@@ -38,3 +38,5 @@ Ringraziamenti
 
 Si ringraziano i volontari dell'associazione ITPUG (Italian PostgreSQL Users Group, http://www.itpug.org/) che hanno contribuito con la traduzione del progetto.
 Si ringrazia inoltre 2ndQuadrant Italia (http://www.2ndQuadrant.it/) per il contributo professionale in termini di risorse umane e di hardware dedicati al progetto.
+
+Si ringrazia inoltre Guillaume Lelarge (guillaume at lelarge.info) di PostgreSQL France e PostgreSQL Europe per il supporto e le preziosissime informazioni fornite per il setup del progetto, derivanti dall'esperienza maturate con la traduzione in francese del manuale di PostgreSQL.

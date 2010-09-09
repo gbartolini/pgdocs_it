@@ -30,6 +30,7 @@ Il progetto
 
 Coordinatore: Gabriele Bartolini <gabriele.bartolini@2ndQuadrant.it>
 Traduttori:
+
 * Cosimo d'Arcangelo (cosimo.darcangelo@itpug.org)
 
 Ringraziamenti

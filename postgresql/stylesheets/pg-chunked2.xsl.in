@@ -5,7 +5,7 @@
                 version="1.0">
 
     <!-- We use XHTML -->
-  <xsl:import href="/opt/local/share/xsl/docbook-xsl/xhtml/docbook.xsl"/>
+  <xsl:import href="@XSLROOTDIR@/xhtml/docbook.xsl"/>
   <xsl:param name="chunker.output.encoding" select="'UTF-8'"/>
 
 

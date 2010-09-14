@@ -25,9 +25,13 @@ CHUNK_QUIET=0
 VPATH = $(BASEDIR):$(BASEDIR)/ref
 src = *.xml ref/*.xml
 
-all: html webhtml pdf manpages INSTALL.html INSTALL.txt
+all: xsl html webhtml pdf manpages INSTALL.html INSTALL.txt
 
-dumbo: html webhtml manpages INSTALL.html INSTALL.txt
+dumbo: xsl html webhtml manpages INSTALL.html INSTALL.txt
+
+xsl: ../stylesheets/pg-chm.xsl.in
+	echo "Creazione degli stylesheet"
+	../bin/prepara-xsl.sh $(XSLROOTDIR)
 
 html: index.html
 index.html: $(src)

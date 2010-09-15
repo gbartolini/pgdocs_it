@@ -2,109 +2,106 @@
 <!-- $PostgreSQL$ -->
 
 <chapter id="ddl">
- <title>Data Definition</title>
+ <title>Definizione dei dati</title>
 
  <para>
-  This chapter covers how one creates the database structures that
-  will hold one's data.  In a relational database, the raw data is
-  stored in tables, so the majority of this chapter is devoted to
-  explaining how tables are created and modified and what features are
-  available to control what data is stored in the tables.
-  Subsequently, we discuss how tables can be organized into
-  schemas, and how privileges can be assigned to tables.  Finally,
-  we will briefly look at other features that affect the data storage,
-  such as inheritance, views, functions, and triggers.
+    Questo capitolo tratta la creazione delle strutture del database che
+    conterranno i dati. In un database relazionale, i dati grezzi sono
+    memorizzati in tabelle. La maggior parte di questo capitolo è dedicata a
+    illustrare come le tabelle vengano create e modificate e quali caratteristiche siano
+    a disposizione per il controllo dei dati.
+    Successivamente, verrà affrontato come organizzare le tabelle in
+    schemi, e come assegnare privilegi alle tabelle. Infine, 
+    verranno brevemente esposte le altre funzionalità riguardanti la memorizzazione dei dati,
+    come ereditarietà, viste, funzioni e trigger.
  </para>
 
  <sect1 id="ddl-basics">
-  <title>Table Basics</title>
+  <title>Fondamenti sulle Tabelle</title>
 
   <indexterm zone="ddl-basics">
-   <primary>table</primary>
+   <primary>tabella</primary>
   </indexterm>
 
   <indexterm>
-   <primary>row</primary>
+   <primary>riga</primary>
   </indexterm>
 
   <indexterm>
-   <primary>column</primary>
+   <primary>colonna</primary>
   </indexterm>
 
   <para>
-   A table in a relational database is much like a table on paper: It
-   consists of rows and columns.  The number and order of the columns
-   is fixed, and each column has a name.  The number of rows is
-   variable &mdash; it reflects how much data is stored at a given moment.
-   SQL does not make any guarantees about the order of the rows in a
-   table.  When a table is read, the rows will appear in an unspecified order,
-   unless sorting is explicitly requested.  This is covered in <xref
-   linkend="queries"/>.  Furthermore, SQL does not assign unique
-   identifiers to rows, so it is possible to have several completely
-   identical rows in a table.  This is a consequence of the
-   mathematical model that underlies SQL but is usually not desirable.
-   Later in this chapter we will see how to deal with this issue.
+    Una tabella, in un database relazionale, è molto simile a una tabella sulla carta: essa
+    consiste di righe e colonne. Il numero e l'ordine delle colonne
+    è fisso, ed ogni colonna ha un nome. Il numero di righe è
+    variabile &mdash; riflette la quantità di dati immagazzinati in un dato momento.
+    SQL non dà alcuna garanzia circa l'ordine delle righe in una 
+    tabella. Quando una tabella viene letta, le righe appariranno in ordine non specificato,
+    a meno che un ordinamento non sia esplicitamente richiesto. Questo argomento è trattato in <xref
+    linkend="queries"/>. Inoltre, SQL non assegna identificatori unici
+    alle righe, così è possibile avere diverse righe 
+    completamente uguali in una tabella. Questa è una conseguenza del 
+    modello matematico sottostante ad SQL, ma di solito non è desiderabile.
+    Questo argomento verrà comunque affrontato più avanti nel corso di questo capitolo.
   </para>
 
   <para>
-   Each column has a data type.  The data type constrains the set of
-   possible values that can be assigned to a column and assigns
-   semantics to the data stored in the column so that it can be used
-   for computations.  For instance, a column declared to be of a
-   numerical type will not accept arbitrary text strings, and the data
-   stored in such a column can be used for mathematical computations.
-   By contrast, a column declared to be of a character string type
-   will accept almost any kind of data but it does not lend itself to
-   mathematical calculations, although other operations such as string
-   concatenation are available.
+    Ogni colonna ha un tipo di dato. Il tipo di dato regola l'insieme di
+    possibili valori che può essere assegnato a una colonna ed fornisce
+    semantica ai dati immagazzinati nella colonna (in modo da poter essere utilizzati per calcoli computazionali). Per esempio, una colonna dichiarata come tipo
+    numerico non accetterà stringhe di testo arbitrarie, e i dati 
+    contenuti in quella colonna potranno essere usati per calcoli matematici.
+    Al contrario, una colonna dichiarata per contenere stringhe di caratteri, 
+    accetterà quasi ogni tipo di dati ma non si presterà
+    a calcoli matematici, benchè altre operazioni, come la concatenazione di stringhe,
+    siano possibili.
   </para>
 
   <para>
-   <productname>PostgreSQL</productname> includes a sizable set of
-   built-in data types that fit many applications.  Users can also
-   define their own data types.  Most built-in data types have obvious
-   names and semantics, so we defer a detailed explanation to <xref
-   linkend="datatype"/>.  Some of the frequently used data types are
-   <type>integer</type> for whole numbers, <type>numeric</type> for
-   possibly fractional numbers, <type>text</type> for character
-   strings, <type>date</type> for dates, <type>time</type> for
-   time-of-day values, and <type>timestamp</type> for values
-   containing both date and time.
+    <productname>PostgreSQL</productname> include un insieme rilevante di tipi di dato
+    che risultano adatti a molte applicazioni. Gli utenti possono inoltre
+    definire i loro propri tipi di dato. Molti dei tipi di dato nativi hanno 
+    nomi e semantica ovvia, perciò si rimanda a 
+    linkend="datatype"/> per una spiegazione dettagliata. Alcuni dei tipi di dato usati frequentemente sono
+    <type>integer</type> per i numeri interi, <type>numeric</type> per
+    i numeri a virgola mobile, <type>text</type> per stringhe 
+    di carattere, <type>date</type> per le date, <type>time</type> per
+    orari e <type>timestamp</type> per valori che contengono 
+    sia data che orario.
   </para>
 
   <indexterm>
-   <primary>table</primary>
-   <secondary>creating</secondary>
+   <primary>tabella</primary>
+   <secondary>creazione</secondary>
   </indexterm>
 
   <para>
-   To create a table, you use the aptly named <xref
-   linkend="sql-createtable"/> command.
-   In this command you specify at least a name for the new table, the
-   names of the columns and the data type of each column.  For
-   example:
+    Per creare una tabella, è possibile utilizzare il comando opportunamente chiamato
+    linkend="sql-createtable"/>.
+    All'interno di questo comando l'utente ha la possibilità di specificare, nella forma minima, un nome per la nuova tabella, i
+    nomi delle colonne e il tipo di dato per ogni colonna. Per
+    esempio:
 <programlisting>
 CREATE TABLE my_first_table (
     first_column text,
     second_column integer
 );
 </programlisting>
-   This creates a table named <literal>my_first_table</literal> with
-   two columns.  The first column is named
-   <literal>first_column</literal> and has a data type of
-   <type>text</type>; the second column has the name
-   <literal>second_column</literal> and the type <type>integer</type>.
-   The table and column names follow the identifier syntax explained
-   in <xref linkend="sql-syntax-identifiers"/>.  The type names are
-   usually also identifiers, but there are some exceptions.  Note that the
-   column list is comma-separated and surrounded by parentheses.
+    Questo comando crea una tabella chiamata <literal>my_first_table</literal> con
+    due colonne. La prima colonna si chiama
+    <literal>first_column</literal> e ha un tipo di dato
+    <type>text</type>; la seconda colonna si chiama
+    <literal>second_column</literal> ed è di tipo <type>integer</type>.
+    I nomi di tabella e colonna seguono la sintassi per gli identificatori, descritta 
+    in <xref linkend="sql-syntax-identifiers"/>. Anche i nomi dei tipi sono
+    di solito identificatori, ma esistono delle eccezioni. Si noti che 
+    la lista di colonne è separata da virgole e racchiusa all'interno di parentesi.
   </para>
 
   <para>
-   Of course, the previous example was heavily contrived.  Normally,
-   you would give names to your tables and columns that convey what
-   kind of data they store.  So let's look at a more realistic
-   example:
+    L'esempio precedente risulta molto forzato. In condizioni normali,
+    è buona norma assegnare nomi a tabelle e colonne in modo significativo. Un esempio più realistico è rappresentato da: 
 <programlisting>
 CREATE TABLE products (
     product_no integer,
@@ -112,59 +109,56 @@ CREATE TABLE products (
     price numeric
 );
 </programlisting>
-   (The <type>numeric</type> type can store fractional components, as
-   would be typical of monetary amounts.)
+   (Il tipo <type>numeric</type> può contenere componenti frazionarie,
+    tipico di somme in valuta.)
   </para>
 
   <tip>
    <para>
-    When you create many interrelated tables it is wise to choose a
-    consistent naming pattern for the tables and columns.  For
-    instance, there is a choice of using singular or plural nouns for
-    table names, both of which are favored by some theorist or other.
-   </para>
+        In fase di creazione di tabelle collegate tra loro è buona norma scegliere
+        un modello coerente per i nomi di tabelle e colonne. Ad esempio, è possibile scegliere se utilizzare nomi di tabella al singolare oppure al plurale, entrambe sostenute da due correnti di pensiero contrapposte.
+    </para>
   </tip>
 
   <para>
-   There is a limit on how many columns a table can contain.
-   Depending on the column types, it is between 250 and 1600.
-   However, defining a table with anywhere near this many columns is
-   highly unusual and often a questionable design.
+    Esiste un limite sul numero di colonne che una tabella può contenere.
+    A seconda dei tipi di colonna, il limite è compreso tra 250 e 1600.
+    Comunque, definire una tabella con un numero di colonne anche minimamente vicino al limite,
+    è molto inusuale e spesso è sintomo di un design discutibile.
   </para>
 
   <indexterm>
-   <primary>table</primary>
-   <secondary>removing</secondary>
+   <primary>tabella</primary>
+   <secondary>rimozione</secondary>
   </indexterm>
 
   <para>
-   If you no longer need a table, you can remove it using the <xref
-   linkend="sql-droptable"/> command.
-   For example:
+    Una tabella non più necessaria può essere rimossa con il comando 
+   <xref linkend="sql-droptable"/> .
+    Per esempio:
 <programlisting>
 DROP TABLE my_first_table;
 DROP TABLE products;
 </programlisting>
-   Attempting to drop a table that does not exist is an error.
-   Nevertheless, it is common in SQL script files to unconditionally
-   try to drop each table before creating it, ignoring any error
-   messages, so that the script works whether or not the table exists.
-   (If you like, you can use the <literal>DROP TABLE IF EXISTS</literal> variant
-   to avoid the error messages, but this is not standard SQL.)
+    Il tentativo di rimozione di una tabella non esistente è considerato un errore. 
+    Ciò nonostante, nei file di script SQL è molto comune 
+    eliminare in modo incondizionato ogni tabella prima di crearla, ignorando qualsiasi messaggio di errore.
+    In questo modo, lo script è in grado di funzionare a prescindere dall'esistenza della tabella.
+    (&Egrave; possibile utilizzare la variante <literal>DROP TABLE IF EXISTS</literal> 
+    per evitare i messaggi di errore, anche se non contemplata dallo standard SQL.)
   </para>
 
   <para>
-   If you need to modify a table that already exists, see <xref
-   linkend="ddl-alter"/> later in this chapter.
+    Per la modifica di tabelle esistenti, fare riferimento a <xref
+   linkend="ddl-alter"/>, descritta più avanti in questo capitolo.
   </para>
 
   <para>
-   With the tools discussed so far you can create fully functional
-   tables.  The remainder of this chapter is concerned with adding
-   features to the table definition to ensure data integrity,
-   security, or convenience.  If you are eager to fill your tables with
-   data now you can skip ahead to <xref linkend="dml"/> and read the
-   rest of this chapter later.
+    Gli strumenti discussi fino a questo punto, permettono di creare tabelle completamente funzionanti.
+    Il resto di questo capitolo riguarda funzionalità aggiuntive
+    alla definizione di tabelle per garantire l'integrità dei dati, 
+    la sicurezza o per semplice comodità. L'utente ansioso di riempire le proprie tabelle con dati
+    può saltare direttamente alla sezione <xref linkend="dml"/> e leggere il resto di questo capitolo in un secondo momento.
   </para>
  </sect1>
 

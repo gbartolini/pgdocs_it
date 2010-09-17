@@ -11,7 +11,7 @@
     illustrare come le tabelle vengano create e modificate e quali caratteristiche siano
     a disposizione per il controllo dei dati.
     Successivamente, verrà affrontato come organizzare le tabelle in
-    schemi, e come assegnare privilegi alle tabelle. Infine, 
+    schemi, e come assegnare privilegi alle tabelle. Infine,
     verranno brevemente esposte le altre funzionalità riguardanti la memorizzazione dei dati,
     come ereditarietà, viste, funzioni e trigger.
  </para>
@@ -36,12 +36,12 @@
     consiste di righe e colonne. Il numero e l'ordine delle colonne
     è fisso, ed ogni colonna ha un nome. Il numero di righe è
     variabile &mdash; riflette la quantità di dati immagazzinati in un dato momento.
-    SQL non dà alcuna garanzia circa l'ordine delle righe in una 
+    SQL non dà alcuna garanzia circa l'ordine delle righe in una
     tabella. Quando una tabella viene letta, le righe appariranno in ordine non specificato,
     a meno che un ordinamento non sia esplicitamente richiesto. Questo argomento è trattato in <xref
     linkend="queries"/>. Inoltre, SQL non assegna identificatori unici
-    alle righe, così è possibile avere diverse righe 
-    completamente uguali in una tabella. Questa è una conseguenza del 
+    alle righe, così è possibile avere diverse righe
+    completamente uguali in una tabella. Questa è una conseguenza del
     modello matematico sottostante ad SQL, ma di solito non è desiderabile.
     Questo argomento verrà comunque affrontato più avanti nel corso di questo capitolo.
   </para>
@@ -50,9 +50,9 @@
     Ogni colonna ha un tipo di dato. Il tipo di dato regola l'insieme di
     possibili valori che può essere assegnato a una colonna ed fornisce
     semantica ai dati immagazzinati nella colonna (in modo da poter essere utilizzati per calcoli computazionali). Per esempio, una colonna dichiarata come tipo
-    numerico non accetterà stringhe di testo arbitrarie, e i dati 
+    numerico non accetterà stringhe di testo arbitrarie, e i dati
     contenuti in quella colonna potranno essere usati per calcoli matematici.
-    Al contrario, una colonna dichiarata per contenere stringhe di caratteri, 
+    Al contrario, una colonna dichiarata per contenere stringhe di caratteri,
     accetterà quasi ogni tipo di dati ma non si presterà
     a calcoli matematici, benchè altre operazioni, come la concatenazione di stringhe,
     siano possibili.
@@ -61,13 +61,13 @@
   <para>
     <productname>PostgreSQL</productname> include un insieme rilevante di tipi di dato
     che risultano adatti a molte applicazioni. Gli utenti possono inoltre
-    definire i loro propri tipi di dato. Molti dei tipi di dato nativi hanno 
-    nomi e semantica ovvia, perciò si rimanda a 
+    definire i loro propri tipi di dato. Molti dei tipi di dato nativi hanno
+    nomi e semantica ovvia, perciò si rimanda a
     linkend="datatype"/> per una spiegazione dettagliata. Alcuni dei tipi di dato usati frequentemente sono
     <type>integer</type> per i numeri interi, <type>numeric</type> per
-    i numeri a virgola mobile, <type>text</type> per stringhe 
+    i numeri a virgola mobile, <type>text</type> per stringhe
     di carattere, <type>date</type> per le date, <type>time</type> per
-    orari e <type>timestamp</type> per valori che contengono 
+    orari e <type>timestamp</type> per valori che contengono
     sia data che orario.
   </para>
 
@@ -93,15 +93,15 @@ CREATE TABLE my_first_table (
     <literal>first_column</literal> e ha un tipo di dato
     <type>text</type>; la seconda colonna si chiama
     <literal>second_column</literal> ed è di tipo <type>integer</type>.
-    I nomi di tabella e colonna seguono la sintassi per gli identificatori, descritta 
+    I nomi di tabella e colonna seguono la sintassi per gli identificatori, descritta
     in <xref linkend="sql-syntax-identifiers"/>. Anche i nomi dei tipi sono
-    di solito identificatori, ma esistono delle eccezioni. Si noti che 
+    di solito identificatori, ma esistono delle eccezioni. Si noti che
     la lista di colonne è separata da virgole e racchiusa all'interno di parentesi.
   </para>
 
   <para>
     L'esempio precedente risulta molto forzato. In condizioni normali,
-    è buona norma assegnare nomi a tabelle e colonne in modo significativo. Un esempio più realistico è rappresentato da: 
+    è buona norma assegnare nomi a tabelle e colonne in modo significativo. Un esempio più realistico è rappresentato da:
 <programlisting>
 CREATE TABLE products (
     product_no integer,
@@ -133,18 +133,18 @@ CREATE TABLE products (
   </indexterm>
 
   <para>
-    Una tabella non più necessaria può essere rimossa con il comando 
+    Una tabella non più necessaria può essere rimossa con il comando
    <xref linkend="sql-droptable"/> .
     Per esempio:
 <programlisting>
 DROP TABLE my_first_table;
 DROP TABLE products;
 </programlisting>
-    Il tentativo di rimozione di una tabella non esistente è considerato un errore. 
-    Ciò nonostante, nei file di script SQL è molto comune 
+    Il tentativo di rimozione di una tabella non esistente è considerato un errore.
+    Ciò nonostante, nei file di script SQL è molto comune
     eliminare in modo incondizionato ogni tabella prima di crearla, ignorando qualsiasi messaggio di errore.
     In questo modo, lo script è in grado di funzionare a prescindere dall'esistenza della tabella.
-    (&Egrave; possibile utilizzare la variante <literal>DROP TABLE IF EXISTS</literal> 
+    (È possibile utilizzare la variante <literal>DROP TABLE IF EXISTS</literal>
     per evitare i messaggi di errore, anche se non contemplata dallo standard SQL.)
   </para>
 
@@ -156,38 +156,42 @@ DROP TABLE products;
   <para>
     Gli strumenti discussi fino a questo punto, permettono di creare tabelle completamente funzionanti.
     Il resto di questo capitolo riguarda funzionalità aggiuntive
-    alla definizione di tabelle per garantire l'integrità dei dati, 
+    alla definizione di tabelle per garantire l'integrità dei dati,
     la sicurezza o per semplice comodità. L'utente ansioso di riempire le proprie tabelle con dati
     può saltare direttamente alla sezione <xref linkend="dml"/> e leggere il resto di questo capitolo in un secondo momento.
   </para>
  </sect1>
 
+
+
+
+
  <sect1 id="ddl-default">
-  <title>Default Values</title>
+  <title>Valori di Default</title>
 
   <indexterm zone="ddl-default">
    <primary>default value</primary>
   </indexterm>
 
   <para>
-   A column can be assigned a default value.  When a new row is
-   created and no values are specified for some of the columns, those
-   columns will be filled with their respective default values.  A
-   data manipulation command can also request explicitly that a column
-   be set to its default value, without having to know what that value is.
-   (Details about data manipulation commands are in <xref linkend="dml"/>.)
+    Ad una colonna può essere assegnato un valore di default. Quando una riga
+    viene creata e non sono specificati valori per alcune colonne, queste 
+    verranno riempite con i loro rispettivi valori di default. Un
+    comando di manipolazione dei dati può anche richiedere esplicitamente che una colonna
+    sia settata al suo valore di default, senza dover sapere che valore sia.
+    (Dettagli riguardanti i comandi di manipolazione dei dati sono in <xref linkend="dml"/>.)
   </para>
 
   <para>
    <indexterm><primary>null value</primary><secondary>default value</secondary></indexterm>
-   If no default value is declared explicitly, the default value is the
-   null value.  This usually makes sense because a null value can
-   be considered to represent unknown data.
+    Se un valore di default non è dichiarato esplicitamente, il valore di default è il
+    valore null. Questo di solito ha senso perchè un valore null può
+    essere considerato rappresentativo di un dato sconosciuto.
   </para>
 
   <para>
-   In a table definition, default values are listed after the column
-   data type.  For example:
+    Nella definizione di una tabella, i valori di default sono elencati dopo il tipo di dato della colonna.
+    Per esempio:
 <programlisting>
 CREATE TABLE products (
     product_no integer,
@@ -198,63 +202,65 @@ CREATE TABLE products (
   </para>
 
   <para>
-   The default value can be an expression, which will be
-   evaluated whenever the default value is inserted
-   (<emphasis>not</emphasis> when the table is created).  A common example
-   is for a <type>timestamp</type> column to have a default of <literal>CURRENT_TIMESTAMP</literal>,
-   so that it gets set to the time of row insertion.  Another common
-   example is generating a <quote>serial number</quote> for each row.
-   In <productname>PostgreSQL</productname> this is typically done by
-   something like:
+    Il valore di default può essere un'espressione, che verrà
+    valutata ogni volta che il valore di default viene inserito
+    (<emphasis>non</emphasis> quando la tabella viene creata).  Un esempio comune
+    è per una colonna <type>timestamp</type> avere un valore di default <literal>CURRENT_TIMESTAMP</literal>,
+    così che verrà settato al momento dell'inserimento della riga. Un altro esempio comune
+<!-- /TODO serial number = numero di serie ???  -->
+    è quando si genera un <quote>numero si serie</quote> per ogni riga.
+    In <productname>PostgreSQL</productname> questo viene tipicamente fatto con 
+    qualcosa di simile a:
 <programlisting>
 CREATE TABLE products (
     product_no integer <emphasis>DEFAULT nextval('products_product_no_seq')</emphasis>,
     ...
 );
 </programlisting>
-   where the <literal>nextval()</literal> function supplies successive values
-   from a <firstterm>sequence object</firstterm> (see <xref
-   linkend="functions-sequence"/>). This arrangement is sufficiently common
-   that there's a special shorthand for it:
+    dove la funzione <literal>nextval()</literal> fornisce valori successivi  
+    da una <firstterm>sequenza</firstterm> (vedi <xref 
+    linkend="functions-sequence"/>). Questa procedura è sufficientemente comune  
+    da avere una speciale scorciatoia:
 <programlisting>
 CREATE TABLE products (
     product_no <emphasis>SERIAL</emphasis>,
     ...
 );
 </programlisting>
-   The <literal>SERIAL</literal> shorthand is discussed further in <xref
+   L'abbreviazione <literal>SERIAL</literal> è discussa approfonditamente in <xref
    linkend="datatype-serial"/>.
   </para>
  </sect1>
 
  <sect1 id="ddl-constraints">
-  <title>Constraints</title>
+  <title>Vincoli</title>
 
   <indexterm zone="ddl-constraints">
    <primary>constraint</primary>
   </indexterm>
 
   <para>
-   Data types are a way to limit the kind of data that can be stored
-   in a table.  For many applications, however, the constraint they
-   provide is too coarse.  For example, a column containing a product
-   price should probably only accept positive values.  But there is no
-   standard data type that accepts only positive numbers.  Another issue is
-   that you might want to constrain column data with respect to other
-   columns or rows.  For example, in a table containing product
-   information, there should be only one row for each product number.
+    I tipi di dato sono un modo per limitare il tipo dei dati che possono essere immagazzinati in una tabella.
+    Per molte applicazioni, comunque, il vincolo che mettono a disposizione 
+    è troppo grossolano. Per esempio, una colonna contenente il prezzo di un prodotto
+    dovrebbe, probabilmente, accettare solo valori positivi. Ma non c'è nessun
+    tipo di dato standard che accetta solo numeri positivi. Un altro problema è
+<!-- /TODO orribile in italiano -->
+    che si potrebbe voler vincolare il dato di una colonna per quanto riguarda 
+    altre colonne o righe. Per esempio, in una tabella contenente informazioni
+    su un prodotto, ci dovrebbe essere solo una riga per ogni numero di prodotto.
   </para>
 
   <para>
-   To that end, SQL allows you to define constraints on columns and
-   tables.  Constraints give you as much control over the data in your
-   tables as you wish.  If a user attempts to store data in a column
-   that would violate a constraint, an error is raised.  This applies
-   even if the value came from the default value definition.
+    Per questo, SQL permette di definire vincoli sulle colonne e le
+    tabelle. I vincoli danno tanto controllo sui dati nelle tue tabelle
+    quanto se ne desidera. Se un utente tenta di immagazzinare dati in una colonna
+    violando un vincolo, viene generato un errore. Questo si applica
+    anche se il valore veniva dalla definizione di valore di default.
   </para>
 
   <sect2>
-   <title>Check Constraints</title>
+   <title>Vincolo Check</title>
 
    <indexterm>
     <primary>check constraint</primary>
@@ -266,10 +272,10 @@ CREATE TABLE products (
    </indexterm>
 
    <para>
-    A check constraint is the most generic constraint type.  It allows
-    you to specify that the value in a certain column must satisfy a
-    Boolean (truth-value) expression.  For instance, to require positive
-    product prices, you could use:
+        Il vincolo check è del tipo più generico. Permette
+        di specificare che il valore di una certa colonna deve soddisfare
+        un'espressione Booleana (valore-verità). Per esempio, per richiedere prezzi positivi
+        per i prodotti, usare:
 <programlisting>
 CREATE TABLE products (
     product_no integer,
@@ -280,13 +286,13 @@ CREATE TABLE products (
    </para>
 
    <para>
-    As you see, the constraint definition comes after the data type,
-    just like default value definitions.  Default values and
-    constraints can be listed in any order.  A check constraint
-    consists of the key word <literal>CHECK</literal> followed by an
-    expression in parentheses.  The check constraint expression should
-    involve the column thus constrained, otherwise the constraint
-    would not make too much sense.
+        La definizione di vincolo viene dopo il tipo di dato,
+        esattamente come le definizioni dei valori di default. I valori di default e i vincoli
+        possono essere elencati in qualsiasi ordine. Un vincolo check
+        consiste della parola chiave <literal>CHECK</literal> seguita da un'espressione
+        in parentesi. L'espressione del vincolo check dovrebbe 
+        coinvolgere la colonna vincolata, altrimenti il vincolo 
+        non avrebbe molto senso.
    </para>
 
    <indexterm>
@@ -295,9 +301,9 @@ CREATE TABLE products (
    </indexterm>
 
    <para>
-    You can also give the constraint a separate name.  This clarifies
-    error messages and allows you to refer to the constraint when you
-    need to change it.  The syntax is:
+        Si può anche dare un nome al vincolo. Questo chiarifica
+        i messaggi di errore e permette di individuare il vincolo quando 
+        bisogna cambiarlo. La sintassi è:
 <programlisting>
 CREATE TABLE products (
     product_no integer,
@@ -305,16 +311,16 @@ CREATE TABLE products (
     price numeric <emphasis>CONSTRAINT positive_price</emphasis> CHECK (price &gt; 0)
 );
 </programlisting>
-    So, to specify a named constraint, use the key word
-    <literal>CONSTRAINT</literal> followed by an identifier followed
-    by the constraint definition.  (If you don't specify a constraint
-    name in this way, the system chooses a name for you.)
+        Così, per specificare un vincolo con nome, usare la parola chiave
+        <literal>CONSTRAINT</literal> seguita da un identificatore, seguito
+        dalla definizione del vincolo. (Se non si specifica un nome per il vincolo
+        in questo modo, il sistema ne sceglierà uno.)
    </para>
 
    <para>
-    A check constraint can also refer to several columns.  Say you
-    store a regular price and a discounted price, and you want to
-    ensure that the discounted price is lower than the regular price:
+        Un vincolo check può anche riguardare diverse colonne. Mettiamo
+        di avere un prezzo regolare e un prezzo scontato, e vogliamo
+        assicurarci che il prezzo scontato sia minore che il prezzo regolare:
 <programlisting>
 CREATE TABLE products (
     product_no integer,
@@ -327,23 +333,22 @@ CREATE TABLE products (
    </para>
 
    <para>
-    The first two constraints should look familiar.  The third one
-    uses a new syntax.  It is not attached to a particular column,
-    instead it appears as a separate item in the comma-separated
-    column list.  Column definitions and these constraint
-    definitions can be listed in mixed order.
+        I primi 2 vincoli dovrebbero essere familiari. Il terzo
+        usa una nuova sintassi. Esso non è attaccato a una particolare colonna,
+        invece appare come un oggetto separato nella lista delle colonne separata da virgole.
+        Le definizioni delle colonne e dei vincoli possono essere elencati in ordine sparso.
    </para>
 
    <para>
-    We say that the first two constraints are column constraints, whereas the
-    third one is a table constraint because it is written separately
-    from any one column definition.  Column constraints can also be
-    written as table constraints, while the reverse is not necessarily
-    possible, since a column constraint is supposed to refer to only the
-    column it is attached to.  (<productname>PostgreSQL</productname> doesn't
-    enforce that rule, but you should follow it if you want your table
-    definitions to work with other database systems.)  The above example could
-    also be written as:
+        Abbiamo detto che i primi due vincoli sono vincoli di colonna, mentre il     
+        terzo è un vincolo di tabella perchè è scritto separatamente 
+        da ogni definizione di colonna. I vincoli di colonna possono anche
+        essere scritti come vincoli di tabella, mentre il contrario non è possibile,
+        dato che un vincolo di colonna si riferisce solo alla colonna
+        a cui è attaccato. (<productname>PostgreSQL</productname> non
+        impone questa regola, ma dovrebbe essere seguita se si vuole che le definizioni delle tabelle
+        funzionino con altri sistemi di database.) L'esempio precedente poteva
+        essere scritto anche:
 <programlisting>
 CREATE TABLE products (
     product_no integer,
@@ -355,7 +360,7 @@ CREATE TABLE products (
     CHECK (price &gt; discounted_price)
 );
 </programlisting>
-    or even:
+    oppure:
 <programlisting>
 CREATE TABLE products (
     product_no integer,
@@ -365,12 +370,12 @@ CREATE TABLE products (
     CHECK (discounted_price &gt; 0 AND price &gt; discounted_price)
 );
 </programlisting>
-    It's a matter of taste.
+     È una questione di gusti.
    </para>
 
    <para>
-    Names can be assigned to table constraints in the same way as
-    column constraints:
+        I nomi possono essere assegnati ai vincoli di tabella nello stesso modo 
+        dei vincoli di colonna:
 <programlisting>
 CREATE TABLE products (
     product_no integer,
@@ -390,17 +395,17 @@ CREATE TABLE products (
    </indexterm>
 
    <para>
-    It should be noted that a check constraint is satisfied if the
-    check expression evaluates to true or the null value.  Since most
-    expressions will evaluate to the null value if any operand is null,
-    they will not prevent null values in the constrained columns.  To
-    ensure that a column does not contain null values, the not-null
-    constraint described in the next section can be used.
+        Un vincolo check è soddisfatto se 
+        l'espressione restituisce un valore true o null. Dato che la maggior parte delle 
+        espressioni restituirà null se uno degli operandi è null,
+        esse non impediranno valori null nelle colonne vincolate. Per 
+        assicurare che una colonna non contenga valori null, può essere usato il vincolo not-null
+        descritto nella prossima sezione.
    </para>
   </sect2>
 
   <sect2>
-   <title>Not-Null Constraints</title>
+   <title>Vincolo Not-Null</title>
 
    <indexterm>
     <primary>not-null constraint</primary>
@@ -412,8 +417,8 @@ CREATE TABLE products (
    </indexterm>
 
    <para>
-    A not-null constraint simply specifies that a column must not
-    assume the null value.  A syntax example:
+        Un vincolo not-null semplicemente specifica che una colonna non deve assumere
+        il valore null. Un esempio di sintassi:
 <programlisting>
 CREATE TABLE products (
     product_no integer <emphasis>NOT NULL</emphasis>,
@@ -424,19 +429,18 @@ CREATE TABLE products (
    </para>
 
    <para>
-    A not-null constraint is always written as a column constraint.  A
-    not-null constraint is functionally equivalent to creating a check
-    constraint <literal>CHECK (<replaceable>column_name</replaceable>
-    IS NOT NULL)</literal>, but in
-    <productname>PostgreSQL</productname> creating an explicit
-    not-null constraint is more efficient.  The drawback is that you
-    cannot give explicit names to not-null constraints created this
-    way.
+        Un vincolo non-null è sempre scritto come un vincolo di colonna. Un    
+        vincolo not-null funziona come un vincolo check della forma
+        <literal>CHECK (<replaceable>column_name</replaceable>
+        IS NOT NULL)</literal>, ma in 
+        <productname>PostgreSQL</productname> creare esplicitamente un 
+        vincolo not-null è più efficiente. Il rovescio della medaglia è che non è possibile
+        dare esplicitamente nomi ai vincoli not-null creati in questo modo.
    </para>
 
    <para>
-    Of course, a column can have more than one constraint.  Just write
-    the constraints one after another:
+        Ovviamente, una colonna può avere più di un vincolo. Semplicemente scrivere
+        i vincoli uno dopo l'altro:
 <programlisting>
 CREATE TABLE products (
     product_no integer NOT NULL,
@@ -444,21 +448,21 @@ CREATE TABLE products (
     price numeric NOT NULL CHECK (price &gt; 0)
 );
 </programlisting>
-    The order doesn't matter.  It does not necessarily determine in which
-    order the constraints are checked.
+        L'ordine non conta. Esso non determina necessariamente in quale ordine
+        i vincoli sono controllati.
    </para>
 
    <para>
-    The <literal>NOT NULL</literal> constraint has an inverse: the
-    <literal>NULL</literal> constraint.  This does not mean that the
-    column must be null, which would surely be useless.  Instead, this
-    simply selects the default behavior that the column might be null.
-    The <literal>NULL</literal> constraint is not present in the SQL
-    standard and should not be used in portable applications.  (It was
-    only added to <productname>PostgreSQL</productname> to be
-    compatible with some other database systems.)  Some users, however,
-    like it because it makes it easy to toggle the constraint in a
-    script file.  For example, you could start with:
+        Il vincolo <literal>NOT NULL</literal> ha un inverso: il 
+        vincolo <literal>NULL</literal>. Questo non significa che la colonna
+        debba essere nulla, che sarebbe sicuramente inutile. Invece, questo 
+        seleziona semplicemente il comportamento di default della colonna sia null.
+        Il vincolo <literal>NULL</literal> non è presente nello standard SQL 
+        e non dovrebbe essere usato in applicazioni portabili. (È stato
+        aggiunto a <productname>PostgreSQL</productname> per essere 
+        compatibile con alcuni altri sistemi di database.) Ad alcuni utenti, comunque,
+        piace perchè rende facile cambiare il vincolo in uno script.
+        Per esempio, potresti partire con:
 <programlisting>
 CREATE TABLE products (
     product_no integer NULL,
@@ -466,19 +470,19 @@ CREATE TABLE products (
     price numeric NULL
 );
 </programlisting>
-    and then insert the <literal>NOT</literal> key word where desired.
+        e poi inserire la parola chiave <literal>NOT</literal> dove desiderato.
    </para>
 
    <tip>
     <para>
-     In most database designs the majority of columns should be marked
-     not null.
+        In molti progetti di database la maggioranza delle colonne dovrebbe essere segnata come
+        not null.
     </para>
    </tip>
   </sect2>
 
   <sect2>
-   <title>Unique Constraints</title>
+   <title>Vincolo Unique</title>
 
    <indexterm>
     <primary>unique constraint</primary>
@@ -490,9 +494,9 @@ CREATE TABLE products (
    </indexterm>
 
    <para>
-    Unique constraints ensure that the data contained in a column or a
-    group of columns is unique with respect to all the rows in the
-    table.  The syntax is:
+        I vincoli unique assicurano che i dati contenuti in una colonna o un
+        gruppo di colonne siano unici rispetto a tutte le righe nella
+        tabella. La sintassi è:
 <programlisting>
 CREATE TABLE products (
     product_no integer <emphasis>UNIQUE</emphasis>,
@@ -500,7 +504,7 @@ CREATE TABLE products (
     price numeric
 );
 </programlisting>
-    when written as a column constraint, and:
+        quando scritto come vincolo di colonna, e:
 <programlisting>
 CREATE TABLE products (
     product_no integer,
@@ -509,12 +513,12 @@ CREATE TABLE products (
     <emphasis>UNIQUE (product_no)</emphasis>
 );
 </programlisting>
-    when written as a table constraint.
+        quando scritto come vincolo di tabella.
    </para>
 
    <para>
-    If a unique constraint refers to a group of columns, the columns
-    are listed separated by commas:
+        Se un vincolo unique si riferisce a un gruppo di colonne, le colonne
+        sono elencate separate da virgole_
 <programlisting>
 CREATE TABLE example (
     a integer,
@@ -523,13 +527,13 @@ CREATE TABLE example (
     <emphasis>UNIQUE (a, c)</emphasis>
 );
 </programlisting>
-    This specifies that the combination of values in the indicated columns
-    is unique across the whole table, though any one of the columns
-    need not be (and ordinarily isn't) unique.
+        Questo specifica che la combinazione di valori nelle colonne indicate 
+        è unica in tutta la tabella, sebbene ogni singola colonna non necessiti di essere
+        (e di solito non lo è) unica.
    </para>
 
    <para>
-    You can assign your own name for a unique constraint, in the usual way:
+        È possibile assegnare un nome per un vincolo unique, nel solito modo:
 <programlisting>
 CREATE TABLE products (
     product_no integer <emphasis>CONSTRAINT must_be_different</emphasis> UNIQUE,
@@ -540,8 +544,8 @@ CREATE TABLE products (
    </para>
 
    <para>
-    Adding a unique constraint will automatically create a unique btree
-    index on the column or group of columns used in the constraint.
+        Aggiungere un vincolo unique creerà automaticamente un indice btree nella 
+        colonna, o gruppo di colonne, usate nel vincolo.
    </para>
 
    <indexterm>
@@ -550,22 +554,21 @@ CREATE TABLE products (
    </indexterm>
 
    <para>
-    In general, a unique constraint is violated when there is more than
-    one row in the table where the values of all of the
-    columns included in the constraint are equal.
-    However, two null values are not considered equal in this
-    comparison.  That means even in the presence of a
-    unique constraint it is possible to store duplicate
-    rows that contain a null value in at least one of the constrained
-    columns.  This behavior conforms to the SQL standard, but we have
-    heard that other SQL databases might not follow this rule.  So be
-    careful when developing applications that are intended to be
-    portable.
+        In generale, un vincolo unique è violato quando c'è più di 
+        una riga nella tabella dove i valori di tutte le colonne
+        incluse nel vincolo sono uguali.
+        Comunque, due valori null non sono considerati uguali in questa 
+        comparazione. Questo significa che anche in presenza di un
+        vincolo unique è possibile immagazzinare righe duplicate 
+        che contengono un valore null in almeno una delle colonne vincolate.
+        Questo comportamento è conforme allo standard SQL, ma abbiamo 
+        sentito che altri database SQL potrebbero non seguire questa regola. Così,
+        stai attento quando sviluppi applicazioni che debbano essere portabili.
    </para>
   </sect2>
 
   <sect2>
-   <title>Primary Keys</title>
+   <title>Chiavi Primarie</title>
 
    <indexterm>
     <primary>primary key</primary>
@@ -577,9 +580,9 @@ CREATE TABLE products (
    </indexterm>
 
    <para>
-    Technically, a primary key constraint is simply a combination of a
-    unique constraint and a not-null constraint.  So, the following
-    two table definitions accept the same data:
+        Tecnicamente, un vincolo chiave primaria è semplicemente una combinazione del
+        vincolo unique e del vincolo not-null. Così, le due tabelle seguenti
+        accettano gli stessi dati:
 <programlisting>
 CREATE TABLE products (
     product_no integer UNIQUE NOT NULL,
@@ -598,8 +601,8 @@ CREATE TABLE products (
    </para>
 
    <para>
-    Primary keys can also constrain more than one column; the syntax
-    is similar to unique constraints:
+        Le chiavi primarie possono anche vincolare più di una colonna; La sintassi 
+        è simile ai vincoli unique:
 <programlisting>
 CREATE TABLE example (
     a integer,
@@ -611,35 +614,35 @@ CREATE TABLE example (
    </para>
 
    <para>
-    A primary key indicates that a column or group of columns can be
-    used as a unique identifier for rows in the table.  (This is a
-    direct consequence of the definition of a primary key.  Note that
-    a unique constraint does not, by itself, provide a unique identifier
-    because it does not exclude null values.)  This is useful both for
-    documentation purposes and for client applications.  For example,
-    a GUI application that allows modifying row values probably needs
-    to know the primary key of a table to be able to identify rows
-    uniquely.
+        Una chiave primaria indica che una colonna o gruppo di colonne può essere
+        usata come identificatore unico per le righe nella tabella. (Questa è una
+        diretta conseguenza della definizione di chiave primaria. Notare che 
+        un vincolo unique non fornisce, da sola, un identificatore unico,
+        perchè non esclude i valori null.) Questo è utile sia per
+        scopi di socumentazione, sia per applicazioni client. Per esempio,
+        un'applicazione GUI che permette la modifica dei valori di una riga probabilmente ha bisogno
+        di sapere la chiave primaria di una tabella per essere capace di identificare le righe
+        unicamente.
    </para>
 
    <para>
-    Adding a primary key will automatically create a unique btree index
-    on the column or group of columns used in the primary key.
+        Aggiungere una chiave primaria creerà automaticamente un indice btree unico
+        sulla colonna o gruppo di colonne usate nella chiave primaria.
    </para>
 
    <para>
-    A table can have at most one primary key.  (There can be any number
-    of unique and not-null constraints, which are functionally the same
-    thing, but only one can be identified as the primary key.)
-    Relational database theory
-    dictates that every table must have a primary key.  This rule is
-    not enforced by <productname>PostgreSQL</productname>, but it is
-    usually best to follow it.
+        Una tabella può avere al più una chiave primaria. (Ci possono essere qualsiasi numero
+        di vincoli unique e not-null, che sono funzionalmente la stessa 
+        cosa, ma solo uno può essere identificato come chiave primaria.)
+        La teoria dei database relazionali
+        afferma che ogni tabella deve avere una chiave primaria. Questa regola non 
+        è forzata da <productname>PostgreSQL</productname>, ma è 
+        generalmente preferibile seguirla.
    </para>
   </sect2>
 
   <sect2 id="ddl-constraints-fk">
-   <title>Foreign Keys</title>
+   <title>Chiavi Esterne</title>
 
    <indexterm>
     <primary>foreign key</primary>
@@ -655,15 +658,15 @@ CREATE TABLE example (
    </indexterm>
 
    <para>
-    A foreign key constraint specifies that the values in a column (or
-    a group of columns) must match the values appearing in some row
-    of another table.
-    We say this maintains the <firstterm>referential
-    integrity</firstterm> between two related tables.
+        Un vincolo chiave esterna specifica che i valori in una colonna (o
+        un gruppo di colonne) deve essere uguale ai valori presenti in qualche riga
+        di un'altra tabella.
+        Questo mantiene l'<firstterm>integrità referenziale</firstterm>
+        tra due tabelle correlate.
    </para>
 
    <para>
-    Say you have the product table that we have used several times already:
+        Mettiamo di avere la tabella products, che abbiamo usato già diverse volte:
 <programlisting>
 CREATE TABLE products (
     product_no integer PRIMARY KEY,
@@ -671,11 +674,10 @@ CREATE TABLE products (
     price numeric
 );
 </programlisting>
-    Let's also assume you have a table storing orders of those
-    products.  We want to ensure that the orders table only contains
-    orders of products that actually exist.  So we define a foreign
-    key constraint in the orders table that references the products
-    table:
+        Assumiamo inoltre di avere una tabella che tiene gli ordini di 
+        questi prodotti. Vogliamo assicurare che la tabella degli ordini contengano solo
+        ordini di prodotti che esistono realmente. Così definiamo un vincolo chiave esterna
+        nella tabella ordini che fa riferimento alla tabella prodotti:
 <programlisting>
 CREATE TABLE orders (
     order_id integer PRIMARY KEY,
@@ -683,20 +685,19 @@ CREATE TABLE orders (
     quantity integer
 );
 </programlisting>
-    Now it is impossible to create orders with
-    <structfield>product_no</structfield> entries that do not appear in the
-    products table.
+        Ora è impossibile creare ordini con 
+        valori di <structfield>product_no</structfield> che non appaiano nella tabella prodotti.
    </para>
 
    <para>
-    We say that in this situation the orders table is the
-    <firstterm>referencing</firstterm> table and the products table is
-    the <firstterm>referenced</firstterm> table.  Similarly, there are
-    referencing and referenced columns.
+        Diciamo che in questa situazione la tabella ordini è la tabella
+        <firstterm>referente</firstterm> e la tabella prodotti è
+        la tabella <firstterm>referenziata</firstterm>. Similarmente, ci sono
+        colonne referenti e referenziate.
    </para>
 
    <para>
-    You can also shorten the above command to:
+        È possibile anche abbreviare il comando sopra:
 <programlisting>
 CREATE TABLE orders (
     order_id integer PRIMARY KEY,
@@ -704,14 +705,14 @@ CREATE TABLE orders (
     quantity integer
 );
 </programlisting>
-    because in absence of a column list the primary key of the
-    referenced table is used as the referenced column(s).
+        perchè in assenza di un elenco di colonne, la chiave primaria della
+        tabella referenziata è usata come colonna/e referenziate.
    </para>
 
    <para>
-    A foreign key can also constrain and reference a group of columns.
-    As usual, it then needs to be written in table constraint form.
-    Here is a contrived syntax example:
+        Una chiave esterna puà anche vincolare e referenziare un gruppo di colonne.
+        Come al solito, deve essere scritta nella forma dei vincoli di tabella.
+        Ecco un esempio di sintassi contratta:
 <programlisting>
 CREATE TABLE t1 (
   a integer PRIMARY KEY,
@@ -720,21 +721,21 @@ CREATE TABLE t1 (
   <emphasis>FOREIGN KEY (b, c) REFERENCES other_table (c1, c2)</emphasis>
 );
 </programlisting>
-    Of course, the number and type of the constrained columns need to
-    match the number and type of the referenced columns.
+        Certamente, il numero e il tipo delle colonne vincolate necessita di 
+        coincidere col numero e il tipo delle colonne referenziate.
    </para>
 
    <para>
-    You can assign your own name for a foreign key constraint,
-    in the usual way.
+        Si può assegnare un nome per un vincolo chiave esterna,
+        nel solito modo.
    </para>
 
    <para>
-    A table can contain more than one foreign key constraint.  This is
-    used to implement many-to-many relationships between tables.  Say
-    you have tables about products and orders, but now you want to
-    allow one order to contain possibly many products (which the
-    structure above did not allow).  You could use this table structure:
+        Una tabella puà contenere più di un vincolo chiave esterna. Questo è
+        usato per implementare relazioni molti-a-molti tra le tabelle. Mettiamo
+        di avere tabelle riguardanti prodotti e ordini, ma ora si vuole 
+        permettere a un ordine di contenere molti prodotti (la struttura precedente non 
+        lo permetteva). Usare questa struttura di tabella:
 <programlisting>
 CREATE TABLE products (
     product_no integer PRIMARY KEY,
@@ -755,8 +756,7 @@ CREATE TABLE order_items (
     PRIMARY KEY (product_no, order_id)
 );
 </programlisting>
-    Notice that the primary key overlaps with the foreign keys in
-    the last table.
+        Notare che la chiave primaria si sovrappone con le chiavi esterne nell'ultima tabella.
    </para>
 
    <indexterm>
@@ -770,23 +770,23 @@ CREATE TABLE order_items (
    </indexterm>
 
    <para>
-    We know that the foreign keys disallow creation of orders that
-    do not relate to any products.  But what if a product is removed
-    after an order is created that references it?  SQL allows you to
-    handle that as well.  Intuitively, we have a few options:
+        Sappiamo che le chiavi esterne non permettono la creazione di ordini 
+        che non siano correlati a qualche prodotto. Ma cosa succede se un prodotto viene 
+        rimosso dopo che un ordine che lo referenzia viene creato? SQL ti permette di
+        gestire questa situazione. Intuitivamente, abbiamo diverse opzioni:
     <itemizedlist spacing="compact">
-     <listitem><para>Disallow deleting a referenced product</para></listitem>
-     <listitem><para>Delete the orders as well</para></listitem>
-     <listitem><para>Something else?</para></listitem>
+     <listitem><para>Non permettere la cancellazione di un prodotto referenziato</para></listitem>
+     <listitem><para>Cancellare anche gli ordini</para></listitem>
+     <listitem><para>Qualcos'altro?</para></listitem>
     </itemizedlist>
    </para>
 
    <para>
-    To illustrate this, let's implement the following policy on the
-    many-to-many relationship example above: when someone wants to
-    remove a product that is still referenced by an order (via
-    <literal>order_items</literal>), we disallow it.  If someone
-    removes an order, the order items are removed as well:
+        Per spiegarlo, implementiamo il seguente comportamento sulla relazione molti-a-molti
+        dell'esempio superiore: quando qualcuno vuole 
+        rimuovere un prodotto che è referenziato da un ordine (attraverso 
+        <literal>order_items</literal>), noi non glielo permettiamo. Se qualcuno
+        rimuove un ordine, anche gli articoli dell'ordine verranno rimossi:
 <programlisting>
 CREATE TABLE products (
     product_no integer PRIMARY KEY,
@@ -810,59 +810,60 @@ CREATE TABLE order_items (
    </para>
 
    <para>
-    Restricting and cascading deletes are the two most common options.
-    <literal>RESTRICT</literal> prevents deletion of a
-    referenced row. <literal>NO ACTION</literal> means that if any
-    referencing rows still exist when the constraint is checked, an error
-    is raised; this is the default behavior if you do not specify anything.
-    (The essential difference between these two choices is that
-    <literal>NO ACTION</literal> allows the check to be deferred until
-    later in the transaction, whereas <literal>RESTRICT</literal> does not.)
-    <literal>CASCADE</literal> specifies that when a referenced row is deleted,
-    row(s) referencing it should be automatically deleted as well.
-    There are two other options:
-    <literal>SET NULL</literal> and <literal>SET DEFAULT</literal>.
-    These cause the referencing columns to be set to nulls or default
-    values, respectively, when the referenced row is deleted.
-    Note that these do not excuse you from observing any constraints.
-    For example, if an action specifies <literal>SET DEFAULT</literal>
-    but the default value would not satisfy the foreign key, the
-    operation will fail.
+        Le cancellazioni ristrette e in cascata sono le due opzioni più comuni.
+        <literal>RESTRICT</literal> previene la cancellazione di una  
+        riga referenziata.  <literal>NO ACTION</literal> significa che se esiste
+        una riga referenziante quando il vincolo viene controllato, viene generato
+        un errore; questo è il comportamento di default se non specifichi niente.
+        (La differenza essenziale tra queste due scelte è che
+        <literal>NO ACTION</literal> permette che il controllo venga rinviato 
+        successivamente nella transazione, mentre <literal>RESTRICT</literal> no.)
+        <literal>CASCADE</literal> specifica che quando una riga referenziata viene cancellata,
+        anche la/e riga/e referenti dovrebbero essere cancellate.
+        Ci sono altre due opzioni:
+        <literal>SET NULL</literal> e <literal>SET DEFAULT</literal>.
+        Queste causano che le colonne referenti siano settate a null o al valore di default,
+        rispettivamente, quando la riga referenziata viene cancellata.
+        Notare che questo non ti esclude dall'avere vincoli.
+        Per esempio, se un'azione specifica <literal>SET DEFAULT</literal>,
+        ma il valore di default non soddisfa la chiave esterna, l'operazione
+        fallirà.
    </para>
 
    <para>
     Analogous to <literal>ON DELETE</literal> there is also
-    <literal>ON UPDATE</literal> which is invoked when a referenced
-    column is changed (updated).  The possible actions are the same.
+        Analogamente a <literal>ON DELETE</literal> c'è anche 
+        <literal>ON UPDATE</literal>, che è invocata quando una colonna referenziata viene
+        cambiata (aggiornata). Le azioni possibili sono le stesse.
    </para>
 
    <para>
-    Since a <command>DELETE</command> of a row from the referenced table
-    or an <command>UPDATE</command> of a referenced column will require
-    a scan of the referencing table for rows matching the old value, it
-    is often a good idea to index the referencing columns.  Because this
-    is not always needed, and there are many choices available on how
-    to index, declaration of a foreign key constraint does not
-    automatically create an index on the referencing columns.
+        Dato che un <command>DELETE</command> di una riga da una tabella referenziata
+        o un <command>UPDATE</command> di una colonna referenziata richiederanno
+        una scansione della tabella referente per la ricerca delle righe che soddisfano il vecchio valore, 
+        spesso è una buona idea indicizzare le colonne referenti. Siccome questo
+        non è sempre necessario, e ci sono molte scelte disponibili su come 
+        indicizzare, la dichiarazione di una chiave esterna non crea automaticamente un indice
+        sulla colonna referente.
    </para>
 
    <para>
-    More information about updating and deleting data is in <xref
+        Maggiori informazioni circa l'aggiornamento e la cancellazione di dati si trovano in <xref
     linkend="dml"/>.
    </para>
 
    <para>
-    Finally, we should mention that a foreign key must reference
-    columns that either are a primary key or form a unique constraint.
-    If the foreign key references a unique constraint, there are some
-    additional possibilities regarding how null values are matched.
-    These are explained in the reference documentation for
+        Infine, dobbiamo menzionare che una chiave esterna deve referenziare 
+        colonne che siano o chiavi primarie o vincolate unique.
+        Se la chiave esterna referenzia un vincolo unique, ci sono alcune 
+        possibilità aggiuntive su come i valori null sono combinati.
+        Questi sono spiegati nella documentazione riguardante
     <xref linkend="sql-createtable"/>.
    </para>
   </sect2>
 
   <sect2 id="ddl-constraints-exclusion">
-   <title>Exclusion constraints</title>
+   <title>Vincoli Exclusion</title>
 
    <indexterm>
     <primary>exclusion constraint</primary>
@@ -874,10 +875,12 @@ CREATE TABLE order_items (
    </indexterm>
 
    <para>
-    Exclusion constraints ensure that if any two rows are compared on
-    the specified columns or expressions using the specified operators,
-    at least one of these operator comparisons will return false or null.
-    The syntax is:
+<!-- /TODO da rivedere  -->
+        I vincoli Exclusion assicurano che se qualsiasi coppia di righe comparate sulle
+        colonne specificate o espressioni che usano gli operatori specificati, 
+        almeno una di queste comparazioni ritornerà false o null.
+        
+        La sintassi è:
 <programlisting>
 CREATE TABLE circles (
     c circle,
@@ -887,28 +890,27 @@ CREATE TABLE circles (
    </para>
 
    <para>
-    See also <link linkend="SQL-CREATETABLE-EXCLUDE"><command>CREATE
-    TABLE ... CONSTRAINT ... EXCLUDE</command></link> for details.
+        Vedi anche <link linkend="SQL-CREATETABLE-EXCLUDE"><command>CREATE
+    TABLE ... CONSTRAINT ... EXCLUDE</command></link> per maggiori dettagli.
    </para>
 
    <para>
-    Adding an exclusion constraint will automatically create an index
-    of the type specified in the constraint declaration.
+        Aggiungere un vincolo exclusion creerà automaticamente un indice
+        del tipo specificato nella dichiarazione del vincolo.
    </para>
   </sect2>
  </sect1>
 
  <sect1 id="ddl-system-columns">
-  <title>System Columns</title>
+  <title>Colonne di Sistema</title>
 
   <para>
-   Every table has several <firstterm>system columns</firstterm> that are
-   implicitly defined by the system.  Therefore, these names cannot be
-   used as names of user-defined columns.  (Note that these
-   restrictions are separate from whether the name is a key word or
-   not; quoting a name will not allow you to escape these
-   restrictions.)  You do not really need to be concerned about these
-   columns; just know they exist.
+        Ogni tabella ha diverse <firstterm>colonne di sistema</firstterm> che sono
+        definite implicitamente dal sistema. Perciò, questi nomi non possono essere
+        usati come nomi di colonne definiti dall'utente. (Notare che queste
+        restrizioni non riguardano se il nome è una parola chiave o no;
+        mettere il nome tra parentesi non ti permetterà di scavalcare queste restrizioni.)
+        Non preoccuparsi di queste colonne; Basta sapere che esistono.
   </para>
 
   <indexterm>
@@ -925,12 +927,12 @@ CREATE TABLE circles (
        <primary>OID</primary>
        <secondary>column</secondary>
       </indexterm>
-      The object identifier (object ID) of a row. This column is only
-      present if the table was created using <literal>WITH
-      OIDS</literal>, or if the <xref linkend="guc-default-with-oids"/>
-      configuration variable was set at the time. This column is of type
-      <type>oid</type> (same name as the column); see <xref
-      linkend="datatype-oid"/> for more information about the type.
+        L'identificatore oggetto (OID oggetto) di una riga. Questa colonna è presente
+        solo se la tabella è stata creata usando <literal>WITH
+        OIDS</literal>, o se la variabile di configurazione  <xref linkend="guc-default-with-oids"/>
+        è settata al momento della creazione della tabella. Questa colonna è del tipo
+        <type>oid</type> (stesso nome della colonna); vedi <xref
+        linkend="datatype-oid"/> per maggiori informazioni sul tipo..
      </para>
     </listitem>
    </varlistentry>
@@ -943,13 +945,13 @@ CREATE TABLE circles (
      </indexterm>
 
      <para>
-      The OID of the table containing this row.  This column is
-      particularly handy for queries that select from inheritance
-      hierarchies (see <xref linkend="ddl-inherit"/>), since without it,
-      it's difficult to tell which individual table a row came from.  The
-      <structfield>tableoid</structfield> can be joined against the
-      <structfield>oid</structfield> column of
-      <structname>pg_class</structname> to obtain the table name.
+        L'OID della tabella contenente questa riga.  Questa colonna è
+        particolarmente utile per query che selezionano da gerarchie di 
+        ereditarietà (see <xref linkend="ddl-inherit"/>), dato che senza essa,
+        è difficile dire da quale tabella proviene una riga. Il
+        <structfield>tableoid</structfield> può essere unito con
+        la colonna <structfield>oid</structfield> di
+        <structname>pg_class</structname> per ottenere il nome della tabella.
      </para>
     </listitem>
    </varlistentry>
@@ -962,10 +964,11 @@ CREATE TABLE circles (
      </indexterm>
 
      <para>
-      The identity (transaction ID) of the inserting transaction for
-      this row version.  (A row version is an individual state of a
-      row; each update of a row creates a new row version for the same
-      logical row.)
+<!-- /TODO da rivedere -->
+        L'identificatore (ID transazione) della transazione di inserimento per l'attuale versione della riga.
+        (Una versione di riga è lo stato individuale di una riga;
+        ognu aggiornamento di una riga crea una nuova versione di riga per la stessa
+        riga logica.
      </para>
     </listitem>
    </varlistentry>
@@ -978,8 +981,7 @@ CREATE TABLE circles (
      </indexterm>
 
      <para>
-      The command identifier (starting at zero) within the inserting
-      transaction.
+        L'identificatore di comando (partendo da zero) all'interno della transazione di inserimento.
      </para>
     </listitem>
    </varlistentry>
@@ -992,11 +994,11 @@ CREATE TABLE circles (
      </indexterm>
 
      <para>
-      The identity (transaction ID) of the deleting transaction, or
-      zero for an undeleted row version.  It is possible for this column to
-      be nonzero in a visible row version. That usually indicates that the
-      deleting transaction hasn't committed yet, or that an attempted
-      deletion was rolled back.
+        L'identificatore (ID transazione) della transazione di cancellazione, o
+        zero per una riga non cancellata. Per questa colonna è possibile essere
+        non-zero in una versione di riga visibile. Questo di solito indica che 
+        la transazione di cancellazione non è stata ancora eseguita, o che è stato fatto un rollback 
+        su  un tentativo di cancellazione.
      </para>
     </listitem>
    </varlistentry>
@@ -1009,7 +1011,7 @@ CREATE TABLE circles (
      </indexterm>
 
      <para>
-      The command identifier within the deleting transaction, or zero.
+        L'identificatore di comando all'interno della transazione di cancellazione, o zero.
      </para>
     </listitem>
    </varlistentry>
@@ -1022,82 +1024,81 @@ CREATE TABLE circles (
      </indexterm>
 
      <para>
-      The physical location of the row version within its table.  Note that
-      although the <structfield>ctid</structfield> can be used to
-      locate the row version very quickly, a row's
-      <structfield>ctid</structfield> will change if it is
-      updated or moved by <command>VACUUM FULL</command>.  Therefore
-      <structfield>ctid</structfield> is useless as a long-term row
-      identifier.  The OID, or even better a user-defined serial
-      number, should be used to identify logical rows.
+        La locazione fisica della versione di riga all'interno della sua tabella. Notare che
+        sebbene <structfield>ctid</structfield> può essere usato per  
+        localizzare la versione di riga molto velocemente, il 
+        <structfield>ctid</structfield> di una riga cambierà se la riga viene
+        aggiornata o mossa dal  <command>VACUUM FULL</command>. Perciò
+        <structfield>ctid</structfield> è inutile come identificatore di riga a lungo-termine.
+        L'OID, od ancora meglio un numero di serie definito dall'utente,
+        dovrebbero essere usati per identificare le righe.
      </para>
     </listitem>
    </varlistentry>
   </variablelist>
 
    <para>
-    OIDs are 32-bit quantities and are assigned from a single
-    cluster-wide counter.  In a large or long-lived database, it is
-    possible for the counter to wrap around.  Hence, it is bad
-    practice to assume that OIDs are unique, unless you take steps to
-    ensure that this is the case.  If you need to identify the rows in
-    a table, using a sequence generator is strongly recommended.
-    However, OIDs can be used as well, provided that a few additional
-    precautions are taken:
+        Gli OID sono quantità a 32-bit, assegnati da un singolo 
+        contatore per cluster. In un database grande o vecchio, è possibile
+        che il contatore si inceppi. Quindi, è una cattiva abitudine
+        assumere che gli OID siano unici, a meno che tu non faccia qualcosa 
+        per assicurartene. Se hai bisogno di identificare le righe
+        una tabella, l'uso di un generatore di sequence è fortemente raccomandato.
+        Comunque, anche gli OID possono essere usati, se vengono prese alcune precauzioni
+        addizionali:
 
     <itemizedlist>
      <listitem>
       <para>
-       A unique constraint should be created on the OID column of each
-       table for which the OID will be used to identify rows.  When such
-       a unique constraint (or unique index) exists, the system takes
-       care not to generate an OID matching an already-existing row.
-       (Of course, this is only possible if the table contains fewer
-       than 2<superscript>32</superscript> (4 billion) rows, and in practice the
-       table size had better be much less than that, or performance
-       might suffer.)
+        Un vincolo unique dovrebbe essere creato sulla colonna OID di ogni
+        tabella in cui l'OID sarà usato per identificare le righe. Quando 
+        un vincolo unique (o un indice unico) esistono, il sistema si prende cura
+        di non generare un OID che sia uguale ad una riga già esistente.
+        (Ovviamente, questo è possibile solo se la tabella contiene meno
+        di 2<superscript>32</superscript> (4 bilioni) di righe, e in pratica la dimensione
+        di una tabella dovrebbe essere molto meno di così, o le prestazioni potrebbero risentirne.)
       </para>
      </listitem>
      <listitem>
       <para>
-       OIDs should never be assumed to be unique across tables; use
-       the combination of <structfield>tableoid</structfield> and row OID if you
-       need a database-wide identifier.
+        Gli OID non dovrebbero mai essere considerati unici attraverso le tabelle; Usa
+        la combinazione di <structfield>tableoid</structfield> e l'OID della riga se hai 
+        bisogno di un identificatore attraverso il database.
       </para>
      </listitem>
      <listitem>
       <para>
-       Of course, the tables in question must be created <literal>WITH
-       OIDS</literal>.  As of <productname>PostgreSQL</productname> 8.1,
-       <literal>WITHOUT OIDS</literal> is the default.
+            Certamente, le tabelle in questione devono essere create <literal>WITH
+            OIDS</literal>. Da <productname>PostgreSQL</productname> 8.1,
+            <literal>WITHOUT OIDS</literal> è il default.
       </para>
      </listitem>
     </itemizedlist>
    </para>
 
    <para>
-    Transaction identifiers are also 32-bit quantities.  In a
-    long-lived database it is possible for transaction IDs to wrap
-    around.  This is not a fatal problem given appropriate maintenance
-    procedures; see <xref linkend="maintenance"/> for details.  It is
-    unwise, however, to depend on the uniqueness of transaction IDs
-    over the long term (more than one billion transactions).
+        Anche gli identificatori di transazione sono a 32-bit. In un 
+        database vissuto è possibile che gli ID di transazione si inceppino.
+        Questo non è un problema fatale se usate procedure di manutenzione appropriate;
+        vedi <xref linkend="maintenance"/> per maggiori dettagli.  Non è
+        consigliabile, comunque, contare sull'unicità degli ID di transazione
+        per il lungo periodo (più di un bilione di transazioni).
    </para>
 
    <para>
-    Command identifiers are also 32-bit quantities.  This creates a hard limit
-    of 2<superscript>32</superscript> (4 billion) <acronym>SQL</acronym> commands
-    within a single transaction.  In practice this limit is not a
-    problem &mdash; note that the limit is on the number of
-    <acronym>SQL</acronym> commands, not the number of rows processed.
-    Also, as of <productname>PostgreSQL</productname> 8.3, only commands
-    that actually modify the database contents will consume a command
-    identifier.
+        Anche gli identificatori di comando sono quantità a 32-bit. Questo crea un forte limite 
+        di  2<superscript>32</superscript> (4 bilioni) di comandi SQL dentro una 
+        singola transazione. In pratica questo limite non è un problema
+        &mdash; note che il limite è sul numero di 
+        comandi <acronym>SQL</acronym>, non il numero di righe processate. 
+        Inoltre, da <productname>PostgreSQL</productname> 8.3, solo i comandi
+        che realmente modificano il contenuto del database  consumeranno un identificatore
+        di comando.
    </para>
  </sect1>
 
  <sect1 id="ddl-alter">
-  <title>Modifying Tables</title>
+  <title>Modifica di Tabelle</title>
 
   <indexterm zone="ddl-alter">
    <primary>table</primary>
@@ -1105,55 +1106,53 @@ CREATE TABLE circles (
   </indexterm>
 
   <para>
-   When you create a table and you realize that you made a mistake, or
-   the requirements of the application change, you can drop the
-   table and create it again.  But this is not a convenient option if
-   the table is already filled with data, or if the table is
-   referenced by other database objects (for instance a foreign key
-   constraint).  Therefore <productname>PostgreSQL</productname>
-   provides a family of commands to make modifications to existing
-   tables.  Note that this is conceptually distinct from altering
-   the data contained in the table: here we are interested in altering
-   the definition, or structure, of the table.
+    Quando si crea una tabella e ci si  rende conto di aver commesso un errore, o
+    le richieste dell'applicazione sono cambiate, è possibile eliminare la tabella e crearla di nuovo.
+    Ma questa non è un'opzione conveniente se la tabella è 
+    già riempita con dati, o se la tabella è referenziata da altri oggetti 
+    del database (per esempio un vincolo chiave esterna). 
+    Perciò  <productname>PostgreSQL</productname> mette a disposizione una famiglia di comandi
+        per modificare tabelle esistenti.
+    Notare che concettualmente questo è differente dall'alterazione dei dati contenuti nella tabella:
+    qui siamo interessati nel modificare la definizione, o la struttura, della tabella.
   </para>
 
   <para>
    You can:
    <itemizedlist spacing="compact">
     <listitem>
-     <para>Add columns</para>
+     <para>Aggiungere colonne</para>
     </listitem>
     <listitem>
-     <para>Remove columns</para>
+     <para>Rimuovere colonne</para>
     </listitem>
     <listitem>
-     <para>Add constraints</para>
+     <para>Aggiungere vincoli</para>
     </listitem>
     <listitem>
-     <para>Remove constraints</para>
+     <para>Rimuovere vincoli</para>
     </listitem>
     <listitem>
-     <para>Change default values</para>
+     <para>Cambiare i valori di default</para>
     </listitem>
     <listitem>
-     <para>Change column data types</para>
+     <para>Cambiare i tipi di dato delle colonne</para>
     </listitem>
     <listitem>
-     <para>Rename columns</para>
+     <para>Rinominare colonne</para>
     </listitem>
     <listitem>
-     <para>Rename tables</para>
+     <para>Rinominare tabelle</para>
     </listitem>
    </itemizedlist>
 
-   All these actions are performed using the
-   <xref linkend="sql-altertable"/>
-   command, whose reference page contains details beyond those given
-   here.
+    Tutte queste azioni sono effettuate usando il comando
+   <xref linkend="sql-altertable"/>,
+    la cui pagina di riferimento contiene dettagli oltre a quelli descritti qui.
   </para>
 
   <sect2>
-   <title>Adding a Column</title>
+   <title>Aggiungere una colonna</title>
 
    <indexterm>
     <primary>column</primary>
@@ -1161,43 +1160,43 @@ CREATE TABLE circles (
    </indexterm>
 
    <para>
-    To add a column, use a command like:
+        Per aggiungere una colonna, usa il comando:
 <programlisting>
 ALTER TABLE products ADD COLUMN description text;
 </programlisting>
-    The new column is initially filled with whatever default
-    value is given (null if you don't specify a <literal>DEFAULT</literal> clause).
+        La nuova colonna è inizialmente riempita con qualunque valore di default sia dato
+        (null se non specifici una clausola <literal>DEFAULT</literal> )
    </para>
 
    <para>
-    You can also define constraints on the column at the same time,
-    using the usual syntax:
+        Puoi anche definire vincoli sulla colonna allo stesso tempo,
+        usando la sintassi usuale:
 <programlisting>
 ALTER TABLE products ADD COLUMN description text CHECK (description &lt;&gt; '');
 </programlisting>
-    In fact all the options that can be applied to a column description
-    in <command>CREATE TABLE</command> can be used here.  Keep in mind however
-    that the default value must satisfy the given constraints, or the
-    <literal>ADD</literal> will fail.  Alternatively, you can add
-    constraints later (see below) after you've filled in the new column
-    correctly.
+        Infatti tutte le opzioni che possono essere applicate alla descrizione di una colonna in
+        <command>CREATE TABLE</command> possono essere usate qui. Tieni a mente comunque
+        che il valore di default deve soddisfare i vincoli dati, o la 
+        <literal>ADD</literal> fallirà. Alternativamente, puoi aggiungere 
+        vincoli più tardi (vedi sotto) dopo che hai riempito la nuova colonna 
+        correttamente.
    </para>
 
   <tip>
    <para>
-    Adding a column with a default requires updating each row of the
-    table (to store the new column value).  However, if no default is
-    specified, <productname>PostgreSQL</productname> is able to avoid
-    the physical update.  So if you intend to fill the column with
-    mostly nondefault values, it's best to add the column with no default,
-    insert the correct values using <command>UPDATE</command>, and then add any
-    desired default as described below.
+        Aggiungere una colonna con un default richiede l'aggiornamento di ogni riga della 
+        tabella (per immagazzinare il valore della nuova colonna). Comunque, se non specifici
+        un default, <productname>PostgreSQL</productname> è capace di evitare
+        l'aggiornamento fisico. Così se intendi riempire la colonna con
+        valori non default principalmente, è meglio aggiungere al colonna senza default,
+        inserisci i valori corretti usando <command>UPDATE</command>, e poi aggiungi qualsiasi
+        default desirato come descritto sotto.
    </para>
   </tip>
   </sect2>
 
   <sect2>
-   <title>Removing a Column</title>
+   <title>Rimuovere una Colonna</title>
 
    <indexterm>
     <primary>column</primary>
@@ -1205,26 +1204,25 @@ ALTER TABLE products ADD COLUMN description text CHECK (description &lt;&gt; '')
    </indexterm>
 
    <para>
-    To remove a column, use a command like:
+        Per rimuovere una colonna, usa un comando tipo:
 <programlisting>
 ALTER TABLE products DROP COLUMN description;
 </programlisting>
-    Whatever data was in the column disappears.  Table constraints involving
-    the column are dropped, too.  However, if the column is referenced by a
-    foreign key constraint of another table,
-    <productname>PostgreSQL</productname> will not silently drop that
-    constraint.  You can authorize dropping everything that depends on
-    the column by adding <literal>CASCADE</literal>:
+        Qualsiasi dato nella colonna sparisce. Anche i vincoli di tabella coinvolti nella colonna 
+        sono eliminati. Comunque, se la colonna è referenziata da un
+        vincolo chiave esterna di un'altra tabella,
+        <productname>PostgreSQL</productname> non eliminerà silenziosamente quel
+        vincolo. Puoi autorizzare l'eliminazione di tutto quello che depende dalla coklonna
+        aggiungendo  <literal>CASCADE</literal>:
 <programlisting>
 ALTER TABLE products DROP COLUMN description CASCADE;
 </programlisting>
-    See <xref linkend="ddl-depend"/> for a description of the general
-    mechanism behind this.
+    Vedi <xref linkend="ddl-depend"/> per una descrizione del meccanismo generale che sta sotto.
    </para>
   </sect2>
 
   <sect2>
-   <title>Adding a Constraint</title>
+   <title>Aggiungere un vincolo</title>
 
    <indexterm>
     <primary>constraint</primary>
@@ -1233,26 +1231,27 @@ ALTER TABLE products DROP COLUMN description CASCADE;
 
    <para>
     To add a constraint, the table constraint syntax is used.  For example:
+        Per aggiungere un vincolo, si usa la sintassi dei vincoli di tabella. Per esempio: 
 <programlisting>
 ALTER TABLE products ADD CHECK (name &lt;&gt; '');
 ALTER TABLE products ADD CONSTRAINT some_name UNIQUE (product_no);
 ALTER TABLE products ADD FOREIGN KEY (product_group_id) REFERENCES product_groups;
 </programlisting>
-    To add a not-null constraint, which cannot be written as a table
-    constraint, use this syntax:
+        Per aggiungere un vincolo not-null, che non può essere scritto come vincolo di tabella,
+        usa questa sintassi:
 <programlisting>
 ALTER TABLE products ALTER COLUMN product_no SET NOT NULL;
 </programlisting>
    </para>
 
    <para>
-    The constraint will be checked immediately, so the table data must
-    satisfy the constraint before it can be added.
+        Il vincolo sarà controllato immediatamente, così la tabella dovrà
+        soddisfarlo prima che possa essere aggiunto.
    </para>
   </sect2>
 
   <sect2>
-   <title>Removing a Constraint</title>
+   <title>Rimuovere un Vincolo</title>
 
    <indexterm>
     <primary>constraint</primary>
@@ -1260,40 +1259,41 @@ ALTER TABLE products ALTER COLUMN product_no SET NOT NULL;
    </indexterm>
 
    <para>
-    To remove a constraint you need to know its name.  If you gave it
-    a name then that's easy.  Otherwise the system assigned a
-    generated name, which you need to find out.  The
-    <application>psql</application> command <literal>\d
-    <replaceable>tablename</replaceable></literal> can be helpful
-    here; other interfaces might also provide a way to inspect table
-    details.  Then the command is:
+        Per rimuovere un vincolo devi conoscerne il nome. Se gli hai dato 
+        un nome allora è semplice. Altrimenti il sistema gli ha assegnato un nome
+        generato, che devi scoprire. Il comando 
+        <application>psql</application> <literal>\d <replaceable>tablename</replaceable></literal>
+        può essere utile qui;
+        Anche altre interfaccie potrebbero avere un modo per ispezionare i dettagli di una tabella.
+        Quindi il comando è:
 <programlisting>
 ALTER TABLE products DROP CONSTRAINT some_name;
 </programlisting>
-    (If you are dealing with a generated constraint name like <literal>$2</literal>,
-    don't forget that you'll need to double-quote it to make it a valid
-    identifier.)
+        (Se hai a che fare con un nome di vincolo generato, tipo <literal>$2</literal>,
+        non dimenticare che avrai bisogno di metterlo tra doppie virgolette per renderlo un 
+        identificatore valido.)
    </para>
 
    <para>
-    As with dropping a column, you need to add <literal>CASCADE</literal> if you
-    want to drop a constraint that something else depends on.  An example
-    is that a foreign key constraint depends on a unique or primary key
-    constraint on the referenced column(s).
+        Come con la cancellazione di una colonna, devi aggiungere <literal>CASCADE</literal> se vuoi
+        eliminare un vincolo da cui dipende qualcos'altro. Un esempio 
+        è che un vincolo chiave esterna dipende da un vincolo unique o chiave primaria 
+        sulla/e colonna/e referenziata.
    </para>
 
    <para>
-    This works the same for all constraint types except not-null
-    constraints. To drop a not null constraint use:
+        Questo funziona allo stesso modo per tutti i tipi di vincoli ad eccezione dei vincoli not-null.    
+        Per eliminare un vincolo not null usa:
 <programlisting>
 ALTER TABLE products ALTER COLUMN product_no DROP NOT NULL;
 </programlisting>
-    (Recall that not-null constraints do not have names.)
+        (Ricorda che i vincoli not null non hanno nomi.)
    </para>
   </sect2>
 
   <sect2>
    <title>Changing a Column's Default Value</title>
+   <title>Cambiare il Valore di Default di una Colonna</title>
 
    <indexterm>
     <primary>default value</primary>
@@ -1301,28 +1301,28 @@ ALTER TABLE products ALTER COLUMN product_no DROP NOT NULL;
    </indexterm>
 
    <para>
-    To set a new default for a column, use a command like:
+        Per impostare un nuovo default per una colonna, usa un comando tipo:
 <programlisting>
 ALTER TABLE products ALTER COLUMN price SET DEFAULT 7.77;
 </programlisting>
-    Note that this doesn't affect any existing rows in the table, it
-    just changes the default for future <command>INSERT</command> commands.
+        Notare che questo non interessa nessuna delle righe esistenti nella tabella,
+        cambia solamente il default per i futuri comandi  <command>INSERT</command>. 
    </para>
 
    <para>
-    To remove any default value, use:
+        Per rimuovere ogni valore di default, usa:
 <programlisting>
 ALTER TABLE products ALTER COLUMN price DROP DEFAULT;
 </programlisting>
-    This is effectively the same as setting the default to null.
-    As a consequence, it is not an error
-    to drop a default where one hadn't been defined, because the
-    default is implicitly the null value.
+        Effettivamente questo è lo stesso di impostare il default a null.
+        Come conseguenza, non è un errore  
+        eliminare un default dove non è stato definito, perchè il
+        default è implicitamente il valore null.
    </para>
   </sect2>
 
   <sect2>
-   <title>Changing a Column's Data Type</title>
+   <title>Cambiare il Tipo di Dato di una Colonna</title>
 
    <indexterm>
     <primary>column data type</primary>
@@ -1330,28 +1330,27 @@ ALTER TABLE products ALTER COLUMN price DROP DEFAULT;
    </indexterm>
 
    <para>
-    To convert a column to a different data type, use a command like:
+        Per convertire una colonna a un diverso tipo di dato, usa un comando come:
 <programlisting>
 ALTER TABLE products ALTER COLUMN price TYPE numeric(10,2);
 </programlisting>
-    This will succeed only if each existing entry in the column can be
-    converted to the new type by an implicit cast.  If a more complex
-    conversion is needed, you can add a <literal>USING</literal> clause that
-    specifies how to compute the new values from the old.
+        Questo andrà a buon fine solo se ogni valore esistente nella colonna può essere
+        convertito al nuovo tipo da un cast implicito. Se è necessaria una 
+        conversione più complessa, puoi aggiungere una clausola <literal>USING</literal> che
+        specifica come calcolare il nuovo valore dal vecchio.
    </para>
 
    <para>
-    <productname>PostgreSQL</productname> will attempt to convert the column's
-    default value (if any) to the new type, as well as any constraints
-    that involve the column.  But these conversions might fail, or might
-    produce surprising results.  It's often best to drop any constraints
-    on the column before altering its type, and then add back suitably
-    modified constraints afterwards.
+        <productname>PostgreSQL</productname> tenterà di convertire il valore di default della colonna
+        (se esistente) al nuovo tipo, così come qualsiasi vincolo
+        che coinvolge la colonna. Ma queste conversioni potrebbero fallire, o potrebbero
+        produrre risultati sorprendenti. Spesso è meglio eliminare qualsiasi vincolo
+        sulla colonna prima di modificarne il tipo, e poi rimettere dopo vincoli corretti.
    </para>
   </sect2>
 
   <sect2>
-   <title>Renaming a Column</title>
+   <title>Rinominare una Colonna</title>
 
    <indexterm>
     <primary>column</primary>
@@ -1359,7 +1358,7 @@ ALTER TABLE products ALTER COLUMN price TYPE numeric(10,2);
    </indexterm>
 
    <para>
-    To rename a column:
+    Per rinominare una colonna:
 <programlisting>
 ALTER TABLE products RENAME COLUMN product_no TO product_number;
 </programlisting>
@@ -1367,7 +1366,7 @@ ALTER TABLE products RENAME COLUMN product_no TO product_number;
   </sect2>
 
   <sect2>
-   <title>Renaming a Table</title>
+   <title>Rinominare una Tabella</title>
 
    <indexterm>
     <primary>table</primary>
@@ -1375,7 +1374,7 @@ ALTER TABLE products RENAME COLUMN product_no TO product_number;
    </indexterm>
 
    <para>
-    To rename a table:
+    Per rinominare una tabella:
 <programlisting>
 ALTER TABLE products RENAME TO items;
 </programlisting>
@@ -1384,7 +1383,7 @@ ALTER TABLE products RENAME TO items;
  </sect1>
 
  <sect1 id="ddl-priv">
-  <title>Privileges</title>
+  <title>Privilegi</title>
 
   <indexterm zone="ddl-priv">
    <primary>privilege</primary>
@@ -1396,159 +1395,155 @@ ALTER TABLE products RENAME TO items;
   </indexterm>
 
   <para>
-   When you create a database object, you become its owner.  By
-   default, only the owner of an object can do anything with the
-   object. In order to allow other users to use it,
-   <firstterm>privileges</firstterm> must be granted.  (However,
-   users that have the superuser attribute can always
-   access any object.)
+    Quando crei un oggetto di database, ne divieni il suo possessore. Di
+    default, solo il possessore diun oggetto può fare qualcosa su di lui.
+    Per permettere agli altri utenti di usarlo,
+    devono essere garantiti <firstterm>privilegi</firstterm>. (Comunque, 
+    gli utenti che sono superuser possono sempre 
+    accedere a qualsiasi oggeto.)
   </para>
 
   <para>
-   There are several different privileges: <literal>SELECT</literal>,
-   <literal>INSERT</literal>, <literal>UPDATE</literal>, <literal>DELETE</literal>,
-   <literal>TRUNCATE</literal>, <literal>REFERENCES</literal>, <literal>TRIGGER</literal>,
-   <literal>CREATE</literal>, <literal>CONNECT</literal>, <literal>TEMPORARY</literal>,
-   <literal>EXECUTE</literal>, and <literal>USAGE</literal>.
-   The privileges applicable to a particular
-   object vary depending on the object's type (table, function, etc).
-   For complete information on the different types of privileges
-   supported by <productname>PostgreSQL</productname>, refer to the
-   <xref linkend="sql-grant"/> reference
-   page.  The following sections and chapters will also show you how
-   those privileges are used.
+    Ci sono diversi privilegi differenti: <literal>SELECT</literal>,
+    <literal>INSERT</literal>, <literal>UPDATE</literal>, <literal>DELETE</literal>,
+    <literal>TRUNCATE</literal>, <literal>REFERENCES</literal>, <literal>TRIGGER</literal>,
+    <literal>CREATE</literal>, <literal>CONNECT</literal>, <literal>TEMPORARY</literal>,
+    <literal>EXECUTE</literal> e <literal>USAGE</literal>.
+    I privilegi applicabili ad un particolare
+    oggetto variano a seconda del tipo di oggetto (tabella, funzione, etc.)
+    Per maggiori informazioni sui diversi tipi di privilegi 
+    supportati da <productname>PostgreSQL</productname>, consulta la pagina di riferimento a 
+    <xref linkend="sql-grant"/> .
+    Anche le sezioni e i capitoli seguenti ti mostreranno come sono usati questi privilegi.
   </para>
 
   <para>
-   The right to modify or destroy an object is always the privilege of
-   the owner only.
+    Il diritto a modificare o distruggere un oggetto è sempre un privilegio del possessore.
   </para>
 
   <note>
    <para>
-    To change the owner of a table, index, sequence, or view, use the
-    <xref linkend="sql-altertable"/>
-    command.  There are corresponding <literal>ALTER</literal> commands for
-    other object types.
+        Per cambiare il possessore di una tabella, indice, sequenza, o vista, usa il comando
+        <xref linkend="sql-altertable"/>
+        Ci sono corrispondenti comandi <literal>ALTER</literal> per gli altri tipi di oggetti.
    </para>
   </note>
 
   <para>
-   To assign privileges, the <command>GRANT</command> command is
-   used. For example, if <literal>joe</literal> is an existing user, and
-   <literal>accounts</literal> is an existing table, the privilege to
-   update the table can be granted with:
+    Per assegnare privilegi, si usa il comando <command>GRANT</command>.
+    Per esempio, se <literal>joe</literal> è un utente esistente, e 
+    <literal>accounts</literal> è una tabella esistente, il privilegio di 
+    aggiornare la tabella è concesso con:
 <programlisting>
 GRANT UPDATE ON accounts TO joe;
 </programlisting>
-   Writing <literal>ALL</literal> in place of a specific privilege grants all
-   privileges that are relevant for the object type.
+    Scrivere <literal>ALL</literal> al posto di un privilegio specifico concede tutti
+    i privilegi che sono rilevanti per il tipo di oggetto.
   </para>
 
   <para>
-   The special <quote>user</quote> name <literal>PUBLIC</literal> can
-   be used to grant a privilege to every user on the system.  Also,
-   <quote>group</quote> roles can be set up to help manage privileges when
-   there are many users of a database &mdash; for details see
-   <xref linkend="user-manag"/>.
+    Il nome <quote>utente</quote> speciale <literal>PUBLIC</literal> può
+    essere usato per concedere privilegi ad ogni utente del sistema. Inoltre,
+    i role <quote>group</quote> possono essere impostati per aiutarti a gestire i privilegi quando
+    ci sono molti utenti per un database &mdash; per dettagli guarda
+    <xref linkend="user-manag"/>.
   </para>
 
   <para>
-   To revoke a privilege, use the fittingly named
-   <command>REVOKE</command> command:
+    Per revocare un privilegio, usa il comando chiamato appropriamente
+    <command>REVOKE</command>:
 <programlisting>
 REVOKE ALL ON accounts FROM PUBLIC;
 </programlisting>
-   The special privileges of the object owner (i.e., the right to do
-   <command>DROP</command>, <command>GRANT</command>, <command>REVOKE</command>, etc.)
-   are always implicit in being the owner,
-   and cannot be granted or revoked.  But the object owner can choose
-   to revoke his own ordinary privileges, for example to make a
-   table read-only for himself as well as others.
+    I privilegi speciali del possessore dell'oggetto (es., il diritto ai comandi
+    <command>DROP</command>, <command>GRANT</command>, <command>REVOKE</command>, ecc.)
+    sono sempre impliciti dell'essere il possessore,
+    e non possono essere concessi o revocati. Ma il possessore dell'oggetto può scegliere
+    di revocare i suoi privilegi, per esempio, per rendere una tabella
+    a sola lettura per sè oltre che per gli altri.
   </para>
 
   <para>
-   Ordinarily, only the object's owner (or a superuser) can grant or
-   revoke privileges on an object.  However, it is possible to grant a
-   privilege <quote>with grant option</quote>, which gives the recipient
-   the right to grant it in turn to others.  If the grant option is
-   subsequently revoked then all who received the privilege from that
-   recipient (directly or through a chain of grants) will lose the
-   privilege.  For details see the <xref linkend="sql-grant"/> and
-   <xref linkend="sql-revoke"/> reference pages.
+    Solitamente, solo il possessore dell'oggetto (o un superuser) puà concedere o
+    revocare privilegi su un oggetto. Comunque, è possibile concedere un
+    privilegio <quote>con l'opzione grant</quote> che dà al beneficiario il 
+    diritto di concederlo a turno agli altri. Se l'opzione grant successivamente è
+    revocata, allora tutti quelli che hanno ricevuto il privilegio da quel beneficiario
+    (direttamente o attraverso una catena di grant) perderanno il
+    privilegio. Per dettagli vedi le pagine di referenza <xref linkend="sql-grant"/> e
+    <xref linkend="sql-revoke"/>. 
   </para>
  </sect1>
 
  <sect1 id="ddl-schemas">
-  <title>Schemas</title>
+  <title>Schemi</title>
 
   <indexterm zone="ddl-schemas">
    <primary>schema</primary>
   </indexterm>
 
   <para>
-   A <productname>PostgreSQL</productname> database cluster
-   contains one or more named databases.  Users and groups of users are
-   shared across the entire cluster, but no other data is shared across
-   databases.  Any given client connection to the server can access
-   only the data in a single database, the one specified in the connection
-   request.
+    Un cluster di database <productname>PostgreSQL</productname>
+    contiene uno o più database. Utenti e gruppi di utenti sono
+    condivisi attraverso l'intero cluster, ma nessun altro dato è condiviso tra i 
+    database. Ogni connessione da un client al server può accedere
+    solo ai dati in un singolo database, quello specificato nella richiesta di connessione.
   </para>
 
   <note>
    <para>
-    Users of a cluster do not necessarily have the privilege to access every
-    database in the cluster.  Sharing of user names means that there
-    cannot be different users named, say, <literal>joe</literal> in two databases
-    in the same cluster; but the system can be configured to allow
-    <literal>joe</literal> access to only some of the databases.
+        Gli utenti di un cluster non hanno necessariamente il privilegio di aver accesso ad ogni 
+        database nel cluster. La condivisione degli username significa che non ci possono essere
+        differenti utenti chiamati, per esempio, <literal>joe</literal> in due database
+        dello stesso cluster; ma il sistema può essere configurato per permettere 
+        a <literal>joe</literal> l'accesso solamente ad alcuni dei database.
    </para>
   </note>
 
   <para>
-   A database contains one or more named <firstterm>schemas</firstterm>, which
-   in turn contain tables.  Schemas also contain other kinds of named
-   objects, including data types, functions, and operators.  The same
-   object name can be used in different schemas without conflict; for
-   example, both <literal>schema1</literal> and <literal>myschema</literal> can
-   contain tables named <literal>mytable</literal>.  Unlike databases,
-   schemas are not rigidly separated: a user can access objects in any
-   of the schemas in the database he is connected to, if he has
-   privileges to do so.
+    Un database contiene uno o più <firstterm>schemi</firstterm>, che
+    contengono tabelle. Gli schemi contengono anche altri tipi di oggetti con nome,
+    incluso tipi di dato, funzioni, e operatori. Lo stesso 
+    nome di oggetto può essere usato in differenti schemi senza conflitti; Per 
+    esempio, sia <literal>schema1</literal> che <literal>myschema</literal> possono
+    contenere tabelle chiamate <literal>mytable</literal>. A differenza dei database,
+    gli schemi non sono separati rigidamente: un utente può avere accesso a qualsiasi 
+    degli schemi nel database a cui è connesso, se ha i 
+    privilegi per farlo.
   </para>
 
   <para>
-   There are several reasons why one might want to use schemas:
+    Ci sono diverse ragioni per cui potresti voler usare gli schemi:
 
    <itemizedlist>
     <listitem>
      <para>
-      To allow many users to use one database without interfering with
-      each other.
+        Permettere a molti utenti di usare un database senza interferire 
+        tra di loro.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      To organize database objects into logical groups to make them
-      more manageable.
+        Organizzare gli oggetti di database in gruppi logici per renderli
+        più gestibili.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Third-party applications can be put into separate schemas so
-      they do not collide with the names of other objects.
+        Applicazioni di terze parti posso essere messe in schemi separati così
+        cge non conflittino con i nome degli altri oggetti.
      </para>
     </listitem>
    </itemizedlist>
 
-   Schemas are analogous to directories at the operating system level,
-   except that schemas cannot be nested.
+    Gli schemi sono analoghi alle directory a livello di sistema operativo,
+    ad eccezione che gli schemi non possono essere annidate.
   </para>
 
   <sect2 id="ddl-schemas-create">
-   <title>Creating a Schema</title>
+   <title>Creare uno Schema</title>
 
    <indexterm zone="ddl-schemas-create">
     <primary>schema</primary>
@@ -1556,9 +1551,9 @@ REVOKE ALL ON accounts FROM PUBLIC;
    </indexterm>
 
    <para>
-    To create a schema, use the <xref linkend="sql-createschema"/>
-    command.  Give the schema a name
-    of your choice.  For example:
+        Per creare uno schema, usa il comando <xref linkend="sql-createschema"/>
+        Dai allo schema un nome a piacere.
+        Per esempio:
 <programlisting>
 CREATE SCHEMA myschema;
 </programlisting>
@@ -1574,31 +1569,32 @@ CREATE SCHEMA myschema;
    </indexterm>
 
    <para>
-    To create or access objects in a schema, write a
-    <firstterm>qualified name</firstterm> consisting of the schema name and
-    table name separated by a dot:
+        Per creare o accedere ad oggetti in uno schema, scrivi un 
+        <firstterm>nome qualificante</firstterm> composto dal nome dello schema e dal nome della tabella
+        separati da un punto:
 <synopsis>
 <replaceable>schema</replaceable><literal>.</literal><replaceable>table</replaceable>
 </synopsis>
-    This works anywhere a table name is expected, including the table
-    modification commands and the data access commands discussed in
-    the following chapters.
-    (For brevity we will speak of tables only, but the same ideas apply
-    to other kinds of named objects, such as types and functions.)
+        Questo funziona ovunque sia accettato il nome di una tabella, inclusi i comandi 
+        di modifica della tabella e i comandi di accesso ai dati discussi nei seguenti
+        capitoli.
+        (Per brevità parleremo solo di tabelle, ma la stessa idea si applica
+        agli altri tipi di oggetti, come tipi e funzioni.)
    </para>
 
    <para>
-    Actually, the even more general syntax
+        In realtà, anche la sintassi più generale 
 <synopsis>
 <replaceable>database</replaceable><literal>.</literal><replaceable>schema</replaceable><literal>.</literal><replaceable>table</replaceable>
 </synopsis>
-    can be used too, but at present this is just for <foreignphrase>pro
-    forma</foreignphrase> compliance with the SQL standard.  If you write a database name,
-    it must be the same as the database you are connected to.
+        può essere usata, ma al momento questa è solo per essere <foreignphrase>pro
+        forma</foreignphrase> con lo standard SQL. Se scrivi il nome di un database, 
+        deve essere lo stesso del database a cui sei connesso.
    </para>
 
    <para>
     So to create a table in the new schema, use:
+        Così, per creare una tabella nel nuovo schema, usa:
 <programlisting>
 CREATE TABLE myschema.mytable (
  ...
@@ -1612,39 +1608,38 @@ CREATE TABLE myschema.mytable (
    </indexterm>
 
    <para>
-    To drop a schema if it's empty (all objects in it have been
-    dropped), use:
+        Per eliminare uno schema se è vuoto (tutti gli oggetti all'interno della schema sono stati eliminati),
+        usa:
 <programlisting>
 DROP SCHEMA myschema;
 </programlisting>
-    To drop a schema including all contained objects, use:
+        Per eliminare uno schema includendo tutti gli oggetti contenuti, usa:
 <programlisting>
 DROP SCHEMA myschema CASCADE;
 </programlisting>
-    See <xref linkend="ddl-depend"/> for a description of the general
-    mechanism behind this.
+        Vedi <xref linkend="ddl-depend"/> per una descrizione del comportamento generale che sta sotto.
    </para>
 
    <para>
-    Often you will want to create a schema owned by someone else
-    (since this is one of the ways to restrict the activities of your
-    users to well-defined namespaces).  The syntax for that is:
+        Spesso vorrai create uno schema posseduto da qualcun altro
+        (dato che questo è un modo di restringere le attività dei tuoi utenti 
+        in namespace ben definiti). La sintassi per farlo è:
 <programlisting>
 CREATE SCHEMA <replaceable>schemaname</replaceable> AUTHORIZATION <replaceable>username</replaceable>;
 </programlisting>
-    You can even omit the schema name, in which case the schema name
-    will be the same as the user name.  See <xref
-    linkend="ddl-schemas-patterns"/> for how this can be useful.
+        Puoi comunque omettere il nome dello schema, nel qual caso il nome dello schema 
+        sarà lo stesso dell'username. Vedi <xref
+        linkend="ddl-schemas-patterns"/> per sapere come questo può essere utile.
    </para>
 
    <para>
-    Schema names beginning with <literal>pg_</literal> are reserved for
-    system purposes and cannot be created by users.
+        I nomi degli schemi che iniziano con <literal>pg_</literal> sono riservati per 
+        scopi di sistema e non possono essere creati dagli utenti.
    </para>
   </sect2>
 
   <sect2 id="ddl-schemas-public">
-   <title>The Public Schema</title>
+   <title>Lo Schema Public</title>
 
    <indexterm zone="ddl-schemas-public">
     <primary>schema</primary>
@@ -1652,10 +1647,10 @@ CREATE SCHEMA <replaceable>schemaname</replaceable> AUTHORIZATION <replaceable>u
    </indexterm>
 
    <para>
-    In the previous sections we created tables without specifying any
-    schema names.  By default such tables (and other objects) are
-    automatically put into a schema named <quote>public</quote>.  Every new
-    database contains such a schema.  Thus, the following are equivalent:
+        Nelle sezioni precedenti abbiamo creato tabelle senza specificare alcuno
+        schema. Di default quelle tabelle (e gli altri oggetti) sono 
+        automaticamente inseriti in uno schema chiamato <quote>public</quote>. Ogni nuovo
+        database contiene quello schema. Così, i seguenti comandi sono equivalenti:
 <programlisting>
 CREATE TABLE products ( ... );
 </programlisting>
@@ -1667,7 +1662,7 @@ CREATE TABLE public.products ( ... );
   </sect2>
 
   <sect2 id="ddl-schemas-path">
-   <title>The Schema Search Path</title>
+   <title>Il Percorso di Ricerca dello Schema</title>
 
    <indexterm>
     <primary>search path</primary>
@@ -1683,15 +1678,16 @@ CREATE TABLE public.products ( ... );
    </indexterm>
 
    <para>
-    Qualified names are tedious to write, and it's often best not to
-    wire a particular schema name into applications anyway.  Therefore
-    tables are often referred to by <firstterm>unqualified names</firstterm>,
-    which consist of just the table name.  The system determines which table
-    is meant by following a <firstterm>search path</firstterm>, which is a list
-    of schemas to look in.  The first matching table in the search path
-    is taken to be the one wanted.  If there is no match in the search
-    path, an error is reported, even if matching table names exist
-    in other schemas in the database.
+<!-- /TODO da rivedere -->
+        I nomi qualificati sono noiosi da scrivere, e spesso è meglio non
+        legare uno schema particolare nelle applicazioni. Perciò
+        spesso ci si riferisce alle tabelle con <firstterm>nomi non qualificati</firstterm>, 
+        che consiste di solo il nome della tabella. Il sistema determina a quale tabella
+        intendiamo seguendo un <firstterm>percorso di ricerca</firstterm>, che è un elenco
+        di schemi in cui cercare. La prima tabella corrispondente trovata nel percorso di ricerca
+        è considerata quella voluta. Se non ci sono risultati nel percorso di ricerca, 
+        viene riportato un errore, anche se il nome di tabella cercato esiste 
+        in altri schemi del database.
    </para>
 
    <indexterm>
@@ -1700,10 +1696,10 @@ CREATE TABLE public.products ( ... );
    </indexterm>
 
    <para>
-    The first schema named in the search path is called the current schema.
-    Aside from being the first schema searched, it is also the schema in
-    which new tables will be created if the <command>CREATE TABLE</command>
-    command does not specify a schema name.
+        Il primo schema persente nel percorso di ricerca è chiamato lo schema corrente.
+        Oltre ad essere il primo schema cercato, è anche lo schema in 
+        cui le nuove tabelle saranno create se il comando  <command>CREATE TABLE</command>
+        non specifica il nome di uno schema.
    </para>
 
    <indexterm>
@@ -1711,83 +1707,84 @@ CREATE TABLE public.products ( ... );
    </indexterm>
 
    <para>
-    To show the current search path, use the following command:
+        Per vedere il percorso di ricerca corrente, usa il seguente comando:
 <programlisting>
 SHOW search_path;
 </programlisting>
-    In the default setup this returns:
+        Nell'installazione di default questo ritorna:
 <screen>
  search_path
 --------------
  "$user",public
 </screen>
-    The first element specifies that a schema with the same name as
-    the current user is to be searched.  If no such schema exists,
-    the entry is ignored.  The second element refers to the
-    public schema that we have seen already.
+        Il primo elemento specifica che uno schema con lo stesso nome dell'utente 
+        corrente viene cercato. Se tale schema non esiste, 
+        la voce viene ignorata. Il secondo elemento allo schema public 
+        che abbiamo già visto.
    </para>
 
    <para>
-    The first schema in the search path that exists is the default
-    location for creating new objects.  That is the reason that by
-    default objects are created in the public schema.  When objects
-    are referenced in any other context without schema qualification
-    (table modification, data modification, or query commands) the
-    search path is traversed until a matching object is found.
-    Therefore, in the default configuration, any unqualified access
-    again can only refer to the public schema.
+        Il primo schema nel percorso di ricerca che esiste è la posizione di default 
+        per la creazione di nuovi oggetti. È la ragione per cui gli oggetti 
+        sono creati di default nello schema public. Quando gli oggetti sono richiamati
+        in ogni altro contesto senza qualificare uno schema
+        (modifica di tabelle, modifica di dati o query) il 
+        percorso di ricerca viene attraversato finchè non viene trovato un oggetto corrispondente.
+        Perciò, in una configurazione standard, ogni accesso non qualificato  
+        può riferirsi solo allo schema public.
    </para>
 
    <para>
     To put our new schema in the path, we use:
+        Per inserire il nostro schema nel percorso, usiamo:
 <programlisting>
 SET search_path TO myschema,public;
 </programlisting>
-    (We omit the <literal>$user</literal> here because we have no
-    immediate need for it.)  And then we can access the table without
-    schema qualification:
+        (Omettiamo l'<literal>$user</literal> qui perchè non ne abbiamo immediato bisogno.) 
+        E quindi possiamo accedere alla tabella senza
+        qualificare lo schema:
 <programlisting>
 DROP TABLE mytable;
 </programlisting>
-    Also, since <literal>myschema</literal> is the first element in
-    the path, new objects would by default be created in it.
+        Inoltre, dato che <literal>myschema</literal> è il primo elemento nel 
+        percorso, i nuovi oggetti saranno per default creati in esso.
    </para>
 
    <para>
-    We could also have written:
+        Potevamo anche scrivere:
 <programlisting>
 SET search_path TO myschema;
 </programlisting>
-    Then we no longer have access to the public schema without
-    explicit qualification.  There is nothing special about the public
-    schema except that it exists by default.  It can be dropped, too.
+        Così non avremo più accesso allo schema public senza
+        esplicita qualificazione. Non c'è niente di speciale nello schema public
+        tranne che esiste di default. Può essere anche cancellato.
    </para>
 
    <para>
-    See also <xref linkend="functions-info"/> for other ways to manipulate
-    the schema search path.
+        Vedi anche <xref linkend="functions-info"/> per altri modi di manipolare 
+        il percorso di ricerca degli schemi.
    </para>
 
    <para>
-    The search path works in the same way for data type names, function names,
-    and operator names as it does for table names.  Data type and function
-    names can be qualified in exactly the same way as table names.  If you
-    need to write a qualified operator name in an expression, there is a
-    special provision: you must write
+        Il percorso di ricerca lavora nello stesso modo dei nomi dei tipi di dato, nomi di funzioni
+        e nomi di operatori e nomi di tabelle. I tipi di dato e i nomi delle funzioni  
+        possono essere qualificati nello stesso identico modo dei nomi delle tabelle. Se devi
+        scrivere un nome di operatore qualificato in una espressione, c'è una
+        condizione speciale: devi scrivere
 <synopsis>
 <literal>OPERATOR(</literal><replaceable>schema</replaceable><literal>.</literal><replaceable>operator</replaceable><literal>)</literal>
 </synopsis>
-    This is needed to avoid syntactic ambiguity.  An example is:
+        Questo è necessario per evitare ambiguità sintattiche. Un esempio è:
 <programlisting>
 SELECT 3 OPERATOR(pg_catalog.+) 4;
 </programlisting>
-    In practice one usually relies on the search path for operators,
-    so as not to have to write anything so ugly as that.
+        In pratica puoi contare sul percorso di ricerca per gli operatori,
+        così non dovrai scrivere di così orribile.
    </para>
   </sect2>
 
   <sect2 id="ddl-schemas-priv">
-   <title>Schemas and Privileges</title>
+   <title>Schemi e Privilegi</title>
 
    <indexterm zone="ddl-schemas-priv">
     <primary>privilege</primary>
@@ -1795,36 +1792,36 @@ SELECT 3 OPERATOR(pg_catalog.+) 4;
    </indexterm>
 
    <para>
-    By default, users cannot access any objects in schemas they do not
-    own.  To allow that, the owner of the schema must grant the
-    <literal>USAGE</literal> privilege on the schema.  To allow users
-    to make use of the objects in the schema, additional privileges
-    might need to be granted, as appropriate for the object.
+        Per default, gli utenti non possono accedere ad alcun oggetto in schemi che non possiedano.
+        Per permettere questo, il possessore dello schema deve concedere il privilegio
+        <literal>USAGE</literal> allo schema. Per permettere agli utenti di
+        fare uso degli oggetti nello schema, potresti avere bisogno di concedere privilegi addizionali, 
+        appropriati per l'oggetto.
    </para>
 
    <para>
-    A user can also be allowed to create objects in someone else's
-    schema.  To allow that, the <literal>CREATE</literal> privilege on
-    the schema needs to be granted.  Note that by default, everyone
-    has <literal>CREATE</literal> and <literal>USAGE</literal> privileges on
-    the schema
-    <literal>public</literal>.  This allows all users that are able to
-    connect to a given database to create objects in its
-    <literal>public</literal> schema.  If you do
-    not want to allow that, you can revoke that privilege:
+        Un utente può anche essere abilitato a creare oggetti in uno schema di un altro.
+        Per permettere ciò, devi concedere  il privilegio <literal>CREATE</literal>
+        sullo schema. Notare che di default, chiunque
+        ha i privilegi <literal>CREATE</literal> e <literal>USAGE</literal> sullo
+        schema 
+        <literal>public</literal>. Questo permette a tutti gli utenti che possono
+        collegarsi a un dato database, di creare oggetti nel proprio
+        schema <literal>public</literal>. Se non vuoi  
+        permettere ciò, puoi revocare quel privilegio:
 <programlisting>
 REVOKE CREATE ON SCHEMA public FROM PUBLIC;
 </programlisting>
-    (The first <quote>public</quote> is the schema, the second
-    <quote>public</quote> means <quote>every user</quote>.  In the
-    first sense it is an identifier, in the second sense it is a
-    key word, hence the different capitalization; recall the
-    guidelines from <xref linkend="sql-syntax-identifiers"/>.)
+        (Il primo <quote>public</quote> è lo schema, il secondo 
+         <quote>public</quote> significa <quote>ogni utente</quote>. 
+        Il primo è un identificatore, il secondo una parola chiave, da cui
+        il differente uso delle maiuscole; ricontrolla le linee guida 
+        <xref linkend="sql-syntax-identifiers"/>.)
    </para>
   </sect2>
 
   <sect2 id="ddl-schemas-catalog">
-   <title>The System Catalog Schema</title>
+   <title>Lo Schema Catagolo di Sistema</title>
 
    <indexterm zone="ddl-schemas-catalog">
     <primary>system catalog</primary>
@@ -1832,31 +1829,30 @@ REVOKE CREATE ON SCHEMA public FROM PUBLIC;
    </indexterm>
 
    <para>
-    In addition to <literal>public</literal> and user-created schemas, each
-    database contains a <literal>pg_catalog</literal> schema, which contains
-    the system tables and all the built-in data types, functions, and
-    operators.  <literal>pg_catalog</literal> is always effectively part of
-    the search path.  If it is not named explicitly in the path then
-    it is implicitly searched <emphasis>before</emphasis> searching the path's
-    schemas.  This ensures that built-in names will always be
-    findable.  However, you can explicitly place
-    <literal>pg_catalog</literal> at the end of your search path if you
-    prefer to have user-defined names override built-in names.
+        In aggiunta agli schemi <literal>public</literal> e a quelli creati dall'utente, ogni
+        database ha uno schema <literal>pg_catalog</literal>, che contiene
+        le tabelle di sistema e tutti i tipi di dato, funzioni, e operatori incorporati.
+        <literal>pg_catalog</literal> è sempre una parte effettiva del 
+        percorso di ricerca. È cercato implicitamente <emphasis>prima</emphasis> degli altri schemi.
+        Questo assicura che i nomi incorporati saranno sempre raggiungibili-
+        Ad ogni modo, puoi esplicitamente posizionare 
+        <literal>pg_catalog</literal> alla fine del percorso di ricerca se preferisci
+        avere nomi definiti dall'utente che sovrascrivano nomi incorporati.
    </para>
 
    <para>
-    In <productname>PostgreSQL</productname> versions before 7.3,
-    table names beginning with <literal>pg_</literal> were reserved.  This is
-    no longer true: you can create such a table name if you wish, in
-    any non-system schema.  However, it's best to continue to avoid
-    such names, to ensure that you won't suffer a conflict if some
-    future version defines a system table named the same as your
-    table.  (With the default search path, an unqualified reference to
-    your table name would then be resolved as the system table instead.)
-    System tables will continue to follow the convention of having
-    names beginning with <literal>pg_</literal>, so that they will not
-    conflict with unqualified user-table names so long as users avoid
-    the <literal>pg_</literal> prefix.
+        Nelle versioni <productname>PostgreSQL</productname> precedenti la 7.3,
+        i nomi delle tabelle che cominciavano con  <literal>pg_</literal> erano riservati. Questo
+        non è più vero: quei nomi si possono usare, in ogni schema
+        non di sistema. Comunque, è meglio continuare a evitare
+        tali nomi, per essere sicuri di non avere conflitti se qualche versione futura
+        definirà una tabella di sistema chiamata allo stesso modo della tua.
+        (Con il percorso di ricerca di default, un riferimento non qualificato alla
+        tua tabella sarebbe invece risolto come riferimento alla tabella di sistema.)
+        Le tabelle di sistema continueranno a seguire la convenzione di avere 
+        nomi che cominciano con <literal>pg_</literal>, così che non andranno in conflitto 
+        con nomi di tabelle-utente non qualificati finche l'utente eviterà
+        il prefisso <literal>pg_</literal> 
    </para>
   </sect2>
 
@@ -1864,46 +1860,46 @@ REVOKE CREATE ON SCHEMA public FROM PUBLIC;
    <title>Usage Patterns</title>
 
    <para>
-    Schemas can be used to organize your data in many ways.  There are
-    a few usage patterns that are recommended and are easily supported by
-    the default configuration:
+        Gli schemi possono essere usati per organizzare i dati in molte maniere. Ci sono
+        alcuni modi d'uso raccomandati e supportati facilmente dalla
+        configurazione di default:
     <itemizedlist>
      <listitem>
       <para>
-       If you do not create any schemas then all users access the
-       public schema implicitly.  This simulates the situation where
-       schemas are not available at all.  This setup is mainly
-       recommended when there is only a single user or a few cooperating
-       users in a database.  This setup also allows smooth transition
-       from the non-schema-aware world.
+        Se non si crea nessun schema allora tutti gli utenti hanno accesso allo
+        schema public implicitamente. Questo simula la situazione in
+        chi gli schemi non sono disponibili per niente. Questa configurazione è
+        raccomandata principalmente quando c'è un solo utente o pochi utenti cooperanti
+        in un database. Questa situazione permette anche una transizione fluida 
+        da una che non abbia schemi.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       You can create a schema for each user with the same name as
-       that user.  Recall that the default search path starts with
-       <literal>$user</literal>, which resolves to the user name.
-       Therefore, if each user has a separate schema, they access their
-       own schemas by default.
+        Si può creare uno schema per ogni utente con lo stesso nome dell'utente.
+        Ricordare che il percorso di ricerca di default comincia con
+        <literal>$user</literal>, che diventa il nome dell'utente.
+        Per questo, se ogni utente ha uno schema separato, accederà
+        il proprio schema di default.
       </para>
 
       <para>
-       If you use this setup then you might also want to revoke access
-       to the public schema (or drop it altogether), so users are
-       truly constrained to their own schemas.
+        Usando questa configurazione allora si potrebbe voler anche revocare l'accesso 
+        allo schema public (o eliminarlo del tutto), così gli utenti saranno
+        realmente vincolati all'uso dei propri schemi.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       To install shared applications (tables to be used by everyone,
-       additional functions provided by third parties, etc.), put them
-       into separate schemas.  Remember to grant appropriate
-       privileges to allow the other users to access them.  Users can
-       then refer to these additional objects by qualifying the names
-       with a schema name, or they can put the additional schemas into
-       their search path, as they choose.
+        Per installare applicazioni condivise (tabelle che tutti possano usare,
+        funzioni addizionali messe a disposizione da terzi, ecc.), metterle
+        in schemi separati. Si ricordi di concedere privilegi
+        appropriati per permettere agli altri utenti di averne accesso. Gli utenti possono
+        allora riferirsi a questi oggetti addizionali qualificandone i nomi 
+        con il nome dello schema, o possono mettere gli schemi addizionali nel loro
+        percorso di ricerca, è una loro scelta.
       </para>
      </listitem>
     </itemizedlist>
@@ -1911,40 +1907,38 @@ REVOKE CREATE ON SCHEMA public FROM PUBLIC;
   </sect2>
 
   <sect2 id="ddl-schemas-portability">
-   <title>Portability</title>
+   <title>Portabilità</title>
 
    <para>
-    In the SQL standard, the notion of objects in the same schema
-    being owned by different users does not exist.  Moreover, some
-    implementations do not allow you to create schemas that have a
-    different name than their owner.  In fact, the concepts of schema
-    and user are nearly equivalent in a database system that
-    implements only the basic schema support specified in the
-    standard.  Therefore, many users consider qualified names to
-    really consist of
-    <literal><replaceable>username</replaceable>.<replaceable>tablename</replaceable></literal>.
-    This is how <productname>PostgreSQL</productname> will effectively
-    behave if you create a per-user schema for every user.
+        Nell'SQL standard, il concetto di oggetti nello stesso schema
+        posseduti da utenti diversi non esiste. In più, alcune
+        implementazioni non permettono la creazione di schemi che hanno un nome
+        diverso dal loro possessore. Infatti, i concetti di schema
+        e utente sono quasi equivalenti in un sistema di database che 
+        implementa solo un supporto base agli schemi.
+        Perciò, molti utenti considerano nomi qualificati composti, in realtà, da
+        <literal><replaceable>username</replaceable>.<replaceable>tablename</replaceable></literal>.
+        Così è come  <productname>PostgreSQL</productname> si comporterà effettivamente
+        se viene creato uno schema per ogni utente.
    </para>
 
    <para>
-    Also, there is no concept of a <literal>public</literal> schema in the
-    SQL standard.  For maximum conformance to the standard, you should
-    not use (perhaps even remove) the <literal>public</literal> schema.
+        Inoltre, non c'è il concetto di schema <literal>public</literal> nel SQL standard.
+        Per seguire al massimo lo standard, non dovresti usare 
+        (forse addirittura rimuovere) lo schema  <literal>public</literal>.
    </para>
 
    <para>
-    Of course, some SQL database systems might not implement schemas
-    at all, or provide namespace support by allowing (possibly
-    limited) cross-database access.  If you need to work with those
-    systems, then maximum portability would be achieved by not using
-    schemas at all.
+        Certamente, alcuni sistemi di database SQL potrebbero non implementare gli schemi 
+        per niente, o fornire il supporto ai namespace permettendo un accesso attraverso al databse (probabilmente limitato).
+        Se devi lavorare con questi 
+        sistemi, allora la massima portabilità si raggiunge non usansdo per niente gli schemi.
    </para>
   </sect2>
  </sect1>
 
  <sect1 id="ddl-inherit">
-  <title>Inheritance</title>
+  <title>Ereditarietà</title>
 
   <indexterm>
    <primary>inheritance</primary>
@@ -1956,23 +1950,23 @@ REVOKE CREATE ON SCHEMA public FROM PUBLIC;
   </indexterm>
 
   <para>
-   <productname>PostgreSQL</productname> implements table inheritance,
-   which can be a useful tool for database designers.  (SQL:1999 and
-   later define a type inheritance feature, which differs in many
-   respects from the features described here.)
+    <productname>PostgreSQL</productname> implementa l'ereditarietà delle tabelle,
+    che può essere uno strumento utile per progettare un databse. (SQL:1999 e successivi
+    definiscono l'ereditarietà dei tipi, che è molto diversa
+    dalle caratteristiche descritte qui.)
   </para>
 
   <para>
-   Let's start with an example: suppose we are trying to build a data
-   model for cities.  Each state has many cities, but only one
-   capital. We want to be able to quickly retrieve the capital city
-   for any particular state. This can be done by creating two tables,
-   one for state capitals and one for cities that are not
-   capitals. However, what happens when we want to ask for data about
-   a city, regardless of whether it is a capital or not? The
-   inheritance feature can help to resolve this problem. We define the
-   <structname>capitals</structname> table so that it inherits from
-   <structname>cities</structname>:
+    Partiamo con un esempio: si supponga di provare a costruire un modello di dati per 
+    le città. Ogni stato ha molte città, ma solo una
+    capitale. Vogliamo essere capaci di ricavare velocemente la città capitale
+    di un particolare stato. Questo può essere fatto creando due tabelle,
+    una per le capitali statali e una per le città che non sono 
+    capitali. Comunque, cosa succede quando si vogliono informazioni su una città,
+    senza badare se sia una capitale o meno? L'ereditarietà
+    può aiutare a ricolvere questo problema. Definire la tabella
+    <structname>capitals</structname> di modo che erediti da 
+    <structname>cities</structname>:
 
 <programlisting>
 CREATE TABLE cities (
@@ -1986,20 +1980,19 @@ CREATE TABLE capitals (
 ) INHERITS (cities);
 </programlisting>
 
-   In this case, the <structname>capitals</structname> table <firstterm>inherits</firstterm>
-   all the columns of its parent table, <structname>cities</structname>. State
-   capitals also have an extra column, <structfield>state</structfield>, that shows
-   their state.
+    In questo caso, la tabella <structname>capitals</structname>  <firstterm>eredità</firstterm>
+    tutte le colonne della sua tabella genitore, <structname>cities</structname>. Le
+    capitali statali hanno una colonna in più, <structfield>state</structfield>, che mostra il loro Stato.
   </para>
 
   <para>
-   In <productname>PostgreSQL</productname>, a table can inherit from
-   zero or more other tables, and a query can reference either all
-   rows of a table or all rows of a table plus all of its descendant tables.
-   The latter behavior is the default.
-   For example, the following query finds the names of all cities,
-   including state capitals, that are located at an altitude over
-   500 feet:
+    In <productname>PostgreSQL</productname>, una tabella può ereditare da 
+    zero o più tabelle, e una query può riferirsi sia a tutte le righe di una tabella
+    che a tutte le righe di una tabella più tutte quelle di una tabella discendente.
+    Quest'ultimo casi è il default.
+    Per esempio, la query seguente trova i nomi di tutte le città,
+    include le capitali statali, che sono collocate ad un'altitudine 
+    maggiore di 500 piedi:
 
 <programlisting>
 SELECT name, altitude
@@ -2007,8 +2000,8 @@ SELECT name, altitude
     WHERE altitude &gt; 500;
 </programlisting>
 
-   Given the sample data from the <productname>PostgreSQL</productname>
-   tutorial (see <xref linkend="tutorial-sql-intro"/>), this returns:
+    Prendendo i dai di esempio dal tutorial di  <productname>PostgreSQL</productname>
+    (see <xref linkend="tutorial-sql-intro"/>), la query restituisce:
 
 <programlisting>
    name    | altitude
@@ -2020,8 +2013,8 @@ SELECT name, altitude
   </para>
 
   <para>
-   On the other hand, the following query finds all the cities that
-   are not state capitals and are situated at an altitude over 500 feet:
+    Invece, la query seguente trova tutte le città che
+    non sono capitali statali e sono situate ad un'altezza maggiore di 500 piedi:
 
 <programlisting>
 SELECT name, altitude
@@ -2036,20 +2029,20 @@ SELECT name, altitude
   </para>
 
   <para>
-   Here the <literal>ONLY</literal> keyword indicates that the query
-   should apply only to <structname>cities</structname>, and not any tables
-   below <structname>cities</structname> in the inheritance hierarchy.  Many
-   of the commands that we have already discussed &mdash;
-   <command>SELECT</command>, <command>UPDATE</command> and
-   <command>DELETE</command> &mdash; support the
-   <literal>ONLY</literal> keyword.
+    Qui la parola chiave  <literal>ONLY</literal> indica che la query
+    deve essere applicata solo sulla tabella <structname>cities</structname>, e non sulle tabelle
+    sotto <structname>cities</structname> nella gerarchia di ereditarietà. Molti
+    dei comandi che abbiamo già discusso &mdash; 
+    <command>SELECT</command>, <command>UPDATE</command> e
+    <command>DELETE</command> &mdash; supportano la parola chiave
+    <literal>ONLY</literal>.
   </para>
 
   <para>
-   In some cases you might wish to know which table a particular row
-   originated from. There is a system column called
-   <structfield>tableoid</structfield> in each table which can tell you the
-   originating table:
+    In alcuni casi si potrebbe voler sapere da quale tabella è stata generata una 
+    particolare riga. In ogni tabella c'è una colonna di sistema chiamata
+    <structfield>tableoid</structfield> che può dire
+    la tabella originatrice:
 
 <programlisting>
 SELECT c.tableoid, c.name, c.altitude
@@ -2057,7 +2050,7 @@ FROM cities c
 WHERE c.altitude &gt; 500;
 </programlisting>
 
-   which returns:
+   che restituisce:
 
 <programlisting>
  tableoid |   name    | altitude
@@ -2067,9 +2060,9 @@ WHERE c.altitude &gt; 500;
    139798 | Madison   |      845
 </programlisting>
 
-   (If you try to reproduce this example, you will probably get
-   different numeric OIDs.)  By doing a join with
-   <structname>pg_class</structname> you can see the actual table names:
+    (Se provi a riprodurre questo esempio, probabilmente otterrai 
+    differenti OID.) Eseguendo una join con
+    <structname>pg_class</structname> si possono avere i nomi delle tabelle:
 
 <programlisting>
 SELECT p.relname, c.name, c.altitude
@@ -2077,7 +2070,7 @@ FROM cities c, pg_class p
 WHERE c.altitude &gt; 500 AND c.tableoid = p.oid;
 </programlisting>
 
-   which returns:
+   che restituisce:
 
 <programlisting>
  relname  |   name    | altitude
@@ -2089,176 +2082,175 @@ WHERE c.altitude &gt; 500 AND c.tableoid = p.oid;
   </para>
 
   <para>
-   Inheritance does not automatically propagate data from
-   <command>INSERT</command> or <command>COPY</command> commands to
-   other tables in the inheritance hierarchy. In our example, the
-   following <command>INSERT</command> statement will fail:
+    L'ereditarietà non propaga automaticamente i dati dai comandi 
+    <command>INSERT</command> o <command>COPY</command> alle altre tabelle
+    nella gerarchia di ereditarietà. Nel nostro esempio, il
+    comando  <command>INSERT</command> seguente fallirà:
 <programlisting>
 INSERT INTO cities (name, population, altitude, state)
 VALUES ('New York', NULL, NULL, 'NY');
 </programlisting>
-   We might hope that the data would somehow be routed to the
-   <structname>capitals</structname> table, but this does not happen:
-   <command>INSERT</command> always inserts into exactly the table
-   specified.  In some cases it is possible to redirect the insertion
-   using a rule (see <xref linkend="rules"/>).  However that does not
-   help for the above case because the <structname>cities</structname> table
-   does not contain the column <structfield>state</structfield>, and so the
-   command will be rejected before the rule can be applied.
+    Si potrebbe sperare che i dati fossero in qualche modo mandati alla
+    tabella <structname>capitals</structname>, am questo non succede:
+    l'<command>INSERT</command> inserisce sempre esattamente nella tabella
+    specificata. In alcuni casi è possibile redirigere l'inserimento 
+    usando una regola  (see <xref linkend="rules"/>). Comunque questo non
+    aiuta nel caso sopra, perchè la tabella <structname>cities</structname> 
+    non contiene la colonna <structfield>state</structfield>, e quindi
+    il comando sarebbe respinto prima che la regola possa essere applicata.
   </para>
 
   <para>
-   All check constraints and not-null constraints on a parent table are
-   automatically inherited by its children.  Other types of constraints
-   (unique, primary key, and foreign key constraints) are not inherited.
+    Tutti i vincoli check e not-null su una tabella genitore sono 
+    automaticamente ereditati da i suoi figli. Altri tipi di vincoli 
+    (unique, chiave primaria e chiave esterna) non sono ereditati.
   </para>
 
   <para>
-   A table can inherit from more than one parent table, in which case it has
-   the union of the columns defined by the parent tables.  Any columns
-   declared in the child table's definition are added to these.  If the
-   same column name appears in multiple parent tables, or in both a parent
-   table and the child's definition, then these columns are <quote>merged</quote>
-   so that there is only one such column in the child table.  To be merged,
-   columns must have the same data types, else an error is raised.  The
-   merged column will have copies of all the check constraints coming from
-   any one of the column definitions it came from, and will be marked not-null
-   if any of them are.
+    Una tabella può ereditare da più di una tabella genitore, nel qual caso avrà
+    l'unione delle colonne definite dalle tabelle genitrici. Le colonne
+    dichiarate nella definizione della tabella figlia sono aggiunte a quelle. Se lo
+    stesso nome di colonna appare in più tabelle genitrici, o sia in una tabella genitore 
+    che in una figlia,  allora queste colonne sono <quote>fuse</quote>
+    così che ci sia una sola di queste colonne nella tabella figlia. Per essere fuse,
+    le colonne devono avere lo stesso tipi di dato, altrimenti viene generato un errore. La
+    colonna fusa avrà copie di tutti i vincoli check provenienti da qualsiasi
+    definizione di colonna originaria, e sarà segnata come not-null
+    se lo è qualsiasi colonna originiaria.
   </para>
 
   <para>
-   Table inheritance is typically established when the child table is
-   created, using the <literal>INHERITS</literal> clause of the
-   <xref linkend="sql-createtable"/>
-   statement.
-   Alternatively, a table which is already defined in a compatible way can
-   have a new parent relationship added, using the <literal>INHERIT</literal>
-   variant of <xref linkend="sql-altertable"/>.
-   To do this the new child table must already include columns with
-   the same names and types as the columns of the parent. It must also include
-   check constraints with the same names and check expressions as those of the
-   parent. Similarly an inheritance link can be removed from a child using the
-   <literal>NO INHERIT</literal> variant of <command>ALTER TABLE</command>.
-   Dynamically adding and removing inheritance links like this can be useful
-   when the inheritance relationship is being used for table
-   partitioning (see <xref linkend="ddl-partitioning"/>).
+    L'ereditarietà delle tabelle è tipicamente stabilita quando la tabella figlia viene
+    creata, usando la clausola <literal>INHERITS</literal> del comando 
+    <xref linkend="sql-createtable"/>
+    Alternativamente, ad una tabella che è già definita in modo compatibile, 
+    è possibile aggiungere una genitore, usando la variante <literal>INHERIT</literal>
+    di <xref linkend="sql-altertable"/>.
+    Per fare questo la nuova tabella figlia deve già includere colonne con lo 
+    stesso nome e tipo delle colonne del genitore. Deve anche includere
+    vincoli check con gli stessi nomi e espressioni check del genitore.
+    Similarmente, un collegamento di ereditarietò può essere rimosso da un figlio usando la
+    variante <literal>NO INHERIT</literal> di  <command>ALTER TABLE</command>.
+    Aggiungere e rimuovere dinamicamente collegamenti di ereditarietà in questo modo può essere utile
+    quando la relazione di ereditarietà viene usata per il partizionameno
+    (vedere <xref linkend="ddl-partitioning"/>).
   </para>
 
   <para>
-   One convenient way to create a compatible table that will later be made
-   a new child is to use the <literal>LIKE</literal> clause in <command>CREATE
-   TABLE</command>. This creates a new table with the same columns as
-   the source table. If there are any <literal>CHECK</literal>
-   constraints defined on the source table, the <literal>INCLUDING
-   CONSTRAINTS</literal> option to <literal>LIKE</literal> should be
-   specified, as the new child must have constraints matching the parent
-   to be considered compatible.
+    Un modo comodo per creare una tabella compatibile che successivamente diventerà
+    una nuova figlia è di usare la clausola <literal>LIKE</literal> nel <command>CREATE
+    TABLE</command>. Questo crea una nuova tabella con le stesse colonne della
+    tabella sorgente. Se ci sono alcuni vincoli <literal>CHECK</literal>
+    definiti sulla tabella sorgente, l'opzione <literal>INCLUDING
+    CONSTRAINTS</literal> della <literal>LIKE</literal> dovrebbe essere specificata,
+    dato che la nuova figlia deve avere vincoli corrispondenti alla genitrice
+    per essere considerata compatibile.
   </para>
 
   <para>
-   A parent table cannot be dropped while any of its children remain. Neither
-   can columns or check constraints of child tables be dropped or altered
-   if they are inherited
-   from any parent tables. If you wish to remove a table and all of its
-   descendants, one easy way is to drop the parent table with the
-   <literal>CASCADE</literal> option.
+    Una tabella genitore non può essere eliminata finchè una delle sue figlie esiste. Nemmeno
+    le colonne o i vincoli check delle tabelle figlie possono essere eliminate o modificate 
+    se sono ereditate 
+    da tabelle genitrici. Se si desidera rimuovere una tabella e tutte le sue discendenti,
+    un modo semplice è eliminare la tabella genitrice con l'opzione
+    <literal>CASCADE</literal>.
   </para>
 
   <para>
-   <xref linkend="sql-altertable"/> will
-   propagate any changes in column data definitions and check
-   constraints down the inheritance hierarchy.  Again, dropping
-   columns that are depended on by other tables is only possible when using
-   the <literal>CASCADE</literal> option. <command>ALTER
-   TABLE</command> follows the same rules for duplicate column merging
-   and rejection that apply during <command>CREATE TABLE</command>.
+    <xref linkend="sql-altertable"/> propagherà
+    i cambiamenti nelle definizioni dei dati di colonna e nei vincoli check
+    lungo tutta la gerarchia di ereditarietà. Di nuovo, la cancellazione delle
+    colonne che dipendono da altre è possibile solo usando l'opzione 
+    <literal>CASCADE</literal>. <command>ALTER
+    TABLE</command> segue le stesse regole per la fusione di colonne duplicate
+    e per il rifuto applicate nella  <command>CREATE TABLE</command>.
   </para>
 
   <para>
-   Note how table access permissions are handled.  Querying a parent
-   table can automatically access data in child tables without further
-   access privilege checking.  This preserves the appearance that the
-   data is (also) in the parent table.  Accessing the child tables
-   directly is, however, not automatically allowed and would require
-   further privileges to be granted.
+    Notare come sono gestiti i permessi di accesso alla tabella. Eseguire una query su una
+    tabella genitrice può automaticamente permettere l'accesso ai dati in tabelle figlie senza ulteriori
+<!-- /TODO This preserves the appearance that the data is (also) in the parent table. -->
+    controlli sui privilegi di accesso. 
+    Comunque, accedere alle tabelle figlie direttamente non è permesso   
+    automaticamente e richiederebbe 
+    la concessione di ulteriori privilegi .
   </para>
 
  <sect2 id="ddl-inherit-caveats">
-  <title>Caveats</title>
+  <title>Avvertimenti</title>
 
   <para>
-   Note that not all SQL commands are able to work on
-   inheritance hierarchies.  Commands that are used for data querying,
-   data modification, or schema modification
-   (e.g., <literal>SELECT</literal>, <literal>UPDATE</literal>, <literal>DELETE</literal>,
-   most variants of <literal>ALTER TABLE</literal>, but
-   not <literal>INSERT</literal> and <literal>ALTER TABLE ...
-   RENAME</literal>) typically default to including child tables and
-   support the <literal>ONLY</literal> notation to exclude them.
-   Commands that do database maintenance and tuning
-   (e.g., <literal>REINDEX</literal>, <literal>VACUUM</literal>)
-   typically only work on individual, physical tables and do no
-   support recursing over inheritance hierarchies.  The respective
-   behavior of each individual command is documented in the reference
-   part (<xref linkend="sql-commands"/>).
+    Notare che non tutti i comandi SQL riescono a lavorare con 
+    le gerarchie di ereditarietà. I comandi usati per le query,
+    la modifica dei dati, o la modifica degli schemi 
+    (ad es., <literal>SELECT</literal>, <literal>UPDATE</literal>, <literal>DELETE</literal>,
+    molte varianti di <literal>ALTER TABLE</literal>, ma non
+    <literal>INSERT</literal> e <literal>ALTER TABLE ...
+    RENAME</literal>) tipicamente di default includono le tabelle figlie e supportano la notazione
+    <literal>ONLY</literal> per escluderle.
+    I comandi per fare la manutenzione del database e la messa a punto
+    (ad es., <literal>REINDEX</literal>, <literal>VACUUM</literal>)
+    tipicamente funzionano solo su tabelle fisiche e individuali e non supportano
+    la recursione attraverso gerarchie di eredità. Il rispettivo
+    comportamento di ogni singolo comando è documentato nel riferimento 
+    (<xref linkend="sql-commands"/>).
   </para>
 
   <para>
-   A serious limitation of the inheritance feature is that indexes (including
-   unique constraints) and foreign key constraints only apply to single
-   tables, not to their inheritance children. This is true on both the
-   referencing and referenced sides of a foreign key constraint. Thus,
-   in the terms of the above example:
+    Una seria limitazione dell'ereditarietà è che gli indici (inclusi
+    i vincoli unique) e i vincoli chiave esterna si applicano solo su
+    singole tabelle, non le loro figlie. Questo è vero sia per il lato
+    referente che referenziato, di un vincolo chiave esterna. Così,  
+    riprendendo l'esempio sopra:
 
    <itemizedlist>
     <listitem>
      <para>
-      If we declared <structname>cities</structname>.<structfield>name</structfield> to be
-      <literal>UNIQUE</literal> or a <literal>PRIMARY KEY</literal>, this would not stop the
-      <structname>capitals</structname> table from having rows with names duplicating
-      rows in <structname>cities</structname>.  And those duplicate rows would by
-      default show up in queries from <structname>cities</structname>.  In fact, by
-      default <structname>capitals</structname> would have no unique constraint at all,
-      and so could contain multiple rows with the same name.
-      You could add a unique constraint to <structname>capitals</structname>, but this
-      would not prevent duplication compared to <structname>cities</structname>.
+        Se <structname>cities</structname>.<structfield>name</structfield> viene dichiarato
+        <literal>UNIQUE</literal> o <literal>PRIMARY KEY</literal>, questo non fermerebbe la tabella
+        <structname>capitals</structname> dall'avere righe con nomi che duplicano
+        le righe nella tabella  <structname>cities</structname>. E queste righe duplicate saranno 
+        mostrate di default nelle query riguardanti la tabella <structname>cities</structname>. Infatti,
+        di default <structname>capitals</structname> non avrebbe nessun vincolo unique, 
+        e così potrebbe contenere diverse righe con lo stesso nome.
+        È possibile aggiungere un vincolo unique a <structname>capitals</structname>, ma questo
+        non preverrebbe duplicazioni rispetto a <structname>cities</structname>.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Similarly, if we were to specify that
-      <structname>cities</structname>.<structfield>name</structfield> <literal>REFERENCES</literal> some
-      other table, this constraint would not automatically propagate to
-      <structname>capitals</structname>.  In this case you could work around it by
-      manually adding the same <literal>REFERENCES</literal> constraint to
-      <structname>capitals</structname>.
+        Similarmente, se abbiamo specificato che 
+        <structname>cities</structname>.<structfield>name</structfield>  referenzia (<literal>REFERENCES</literal>)
+        un altra tabella, questo vincolo non si propagherà automaticamente in
+        <structname>capitals</structname>. In questo caso potresti ovviare alla cosa
+        aggiungendo manualmente lo stesso vincolo <literal>REFERENCES</literal> 
+        a <structname>capitals</structname>.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Specifying that another table's column <literal>REFERENCES
-      cities(name)</literal> would allow the other table to contain city names, but
-      not capital names.  There is no good workaround for this case.
+        Specificare che una colonna <literal>REFERENCES 
+        cities(name)</literal> permetterebbe all'altra tabella di contenere nomi di città, ma
+        non nomi di capitale. Non ci sono modi di ovviare a questa cosa.
      </para>
     </listitem>
    </itemizedlist>
 
-   These deficiencies will probably be fixed in some future release,
-   but in the meantime considerable care is needed in deciding whether
-   inheritance is useful for your application.
+    Queste carenze saranno probabilmente corrette in versioni future,
+    ma nel frattempo è necessaria particolare attenzione nel decidere se
+    l'ereditarietà è utile per la propria applicazione.
   </para>
 
   <note>
-   <title>Deprecated</title>
+   <title>Deprecato</title>
    <para>
-     In releases of <productname>PostgreSQL</productname> prior to 7.1, the
-     default behavior was not to include child tables in queries. This was
-     found to be error prone and also in violation of the SQL
-     standard.  You can get the pre-7.1 behavior by turning off the
-     <xref linkend="guc-sql-inheritance"/> configuration
-     option.
+        Nelle versioni di  <productname>PostgreSQL</productname> precedenti alla 7.1, il
+        comportamento di default non era di includere le tabelle figlie nelle query. Questo
+        fu trovato incline ad errori e in violazione dello standard SQL.
+        Puoi avere il comportamento delle versioni precedenti la 7.1 agendo sull'opzione di configurazione 
+        <xref linkend="guc-sql-inheritance"/>.
    </para>
   </note>
 
@@ -2266,7 +2258,7 @@ VALUES ('New York', NULL, NULL, 'NY');
   </sect1>
 
   <sect1 id="ddl-partitioning">
-   <title>Partitioning</title>
+   <title>Partizionamento</title>
 
    <indexterm>
     <primary>partitioning</primary>
@@ -2278,98 +2270,102 @@ VALUES ('New York', NULL, NULL, 'NY');
    </indexterm>
 
    <para>
-    <productname>PostgreSQL</productname> supports basic table
-    partitioning. This section describes why and how to implement
-    partitioning as part of your database design.
+         <productname>PostgreSQL</productname> supporta un partizionamento di base delle tabelle.
+        Questa sezione descrive perchè e come implementare 
+        il partizionamento come parte del progetto del database.
    </para>
 
    <sect2 id="ddl-partitioning-overview">
-     <title>Overview</title>
+     <title>Panoramica</title>
 
    <para>
-    Partitioning refers to splitting what is logically one large table
-    into smaller physical pieces.
-    Partitioning can provide several benefits:
+        Partizionare si riferisce a dividere quella che è una tabella grande
+        in pezzi fisici più piccoli.
+        Il partizionamento può portare diversi vantaggi:
    <itemizedlist>
     <listitem>
      <para>
-      Query performance can be improved dramatically in certain situations,
-      particularly when most of the heavily accessed rows of the table are in a
-      single partition or a small number of partitions.  The partitioning
-      substitutes for leading columns of indexes, reducing index size and
-      making it more likely that the heavily-used parts of the indexes
-      fit in memory.
+        Le prestazioni delle query possono essere drasticamente migliorate in certe situazioni,
+        particolarmente quando la maggior parte delle righe della tabella accesse pesantemente sono 
+        in una singola partizione od un piccolo numero di partizioni. 
+<!-- /TODO -->
+        The partitioning
+        substitutes for leading columns of indexes, reducing index size and
+        making it more likely that the heavily-used parts of the indexes
+        fit in memory.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      When queries or updates access a large percentage of a single
-      partition, performance can be improved by taking advantage
-      of sequential scan of that partition instead of using an
-      index and random access reads scattered across the whole table.
+        Quando delle query o degli aggiornamenti accedono ad un'alta percentuale di una 
+        singola partizione, le prestazioni possono essere migliorate traendo vantaggio da
+        uno scan sequenziale di quella partizione invece di usare 
+        un indice e letture acsuali sparse attraverso l'intera tabella.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Bulk loads and deletes can be accomplished by adding or removing
-      partitions, if that requirement is planned into the partitioning design.
-      <command>ALTER TABLE</command> is far faster than a bulk operation.
-      It also entirely avoids the <command>VACUUM</command>
-      overhead caused by a bulk <command>DELETE</command>.
+        Grossi caricamenti ed eliminazioni possono essere svolti aggiungendo o rimuovendo
+        partizioni, se questo requisito è stato messo in conto nel progetto di partizionamento.
+<!-- /TODO Bulk come si traduce? -->
+        <command>ALTER TABLE</command> è molto più veloce di una oprazione "bulk".
+        Inoltre viene interamente evitato l'overhead del  <command>VACUUM</command>  
+        causato da una <command>DELETE</command> "bulk".
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Seldom-used data can be migrated to cheaper and slower storage media.
+        I dati usati raramente possono essere migrati verso supporti di immagazzinamento 
+        meno costosi e più lenti.
      </para>
     </listitem>
    </itemizedlist>
 
-    The benefits will normally be worthwhile only when a table would
-    otherwise be very large. The exact point at which a table will
-    benefit from partitioning depends on the application, although a
-    rule of thumb is that the size of the table should exceed the physical
-    memory of the database server.
+        I benefici varranno la pena solo quando una tabella
+        è molto grande. Il punto esatto in cui una tabella beneficierà
+        del partizionamento dipende dall'applicazione, sebbene 
+        una regola generale sia che la dimensione della tabella dovrebbe eccedere la memoria
+        fisica del database server.
    </para>
 
    <para>
-    Currently, <productname>PostgreSQL</productname> supports partitioning
-    via table inheritance.  Each partition must be created as a child
-    table of a single parent table.  The parent table itself is normally
-    empty; it exists just to represent the entire data set.  You should be
-    familiar with inheritance (see <xref linkend="ddl-inherit"/>) before
-    attempting to set up partitioning.
+        Attualmente, <productname>PostgreSQL</productname> supporta il partizionamento
+        attraverso l'ereditarietà. Ogni partizione dev'essere creata come tabella 
+        figlia di una singola tabella genitrice. La tabella genitrice di per sè normalmente è
+        vuota; Esiste solo per rappresentare l'intero insieme di dati. Si dovrebbe avere
+        familiarità con l'ereditarietà (vedere <xref linkend="ddl-inherit"/>) prima
+        di tentare di mettere su il partizionamento.
    </para>
 
    <para>
-    The following forms of partitioning can be implemented in
+        Le seguenti forme di partizionamento possono essere implementate in
     <productname>PostgreSQL</productname>:
 
     <variablelist>
      <varlistentry>
-      <term>Range Partitioning</term>
+      <term>Partizionamento a intervallo (Range Partitioning)</term>
 
       <listitem>
        <para>
-        The table is partitioned into <quote>ranges</quote> defined
-        by a key column or set of columns, with no overlap between
-        the ranges of values assigned to different partitions.  For
-        example one might partition by date ranges, or by ranges of
-        identifiers for particular business objects.
+            La tabella è partizionata in <quote>intervalli</quote> definiti 
+            da una colonna chiave o insieme di colonne, senza sovrapposizioni tra gli 
+            intervalli di valori assegnati alle diverse partizioni. Per
+            esempio si potrebbe partizionare per intervalli di date, o per intervalli di 
+            identificatori di particolari oggetti.
        </para>
       </listitem>
      </varlistentry>
 
      <varlistentry>
-      <term>List Partitioning</term>
+      <term>Partizionamento a elenco (List Partitioning)</term>
 
       <listitem>
        <para>
-        The table is partitioned by explicitly listing which key values
-        appear in each partition.
+            La tabella è partizionata elencando esplicitamente quali valori chiave 
+            appaiono in ogni partizione.
        </para>
       </listitem>
      </varlistentry>
@@ -2378,92 +2374,90 @@ VALUES ('New York', NULL, NULL, 'NY');
    </sect2>
 
    <sect2 id="ddl-partitioning-implementation">
-     <title>Implementing Partitioning</title>
+     <title>Implementare il Partizionamento</title>
 
     <para>
-     To set up a partitioned table, do the following:
+        Per impostare una tabella partizionata, fare:
      <orderedlist spacing="compact">
       <listitem>
        <para>
-        Create the <quote>master</quote> table, from which all of the
-        partitions will inherit.
+            Creare la tabella <quote>master</quote>, dalla qualle tutte le altre
+            erediteranno.
        </para>
        <para>
-        This table will contain no data.  Do not define any check
-        constraints on this table, unless you intend them to
-        be applied equally to all partitions.  There is no point
-        in defining any indexes or unique constraints on it, either.
-       </para>
-      </listitem>
-
-      <listitem>
-       <para>
-        Create several <quote>child</quote> tables that each inherit from
-        the master table.  Normally, these tables will not add any columns
-        to the set inherited from the master.
-       </para>
-
-       <para>
-        We will refer to the child tables as partitions, though they
-        are in every way normal <productname>PostgreSQL</productname> tables.
+            Questa tabella non conterrà dati. Non definire nessun
+            vincolo check su questa tabella, a meno che non si intenda applicarli 
+            equamente a tutte le partizioni. Non c'è neppure alcun motivo
+            di definire un indice o vincolo unique. 
        </para>
       </listitem>
 
       <listitem>
        <para>
-        Add table constraints to the partition tables to define the
-        allowed key values in each partition.
+            Crea diverse tabelle <quote>figlie</quote> ognuna delle quali eredita
+            dalla tabella master. Normalmente, queste tabelle non aggiungeranno colonne 
+            all'insieme ereditato dalla master.
        </para>
 
        <para>
-        Typical examples would be:
+            Ci riferiremo alle tabelle figlie come "partizioni", nonostante siano
+            normali tabelle <productname>PostgreSQL</productname>. 
+       </para>
+      </listitem>
+
+      <listitem>
+       <para>
+            Aggiungere vincoli di tabella sulle tabelle-partizioni per definire
+            i valori chiave permessi in ogni partizione.
+       </para>
+
+       <para>
+            Tipici esempi potrebbero essere:
 <programlisting>
 CHECK ( x = 1 )
 CHECK ( county IN ( 'Oxfordshire', 'Buckinghamshire', 'Warwickshire' ))
 CHECK ( outletID &gt;= 100 AND outletID &lt; 200 )
 </programlisting>
-        Ensure that the constraints guarantee that there is no overlap
-        between the key values permitted in different partitions.  A common
-        mistake is to set up range constraints like:
+            Assicurarsi che i vincoli garantiscano che non ci siano sovrapposizioni 
+            tra i valori chiave permessi nelle varie partizioni. Un errore comune 
+            è impostare vincoli di range tipo:
 <programlisting>
 CHECK ( outletID BETWEEN 100 AND 200 )
 CHECK ( outletID BETWEEN 200 AND 300 )
 </programlisting>
-        This is wrong since it is not clear which partition the key value
-        200 belongs in.
+            Questo è sbagliato dato che non è chiaro a quale partizione appartiene il 200.
        </para>
 
        <para>
-        Note that there is no difference in
-        syntax between range and list partitioning; those terms are
-        descriptive only.
-       </para>
-      </listitem>
-
-      <listitem>
-       <para>
-        For each partition, create an index on the key column(s),
-        as well as any other indexes you might want.  (The key index is
-        not strictly necessary, but in most scenarios it is helpful.
-        If you intend the key values to be unique then you should
-        always create a unique or primary-key constraint for each
-        partition.)
+            Notare che non c'è differenza nella sintassi tra    
+            il partizionamento di intervallo e il partizinamento di elenco; questi termini
+            sono solo descrittivi.
        </para>
       </listitem>
 
       <listitem>
        <para>
-        Optionally, define a trigger or rule to redirect data inserted into
-        the master table to the appropriate partition.
+            Per ogni partizione, creare un indice su ogni colonna/e, 
+            così come ogni altro indice potresti volere. (L'indice chiave non
+            è strettamente necessario, ma in molte situazioni è utile.
+            Se si vuole che i valori chiave siano unici allora si dovrebbe
+            sempre creare un vincolo unique o chiave primaria per ogni 
+            partizione.)
        </para>
       </listitem>
 
       <listitem>
        <para>
-        Ensure that the <xref linkend="guc-constraint-exclusion"/>
-        configuration parameter is not disabled in
-        <filename>postgresql.conf</filename>.
-        If it is, queries will not be optimized as desired.
+            Opzionalmente, definire un trigger o una regola per redirigere i dati inseriti nella
+            tabella master alle partizioni appropriate.
+       </para>
+      </listitem>
+
+      <listitem>
+       <para>
+            Assicurarsi che il parametro di configurazione  <xref linkend="guc-constraint-exclusion"/>
+            non sia disabilitato in <filename>postgresql.conf</filename>.
+            Se lo è, le query non saranno ottimizzate come desiderato.
        </para>
       </listitem>
 
@@ -2471,10 +2465,10 @@ CHECK ( outletID BETWEEN 200 AND 300 )
     </para>
 
     <para>
-     For example, suppose we are constructing a database for a large
-     ice cream company. The company measures peak temperatures every
-     day as well as ice cream sales in each region. Conceptually,
-     we want a table like:
+       Per esempio, supponiamo di realizzare un databse per una grande  
+        ditta di gelati. La ditta misura le temperature massime ogni 
+        giorno così come le vendite di gelati in ogni regione. Concettualmente, 
+        la tabella sarà:
 
 <programlisting>
 CREATE TABLE measurement (
@@ -2485,32 +2479,32 @@ CREATE TABLE measurement (
 );
 </programlisting>
 
-     We know that most queries will access just the last week's, month's or
-     quarter's data, since the main use of this table will be to prepare
-     online reports for management.
-     To reduce the amount of old data that needs to be stored, we
-     decide to only keep the most recent 3 years worth of data. At the
-     beginning of each month we will remove the oldest month's data.
+        La maggior parte delle query accederanno ai dati dell'ultima settimana, mese o 
+        trimestre, dato che l'utilizzo principale di questa tabella sarà di preparare 
+        rapporti online per la gestione.
+        Per ridurre l'ammontare di vecchi dati che devono essere immagazzinati, 
+        vale la pena tenere solo i 3 anni di dati più recenti. All'inizio
+        di ogni mese verranno cancellati i dati del mese più vecchio.
     </para>
 
     <para>
-     In this situation we can use partitioning to help us meet all of our
-     different requirements for the measurements table. Following the
-     steps outlined above, partitioning can be set up as follows:
+        In questa situazione è possibile usare il partizionamento per far fronte  
+        a tutte le esigenze della tabella delle misurazioni.
+        Seguendo i passi
+        evidenziati sopra, il partizionamento può essere impostato come segue:
     </para>
 
     <para>
      <orderedlist spacing="compact">
       <listitem>
        <para>
-        The master table is the <structname>measurement</structname> table, declared
-        exactly as above.
+            La tabella master è <structname>measurement</structname>, dichiarata esattamente come sopra.
        </para>
       </listitem>
 
       <listitem>
        <para>
-        Next we create one partition for each active month:
+            Successivamente creare una partizione per ogni mese attivo:
 
 <programlisting>
 CREATE TABLE measurement_y2006m02 ( ) INHERITS (measurement);
@@ -2521,24 +2515,24 @@ CREATE TABLE measurement_y2007m12 ( ) INHERITS (measurement);
 CREATE TABLE measurement_y2008m01 ( ) INHERITS (measurement);
 </programlisting>
 
-        Each of the partitions are complete tables in their own right,
-        but they inherit their definitions from the
-        <structname>measurement</structname> table.
+            Ognuna delle partizioni è una tabella completa,
+            ma eredita la sua definizione dalla tabella
+            <structname>measurement</structname>.
        </para>
 
        <para>
-        This solves one of our problems: deleting old data. Each
-        month, all we will need to do is perform a <command>DROP
-        TABLE</command> on the oldest child table and create a new
-        child table for the new month's data.
+            Questo risolve uno dei problemi: la cancellazione dei vecchi dati. Ogni  
+            mese, basterà eseguire una <command>DROP
+            TABLE</command> sulla tabella figlia più vecchia e creare una nuova tabella
+            per i dati del mese nuovo.
        </para>
       </listitem>
 
       <listitem>
        <para>
-        We must provide non-overlapping table constraints.  Rather than
-        just creating the partition tables as above, the table creation
-        script should really be:
+            E' necessario fornire vincoli di tabella non sovrapponibili. Piuttosto che
+            creare semplicemente le tabelle partizione come sopra, lo script di creazione delle tabelle 
+            dovrebbe essere:
 
 <programlisting>
 CREATE TABLE measurement_y2006m02 (
@@ -2563,7 +2557,7 @@ CREATE TABLE measurement_y2008m01 (
 
       <listitem>
        <para>
-        We probably need indexes on the key columns too:
+            Probabilmente ci sarà bisogno di indici sulle colonne chiave:
 
 <programlisting>
 CREATE INDEX measurement_y2006m02_logdate ON measurement_y2006m02 (logdate);
@@ -2574,18 +2568,18 @@ CREATE INDEX measurement_y2007m12_logdate ON measurement_y2007m12 (logdate);
 CREATE INDEX measurement_y2008m01_logdate ON measurement_y2008m01 (logdate);
 </programlisting>
 
-        We choose not to add further indexes at this time.
+            Per adesso scegliamo di non aggiungere ulteriori indici.
        </para>
       </listitem>
 
       <listitem>
        <para>
-        We want our application to be able to say <literal>INSERT INTO
-        measurement ...</literal> and have the data be redirected into the
-        appropriate partition table.  We can arrange that by attaching
-        a suitable trigger function to the master table.
-        If data will be added only to the latest partition, we can
-        use a very simple trigger function:
+            Vogliamo che l'applicazione sia capace di indirizare nelle tabelle di partizione appropriate    
+            i dati inseriti con <literal>INSERT INTO measurement ...</literal>.
+            Per realizzare ciò, creare una funzione di trigger adatta e collegarla 
+            alla tabella master.
+            Se i dati saranno aggiunti solo all'ultima partizione, usare
+            una funzione trigger molto semplice:
 
 <programlisting>
 CREATE OR REPLACE FUNCTION measurement_insert_trigger()
@@ -2598,8 +2592,8 @@ $$
 LANGUAGE plpgsql;
 </programlisting>
 
-        After creating the function, we create a trigger which
-        calls the trigger function:
+            Dopo aver creato la funzione, creare un trigger che
+            la chiama:
 
 <programlisting>
 CREATE TRIGGER insert_measurement_trigger
@@ -2607,15 +2601,15 @@ CREATE TRIGGER insert_measurement_trigger
     FOR EACH ROW EXECUTE PROCEDURE measurement_insert_trigger();
 </programlisting>
 
-        We must redefine the trigger function each month so that it always
-        points to the current partition.  The trigger definition does
-        not need to be updated, however.
+            È necessario ridefinire la funzione trigger ogni mese così che punti
+            sempre alla partizione corrente. La definizione del trigger, comunque,
+            non deve essere aggiornata.
        </para>
 
        <para>
-        We might want to insert data and have the server automatically
-        locate the partition into which the row should be added. We
-        could do this with a more complex trigger function, for example:
+            Si potrebbe voler inserire i dati e far sì che il server automaticamente 
+            localizzi la partizione in cui la riga dovrebbe essere aggiunta. 
+            E' possibile farlo con una funzione di trigger più complessa, per esempio:
 
 <programlisting>
 CREATE OR REPLACE FUNCTION measurement_insert_trigger()
@@ -2640,23 +2634,24 @@ $$
 LANGUAGE plpgsql;
 </programlisting>
 
-        The trigger definition is the same as before.
-        Note that each <literal>IF</literal> test must exactly match the
-        <literal>CHECK</literal> constraint for its partition.
+            La definizione del trigger sarà la stessa di prima.
+            Notare che ogni test <literal>IF</literal> deve esattamente corrispondere
+            al vincolo <literal>CHECK</literal> per la sua partizione.
        </para>
 
        <para>
-        While this function is more complex than the single-month case,
-        it doesn't need to be updated as often, since branches can be
-        added in advance of being needed.
+<!-- /TODO da rivedere -->
+            Mentre questa funzione è più complessa che quella riguardante il songolo mese,
+            non ha bisogno di essere aggiornata così spesso, dato che possono essere aggiunti
+            rami in anticipo rispetto ai bisogni.
        </para>
 
        <note>
         <para>
-         In practice it might be best to check the newest partition first,
-         if most inserts go into that partition.  For simplicity we have
-         shown the trigger's tests in the same order as in other parts
-         of this example.
+            In pratica potrebbe essere meglio controllare la partizione più nuova prima,
+            se la maggior parte degli inserimenti vanno in quella partizione. Per simplicità
+            si sono mostrati i test del trigger nello stasso ordine che in altre parti
+            dell'esempio.
         </para>
        </note>
       </listitem>
@@ -2664,57 +2659,59 @@ LANGUAGE plpgsql;
     </para>
 
     <para>
-     As we can see, a complex partitioning scheme could require a
-     substantial amount of DDL. In the above example we would be
-     creating a new partition each month, so it might be wise to write a
-     script that generates the required DDL automatically.
+        Come si può notare, uno schema di partizionamento complesso potrebbe richiedere
+        una grande quantità di DDL. Nell'esempio sopra di dovrebbe creare
+        una nuova partizione ogni mese, così potrebbe esser saggio scrivere uno
+        script che generasse il DDL richiesto automaticamente.
     </para>
 
    </sect2>
 
    <sect2 id="ddl-partitioning-managing-partitions">
-   <title>Managing Partitions</title>
+   <title>Gestire le Partizioni</title>
 
    <para>
-     Normally the set of partitions established when initially
-     defining the table are not intended to remain static. It is
-     common to want to remove old partitions of data and periodically
-     add new partitions for new data. One of the most important
-     advantages of partitioning is precisely that it allows this
-     otherwise painful task to be executed nearly instantaneously by
-     manipulating the partition structure, rather than physically moving large
-     amounts of data around.
+        Normalmente l'insieme delle partizioni stabilite quando inizialmente
+        si definisce la tabella non rimarrà statico. È comune 
+        voler rimuovere vecchie partizioni di dati e periodicamente
+        aggiungere nuove partizioni per nuovi dati. Uno dei più importanti
+        vantaggi del partizionamento è precisamente che permette che questo
+        compito che altrimenti sarebbe penoso, sia eseguito quasi istantaneamente 
+        manipolando la struttura della partizione, invece che spostare fisicamente 
+        grandi quantità di dati.
    </para>
 
    <para>
-     The simplest option for removing old data is simply to drop the partition
-     that is no longer necessary:
+        L'opzione più semplice per rimuovere vecchi dati è semplicemente di eliminare la partizione
+        che non è più necessaria:
 <programlisting>
 DROP TABLE measurement_y2006m02;
 </programlisting>
-     This can very quickly delete millions of records because it doesn't have
-     to individually delete every record.
+        Questo può cancellare milioni di record velocemente dato che non deve
+        cancellare individualmente ogni record.
    </para>
 
    <para>
-     Another option that is often preferable is to remove the partition from
-     the partitioned table but retain access to it as a table in its own
-     right:
+        Un'altra opzione che spesso è preferibile è quella di rimuovere la partizione dalla
+        tabella partizionata ma conservare l'accesso ad essa come tabella a sè stante:
 <programlisting>
 ALTER TABLE measurement_y2006m02 NO INHERIT measurement;
 </programlisting>
-     This allows further operations to be performed on the data before
-     it is dropped. For example, this is often a useful time to back up
+        Questo permette di svolgere ulteriori operazioni sui dati prima
+        di essere eliminati.
+<!-- /TODO time? -->
+     For example, this is often a useful time to back up
      the data using <command>COPY</command>, <application>pg_dump</application>, or
-     similar tools. It might also be a useful time to aggregate data
+     similar tools. 
+     It might also be a useful time to aggregate data
      into smaller formats, perform other data manipulations, or run
      reports.
    </para>
 
    <para>
-     Similarly we can add a new partition to handle new data. We can create an
-     empty partition in the partitioned table just as the original partitions
-     were created above:
+        Similarmente, è possibile aggiungere una nuova partizione per trattare nuovi dati. E' possibile creare
+        una partizione vuota nella tabella partizionata semplicemente come le partizioni originali
+        create sopra:
 
 <programlisting>
 CREATE TABLE measurement_y2008m02 (
@@ -2722,10 +2719,10 @@ CREATE TABLE measurement_y2008m02 (
 ) INHERITS (measurement);
 </programlisting>
 
-     As an alternative, it is sometimes more convenient to create the
-     new table outside the partition structure, and make it a proper
-     partition later. This allows the data to be loaded, checked, and
-     transformed prior to it appearing in the partitioned table:
+        Come alternativa, a volte è più comodo creare la nuova tabella
+        fuori la struttura delle partizioni, e renderla una una partizione vera e propria 
+        più tardi. Questo permette ai dati di essere caricati, controllati e 
+        trasformari prima di apparire nella tabella partizionata:
 
 <programlisting>
 CREATE TABLE measurement_y2008m02
@@ -2733,42 +2730,41 @@ CREATE TABLE measurement_y2008m02
 ALTER TABLE measurement_y2008m02 ADD CONSTRAINT y2008m02
    CHECK ( logdate &gt;= DATE '2008-02-01' AND logdate &lt; DATE '2008-03-01' );
 \copy measurement_y2008m02 from 'measurement_y2008m02'
--- possibly some other data preparation work
+-- possibilmente qualche altro lavoro sulla preparazione dei dati
 ALTER TABLE measurement_y2008m02 INHERIT measurement;
 </programlisting>
     </para>
    </sect2>
 
    <sect2 id="ddl-partitioning-constraint-exclusion">
-   <title>Partitioning and Constraint Exclusion</title>
+   <title>Partizionamento e Vincolo Exclusion</title>
 
    <indexterm>
-    <primary>constraint exclusion</primary>
+    <primary>vincolo exclusion</primary>
    </indexterm>
 
    <para>
-    <firstterm>Constraint exclusion</firstterm> is a query optimization technique
-    that improves performance for partitioned tables defined in the
-    fashion described above.  As an example:
+        Il <firstterm>vincolo exclusion</firstterm> è una tecnica per ottimizzare una query
+        che aumenta le prestazioni per le tabelle partizionate definite nel 
+        modo descritto sopra. Come esempio:
 
 <programlisting>
 SET constraint_exclusion = on;
 SELECT count(*) FROM measurement WHERE logdate &gt;= DATE '2008-01-01';
 </programlisting>
 
-    Without constraint exclusion, the above query would scan each of
-    the partitions of the <structname>measurement</structname> table. With constraint
-    exclusion enabled, the planner will examine the constraints of each
-    partition and try to prove that the partition need not
-    be scanned because it could not contain any rows meeting the query's
-    <literal>WHERE</literal> clause.  When the planner can prove this, it
-    excludes the partition from the query plan.
+        Senza il vincolo exclusion, la query sopra avrebbe controllato ogni 
+        partizione della tabella <structname>measurement</structname>. Con il vincolo
+        exclude abilitato, verranno esaminati i vincoli di ogni partizione
+        e si tenterà di provare che la partizione non necessita di essere controllata
+        perchè non potrebbe contenere alcuna riga che rispetta la clausola <literal>WHERE</literal>.
+        Quando si può provare questo, la partizione verrà esclusa dalla query.
    </para>
 
    <para>
-    You can use the <command>EXPLAIN</command> command to show the difference
-    between a plan with <varname>constraint_exclusion</varname> on and a plan
-    with it off.  A typical unoptimized plan for this type of table setup is:
+        È possibile usare il comando <command>EXPLAIN</command> per mostrare le differenze
+        tra avere  <varname>constraint_exclusion</varname> attiva e disattiva.
+        Un esempio di query plan per questo tipo di tabella è:
 
 <programlisting>
 SET constraint_exclusion = off;
@@ -2791,11 +2787,11 @@ EXPLAIN SELECT count(*) FROM measurement WHERE logdate &gt;= DATE '2008-01-01';
                Filter: (logdate &gt;= '2008-01-01'::date)
 </programlisting>
 
-    Some or all of the partitions might use index scans instead of
-    full-table sequential scans, but the point here is that there
-    is no need to scan the older partitions at all to answer this query.
-    When we enable constraint exclusion, we get a significantly
-    cheaper plan that will deliver the same answer:
+        Alcune o tutte le partizioni potrebbero usare la scansione degli indici invece
+        di una scansione sequenziale di tutta la tabella, ma il punto qui è che non c'è 
+        bisogno di scansionare le vecchie partizioni per niente per rispondere a quella query.
+        Con il vincolo exclusion abilitato, si ha un query plan significativamente 
+        più economico che porterà alla stessa risposta:
 
 <programlisting>
 SET constraint_exclusion = on;
@@ -2812,35 +2808,35 @@ EXPLAIN SELECT count(*) FROM measurement WHERE logdate &gt;= DATE '2008-01-01';
    </para>
 
    <para>
-    Note that constraint exclusion is driven only by <literal>CHECK</literal>
-    constraints, not by the presence of indexes.  Therefore it isn't
-    necessary to define indexes on the key columns.  Whether an index
-    needs to be created for a given partition depends on whether you
-    expect that queries that scan the partition will generally scan
-    a large part of the partition or just a small part.  An index will
-    be helpful in the latter case but not the former.
+        Notare che il vincolo exclusion è guidato solo dal vincolo <literal>CHECK</literal>,
+        non dalla presenza degli indici. Perciò non è necessario 
+        definire indici sulle colonne chiave. Se un indice 
+        deve essere creato per una data partizione dipende dal fatto che 
+        ci si aspetti che le query che scansionano la partizione generalmente scansionino
+        una grande parte della partizione o solo una piccola parte. Un indice sarà
+        utile nell'ultimo caso ma non nel primo.
    </para>
 
    <para>
-    The default (and recommended) setting of
-    <xref linkend="guc-constraint-exclusion"/> is actually neither
-    <literal>on</literal> nor <literal>off</literal>, but an intermediate setting
-    called <literal>partition</literal>, which causes the technique to be
-    applied only to queries that are likely to be working on partitioned
-    tables.  The <literal>on</literal> setting causes the planner to examine
-    <literal>CHECK</literal> constraints in all queries, even simple ones that
-    are unlikely to benefit.
+        L'impostazione di default (e raccomandata) di 
+        <xref linkend="guc-constraint-exclusion"/> attualmente non è nè
+        <literal>on</literal> nè <literal>off</literal>, ma un valore intermedio
+        chiamato <literal>partition</literal>, che fa sì che la tecnica sia applicata 
+        solo su query che probabilmente lavorano su tabelle partizionate.
+        L'impostazione  <literal>on</literal> fa sì che i vincoli <literal>CHECK</literal>
+        siano esaminati in tutte le query, anche quelle semplici che
+        poco probabilmente ne trarranno beneficio.
    </para>
 
    </sect2>
 
    <sect2 id="ddl-partitioning-alternatives">
-   <title>Alternative Partitioning Methods</title>
+   <title>Metodi di Partizionamento Alternativi</title>
 
     <para>
-     A different approach to redirecting inserts into the appropriate
-     partition table is to set up rules, instead of a trigger, on the
-     master table.  For example:
+        Un approccio differente per indirizzare gli inserimenti nell'appropriata
+        tabella partizione è di impostare regole, invece di trigger, sulla
+        tabella master. Per esempio:
 
 <programlisting>
 CREATE RULE measurement_insert_y2006m02 AS
@@ -2856,28 +2852,28 @@ DO INSTEAD
     INSERT INTO measurement_y2008m01 VALUES (NEW.*);
 </programlisting>
 
-     A rule has significantly more overhead than a trigger, but the overhead
-     is paid once per query rather than once per row, so this method might be
-     advantageous for bulk-insert situations.  In most cases, however, the
-     trigger method will offer better performance.
+        Una regola ha un costo significativamente maggiore rispetto a un trigger, ma il costo
+        è pagato una volta per query invece di una volta per riga, così questo metodo potrebbe essere
+        vantaggioso per inserimenti massivi. In molti casi, comunque,  
+        il metodo basato sui trigger offre migliori prestazioni.
     </para>
 
     <para>
-     Be aware that <command>COPY</command> ignores rules.  If you want to
-     use <command>COPY</command> to insert data, you'll need to copy into the correct
-     partition table rather than into the master.  <command>COPY</command> does fire
-     triggers, so you can use it normally if you use the trigger approach.
+        Tenere presente che <command>COPY</command> ignora le regole. Se si vuole
+        usare <command>COPY</command> per inserire dati, si dovranno copiare nella corretta 
+        tabella partizione piuttosto che nel master. <command>COPY</command> attiva i 
+        trigger, così puoi usarlo normalmente se usi l'approccio con i trigger.
     </para>
 
     <para>
-     Another disadvantage of the rule approach is that there is no simple
-     way to force an error if the set of rules doesn't cover the insertion
-     date; the data will silently go into the master table instead.
+        Un altro svantaggio  dell'approccio con le regole è che non c'è un modo semplice 
+        di forzare un errore se l'insieme di regole non soddisfa i dati da inserire;
+        I dati verranno invece inseriti silenziosamente nella tabella master.
     </para>
 
     <para>
-     Partitioning can also be arranged using a <literal>UNION ALL</literal>
-     view, instead of table inheritance.  For example,
+        Il partizionamento può anche essere programmato usando una view  <literal>UNION ALL</literal>,
+        invece dell'ereditarietà. Per esempio:
 
 <programlisting>
 CREATE VIEW measurement AS
@@ -2889,33 +2885,34 @@ UNION ALL SELECT * FROM measurement_y2007m12
 UNION ALL SELECT * FROM measurement_y2008m01;
 </programlisting>
 
-     However, the need to recreate the view adds an extra step to adding and
-     dropping individual partitions of the data set.  In practice this
-     method has little to recommend it compared to using inheritance.
+        Comunque, la necessità di ricreare la view aggiunge un ulteriore passo all'aggiunta ed
+        eliminazione di partizioni singole dell'insieme di dati. In pratica questo metodo
+        è poco raccomandabile rispetto all'uso dell'ereditarietà.
     </para>
 
    </sect2>
 
    <sect2 id="ddl-partitioning-caveats">
-   <title>Caveats</title>
+   <title>Avvertimenti</title>
 
    <para>
-    The following caveats apply to partitioned tables:
+        I seguenti avvertimenti si applicano alle tabelle partizionate:
    <itemizedlist>
     <listitem>
      <para>
-      There is no automatic way to verify that all of the
-      <literal>CHECK</literal> constraints are mutually
-      exclusive.  It is safer to create code that generates
-      partitions and creates and/or modifies associated objects than
-      to write each by hand.
+        Non c'è un modo automatico per verificare che tutti i 
+        vincoli <literal>CHECK</literal> sono mutualmente
+        esclusivi. È più sicuro creare codice che genera le partizioni
+        e creare e/o modificare gli oggetti associati che scriverle
+        a mano.
      </para>
     </listitem>
 
     <listitem>
      <para>
+<!-- /TODO -->
       The schemes shown here assume that the partition key column(s)
-      of a row never change, or at least do not change enough to require
+      of a row never change, or at least do not change enough to require        
       it to move to another partition.  An <command>UPDATE</command> that attempts
       to do that will fail because of the <literal>CHECK</literal> constraints.
       If you need to handle such cases, you can put suitable update triggers
@@ -2926,13 +2923,13 @@ UNION ALL SELECT * FROM measurement_y2008m01;
 
     <listitem>
      <para>
-      If you are using manual <command>VACUUM</command> or
-      <command>ANALYZE</command> commands, don't forget that
-      you need to run them on each partition individually. A command like:
+        Quando si usano comandi come il <command>VACUUM</command> manuale o 
+        <command>ANALYZE</command>, non dimenticarsi che 
+        è necessario eseguirli individualmente sulle partizioni. Un comando tipo:
 <programlisting>
 ANALYZE measurement;
 </programlisting>
-      will only process the master table.
+        Processerà solo la tabella master.
      </para>
     </listitem>
 
@@ -2940,39 +2937,39 @@ ANALYZE measurement;
    </para>
 
    <para>
-    The following caveats apply to constraint exclusion:
+        I seguenti avvertimenti sono validi per il vincolo exclusion:
 
    <itemizedlist>
     <listitem>
      <para>
-      Constraint exclusion only works when the query's <literal>WHERE</literal>
-      clause contains constants.  A parameterized query will not be
-      optimized, since the planner cannot know which partitions the
-      parameter value might select at run time.  For the same reason,
-      <quote>stable</quote> functions such as <function>CURRENT_DATE</function>
-      must be avoided.
+        Il vincolo exclusion funziona solo quando la lausola <literal>WHERE</literal>
+        della query contiene costanti. Una query parametrizzata non sarà
+        ottimizzata, fino a che non sia possibile stabilire il valore 
+        che quel parametro potrebbe avere. Per la stessa ragione,
+        funzioni <quote>stabili</quote> tipo <function>CURRENT_DATE</function>
+        dovrebbero essere evitate.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Keep the partitioning constraints simple, else the planner may not be
-      able to prove that partitions don't need to be visited.  Use simple
-      equality conditions for list partitioning, or simple
-      range tests for range partitioning, as illustrated in the preceding
-      examples.  A good rule of thumb is that partitioning constraints should
-      contain only comparisons of the partitioning column(s) to constants
-      using B-tree-indexable operators.
+        È consigliabile mantenere i vincoli di partizionamento semplici, altrimenti il planner potrebbe non
+        essere capace di provare che le partizioni non hanno bisogno di essere visitate. Usare condizioni di uguaglianza
+        semplici per partizionamenti a elenco, o semplici
+        test di intervallo per partizionamenti di intervallo, come illustrato nei precedenti 
+        esempi. Una buona regola generale è che i vincoli di partizionamento dovrebbero
+        contenere solo comparazioni tra colonna/e di partizionamento e costanti
+        usando operatori indicizzabili B-tree.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      All constraints on all partitions of the master table are examined
-      during constraint exclusion, so large numbers of partitions are likely
-      to increase query planning time considerably.  Partitioning using
-      these techniques will work well with up to perhaps a hundred partitions;
-      don't try to use many thousands of partitions.
+        Tutti i vincoli su tutte le partizioni della tabella master sono esaminati
+        durante il vincolo exclusion, così grandi quantità di partizioni probabilmente
+        aumenteranno considerevolmente il tempo di query planning. Pertizionare usando
+        queste tecniche funzionerà bene con circa cento partizioni;
+        Non tentare di usare molte migliaia di partizioni.
      </para>
     </listitem>
 
@@ -2982,77 +2979,77 @@ ANALYZE measurement;
  </sect1>
 
  <sect1 id="ddl-others">
-  <title>Other Database Objects</title>
+  <title>Altri Oggetti di Database</title>
 
   <para>
-   Tables are the central objects in a relational database structure,
-   because they hold your data.  But they are not the only objects
-   that exist in a database.  Many other kinds of objects can be
-   created to make the use and management of the data more efficient
-   or convenient.  They are not discussed in this chapter, but we give
-   you a list here so that you are aware of what is possible:
+        Le tabelle sono gli oggetti centrali in una struttura di database relazionali,
+        perchè conservano i dati. Ma non sono gli unici oggetti
+        che esistono in un database. Molti altri tipi di oggetti possono
+        essere creati per rendere l'uso e la gestione dei dati più efficiente
+        o comodo. Non sono discussi in questo capitolo, ma ecco un elenco
+        così per conoscere cosa sia possibile avere:
   </para>
 
   <itemizedlist>
    <listitem>
     <para>
-     Views
+     Viste
     </para>
    </listitem>
 
    <listitem>
     <para>
-     Functions and operators
+     Funzioni e operatori
     </para>
    </listitem>
 
    <listitem>
     <para>
-     Data types and domains
+     Tipi di dato e domini
     </para>
    </listitem>
 
    <listitem>
     <para>
-     Triggers and rewrite rules
+     Trigger e regole rewrite
     </para>
    </listitem>
   </itemizedlist>
 
   <para>
-   Detailed information on
-   these topics appears in <xref linkend="server-programming"/>.
+   Informazioni dettagliate su 
+    questi argomenti appaiono in <xref linkend="server-programming"/>.
   </para>
  </sect1>
 
  <sect1 id="ddl-depend">
-  <title>Dependency Tracking</title>
+  <title>Dipendenze</title>
 
   <indexterm zone="ddl-depend">
    <primary>CASCADE</primary>
-   <secondary sortas="DROP">with DROP</secondary>
+   <secondary sortas="DROP">con DROP</secondary>
   </indexterm>
 
   <indexterm zone="ddl-depend">
    <primary>RESTRICT</primary>
-   <secondary sortas="DROP">with DROP</secondary>
+   <secondary sortas="DROP">con DROP</secondary>
   </indexterm>
 
   <para>
-   When you create complex database structures involving many tables
-   with foreign key constraints, views, triggers, functions, etc. you
-   implicitly create a net of dependencies between the objects.
-   For instance, a table with a foreign key constraint depends on the
-   table it references.
+    Quando si crea una struttura di database complessa che contiene molte tabelle
+    con vincoli hiave esterna, viste, trigger, funzioni, ecc. si        
+    crea implicitamente una rete di dipendenze tra gli oggetti.
+    Per esempio, una tabella con un vincolo chiave esterna dipende dalla
+    tabella che referenzia.
   </para>
 
   <para>
-   To ensure the integrity of the entire database structure,
-   <productname>PostgreSQL</productname> makes sure that you cannot
-   drop objects that other objects still depend on.  For example,
-   attempting to drop the products table we had considered in <xref
-   linkend="ddl-constraints-fk"/>, with the orders table depending on
-   it, would result in an error message such as this:
+    Per assicurare l'integrità dell'intera struttura del database,
+    <productname>PostgreSQL</productname> fa sì che non sia possibile
+    eliminare oggetti dai quali ne dipendono altri. Per esempio,
+    tentare di rimuovere la tabella dei prodotti considerata in <xref
+    linkend="ddl-constraints-fk"/>, con la tabella ordini che dipende da essa,
+    restituirà un messaggio di errore simile a questo:
 <screen>
 DROP TABLE products;
 
@@ -3060,43 +3057,43 @@ NOTICE:  constraint orders_product_no_fkey on table orders depends on table prod
 ERROR:  cannot drop table products because other objects depend on it
 HINT:  Use DROP ... CASCADE to drop the dependent objects too.
 </screen>
-   The error message contains a useful hint: if you do not want to
-   bother deleting all the dependent objects individually, you can run:
+    Il messaggio di errore contiene un suggerimento utile: se non ci si vuole 
+    preoccupare di cancellare tutti gli oggetti dipendenti individualmente, si può eseguire:
 <screen>
 DROP TABLE products CASCADE;
 </screen>
-   and all the dependent objects will be removed.  In this case, it
-   doesn't remove the orders table, it only removes the foreign key
-   constraint.  (If you want to check what <command>DROP ... CASCADE</command> will do,
-   run <command>DROP</command> without <literal>CASCADE</literal> and read the <literal>NOTICE</literal> messages.)
+    e tutti gli oggetti dipendenti saranno rimossi. In questo caso, 
+    non viene rimossa la tabella ordini, viene rimosso solo il vincolo 
+    chiave esterna. (Se si vuole controllare cosa farà  <command>DROP ... CASCADE</command>, 
+    eseguire <command>DROP</command> senza <literal>CASCADE</literal> e leggere i messaggi <literal>NOTICE</literal>.)
   </para>
 
   <para>
-   All drop commands in <productname>PostgreSQL</productname> support
-   specifying <literal>CASCADE</literal>.  Of course, the nature of
-   the possible dependencies varies with the type of the object.  You
-   can also write <literal>RESTRICT</literal> instead of
-   <literal>CASCADE</literal> to get the default behavior, which is to
-   prevent the dropping of objects that other objects depend on.
+    Tutti i comandi drop in <productname>PostgreSQL</productname> supportano
+    la possibilità di specificare <literal>CASCADE</literal>. Certamente, la natura 
+    delle possibile dipendenze varia con il tipo di oggetto. È possibile anche 
+    scrivere <literal>RESTRICT</literal> invece di 
+    <literal>CASCADE</literal> per avere il comportamento di default, che serve
+    a prevenire l'eliminazione degli oggetti che dipendono da altri.
   </para>
 
   <note>
    <para>
-    According to the SQL standard, specifying either
-    <literal>RESTRICT</literal> or <literal>CASCADE</literal> is
-    required.  No database system actually enforces that rule, but
-    whether the default behavior is <literal>RESTRICT</literal> or
-    <literal>CASCADE</literal> varies across systems.
+        Secondo lo standard SQL, specificare 
+        <literal>RESTRICT</literal> o <literal>CASCADE</literal> è
+        necessario. Nessun sistema di database attualmente forza questa regola, ma
+        che il comportamento di default sia <literal>RESTRICT</literal> o 
+        <literal>CASCADE</literal> varia a seconda del sistema.
    </para>
   </note>
 
   <note>
    <para>
-    Foreign key constraint dependencies and serial column dependencies
-    from <productname>PostgreSQL</productname> versions prior to 7.3
-    are <emphasis>not</emphasis> maintained or created during the
-    upgrade process.  All other dependency types will be properly
-    created during an upgrade from a pre-7.3 database.
+        Le dipendenze dei vincoli chiave esterna e delle colonne serial 
+        da versioni di <productname>PostgreSQL</productname> prima della 7.3
+        <emphasis>not</emphasis> sono mantenute o create durante 
+        un processo di aggiornamento. Tutti gli altri tipi di dipendenza saranno correttamente 
+        creati durante un aggiornamento da un database di versione precedente alla 7.3.
    </para>
   </note>
  </sect1>

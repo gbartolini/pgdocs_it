@@ -49,7 +49,8 @@
   <para>
     Ogni colonna ha un tipo di dato. Il tipo di dato regola l'insieme di
     possibili valori che può essere assegnato a una colonna ed fornisce
-    semantica ai dati immagazzinati nella colonna (in modo da poter essere utilizzati per calcoli computazionali). Per esempio, una colonna dichiarata come tipo
+    semantica ai dati immagazzinati nella colonna (in modo da poter essere utilizzati per calcoli computazionali). 
+    Per esempio, una colonna dichiarata come tipo
     numerico non accetterà stringhe di testo arbitrarie, e i dati
     contenuti in quella colonna potranno essere usati per calcoli matematici.
     Al contrario, una colonna dichiarata per contenere stringhe di caratteri,
@@ -62,7 +63,7 @@
     <productname>PostgreSQL</productname> include un insieme rilevante di tipi di dato
     che risultano adatti a molte applicazioni. Gli utenti possono inoltre
     definire i loro propri tipi di dato. Molti dei tipi di dato nativi hanno
-    nomi e semantica ovvia, perciò si rimanda a
+    nomi e semantica ovvia, perciò si rimanda a <xref 
     linkend="datatype"/> per una spiegazione dettagliata. Alcuni dei tipi di dato usati frequentemente sono
     <type>integer</type> per i numeri interi, <type>numeric</type> per
     i numeri a virgola mobile, <type>text</type> per stringhe
@@ -77,8 +78,8 @@
   </indexterm>
 
   <para>
-    Per creare una tabella, è possibile utilizzare il comando opportunamente chiamato
-    linkend="sql-createtable"/>.
+    Per creare una tabella, è possibile utilizzare il comando opportunamente chiamato 
+    <xref linkend="sql-createtable"/>.
     All'interno di questo comando l'utente ha la possibilità di specificare, nella forma minima, un nome per la nuova tabella, i
     nomi delle colonne e il tipo di dato per ogni colonna. Per
     esempio:
@@ -170,7 +171,7 @@ DROP TABLE products;
   <title>Valori di Default</title>
 
   <indexterm zone="ddl-default">
-   <primary>default value</primary>
+   <primary>valore di default</primary>
   </indexterm>
 
   <para>
@@ -183,7 +184,7 @@ DROP TABLE products;
   </para>
 
   <para>
-   <indexterm><primary>null value</primary><secondary>default value</secondary></indexterm>
+   <indexterm><primary>valore null</primary><secondary>valore di default</secondary></indexterm>
     Se un valore di default non è dichiarato esplicitamente, il valore di default è il
     valore null. Questo di solito ha senso perchè un valore null può
     essere considerato rappresentativo di un dato sconosciuto.
@@ -207,8 +208,7 @@ CREATE TABLE products (
     (<emphasis>non</emphasis> quando la tabella viene creata).  Un esempio comune
     è per una colonna <type>timestamp</type> avere un valore di default <literal>CURRENT_TIMESTAMP</literal>,
     così che verrà settato al momento dell'inserimento della riga. Un altro esempio comune
-<!-- /TODO serial number = numero di serie ???  -->
-    è quando si genera un <quote>numero si serie</quote> per ogni riga.
+    è quando si genera un <quote>numero di serie</quote> per ogni riga.
     In <productname>PostgreSQL</productname> questo viene tipicamente fatto con 
     qualcosa di simile a:
 <programlisting>
@@ -236,7 +236,7 @@ CREATE TABLE products (
   <title>Vincoli</title>
 
   <indexterm zone="ddl-constraints">
-   <primary>constraint</primary>
+   <primary>vincolo</primary>
   </indexterm>
 
   <para>
@@ -245,8 +245,7 @@ CREATE TABLE products (
     è troppo grossolano. Per esempio, una colonna contenente il prezzo di un prodotto
     dovrebbe, probabilmente, accettare solo valori positivi. Ma non c'è nessun
     tipo di dato standard che accetta solo numeri positivi. Un altro problema è
-<!-- /TODO orribile in italiano -->
-    che si potrebbe voler vincolare il dato di una colonna per quanto riguarda 
+    che si potrebbe voler vincolare il dato di una colonna rispetto ai dati delle
     altre colonne o righe. Per esempio, in una tabella contenente informazioni
     su un prodotto, ci dovrebbe essere solo una riga per ogni numero di prodotto.
   </para>
@@ -263,11 +262,11 @@ CREATE TABLE products (
    <title>Vincolo Check</title>
 
    <indexterm>
-    <primary>check constraint</primary>
+    <primary>vincolo check</primary>
    </indexterm>
 
    <indexterm>
-    <primary>constraint</primary>
+    <primary>vincolo</primary>
     <secondary>check</secondary>
    </indexterm>
 
@@ -296,8 +295,8 @@ CREATE TABLE products (
    </para>
 
    <indexterm>
-    <primary>constraint</primary>
-    <secondary>name</secondary>
+    <primary>vincolo</primary>
+    <secondary>nome</secondary>
    </indexterm>
 
    <para>
@@ -390,8 +389,8 @@ CREATE TABLE products (
    </para>
 
    <indexterm>
-    <primary>null value</primary>
-    <secondary sortas="check constraints">with check constraints</secondary>
+    <primary>valore null</primary>
+    <secondary sortas="check constraints">con vincoli check</secondary>
    </indexterm>
 
    <para>
@@ -408,11 +407,11 @@ CREATE TABLE products (
    <title>Vincolo Not-Null</title>
 
    <indexterm>
-    <primary>not-null constraint</primary>
+    <primary>vincolo not-null</primary>
    </indexterm>
 
    <indexterm>
-    <primary>constraint</primary>
+    <primary>vincolo</primary>
     <secondary>NOT NULL</secondary>
    </indexterm>
 
@@ -485,11 +484,11 @@ CREATE TABLE products (
    <title>Vincolo Unique</title>
 
    <indexterm>
-    <primary>unique constraint</primary>
+    <primary>vincolo unique</primary>
    </indexterm>
 
    <indexterm>
-    <primary>constraint</primary>
+    <primary>vincolo</primary>
     <secondary>unique</secondary>
    </indexterm>
 
@@ -549,8 +548,8 @@ CREATE TABLE products (
    </para>
 
    <indexterm>
-    <primary>null value</primary>
-    <secondary sortas="unique constraints">with unique constraints</secondary>
+    <primary>valore null</primary>
+    <secondary sortas="unique constraints">con vincolo unique</secondary>
    </indexterm>
 
    <para>
@@ -571,12 +570,12 @@ CREATE TABLE products (
    <title>Chiavi Primarie</title>
 
    <indexterm>
-    <primary>primary key</primary>
+    <primary>chiave primaria</primary>
    </indexterm>
 
    <indexterm>
-    <primary>constraint</primary>
-    <secondary>primary key</secondary>
+    <primary>vincolo</primary>
+    <secondary>chiave primaria</secondary>
    </indexterm>
 
    <para>
@@ -645,16 +644,16 @@ CREATE TABLE example (
    <title>Chiavi Esterne</title>
 
    <indexterm>
-    <primary>foreign key</primary>
+    <primary>chiave esterna</primary>
    </indexterm>
 
    <indexterm>
-    <primary>constraint</primary>
-    <secondary>foreign key</secondary>
+    <primary>vincolo</primary>
+    <secondary>chiave esterna</secondary>
    </indexterm>
 
    <indexterm>
-    <primary>referential integrity</primary>
+    <primary>integrità referenziale</primary>
    </indexterm>
 
    <para>
@@ -761,12 +760,12 @@ CREATE TABLE order_items (
 
    <indexterm>
     <primary>CASCADE</primary>
-    <secondary>foreign key action</secondary>
+    <secondary>azione chiave esterna</secondary>
    </indexterm>
 
    <indexterm>
     <primary>RESTRICT</primary>
-    <secondary>foreign key action</secondary>
+    <secondary>azione chiave esterna</secondary>
    </indexterm>
 
    <para>
@@ -866,18 +865,17 @@ CREATE TABLE order_items (
    <title>Vincoli Exclusion</title>
 
    <indexterm>
-    <primary>exclusion constraint</primary>
+    <primary>vincolo exclusion</primary>
    </indexterm>
 
    <indexterm>
-    <primary>constraint</primary>
+    <primary>vincolo</primary>
     <secondary>exclusion</secondary>
    </indexterm>
 
    <para>
-<!-- /TODO da rivedere  -->
-        I vincoli Exclusion assicurano che se qualsiasi coppia di righe comparate sulle
-        colonne specificate o espressioni che usano gli operatori specificati, 
+        I vincoli Exclusion assicurano che se qualsiasi coppia di righe viane comparata sulle
+        colonne specificate o su espressioni che usano gli operatori specificati, 
         almeno una di queste comparazioni ritornerà false o null.
         
         La sintassi è:
@@ -914,8 +912,8 @@ CREATE TABLE circles (
   </para>
 
   <indexterm>
-   <primary>column</primary>
-   <secondary>system column</secondary>
+   <primary>colonna</primary>
+   <secondary>colonna di sistema</secondary>
   </indexterm>
 
   <variablelist>
@@ -925,7 +923,7 @@ CREATE TABLE circles (
      <para>
       <indexterm>
        <primary>OID</primary>
-       <secondary>column</secondary>
+       <secondary>colonna</secondary>
       </indexterm>
         L'identificatore oggetto (OID oggetto) di una riga. Questa colonna è presente
         solo se la tabella è stata creata usando <literal>WITH
@@ -964,10 +962,9 @@ CREATE TABLE circles (
      </indexterm>
 
      <para>
-<!-- /TODO da rivedere -->
         L'identificatore (ID transazione) della transazione di inserimento per l'attuale versione della riga.
-        (Una versione di riga è lo stato individuale di una riga;
-        ognu aggiornamento di una riga crea una nuova versione di riga per la stessa
+        (Una versione di riga è lo stato individuale di una riga);
+        Ogni aggiornamento di una riga crea una nuova versione di riga per la stessa
         riga logica.
      </para>
     </listitem>
@@ -1101,8 +1098,8 @@ CREATE TABLE circles (
   <title>Modifica di Tabelle</title>
 
   <indexterm zone="ddl-alter">
-   <primary>table</primary>
-   <secondary>modifying</secondary>
+   <primary>tabella</primary>
+   <secondary>modifica</secondary>
   </indexterm>
 
   <para>
@@ -1155,8 +1152,8 @@ CREATE TABLE circles (
    <title>Aggiungere una colonna</title>
 
    <indexterm>
-    <primary>column</primary>
-    <secondary>adding</secondary>
+    <primary>colonna</primary>
+    <secondary>aggiungere</secondary>
    </indexterm>
 
    <para>
@@ -1199,8 +1196,8 @@ ALTER TABLE products ADD COLUMN description text CHECK (description &lt;&gt; '')
    <title>Rimuovere una Colonna</title>
 
    <indexterm>
-    <primary>column</primary>
-    <secondary>removing</secondary>
+    <primary>colonna</primary>
+    <secondary>rimuovere</secondary>
    </indexterm>
 
    <para>
@@ -1225,8 +1222,8 @@ ALTER TABLE products DROP COLUMN description CASCADE;
    <title>Aggiungere un vincolo</title>
 
    <indexterm>
-    <primary>constraint</primary>
-    <secondary>adding</secondary>
+    <primary>vincolo</primary>
+    <secondary>aggiungere</secondary>
    </indexterm>
 
    <para>
@@ -1254,8 +1251,8 @@ ALTER TABLE products ALTER COLUMN product_no SET NOT NULL;
    <title>Rimuovere un Vincolo</title>
 
    <indexterm>
-    <primary>constraint</primary>
-    <secondary>removing</secondary>
+    <primary>vincolo</primary>
+    <secondary>rimuovere</secondary>
    </indexterm>
 
    <para>
@@ -1292,12 +1289,11 @@ ALTER TABLE products ALTER COLUMN product_no DROP NOT NULL;
   </sect2>
 
   <sect2>
-   <title>Changing a Column's Default Value</title>
    <title>Cambiare il Valore di Default di una Colonna</title>
 
    <indexterm>
-    <primary>default value</primary>
-    <secondary>changing</secondary>
+    <primary>calore di default</primary>
+    <secondary>cambiare</secondary>
    </indexterm>
 
    <para>
@@ -1325,8 +1321,8 @@ ALTER TABLE products ALTER COLUMN price DROP DEFAULT;
    <title>Cambiare il Tipo di Dato di una Colonna</title>
 
    <indexterm>
-    <primary>column data type</primary>
-    <secondary>changing</secondary>
+    <primary>tipo di dato della colonna</primary>
+    <secondary>cambiare</secondary>
    </indexterm>
 
    <para>
@@ -1353,8 +1349,8 @@ ALTER TABLE products ALTER COLUMN price TYPE numeric(10,2);
    <title>Rinominare una Colonna</title>
 
    <indexterm>
-    <primary>column</primary>
-    <secondary>renaming</secondary>
+    <primary>colonna</primary>
+    <secondary>rinominare</secondary>
    </indexterm>
 
    <para>
@@ -1369,8 +1365,8 @@ ALTER TABLE products RENAME COLUMN product_no TO product_number;
    <title>Rinominare una Tabella</title>
 
    <indexterm>
-    <primary>table</primary>
-    <secondary>renaming</secondary>
+    <primary>tabella</primary>
+    <secondary>rinominare</secondary>
    </indexterm>
 
    <para>
@@ -1386,12 +1382,12 @@ ALTER TABLE products RENAME TO items;
   <title>Privilegi</title>
 
   <indexterm zone="ddl-priv">
-   <primary>privilege</primary>
+   <primary>privilegio</primary>
   </indexterm>
 
   <indexterm>
-   <primary>permission</primary>
-   <see>privilege</see>
+   <primary>permesso</primary>
+   <see>privilegio</see>
   </indexterm>
 
   <para>
@@ -1547,7 +1543,7 @@ REVOKE ALL ON accounts FROM PUBLIC;
 
    <indexterm zone="ddl-schemas-create">
     <primary>schema</primary>
-    <secondary>creating</secondary>
+    <secondary>creazione</secondary>
    </indexterm>
 
    <para>
@@ -1560,12 +1556,12 @@ CREATE SCHEMA myschema;
    </para>
 
    <indexterm>
-    <primary>qualified name</primary>
+    <primary>nome qualificato</primary>
    </indexterm>
 
    <indexterm>
-    <primary>name</primary>
-    <secondary>qualified</secondary>
+    <primary>nome</primary>
+    <secondary>qualificato</secondary>
    </indexterm>
 
    <para>
@@ -1604,7 +1600,7 @@ CREATE TABLE myschema.mytable (
 
    <indexterm>
     <primary>schema</primary>
-    <secondary>removing</secondary>
+    <secondary>rimuovere</secondary>
    </indexterm>
 
    <para>
@@ -1665,25 +1661,24 @@ CREATE TABLE public.products ( ... );
    <title>Il Percorso di Ricerca dello Schema</title>
 
    <indexterm>
-    <primary>search path</primary>
+    <primary>percorso di ricerca</primary>
    </indexterm>
 
    <indexterm>
-    <primary>unqualified name</primary>
+    <primary>nome non qualificato</primary>
    </indexterm>
 
    <indexterm>
-    <primary>name</primary>
-    <secondary>unqualified</secondary>
+    <primary>nome</primary>
+    <secondary>non qualificato</secondary>
    </indexterm>
 
    <para>
-<!-- /TODO da rivedere -->
-        I nomi qualificati sono noiosi da scrivere, e spesso è meglio non
-        legare uno schema particolare nelle applicazioni. Perciò
+        I nomi qualificati sono noiosi da scrivere, e comunque spesso è meglio non
+        legare uno schema particolare all'applicazione. Perciò
         spesso ci si riferisce alle tabelle con <firstterm>nomi non qualificati</firstterm>, 
-        che consiste di solo il nome della tabella. Il sistema determina a quale tabella
-        intendiamo seguendo un <firstterm>percorso di ricerca</firstterm>, che è un elenco
+        che consistono solo del nome della tabella. Il sistema determina a quale tabella
+        ci stiamo riferendo seguendo un <firstterm>percorso di ricerca</firstterm>, che è un elenco
         di schemi in cui cercare. La prima tabella corrispondente trovata nel percorso di ricerca
         è considerata quella voluta. Se non ci sono risultati nel percorso di ricerca, 
         viene riportato un errore, anche se il nome di tabella cercato esiste 
@@ -1692,7 +1687,7 @@ CREATE TABLE public.products ( ... );
 
    <indexterm>
     <primary>schema</primary>
-    <secondary>current</secondary>
+    <secondary>corrente</secondary>
    </indexterm>
 
    <para>
@@ -1787,8 +1782,8 @@ SELECT 3 OPERATOR(pg_catalog.+) 4;
    <title>Schemi e Privilegi</title>
 
    <indexterm zone="ddl-schemas-priv">
-    <primary>privilege</primary>
-    <secondary sortas="schemas">for schemas</secondary>
+    <primary>privilegio</primary>
+    <secondary sortas="schemas">per schemai</secondary>
    </indexterm>
 
    <para>
@@ -1824,7 +1819,7 @@ REVOKE CREATE ON SCHEMA public FROM PUBLIC;
    <title>Lo Schema Catagolo di Sistema</title>
 
    <indexterm zone="ddl-schemas-catalog">
-    <primary>system catalog</primary>
+    <primary>catalogo di sistema</primary>
     <secondary>schema</secondary>
    </indexterm>
 
@@ -1941,12 +1936,12 @@ REVOKE CREATE ON SCHEMA public FROM PUBLIC;
   <title>Ereditarietà</title>
 
   <indexterm>
-   <primary>inheritance</primary>
+   <primary>ereditarietà</primary>
   </indexterm>
 
   <indexterm>
-   <primary>table</primary>
-   <secondary>inheritance</secondary>
+   <primary>tabella</primary>
+   <secondary>ereditarietà</secondary>
   </indexterm>
 
   <para>
@@ -2169,8 +2164,8 @@ VALUES ('New York', NULL, NULL, 'NY');
   <para>
     Notare come sono gestiti i permessi di accesso alla tabella. Eseguire una query su una
     tabella genitrice può automaticamente permettere l'accesso ai dati in tabelle figlie senza ulteriori
-<!-- /TODO This preserves the appearance that the data is (also) in the parent table. -->
     controlli sui privilegi di accesso. 
+    Questo comportamento mantiene l'apparenza che i dati siano (anche) nella tabella genitrice.
     Comunque, accedere alle tabelle figlie direttamente non è permesso   
     automaticamente e richiederebbe 
     la concessione di ulteriori privilegi .
@@ -2261,12 +2256,12 @@ VALUES ('New York', NULL, NULL, 'NY');
    <title>Partizionamento</title>
 
    <indexterm>
-    <primary>partitioning</primary>
+    <primary>partizionamento</primary>
    </indexterm>
 
    <indexterm>
-    <primary>table</primary>
-    <secondary>partitioning</secondary>
+    <primary>tabella</primary>
+    <secondary>partizionamento</secondary>
    </indexterm>
 
    <para>
@@ -2288,7 +2283,7 @@ VALUES ('New York', NULL, NULL, 'NY');
         Le prestazioni delle query possono essere drasticamente migliorate in certe situazioni,
         particolarmente quando la maggior parte delle righe della tabella accesse pesantemente sono 
         in una singola partizione od un piccolo numero di partizioni. 
-<!-- /TODO -->
+<!-- /TODO non ho capito -->
         The partitioning
         substitutes for leading columns of indexes, reducing index size and
         making it more likely that the heavily-used parts of the indexes
@@ -2309,10 +2304,9 @@ VALUES ('New York', NULL, NULL, 'NY');
      <para>
         Grossi caricamenti ed eliminazioni possono essere svolti aggiungendo o rimuovendo
         partizioni, se questo requisito è stato messo in conto nel progetto di partizionamento.
-<!-- /TODO Bulk come si traduce? -->
-        <command>ALTER TABLE</command> è molto più veloce di una oprazione "bulk".
+        <command>ALTER TABLE</command> è molto più veloce di una oprazione massiva.
         Inoltre viene interamente evitato l'overhead del  <command>VACUUM</command>  
-        causato da una <command>DELETE</command> "bulk".
+        causato da una <command>DELETE</command> massiva.
      </para>
     </listitem>
 
@@ -2640,10 +2634,9 @@ LANGUAGE plpgsql;
        </para>
 
        <para>
-<!-- /TODO da rivedere -->
-            Mentre questa funzione è più complessa che quella riguardante il songolo mese,
+            Mentre questa funzione è più complessa che quella riguardante il singolo mese,
             non ha bisogno di essere aggiornata così spesso, dato che possono essere aggiunti
-            rami in anticipo rispetto ai bisogni.
+            rami in anticipo per ogni bisogno.
        </para>
 
        <note>
@@ -2699,13 +2692,12 @@ ALTER TABLE measurement_y2006m02 NO INHERIT measurement;
 </programlisting>
         Questo permette di svolgere ulteriori operazioni sui dati prima
         di essere eliminati.
-<!-- /TODO time? -->
-     For example, this is often a useful time to back up
-     the data using <command>COPY</command>, <application>pg_dump</application>, or
-     similar tools. 
-     It might also be a useful time to aggregate data
-     into smaller formats, perform other data manipulations, or run
-     reports.
+        Per esempio, spesso questo è utile per eseguire un backup dei dati
+        usando <command>COPY</command>, <application>pg_dump</application>, o 
+        strumenti simili.
+        Potrebbe anche essere utile per aggregare dati in 
+        formati più piccoli, eseguire altre manipolazioni di dati, o fare
+        rapporti sui dati.
    </para>
 
    <para>
@@ -2910,14 +2902,14 @@ UNION ALL SELECT * FROM measurement_y2008m01;
 
     <listitem>
      <para>
-<!-- /TODO -->
-      The schemes shown here assume that the partition key column(s)
-      of a row never change, or at least do not change enough to require        
-      it to move to another partition.  An <command>UPDATE</command> that attempts
-      to do that will fail because of the <literal>CHECK</literal> constraints.
-      If you need to handle such cases, you can put suitable update triggers
-      on the partition tables, but it makes management of the structure
-      much more complicated.
+        Gli schemi mostrati qui assumono che la/e colonna/e chiave della partizione
+        do una riga non cambia mai, o almeno non cambia abbastanza da richiedere 
+        che venga mossa verso un'altra partizione.
+        Un  <command>UPDATE</command> che tenta 
+        di fare ciò fallirà causa il vincolo <literal>CHECK</literal>.
+        Se hai bisogno di far fronte a questi casi, puoi inserire trigger di aggiornamento 
+        sulle tabelle partizioni, ma questo renderà la gestione della struttura 
+        molto più complicata.
      </para>
     </listitem>
 

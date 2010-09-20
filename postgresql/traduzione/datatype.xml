@@ -2,41 +2,42 @@
 <!-- $PostgreSQL$ -->
 
  <chapter id="datatype">
-  <title>Data Types</title>
+  <title>Tipi di Dato</title>
 
   <indexterm zone="datatype">
-   <primary>data type</primary>
+   <primary>tipo di dato</primary>
   </indexterm>
 
   <indexterm>
-   <primary>type</primary>
-   <see>data type</see>
+   <primary>tipo</primary>
+   <see>tipo di dato</see>
   </indexterm>
 
   <para>
-   <productname>PostgreSQL</productname> has a rich set of native data
-   types available to users.  Users can add new types to
-   <productname>PostgreSQL</productname> using the <xref
-   linkend="sql-createtype"/> command.
+   <productname>PostgreSQL</productname> ha un corposo insieme tipi di dato
+   nativi disponibili per gli utenti. Gli utenti possono aggiungere nuovi tipi a
+   <productname>PostgreSQL</productname> utilizzando il comando <xref
+   linkend="sql-createtype" endterm="sql-createtype-title" />.
   </para>
 
   <para>
-   <xref linkend="datatype-table"/> shows all the built-in general-purpose data
-   types. Most of the alternative names listed in the 
-   <quote>Aliases</quote> column are the names used internally by
-   <productname>PostgreSQL</productname> for historical reasons.  In
-   addition, some internally used or deprecated types are available,
-   but are not listed here.
+   La <xref linkend="datatype-table" /> visualizza tutti i tipi dati di uso generale
+   incorporati. La maggior parte dei nomi alternativi elencati nella colonna 
+   <quote>Alias</quote> sono i nomi usati internamente da
+   <productname>PostgreSQL</productname> per ragioni storiche. In
+   aggiunta, sono disponibili altri tipi usati internamente o deprecati,
+   ma non sono elencati quì.
+   
   </para>
 
    <table id="datatype-table">
-    <title>Data Types</title>
+    <title>Tipi di Dato</title>
     <tgroup cols="3">
      <thead>
       <row>
-       <entry>Name</entry>
-       <entry>Aliases</entry>
-       <entry>Description</entry>
+       <entry>Nome</entry>
+       <entry>Alias</entry>
+       <entry>Descrizione</entry>
       </row>
      </thead>
 
@@ -44,121 +45,121 @@
       <row>
        <entry><type>bigint</type></entry>
        <entry><type>int8</type></entry>
-       <entry>signed eight-byte integer</entry>
+       <entry>intero con segno a 8 byte</entry>
       </row>
 
       <row>
        <entry><type>bigserial</type></entry>
        <entry><type>serial8</type></entry>
-       <entry>autoincrementing eight-byte integer</entry>
+       <entry>intero auto incrementale a 8 byte</entry>
       </row>
 
       <row>
        <entry><type>bit [ (<replaceable>n</replaceable>) ]</type></entry>
        <entry></entry>
-       <entry>fixed-length bit string</entry>
+       <entry>stringa di bit a lunghezza fissa</entry>
       </row>
 
       <row>
        <entry><type>bit varying [ (<replaceable>n</replaceable>) ]</type></entry>
        <entry><type>varbit</type></entry>
-       <entry>variable-length bit string</entry>
+       <entry>stringa di bit a lunghezza variabile</entry>
       </row>
 
       <row>
        <entry><type>boolean</type></entry>
        <entry><type>bool</type></entry>
-       <entry>logical Boolean (true/false)</entry>
+       <entry>valore Booleano (vero/falso)</entry>
       </row>
 
       <row>
        <entry><type>box</type></entry>
        <entry></entry>
-       <entry>rectangular box on a plane</entry>
+       <entry>Un rettangolo su un piano</entry>
       </row>
 
       <row>
        <entry><type>bytea</type></entry>
        <entry></entry>
-       <entry>binary data (<quote>byte array</quote>)</entry>
+       <entry>dato binario (<quote>array di byte</quote>)</entry>
       </row>
 
       <row>
        <entry><type>character varying [ (<replaceable>n</replaceable>) ]</type></entry>
        <entry><type>varchar [ (<replaceable>n</replaceable>) ]</type></entry>
-       <entry>variable-length character string</entry>
+       <entry>stringa di caratteri a lunghezza variabile</entry>
       </row>
 
       <row>
        <entry><type>character [ (<replaceable>n</replaceable>) ]</type></entry>
        <entry><type>char [ (<replaceable>n</replaceable>) ]</type></entry>
-       <entry>fixed-length character string</entry>
+       <entry>stringa di caratteri a lunghezza fissa</entry>
       </row>
 
       <row>
        <entry><type>cidr</type></entry>
        <entry></entry>
-       <entry>IPv4 or IPv6 network address</entry>
+       <entry>indirizzo di rete IPv4 o IPv6</entry>
       </row>
 
       <row>
        <entry><type>circle</type></entry>
        <entry></entry>
-       <entry>circle on a plane</entry>
+       <entry>cerchio su un piano</entry>
       </row>
 
       <row>
        <entry><type>date</type></entry>
        <entry></entry>
-       <entry>calendar date (year, month, day)</entry>
+       <entry>data di calendario (anno, mese, giorno)</entry>
       </row>
 
       <row>
        <entry><type>double precision</type></entry>
        <entry><type>float8</type></entry>
-       <entry>double precision floating-point number (8 bytes)</entry>
+       <entry>numero a virgola mobile a doppia precisione (8 bytes)</entry>
       </row>
 
       <row>
        <entry><type>inet</type></entry>
        <entry></entry>
-       <entry>IPv4 or IPv6 host address</entry>
+       <entry>indirizzo di host IPv4 or IPv6</entry>
       </row>
 
       <row>
        <entry><type>integer</type></entry>
        <entry><type>int</type>, <type>int4</type></entry>
-       <entry>signed four-byte integer</entry>
+       <entry>intero con segno a 4 byte</entry>
       </row>
 
       <row>
        <entry><type>interval [ <replaceable>fields</replaceable> ] [ (<replaceable>p</replaceable>) ]</type></entry>
        <entry></entry>
-       <entry>time span</entry>
+       <entry>intervallo di tempo</entry>
       </row>
 
       <row>
        <entry><type>line</type></entry>
        <entry></entry>
-       <entry>infinite line on a plane</entry>
+       <entry>linea infinita su un piano</entry>
       </row>
 
       <row>
        <entry><type>lseg</type></entry>
        <entry></entry>
-       <entry>line segment on a plane</entry>
+       <entry>segnmento di linea su un piano</entry>
       </row>
 
       <row>
        <entry><type>macaddr</type></entry>
        <entry></entry>
-       <entry>MAC (Media Access Control) address</entry>
+       <entry>indirizzo MAC (Media Access Control)</entry>
       </row>
 
       <row>
        <entry><type>money</type></entry>
        <entry></entry>
-       <entry>currency amount</entry>
+       <entry>somma di denaro</entry>
       </row>
 
       <row>
@@ -166,236 +167,240 @@
          <replaceable>s</replaceable>) ]</type></entry>
        <entry><type>decimal [ (<replaceable>p</replaceable>,
          <replaceable>s</replaceable>) ]</type></entry>
-       <entry>exact numeric of selectable precision</entry>
+       <entry>numerico di precisione selezionabile</entry>
       </row>
 
       <row>
        <entry><type>path</type></entry>
        <entry></entry>
-       <entry>geometric path on a plane</entry>
+       <entry>tracciato geometrico su un piano</entry>
       </row>
 
       <row>
        <entry><type>point</type></entry>
        <entry></entry>
-       <entry>geometric point on a plane</entry>
+       <entry>punto geometrico su un piano</entry>
       </row>
 
       <row>
        <entry><type>polygon</type></entry>
        <entry></entry>
-       <entry>closed geometric path on a plane</entry>
+       <entry>tracciato chiuso su un piano</entry>
       </row>
 
       <row>
        <entry><type>real</type></entry>
        <entry><type>float4</type></entry>
-       <entry>single precision floating-point number (4 bytes)</entry>
+       <entry>numero a virgola mobile a precisione singola (4 byte)</entry>
       </row>
 
       <row>
        <entry><type>smallint</type></entry>
        <entry><type>int2</type></entry>
-       <entry>signed two-byte integer</entry>
+       <entry>intero con segno a 2-byte</entry>
       </row>
 
       <row>
        <entry><type>serial</type></entry>
        <entry><type>serial4</type></entry>
-       <entry>autoincrementing four-byte integer</entry>
+       <entry>intero autoincrementale a 4-byte</entry>
       </row>
 
       <row>
        <entry><type>text</type></entry>
        <entry></entry>
-       <entry>variable-length character string</entry>
+       <entry>stringa di caratteri a lunghezza variabile</entry>
       </row>
 
       <row>
        <entry><type>time [ (<replaceable>p</replaceable>) ] [ without time zone ]</type></entry>
        <entry></entry>
-       <entry>time of day (no time zone)</entry>
+       <entry>orario del giorno (senza fuso orario)</entry>
       </row>
 
       <row>
        <entry><type>time [ (<replaceable>p</replaceable>) ] with time zone</type></entry>
        <entry><type>timetz</type></entry>
-       <entry>time of day, including time zone</entry>
+       <entry>orario del giorno, incluso il fuso orario</entry>
       </row>
 
       <row>
        <entry><type>timestamp [ (<replaceable>p</replaceable>) ] [ without time zone ]</type></entry>
        <entry></entry>
-       <entry>date and time (no time zone)</entry>
+       <entry>data e orario (senza fuso orario)</entry>
       </row>
 
       <row>
        <entry><type>timestamp [ (<replaceable>p</replaceable>) ] with time zone</type></entry>
        <entry><type>timestamptz</type></entry>
-       <entry>date and time, including time zone</entry>
+       <entry>data e orario, includo il fuso orario</entry>
       </row>
 
       <row>
        <entry><type>tsquery</type></entry>
        <entry></entry>
-       <entry>text search query</entry>
+       <entry>query di ricerca di testo</entry>
       </row>
 
       <row>
        <entry><type>tsvector</type></entry>
        <entry></entry>
-       <entry>text search document</entry>
+       <entry>documento di ricerca testo</entry>
       </row>
 
       <row>
        <entry><type>txid_snapshot</type></entry>
        <entry></entry>
-       <entry>user-level transaction ID snapshot</entry>
+       <entry>istantanea di transaction ID a livello utente</entry>
       </row>
 
       <row>
        <entry><type>uuid</type></entry>
        <entry></entry>
-       <entry>universally unique identifier</entry>
+       <entry>identificatore unico universalmente</entry>
       </row>
 
       <row>
        <entry><type>xml</type></entry>
        <entry></entry>
-       <entry>XML data</entry>
+       <entry>dati XML</entry>
       </row>
      </tbody>
     </tgroup>
    </table>
 
   <note>
-   <title>Compatibility</title>
+   <title>Compatibilità</title>
    <para>
-    The following types (or spellings thereof) are specified by
-    <acronym>SQL</acronym>: <type>bigint</type>, <type>bit</type>, <type>bit
+<!-- /TODO or spelling thereof ? -->
+    I seguenti tipi (or spellings thereof) sono specificati dall'<acronym>SQL</acronym>: 
+    <type>bigint</type>, <type>bit</type>, <type>bit
     varying</type>, <type>boolean</type>, <type>char</type>,
     <type>character varying</type>, <type>character</type>,
     <type>varchar</type>, <type>date</type>, <type>double
     precision</type>, <type>integer</type>, <type>interval</type>,
     <type>numeric</type>, <type>decimal</type>, <type>real</type>,
-    <type>smallint</type>, <type>time</type> (with or without time zone),
-    <type>timestamp</type> (with or without time zone),
+    <type>smallint</type>, <type>time</type> (con o senza fuso orario),
+    <type>timestamp</type> (con o senza fuso orario),
     <type>xml</type>.
    </para>
   </note>
 
   <para>
-   Each data type has an external representation determined by its input
-   and output functions.  Many of the built-in types have
-   obvious external formats.  However, several types are either unique
-   to <productname>PostgreSQL</productname>, such as geometric
-   paths, or have several possible formats, such as the date
-   and time types.
-   Some of the input and output functions are not invertible, i.e.,
-   the result of an output function might lose accuracy when compared to
-   the original input.
+   Ogni tipo dato ha una rappresentazione esterna determinata dalle sue
+   funzioni di input e output. Molti dei tipi incorporati hanno
+   formati esterni evidenti. Tuttavia, diversi tipi o sono unici a
+   <productname>PostgreSQL</productname>, come i percorsi geometrici,
+   o hanno molte più possibilità di formattazione, come i tipi data
+   e ora.
+   Alcune delle funzioni di input e output non sono invertibili. Cioè
+   il risultato di una funzione di output potrebbe perdere precisione quando confrontato
+   al input originale.
+
   </para>
 
   <sect1 id="datatype-numeric">
-   <title>Numeric Types</title>
+   <title>Tipi Numerici</title>
 
    <indexterm zone="datatype-numeric">
-    <primary>data type</primary>
-    <secondary>numeric</secondary>
+    <primary>tipo di dato</primary>
+    <secondary>numerico</secondary>
    </indexterm>
 
    <para>
-    Numeric types consist of two-, four-, and eight-byte integers,
-    four- and eight-byte floating-point numbers, and selectable-precision
-    decimals.  <xref linkend="datatype-numeric-table"/> lists the
-    available types.
+    I tipi numerici consistono di numeri interi di due, quattro, e otto byte, di
+    numeri in virgola mobile di quattro e otto byte, e di numeri decimali con precisione
+    selezionabile. La <xref linkend="datatype-numeric-table" /> elenca
+    i tipi disponibili.
+    
    </para>
 
     <table id="datatype-numeric-table">
-     <title>Numeric Types</title>
+     <title>Tipi Numerici</title>
      <tgroup cols="4">
       <thead>
        <row>
-        <entry>Name</entry>
-        <entry>Storage Size</entry>
-        <entry>Description</entry>
-        <entry>Range</entry>
+        <entry>Nome</entry>
+        <entry>Dimensione</entry>
+        <entry>Descrizione</entry>
+        <entry>Estensione</entry>
        </row>
       </thead>
 
       <tbody>
        <row>
         <entry><type>smallint</type></entry>
-        <entry>2 bytes</entry>
-        <entry>small-range integer</entry>
+        <entry>2 byte</entry>
+        <entry>interi con piccola estensione</entry>
         <entry>-32768 to +32767</entry>
        </row>
        <row>
         <entry><type>integer</type></entry>
-        <entry>4 bytes</entry>
-        <entry>typical choice for integer</entry>
+        <entry>4 byte</entry>
+        <entry>la scelta comune per gli interi</entry>
         <entry>-2147483648 to +2147483647</entry>
        </row>
        <row>
         <entry><type>bigint</type></entry>
-        <entry>8 bytes</entry>
-        <entry>large-range integer</entry>
+        <entry>8 byte</entry>
+        <entry>interi ad elevata estensione</entry>
         <entry>-9223372036854775808 to 9223372036854775807</entry>
        </row>
 
        <row>
         <entry><type>decimal</type></entry>
         <entry>variable</entry>
-        <entry>user-specified precision, exact</entry>
-        <entry>no limit</entry>
+        <entry>esatta, precisione specificata dall'utente</entry>
+        <entry>senza limite</entry>
        </row>
        <row>
         <entry><type>numeric</type></entry>
         <entry>variable</entry>
-        <entry>user-specified precision, exact</entry>
-        <entry>no limit</entry>
+        <entry>esatta, precisione specificata dall'utente</entry>
+        <entry>senza limite</entry>
        </row>
 
        <row>
         <entry><type>real</type></entry>
-        <entry>4 bytes</entry>
-        <entry>variable-precision, inexact</entry>
-        <entry>6 decimal digits precision</entry>
+        <entry>4 byte</entry>
+        <entry>inesatta, precisione variabile</entry>
+        <entry>6 cifre decimali di precisione</entry>
        </row>
        <row>
         <entry><type>double precision</type></entry>
-        <entry>8 bytes</entry>
-        <entry>variable-precision, inexact</entry>
-        <entry>15 decimal digits precision</entry>
+        <entry>8 byte</entry>
+        <entry>inesatta, precisione variabile</entry>
+        <entry>15 cifre decimali di precisione</entry>
        </row>
 
        <row>
         <entry><type>serial</type></entry>
-        <entry>4 bytes</entry>
-        <entry>autoincrementing integer</entry>
-        <entry>1 to 2147483647</entry>
+        <entry>4 byte</entry>
+        <entry>intero autoincrementante</entry>
+        <entry>da 1 a 2147483647</entry>
        </row>
 
        <row>
         <entry><type>bigserial</type></entry>
-        <entry>8 bytes</entry>
-        <entry>large autoincrementing integer</entry>
-        <entry>1 to 9223372036854775807</entry>
+        <entry>8 byte</entry>
+        <entry>intero autoincrementante grande</entry>
+        <entry>da 1 a 9223372036854775807</entry>
        </row>
       </tbody>
      </tgroup>
     </table>
 
    <para>
-    The syntax of constants for the numeric types is described in
-    <xref linkend="sql-syntax-constants"/>.  The numeric types have a
-    full set of corresponding arithmetic operators and
-    functions. Refer to <xref linkend="functions"/> for more
-    information.  The following sections describe the types in detail.
+    La sintassi delle costanti per i tipi numerici è descritta in
+    <xref linkend="sql-syntax-constants" />. I tipi numerici hanno un
+    insieme completo di corrispondenti operatori aritmetici e
+    funzioni. Riferirsi al <xref linkend="functions" /> per ulteriori
+    informazioni. La sezione seguente descrive i tipi in dettaglio.
+    
    </para>
 
    <sect2 id="datatype-int">
-    <title>Integer Types</title>
+    <title>Tipi Interi</title>
 
     <indexterm zone="datatype-int">
      <primary>integer</primary>
@@ -425,50 +430,51 @@
     </indexterm>
 
     <para>
-     The types <type>smallint</type>, <type>integer</type>, and
-     <type>bigint</type> store whole numbers, that is, numbers without
-     fractional components, of various ranges.  Attempts to store
-     values outside of the allowed range will result in an error.
+     I tipi <type>smallint</type>, <type>integer</type>, e
+     <type>bigint</type> memorizzano numeri interi, che significa, numeri senza
+     componente frazionale, di diversa estensione. Tentativi di memorizzare
+     valori al di fuori dell'estensione consentita provocheranno un errore.
     </para>
 
     <para>
-     The type <type>integer</type> is the common choice, as it offers
-     the best balance between range, storage size, and performance.
-     The <type>smallint</type> type is generally only used if disk
-     space is at a premium.  The <type>bigint</type> type should only
-     be used if the <type>integer</type> range is insufficient,
-     because the latter is definitely faster.
+     Il tipo <type>integer</type> è quello scelto normalmente, dato che offre
+     il migliore bilanciamento tra estensione, dimensione di memorizzazione e prestazione.
+     Il tipo <type>smallint</type> è generalmente usato solo se lo spazio nel
+     disco è ridotto. Il tipo <type>bigint</type> dovrebbe essere usato solo se
+     l'estensione del tipo <type>integer</type> non è sufficiente,
+     in quanto quest'ultimo è certamente più veloce.
     </para>
 
     <para>
-     On very minimal operating systems the <type>bigint</type> type
-     might not function correctly, because it relies on compiler support
-     for eight-byte integers.  On such machines, <type>bigint</type>
-     acts the same as <type>integer</type>, but still takes up eight
-     bytes of storage.  (We are not aware of any modern
-     platform where this is the case.)
+     Il tipo <type>bigint</type> può non funzionare correttamente su tutte
+     le piattaforme, dato che richiede sul compilatore un supporto per interi a
+     otto byte. Su una macchina senza tale supporto, <type>bigint</type>
+     si comporta come <type>integer</type> (ma occupa ugualmente otto byte
+     di memorizzazione). Tuttavia, non siamo informati di alcuna
+     piattaforma sui cui si sia presentato questo caso.
     </para>
 
     <para>
-     <acronym>SQL</acronym> only specifies the integer types
-     <type>integer</type> (or <type>int</type>),
-     <type>smallint</type>, and <type>bigint</type>.  The
-     type names <type>int2</type>, <type>int4</type>, and
-     <type>int8</type> are extensions, which are also used by some
-     other <acronym>SQL</acronym> database systems.
+     <acronym>SQL</acronym> specifica solo i tipi interi
+     <type>integer</type> (o <type>int</type>),
+     <type>smallint</type>, e <type>bigint</type>. I tipi
+     chiamati <type>int2</type>, <type>int4</type>, e
+     <type>int8</type> sono estensioni, che sono condivise con diversi
+     altri sistemi di database <acronym>SQL</acronym>.
     </para>
+
 
    </sect2>
 
    <sect2 id="datatype-numeric-decimal">
-    <title>Arbitrary Precision Numbers</title>
+    <title>Numeri a Precisione Arbitraria</title>
 
     <indexterm>
-     <primary>numeric (data type)</primary>
+     <primary>(tipo di dato) numerico</primary>
     </indexterm>
 
    <indexterm>
-    <primary>arbitrary precision numbers</primary>
+    <primary>numeri a precisione arbitraria</primary>
    </indexterm>
 
     <indexterm>
@@ -477,72 +483,78 @@
     </indexterm>
 
     <para>
-     The type <type>numeric</type> can store numbers with up to 1000
-     digits of precision and perform calculations exactly. It is
-     especially recommended for storing monetary amounts and other
-     quantities where exactness is required. However, arithmetic on
-     <type>numeric</type> values is very slow compared to the integer
-     types, or to the floating-point types described in the next section.
+     Il tipo <type>numeric</type> può memorizzare numeri di precisione fino a 1000
+     cifre ed effettuare i calcoli esattamente. È
+     raccomandato specialmente per memorizzare quantità monetarie e altre
+     quantità dove viene richiesta precisione. Tuttavia, l'aritmetica su
+     valori <type>numeric</type> è molto lenta confrontata con i tipi
+     interi, o con i tipi in virgola mobile descritti nella prossima sezione.
     </para>
 
     <para>
-     We use the following terms below:  The
-     <firstterm>scale</firstterm> of a <type>numeric</type> is the
-     count of decimal digits in the fractional part, to the right of
-     the decimal point.  The <firstterm>precision</firstterm> of a
-     <type>numeric</type> is the total count of significant digits in
-     the whole number, that is, the number of digits to both sides of
-     the decimal point.  So the number 23.5141 has a precision of 6
-     and a scale of 4.  Integers can be considered to have a scale of
+     In ciò che segue vengono utilizzati questi termini: La
+     <firstterm>scala</firstterm> di un <type>numeric</type> è il
+     conto delle delle cifre decimali nella parte frazionaria, alla destra del
+     punto decimale. La <firstterm>precisione</firstterm> di un
+     <type>numeric</type> è il conto totale delle cifre significative
+     nell'intero numero, cioè, il numero di cifre in ambedue i lati del
+     punto decimale. Per cui il numero 23.5141 ha una precisione di 6
+     e una scala di 4. Gli interi possono essere considerati come aventi una scala
      zero.
     </para>
 
     <para>
-     Both the maximum precision and the maximum scale of a
-     <type>numeric</type> column can be
-     configured.  To declare a column of type <type>numeric</type> use
-     the syntax:
+     In una colonna <type>numeric</type> possono essere
+     configurati sia la massima precisione che la massima
+     scala. Per dichiarare una colonna di tipo <type>numeric</type> usare
+     la sintassi:
+
 <programlisting>
 NUMERIC(<replaceable>precision</replaceable>, <replaceable>scale</replaceable>)
 </programlisting>
-     The precision must be positive, the scale zero or positive.
-     Alternatively:
+
+     La precisione deve essere positiva,la scala zero o positiva.
+     Alternativamente:
+
 <programlisting>
 NUMERIC(<replaceable>precision</replaceable>)
 </programlisting>
-     selects a scale of 0.  Specifying:
+
+       seleziona una scala di 0. Specificare: 
+
 <programlisting>
 NUMERIC
 </programlisting>
-     without any precision or scale creates a column in which numeric
-     values of any precision and scale can be stored, up to the
-     implementation limit on precision.  A column of this kind will
-     not coerce input values to any particular scale, whereas
-     <type>numeric</type> columns with a declared scale will coerce
-     input values to that scale.  (The <acronym>SQL</acronym> standard
-     requires a default scale of 0, i.e., coercion to integer
-     precision.  We find this a bit useless.  If you're concerned
-     about portability, always specify the precision and scale
-     explicitly.)
+     senza nessuna precisione o scala crea una colonna in cui possono
+     essere memorizzati valori di qualsiasi precisione e scala, fino al
+     limite di implementazione della precisione. Una colonna di questo tipo
+     non forzerà i valori in ingresso ad una particolare scala, mentre
+     le colonne <type>numeric</type> con una scala dichiarata forzeranno i
+     valori in ingresso a quella scala. (Lo standard <acronym>SQL</acronym>
+     richiede un valore predefinito di 0 per la scala, cioè forza la
+     precisione a intero. Considerare questo un tantino inutile. Se siete
+     preoccupati per la portabilità, specificare esplicitamente la
+     precisione e la scala).
+    </para>
+     
+    <para>
+     Se la scala di un valore da memorizzare è più grande della scala
+     dichiarata della colonna, il sistema arrotonderà il valore al numero
+     dichiarato di cifre decimali. Se invece il numero di cifre alla sinistra
+     del punto decimale supera la precisione dichiarata meno la scala dichiarata,
+     viene generato un errore.
     </para>
 
     <para>
-     If the scale of a value to be stored is greater than the declared
-     scale of the column, the system will round the value to the specified
-     number of fractional digits.  Then, if the number of digits to the
-     left of the decimal point exceeds the declared precision minus the
-     declared scale, an error is raised.
+     I valori numerici vengono fisicamente memorizzati senza zeri non significativi
+     e senza zeri finali. Quindi, la precisione e la scala dichiarate per una colonna
+     sono massime, non allocazioni fisse.  (In questo senso il tipo <type>numeric</type>
+     è più simile al <type>varchar(<replaceable>n</replaceable>)</type>
+     che al <type>char(<replaceable>n</replaceable>)</type>). La richiesta reale di memoria
+     è di due byte per ogni gruppo di quattro cifre decimali,
+     più da cinque a otto byte in testa.
     </para>
 
-    <para>
-     Numeric values are physically stored without any extra leading or
-     trailing zeroes.  Thus, the declared precision and scale of a column
-     are maximums, not fixed allocations.  (In this sense the <type>numeric</type>
-     type is more akin to <type>varchar(<replaceable>n</replaceable>)</type>
-     than to <type>char(<replaceable>n</replaceable>)</type>.)  The actual storage
-     requirement is two bytes for each group of four decimal digits,
-     plus five to eight bytes overhead.
-    </para>
 
     <indexterm>
      <primary>NaN</primary>
@@ -551,41 +563,44 @@ NUMERIC
 
     <indexterm>
      <primary>not a number</primary>
-     <secondary>numeric (data type)</secondary>
+     <secondary>(tipo di dato) numerico</secondary>
     </indexterm>
 
+
     <para>
-     In addition to ordinary numeric values, the <type>numeric</type>
-     type allows the special value <literal>NaN</literal>, meaning 
-     <quote>not-a-number</quote>.  Any operation on <literal>NaN</literal>
-     yields another <literal>NaN</literal>.  When writing this value
-     as a constant in an SQL command, you must put quotes around it,
-     for example <literal>UPDATE table SET x = 'NaN'</literal>.  On input,
-     the string <literal>NaN</literal> is recognized in a case-insensitive manner.
+     In aggiunta ai valori numerici normali, il tipo <type>numeric</type>
+     ammette il valore speciale <literal>NaN</literal>, che significa 
+     <quote>not-a-number</quote> (non-un-numero). Ogni operazione su <literal>NaN</literal>
+     restituisce un altro <literal>NaN</literal>. Quando si scrive questo valore come
+     una costante in un comando SQL, bisogna racchiuderlo tra apici, per esempio
+     <literal>UPDATE tabella SET x = 'NaN'</literal>. In ingresso, la stringa <literal>NaN</literal>
+     viene riconosciuta senza distinzione tra maiuscole e minuscole.
     </para>
 
+    
     <note>
      <para>
-      In most implementations of the <quote>not-a-number</quote> concept,
-      <literal>NaN</literal> is not considered equal to any other numeric
-      value (including <literal>NaN</literal>).  In order to allow
-      <type>numeric</type> values to be sorted and used in tree-based
-      indexes, <productname>PostgreSQL</productname> treats <literal>NaN</literal>
-      values as equal, and greater than all non-<literal>NaN</literal>
-      values.
+      Nella maggior parte delle implementazioni del concetto
+      <quote>not-a-number</quote>, <literal>NaN</literal> non è considerato
+      uguale a nessun altro valore numerico (<literal>NaN</literal> compreso).
+      Per consentire che i valori <type>numeric</type> siano ordinati e
+      usati negli indici B-tree, <productname>PostgreSQL</productname> tratta i
+      valori <literal>NaN</literal> come uguali, e maggiori di tutti i valori
+      non-<literal>NaN</literal>.
      </para>
     </note>
 
+
     <para>
-     The types <type>decimal</type> and <type>numeric</type> are
-     equivalent.  Both types are part of the <acronym>SQL</acronym>
-     standard.
+     I tipi <type>decimal</type> e <type>numeric</type> sono
+     equivalenti. Ambedue fanno parte dello standard
+     <acronym>SQL</acronym>.
     </para>
    </sect2>
 
 
    <sect2 id="datatype-float">
-    <title>Floating-Point Types</title>
+    <title>Tipi a Virgola Mobile</title>
 
     <indexterm zone="datatype-float">
      <primary>real</primary>
@@ -606,63 +621,65 @@ NUMERIC
     </indexterm>
 
     <indexterm zone="datatype-float">
-     <primary>floating point</primary>
+     <primary>virgola mobile</primary>
     </indexterm>
 
     <para>
-     The data types <type>real</type> and <type>double
-     precision</type> are inexact, variable-precision numeric types.
-     In practice, these types are usually implementations of
-     <acronym>IEEE</acronym> Standard 754 for Binary Floating-Point
-     Arithmetic (single and double precision, respectively), to the
-     extent that the underlying processor, operating system, and
-     compiler support it.
+     I tipi di dato <type>real</type> e <type>double precision</type>
+     sono tipi numerici inesatti, con precisione variabile. In pratica,
+     questi tipi sono normalmente implementazioni dello standard
+     <acronym>IEEE</acronym> 754 per l'Aritmetica Binaria a Virgola-Mobile
+     (rispettivamente a singola e doppia precisione), nella misura in
+     cui i sottostanti processore, sistema operativo e compilatore li
+     supportano.
     </para>
 
     <para>
-     Inexact means that some values cannot be converted exactly to the
-     internal format and are stored as approximations, so that storing
-     and retrieving a value might show slight discrepancies.
-     Managing these errors and how they propagate through calculations
-     is the subject of an entire branch of mathematics and computer
-     science and will not be discussed here, except for the
-     following points:
+     Inesatto significa che alcuni valori non possono essere convertiti esattamente al
+     formato interno e vengono memorizzati con approssimazione, per cui la memorizzazione
+     e la stampa tirata fuori potrebbero mostrare lievi discrepanze.
+     La gestione di questi errori e della loro propagazione attraverso i calcoli
+     è il soggetto di una intera branca della matematica e della scienza del
+     computer e non sarà quì ulteriormente discussa, tranne che per i
+     seguenti punti:
      <itemizedlist>
       <listitem>
        <para>
-        If you require exact storage and calculations (such as for
-        monetary amounts), use the <type>numeric</type> type instead.
+        Se si richiedono esatte memorizzazione e calcoli (come per gli
+        importi monetari), usare invece il tipo <type>numeric</type>.
        </para>
       </listitem>
 
       <listitem>
        <para>
-        If you want to do complicated calculations with these types
-        for anything important, especially if you rely on certain
-        behavior in boundary cases (infinity, underflow), you should
-        evaluate the implementation carefully.
+        Se si vogliono fare calcoli complicati con questi tipi
+        per niente di importante, specialmente se si basano su alcuni
+        comportamenti in casi limite (infinito, underflow), bisogna
+        valutarne attentamente l'implementazione.
        </para>
       </listitem>
 
       <listitem>
        <para>
-        Comparing two floating-point values for equality might not
-        always work as expected.
+        Il confronto di due valori in virgola mobile per l'uguaglianza, non è
+        detto che debba funzionare come ci si attende.
        </para>
       </listitem>
      </itemizedlist>
     </para>
 
+
     <para>
-     On most platforms, the <type>real</type> type has a range of at least
-     1E-37 to 1E+37 with a precision of at least 6 decimal digits.  The
-     <type>double precision</type> type typically has a range of around
-     1E-307 to 1E+308 with a precision of at least 15 digits.  Values that
-     are too large or too small will cause an error.  Rounding might
-     take place if the precision of an input number is too high.
-     Numbers too close to zero that are not representable as distinct
-     from zero will cause an underflow error.
+     Sulla maggior parte delle piattaforme, il tipo <type>real</type> ha una
+     estensione di almeno da 1E-37 a 1E+37 con una precisione di almeno 6
+     cifre decimali. Il tipo <type>double precision</type> normalmente ha una
+     estensione di circa da 1E-307 a 1E+308 con una precisione di almeno 15
+     cifre. Valori troppo grandi o troppo piccoli causeranno un errore. Se la
+     precisione di un numero in ingresso è troppo alta, si potrà
+     verificare un arrotondamento. Numeri troppo prossimi a zero che non sono
+     rappresentabili come diversi da zero possono causare un errore di underflow.
     </para>
+
 
     <indexterm>
      <primary>not a number</primary>
@@ -670,31 +687,33 @@ NUMERIC
     </indexterm>
 
     <para>
-     In addition to ordinary numeric values, the floating-point types
-     have several special values:
+     In aggiunte ai valori numerici ordinari, i tipi in virgola mobile
+     hanno alcuni valori speciali:
+
 <literallayout>
 <literal>Infinity</literal>
 <literal>-Infinity</literal>
 <literal>NaN</literal>
 </literallayout>
-     These represent the IEEE 754 special values
-     <quote>infinity</quote>, <quote>negative infinity</quote>, and
-     <quote>not-a-number</quote>, respectively.  (On a machine whose
-     floating-point arithmetic does not follow IEEE 754, these values
-     will probably not work as expected.)  When writing these values
-     as constants in an SQL command, you must put quotes around them,
-     for example <literal>UPDATE table SET x = 'Infinity'</literal>.  On input,
-     these strings are recognized in a case-insensitive manner.
+
+     Questi rappresentano rispettivamente i valori speciali IEEE 754
+     <quote>infinito</quote>, <quote>infinito negativo</quote>, e
+     <quote>non-un-numero</quote>.  (Su una macchina la cui aritmetica in
+     virgola mobile non segue lo IEEE754, molto probabilmente non lavoreranno
+     come ci si aspetta). Quando si scrivono questi valori come costanti in
+     un comando SQL, bisogna racchiuderli tra apici, per esempio 
+     <literal>UPDATE tabella SET x = 'Infinity'</literal>. In ingresso le stringhe
+     vengono riconosciute senza distinzione tra maiuscole e minuscole.
     </para>
 
     <note>
      <para>
-      IEEE754 specifies that <literal>NaN</literal> should not compare equal
-      to any other floating-point value (including <literal>NaN</literal>).
-      In order to allow floating-point values to be sorted and used
-      in tree-based indexes, <productname>PostgreSQL</productname> treats
-      <literal>NaN</literal> values as equal, and greater than all
-      non-<literal>NaN</literal> values.
+      IEEE754 specifica che <literal>NaN</literal> non dovrebbe essere uguale
+      a qualsiasi altro valore in virgola mobile (<literal>NaN</literal> compreso).
+      Per consentire che i valori in virgola mobile siano ordinati e usati
+      in indici B-tree, <productname>PostgreSQL</productname> tratta i
+      valori <literal>NaN</literal> come uguali, e maggiori di tutti i
+      valori non-<literal>NaN</literal>.
      </para>
     </note>
 
@@ -716,23 +735,23 @@ NUMERIC
 
     <note>
      <para>
-      Prior to <productname>PostgreSQL</productname> 7.4, the precision in
-      <type>float(<replaceable>p</replaceable>)</type> was taken to mean
-      so many <emphasis>decimal</emphasis> digits.  This has been corrected to match the SQL
-      standard, which specifies that the precision is measured in binary
-      digits.  The assumption that <type>real</type> and
-      <type>double precision</type> have exactly 24 and 53 bits in the
-      mantissa respectively is correct for IEEE-standard floating point
-      implementations.  On non-IEEE platforms it might be off a little, but
-      for simplicity the same ranges of <replaceable>p</replaceable> are used
-      on all platforms.
+      Prima di <productname>PostgreSQL</productname> 7.4, la precisione nei
+      <type>float(<replaceable>p</replaceable>)</type> era considerata essere di molte
+      cifre decimali. Questo è stato corretto per uniformarsi allo standard SQL,
+      il quale specifica che la precisione viene misurata in cifre binarie. Il
+      presupposto che <type>real</type> e <type>double precision</type> abbiano nella
+      mantissa, rispettivamente, esattamente 24 e 53 bit è corretto per lo
+      standard IEEE nell'implementazione in virgola mobile. Sulle piattaforme non-IEEE 
+      potrebbe essere leggermente diverso, ma per semplicità viene
+      utilizzata la stessa estensione di <replaceable>p</replaceable> su
+      tutte le piattaforme.
      </para>
     </note>
 
    </sect2>
 
    <sect2 id="datatype-serial">
-    <title>Serial Types</title>
+    <title>Tipi Serial</title>
 
     <indexterm zone="datatype-serial">
      <primary>serial</primary>
@@ -761,12 +780,11 @@ NUMERIC
     </indexterm>
 
     <para>
-     The data types <type>serial</type> and <type>bigserial</type>
-     are not true types, but merely
-     a notational convenience for creating unique identifier columns
-     (similar to the <literal>AUTO_INCREMENT</literal> property
-     supported by some other databases). In the current
-     implementation, specifying:
+     I tipi di dato <type>serial</type> e <type>bigserial</type>
+     non sono veri tipi, ma soltanto una convenzione simbolica
+     per impostare identificatori unici di colonne
+     (in maniera simile alla propriet&agrave; <literal>AUTO_INCREMENT</literal>
+     supportata da alcuni altri database). Nell'implementazione corrente, specificare:
 
 <programlisting>
 CREATE TABLE <replaceable class="parameter">tablename</replaceable> (
@@ -774,7 +792,7 @@ CREATE TABLE <replaceable class="parameter">tablename</replaceable> (
 );
 </programlisting>
 
-     is equivalent to specifying:
+    è equivalente a specificare:
 
 <programlisting>
 CREATE SEQUENCE <replaceable class="parameter">tablename</replaceable>_<replaceable class="parameter">colname</replaceable>_seq;
@@ -784,85 +802,87 @@ CREATE TABLE <replaceable class="parameter">tablename</replaceable> (
 ALTER SEQUENCE <replaceable class="parameter">tablename</replaceable>_<replaceable class="parameter">colname</replaceable>_seq OWNED BY <replaceable class="parameter">tablename</replaceable>.<replaceable class="parameter">colname</replaceable>;
 </programlisting>
 
-     Thus, we have created an integer column and arranged for its default
-     values to be assigned from a sequence generator.  A <literal>NOT NULL</literal>
-     constraint is applied to ensure that a null value cannot be
-     inserted.  (In most cases you would also want to attach a
-     <literal>UNIQUE</literal> or <literal>PRIMARY KEY</literal> constraint to prevent
-     duplicate values from being inserted by accident, but this is
-     not automatic.)  Lastly, the sequence is marked as <quote>owned by</quote>
-     the column, so that it will be dropped if the column or table is dropped.
+     Così, è stata creata una colonna integer e gli sono stati impostati i
+     valori predefiniti che verranno assegnati da un generatore di sequenza. È stato
+     applicato un vincolo <literal>NOT NULL</literal> per essere sicuri che non venga, altrimenti,
+     inserito esplicitamente un valore null. (Nella maggior parte dei casi si vorrà
+     anche inserire un vincolo <literal>UNIQUE</literal> o <literal>PRIMARY KEY</literal> per impedire
+     l'inserimento accidentale di valori duplicati, ma questo non è automatico). Infine,
+     la sequenza è contrassegnata <quote>owned by</quote> la colonna,
+     in modo che potrà essere eliminata se la colonna o la tabella vengono eliminate.
     </para>
 
     <note>
      <para>
-      Prior to <productname>PostgreSQL</productname> 7.3, <type>serial</type>
-      implied <literal>UNIQUE</literal>.  This is no longer automatic.  If
-      you wish a serial column to have a unique constraint or be a
-      primary key, it must now be specified, just like
-      any other data type.
+      Prima di <productname>PostgreSQL</productname> 7.3, <type>serial</type>
+      sottintendeva <literal>UNIQUE</literal>. Questo non è più
+      automatico. Se si vuole che una colonna serial abbia un vincolo unique
+      o una chiave primaria, bisognerà specificarlo, come con 
+      qualsiasi altro tipo di dato.
      </para>
     </note>
 
     <para>
-     To insert the next value of the sequence into the <type>serial</type>
-     column, specify that the <type>serial</type>
-     column should be assigned its default value. This can be done
-     either by excluding the column from the list of columns in
-     the <command>INSERT</command> statement, or through the use of
-     the <literal>DEFAULT</literal> key word.
+     Per inserire nella colonna <type>serial</type> il successivo valore
+     di sequenza, specificare che alla colonna  <type>serial</type>
+     dovrà essere assegnato il suo valore predefinito. Questo può
+     essere fatto o escludendo la colonna dalla lista di colonne
+     nell'istruzione <command>INSERT</command>, o tramite l'uso della
+     parola chiave <literal>DEFAULT</literal>.
     </para>
 
     <para>
-     The type names <type>serial</type> and <type>serial4</type> are
-     equivalent: both create <type>integer</type> columns.  The type
-     names <type>bigserial</type> and <type>serial8</type> work
-     the same way, except that they create a <type>bigint</type>
-     column.  <type>bigserial</type> should be used if you anticipate
-     the use of more than 2<superscript>31</superscript> identifiers over the
-     lifetime of the table.
+     I tipi chiamati <type>serial</type> e <type>serial4</type> sono equivalenti:
+     ambedue creano colonne <type>integer</type>. I tipi chiamati
+     <type>bigserial</type> e <type>serial8</type> lavorano anch'essi nello stesso
+     modo, eccetto che essi creano una colonna <type>bigint</type>. Il tipo
+     <type>bigserial</type> dovrà essere usato solo se si prevede di usare
+     un numero di identificatori maggiore di 2<superscript>31</superscript> nel corso
+     della durata della tabella.
     </para>
 
     <para>
-     The sequence created for a <type>serial</type> column is
-     automatically dropped when the owning column is dropped.
-     You can drop the sequence without dropping the column, but this
-     will force removal of the column default expression.
+     La sequenza creata per una colonna <type>serial</type> viene
+     automaticamente eliminata quando viene eliminata la colonna proprietaria.
+     Si potrà eliminare la sequenza senza eliminare la colonna, ma questo
+     forzerà la rimozione dell'espressione predefinita della colonna.
+     
     </para>
    </sect2>
   </sect1>
 
   <sect1 id="datatype-money">
-   <title>Monetary Types</title>
+   <title>Tipi Monetari</title>
 
    <para>
-    The <type>money</type> type stores a currency amount with a fixed
-    fractional precision; see <xref
-    linkend="datatype-money-table"/>.  The fractional precision is
-    determined by the database's <xref linkend="guc-lc-monetary"/> setting.
-    The range shown in the table assumes there are two fractional digits.
-    Input is accepted in a variety of formats, including integer and
-    floating-point literals, as well as typical
-    currency formatting, such as <literal>'$1,000.00'</literal>.
-    Output is generally in the latter form but depends on the locale.
+    Il tipo <type>money</type> memorizza un ammontare di valuta con una
+    precisione frazionaria fissa; vedere la <xref
+    linkend="datatype-money-table" />.
+    La precisione frazionale è determinata dalle impostazioni del database 
+    <xref linkend="guc-lc-monetary"/>.
+    L'intervallo mostrato nella tabella assume che ci siano 2 cifre frazionali.
+    Il valore di input è accettato in vari formati, inclusi interi e a virgola-mobile, 
+    così come tipica formattazione monetaria, come <literal>'$1,000.00'</literal>.
+    L'output è generalmente nell'ultima forma ma dipende dalla localizzazione.
+
    </para>
 
     <table id="datatype-money-table">
-     <title>Monetary Types</title>
+     <title>Tipi Monetari</title>
      <tgroup cols="4">
       <thead>
        <row>
-        <entry>Name</entry>
-        <entry>Storage Size</entry>
-        <entry>Description</entry>
-        <entry>Range</entry>
+        <entry>Nome</entry>
+        <entry>Dimenzione</entry>
+        <entry>Descrizione</entry>
+        <entry>Estensione</entry>
        </row>
       </thead>
       <tbody>
        <row>
         <entry>money</entry>
-        <entry>8 bytes</entry>
-        <entry>currency amount</entry>
+        <entry>8 byte</entry>
+        <entry>ammontare monetario</entry>
         <entry>-92233720368547758.08 to +92233720368547758.07</entry>
        </row>
       </tbody>
@@ -870,51 +890,55 @@ ALTER SEQUENCE <replaceable class="parameter">tablename</replaceable>_<replaceab
     </table>
 
    <para>
-    Since the output of this data type is locale-sensitive, it might not
-    work to load <type>money</type> data into a database that has a different
-    setting of <varname>lc_monetary</varname>.  To avoid problems, before
-    restoring a dump into a new database make sure <varname>lc_monetary</varname> has
-    the same or equivalent value as in the database that was dumped.
+    Dato che questo tipo dato è sensibile alla localizzazione, potrebbe non
+    funzionare il caricamento di dati <type>money</type> in un database che ha un'impostazione
+    diversa di <varname>lc_monetary</varname>. Per evitare problemi, prima di ripristinare
+    un dump bisogna assicurarsi che <varname>lc_monetary</varname> abbia lo stesso
+    valore, o un equivalente, di quello che aveva il database da ripristinare.
+    
    </para>
 
    <para>
-    Values of the <type>numeric</type> data type can be cast to
-    <type>money</type>.  Other numeric types can be converted to
-    <type>money</type> by casting to <type>numeric</type> first, for example:
+   
+        Valori di tipo <type>numeric</type> posso essere castati a               
+        <type>money</type>. Altri tipi numerici posso essere convertiti a
+        <type>money</type> castandoli prima a <type>numeric</type>, per esempio:
+
+
 <programlisting>
 SELECT 1234::numeric::money;
 </programlisting>
-    A <type>money</type> value can be cast to <type>numeric</type> without
-    loss of precision. Conversion to other types could potentially lose
-    precision, and it must be done in two stages, for example:
+        Un valore <type>money</type> può castare un <type>numeric</type> senza 
+        perdita di precisione. La conversione ad altri tipi potrebbe potenzialmente 
+        perdere precisione, e deve essere fatta in 2 passi, per esempio:
 <programlisting>
 SELECT '52093.89'::money::numeric::float8;
 </programlisting>
    </para>
 
    <para>
-    When a <type>money</type> value is divided by another <type>money</type>
-    value, the result is <type>double precision</type> (i.e., a pure number,
-    not money); the currency units cancel each other out in the division.
+        Quando un valore <type>money</type> è diviso da un altro valore <type>money</type>,
+        il risultato è <type>double precision</type> (un numero puro, 
+        non un valore monetario); le unità di valuta si cancellano a vicenda nella divisione.
    </para>
   </sect1>
 
 
   <sect1 id="datatype-character">
-   <title>Character Types</title>
+   <title>Tipi Carattere</title>
 
    <indexterm zone="datatype-character">
-    <primary>character string</primary>
-    <secondary>data types</secondary>
+    <primary>stringa di caratteri</primary>
+    <secondary>tipi di dato</secondary>
    </indexterm>
 
    <indexterm>
-    <primary>string</primary>
-    <see>character string</see>
+    <primary>stringa</primary>
+    <see>stringa di caratteri</see>
    </indexterm>
 
    <indexterm zone="datatype-character">
-    <primary>character</primary>
+    <primary>carattere</primary>
    </indexterm>
 
    <indexterm zone="datatype-character">
@@ -938,106 +962,111 @@ SELECT '52093.89'::money::numeric::float8;
      <tgroup cols="2">
       <thead>
        <row>
-        <entry>Name</entry>
-        <entry>Description</entry>
+        <entry>Nome</entry>
+        <entry>Descrizione</entry>
        </row>
       </thead>
       <tbody>
        <row>
         <entry><type>character varying(<replaceable>n</replaceable>)</type>, <type>varchar(<replaceable>n</replaceable>)</type></entry>
-        <entry>variable-length with limit</entry>
+        <entry>lunghezza variabile, con limite</entry>
        </row>
        <row>
         <entry><type>character(<replaceable>n</replaceable>)</type>, <type>char(<replaceable>n</replaceable>)</type></entry>
-        <entry>fixed-length, blank padded</entry>
+        <entry>lunghezza fissa, completata con blank</entry>
        </row>
        <row>
         <entry><type>text</type></entry>
-        <entry>variable unlimited length</entry>
+        <entry>lunghezza variabile illimitata</entry>
        </row>
      </tbody>
      </tgroup>
     </table>
 
    <para>
-    <xref linkend="datatype-character-table"/> shows the
-    general-purpose character types available in
+    La <xref linkend="datatype-character-table" /> mostra i tipi di dato di
+    caratteri di utilizzo generale disponibili in
     <productname>PostgreSQL</productname>.
    </para>
 
    <para>
-    <acronym>SQL</acronym> defines two primary character types:
-    <type>character varying(<replaceable>n</replaceable>)</type> and
-    <type>character(<replaceable>n</replaceable>)</type>, where <replaceable>n</replaceable>
-    is a positive integer.  Both of these types can store strings up to
-    <replaceable>n</replaceable> characters (not bytes) in length.  An attempt to store a
-    longer string into a column of these types will result in an
-    error, unless the excess characters are all spaces, in which case
-    the string will be truncated to the maximum length. (This somewhat
-    bizarre exception is required by the <acronym>SQL</acronym>
-    standard.) If the string to be stored is shorter than the declared
-    length, values of type <type>character</type> will be space-padded;
-    values of type <type>character varying</type> will simply store the
-    shorter
-    string.
+    <acronym>SQL</acronym> definisce due tipi primari di caratteri:
+    <type>character varying(<replaceable>n</replaceable>)</type> e
+    <type>character(<replaceable>n</replaceable>)</type>, dove <replaceable>n</replaceable> è
+    un intero positivo. Ambedue questi tipi possono memorizzare stringhe fino
+    a <replaceable>n</replaceable> caratteri di lunghezza. Un tentativo di memorizzare
+    una stringa più lunga in una colonna di questi tipi provocherà
+    un errore, a meno che i caratteri eccedenti non siano tutti spazi, in
+    questo caso la stringa verrà troncata alla lunghezza massima. (Questa
+    eccezione un pò bizzarra è richiesta dallo standard
+    <acronym>SQL</acronym>). Se la stringa da memorizzare è più
+    corta della lunghezza dichiarata, nei valori di tipo <type>character</type>
+    la parte eccedente sarà completata con spazi; nei valori di tipo
+    <type>character varying</type> la stringa verrà semplicemente memorizzata
+    con la sua lunghezza più corta.
+    
    </para>
 
    <para>
-    If one explicitly casts a value to <type>character
-    varying(<replaceable>n</replaceable>)</type> or
-    <type>character(<replaceable>n</replaceable>)</type>, then an over-length
-    value will be truncated to <replaceable>n</replaceable> characters without
-    raising an error. (This too is required by the
-    <acronym>SQL</acronym> standard.)
+    Se si effettua una conversione esplicita di un valore a <type>character
+    varying(<replaceable>n</replaceable>)</type> o
+    <type>character(<replaceable>n</replaceable>)</type>, un eventuale eccesso di
+    lunghezza del valore verrà troncato a <replaceable>n</replaceable> caratteri
+    senza generare un errore. (Anche questo è richiesto dallo standard
+    <acronym>SQL</acronym>).
    </para>
 
    <para>
-    The notations <type>varchar(<replaceable>n</replaceable>)</type> and
-    <type>char(<replaceable>n</replaceable>)</type> are aliases for <type>character
-    varying(<replaceable>n</replaceable>)</type> and
-    <type>character(<replaceable>n</replaceable>)</type>, respectively.
-    <type>character</type> without length specifier is equivalent to
-    <type>character(1)</type>. If <type>character varying</type> is used
-    without length specifier, the type accepts strings of any size. The
-    latter is a <productname>PostgreSQL</productname> extension.
+    Le notazioni <type>varchar(<replaceable>n</replaceable>)</type> e
+    <type>char(<replaceable>n</replaceable>)</type> sono, rispettivamente, alias
+    per <type>character varying(<replaceable>n</replaceable>)</type> e
+    <type>character(<replaceable>n</replaceable>)</type>. Il tipo <type>character</type>
+    senza specificatore di lunghezza è equivalente a
+    <type>character(1)</type>. Se <type>character varying</type> viene usato
+    senza specificatore di lunghezza, accetterà stringhe di qualsiasi
+    lunghezza. Quest'ultima è un'estensione di <productname>PostgreSQL</productname>.
+    
    </para>
 
    <para>
-    In addition, <productname>PostgreSQL</productname> provides the
-    <type>text</type> type, which stores strings of any length.
-    Although the type <type>text</type> is not in the
-    <acronym>SQL</acronym> standard, several other SQL database
-    management systems have it as well.
+    Inoltre, <productname>PostgreSQL</productname> fornisce il
+    tipo <type>text</type>, il quale memorizza stringhe di qualsiasi lunghezza.
+    Anche se il tipo <type>text</type> non è nello standard 
+    <acronym>SQL</acronym>, diversi altri sitemi di gestione database SQL
+    lo hanno adottato.
+    
    </para>
 
    <para>
-    Values of type <type>character</type> are physically padded
-    with spaces to the specified width <replaceable>n</replaceable>, and are
-    stored and displayed that way.  However, the padding spaces are
-    treated as semantically insignificant.  Trailing spaces are
-    disregarded when comparing two values of type <type>character</type>,
-    and they will be removed when converting a <type>character</type> value
-    to one of the other string types.  Note that trailing spaces
-    <emphasis>are</emphasis> semantically significant in
-    <type>character varying</type> and <type>text</type> values.
+    I valori di tipo <type>character</type> vengono fisicamente completati con
+    spazi fino alla larghezza specificata <replaceable>n</replaceable>, e vengono
+    memorizzati e visualizzati in questo modo. Tuttavia gli spazi riempitivi sono
+    trattati come semanticamente insignificanti. Gli spazi accodati non vengono presi
+    in considerazione quando si confrontano due valori di tipo <type>character</type>,
+    e vengono invece eliminati quando si converte un valore di tipo
+    <type>character</type> a uno degli altri tipi stringa. Notare che gli spazi accodati
+    <emphasis>sono</emphasis> semanticamente significativi nei valori
+    <type>character varying</type> e <type>text</type>.
+    
    </para>
 
    <para>
-    The storage requirement for a short string (up to 126 bytes) is 1 byte
-    plus the actual string, which includes the space padding in the case of
-    <type>character</type>.  Longer strings have 4 bytes of overhead instead
-    of 1.  Long strings are compressed by the system automatically, so
-    the physical requirement on disk might be less. Very long values are also
-    stored in background tables so that they do not interfere with rapid
-    access to shorter column values. In any case, the longest
-    possible character string that can be stored is about 1 GB. (The
-    maximum value that will be allowed for <replaceable>n</replaceable> in the data
-    type declaration is less than that. It wouldn't be useful to
-    change this because with multibyte character encodings the number of
-    characters and bytes can be quite different. If you desire to
-    store long strings with no specific upper limit, use
-    <type>text</type> or <type>character varying</type> without a length
-    specifier, rather than making up an arbitrary length limit.)
+    La memoria richiesta per una stringa corta (fino a 126 byte) è di 1 byte
+    più la stringa effettiva, che comprende gli spazi riempitivi nel caso di
+    <type>character</type>. Stringhe più lunghe hanno 4 byte in testa invece di
+    di 1. Le stringhe lunghe vengono automaticamente compresse dal sistema, per cui
+    la lunghezza fisica richiesta su disco potrebbe essere minore. Valori molto lunghi vengono anche
+    memorizzati in tabelle di background in modo che non interferiscano con l'accesso
+    rapido a valori di colonna più corti. In ogni caso, la più lunga
+    stringa di caratteri che può essere memorizzata è di circa 1 GB. (Il
+    valore massimo consentito per <replaceable>n</replaceable> nella dichiarazione del tipo dato
+    è inferiore a questo. Non sarebbe molto utile cambiare questo comportamento
+    perchè con la codificazione di caratteri multibyte, il numero di
+    caratteri e di byte può essere comunque abbastanza diverso. Se si desidera
+    memorizzare stringhe lunghe con nessun limite superiore specificato, usare
+    <type>text</type> o <type>character varying</type> senza specificatore di
+    lunghezza, piuttosto che impostare un limite di lunghezza arbitrario).
+
    </para>
 
    <tip>

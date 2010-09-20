@@ -2,30 +2,30 @@
 <!-- $PostgreSQL$ -->
 
 <sect1 id="arrays">
- <title>Arrays</title>
+ <title>Array</title>
 
  <indexterm>
   <primary>array</primary>
  </indexterm>
 
  <para>
-  <productname>PostgreSQL</productname> allows columns of a table to be
-  defined as variable-length multidimensional arrays. Arrays of any
-  built-in or user-defined base type, enum type, or composite type
-  can be created.
-  Arrays of domains are not yet supported.
+  <productname>PostgreSQL</productname> consente che le colonne di una
+  tabella siano definite come array multidimensionali a lunghezza variabile.
+  Si possono creare array incorporati o definiti dall'utente, di tipo enum
+  o di tipo composto.
+  Gli array di dominio non sono finora gestiti. 
  </para>
 
  <sect2 id="arrays-declaration">
-  <title>Declaration of Array Types</title>
+  <title>Dichiarare i tipi Array</title>
 
   <indexterm>
    <primary>array</primary>
-   <secondary>declaration</secondary>
+   <secondary>dichiarazione</secondary>
   </indexterm>
 
  <para>
-  To illustrate the use of array types, we create this table:
+  Per spiegare l'uso dei tipi array, creare questa tabella:
 <programlisting>
 CREATE TABLE sal_emp (
     name            text,
@@ -33,21 +33,22 @@ CREATE TABLE sal_emp (
     schedule        text[][]
 );
 </programlisting>
-  As shown, an array data type is named by appending square brackets
-  (<literal>[]</literal>) to the data type name of the array elements.  The
-  above command will create a table named
-  <structname>sal_emp</structname> with a column of type
-  <type>text</type> (<structfield>name</structfield>), a
-  one-dimensional array of type <type>integer</type>
-  (<structfield>pay_by_quarter</structfield>), which represents the
-  employee's salary by quarter, and a two-dimensional array of
-  <type>text</type> (<structfield>schedule</structfield>), which
-  represents the employee's weekly schedule.
+  Come mostrato, un tipo dato array viene creato aggiungendo parentesi quadre
+  (<literal>[]</literal>) al nome del tipo di dato degli elementi dell'array. Il comando
+  mostrato sopra crea una tabella chiamata
+  <structname>sal_emp</structname> con una colonna di tipo
+  <type>text</type> (<structfield>name</structfield>), un
+  array di tipo unidimensionale <type>integer</type>
+  (<structfield>pay_by_quarter</structfield>), che rappresenta il
+  salario trimestrale del dipendente, e un array a due dimensioni di tipo
+  <type>text</type> (<structfield>schedule</structfield>), che
+  rappresenta il piano di lavoro settimanale dell'impiegato.
+  
  </para>
 
  <para>
-  The syntax for <command>CREATE TABLE</command> allows the exact size of
-  arrays to be specified, for example:
+  La sintassi di <command>CREATE TABLE</command> consente di specificare
+  la dimensione esatta dell'array, per esempio:
 
 <programlisting>
 CREATE TABLE tictactoe (
@@ -55,88 +56,92 @@ CREATE TABLE tictactoe (
 );
 </programlisting>
 
-  However, the current implementation ignores any supplied array size
-  limits, i.e., the behavior is the same as for arrays of unspecified
-  length.
+  Tuttavia, l'implementazione corrente non impone il rispetto dei limiti di
+  dimensione dell'array &mdash; il comportamento è identico 
+  agli array di lunghezza non specificata.
  </para>
 
  <para>
-  The current implementation does not enforce the declared
-  number of dimensions either.  Arrays of a particular element type are
-  all considered to be of the same type, regardless of size or number
-  of dimensions.  So, declaring the array size or number of dimensions in
-  <command>CREATE TABLE</command> is simply documentation; it does not
-  affect run-time behavior.
+  L'implementazione corrente non impone di dichiarare neanche
+  il numero delle dimensioni. Gli array di un particolare tipo di elemento sono tutti
+  considerati essere dello stesso tipo, senza tener conto della dimensione o del numero
+  di dimensioni. Per cui, dichiarare il numero di dimensioni o il formato in
+  <command>CREATE TABLE</command> è semplice documentazione, in quanto ciò non
+  influisce sul comportamento al momento dell'esecuzione.
  </para>
 
  <para>
-  An alternative syntax, which conforms to the SQL standard by using
-  the keyword <literal>ARRAY</literal>, can be used for one-dimensional arrays.
-  <structfield>pay_by_quarter</structfield> could have been defined
-  as:
+  Una sintassi alternativa, conforme allo standard SQL, può 
+  essere usata per gli array unidimensionali.
+  <structfield>pay_by_quarter</structfield> potrebbe essere definito
+  come:
 <programlisting>
     pay_by_quarter  integer ARRAY[4],
 </programlisting>
-  Or, if no array size is to be specified:
+    Oppure, se non viene specificata la dimesione dell'array:
 <programlisting>
     pay_by_quarter  integer ARRAY,
 </programlisting>
-  As before, however, <productname>PostgreSQL</productname> does not enforce the
-  size restriction in any case.
+  Come prima, tuttavia, <productname>PostgreSQL</productname> non impone restrizioni di dimensione in nessun caso.
  </para>
  </sect2>
 
  <sect2 id="arrays-input">
-  <title>Array Value Input</title>
+  <title>Inserimento di valori negli Array</title>
 
   <indexterm>
    <primary>array</primary>
-   <secondary>constant</secondary>
+   <secondary>costante</secondary>
   </indexterm>
 
   <para>
-   To write an array value as a literal constant, enclose the element
-   values within curly braces and separate them by commas.  (If you
-   know C, this is not unlike the C syntax for initializing
-   structures.)  You can put double quotes around any element value,
-   and must do so if it contains commas or curly braces.  (More
-   details appear below.)  Thus, the general format of an array
-   constant is the following:
+   Per scrivere un valore di array come una costante letterale, racchiudere i valori
+   degli elementi tra parentesi graffe separarati da virgole. (Se si conosce
+   il C, questo non è dissimile alla sintassi del C per l'inizializzazione delle
+   strutture). Potete inserire doppi apici intorno ad ogni valore dell'elemento,
+   dovrete farlo se esso contiene virgole o parentesi graffe. (Maggiori
+   dettagli appaiono sotto). Quindi, il formato generale di una costante array
+   è il seguente:
+   
 <synopsis>
 '{ <replaceable>val1</replaceable> <replaceable>delim</replaceable> <replaceable>val2</replaceable> <replaceable>delim</replaceable> ... }'
 </synopsis>
-   where <replaceable>delim</replaceable> is the delimiter character
-   for the type, as recorded in its <literal>pg_type</literal> entry.
-   Among the standard data types provided in the
-   <productname>PostgreSQL</productname> distribution, all use a comma
-   (<literal>,</literal>), except for type <type>box</type> which uses a semicolon
-   (<literal>;</literal>). Each <replaceable>val</replaceable> is
-   either a constant of the array element type, or a subarray. An example
-   of an array constant is:
+
+   dove <replaceable>delim</replaceable> è il carattere di delimitazione
+   per il tipo, come registrato nelle sua voce <literal>pg_type</literal>.
+   Tra i tipi dati standard forniti nella distribuzione
+   <productname>PostgreSQL</productname>, il tipo
+   <literal>box</literal> usa una punto e virgola (<literal>;</literal>) ma tutti gli altri
+   usano la virgola (<literal>,</literal>). Ogni <replaceable>val</replaceable> può
+   essere una costante di tipo elemento dell'array, o un subarray. Un esempio
+   di una costante array è:
+
 <programlisting>
 '{{1,2,3},{4,5,6},{7,8,9}}'
 </programlisting>
-   This constant is a two-dimensional, 3-by-3 array consisting of
-   three subarrays of integers.
+   Questa costante è un array bidimensionale 3-per-3, consistente in
+   tre subarray di interi.
   </para>
 
   <para>
-   To set an element of an array constant to NULL, write <literal>NULL</literal>
-   for the element value.  (Any upper- or lower-case variant of
-   <literal>NULL</literal> will do.)  If you want an actual string value
-   <quote>NULL</quote>, you must put double quotes around it.
+   Per impostare una elemento di un array a NULL, scrivere <literal>NULL</literal>
+   come valore dell'elemento. (Sia i caratteri maiuscoli che i minuscoli vanno bene
+   per <literal>NULL</literal>). Se si vuole un effettivo valore di stringa
+   <quote>NULL</quote>, bisogna racchiuderlo tra doppi apici.
+   
   </para>
 
   <para>
-   (These kinds of array constants are actually only a special case of
-   the generic type constants discussed in <xref
-   linkend="sql-syntax-constants-generic"/>.  The constant is initially
-   treated as a string and passed to the array input conversion
-   routine.  An explicit type specification might be necessary.)
+   (Questi tipi di array costanti sono attualmente solo un caso speciale delle
+   costanti di tipo generico discusse in <xref
+   linkend="sql-syntax-constants-generic" />. La costante viene inizialmente
+   trattata come una stringa e passata poi all'input della routine di conversione 
+   array. Potrebbe essere necessario specificare esplicitamente il tipo).
+   
   </para>
 
   <para>
-   Now we can show some <command>INSERT</command> statements:
+   Si possono ora vedere alcuni comandi <command>INSERT</command>:
 
 <programlisting>
 INSERT INTO sal_emp
@@ -152,7 +157,7 @@ INSERT INTO sal_emp
   </para>
 
  <para>
-  The result of the previous two inserts looks like this:
+  Il risultato dei precedenti due inserimenti sarà simile a questo:
 
 <programlisting>
 SELECT * FROM sal_emp;
@@ -165,8 +170,8 @@ SELECT * FROM sal_emp;
  </para>
 
  <para>
-  Multidimensional arrays must have matching extents for each
-  dimension. A mismatch causes an error, for example:
+    Gli array multidimansionali devono avere corrispondenti intervalli per ogni
+    dimensione. Una non-corrispondenza causa un errore, per esempio:
 
 <programlisting>
 INSERT INTO sal_emp
@@ -178,7 +183,7 @@ ERROR:  multidimensional arrays must have array expressions with matching dimens
  </para>
 
  <para>
-  The <literal>ARRAY</literal> constructor syntax can also be used:
+  Si può anche utilizzare la sintassi del costruttore di <literal>ARRAY</literal>:
 <programlisting>
 INSERT INTO sal_emp
     VALUES ('Bill',
@@ -190,28 +195,29 @@ INSERT INTO sal_emp
     ARRAY[20000, 25000, 25000, 25000],
     ARRAY[['breakfast', 'consulting'], ['meeting', 'lunch']]);
 </programlisting>
-  Notice that the array elements are ordinary SQL constants or
-  expressions; for instance, string literals are single quoted, instead of
-  double quoted as they would be in an array literal.  The <literal>ARRAY</literal>
-  constructor syntax is discussed in more detail in
-  <xref linkend="sql-syntax-array-constructors"/>.
+  Notare che gli elementi degli array sono normali costanti SQL o
+  espressioni; per esempio, i caratteri sono racchiusi tra singoli apici, invece dei
+  doppi apici. La sintassi del costruttore
+  di <literal>ARRAY</literal> viene discussa con maggiori dettagli in
+  <xref linkend="sql-syntax-array-constructors" />.
+  
  </para>
  </sect2>
 
  <sect2 id="arrays-accessing">
-  <title>Accessing Arrays</title>
+  <title>Accedere agli array</title>
 
   <indexterm>
    <primary>array</primary>
-   <secondary>accessing</secondary>
+   <secondary>accedere</secondary>
   </indexterm>
 
  <para>
-  Now, we can run some queries on the table.
-  First, we show how to access a single element of an array.
-  This query retrieves the names of the employees whose pay changed in
-  the second quarter:
-
+  Si possono ora eseguire alcune query sulla tabella.
+  Prima, si vedrà come accedere ad un singolo elemento di array alla volta.
+  Questa query richiama i nomi degli impiegati la cui paga è stata
+  cambiata nel secondo trimestre:
+     
 <programlisting>
 SELECT name FROM sal_emp WHERE pay_by_quarter[1] &lt;&gt; pay_by_quarter[2];
 
@@ -221,15 +227,15 @@ SELECT name FROM sal_emp WHERE pay_by_quarter[1] &lt;&gt; pay_by_quarter[2];
 (1 row)
 </programlisting>
 
-  The array subscript numbers are written within square brackets.
-  By default <productname>PostgreSQL</productname> uses a
-  one-based numbering convention for arrays, that is,
-  an array of <replaceable>n</replaceable> elements starts with <literal>array[1]</literal> and
-  ends with <literal>array[<replaceable>n</replaceable>]</literal>.
- </para>
+  I numeri di indice dell'array sono scritti tra parentesi quadre.
+  Come impostazione predefinita <productname>PostgreSQL</productname> usa per
+  gli array la convenzione di numerazione basata su uno, cioè:
+  un array di <replaceable>n</replaceable> elementi che cominciano con <literal>array[1]</literal> e
+  terminano con <literal>array[<replaceable>n</replaceable>]</literal>.
+</para>  
 
  <para>
-  This query retrieves the third quarter pay of all employees:
+  Questa query richiama la paga del terzo trimestre di tutti gli impiegati:
 
 <programlisting>
 SELECT pay_by_quarter[3] FROM sal_emp;
@@ -243,11 +249,12 @@ SELECT pay_by_quarter[3] FROM sal_emp;
  </para>
 
  <para>
-  We can also access arbitrary rectangular slices of an array, or
-  subarrays.  An array slice is denoted by writing
-  <literal><replaceable>lower-bound</replaceable>:<replaceable>upper-bound</replaceable></literal>
-  for one or more array dimensions.  For example, this query retrieves the first
-  item on Bill's schedule for the first two days of the week:
+  Si può anche accedere ad una parte rettangolare di un array, o di un
+  sotto-array. Una parte di array è denotata scrivendo
+  <literal><replaceable>limite-inferiore</replaceable>:<replaceable>limite-superiore</replaceable></literal>
+  per una o più dimensioni dell'array. Per esempio, questa query richiama il primo
+  elemento del piano di lavoro di Bill per i primi due giorni della settimana:
+  
 
 <programlisting>
 SELECT schedule[1:2][1:1] FROM sal_emp WHERE name = 'Bill';
@@ -258,11 +265,12 @@ SELECT schedule[1:2][1:1] FROM sal_emp WHERE name = 'Bill';
 (1 row)
 </programlisting>
 
-  If any dimension is written as a slice, i.e., contains a colon, then all
-  dimensions are treated as slices.  Any dimension that has only a single
-  number (no colon) is treated as being from <literal>1</literal>
-  to the number specified.  For example, <literal>[2]</literal> is treated as
-  <literal>[1:2]</literal>, as in this example:
+  Se una dimesione è scritta come una parte, cioè contiene un due punti,
+  allora tutte le dimensioni vengono trattate come una parte. Ogni dimesione che ha un solo
+  numero (senza due punti) viene trattata come se andasse da  <literal>1</literal>
+  al numero specificato. Per esempio, <literal>[2]</literal> viene trattato come se fosse
+  scritto <literal>[1:2]</literal>, come in questo esempio:
+  
 
 <programlisting>
 SELECT schedule[1:2][2] FROM sal_emp WHERE name = 'Bill';
@@ -273,35 +281,35 @@ SELECT schedule[1:2][2] FROM sal_emp WHERE name = 'Bill';
 (1 row)
 </programlisting>
 
-  To avoid confusion with the non-slice case, it's best to use slice syntax
-  for all dimensions, e.g., <literal>[1:2][1:1]</literal>, not <literal>[2][1:1]</literal>.
+    Per evitare confusione, è meglio usare la sintassi di intervallo per tutte le dimensioni, ad es. 
+    <literal>[1:2][1:1]</literal>, non <literal>[2][1:1]</literal>.
  </para>
 
  <para>
-  An array subscript expression will return null if either the array itself or
-  any of the subscript expressions are null.  Also, null is returned if a
-  subscript is outside the array bounds (this case does not raise an error).
-  For example, if <literal>schedule</literal>
-  currently has the dimensions <literal>[1:3][1:2]</literal> then referencing
-  <literal>schedule[3][3]</literal> yields NULL.  Similarly, an array reference
-  with the wrong number of subscripts yields a null rather than an error.
+  Un espressione di indice di array restituirà null se lo stesso array o
+  una delle espressioni di indice è null. Viene restituito null anche se,
+  un indice è fuori dei limiti dell'array (questo caso non genera un errore).
+  Per esempio se  <literal>schedule</literal>
+  avesse le dimensioni <literal>[1:3][1:2]</literal> il riferimento
+  <literal>schedule[3][3]</literal> produrrebbe NULL. Similmente, un riferimento di array
+  con il numero di indici errato produrrebbe un null anzichè un errore.
+  
  </para>
 
  <para>
-  An array slice expression likewise yields null if the array itself or
-  any of the subscript expressions are null.  However, in other
-  cases such as selecting an array slice that
-  is completely outside the current array bounds, a slice expression
-  yields an empty (zero-dimensional) array instead of null.  (This
-  does not match non-slice behavior and is done for historical reasons.)
-  If the requested slice partially overlaps the array bounds, then it
-  is silently reduced to just the overlapping region instead of
-  returning null.
+  Un espressione di una parte di array produce similmente null se l'array stesso o
+  una delle espressioni di indice è null. Tuttavia, in altri casi,
+  come la selezione di una parte di array che
+  è completamente al di fuori dei limiti correnti dell'array, 
+  un'espressione di parte dell'array produrrà un array vuoto (di dimensione uguale a 0) invece di null.
+  Se la parte richiesta sovrappone parzialmente i limiti dell'array, essa viene
+  automaticamente ridotta alla sola regione di sovrapposizione invece di ritornare null.
+  
  </para>
 
  <para>
-  The current dimensions of any array value can be retrieved with the
-  <function>array_dims</function> function:
+  Le dimensioni correnti di ogni valore dell'array possono essere recuperate con la
+  funzione <function>array_dims</function>:
 
 <programlisting>
 SELECT array_dims(schedule) FROM sal_emp WHERE name = 'Carol';
@@ -312,12 +320,13 @@ SELECT array_dims(schedule) FROM sal_emp WHERE name = 'Carol';
 (1 row)
 </programlisting>
 
-  <function>array_dims</function> produces a <type>text</type> result,
-  which is convenient for people to read but perhaps inconvenient
-  for programs.  Dimensions can also be retrieved with
-  <function>array_upper</function> and <function>array_lower</function>,
-  which return the upper and lower bound of a
-  specified array dimension, respectively:
+  Il risultato prodotto da <function>array_dims</function> è di tipo <type>text</type>,
+  che è conveniente per le persone che lo leggono ma forse non è altrettanto
+  conveniente per i programmi. Le dimensioni possono anche essere recuperate con
+  <function>array_upper</function> e con <function>array_lower</function>, che
+  restituiscono, rispettivamente, i limiti superiore e inferiore di una specificata
+  dimensione dell'array:
+  
 
 <programlisting>
 SELECT array_upper(schedule, 1) FROM sal_emp WHERE name = 'Carol';
@@ -328,8 +337,7 @@ SELECT array_upper(schedule, 1) FROM sal_emp WHERE name = 'Carol';
 (1 row)
 </programlisting>
 
- <function>array_length</function> will return the length of a specified
- array dimension:
+    <function>array_length</function> ritornerà la lunghezza di una specificata dimensione di un array:
 
 <programlisting>
 SELECT array_length(schedule, 1) FROM sal_emp WHERE name = 'Carol';
@@ -343,36 +351,36 @@ SELECT array_length(schedule, 1) FROM sal_emp WHERE name = 'Carol';
  </sect2>
 
  <sect2 id="arrays-modifying">
-  <title>Modifying Arrays</title>
+  <title>Modificare gli Array</title>
 
   <indexterm>
    <primary>array</primary>
-   <secondary>modifying</secondary>
+   <secondary>modificare</secondary>
   </indexterm>
 
  <para>
-  An array value can be replaced completely:
+    Un valore di array può essere sostituito completamente:
 
 <programlisting>
 UPDATE sal_emp SET pay_by_quarter = '{25000,25000,27000,27000}'
     WHERE name = 'Carol';
 </programlisting>
 
-  or using the <literal>ARRAY</literal> expression syntax:
+  oppure utilizzando la sintassi espressione <literal>ARRAY</literal>:
 
 <programlisting>
 UPDATE sal_emp SET pay_by_quarter = ARRAY[25000,25000,27000,27000]
     WHERE name = 'Carol';
 </programlisting>
 
-  An array can also be updated at a single element:
+  Un array può anche essere aggiornato in un singolo elemento:
 
 <programlisting>
 UPDATE sal_emp SET pay_by_quarter[4] = 15000
     WHERE name = 'Bill';
 </programlisting>
 
-  or updated in a slice:
+  oppure aggiornato in una parte:
 
 <programlisting>
 UPDATE sal_emp SET pay_by_quarter[1:2] = '{27000,27000}'
@@ -382,24 +390,26 @@ UPDATE sal_emp SET pay_by_quarter[1:2] = '{27000,27000}'
  </para>
 
  <para>
-  A stored array value can be enlarged by assigning to elements not already
-  present.  Any positions between those previously present and the newly
-  assigned elements will be filled with nulls.  For example, if array
-  <literal>myarray</literal> currently has 4 elements, it will have six
-  elements after an update that assigns to <literal>myarray[6]</literal>;
-  <literal>myarray[5]</literal> will contain null.
-  Currently, enlargement in this fashion is only allowed for one-dimensional
-  arrays, not multidimensional arrays.
+  Un array memorizzato può essere allargato assegnandogli elementi/o non
+  già presenti. Ogni posizione tra quelle precedentemente presenti e gli elementi/o
+  ora assegnati sarà riempito con null. Per esempio, se l'array
+  <literal>myarray</literal> attualmente ha 4 elementi, esso avrà sei
+  elementi, dopo un aggiornamento che assegnerà a <literal>myarray[6]</literal>;
+  <literal>myarray[5]</literal> conterrà un null.
+  Attualmente, l'allargamento in questo modo è solamente consentito per array
+  unidimensionali e non per array multidimensionali.
+  
  </para>
 
  <para>
-  Subscripted assignment allows creation of arrays that do not use one-based
-  subscripts.  For example one might assign to <literal>myarray[-2:7]</literal> to
-  create an array with subscript values from -2 to 7.
+  L'assegnazione di indici permette la creazione di array che non usano indici
+  che partono da 1. Per esempio, si potrebbe assegnare a <literal>myarray[-2:7]</literal> per
+  creare un array con valori degli indici che vanno da -2 a 7.
+  
  </para>
 
  <para>
-  New array values can also be constructed using the concatenation operator,
+  Nuovi valori di array possono essere costruiti usando gli operatori di concatenazione,
   <literal>||</literal>:
 <programlisting>
 SELECT ARRAY[1,2] || ARRAY[3,4];
@@ -417,16 +427,18 @@ SELECT ARRAY[5,6] || ARRAY[[1,2],[3,4]];
  </para>
 
  <para>
-  The concatenation operator allows a single element to be pushed onto the
-  beginning or end of a one-dimensional array. It also accepts two
-  <replaceable>N</replaceable>-dimensional arrays, or an <replaceable>N</replaceable>-dimensional
-  and an <replaceable>N+1</replaceable>-dimensional array.
+  
+    L'operatore di concatenazione consente ad un singolo elemento di essere spinto
+  all'inizio o alla fine di un array unidimensionale. Esso accetta anche due
+  array <replaceable>N</replaceable>-dimensionali, o un array <replaceable>N</replaceable>-dimensionale
+  e uno <replaceable>N+1</replaceable>-dimensionale.
  </para>
 
  <para>
-  When a single element is pushed onto either the beginning or end of a
-  one-dimensional array, the result is an array with the same lower bound
-  subscript as the array operand. For example:
+  Quando un singolo elemento viene spinto all'inizio o alla fine di un array
+  unidimensionale, il risultato è un array con lo stesso limite inferiore
+  di indice dell'operatore dell'array. Per esempio:
+  
 <programlisting>
 SELECT array_dims(1 || '[0:1]={2,3}'::int[]);
  array_dims
@@ -443,10 +455,11 @@ SELECT array_dims(ARRAY[1,2] || 3);
  </para>
 
  <para>
-  When two arrays with an equal number of dimensions are concatenated, the
-  result retains the lower bound subscript of the left-hand operand's outer
-  dimension. The result is an array comprising every element of the left-hand
-  operand followed by every element of the right-hand operand. For example:
+  Quando due array con un uguale numero di dimensioni vengono concatenati, il risultato
+  mantiene il limite inferiore della dimensione esterna dell'operatore di sinistra. 
+  Il risultato &egrave; un array comprendente ogni elemento dell'operando
+  di sinistra seguito da ogni elemento dell'operando di destra. Per esempio:
+  
 <programlisting>
 SELECT array_dims(ARRAY[1,2] || ARRAY[3,4,5]);
  array_dims
@@ -463,11 +476,12 @@ SELECT array_dims(ARRAY[[1,2],[3,4]] || ARRAY[[5,6],[7,8],[9,0]]);
  </para>
 
  <para>
-  When an <replaceable>N</replaceable>-dimensional array is pushed onto the beginning
-  or end of an <replaceable>N+1</replaceable>-dimensional array, the result is
-  analogous to the element-array case above. Each <replaceable>N</replaceable>-dimensional
-  sub-array is essentially an element of the <replaceable>N+1</replaceable>-dimensional
-  array's outer dimension. For example:
+  Quando un array <replaceable>N</replaceable>-dimensionale viene spinto all'inizio o
+  alla fine di un array <replaceable>N+1</replaceable>-dimensionale, il risultato è
+  identico al caso visto sopra. Ogni sotto-array <replaceable>N</replaceable>-dimensionale
+  è un elemento dell'array di dimensione esterna <replaceable>N+1</replaceable>-dimensionale.
+  per esempio:
+
 <programlisting>
 SELECT array_dims(ARRAY[1,2] || ARRAY[[3,4],[5,6]]);
  array_dims
@@ -478,15 +492,16 @@ SELECT array_dims(ARRAY[1,2] || ARRAY[[3,4],[5,6]]);
  </para>
 
  <para>
-  An array can also be constructed by using the functions
+  Un array puè essere costruito anche usando le funzioni
   <function>array_prepend</function>, <function>array_append</function>,
-  or <function>array_cat</function>. The first two only support one-dimensional
-  arrays, but <function>array_cat</function> supports multidimensional arrays.
+  o <function>array_cat</function>. Le prime due supportano solo array
+  unidirezionali, ma <function>array_cat</function> supporta array multidimensionali.
 
-  Note that the concatenation operator discussed above is preferred over
-  direct use of these functions. In fact, these functions primarily exist for use
-  in implementing the concatenation operator. However, they might be directly
-  useful in the creation of user-defined aggregates. Some examples:
+  Notare che l'operatore di concatenamento discusso sopra è preferito nell'uso
+  diretto di queste funzioni. Infatti, le funzioni esistono principalmente per usare
+  nelle implementazioni l'operatore di concatenamento. Tuttavia, esse possono essere
+  direttamente utilizzate in creazioni di aggregati definiti dall'utente. Alcuni esempi:
+
 
 <programlisting>
 SELECT array_prepend(1, ARRAY[2,3]);
@@ -522,17 +537,17 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
  </sect2>
 
  <sect2 id="arrays-searching">
-  <title>Searching in Arrays</title>
+  <title>Cercare negli Array</title>
 
   <indexterm>
    <primary>array</primary>
-   <secondary>searching</secondary>
+   <secondary>cercare</secondary>
   </indexterm>
 
  <para>
-  To search for a value in an array, each value must be checked.
-  This can be done manually, if you know the size of the array.
-  For example:
+  Per ricercare un valore in un array, bisogna controllare ogni valore
+  dell'array. Questo può essere fatto a mano, se si conosce la
+  dimensione dell'array. Per esempio:
 
 <programlisting>
 SELECT * FROM sal_emp WHERE pay_by_quarter[1] = 10000 OR
@@ -541,17 +556,19 @@ SELECT * FROM sal_emp WHERE pay_by_quarter[1] = 10000 OR
                             pay_by_quarter[4] = 10000;
 </programlisting>
 
-  However, this quickly becomes tedious for large arrays, and is not
-  helpful if the size of the array is unknown. An alternative method is
-  described in <xref linkend="functions-comparisons"/>. The above
-  query could be replaced by:
+  Tuttavia, questo diventa estremamente noioso per grossi array, e non è
+  di grande aiuto se la dimensione dell'array è dubbia. Un metodo alternativo
+  è descritto in <xref linkend="functions-comparisons" />. La query vista
+  sopra può essere rimpiazzata con:
+  
 
 <programlisting>
 SELECT * FROM sal_emp WHERE 10000 = ANY (pay_by_quarter);
 </programlisting>
 
-  In addition, you can find rows where the array has all values
-  equal to 10000 with:
+  In aggiunta, si potrebbero cercare le righe in cui l'array ha tutti i valori
+  uguali a 10000 con:
+
 
 <programlisting>
 SELECT * FROM sal_emp WHERE 10000 = ALL (pay_by_quarter);
@@ -560,8 +577,8 @@ SELECT * FROM sal_emp WHERE 10000 = ALL (pay_by_quarter);
  </para>
 
  <para>
-  Alternatively, the <function>generate_subscripts</function> function can be used.
-  For example:
+  In alternativa, può essere usata la funzione <function>generate_subscripts</function>.
+  Per esempio:
 
 <programlisting>
 SELECT * FROM
@@ -571,22 +588,23 @@ SELECT * FROM
  WHERE pay_by_quarter[s] = 10000;
 </programlisting>
 
-  This function is described in <xref linkend="functions-srf-subscripts"/>.
+  Questa funzione è descritta in <xref linkend="functions-srf-subscripts"/>.
  </para>
 
  <tip>
   <para>
-   Arrays are not sets; searching for specific array elements
-   can be a sign of database misdesign.  Consider
-   using a separate table with a row for each item that would be an
-   array element.  This will be easier to search, and is likely to
-   scale better for a large number of elements.
+   Gli array non sono insiemi; ricerche per uno specifico elemento di array
+   possono essere un segno di cattiva progettazione del database. Considerare
+   la possibilità di usare una tabella separata con una riga per ogni elemento che 
+   sarebbe un elemento dell'array. Questo faciliterà la ricerca, e sarà 
+   verosimilmente un miglioramento per grandi numeri di elementi.
+   
   </para>
  </tip>
  </sect2>
 
  <sect2 id="arrays-io">
-  <title>Array Input and Output Syntax</title>
+  <title>Sintassi di input e output degli array</title>
 
   <indexterm>
    <primary>array</primary>
@@ -594,42 +612,45 @@ SELECT * FROM
   </indexterm>
 
   <para>
-   The external text representation of an array value consists of items that
-   are interpreted according to the I/O conversion rules for the array's
-   element type, plus decoration that indicates the array structure.
-   The decoration consists of curly braces (<literal>{</literal> and <literal>}</literal>)
-   around the array value plus delimiter characters between adjacent items.
-   The delimiter character is usually a comma (<literal>,</literal>) but can be
-   something else: it is determined by the <literal>typdelim</literal> setting
-   for the array's element type.  Among the standard data types provided
-   in the <productname>PostgreSQL</productname> distribution, all use a comma,
-   except for type <type>box</type>, which uses a semicolon (<literal>;</literal>).
-   In a multidimensional array, each dimension (row, plane,
-   cube, etc.) gets its own level of curly braces, and delimiters
-   must be written between adjacent curly-braced entities of the same level.
+   La rappresentazione in testo di un valore di array consiste di elementi che
+   sono interpretati secondo le regole di conversione di I/O per il tipo elemento di
+   array, più un contorno che indica la struttura dell'array.
+   Il contorno consiste di parentesi graffe (<literal>{</literal> e <literal>}</literal>)
+   attorno ai valori dell'array più caratteri di delimitazione tra elementi adiacenti.
+   Il carattere di delimitazione è normalmente una virgola (<literal>,</literal>) ma può 
+   anche essere qualche altro: dipende dall'impostazione di <literal>typdelim</literal> per il 
+   tipo elemento di array. (Tra i tipi dati standard forniti nella distribuzione
+   <productname>PostgreSQL</productname>, il tipo
+   <literal>box</literal> usa punto e virgola (<literal>;</literal>) ma tutti gli altri
+   usano la virgola). In un array multidimensionale, ogni dimensione (riga, piano,
+   cubo, ecc.) accetta il suo proprio livello di parentesi graffe, ed i delimitatori 
+   devono essere scritti tra adiacenti entità parentesi graffe dello stesso livello.
+   
   </para>
 
   <para>
-   The array output routine will put double quotes around element values
-   if they are empty strings, contain curly braces, delimiter characters,
-   double quotes, backslashes, or white space, or match the word
-   <literal>NULL</literal>.  Double quotes and backslashes
-   embedded in element values will be backslash-escaped.  For numeric
-   data types it is safe to assume that double quotes will never appear, but
-   for textual data types one should be prepared to cope with either the presence
-   or absence of quotes.
+   La routine di output degli array metterà doppi apici intorno ai valori di elementi
+   se sono stringhe vuote, se contengono parentesi graffe, caratteri delimitatori,
+   doppi apici, barre inverse, o spazi vuoti, o contengono la parola
+   <literal>NULL</literal>. Doppi apici e barre inverse incorporate
+   dentro valori di elementi saranno preceduti da barre inverse. Per tipi dati numerici
+    è sicuro presumere che i doppi apici non compariranno mai, ma per i
+   tipi dati testuali bisognerà essere preparati a far fronte alla presenza
+   o all'assenza di apici.
+   
   </para>
 
   <para>
-   By default, the lower bound index value of an array's dimensions is
-   set to one.  To represent arrays with other lower bounds, the array
-   subscript ranges can be specified explicitly before writing the
-   array contents.
-   This decoration consists of square brackets (<literal>[]</literal>)
-   around each array dimension's lower and upper bounds, with
-   a colon (<literal>:</literal>) delimiter character in between. The
-   array dimension decoration is followed by an equal sign (<literal>=</literal>).
-   For example:
+   Per impostazione predefinita, il valore dell'indice del limite inferiore della dimensione di un array è
+   impostato a uno. Per rappresentare array con altri limiti inferiori, la gamma degli indici dell'array
+   deve essere specificata esplicitamente prima di scrivere il
+   contenuto dell'array.
+   Questo consiste nel contorno di parentesi quadre (<literal>[]</literal>)
+   intorno ai limiti inferiore e superiore di dimensione dell'elemento dell'array, con
+   un carattere delimitatore due punti (<literal>:</literal>) posto tra di loro. Il
+   contorno della dimensione di un array è seguito da un segno uguale (<literal>=</literal>).
+   Per esempio:
+   
 <programlisting>
 SELECT f1[1][-2][3] AS e1, f1[1][-1][5] AS e2
  FROM (SELECT '[1:1][-2:-1][3:5]={{{1,2,3},{4,5,6}}}'::int[] AS f1) AS ss;
@@ -639,70 +660,76 @@ SELECT f1[1][-2][3] AS e1, f1[1][-1][5] AS e2
   1 |  6
 (1 row)
 </programlisting>
-   The array output routine will include explicit dimensions in its result
-   only when there are one or more lower bounds different from one.
+   La routine di output degli array includerà dimensioni esplicite nel suo risultato
+   solo quando ci sono uno o più limiti inferiori diversi da uno.
+   
   </para>
 
   <para>
-   If the value written for an element is <literal>NULL</literal> (in any case
-   variant), the element is taken to be NULL.  The presence of any quotes
-   or backslashes disables this and allows the literal string value
-   <quote>NULL</quote> to be entered.  Also, for backwards compatibility with
-   pre-8.2 versions of <productname>PostgreSQL</productname>, the <xref
-   linkend="guc-array-nulls"/> configuration parameter can be turned
-   <literal>off</literal> to suppress recognition of <literal>NULL</literal> as a NULL.
+   Se il valore scritto per un elemento è <literal>NULL</literal> (sia maiuscolo
+   che minuscolo), l'elemento viene considerato essere NULL. La presenza di apici
+   o barre inverse disabilita ciò e consente l'immissione del valore stringa
+   <quote>NULL</quote>. Inoltre, per la compatibilità all'indietro con la
+   la versione precedente la 8.2 di <productname>PostgreSQL</productname>, il parametro di
+   configurazione <xref linkend="guc-array-nulls" /> può essere messo a
+   <literal>off</literal> per sopprimere l'identificazione di <literal>NULL</literal> come un NULL.
+   
   </para>
 
   <para>
-   As shown previously, when writing an array value you can use double
-   quotes around any individual array element. You <emphasis>must</emphasis> do so
-   if the element value would otherwise confuse the array-value parser.
-   For example, elements containing curly braces, commas (or the data type's
-   delimiter character), double quotes, backslashes, or leading or trailing
-   whitespace must be double-quoted.  Empty strings and strings matching the
-   word <literal>NULL</literal> must be quoted, too.  To put a double quote or
-   backslash in a quoted array element value, use escape string syntax
-   and precede it with a backslash. Alternatively, you can avoid quotes and use
-   backslash-escaping to protect all data characters that would otherwise
-   be taken as array syntax.
+   Come visto precedentemente, quando si scrive un valore di array si possono usare i doppi
+   apici intorno ad ogni individuale elemento dell'array. <emphasis>Bisogna</emphasis> fare così
+   se il valore dell'elemento può confondere l'analizzatore di valori dell'array.
+   In particolare, elementi contenenti parentesi graffe, virgole (o qualsiasi delimitatore
+   di caratteri), doppi apici, barre inverse, o spazi bianchi in testa o in coda
+   devono essere racchiusi tra doppi apici. Anche le stringhe vuote e le stringhe che contengono la
+   parola <literal>NULL</literal> devono essere racchiuse tra apici. Per inserire un doppio apice o
+   una barra inversa in un valore di elemento di array racchiuso tra apici, usare la sintassi di
+   escape delle stringhe e precederli con una barra inversa. In alternativa, si può usare
+   la barra inversa di escape per proteggere tutti i caratteri che sarebbero altrimenti
+   presi per sintassi di array.
+   
   </para>
 
   <para>
-   You can add whitespace before a left brace or after a right
-   brace. You can also add whitespace before or after any individual item
-   string. In all of these cases the whitespace will be ignored. However,
-   whitespace within double-quoted elements, or surrounded on both sides by
-   non-whitespace characters of an element, is not ignored.
+   Si possono scrivere spazi bianchi prima della parentesi graffa di sinistra o dopo quella di
+   destra. Si possono anche scrivere spazi bianchi prima o dopo ogni individuale elemento
+   stringa. In tutti questi casi gli spazi bianchi saranno ignorati. Tuttavia,
+   spazi bianchi dentro elementi racchiusi tra doppi apici, o attorniati in ambedue i lati da
+   caratteri di un elemento diversi da spazi bianchi, non saranno ignorati.
+   
   </para>
 
  <note>
   <para>
-   Remember that what you write in an SQL command will first be interpreted
-   as a string literal, and then as an array.  This doubles the number of
-   backslashes you need.  For example, to insert a <type>text</type> array
-   value containing a backslash and a double quote, you'd need to write:
+   Ricordarsi che ciò che si scrive in un comando sql sarà prima interpretato
+   come una stringa, e dopo come un array. Questo raddoppia il numero di
+   barre inverse necessarie. Per esempio, per inserire un valore di array di tipo <type>text</type>
+   contenente una barra inversa e un doppio apice, bisognerà scrivere:
+   
 <programlisting>
 INSERT ... VALUES (E'{"\\\\","\\""}');
 </programlisting>
-   The escape string processor removes one level of backslashes, so that
-   what arrives at the array-value parser looks like <literal>{"\\","\""}</literal>.
-   In turn, the strings fed to the <type>text</type> data type's input routine
-   become <literal>\</literal> and <literal>"</literal> respectively.  (If we were working
-   with a data type whose input routine also treated backslashes specially,
-   <type>bytea</type> for example, we might need as many as eight backslashes
-   in the command to get one backslash into the stored array element.)
-   Dollar quoting (see <xref linkend="sql-syntax-dollar-quoting"/>) can be
-   used to avoid the need to double backslashes.
+    Il processore di stringhe di escape rimuove un livello di barre inverse, per cui ciò che
+   arriverà all'analizzatore di valori array sarà questo <literal>{"\\","\""}</literal>.
+   Per cui, le stringhe che alimentano la routine di entrata del tipo di dati <type>text</type>
+   saranno rispettivamente <literal>\</literal> e <literal>"</literal>. (Se si stesse lavorando
+   con tipi di dato le cui routine di input trattano specialmente anche le barre inverse,
+   per esempio <type>bytea</type>, potrebbero essere necessarie ben otto barre inverse
+   nel comando per inserire una barra inversa nell'elemento di array memorizzato).
+   La quotazione con dollaro (vedere <xref linkend="sql-syntax-dollar-quoting" />) può
+   essere usata per evitare la necessità di raddoppiare le barre inverse.
   </para>
  </note>
 
  <tip>
   <para>
-   The <literal>ARRAY</literal> constructor syntax (see
-   <xref linkend="sql-syntax-array-constructors"/>) is often easier to work
-   with than the array-literal syntax when writing array values in SQL
-   commands. In <literal>ARRAY</literal>, individual element values are written the
-   same way they would be written when not members of an array.
+   La sintassi del costruttore di <literal>ARRAY</literal>  (vedere
+   <xref linkend="sql-syntax-array-constructors" />) è spesso più facile
+   da usare quando si scrivono valori di array
+   nei comandi SQL. Negli <literal>ARRAY</literal>, i valori degli elementi individuali vengono scritti
+   nello stesso modo in cui sarebbero scritti se non fossero membri di un array.
+   
   </para>
  </tip>
  </sect2>

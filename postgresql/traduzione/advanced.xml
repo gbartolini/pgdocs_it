@@ -2,39 +2,40 @@
 <!-- $PostgreSQL$ -->
 
  <chapter id="tutorial-advanced">
-  <title>Advanced Features</title>
+  <title>Caratteristiche Avanzate</title>
 
   <sect1 id="tutorial-advanced-intro">
-   <title>Introduction</title>
+   <title>Introduzione</title>
 
    <para>
-    In the previous chapter we have covered the basics of using
-    <acronym>SQL</acronym> to store and access your data in
-    <productname>PostgreSQL</productname>.  We will now discuss some
-    more advanced features of <acronym>SQL</acronym> that simplify
-    management and prevent loss or corruption of your data.  Finally,
-    we will look at some <productname>PostgreSQL</productname>
-    extensions.
+    
+    Nel capitolo precedente abbiamo trattato i principi fondamentali
+    dell'utilizzo di <acronym>SQL</acronym> per conservare e accedere
+    ai dati in <productname>PostgreSQL</productname>. Discuteremo
+    ora di alcune delle caratteristiche più avanzate di
+    <acronym>SQL</acronym> che semplificano la gestione ed evitano la
+    perdita o la corruzione dei dati. Per concludere, vedremo
+    alcune estensioni di <productname>PostgreSQL</productname>.
    </para>
 
    <para>
-    This chapter will on occasion refer to examples found in <xref
-    linkend="tutorial-sql"/> to change or improve them, so it will be
-    useful to have read that chapter.  Some examples from
-    this chapter can also be found in
-    <filename>advanced.sql</filename> in the tutorial directory.  This
-    file also contains some sample data to load, which is not
-    repeated here.  (Refer to <xref linkend="tutorial-sql-intro"/> for
-    how to use the file.)
+    Questo capitolo farà occasionalmente riferimento agli esempi visti
+    nel <xref linkend="tutorial-sql" /> per modificarli o migliorarli, per cui
+    sarete avvantaggiati dalla lettura di quel capitolo. Alcuni esempi trattati
+    in questo capitolo possono essere trovati in
+    <filename>advanced.sql</filename> nella directory tutorial. Questo file
+    contiene anche alcuni dati di esempio da caricare, che non vengono ripetuti
+    quì.  (consultare <xref linkend="tutorial-sql-intro" /> per sapere
+    come usare il file.)
    </para>
   </sect1>
 
 
   <sect1 id="tutorial-views">
-   <title>Views</title>
+   <title>Viste</title>
 
    <indexterm zone="tutorial-views">
-    <primary>view</primary>
+    <primary>vista</primary>
    </indexterm>
 
    <para>
@@ -44,6 +45,13 @@
     to type the query each time you need it.  You can create a
     <firstterm>view</firstterm> over the query, which gives a name to
     the query that you can refer to like an ordinary table:
+
+    Riferendosi indietro alle query dentro <xref linkend="tutorial-join" />,
+    supporre che la lista combinata dei record delle temperature e delle locazioni delle
+    città sia di particolare interesse per un'applicazione, ma che non si voglia
+    digitare una query ogni volta che serve. Potete creare una <firstterm>vista</firstterm>
+    della query assegnandoli un nome al quale fare riferimento
+    come se fosse una tabella ordinaria:
 
 <programlisting>
 CREATE VIEW myview AS
@@ -56,49 +64,51 @@ SELECT * FROM myview;
    </para>
 
    <para>
-    Making liberal use of views is a key aspect of good SQL database
-    design.  Views allow you to encapsulate the details of the
-    structure of your tables, which might change as your application
-    evolves, behind consistent interfaces.
+    
+    Fare un uso copioso delle viste è un aspetto fondamentale di una buona progettazione
+    di database SQL. Le viste vi consentono di incapsulare in intefacce compatibili, i
+    dettagli delle strutture delle tabelle, che potrebbero cambiare con l'evolversi
+    dell'applicazione.
    </para>
 
    <para>
-    Views can be used in almost any place a real table can be used.
-    Building views upon other views is not uncommon.
+    La viste possono essere utilizzate dovunque può essere usata una reale tabella.
+    Non è raro trovare viste dentro altre viste.
    </para>
   </sect1>
 
 
   <sect1 id="tutorial-fk">
-   <title>Foreign Keys</title>
+   <title>Chiavi Esterne</title>
 
    <indexterm zone="tutorial-fk">
-    <primary>foreign key</primary>
+    <primary>chiave esterna</primary>
    </indexterm>
 
    <indexterm zone="tutorial-fk">
-    <primary>referential integrity</primary>
+    <primary>integrità referenziale</primary>
    </indexterm>
 
    <para>
-    Recall the <classname>weather</classname> and
-    <classname>cities</classname> tables from <xref
-    linkend="tutorial-sql"/>.  Consider the following problem:  You
-    want to make sure that no one can insert rows in the
-    <classname>weather</classname> table that do not have a matching
-    entry in the <classname>cities</classname> table.  This is called
-    maintaining the <firstterm>referential integrity</firstterm> of
-    your data.  In simplistic database systems this would be
-    implemented (if at all) by first looking at the
-    <classname>cities</classname> table to check if a matching record
-    exists, and then inserting or rejecting the new
-    <classname>weather</classname> records.  This approach has a
-    number of problems and is very inconvenient, so
-    <productname>PostgreSQL</productname> can do this for you.
+    
+    Ricordate le tabelle <classname>weather</classname> e
+    <classname>cities</classname> viste nel <xref linkend="tutorial-sql" />.
+    Considerate il seguente problema: Volete essere sicuri che 
+    nessuno possa inserire nella tabella <classname>weather</classname>
+    righe che non hanno elementi corrispondenti nella tabella
+    <classname>cities</classname>. Questo viene chiamato mantenere
+    l'<firstterm>integrità referenziale</firstterm> dei vostri dati.
+    Nei sistemi di database semplicistici questo viene realizzato
+    (all'occorrenza) in primo luogo esaminando la tabella
+    <classname>cities</classname> per controllare se esiste un record
+    corrispondente, e quindi inserendo o respingendo il nuovo record
+    <classname>weather</classname>. Questo metodo presenta un certo numero di problemi
+    e non è conveniente adottarlo, per cui <productname>PostgreSQL</productname>
+    si incarica di fare tutto questo al vostro posto.
    </para>
 
    <para>
-    The new declaration of the tables would look like this:
+    Le nuove dichiarazioni delle tabelle dovranno essere simili a queste:
 
 <programlisting>
 CREATE TABLE cities (
@@ -115,7 +125,7 @@ CREATE TABLE weather (
 );
 </programlisting>
 
-    Now try inserting an invalid record:
+    Provate ora ad inserire un record non valido:
 
 <programlisting>
 INSERT INTO weather VALUES ('Berkeley', 45, 53, 0.0, '1994-11-28');
@@ -128,38 +138,40 @@ DETAIL:  Key (city)=(Berkeley) is not present in table "cities".
    </para>
 
    <para>
-    The behavior of foreign keys can be finely tuned to your
-    application.  We will not go beyond this simple example in this
-    tutorial, but just refer you to <xref linkend="ddl"/>
-    for more information.  Making correct use of
-    foreign keys will definitely improve the quality of your database
-    applications, so you are strongly encouraged to learn about them.
+    
+    Il comportamento delle chiavi esterne può essere adattato alle vostre
+    applicazioni. In questo tutorial non andremo al di là di questo semplice
+    esempio, fare riferimento al <xref linkend="ddl" /> per ulteriori informazioni.
+    Con un uso corretto delle chiavi esterne verrà sicuramente
+    migliorata la qualità dell'applicazione di database,
+    per cui si incoraggia fortemente ad imparare il loro utilizzo.
    </para>
   </sect1>
 
 
   <sect1 id="tutorial-transactions">
-   <title>Transactions</title>
+   <title>Transazioni</title>
 
    <indexterm zone="tutorial-transactions">
-    <primary>transaction</primary>
+    <primary>transazione</primary>
    </indexterm>
 
    <para>
-    <firstterm>Transactions</firstterm> are a fundamental concept of all database
-    systems.  The essential point of a transaction is that it bundles
-    multiple steps into a single, all-or-nothing operation.  The intermediate
-    states between the steps are not visible to other concurrent transactions,
-    and if some failure occurs that prevents the transaction from completing,
-    then none of the steps affect the database at all.
+    
+    Le <firstterm>transazioni</firstterm> sono un concetto fondamentale in tutti i sistemi
+    di database. Il punto essenziale di una transazione è che essa concentra
+    diversi passi in una singola operazione "tutto-o-niente". Gli stati intermedi tra
+    i diversi passi non sono visibili alle transazioni concorrenti, e se
+    si verifica qualche errore che impedisce il completamento della transazione,
+    nessuno dei passi completati va ad interessare il database.
    </para>
 
    <para>
-    For example, consider a bank database that contains balances for various
-    customer accounts, as well as total deposit balances for branches.
-    Suppose that we want to record a payment of $100.00 from Alice's account
-    to Bob's account.  Simplifying outrageously, the SQL commands for this
-    might look like:
+    Per esempio, considerare il database di una banca che contiene i saldi dei
+    conti di diversi clienti, come pure i saldi dei depositi totali per settore. 
+    Supponiamo di voler registrare un pagamento di $100.00 dal conto di Alice
+    al conto di Bob. Semplificando all'eccesso, il comando SQL per fare questo
+    potrebbe essere:
 
 <programlisting>
 UPDATE accounts SET balance = balance - 100.00
@@ -174,53 +186,55 @@ UPDATE branches SET balance = balance + 100.00
    </para>
 
    <para>
-    The details of these commands are not important here; the important
-    point is that there are several separate updates involved to accomplish
-    this rather simple operation.  Our bank's officers will want to be
-    assured that either all these updates happen, or none of them happen.
-    It would certainly not do for a system failure to result in Bob
-    receiving $100.00 that was not debited from Alice.  Nor would Alice long
-    remain a happy customer if she was debited without Bob being credited.
-    We need a guarantee that if something goes wrong partway through the
-    operation, none of the steps executed so far will take effect.  Grouping
-    the updates into a <firstterm>transaction</firstterm> gives us this guarantee.
-    A transaction is said to be <firstterm>atomic</firstterm>: from the point of
-    view of other transactions, it either happens completely or not at all.
+    I dettagli di questi comandi non sono importanti; la cosa importante è
+    che per realizzare questa operazione piuttosto semplice, sono necessari
+    diversi aggiornamenti separati. I nostri funzionari di banca vorranno essere
+    sicuri che ognuno di questi aggiornamenti si verifichi, o che non si verifichi
+    nessuno di essi. Essi non vorrebbero certamente che, per un guasto di sistema,
+    risultasse in Bob un accredito di $100.00 e nessun addebito nel conto di
+    Alice. Mentre  Alice non sarebbe una cliente felice se gli fossero stati
+    addebitati $100.00 senza il corrispondente accredito nel conto di Bob. Abbiamo bisogno di una
+    garanzia che se qualcosa va male all'interno dell'operazione, nessuno dei passi eseguiti
+    abbia effetto. Raggruppando gli aggiornamenti in una <firstterm>transazione</firstterm>
+    avremo questa garanzia. Una transazione si dice essere <firstterm>atomica</firstterm>:
+    dal punto di vista di altre transazioni, se si attua completamente o per niente.
+    
    </para>
 
    <para>
-    We also want a
-    guarantee that once a transaction is completed and acknowledged by
-    the database system, it has indeed been permanently recorded
-    and won't be lost even if a crash ensues shortly thereafter.
-    For example, if we are recording a cash withdrawal by Bob,
-    we do not want any chance that the debit to his account will
-    disappear in a crash just after he walks out the bank door.
-    A transactional database guarantees that all the updates made by
-    a transaction are logged in permanent storage (i.e., on disk) before
-    the transaction is reported complete.
+    Si vuole anche una
+    garanzia che una volta che una transazione è completata e riconosciuta
+    dal sistema di database, essa sia permanentemente registrata e non vada persa,
+    anche se subito dopo si verifica un arresto del sistema. Per esempio, se stiamo
+    registrando un prelevamento di denaro effettuato da Bob, non vogliamo assolutamente
+    che il debito di questo cliente sparisca per un blocco del sistema che si verifica
+    dopo che il cliente è uscito  dalla porta della banca. Un database transazionale
+    garantisce che tutti gli aggiornamenti fatti tramite una transazione siano registrati
+    su un supporto permanente (es., su disco) prima che venga segnalato il completamento
+    della transazione.
    </para>
 
    <para>
-    Another important property of transactional databases is closely
-    related to the notion of atomic updates: when multiple transactions
-    are running concurrently, each one should not be able to see the
-    incomplete changes made by others.  For example, if one transaction
-    is busy totalling all the branch balances, it would not do for it
-    to include the debit from Alice's branch but not the credit to
-    Bob's branch, nor vice versa.  So transactions must be all-or-nothing
-    not only in terms of their permanent effect on the database, but
-    also in terms of their visibility as they happen.  The updates made
-    so far by an open transaction are invisible to other transactions
-    until the transaction completes, whereupon all the updates become
-    visible simultaneously.
+    Un altra importante proprietà dei database transazionali è
+    strettamente collegata alla nozione di aggiornamenti atomici: quando
+    diverse transazioni vengono eseguite concorrentemente, ognuna di esse non
+    dovrebbe poter vedere i cambiamenti incompleti fatti dalle altre. Per
+    esempio, se una transazione si sta occupando completamente di tutto il ramo
+    saldi, essa non dovrebbe includere il debito dal ramo Alice e non il credito
+    al ramo Bob, nè viceversa. Per cui le transazioni devono essere tutto-o-niente
+    non solo per quanto riguarda il loro effetto permanente nel database, ma anche
+    per quanto riguarda la loro visibilità. Gli aggiornamenti fatti da una
+    transazione aperta sono invisibili alle altre transazioni finchè la
+    transazione non è stata completata, dopodichè tutti gli
+    aggiornamenti fatti diventano visibili contemporaneamente.
+    
    </para>
 
    <para>
-    In <productname>PostgreSQL</productname>, a transaction is set up by surrounding
-    the SQL commands of the transaction with
-    <command>BEGIN</command> and <command>COMMIT</command> commands.  So our banking
-    transaction would actually look like:
+    In <productname>PostgreSQL</productname>, una transazione è impostata
+    racchiudendo i comandi SQL della transazione tra i comandi
+    <command>BEGIN</command> e <command>COMMIT</command>. Per cui la nostra transazione
+    bancaria assumerà questa forma:
 
 <programlisting>
 BEGIN;
@@ -232,64 +246,67 @@ COMMIT;
    </para>
 
    <para>
-    If, partway through the transaction, we decide we do not want to
-    commit (perhaps we just noticed that Alice's balance went negative),
-    we can issue the command <command>ROLLBACK</command> instead of
-    <command>COMMIT</command>, and all our updates so far will be canceled.
+    
+    Se, durante l'elaborazione della transazione, si decide di non volerla completare
+    (per esempio, se ci viene notificato che il conto di Alice è negativo), possiamo
+    eseguire il comando di rinuncia <command>ROLLBACK</command> invece del comando di conferma
+    <command>COMMIT</command>, e tutti gli aggiornamenti eseguiti fino a quel momento saranno cancellati.
    </para>
 
    <para>
-    <productname>PostgreSQL</productname> actually treats every SQL statement as being
-    executed within a transaction.  If you do not issue a <command>BEGIN</command>
-    command,
-    then each individual statement has an implicit <command>BEGIN</command> and
-    (if successful) <command>COMMIT</command> wrapped around it.  A group of
-    statements surrounded by <command>BEGIN</command> and <command>COMMIT</command>
-    is sometimes called a <firstterm>transaction block</firstterm>.
+    <productname>PostgreSQL</productname> attualmente tratta ogni istruzione SQL come
+    se fosse eseguita dentro una transazione. Se non date un comando
+    <command>BEGIN</command>,
+    ogni istruzione individuale verrà racchiusa tra un implicito
+    <command>BEGIN</command> e (se riuscita) un <command>COMMIT</command>.  Un gruppo di
+    istruzioni racchiuse tra <command>BEGIN</command> e <command>COMMIT</command>
+    viene talvolta chiamato <firstterm>blocco di transazione</firstterm>.
+    
    </para>
 
    <note>
     <para>
-     Some client libraries issue <command>BEGIN</command> and <command>COMMIT</command>
-     commands automatically, so that you might get the effect of transaction
-     blocks without asking.  Check the documentation for the interface
-     you are using.
+     Alcune librerie client impartiscono i comandi <command>BEGIN</command> e <command>COMMIT</command>
+     automaticamente, per cui si ottiene l'effetto blocco di transazione senza
+     averlo richiesto. Controllare la documentazione per l'interfaccia che state
+     utilizzando.
     </para>
    </note>
 
    <para>
-    It's possible to control the statements in a transaction in a more
-    granular fashion through the use of <firstterm>savepoints</firstterm>.  Savepoints
-    allow you to selectively discard parts of the transaction, while
-    committing the rest.  After defining a savepoint with
-    <command>SAVEPOINT</command>, you can if needed roll back to the savepoint
-    with <command>ROLLBACK TO</command>.  All the transaction's database changes
-    between defining the savepoint and rolling back to it are discarded, but
-    changes earlier than the savepoint are kept.
+    È possibile controllare le istruzioni in una transazione in modo
+    granulare tramite l'utilizzo di <firstterm>savepoint</firstterm>. I savepoint
+    vi consentono di scartare selettivamente parti della transazione,
+    confermando il resto. Dopo aver definito un savepoint con
+    <command>SAVEPOINT</command>, potrete tornare indietro al savepoint con
+    <command>ROLLBACK TO</command>.  Tutte le modifiche al database poste tra la
+    definizione del savepoint ed il ritorno ad esso vengono scartate, mentre
+    le modifiche precedenti il savepoint sono mantenute.
+    
    </para>
 
    <para>
-    After rolling back to a savepoint, it continues to be defined, so you can
-    roll back to it several times.  Conversely, if you are sure you won't need
-    to roll back to a particular savepoint again, it can be released, so the
-    system can free some resources.  Keep in mind that either releasing or
-    rolling back to a savepoint
-    will automatically release all savepoints that were defined after it.
-   </para>
+    Dopo essere tornati indietro ad un savepoint, lo stesso continua ad essere definito,
+    per cui potrete tornare indietro ad esso diverse volte.  Al contrario, se siete
+    sicuri di non voler tornare ancora indietro ad un particolare savepoint, esso
+    può essere rilasciato, in modo che il sitema possa liberare alcune
+    risorse. Ricordatevi che sia il rilascio che il tornare indietro ad un savepoint
+    rilascerà automaticamente tutti i savepoint che sono definiti dopo di esso.
+   </para> 
 
    <para>
-    All this is happening within the transaction block, so none of it
-    is visible to other database sessions.  When and if you commit the
-    transaction block, the committed actions become visible as a unit
-    to other sessions, while the rolled-back actions never become visible
-    at all.
-   </para>
+    Tutto questo si verifica dentro il blocco di transazione, così niente di
+    questo sarà visibile alle altre sessioni del database. Quando e se il blocco
+    di transazione termina con commit, le azioni confermate diventano visibili come
+    una unità alle altre sessioni, mentre le azioni rolled-back non verranno
+    viste per niente.
+   </para> 
 
    <para>
-    Remembering the bank database, suppose we debit $100.00 from Alice's
-    account, and credit Bob's account, only to find later that we should
-    have credited Wally's account.  We could do it using savepoints like
-    this:
+    Ricordando il database della banca, si supponga di dover addebitare $100.00 dal conto di
+    Alice, ed accreditarle nel conto di Bob, per scoprire solo più tardi che si doveva
+    accreditarli sul conto di Wally. È possibile rimediare usando un savepoint
+    come questo:
 
 <programlisting>
 BEGIN;
@@ -307,38 +324,39 @@ COMMIT;
    </para>
 
    <para>
-    This example is, of course, oversimplified, but there's a lot of control
-    possible in a transaction block through the use of savepoints.
-    Moreover, <command>ROLLBACK TO</command> is the only way to regain control of a
-    transaction block that was put in aborted state by the
-    system due to an error, short of rolling it back completely and starting
-    again.
+    
+    Questo esempio, naturalmente, è enormemente semplificato, ma comprende 
+    il controllo effettuato tramite savepoint dentro un blocco di transazione.
+    Inoltre, <command>ROLLBACK TO</command> è il solo modo per riprendere il
+    controllo di un blocco di transazione abortito dal sistema a causa di un
+    errore, scorciatoia che ci consente di non dover tornare indietro completamente
+    e ripartire di nuovo.
    </para>
 
   </sect1>
 
 
   <sect1 id="tutorial-window">
-   <title>Window Functions</title>
+   <title>Funzioni di Finestra</title>
 
    <indexterm zone="tutorial-window">
-    <primary>window function</primary>
+    <primary>funzione di finestra</primary>
    </indexterm>
 
    <para>
-    A <firstterm>window function</firstterm> performs a calculation across a set of
-    table rows that are somehow related to the current row.  This is comparable
-    to the type of calculation that can be done with an aggregate function.
-    But unlike regular aggregate functions, use of a window function does not
-    cause rows to become grouped into a single output row &mdash; the
-    rows retain their separate identities.  Behind the scenes, the window
-    function is able to access more than just the current row of the query
-    result.
+        Una <firstterm>funzione di finestra</firstterm> esegue calcoli attraverso un insieme di 
+        righe della tabella che sono in qualche modo legate alla riga corrente. Questo è comparabile
+        con i tipi di calcoli che possono essere svolti con una funzione aggregata.
+        Diversamente dalle funzioni aggregate, l'uso di funzioni di finestra non comporta
+        che le righe vengano raggruppate in una singola riga di output &mdash; le
+        righe mantengono le loro identità separate. Dietro le quinte, la funzione
+        finestra è capace di avere accesso a più della riga corrente del risultato della
+        query.
    </para>
 
    <para>
-    Here is an example that shows how to compare each employee's salary
-    with the average salary in his or her department:
+        Ecco un esempio che mostra come confrontare ogni salario di impiegato/a
+        con la media dei salari del suo reparto:
 
 <programlisting>
 SELECT depname, empno, salary, avg(salary) OVER (PARTITION BY depname) FROM empsalary;
@@ -360,34 +378,33 @@ SELECT depname, empno, salary, avg(salary) OVER (PARTITION BY depname) FROM emps
 (10 rows)
 </screen>
 
-    The first three output columns come directly from the table
-    <structname>empsalary</structname>, and there is one output row for each row in the
-    table.  The fourth column represents an average taken across all the table
-    rows that have the same <structfield>depname</structfield> value as the current row.
-    (This actually is the same function as the regular <function>avg</function>
-    aggregate function, but the <literal>OVER</literal> clause causes it to be
-    treated as a window function and computed across an appropriate set of
-    rows.)
+        L'output delle prime tre colonne arriva direttamente dalla tabella
+        <structname>empsalary</structname>, e c'è una riga di output per ogni riga della
+        tabella. La quarta colonna rappresenta una media presa attraverso tutte le righe della
+        tabella aventi lo stesso valore <structfield>depname</structfield> della riga corrente.
+        (Questa attualmente è la stessa funzione della funzione aggregata  <function>avg</function>,
+        me la clausola <literal>OVER</literal> comporta che sia tratta come 
+        una funzione finestra e calcolata attraverso un insieme appropriato di righe.)
    </para>
 
    <para>
-    A window function call always contains an <literal>OVER</literal> clause
-    following the window function's name and argument(s).  This is what
-    syntactically distinguishes it from a regular function or aggregate
-    function.  The <literal>OVER</literal> clause determines exactly how the
-    rows of the query are split up for processing by the window function.
-    The <literal>PARTITION BY</literal> list within <literal>OVER</literal> specifies
-    dividing the rows into groups, or partitions, that share the same
-    values of the <literal>PARTITION BY</literal> expression(s).  For each row,
-    the window function is computed across the rows that fall into the
-    same partition as the current row.
+        Una chiamata a una funzione finestra contiene sempre una clausola <literal>OVER</literal>
+        dopo il nome della funzione e l'argomento/i. Questo è quello che
+        sintatticamente la distingue da una normale funzione aggregata.
+        La clausola <literal>OVER</literal> determina esattamente come vengono
+        separate le righe della query per essere processate dalla funzione finestra.
+        L'elenco <literal>PARTITION BY</literal> all'interno della <literal>OVER</literal> specifica
+        la divisione delle righe in gruppi, o partizioni, che condividono gli stessi valori 
+        dell'espressione/i <literal>PARTITION BY</literal>. Per ogni riga,
+        la funzione finestra è calcolata attraverso le righe che stanno nella
+        stessa partizione della riga corrente.
    </para>
 
    <para>
-    Although <function>avg</function> will produce the same result no matter
-    what order it processes the partition's rows in, this is not true of all
-    window functions.  When needed, you can control that order using
-    <literal>ORDER BY</literal> within <literal>OVER</literal>.  Here is an example:
+        Sebbene <function>avg</function> produrrà lo stesso risultato senza considerare 
+        l'ordine in cui processa le righe della partizione, questo non è vero per tutte le
+        funzioni finestra. Quando lo si necessita, è possibile controllare l'ordine usando
+        <literal>ORDER BY</literal> all'interno di <literal>OVER</literal>. Ecco un esempio:
 
 <programlisting>
 SELECT depname, empno, salary, rank() OVER (PARTITION BY depname ORDER BY salary DESC) FROM empsalary;
@@ -409,48 +426,48 @@ SELECT depname, empno, salary, rank() OVER (PARTITION BY depname ORDER BY salary
 (10 rows)
 </screen>
 
-    As shown here, the <function>rank</function> function produces a numerical rank
-    within the current row's partition for each distinct <literal>ORDER BY</literal>
-    value, in the order defined by the <literal>ORDER BY</literal> clause.
-    <function>rank</function> needs no explicit parameter, because its behavior
-    is entirely determined by the <literal>OVER</literal> clause.
+        Come mostrato qui, la funzione  <function>rank</function> produce un grado numerico
+        all'interno della partizione della riga corrente per ogni valore  <literal>ORDER BY</literal>
+        distinto, nell'ordine definito dalla clausola <literal>ORDER BY</literal>.
+        <function>rank</function> non necessita parametri espliciti, dato che il suo comportamento 
+        è determinato interamente dalla clausola  <literal>OVER</literal>.
    </para>
 
    <para>
-    The rows considered by a window function are those of the <quote>virtual
-    table</quote> produced by the query's <literal>FROM</literal> clause as filtered by its
-    <literal>WHERE</literal>, <literal>GROUP BY</literal>, and <literal>HAVING</literal> clauses
-    if any.  For example, a row removed because it does not meet the
-    <literal>WHERE</literal> condition is not seen by any window function.
-    A query can contain multiple window functions that slice up the data
-    in different ways by means of different <literal>OVER</literal> clauses, but
-    they all act on the same collection of rows defined by this virtual table.
+        Le righe considerate da una funzione finestra sono quelle della <quote>tabella
+        virtuale</quote> prodotta dalla clausola <literal>FROM</literal> della query filtrata dalle clausole
+        <literal>WHERE</literal>, <literal>GROUP BY</literal>, e <literal>HAVING</literal> (se presenti).
+        Per esempio, una riga rimossa perchè non soddisfa la condizione 
+        <literal>WHERE</literal> non è vista da nessuna funzione finestra.
+        Una query può contenere molteplici funzioni window che "affettano" i dati
+        in differenti modi a seconda di differenti clausole  <literal>OVER</literal>, ma
+        agiscono tutte sulla stessa collezione di righe definita dalla tabella virtuale.
    </para>
 
    <para>
-    We already saw that <literal>ORDER BY</literal> can be omitted if the ordering
-    of rows is not important.  It is also possible to omit <literal>PARTITION
-    BY</literal>, in which case there is just one partition containing all the rows.
+        È stato già detto che <literal>ORDER BY</literal> può essere omessa se l'ordinamento
+        delle righe non è importante. È possibile anche omettere <literal>PARTITION
+        BY</literal>, nel caso ci sia solo una partizione contenente tutte le righe.
    </para>
 
    <para>
-    There is another important concept associated with window functions:
-    for each row, there is a set of rows within its partition called its
-    <firstterm>window frame</firstterm>.  Many (but not all) window functions act only
-    on the rows of the window frame, rather than of the whole partition.
-    By default, if <literal>ORDER BY</literal> is supplied then the frame consists of
-    all rows from the start of the partition up through the current row, plus
-    any following rows that are equal to the current row according to the
-    <literal>ORDER BY</literal> clause.  When <literal>ORDER BY</literal> is omitted the
-    default frame consists of all rows in the partition.
+        C'è un altro importante concetto associato alle funzioni finestra:    
+        per ogni riga, c'è un insieme di righe all'interno della sua partizione chiamato il suo
+        <firstterm>telaio di finestra</firstterm> ("window frame"). Molte funzioni di finestra (ma non tutte) agiscono solo
+        sulle righe del telaio di finestra, invece che su tutta la partizione.
+        Per default, se <literal>ORDER BY</literal> è impostata, allora il telaio consiste di 
+        tutte le righe dall'inizio della partizione su fino alla riga corrente, più
+        ogni riga seguente che sia uguale alla riga corrente in base alla clausola
+        <literal>ORDER BY</literal>. Quando <literal>ORDER BY</literal> viene omessa il 
+        telaio di default consiste di tutte le righe della partizione.
      <footnote>
       <para>
-       There are options to define the window frame in other ways, but
-       this tutorial does not cover them.  See
-       <xref linkend="syntax-window-functions"/> for details.
+        Ci sono opzioni per definire il telaio di finestra in altre maniere, ma
+        questo tutorial non le tratta. Vedere
+        <xref linkend="syntax-window-functions"/> per ulteriori dettagli.
       </para>
      </footnote>
-    Here is an example using <function>sum</function>:
+    Ecco un esempio che usa la funzione <function>sum</function>:
    </para>
 
 <programlisting>
@@ -474,12 +491,11 @@ SELECT salary, sum(salary) OVER () FROM empsalary;
 </screen>
 
    <para>
-    Above, since there is no <literal>ORDER BY</literal> in the <literal>OVER</literal>
-    clause, the window frame is the same as the partition, which for lack of
-    <literal>PARTITION BY</literal> is the whole table; in other words each sum is
-    taken over the whole table and so we get the same result for each output
-    row.  But if we add an <literal>ORDER BY</literal> clause, we get very different
-    results:
+        Sopra, dato che non c'è <literal>ORDER BY</literal> nella clausola <literal>OVER</literal>,
+        il telaio di finestra è la partizione, che per la mancanza di 
+        <literal>PARTITION BY</literal> è la tabella completa; In altre parole ogni somma è
+        presa sull'intera tabella e così si ottiene lo stesso risultato per ogni riga.
+        Ma se si aggiunge una clausola <literal>ORDER BY</literal>, si ottengono risultati molto diversi:
    </para>
 
 <programlisting>
@@ -503,25 +519,25 @@ SELECT salary, sum(salary) OVER (ORDER BY salary) FROM empsalary;
 </screen>
 
    <para>
-    Here the sum is taken from the first (lowest) salary up through the
-    current one, including any duplicates of the current one (notice the
-    results for the duplicated salaries).
+        Qui la somma viene presa dal primo (il più basso) salario in su fino al corrente,
+        inclusi i duplicati del corrente (notare i risultati per i 
+        salari duplicati).
    </para>
 
    <para>
-    Window functions are permitted only in the <literal>SELECT</literal> list
-    and the <literal>ORDER BY</literal> clause of the query. They are forbidden
-    elsewhere, such as in <literal>GROUP BY</literal>, <literal>HAVING</literal>
-    and <literal>WHERE</literal> clauses.  This is because they logically
-    execute after the processing of those clauses.  Also, window functions
-    execute after regular aggregate functions.  This means it is valid to
-    include an aggregate function call in the arguments of a window function,
-    but not vice versa.
+        Le funzioni finestra sono permesse solo nell'elenco <literal>SELECT</literal>
+        e nella clausola <literal>ORDER BY</literal> della query. Sono proibite 
+        altrove, tipo nelle clausole <literal>GROUP BY</literal>, <literal>HAVING</literal>
+        e <literal>WHERE</literal>. Questo perchè logicamente
+        esse vengono eseguite dopo il trattamento di quelle clausole. Inoltre, le funzioni finestra
+        vengono eseguite dopo le normali funzioni aggregate. Questo significa che è permesso
+        includere una chiamata a una funzione aggregata negli argomento di una funzione finestra,
+        ma non vice versa.
    </para>
 
    <para>
-    If there is a need to filter or group rows after the window calculations
-    are performed, you can use a sub-select.  For example:
+        Se non c'è il bisogno di filtrare o raggruppare le righe dopo che i calcoli sono eseguiti, 
+        si possono usare le sotto-select. Per esempio:
 
 <programlisting>
 SELECT depname, empno, salary, enroll_date
@@ -533,17 +549,17 @@ FROM
 WHERE pos &lt; 3;
 </programlisting>
 
-    The above query only shows the rows from the inner query having
-    <literal>rank</literal> less than <literal>3</literal>.
+        La query sopra mostra solo le righe della query interna aventi 
+        <literal>rank</literal> minore di <literal>3</literal>.
    </para>
 
    <para>
-    When a query involves multiple window functions, it is possible to write
-    out each one with a separate <literal>OVER</literal> clause, but this is
-    duplicative and error-prone if the same windowing behavior is wanted
-    for several functions.  Instead, each windowing behavior can be named
-    in a <literal>WINDOW</literal> clause and then referenced in <literal>OVER</literal>.
-    For example:
+        Quando una query coinvolge molteplici funzioni finestra, è possibile scriverle
+        separate da una clausola <literal>OVER</literal>, ma questo è soggetto
+        ad errori se si vuole lo stesso comportamento della finestra per diverse funzioni.
+        Invece, può esser dato un nome ad ogni comportamento di finestra in una clausola 
+        <literal>WINDOW</literal> e poi essere referenziato con <literal>OVER</literal>.
+        Per esempio:
 
 <programlisting>
 SELECT sum(salary) OVER w, avg(salary) OVER w
@@ -554,32 +570,34 @@ SELECT sum(salary) OVER w, avg(salary) OVER w
 
    <para>
     More details about window functions can be found in
+        Maggiori dettagli circa le funzioni finestra possono essere trovati in
     <xref linkend="syntax-window-functions"/>,
     <xref linkend="functions-window"/>,
-    <xref linkend="queries-window"/>, and the
-    <xref linkend="sql-select"/> reference page.
+    <xref linkend="queries-window"/>, e la pagina di referenza di 
+    <xref linkend="sql-select"/>.
    </para>
   </sect1>
 
 
   <sect1 id="tutorial-inheritance">
-   <title>Inheritance</title>
+   <title>Ereditarietà</title>
 
    <indexterm zone="tutorial-inheritance">
-    <primary>inheritance</primary>
+    <primary>ereditarietà</primary>
    </indexterm>
 
    <para>
-    Inheritance is a concept from object-oriented databases.  It opens
-    up interesting new possibilities of database design.
+    L'ereditarietà è un concetto per i database orientati agli oggetti.
+    Essa apre interessanti nuove possibilità nella progettazione dei database.
    </para>
 
    <para>
-    Let's create two tables:  A table <classname>cities</classname>
-    and a table <classname>capitals</classname>.  Naturally, capitals
-    are also cities, so you want some way to show the capitals
-    implicitly when you list all cities.  If you're really clever you
-    might invent some scheme like this:
+    Andiamo a creare due tabelle: Una tabella <classname>cities</classname>
+    e una tabella <classname>capitals</classname>. Naturalmente le capitali
+    sono anche città, per cui dovete trovare il modo di mostrare implicitamente
+    le capitali quando elencate tutte le città. Se siete veramente intelligenti
+    è probabile che inventiate uno schema come questo:
+    
 
 <programlisting>
 CREATE TABLE capitals (
@@ -601,12 +619,12 @@ CREATE VIEW cities AS
   SELECT name, population, altitude FROM non_capitals;
 </programlisting>
 
-    This works OK as far as querying goes, but it gets ugly when you
-    need to update several rows, for one thing.
+    Questo schema lavora bene per fare interrogazioni, ma meno bene quando,
+    per qualche motivo, si devono aggiornare parecchie righe.
    </para>
 
    <para>
-    A better solution is this:
+    Una soluzione migliore è questa:
 
 <programlisting>
 CREATE TABLE cities (
@@ -622,22 +640,23 @@ CREATE TABLE capitals (
    </para>
 
    <para>
-    In this case, a row of <classname>capitals</classname>
-    <firstterm>inherits</firstterm> all columns (<structfield>name</structfield>,
-    <structfield>population</structfield>, and <structfield>altitude</structfield>) from its
-    <firstterm>parent</firstterm>, <classname>cities</classname>.  The
-    type of the column <structfield>name</structfield> is
-    <type>text</type>, a native <productname>PostgreSQL</productname>
-    type for variable length character strings.  State capitals have
-    an extra column, <structfield>state</structfield>, that shows their state.  In
-    <productname>PostgreSQL</productname>, a table can inherit from
-    zero or more other tables.
+    In questo caso, una riga della tabella <classname>capitals</classname>
+    <firstterm>eredita</firstterm> tutte le colonne (<structfield>name</structfield>,
+    <structfield>population</structfield>, and <structfield>altitude</structfield>) dal suo
+    <firstterm>genitore</firstterm>, <classname>cities</classname>. Il tipo di
+    dato della colonna <structfield>name</structfield> è <type>text</type>,
+    un tipo nativo di <productname>PostgreSQL</productname> per stringhe di
+    caratteri di lunghezza variabile. Le capitali di stato hanno una colonna extra,
+    <structfield>state</structfield>, che identifica il loro stato di appartenenza. In
+    <productname>PostgreSQL</productname>, una tabella può ereditare da
+    zero a diverse altre tabelle.
+    
    </para>
 
    <para>
-    For example, the  following  query finds the  names  of  all  cities,
-    including  state capitals, that are located at an altitude
-    over 500 feet:
+    Per esempio, la seguente query trova il nome di tutte le città,
+    comprese le capitali di stato, che sono situate ad una altitudine 
+    superiore ai 500 piedi:
 
 <programlisting>
 SELECT name, altitude
@@ -645,7 +664,7 @@ SELECT name, altitude
   WHERE altitude &gt; 500;
 </programlisting>
 
-    which returns:
+    che ritorna:
 
 <screen>
    name    | altitude
@@ -658,9 +677,9 @@ SELECT name, altitude
    </para>
 
    <para>
-    On the other hand, the  following  query  finds
-    all  the cities that are not state capitals and
-    are situated at an altitude of 500 feet or higher:
+    Mentre invece, la seguente query trova tutte le
+    città che non sono capitali di stato e che sono
+    situate ad una altitudine di 500 piedi o superiore:
 
 <programlisting>
 SELECT name, altitude
@@ -678,41 +697,42 @@ SELECT name, altitude
    </para>
 
    <para>
-    Here the <literal>ONLY</literal> before <literal>cities</literal>
-    indicates that the query should be run over only the
-    <classname>cities</classname> table, and not tables below
-    <classname>cities</classname> in the inheritance hierarchy.  Many
-    of the commands that we have already discussed &mdash;
-    <command>SELECT</command>, <command>UPDATE</command>, and
-    <command>DELETE</command> &mdash; support this <literal>ONLY</literal>
-    notation.
+    Quì la notazione <literal>ONLY</literal> posta prima di
+    <literal>cities</literal> indica che la query deve essere
+    eseguita solo nella tabella <classname>cities</classname>, e non nelle
+    tabelle sotto <classname>cities</classname> nella gerarchia di
+    ereditarietà. Molti dei comandi che abbiamo già trattato
+    &mdash; <command>SELECT</command>, <command>UPDATE</command>, e
+    <command>DELETE</command> &mdash; supportano la
+    notazione <literal>ONLY</literal>.
+    
    </para>
 
    <note>
     <para>
-     Although inheritance is frequently useful, it has not been integrated
-     with unique constraints or foreign keys, which limits its usefulness.
-     See <xref linkend="ddl-inherit"/> for more detail.
+     Anche se l'ereditarietà è utilizzata frequentemente, essa non è
+     stata integrata con i vincoli unique o con la chiavi esterne, questo ne limita
+     l'utilità. Vedere <xref linkend="ddl-inherit" /> per ulteriori dettagli.
     </para>
    </note>
   </sect1>
 
 
   <sect1 id="tutorial-conclusion">
-   <title>Conclusion</title>
+   <title>Conclusioni</title>
 
    <para>
-    <productname>PostgreSQL</productname> has many features not
-    touched upon in this tutorial introduction, which has been
-    oriented toward newer users of <acronym>SQL</acronym>.  These
-    features are discussed in more detail in the remainder of this
-    book.
+    <productname>PostgreSQL</productname> ha molte caratteristiche non
+    trattate in questo tutorial introduttivo, che è orientato
+    verso i nuovi utilizzatori di <acronym>SQL</acronym>. Queste
+    caratteristiche sono discusse dettagliatamente nel resto di questo
+    libro.
    </para>
 
    <para>
-    If you feel you need more introductory material, please visit the PostgreSQL
-    <ulink url="http://www.postgresql.org">web site</ulink>
-    for links to more resources.
+    Se si ritiene di aver bisogno di materiale introduttivo, visitate il
+    <ulink url="http://www.postgresql.org">sito web</ulink> di postgresql
+    per collegamenti a maggiori risorse.
    </para>
   </sect1>
  </chapter>

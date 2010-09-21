@@ -179,7 +179,7 @@ DROP TABLE products;
     viene creata e non sono specificati valori per alcune colonne, queste 
     verranno riempite con i loro rispettivi valori di default. Un
     comando di manipolazione dei dati può anche richiedere esplicitamente che una colonna
-    sia settata al suo valore di default, senza dover sapere che valore sia.
+    sia impostata al suo valore di default, senza dover sapere che valore sia.
     (Dettagli riguardanti i comandi di manipolazione dei dati sono in <xref linkend="dml"/>.)
   </para>
 
@@ -204,11 +204,11 @@ CREATE TABLE products (
 
   <para>
     Il valore di default può essere un'espressione, che verrà
-    valutata ogni volta che il valore di default viene inserito
-    (<emphasis>non</emphasis> quando la tabella viene creata).  Un esempio comune
-    è per una colonna <type>timestamp</type> avere un valore di default <literal>CURRENT_TIMESTAMP</literal>,
-    così che verrà settato al momento dell'inserimento della riga. Un altro esempio comune
-    è quando si genera un <quote>numero di serie</quote> per ogni riga.
+    valutata ogniqualvolta il valore di default viene inserito
+    (<emphasis>non</emphasis> quando la tabella viene creata).  Un esempio molto comune
+    è assegnare a una colonna di tipo <type>timestamp</type> un valore di default <literal>CURRENT_TIMESTAMP</literal>,
+    che verrà impostato al momento dell'inserimento della riga. Un altro esempio comune
+    è la generazione di un <quote>numero di serie</quote> per ogni riga.
     In <productname>PostgreSQL</productname> questo viene tipicamente fatto con 
     qualcosa di simile a:
 <programlisting>
@@ -219,7 +219,7 @@ CREATE TABLE products (
 </programlisting>
     dove la funzione <literal>nextval()</literal> fornisce valori successivi  
     da una <firstterm>sequenza</firstterm> (vedi <xref 
-    linkend="functions-sequence"/>). Questa procedura è sufficientemente comune  
+    linkend="functions-sequence"/>). Questo espediente è talmente comune
     da avere una speciale scorciatoia:
 <programlisting>
 CREATE TABLE products (
@@ -240,22 +240,22 @@ CREATE TABLE products (
   </indexterm>
 
   <para>
-    I tipi di dato sono un modo per limitare il tipo dei dati che possono essere immagazzinati in una tabella.
-    Per molte applicazioni, comunque, il vincolo che mettono a disposizione 
-    è troppo grossolano. Per esempio, una colonna contenente il prezzo di un prodotto
+    I tipi di dato sono un modo per limitare il genere dei dati che possono essere immagazzinati in una tabella.
+    Il vincolo che forniscono, tuttavia è per molte applicazioni troppo grossolano.
+    Per esempio, una colonna contenente il prezzo di un prodotto
     dovrebbe, probabilmente, accettare solo valori positivi. Ma non c'è nessun
-    tipo di dato standard che accetta solo numeri positivi. Un altro problema è
-    che si potrebbe voler vincolare il dato di una colonna rispetto ai dati delle
-    altre colonne o righe. Per esempio, in una tabella contenente informazioni
-    su un prodotto, ci dovrebbe essere solo una riga per ogni numero di prodotto.
+    tipo di dato standard che accetti esclusivamente numeri positivi. Un altro problema è
+    rappresentato dal voler vincolare il dato di una colonna rispetto ai dati di
+    altre colonne o persino righe. Ad esempio, in una tabella contenente informazioni
+    su un prodotto, ci dovrebbe essere soltano una riga per ogni numero di prodotto.
   </para>
 
   <para>
     Per questo, SQL permette di definire vincoli sulle colonne e le
-    tabelle. I vincoli danno tanto controllo sui dati nelle tue tabelle
-    quanto se ne desidera. Se un utente tenta di immagazzinare dati in una colonna
+    tabelle. I vincoli permettono di controllare a proprio piacimento i dati contenuti nelle tabella.
+    Se un utente tenta di immagazzinare dati in una colonna
     violando un vincolo, viene generato un errore. Questo si applica
-    anche se il valore veniva dalla definizione di valore di default.
+    anche se il valore veniva dalla definizione del valore di default.
   </para>
 
   <sect2>

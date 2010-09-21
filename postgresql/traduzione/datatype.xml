@@ -900,15 +900,15 @@ ALTER SEQUENCE <replaceable class="parameter">tablename</replaceable>_<replaceab
 
    <para>
    
-        Valori di tipo <type>numeric</type> posso essere castati a               
+        Valori di tipo <type>numeric</type> posso essere convertiti a               
         <type>money</type>. Altri tipi numerici posso essere convertiti a
-        <type>money</type> castandoli prima a <type>numeric</type>, per esempio:
+        <type>money</type> eseguendo prima un cast a <type>numeric</type>, per esempio:
 
 
 <programlisting>
 SELECT 1234::numeric::money;
 </programlisting>
-        Un valore <type>money</type> può castare un <type>numeric</type> senza 
+        Un valore <type>money</type> può eseguire un cast di un <type>numeric</type> senza 
         perdita di precisione. La conversione ad altri tipi potrebbe potenzialmente 
         perdere precisione, e deve essere fatta in 2 passi, per esempio:
 <programlisting>
@@ -1071,31 +1071,31 @@ SELECT '52093.89'::money::numeric::float8;
 
    <tip>
     <para>
-     There is no performance difference among these three types,
-     apart from increased storage space when using the blank-padded
-     type, and a few extra CPU cycles to check the length when storing into
-     a length-constrained column.  While
-     <type>character(<replaceable>n</replaceable>)</type> has performance
-     advantages in some other database systems, there is no such advantage in
-     <productname>PostgreSQL</productname>; in fact
-     <type>character(<replaceable>n</replaceable>)</type> is usually the slowest of
-     the three because of its additional storage costs.  In most situations
-     <type>text</type> or <type>character varying</type> should be used
-     instead.
+     Non ci sono differenze di prestazioni tra questi tre tipi, a prescindere
+     dalla maggiore dimensione di memorizzazione quando si utilizza il tipo con
+     spazi riempitivi, e alcuni cicli CPU supplementari per controllare la lunghezza
+     quando si memorizzano in colonne a lunghezza vincolata. Mentre in alcuni
+     altri sistemi di database, <type>character(<replaceable>n</replaceable>)</type> ha
+     vantaggi nelle prestazioni, esso non ha gli stessi vantaggi in
+     <productname>PostgreSQL</productname>; Infatti <type>character(<replaceable>n</replaceable>)</type> 
+     è solitamente il più lento dei tre, causa il costo del suo spazio di immagazzinamento aggiuntivo. 
+     Nella maggior parte delle situazioni
+     dovrebbero invece essere usati <type>text</type> o
+     <type>character varying</type>.
     </para>
    </tip>
 
    <para>
-    Refer to <xref linkend="sql-syntax-strings"/> for information about
-    the syntax of string literals, and to <xref linkend="functions"/>
-    for information about available operators and functions. The
-    database character set determines the character set used to store
-    textual values; for more information on character set support,
-    refer to <xref linkend="multibyte"/>.
+    Vedere <xref linkend="sql-syntax-strings" /> per informazioni circa
+    la sintassi delle stringhe, e in <xref linkend="functions" />
+    per informazioni circa gli operatori e le funzioni disponibili. Il
+    set di caratteri del database determina il set di caratteri usato per
+    memorizzare valori testuali; per ulteriori informazioni sul set di
+    caratteri supportato, vedere in <xref linkend="multibyte" />.
    </para>
 
    <example>
-    <title>Using the character types</title>
+    <title>Utilizzare i tipi di carattere</title>
 
 <programlisting>
 CREATE TABLE test1 (a character(4));
@@ -1125,8 +1125,8 @@ SELECT b, char_length(b) FROM test2;
     <calloutlist>
      <callout arearefs="co.datatype-char">
       <para>
-       The <function>char_length</function> function is discussed in
-       <xref linkend="functions-string"/>.
+       La funzione <function>char_length</function> è discussa dentro
+       <xref linkend="functions-string" />.
       </para>
      </callout>
     </calloutlist>
@@ -1147,28 +1147,45 @@ SELECT b, char_length(b) FROM test2;
     (note the quotes) is different from <type>char(1)</type> in that it
     only uses one byte of storage. It is internally used in the system
     catalogs as a simplistic enumeration type.
+    
+    Ci sono altri due tipi carattere a lunghezza fissa in
+    <productname>PostgreSQL</productname>, mostrati nella <xref
+    linkend="datatype-character-special-table" />. Il tipo <type>name</type>
+    esiste <emphasis>solo</emphasis> per memorizzazioni di identificatori lunghi
+    nei cataloghi di sistema e non è destinato per un uso generale degli utenti. La sua
+    lunghezza è attualmente definita di 64 byte (63 caratteri usabili più il
+    terminatore) ma dovrebbe essere referenziata usando la costante
+    <symbol>NAMEDATALEN</symbol> nel codice sorgente <literal>C</literal> . 
+    La lunghezza è impostata al momento della compilazione (ed
+    è quindi adattabile per usi speciali); 
+    La lunghezza massima preimpostata potrebbe essere
+    cambiata in un futuro rilascio. Il tipo <type>"char"</type>
+    (notare gli apici) è diverso da <type>char(1)</type> in quanto
+<!-- /TODO tipo di enumerazione semplicistica??? -->
+    usa solo un byte di memorizzazione. Viene usato internamente nei cataloghi di
+    sistema come tipo di enumerazione semplicistica.
    </para>
 
     <table id="datatype-character-special-table">
-     <title>Special Character Types</title>
+     <title>Tipi Carattere Speciali</title>
      <tgroup cols="3">
       <thead>
        <row>
-        <entry>Name</entry>
-        <entry>Storage Size</entry>
-        <entry>Description</entry>
+        <entry>Nome</entry>
+        <entry>Dimensione</entry>
+        <entry>Descrizione</entry>
        </row>
       </thead>
       <tbody>
        <row>
         <entry><type>"char"</type></entry>
         <entry>1 byte</entry>
-        <entry>single-byte internal type</entry>
+        <entry>tipo interno a 1-byte</entry>
        </row>
        <row>
         <entry><type>name</type></entry>
         <entry>64 bytes</entry>
-        <entry>internal type for object names</entry>
+        <entry>tipo interno per i nomi di oggetti</entry>
        </row>
       </tbody>
      </tgroup>
@@ -1177,10 +1194,10 @@ SELECT b, char_length(b) FROM test2;
   </sect1>
 
  <sect1 id="datatype-binary">
-  <title>Binary Data Types</title>
+  <title>Tipi di dato binari</title>
 
   <indexterm zone="datatype-binary">
-   <primary>binary data</primary>
+   <primary>dato binario</primary>
   </indexterm>
 
   <indexterm zone="datatype-binary">
@@ -1188,82 +1205,83 @@ SELECT b, char_length(b) FROM test2;
   </indexterm>
 
    <para>
-    The <type>bytea</type> data type allows storage of binary strings;
-    see <xref linkend="datatype-binary-table"/>.
+    Il tipo di dato <type>bytea</type> consente memorizzazioni di stringhe binarie;
+    Vedere <xref linkend="datatype-binary-table" />.
    </para>
 
    <table id="datatype-binary-table">
-    <title>Binary Data Types</title>
+    <title>Tipi di dato binari</title>
     <tgroup cols="3">
      <thead>
       <row>
-       <entry>Name</entry>
-       <entry>Storage Size</entry>
-       <entry>Description</entry>
+       <entry>Nome</entry>
+       <entry>Dimensione</entry>
+       <entry>Descrizione</entry>
       </row>
      </thead>
      <tbody>
       <row>
        <entry><type>bytea</type></entry>
-       <entry>1 or 4 bytes plus the actual binary string</entry>
-       <entry>variable-length binary string</entry>
+       <entry>1 o 4 byte più l'attuale stringa binaria</entry>
+       <entry>stringa binaria a lunghezza variabile</entry>
       </row>
      </tbody>
     </tgroup>
    </table>
 
    <para>
-    A binary string is a sequence of octets (or bytes).  Binary
-    strings are distinguished from character strings in two
-    ways.  First, binary strings specifically allow storing
-    octets of value zero and other <quote>non-printable</quote>
-    octets (usually, octets outside the range 32 to 126).
-    Character strings disallow zero octets, and also disallow any
-    other octet values and sequences of octet values that are invalid
-    according to the database's selected character set encoding.
-    Second, operations on binary strings process the actual bytes,
-    whereas the processing of character strings depends on locale settings.
-    In short, binary strings are appropriate for storing data that the
-    programmer thinks of as <quote>raw bytes</quote>, whereas character
-    strings are appropriate for storing text.
+    Una stringa binaria è una sequenza di ottetti (o byte). Le stringhe
+    binarie si distinguono dalle stringhe di caratteri per due caratteristiche.
+    In primo luogo, le stringhe binarie consentono specificatamente la memorizzazione 
+    di ottetti di valore zero e altri ottetti <quote>non-stampabili</quote>
+    (normalmente ottetti al di fuori della gamma da 32 a 126). Le stringhe di
+    caratteri non accettano ottetti zero, e neanche altri valori di ottetti e
+    sequenze di valori di ottetti che non sono validi secondo la codifica del
+    set di caratteri selezionata dal database. In secondo luogo, le operazioni
+    sulle stringhe binarie elaborano i byte reali, mentre l'elaborazione delle
+    stringhe di caratteri dipende dall'impostazione della localizzazione.
+    In breve, le stringhe binarie sono indicate per la memorizzazione di dati che
+    il programmatore ritiene <quote>byte non codificati</quote>, mentre le stringhe di
+    caratteri sono indicate per memorizzare testo.
    </para>
 
    <para>
-    The <type>bytea</type> type supports two external formats for
-    input and output: <productname>PostgreSQL</productname>'s historical
-    <quote>escape</quote> format, and <quote>hex</quote> format.  Both
-    of these are always accepted on input.  The output format depends
-    on the configuration parameter <xref linkend="guc-bytea-output"/>;
-    the default is hex.  (Note that the hex format was introduced in
-    <productname>PostgreSQL</productname> 9.0; earlier versions and some
-    tools don't understand it.)
+    
+        Il tipo <type>bytea</type> supporta 2 formati esterni per 
+        l'input e l'output: il formato <quote>escape</quote>, storico
+        di <productname>PostgreSQL</productname>, e il formato <quote>hex</quote>.
+        Ambedue sono accettati in input. Il formato di output dipende 
+        dal parametro di configurazione <xref linkend="guc-bytea-output"/>;
+        Il default è hex. (Notare che il formato hex è stato introdotto in 
+        <productname>PostgreSQL</productname> 9.0; Versioni precedenti ed alcuni 
+        strumenti non lo capiscono.)
    </para>
 
    <para>
-    The <acronym>SQL</acronym> standard defines a different binary
-    string type, called <type>BLOB</type> or <type>BINARY LARGE
-    OBJECT</type>.  The input format is different from
-    <type>bytea</type>, but the provided functions and operators are
-    mostly the same.
+        Lo standard <acronym>SQL</acronym> definisce un altro tipo 
+        di stringa binaria, chiamato  <type>BLOB</type> o <type>BINARY LARGE
+        OBJECT</type>. Il formato di input è diverso da
+        <type>bytea</type>, ma le funzioni e gli operatori messe a disposizione sono
+        per la maggior parte le stesse.
    </para>
 
   <sect2>
-   <title><type>bytea</type> hex format</title>
+   <title>Il formato hex di <type>bytea</type></title>
 
    <para>
-    The <quote>hex</quote> format encodes binary data as 2 hexadecimal digits
-    per byte, most significant nibble first.  The entire string is
-    preceded by the sequence <literal>\x</literal> (to distinguish it
-    from the escape format).  In some contexts, the initial backslash may
-    need to be escaped by doubling it, in the same cases in which backslashes
-    have to be doubled in escape format; details appear below.
-    The hexadecimal digits can
-    be either upper or lower case, and whitespace is permitted between
-    digit pairs (but not within a digit pair nor in the starting
-    <literal>\x</literal> sequence).
-    The hex format is compatible with a wide
-    range of external applications and protocols, and it tends to be
-    faster to convert than the escape format, so its use is preferred.
+        Il formato <quote>hex</quote> codifica i dati binari come 2 cifre esadecimali 
+        per byte, mettendo prima il nibble più significativo. L'intera stringa è
+        preceduta dalla sequenza  <literal>\x</literal> (per distinguerla dal
+        formato escape). In alcuni contesti, la barra inversa iniziale potrebbe
+        avere bisogno di un escape, quindi va raddoppiata, come nei casi in cui le barre inverse
+        devono essere raddoppiate nel formato escape; Dettagli sotto.
+        Le cifre esadecimali possono
+        essere sia maiuscole che minuscole, e sono permessi spazi bianchi tra
+        coppie di cifre (ma non all'interno di una coppia di cifre e nemmeno nella sequenza
+        iniziale <literal>\x</literal> ).
+        Il formato hex è compatibile con una vasta
+        gamme di applicazioni e protocolli, e tende ad essere più veloce
+        da convertire rispetto al formato escape, per questo il suo uso è preferibile.
    </para>
 
    <para>
@@ -1275,57 +1293,57 @@ SELECT E'\\xDEADBEEF';
   </sect2>
 
   <sect2>
-   <title><type>bytea</type> escape format</title>
+   <title>Il formato escape di <type>bytea</type></title>
 
    <para>
-    The <quote>escape</quote> format is the traditional
-    <productname>PostgreSQL</productname> format for the <type>bytea</type>
-    type.  It
-    takes the approach of representing a binary string as a sequence
-    of ASCII characters, while converting those bytes that cannot be
-    represented as an ASCII character into special escape sequences.
-    If, from the point of view of the application, representing bytes
-    as characters makes sense, then this representation can be
-    convenient.  But in practice it is usually confusing because it
-    fuzzes up the distinction between binary strings and character
-    strings, and also the particular escape mechanism that was chosen is
-    somewhat unwieldy.  So this format should probably be avoided
-    for most new applications.
+        Il formato <quote>escape</quote> è il formato tradizionale di
+        <productname>PostgreSQL</productname> per il tipo <type>bytea</type>.
+        Esso
+        usa l'approccio di rappresentare una stringa binaria come una sequenza
+        di caratteri ASCII, convertendo i byte che non possono essere rappresentati 
+        come carattere ASCII in sequence di escape speciali.
+        Se, dal punto di vista dell'applicazione, rappresentare i byte 
+        come caratteri ha senso, allora questa rappresentazione può essere
+        conveniente. Ma in pratica, di solito questo è fuorviante, in quanto
+        maschera la distinzione fra stringhe binarie e stringhe di caratteri.
+<!-- /TODO and also the particular escape mechanism that was chosen is somewhat unwieldy. -->        
+        Per questo, questo formato dovrebbe probabilmente essere evitato per la
+        maggior parte delle nuove applicazioni.
    </para>
 
    <para>
-    When entering <type>bytea</type> values in escape format,
-    octets of certain
-    values <emphasis>must</emphasis> be escaped, while all octet
-    values <emphasis>can</emphasis> be escaped.  In
-    general, to escape an octet, convert it into its three-digit
-    octal value and precede it
-    by a backslash (or two backslashes, if writing the value as a
-    literal using escape string syntax).
-    Backslash itself (octet value 92) can alternatively be represented by
-    double backslashes.
-    <xref linkend="datatype-binary-sqlesc"/>
-    shows the characters that must be escaped, and gives the alternative
-    escape sequences where applicable.
+        Quando si inseriscono valori <type>bytea</type> in formato escape, 
+        ottetti di certi
+        valori <emphasis>devono</emphasis> essere espressi in formato escape, mentre tutti i 
+        valori ottetti <emphasis>possono</emphasis> essere espressi in formato escape. In
+        generale, per esprimere un ottetto in formato escape, convertirlo nel suo valore 
+        ottale e precederlo da
+        una barra inversa (o due barre inverse, se si sta scrivendo il valore 
+        come un valore letterale che usa la sintassi di escape di stringa).
+        La barra inversa di per sè (valore di ottetto 92) può alternativamente essere rappresentata da
+        doppie barre inverse.
+        <xref linkend="datatype-binary-sqlesc"/>
+        mostra i caratteri che devono essere espressi con l'escape, e mostra le 
+        sequenze di escape alternative dove sono applicabili.
    </para>
 
    <table id="datatype-binary-sqlesc">
-    <title><type>bytea</type> Literal Escaped Octets</title>
+    <title>Sequenze di escape di ottetti letterali per <type>bytea</type></title>
     <tgroup cols="5">
      <thead>
       <row>
-       <entry>Decimal Octet Value</entry>
-       <entry>Description</entry>
-       <entry>Escaped Input Representation</entry>
-       <entry>Example</entry>
-       <entry>Output Representation</entry>
+       <entry>Valore decimale ottetto</entry>
+       <entry>Descrizione</entry>
+       <entry>Rappresentazione sequenza di escape in ingresso</entry>
+       <entry>Esempio</entry>
+       <entry>Rappresentazione in uscita</entry>
       </row>
      </thead>
 
      <tbody>
       <row>
        <entry>0</entry>
-       <entry>zero octet</entry>
+       <entry>ottetto 0</entry>
        <entry><literal>E'\\000'</literal></entry>
        <entry><literal>SELECT E'\\000'::bytea;</literal></entry>
        <entry><literal>\000</literal></entry>
@@ -1333,7 +1351,7 @@ SELECT E'\\xDEADBEEF';
 
       <row>
        <entry>39</entry>
-       <entry>single quote</entry>
+       <entry>apice singolo</entry>
        <entry><literal>''''</literal> or <literal>E'\\047'</literal></entry>
        <entry><literal>SELECT E'\''::bytea;</literal></entry>
        <entry><literal>'</literal></entry>
@@ -1341,16 +1359,16 @@ SELECT E'\\xDEADBEEF';
 
       <row>
        <entry>92</entry>
-       <entry>backslash</entry>
+       <entry>barra inversa</entry>
        <entry><literal>E'\\\\'</literal> or <literal>E'\\134'</literal></entry>
        <entry><literal>SELECT E'\\\\'::bytea;</literal></entry>
        <entry><literal>\\</literal></entry>
       </row>
 
       <row>
-       <entry>0 to 31 and 127 to 255</entry>
-       <entry><quote>non-printable</quote> octets</entry>
-       <entry><literal>E'\\<replaceable>xxx'</replaceable></literal> (octal value)</entry>
+       <entry>da 0 a 31 e da 127 a 255</entry>
+       <entry>ottetti <quote>non stampabili</quote></entry>
+       <entry><literal>E'\\<replaceable>xxx'</replaceable></literal> (valore ottale)</entry>
        <entry><literal>SELECT E'\\001'::bytea;</literal></entry>
        <entry><literal>\001</literal></entry>
       </row>
@@ -1360,56 +1378,58 @@ SELECT E'\\xDEADBEEF';
    </table>
 
    <para>
-    The requirement to escape <emphasis>non-printable</emphasis> octets
-    varies depending on locale settings. In some instances you can get away
-    with leaving them unescaped. Note that the result in each of the examples
-    in <xref linkend="datatype-binary-sqlesc"/> was exactly one octet in
-    length, even though the output representation is sometimes
-    more than one character.
+    La necessità di codificare le sequenze di escape per gli ottetti 
+    <quote>non stampabili</quote> varia a seconda dell'impostazione locale. 
+    In alcuni
+    casi è possibile cavarsela senza dover fare l'escape. Notare che il risultato in
+    ognuno degli esempi in <xref linkend="datatype-binary-sqlesc" /> è
+    esattamente della lunghezza di un ottetto, anche se la rappresentazione d'uscita degli
+    ottetti a volte è maggiore di un carattere.
    </para>
 
    <para>
-    The reason multiple backslashes are required, as shown
-    in <xref linkend="datatype-binary-sqlesc"/>, is that an input
-    string written as a string literal must pass through two parse
-    phases in the <productname>PostgreSQL</productname> server.
-    The first backslash of each pair is interpreted as an escape
-    character by the string-literal parser (assuming escape string
-    syntax is used) and is therefore consumed, leaving the second backslash of the
-    pair.  (Dollar-quoted strings can be used to avoid this level
-    of escaping.)  The remaining backslash is then recognized by the
-    <type>bytea</type> input function as starting either a three
-    digit octal value or escaping another backslash.  For example,
-    a string literal passed to the server as <literal>E'\\001'</literal>
-    becomes <literal>\001</literal> after passing through the
-    escape string parser. The <literal>\001</literal> is then sent
-    to the <type>bytea</type> input function, where it is converted
-    to a single octet with a decimal value of 1.  Note that the
-    single-quote character is not treated specially by <type>bytea</type>,
-    so it follows the normal rules for string literals.  (See also
-    <xref linkend="sql-syntax-strings"/>.)
+    La ragione per cui bisogna scrivere diverse barre inverse, come mostrato nella
+    <xref linkend="datatype-binary-sqlesc" />, è che una stringa in input,
+    scritta come stringa letterale, deve passare attraverso due fasi di analisi
+    nel server <productname>PostgreSQL</productname>. La prima barra inversa
+    di ogni paio viene interpretata come un carattere di escape dall'analizzatore
+    di stringhe letterali (assumendo che si stia utilizzando la sintassi di escape per le
+    stringhe) e viene quindi eliminata, lasciando invariata la seconda
+    barra inversa del paio. (Per eliminare questo livello di decodifica del carattere di
+    escape è possibile utilizzare le stringhe racchiuse tra caratteri dollaro).
+    La barra inversa rimasta viene quindi riconosciuta dalla funzione di input di
+    <type>bytea</type> o come inizio di un valore ottale di tre cifre, oppure come
+    un'altro carattere barra inversa di escape. Per esempio, una stringa letterale passata
+    al server come <literal>E'\\001'</literal> diventa <literal>\001</literal>
+    dopo essere passata attraverso l'analizzatore di sequenze di escape. Il valore
+    <literal>\001</literal> viene quindi passato alla funzione di input di
+    <type>bytea</type>, dove viene convertito in un singolo ottetto con valore
+    decimale 1. Notare che il carattere racchiuso tra singoli-apici non viene
+    specificatamente trattato da <type>bytea</type> per cui segue le regole normali
+    per le stringhe letterali. (Vedere anche <xref linkend="sql-syntax-strings" />). 
    </para>
 
    <para>
-    <type>Bytea</type> octets are sometimes escaped when output. In general, each
-    <quote>non-printable</quote> octet is converted into
-    its equivalent three-digit octal value and preceded by one backslash.
-    Most <quote>printable</quote> octets are represented by their standard
-    representation in the client character set. The octet with decimal
-    value 92 (backslash) is doubled in the output.
-    Details are in <xref linkend="datatype-binary-resesc"/>.
+    Gli ottetti di <type>Bytea</type> a volte vengono codificati come sequenze di escape
+    in uscita. Generalmente ogni ottetto <quote>non-stampabile</quote> viene convertito
+    nel suo equivalente valore ottale a tre cifre e preceduto da una barra inversa.
+    La maggior parte degli ottetti <quote>stampabili</quote> vengono rappresentati
+    nella loro rappresentazione standard nel set di caratteri del client. L'ottetto con valore
+    decimale 92 (barra inversa) viene raddoppiato in uscita.
+    Maggiori dettagli in <xref linkend="datatype-binary-resesc" />.
+    
    </para>
 
    <table id="datatype-binary-resesc">
-    <title><type>bytea</type> Output Escaped Octets</title>
+    <title>Ottetti di <type>bytea</type> con escape in uscita</title>
     <tgroup cols="5">
      <thead>
       <row>
-       <entry>Decimal Octet Value</entry>
-       <entry>Description</entry>
-       <entry>Escaped Output Representation</entry>
-       <entry>Example</entry>
-       <entry>Output Result</entry>
+       <entry>Valore decimale ottetto</entry>
+       <entry>Descrizione</entry>
+       <entry>Rappresentazione sequenza di escape in uscita</entry>
+       <entry>Esempio</entry>
+       <entry>Risultato in uscita</entry>
       </row>
      </thead>
 
@@ -1417,7 +1437,7 @@ SELECT E'\\xDEADBEEF';
 
       <row>
        <entry>92</entry>
-       <entry>backslash</entry>
+       <entry>barra inversa</entry>
        <entry><literal>\\</literal></entry>
        <entry><literal>SELECT E'\\134'::bytea;</literal></entry>
        <entry><literal>\\</literal></entry>
@@ -1425,16 +1445,16 @@ SELECT E'\\xDEADBEEF';
 
       <row>
        <entry>0 to 31 and 127 to 255</entry>
-       <entry><quote>non-printable</quote> octets</entry>
-       <entry><literal>\<replaceable>xxx</replaceable></literal> (octal value)</entry>
+       <entry>ottetti <quote>non stampabili</quote></entry>
+       <entry><literal>\<replaceable>xxx</replaceable></literal> (valore ottale)</entry>
        <entry><literal>SELECT E'\\001'::bytea;</literal></entry>
        <entry><literal>\001</literal></entry>
       </row>
 
       <row>
        <entry>32 to 126</entry>
-       <entry><quote>printable</quote> octets</entry>
-       <entry>client character set representation</entry>
+       <entry>ottetti <quote>stampabili</quote></entry>
+       <entry>rappresentazione in base al set di caratteri del client</entry>
        <entry><literal>SELECT E'\\176'::bytea;</literal></entry>
        <entry><literal>~</literal></entry>
       </row>
@@ -1444,116 +1464,118 @@ SELECT E'\\xDEADBEEF';
    </table>
 
    <para>
-    Depending on the front end to <productname>PostgreSQL</productname> you use,
-    you might have additional work to do in terms of escaping and
-    unescaping <type>bytea</type> strings. For example, you might also
-    have to escape line feeds and carriage returns if your interface
-    automatically translates these.
+    In base al front end di <productname>PostgreSQL</productname> utilizzato, potrebbe
+    essere necessario fare del lavoro aggiuntivo sulla codifica e la decodifica
+    delle sequenze di escape per le stringhe di <type>bytea</type>. Per esempio, si
+    potrebbe anche dover fare l'escape per l'accapo e per il ritorno carrello se la
+    vostra interfaccia non li trasforma automaticamente.
+    
    </para>
   </sect2>
  </sect1>
 
 
   <sect1 id="datatype-datetime">
-   <title>Date/Time Types</title>
+   <title>Tipi di Data/Orario</title>
 
    <indexterm zone="datatype-datetime">
-    <primary>date</primary>
+    <primary>data</primary>
    </indexterm>
    <indexterm zone="datatype-datetime">
-    <primary>time</primary>
+    <primary>orario</primary>
    </indexterm>
    <indexterm zone="datatype-datetime">
-    <primary>time without time zone</primary>
+    <primary>orario senza fuso orario</primary>
    </indexterm>
    <indexterm zone="datatype-datetime">
-    <primary>time with time zone</primary>
+    <primary>orario con fuso orario</primary>
    </indexterm>
    <indexterm zone="datatype-datetime">
     <primary>timestamp</primary>
    </indexterm>
    <indexterm zone="datatype-datetime">
-    <primary>timestamp with time zone</primary>
+    <primary>timestamp con fuso orario</primary>
    </indexterm>
    <indexterm zone="datatype-datetime">
-    <primary>timestamp without time zone</primary>
+    <primary>timestamp senza fuso orario</primary>
    </indexterm>
    <indexterm zone="datatype-datetime">
-    <primary>interval</primary>
+    <primary>intervallo</primary>
    </indexterm>
    <indexterm zone="datatype-datetime">
-    <primary>time span</primary>
+    <primary>arco di tempo</primary>
    </indexterm>
 
    <para>
-    <productname>PostgreSQL</productname> supports the full set of
-    <acronym>SQL</acronym> date and time types, shown in <xref
-    linkend="datatype-datetime-table"/>.  The operations available
-    on these data types are described in
-    <xref linkend="functions-datetime"/>.
+    <productname>PostgreSQL</productname> supporta l'insieme
+    completo dei tipi data e ora di <acronym>SQL</acronym>,
+    visualizzato nella <xref linkend="datatype-datetime-table" />.
+    Le operazioni disponibili in questi tipi di dati sono
+    descritte in <xref linkend="functions-datetime" />.
+    
    </para>
 
     <table id="datatype-datetime-table">
-     <title>Date/Time Types</title>
+     <title>Tipi data/orario</title>
      <tgroup cols="6">
       <thead>
        <row>
-        <entry>Name</entry>
-        <entry>Storage Size</entry>
-        <entry>Description</entry>
-        <entry>Low Value</entry>
-        <entry>High Value</entry>
-        <entry>Resolution</entry>
+        <entry>Nome</entry>
+        <entry>Dimensione</entry>
+        <entry>Descrizione</entry>
+        <entry>Valore minimo</entry>
+        <entry>Valore massimo</entry>
+        <entry>Risoluzione</entry>
        </row>
       </thead>
       <tbody>
        <row>
         <entry><type>timestamp [ (<replaceable>p</replaceable>) ] [ without time zone ]</type></entry>
-        <entry>8 bytes</entry>
-        <entry>both date and time (no time zone)</entry>
-        <entry>4713 BC</entry>
-        <entry>294276 AD</entry>
-        <entry>1 microsecond / 14 digits</entry>
+        <entry>8 byte</entry>
+        <entry>sia data che orario (senza fuso orario)</entry>
+        <entry>4713 AC</entry>
+        <entry>294276 DC</entry>
+        <entry>1 microsecondo / 14 cifre</entry>
        </row>
        <row>
         <entry><type>timestamp [ (<replaceable>p</replaceable>) ] with time zone</type></entry>
-        <entry>8 bytes</entry>
-        <entry>both date and time, with time zone</entry>
-        <entry>4713 BC</entry>
-        <entry>294276 AD</entry>
-        <entry>1 microsecond / 14 digits</entry>
+        <entry>8 byte</entry>
+        <entry>sia data che orario, con fuso orario</entry>
+        <entry>4713 AC</entry>
+        <entry>294276 DC</entry>
+        <entry>1 microsecondo / 14 cifre</entry>
        </row>
        <row>
         <entry><type>date</type></entry>
-        <entry>4 bytes</entry>
-        <entry>date (no time of day)</entry>
-        <entry>4713 BC</entry>
-        <entry>5874897 AD</entry>
-        <entry>1 day</entry>
+        <entry>4 byte</entry>
+        <entry>data (senza orario del giorno)</entry>
+        <entry>4713 AC</entry>
+        <entry>5874897 DC</entry>
+        <entry>1 giorno</entry>
        </row>
        <row>
         <entry><type>time [ (<replaceable>p</replaceable>) ] [ without time zone ]</type></entry>
-        <entry>8 bytes</entry>
-        <entry>time of day (no date)</entry>
+        <entry>8 byte</entry>
+        <entry>orario del giorno (senza data)</entry>
         <entry>00:00:00</entry>
         <entry>24:00:00</entry>
-        <entry>1 microsecond / 14 digits</entry>
+        <entry>1 microsecondo / 14 cifre</entry>
        </row>
        <row>
         <entry><type>time [ (<replaceable>p</replaceable>) ] with time zone</type></entry>
-        <entry>12 bytes</entry>
-        <entry>times of day only, with time zone</entry>
+        <entry>12 byte</entry>
+        <entry>solo orario del giorno, con fuso orario</entry>
         <entry>00:00:00+1459</entry>
         <entry>24:00:00-1459</entry>
-        <entry>1 microsecond / 14 digits</entry>
+        <entry>1 microsecondo / 14 cifre</entry>
        </row>
        <row>
         <entry><type>interval [ <replaceable>fields</replaceable> ] [ (<replaceable>p</replaceable>) ]</type></entry>
-        <entry>12 bytes</entry>
-        <entry>time interval</entry>
-        <entry>-178000000 years</entry>
-        <entry>178000000 years</entry>
-        <entry>1 microsecond / 14 digits</entry>
+        <entry>12 byte</entry>
+        <entry>intervallo di tempo</entry>
+        <entry>-178000000 anni</entry>
+        <entry>178000000 anni</entry>
+        <entry>1 microsecondo / 14 cifre</entry>
        </row>
       </tbody>
      </tgroup>
@@ -1561,59 +1583,60 @@ SELECT E'\\xDEADBEEF';
 
    <note>
     <para>
-     The SQL standard requires that writing just <type>timestamp</type>
-     be equivalent to <type>timestamp without time
-     zone</type>, and <productname>PostgreSQL</productname> honors that
-     behavior.  (Releases prior to 7.3 treated it as <type>timestamp
-     with time zone</type>.)
+        Lo standard SQL considera che <type>timestamp</type>
+        da solo sia equivalente a <type>timestamp without time zone</type> (timestamp senza fuso orario),
+        e <productname>PostgreSQL</productname> segue lo stesso comportamento.
+        (Le versioni di <productname>PostgreSQL</productname> precedenti la 7.3, tarttavano i <type>timestamp</type>
+        come <type>timestamp with time zone</type> (timestamp con fuso orario).)
     </para>
    </note>
 
    <para>
-    <type>time</type>, <type>timestamp</type>, and
-    <type>interval</type> accept an optional precision value
-    <replaceable>p</replaceable> which specifies the number of
-    fractional digits retained in the seconds field. By default, there
-    is no explicit bound on precision.  The allowed range of
-    <replaceable>p</replaceable> is from 0 to 6 for the
-    <type>timestamp</type> and <type>interval</type> types.
+    I tipi <type>time</type>, <type>timestamp</type>, e
+    <type>interval</type> accettano un valore opzionale di precisione
+    <replaceable>p</replaceable>, il quale specifica il numero di
+    cifre decimali restituite nel campo dei secondi. Per impostazione predefinita, non
+    c'è alcun vincolo esplicito di precisione. L'estensione consentita per
+    <replaceable>p</replaceable> è da 0 a 6 cifre per i tipi
+    <type>timestamp</type> e <type>interval</type>.
+    
    </para>
 
    <note>
    <para>
-    When <type>timestamp</type> values are stored as eight-byte integers
-    (currently the default), microsecond precision is available over
-    the full range of values. When <type>timestamp</type> values are
-    stored as double precision floating-point numbers instead (a
-    deprecated compile-time option), the effective limit of precision
-    might be less than 6. <type>timestamp</type> values are stored as
-    seconds before or after midnight 2000-01-01.  When
-    <type>timestamp</type> values are implemented using floating-point
-    numbers, microsecond precision is achieved for dates within a few
-    years of 2000-01-01, but the precision degrades for dates further
-    away. Note that using floating-point datetimes allows a larger
-    range of <type>timestamp</type> values to be represented than
-    shown above: from 4713 BC up to 5874897 AD.
+        Quando valori <type>timestamp</type> sono memorizzati come interi a otto byte
+        (attualmente per default), la precizione al microsecondo è disponibile 
+        per tutta la gamma di valori. Quando invece i valori <type>timestamp</type> sono
+        memorizzati come numeri a vorgola mobile con doppia precisione, (un'opzione
+        di compilazione deprecata), il limite effettivo di precisione 
+        potrebbe essere minore di 6. I valori <type>timestamp</type> sono memorizzati
+        come secondi prima o dopo la mezzanotte del 01/01/2000. Quando 
+        i valori <type>timestamp</type> sono implementati usando numeri a
+        virgola mobile, la precisione al millisecondo è disponibile per date entro pochi
+        anni dal 01/01/2000, ma la precisione degrada per date più lontane.
+        Notare che l'uso di datetimes a virgola mobile permette un una gamma maggiore di 
+        valori rispetto a quanto mostrato sopra:
+        da 4713 AC fino a 5874897 DC.
    </para>
 
    <para>
-    The same compile-time option also determines whether
-    <type>time</type> and <type>interval</type> values are stored as
-    floating-point numbers or eight-byte integers.  In the
-    floating-point case, large <type>interval</type> values degrade in
-    precision as the size of the interval increases.
+        La stessa opzione di compilazione determina se
+        i valori <type>time</type> e <type>interval</type> sono memorizzati come
+        numeri a virgola mobile o interi a otto byte. Nel caso della virgola mobile,
+        valori di grandi intervalli degradano in precisione 
+        man mano che la dimensione dell'intervallo cresce.
    </para>
    </note>
 
    <para>
-    For the <type>time</type> types, the allowed range of
-    <replaceable>p</replaceable> is from 0 to 6 when eight-byte integer
-    storage is used, or from 0 to 10 when floating-point storage is used.
+    Per i tipi <type>time</type>, il valore consentito per <replaceable>p</replaceable>
+    va da 0 a 6 se si utilizza la memorizzazione con intero a otto byte,
+    o da 0 a 10 quando si utilizza la memorizzazione in virgola mobile.
    </para>
 
    <para>
-    The <type>interval</type> type has an additional option, which is
-    to restrict the set of stored fields by writing one of these phrases:
+        Il tipo  <type>interval</type> ha un'opzione aggiuntiva, che è
+        di restringere l'insieme dei campi memorizzati scrivendo una di queste frasi:
 <literallayout class="monospaced">
 YEAR
 MONTH
@@ -1629,164 +1652,166 @@ HOUR TO MINUTE
 HOUR TO SECOND
 MINUTE TO SECOND
 </literallayout>
-    Note that if both <replaceable>fields</replaceable> and
-    <replaceable>p</replaceable> are specified, the
-    <replaceable>fields</replaceable> must include <literal>SECOND</literal>,
-    since the precision applies only to the seconds.
+        Notare che se sono specificate sia <replaceable>fields</replaceable> che 
+        <replaceable>p</replaceable>, l'opzione  
+        <replaceable>fields</replaceable> deve includere <literal>SECOND</literal>,
+        dato che la precisione si applica solo sui secondi.
    </para>
 
    <para>
-    The type <type>time with time zone</type> is defined by the SQL
-    standard, but the definition exhibits properties which lead to
-    questionable usefulness. In most cases, a combination of
+    Il tipo <type>time with time zone</type> è definito dallo standard
+    SQL, ma la definizione espone proprietà che portano ad un utilizzo
+    discutibile. Nella maggior parte dei casi, una combinazione di
     <type>date</type>, <type>time</type>, <type>timestamp without time
-    zone</type>, and <type>timestamp with time zone</type> should
-    provide a complete range of date/time functionality required by
-    any application.
+    zone</type> e <type>timestamp with time zone</type> dovrebbe
+    fornire una completa gamma di funzionalità per data/ora richiesta
+    da qualsiasi applicazione.
+    
    </para>
 
    <para>
-    The types <type>abstime</type>
-    and <type>reltime</type> are lower precision types which are used internally.
-    You are discouraged from using these types in
-    applications;  these internal types
-    might disappear in a future release.
+    I tipi <type>abstime</type> e <type>reltime</type>
+    sono tipi a bassa precisione che sono usati internamente.
+    Siete sconsigliati dall'utilizzare questi tipi nelle
+    applicazioni. Questi tipi interni
+    potrebbero sparire nei rilasci futuri.
    </para>
 
    <sect2 id="datatype-datetime-input">
-    <title>Date/Time Input</title>
+    <title>Input di date/orari</title>
 
     <para>
-     Date and time input is accepted in almost any reasonable format, including
-     ISO 8601, <acronym>SQL</acronym>-compatible, 
-     traditional <productname>POSTGRES</productname>, and others.
-     For some formats, ordering of day, month, and year in date input is
-     ambiguous and there is support for specifying the expected
-     ordering of these fields.  Set the <xref linkend="guc-datestyle"/> parameter
-     to <literal>MDY</literal> to select month-day-year interpretation,
-     <literal>DMY</literal> to select day-month-year interpretation, or
-     <literal>YMD</literal> to select year-month-day interpretation.
+     L'input per le date e le ore è accettato in qualsiasi plausibile formato,
+     compreso il formato ISO 8601, <acronym>SQL</acronym>-compatibile, i formati
+     tradizionali <productname>POSTGRES</productname>, ed altri. Per alcuni formati,
+     il posizionamento per mese, giorno e anno nelle date in input è ambiguo
+     ed esiste un supporto per specificare il posizionamento desiderato per questi
+     campi . Impostare il parametro <xref linkend="guc-datestyle" /> a
+     <literal>MDY</literal> per selezionare la disposizione mese-giorno-anno,
+     <literal>DMY</literal> per selezionare la disposizione giorno-mese-anno,
+     <literal>YMD</literal> per selezionare la disposizione anno-mese-giorno.
     </para>
 
     <para>
-     <productname>PostgreSQL</productname> is more flexible in
-     handling date/time input than the
-     <acronym>SQL</acronym> standard requires.
-     See <xref linkend="datetime-appendix"/>
-     for the exact parsing rules of date/time input and for the
-     recognized text fields including months, days of the week, and
-     time zones. 
+     <productname>PostgreSQL</productname> è più
+     flessibile nella gestione dell'input di data/ora rispetto a
+     quanto richiesto dallo standard <acronym>SQL</acronym>. Vedere
+     <xref linkend="datetime-appendix" /> per conoscere le regole
+     esatte di conversione dell'input di data/ora e per i campi di
+     testo riconosciuti compresi mesi, giorni della settimana, e
+     fusi orari. 
     </para>
 
     <para>
-     Remember that any date or time literal input needs to be enclosed
-     in single quotes, like text strings.  Refer to 
-     <xref linkend="sql-syntax-constants-generic"/> for more
-     information.
-     <acronym>SQL</acronym> requires the following syntax
+     Ricordare che ogni data o orario letterale in ingresso deve essere
+     racchiuso tra singoli apici, come le stringhe di testo. Vedere
+     <xref linkend="sql-syntax-constants-generic" /> per ulteriori
+     informazioni.
+     <acronym>SQL</acronym> richiede la seguente sintassi
 <synopsis>
 <replaceable>type</replaceable> [ (<replaceable>p</replaceable>) ] '<replaceable>value</replaceable>'
 </synopsis>
-     where <replaceable>p</replaceable> is an optional precision
-     specification giving the number of
-     fractional digits in the seconds field. Precision can be
-     specified for <type>time</type>, <type>timestamp</type>, and
-     <type>interval</type> types.  The allowed values are mentioned
-     above.  If no precision is specified in a constant specification,
-     it defaults to the precision of the literal value.
+     dove la specifica di precisione opzionale <replaceable>p</replaceable>
+     è un intero corrispondente al numero delle cifre decimali nel
+     campo dei secondi. La precisione può essere
+     specificata per i tipi <type>time</type>, <type>timestamp</type> e
+     <type>interval</type>. I valori consentiti sono stati specificati
+     sopra. Se non viene specificata nessuna costante di precisione,
+     come precisione viene assunta quella propria del valore letterale.
+     
     </para>
 
     <sect3>
-    <title>Dates</title>
+    <title>Date</title>
 
     <indexterm>
      <primary>date</primary>
     </indexterm>
  
     <para>
-     <xref linkend="datatype-datetime-date-table"/> shows some possible
-     inputs for the <type>date</type> type.
+     La <xref linkend="datatype-datetime-date-table" /> mostra alcuni possibili
+     valori di input per il tipo <type>date</type>.
     </para>
 
      <table id="datatype-datetime-date-table">
-      <title>Date Input</title>
+      <title>Input per le date</title>
       <tgroup cols="2">
        <thead>
         <row>
-         <entry>Example</entry>
-         <entry>Description</entry>
+         <entry>Esempio</entry>
+         <entry>Descrizione</entry>
         </row>
        </thead>
        <tbody>
         <row>
          <entry>1999-01-08</entry>
-         <entry>ISO 8601; January 8 in any mode
-         (recommended format)</entry>
+         <entry>ISO 8601; 8 Gennaio in qualsiasi modo
+         (formato raccomandato)</entry>
         </row>
         <row>
          <entry>January 8, 1999</entry>
-         <entry>unambiguous in any <varname>datestyle</varname> input mode</entry>
+         <entry>non ambiguo per qualsiasi modo di input impostato con <varname>datestyle</varname></entry>
         </row>
         <row>
          <entry>1/8/1999</entry>
-         <entry>January 8 in <literal>MDY</literal> mode;
-          August 1 in <literal>DMY</literal> mode</entry>
+         <entry>8 Gennaio nel modo <literal>MDY</literal>;
+          1 Agosto nel modo <literal>DMY</literal></entry>
         </row>
         <row>
          <entry>1/18/1999</entry>
-         <entry>January 18 in <literal>MDY</literal> mode;
-          rejected in other modes</entry>
+         <entry>18 Gennaio nel modo <literal>MDY</literal>;
+          respinto negli altri modi</entry>
         </row>
         <row>
          <entry>01/02/03</entry>
-         <entry>January 2, 2003 in <literal>MDY</literal> mode;
-          February 1, 2003 in <literal>DMY</literal> mode;
-          February 3, 2001 in <literal>YMD</literal> mode
+         <entry>2 Gennaio 2003 nel modo <literal>MDY</literal>;
+          1 Febbraio 2003 nel modo <literal>DMY</literal>;
+          3 Febbraio 2001 nel modo <literal>YMD</literal>
          </entry>
         </row>
         <row>
          <entry>1999-Jan-08</entry>
-         <entry>January 8 in any mode</entry>
+         <entry>8 Gennaio in qualsiasi modo</entry>
         </row>
         <row>
          <entry>Jan-08-1999</entry>
-         <entry>January 8 in any mode</entry>
+         <entry>8 Gennaio in qualsiasi modo</entry>
         </row>
         <row>
          <entry>08-Jan-1999</entry>
-         <entry>January 8 in any mode</entry>
+         <entry>8 Gennaio in qualsiasi modo</entry>
         </row>
         <row>
          <entry>99-Jan-08</entry>
-         <entry>January 8 in <literal>YMD</literal> mode, else error</entry>
+         <entry>8 Gennaio nel modo <literal>YMD</literal>, altrimenti errore</entry>
         </row>
         <row>
          <entry>08-Jan-99</entry>
-         <entry>January 8, except error in <literal>YMD</literal> mode</entry>
+         <entry>8 Gennaio, errore se in modo <literal>YMD</literal></entry>
         </row>
         <row>
          <entry>Jan-08-99</entry>
-         <entry>January 8, except error in <literal>YMD</literal> mode</entry>
+         <entry>8 Gennaio, errore se in modo <literal>YMD</literal></entry>
         </row>
         <row>
          <entry>19990108</entry>
-         <entry>ISO 8601; January 8, 1999 in any mode</entry>
+         <entry>ISO 8601; 8 Gennaio 1999 in qualsiasi modo</entry>
         </row>
         <row>
          <entry>990108</entry>
-         <entry>ISO 8601; January 8, 1999 in any mode</entry>
+         <entry>ISO 8601;  8 Gennaio 1999 in qualsiasi modo</entry>
         </row>
         <row>
          <entry>1999.008</entry>
-         <entry>year and day of year</entry>
+         <entry>anno e giorno dell'anno</entry>
         </row>
         <row>
          <entry>J2451187</entry>
-         <entry>Julian day</entry>
+         <entry>giorno giuliano</entry>
         </row>
         <row>
          <entry>January 8, 99 BC</entry>
-         <entry>year 99 BC</entry>
+         <entry>anno 99 AC</entry>
         </row>
        </tbody>
       </tgroup>
@@ -1794,7 +1819,7 @@ MINUTE TO SECOND
     </sect3>
 
     <sect3>
-     <title>Times</title>
+     <title>Orari</title>
 
      <indexterm>
       <primary>time</primary>
@@ -1807,35 +1832,36 @@ MINUTE TO SECOND
      </indexterm>
 
      <para>
-      The time-of-day types are <type>time [
-      (<replaceable>p</replaceable>) ] without time zone</type> and
+      I tipi relativi alle ore del giorno sono <type>time [
+      (<replaceable>p</replaceable>) ] without time zone</type> e
       <type>time [ (<replaceable>p</replaceable>) ] with time
-      zone</type>.  <type>time</type> alone is equivalent to
+      zone</type>.  Scrivere solo <type>time</type> equivale a scrivere
       <type>time without time zone</type>.
      </para>
 
      <para>
-      Valid input for these types consists of a time of day followed
-      by an optional time zone. (See <xref
-      linkend="datatype-datetime-time-table"/> 
-      and <xref linkend="datatype-timezone-table"/>.)  If a time zone is
-      specified in the input for <type>time without time zone</type>,
-      it is silently ignored. You can also specify a date but it will
-      be ignored, except when you use a time zone name that involves a
-      daylight-savings rule, such as
-      <literal>America/New_York</literal>. In this case specifying the date
-      is required in order to determine whether standard or daylight-savings
-      time applies.  The appropriate time zone offset is recorded in the
-      <type>time with time zone</type> value.
+      Input validi per questi tipi consistono in un ora del giorno seguita
+      da un opzionale fuso orario. (Vedere la <xref
+      linkend="datatype-datetime-time-table" /> e la 
+      <xref linkend="datatype-timezone-table" />). Se viene specificato il fuso
+      orario nell'input di <type>time without time zone</type>, questo viene
+      tranquillamente ignorato. Anche se viene specificata una data, questa
+      sarà ignorata, eccetto se viene utilizzato un nome di fuso orario
+      che coinvolge un utilizzo di ora estiva, come <literal>America/New_York</literal>.
+      In questo caso è necessario specificare la data per determinare
+      se si deve applicare l'ora standard o quella estiva. L'offset
+      appropriato per il fuso orario è registrato nel valore
+      <type>time with time zone</type>.
+
      </para>
 
       <table id="datatype-datetime-time-table">
-       <title>Time Input</title>
+       <title>Input per gli orari</title>
        <tgroup cols="2">
         <thead>
          <row>
-          <entry>Example</entry>
-          <entry>Description</entry>
+          <entry>Esempio</entry>
+          <entry>Descrizione</entry>
          </row>
         </thead>
         <tbody>
@@ -1857,11 +1883,11 @@ MINUTE TO SECOND
          </row>
          <row>
           <entry><literal>04:05 AM</literal></entry>
-          <entry>same as 04:05; AM does not affect value</entry>
+          <entry>stesso di 04:05; AM non influisce sul valore</entry>
          </row>
          <row>
           <entry><literal>04:05 PM</literal></entry>
-          <entry>same as 16:05; input hour must be &lt;= 12</entry>
+          <entry>stesso di 16:05; l'ora di ingresso deve essere &lt;= 12</entry>
          </row>
          <row>
           <entry><literal>04:05:06.789-8</literal></entry>
@@ -1881,70 +1907,70 @@ MINUTE TO SECOND
          </row>
          <row>
           <entry><literal>04:05:06 PST</literal></entry>
-          <entry>time zone specified by abbreviation</entry>
+          <entry>fuso orario specificato con un'abbreviazione</entry>
          </row>
          <row>
           <entry><literal>2003-04-12 04:05:06 America/New_York</literal></entry>
-          <entry>time zone specified by full name</entry>
+          <entry>fuso orario specificato con il nome completo</entry>
          </row>
         </tbody>
        </tgroup>
       </table>
 
       <table tocentry="1" id="datatype-timezone-table">
-       <title>Time Zone Input</title>
+       <title>Input di fuso orario</title>
        <tgroup cols="2">
         <thead>
          <row>
-          <entry>Example</entry>
-          <entry>Description</entry>
+          <entry>Esempio</entry>
+          <entry>Descrizione</entry>
          </row>
         </thead>
         <tbody>
          <row>
           <entry><literal>PST</literal></entry>
-          <entry>Abbreviation (for Pacific Standard Time)</entry>
+          <entry>Abbreviazione (per Pacific Standard Time)</entry>
          </row>
          <row>
           <entry><literal>America/New_York</literal></entry>
-          <entry>Full time zone name</entry>
+          <entry>Nome compelto del fuso orario</entry>
          </row>
          <row>
           <entry><literal>PST8PDT</literal></entry>
-          <entry>POSIX-style time zone specification</entry>
+          <entry>Specifica del fuso orario in stile POSIX</entry>
          </row>
          <row>
           <entry><literal>-8:00</literal></entry>
-          <entry>ISO-8601 offset for PST</entry>
+          <entry>ISO-8601 scostamento da PST</entry>
          </row>
          <row>
           <entry><literal>-800</literal></entry>
-          <entry>ISO-8601 offset for PST</entry>
+          <entry>ISO-8601 scostamento da PST</entry>
          </row>
          <row>
           <entry><literal>-8</literal></entry>
-          <entry>ISO-8601 offset for PST</entry>
+          <entry>ISO-8601 scostamento da PST</entry>
          </row>
          <row>
           <entry><literal>zulu</literal></entry>
-          <entry>Military abbreviation for UTC</entry>
+          <entry>Abbreviazione militare per UTC</entry>
          </row>
          <row>
           <entry><literal>z</literal></entry>
-          <entry>Short form of <literal>zulu</literal></entry>
+          <entry>Forma contratta di <literal>zulu</literal></entry>
          </row>
         </tbody>
        </tgroup>
       </table>
 
      <para>
-     Refer to <xref linkend="datatype-timezones"/> for more information on how
-     to specify time zones.
+        Riferirsi a <xref linkend="datatype-timezones"/> per maggiori informazioni su 
+        come specificare il fuso orario.
     </para>
     </sect3>
 
     <sect3>
-    <title>Time Stamps</title>
+    <title>Input per i timestamp</title>
 
     <indexterm>
      <primary>timestamp</primary>
@@ -1959,160 +1985,154 @@ MINUTE TO SECOND
     </indexterm>
 
      <para>
-      Valid input for the time stamp types consists of the concatenation
-      of a date and a time, followed by an optional time zone,
-      followed by an optional <literal>AD</literal> or <literal>BC</literal>.
-      (Alternatively, <literal>AD</literal>/<literal>BC</literal> can appear
-      before the time zone, but this is not the preferred ordering.)
-      Thus:
+      Input validi per i tipi timestamp consistono in una concatenazione di una
+      data e un'orario, seguiti da un opzionale fuso orario e da un opzionale
+      <literal>AD</literal> o <literal>BC</literal>. (Alternativamente,
+      <literal>AD</literal>/<literal>BC</literal> pu&ograve; apparire
+      prima del fuso orario, ma questo non &egrave; l'ordine preferito).
+      Per cui:
 
 <programlisting>
 1999-01-08 04:05:06
 </programlisting>
-      and:
+      e:
 <programlisting>
 1999-01-08 04:05:06 -8:00
 </programlisting>
 
-      are valid values, which follow the <acronym>ISO</acronym> 8601
-      standard.  In addition, the common format:
+      sono valori validi, che seguono lo standard <acronym>ISO</acronym> 8601.
+      In aggiunta, il formato largamente diffuso:
 <programlisting>
 January 8 04:05:06 1999 PST
 </programlisting>
-      is supported.
+      è supportato.
      </para>
 
      <para>
-      The <acronym>SQL</acronym> standard differentiates
-      <type>timestamp without time zone</type> 
-      and <type>timestamp with time zone</type> literals by the presence of a 
-      <quote>+</quote> or <quote>-</quote> symbol and time zone offset after
-      the time.  Hence, according to the standard,
-
+      Lo standard <acronym>SQL</acronym> differenzia i letterali <type>timestamp without time zone</type> 
+      e <type>timestamp with time zone</type> per la presenza di un <quote>+</quote> o
+      <quote>-</quote> e lo scostamento di fuso orario. Per cui, secondo lo standard, 
       <programlisting>TIMESTAMP '2004-10-19 10:23:54'</programlisting>
-
-      is a <type>timestamp without time zone</type>, while
-
+      è un <type>timestamp without time zone</type>, mentre
       <programlisting>TIMESTAMP '2004-10-19 10:23:54+02'</programlisting>
-
-      is a <type>timestamp with time zone</type>.
-      <productname>PostgreSQL</productname> never examines the content of a
-      literal string before determining its type, and therefore will treat
-      both of the above as <type>timestamp without time zone</type>.  To
-      ensure that a literal is treated as <type>timestamp with time
-      zone</type>, give it the correct explicit type:
-
+      è un a <type>timestamp with time zone</type>.
+      <productname>PostgreSQL</productname> non esamina mai il contenuto di una
+      stinga letterale prima di determinare il relativo tipo, e quindi tratterà
+      entrambi i tipi visti sopra come <type>timestamp without time zone</type>. Per
+      assicurarsi che un letterale venga trattato come <type>timestamp with time
+      zone</type>, bisogna fornirgli il corretto tipo esplicito:
       <programlisting>TIMESTAMP WITH TIME ZONE '2004-10-19 10:23:54+02'</programlisting>
+      In un lettarale, che è stato determinato essere <type>timestamp without time
+      zone</type>, <productname>PostgreSQL</productname> ignorerà tranquillamente
+      qualsiasi indicazione di fuso orario.
+      Cioè, il valore risultante deriverà dal valore in input dei campi
+      data/ora, e non verrà adattato al fuso orario.
+     </para>
 
-      In a literal that has been determined to be <type>timestamp without time
-      zone</type>, <productname>PostgreSQL</productname> will silently ignore
-      any time zone indication.
-      That is, the resulting value is derived from the date/time
-      fields in the input value, and is not adjusted for time zone.
+
+     <para>
+      Per <type>timestamp with time zone</type>, il valore memorizzato
+      internamente è sempre in UTC (Universal Coordinated Time,
+      tradizionalmente conosciuto come Greenwich Mean Time,
+      <acronym>GMT</acronym>). Un valore in input che ha un esplicito fuso
+      orario specificato viene convertito in UTC utilizzando lo scostamento specifico
+      per quel fuso orario. Se nella stringa in input non è stato indicato
+      il fuso orario si suppone che il fuso orario sia quello  indicato nel parametro di
+      sistema <xref linkend="guc-timezone" />, e quindi viene convertita in UTC utilizzando
+      lo scostamento per il fuso <varname>timezone</varname>.
+    </para>
+
+     <para>
+      Quando in uscita si ha un valore <type>timestamp with time zone</type>,
+      questo viene sempre convertito da UTC al corrente fuso
+      <varname>timezone</varname>, e visualizzato come ora locale in quel fuso.
+      Per visualizzare l'ora in un altro fuso orario, modificare
+      <varname>timezone</varname> o usare il costrutto <literal>AT TIME ZONE</literal>
+      (vedere dentro <xref linkend="functions-datetime-zoneconvert" />).
      </para>
 
      <para>
-      For <type>timestamp with time zone</type>, the internally stored
-      value is always in UTC (Universal
-      Coordinated Time, traditionally known as Greenwich Mean Time,
-      <acronym>GMT</acronym>).  An input value that has an explicit
-      time zone specified is converted to UTC using the appropriate offset
-      for that time zone.  If no time zone is stated in the input string,
-      then it is assumed to be in the time zone indicated by the system's
-      <xref linkend="guc-timezone"/> parameter, and is converted to UTC using the
-      offset for the <varname>timezone</varname> zone.
-     </para>
-
-     <para>
-      When a <type>timestamp with time
-      zone</type> value is output, it is always converted from UTC to the
-      current <varname>timezone</varname> zone, and displayed as local time in that
-      zone.  To see the time in another time zone, either change
-      <varname>timezone</varname> or use the <literal>AT TIME ZONE</literal> construct
-      (see <xref linkend="functions-datetime-zoneconvert"/>).
-     </para>
-
-     <para>
-      Conversions between <type>timestamp without time zone</type> and
-      <type>timestamp with time zone</type> normally assume that the
-      <type>timestamp without time zone</type> value should be taken or given
-      as <varname>timezone</varname> local time.  A different time zone can
-      be specified for the conversion using <literal>AT TIME ZONE</literal>.
+      Le conversioni tra <type>timestamp without time zone</type> e
+      <type>timestamp with time zone</type> assumono normalmente che il
+      valore <type>timestamp without time zone</type> verrà accettato o fornito
+      come ora locale <varname>timezone</varname>. Un diverso riferimento di fuso può
+      essere specificato per la conversione utilizzando <literal>AT TIME ZONE</literal>.
      </para>
     </sect3>
 
     <sect3>
-     <title>Special Values</title>
+     <title>Valori speciali</title>
 
      <indexterm>
       <primary>time</primary>
-      <secondary>constants</secondary>
+      <secondary>costanti</secondary>
      </indexterm>
 
      <indexterm>
       <primary>date</primary>
-      <secondary>constants</secondary>
+      <secondary>costanti</secondary>
      </indexterm>
 
      <para>
-      <productname>PostgreSQL</productname> supports several
-      special date/time input values for convenience, as shown in <xref
-      linkend="datatype-datetime-special-table"/>.  The values
-      <literal>infinity</literal> and <literal>-infinity</literal>
-      are specially represented inside the system and will be displayed
-      unchanged; but the others are simply notational shorthands
-      that will be converted to ordinary date/time values when read.
-      (In particular, <literal>now</literal> and related strings are converted
-      to a specific time value as soon as they are read.)
-      All of these values need to be enclosed in single quotes when used
-      as constants in SQL commands.
+      <productname>PostgreSQL</productname> supporta in input, per comodità,
+      diversi valori speciali di data/ora, come mostrato nella <xref
+      linkend="datatype-datetime-special-table" />. I valori
+      <literal>infinity</literal> e <literal>-infinity</literal>
+      sono rappresentazioni speciali all'interno del sistema e possono essere
+      visualizzati nel modo normale; ma gli altri sono semplici notazioni 
+      abbreviate che verranno convertite in valori data/ora ordinari quando letti.
+      (In particolare, <literal>now</literal> e le relative stringhe vengono convertite in
+      uno specifici valori di orario al momento appena vengono lette).
+      Tutti questi valori devono essere scritti racchiusi tra singoli apici quando
+      vengono usati come costanti in comandi SQL.
+      
      </para>
 
       <table id="datatype-datetime-special-table">
-       <title>Special Date/Time Inputs</title>
+       <title>Input speciali di data/ora</title>
        <tgroup cols="3">
         <thead>
          <row>
-          <entry>Input String</entry>
-          <entry>Valid Types</entry>
-          <entry>Description</entry>
+          <entry>Stringa in input</entry>
+          <entry>Tipi validi</entry>
+          <entry>Descrizione</entry>
          </row>
         </thead>
         <tbody>
          <row>
           <entry><literal>epoch</literal></entry>
           <entry><type>date</type>, <type>timestamp</type></entry>
-          <entry>1970-01-01 00:00:00+00 (Unix system time zero)</entry>
+          <entry>1970-01-01 00:00:00+00 (Tempo zero di sistema UNIX)</entry>
          </row>
          <row>
           <entry><literal>infinity</literal></entry>
           <entry><type>date</type>, <type>timestamp</type></entry>
-          <entry>later than all other time stamps</entry>
+          <entry>successivo a tutti gli altri time stamps</entry>
          </row>
          <row>
           <entry><literal>-infinity</literal></entry>
           <entry><type>date</type>, <type>timestamp</type></entry>
-          <entry>earlier than all other time stamps</entry>
+          <entry>precedente a tutti gli altri time stamps</entry>
          </row>
          <row>
           <entry><literal>now</literal></entry>
           <entry><type>date</type>, <type>time</type>, <type>timestamp</type></entry>
-          <entry>current transaction's start time</entry>
+          <entry>momento di avvio della transazione corrente</entry>
          </row>
          <row>
           <entry><literal>today</literal></entry>
           <entry><type>date</type>, <type>timestamp</type></entry>
-          <entry>midnight today</entry>
+          <entry>mezzanotte di oggi</entry>
          </row>
          <row>
           <entry><literal>tomorrow</literal></entry>
           <entry><type>date</type>, <type>timestamp</type></entry>
-          <entry>midnight tomorrow</entry>
+          <entry>mezzanotte di domani</entry>
          </row>
          <row>
           <entry><literal>yesterday</literal></entry>
           <entry><type>date</type>, <type>timestamp</type></entry>
-          <entry>midnight yesterday</entry>
+          <entry>mezzanotte di ieri</entry>
          </row>
          <row>
           <entry><literal>allballs</literal></entry>
@@ -2124,59 +2144,58 @@ January 8 04:05:06 1999 PST
       </table>
 
      <para>
-      The following <acronym>SQL</acronym>-compatible functions can also
-      be used to obtain the current time value for the corresponding data
-      type:
+      Le seguenti funzioni compatibili <acronym>SQL</acronym> possono anche
+      essere utilizzate per ottenere l'attuale valore temporale per il corrispondente
+      tipo di dato:
       <literal>CURRENT_DATE</literal>, <literal>CURRENT_TIME</literal>, 
       <literal>CURRENT_TIMESTAMP</literal>, <literal>LOCALTIME</literal>, 
-      <literal>LOCALTIMESTAMP</literal>.  The latter four accept an 
-      optional subsecond precision specification.  (See <xref 
-      linkend="functions-datetime-current"/>.)  Note that these are
-      SQL functions and are <emphasis>not</emphasis> recognized in data input strings.
+      <literal>LOCALTIMESTAMP</literal>.  Le ultime quattro accettano la 
+      specificazione opzionale di precisione dei subsecondi.  (Vedere <xref 
+      linkend="functions-datetime-current" />.)  Notare uttavia che queste sono
+      funzioni SQL e <emphasis>non</emphasis> sono riconosciute come stringhe per input dati.
      </para>
 
     </sect3>
    </sect2>
 
    <sect2 id="datatype-datetime-output">
-    <title>Date/Time Output</title>
+    <title>Ouput di data/ora</title>
 
     <indexterm>
      <primary>date</primary>
-     <secondary>output format</secondary>
-     <seealso>formatting</seealso>
+     <secondary>formato di output</secondary>
+     <seealso>formattazione</seealso>
     </indexterm>
 
     <indexterm>
      <primary>time</primary>
-     <secondary>output format</secondary>
-     <seealso>formatting</seealso>
+     <secondary>formato di output</secondary>
+     <seealso>formattazione</seealso>
     </indexterm>
 
     <para>
-     The output format of the date/time types can be set to one of the four
-     styles ISO 8601,
-     <acronym>SQL</acronym> (Ingres), traditional <productname>POSTGRES</productname>
-     (Unix <application>date</application> format), or
-     German.  The default
-     is the <acronym>ISO</acronym> format.  (The
-     <acronym>SQL</acronym> standard requires the use of the ISO 8601
-     format.  The name of the <quote>SQL</quote> output format is a
-     historical accident.)  <xref
-     linkend="datatype-datetime-output-table"/> shows examples of each
-     output style.  The output of the <type>date</type> and
-     <type>time</type> types is of course only the date or time part
-     in accordance with the given examples.
+     Il formato di output dei tipi data/ora può essere impostato a uno dei quattro
+     stili ISO 8601,
+     <acronym>SQL</acronym> (Ingres), POSTGRES tradizionale e
+     German, utilizzando il comando <literal>SET datestyle</literal>.
+     Il formato predefinito è l'<acronym>ISO</acronym>. (Lo 
+     standard <acronym>SQL</acronym> richiede l'uso del formato ISO 8601.
+     Il nome del formato di output <quote>SQL</quote> è un
+     incidente storico). La <xref
+     linkend="datatype-datetime-output-table" /> mostra esempi di ogni
+     stile di output.  L'output dei tipi <type>date</type> e
+     <type>time</type> è naturalmente solo la parte data o ora
+     in conformità con l'esempio fornito.
     </para>
 
      <table id="datatype-datetime-output-table">
-      <title>Date/Time Output Styles</title>
+      <title>Stili di output per data/ora</title>
       <tgroup cols="3">
        <thead>
         <row>
-         <entry>Style Specification</entry>
-         <entry>Description</entry>
-         <entry>Example</entry>
+         <entry>Specifica stile</entry>
+         <entry>Descrizione</entry>
+         <entry>Esempio</entry>
         </row>
        </thead>
        <tbody>
@@ -2187,17 +2206,17 @@ January 8 04:05:06 1999 PST
         </row>
         <row>
          <entry>SQL</entry>
-         <entry>traditional style</entry>
+         <entry>stile tradizionale</entry>
          <entry>12/17/1997 07:37:16.00 PST</entry>
         </row>
         <row>
          <entry>POSTGRES</entry>
-         <entry>original style</entry>
+         <entry>stile originale</entry>
          <entry>Wed Dec 17 07:37:16 1997 PST</entry>
         </row>
         <row>
          <entry>German</entry>
-         <entry>regional style</entry>
+         <entry>stile regionale</entry>
          <entry>17.12.1997 07:37:16.00 PST</entry>
         </row>
        </tbody>
@@ -2205,39 +2224,40 @@ January 8 04:05:06 1999 PST
      </table>
 
     <para>
-     In the <acronym>SQL</acronym> and POSTGRES styles, day appears before
-     month if DMY field ordering has been specified, otherwise month appears
-     before day.
-     (See <xref linkend="datatype-datetime-input"/>
-     for how this setting also affects interpretation of input values.)
-     <xref linkend="datatype-datetime-output2-table"/> shows an
-     example.
+     Negli stili <acronym>SQL</acronym> e POSTGRES, se è stato specificato
+     il campo di ordinamento DMY, i giorni compaiono prima dei mesi, altrimenti i mesi compaiono
+     prima dei giorni.
+     (Vedere <xref linkend="datatype-datetime-input" />
+     per come questa impostazione influisce nell'interpretazione dei valori in input).
+     La <xref linkend="datatype-datetime-output2-table" /> mostra un
+     esempio.
+     
     </para>
 
      <table id="datatype-datetime-output2-table">
-      <title>Date Order Conventions</title>
+      <title>Convenzioni di ordinamento della data</title>
       <tgroup cols="3">
        <thead>
         <row>
-         <entry><varname>datestyle</varname> Setting</entry>
-         <entry>Input Ordering</entry>
-         <entry>Example Output</entry>
+         <entry>Impostazione <varname>datestyle</varname></entry>
+         <entry>Ordinamento in input</entry>
+         <entry>Esempio di output</entry>
         </row>
        </thead>
        <tbody>
         <row>
          <entry><literal>SQL, DMY</literal></entry>
-         <entry><replaceable>day</replaceable>/<replaceable>month</replaceable>/<replaceable>year</replaceable></entry>
+         <entry><replaceable>giorno</replaceable>/<replaceable>mese</replaceable>/<replaceable>anno</replaceable></entry>
          <entry>17/12/1997 15:37:16.00 CET</entry>
         </row>
         <row>
          <entry><literal>SQL, MDY</literal></entry>
-         <entry><replaceable>month</replaceable>/<replaceable>day</replaceable>/<replaceable>year</replaceable></entry>
+         <entry><replaceable>mese</replaceable>/<replaceable>giorno</replaceable>/<replaceable>anno</replaceable></entry>
          <entry>12/17/1997 07:37:16.00 PST</entry>
         </row>
         <row>
          <entry><literal>Postgres, DMY</literal></entry>
-         <entry><replaceable>day</replaceable>/<replaceable>month</replaceable>/<replaceable>year</replaceable></entry>
+         <entry><replaceable>giorno</replaceable>/<replaceable>mese</replaceable>/<replaceable>anno</replaceable></entry>
          <entry>Wed 17 Dec 07:37:16 1997 PST</entry>
         </row>
        </tbody>
@@ -2245,62 +2265,66 @@ January 8 04:05:06 1999 PST
      </table>
 
     <para>
-     The date/time styles can be selected by the user using the
-     <command>SET datestyle</command> command, the <xref
-     linkend="guc-datestyle"/> parameter in the
-     <filename>postgresql.conf</filename> configuration file, or the
-     <envar>PGDATESTYLE</envar> environment variable on the server or
-     client.  The formatting function <function>to_char</function>
-     (see <xref linkend="functions-formatting"/>) is also available as
-     a more flexible way to format date/time output.
+     Gli stili di data/ora, possono essere selezionati dall'utente usando il
+     comando <command>SET datestyle</command>, il parametro <xref
+     linkend="guc-datestyle" /> nel
+     file di configurazione <filename>postgresql.conf</filename>, o la
+     variabile di ambiente <envar>PGDATESTYLE</envar> nel server o nel
+     client. Per formattare l'output di data/ora in un modo più flessibile,
+     è anche disponibile la funzione <function>to_char</function> 
+     (Vedere <xref linkend="functions-formatting" />).
     </para>
    </sect2>
 
    <sect2 id="datatype-timezones">
-    <title>Time Zones</title>
+    <title>Fusi OrarioTime Zones</title>
 
     <indexterm zone="datatype-timezones">
-     <primary>time zone</primary>
+     <primary>fuso orario</primary>
     </indexterm>
 
    <para>
-    Time zones, and time-zone conventions, are influenced by
-    political decisions, not just earth geometry. Time zones around the
-    world became somewhat standardized during the 1900's,
-    but continue to be prone to arbitrary changes, particularly with
-    respect to daylight-savings rules.
-    <productname>PostgreSQL</productname> uses the widely-used
-    <literal>zoneinfo</literal> time zone database for information about
-    historical time zone rules.  For times in the future, the assumption
-    is that the latest known rules for a given time zone will
-    continue to be observed indefinitely far into the future.
+    I fusi orari e le convenzioni per i fusi orari, sono influenzati da
+    decisioni politiche, non solo dalla geometria della terra. I fusi orari intorno al
+    mondo cominciano ad essere standardizzati durante il 1900,
+    ma continuano ad essere soggetti a modifiche arbitrarie, particolarmente
+    rispetto alle regole per l'ora estiva.
+    
+        <productname>PostgreSQL</productname> sfrutta il database di fusi orari
+        <literal>zoneinfo</literal> per informazioni sulle regole storiche
+        riguardanti i fusi orario. Per orari, nel futuro, si assume 
+        che l'ultima regola per un dato fuso orario continui
+        ad essere osservata indefinitamente nel futuro.
    </para>
 
     <para>
-     <productname>PostgreSQL</productname> endeavors to be compatible with
-     the <acronym>SQL</acronym> standard definitions for typical usage.
-     However, the <acronym>SQL</acronym> standard has an odd mix of date and
-     time types and capabilities. Two obvious problems are:
+	  
+    <productname>PostgreSQL</productname> si sforza di essere compatibile con
+     le definizioni dello standard <acronym>SQL</acronym> per usi tipici.
+     Tuttavia, lo standard <acronym>SQL</acronym> ha uno strano miscuglio di tipi e di
+     possibilità per data e ora. Due problemi evidenti sono:
 
      <itemizedlist>
       <listitem>
        <para>
-        Although the <type>date</type> type 
-        cannot have an associated time zone, the
-        <type>time</type> type can.
-        Time zones in the real world have little meaning unless 
-        associated with a date as well as a time,
-        since the offset can vary through the year with daylight-saving
-        time boundaries.
+        Anche se il tipo <type>date</type> non ha 
+        un fuso orario associato, il tipo
+        <type>time</type> potrebbe averlo.
+        I fusi orari nel mondo reale hanno uno scarso significato a meno che
+        non siano associati ad una data oltre che ad un ora, poichè
+        lo scostamento può variare durante l'anno, in funzione
+        dell'applicazione dell'ora estiva.
+        
        </para>
       </listitem>
 
       <listitem>
        <para>
-        The default time zone is specified as a constant numeric offset 
-        from <acronym>UTC</acronym>. It is therefore impossible to adapt to
-        daylight-saving time when doing date/time arithmetic across
-        <acronym>DST</acronym> boundaries.
+        Il fuso orario predefinito è specificato come una costante numerica di 
+        scostamento da <acronym>UTC</acronym>. Non è perciò possibile adattarlo
+        all'ora estiva quando l'aritmetica data/ora viene fatta attraverso i
+        confini del <acronym>DST</acronym>.
+        
        </para>
       </listitem>
 
@@ -2308,148 +2332,154 @@ January 8 04:05:06 1999 PST
     </para>
 
     <para>
-     To address these difficulties, we recommend using date/time types
-     that contain both date and time when using time zones. We
-     do <emphasis>not</emphasis> recommend using the type <type>time with
-     time zone</type> (though it is supported by
-     <productname>PostgreSQL</productname> for legacy applications and
-     for compliance with the <acronym>SQL</acronym> standard).
-     <productname>PostgreSQL</productname> assumes
-     your local time zone for any type containing only date or time.
+     Per far fronte a queste difficoltà, si raccomanda di utilizzare tipi data/ora che
+     contengano ambedue le informazioni di data e ora quando si utilizzano i fusi orari. Si
+     raccomanda di <emphasis>non</emphasis> utilizzare il tipo <type>time with
+     time zone</type> (Anche se è supportato da
+     <productname>PostgreSQL</productname> per le applicazioni ereditate e
+     per conformità con lo standard <acronym>SQL</acronym>).
+     <productname>PostgreSQL</productname> presume che
+     il fuso orario locale per qualsiasi tipo contenga solo data o ora.
+     
     </para>
 
     <para>
-     All timezone-aware dates and times are stored internally in
-     <acronym>UTC</acronym>.  They are converted to local time
-     in the zone specified by the <xref linkend="guc-timezone"/> configuration
-     parameter before being displayed to the client.
+     Tutte le date e ore consapevoli del fuso orario sono memorizzate internamente
+     in <acronym>UTC</acronym>. Esse vengono convertite in ora locale nel fuso
+     specificato dal parametro di configurazione <xref linkend="guc-timezone" />
+     prima di essere visualizate al client.
     </para>
 
     <para>
-     <productname>PostgreSQL</productname> allows you to specify time zones in
-     three different forms:
+     <productname>PostgreSQL</productname> consente di specificare il fuso orario
+        in tre modi differenti:
      <itemizedlist>
       <listitem>
        <para>
-        A full time zone name, for example <literal>America/New_York</literal>.
-        The recognized time zone names are listed in the
-        <literal>pg_timezone_names</literal> view (see <xref
-        linkend="view-pg-timezone-names"/>).
-        <productname>PostgreSQL</productname> uses the widely-used
-        <literal>zoneinfo</literal> time zone data for this purpose, so the same
-        names are also recognized by much other software.
+        Un nome completo di fuso orario, per esempio <literal>America/New_York</literal>.
+        I nomi riconosciuti di fusi orario sono elencati nella
+        vista <literal>pg_timezone_names</literal> (vedere <xref
+        linkend="view-pg-timezone-names" />).
+        <productname>PostgreSQL</productname> utilizza per questo scopo
+        i dati di fusi orari <literal>zic</literal> ampiamente usati, in modo che gli stessi
+        nomi siano riconosciuti anche da molti altri software.
+        
        </para>
       </listitem>
       <listitem>
        <para>
-        A time zone abbreviation, for example <literal>PST</literal>.  Such a
-        specification merely defines a particular offset from UTC, in
-        contrast to full time zone names which can imply a set of daylight
-        savings transition-date rules as well.  The recognized abbreviations
-        are listed in the <literal>pg_timezone_abbrevs</literal> view (see <xref
-        linkend="view-pg-timezone-abbrevs"/>).  You cannot set the
-        configuration parameters <xref linkend="guc-timezone"/> or
-        <xref linkend="guc-log-timezone"/> to a time
-        zone abbreviation, but you can use abbreviations in
-        date/time input values and with the <literal>AT TIME ZONE</literal>
-        operator.
+        Una abbreviazione di fuso orario, per esempio <literal>PST</literal>. Tale
+        specifica si limita a definire un particolare scostamento da UTC, in
+        contrasto con il nome completo di fuso orario il quale potrebbe implicare
+        un insieme di regole di transizioni delle date per l'ora estiva. Le abbreviazioni
+        riconosciute sono elencate nella vista <literal>pg_timezone_abbrevs</literal>
+        (vedere <xref linkend="view-pg-timezone-abbrevs" />). Non si possono
+        impostare i parametri di configurazione <xref linkend="guc-timezone" /> o
+        <xref linkend="guc-log-timezone" /> utilizzando un'abbrevizione
+        di fuso orario, ma si possono usare le abbreviazioni nei valori
+        di input data/ora e con l'operatore
+        <literal>AT TIME ZONE</literal>.
+        
        </para>
       </listitem>
       <listitem>
        <para>
-        In addition to the timezone names and abbreviations,
-        <productname>PostgreSQL</productname> will accept POSIX-style time zone
-        specifications of the form <replaceable>STD</replaceable><replaceable>offset</replaceable> or
-        <replaceable>STD</replaceable><replaceable>offset</replaceable><replaceable>DST</replaceable>, where
-        <replaceable>STD</replaceable> is a zone abbreviation, <replaceable>offset</replaceable> is a
-        numeric offset in hours west from UTC, and <replaceable>DST</replaceable> is an
-        optional daylight-savings zone abbreviation, assumed to stand for one
-        hour ahead of the given offset. For example, if <literal>EST5EDT</literal>
-        were not already a recognized zone name, it would be accepted and would
-        be functionally equivalent to United States East Coast time.  When a
-        daylight-savings zone name is present, it is assumed to be used
-        according to the same daylight-savings transition rules used in the
-        <literal>zoneinfo</literal> time zone database's <filename>posixrules</filename> entry.
-        In a standard <productname>PostgreSQL</productname> installation,
-        <filename>posixrules</filename> is the same as <literal>US/Eastern</literal>, so
-        that POSIX-style time zone specifications follow USA daylight-savings
-        rules.  If needed, you can adjust this behavior by replacing the
-        <filename>posixrules</filename> file.
+        Oltre ai nomi di fusi orari e alla abbreviazioni,
+        <productname>PostgreSQL</productname> accetterà anche specificazioni
+        di fuso orario stile POSIX nella forma <replaceable>STD</replaceable><replaceable>scostamento</replaceable> o
+        <replaceable>STD</replaceable><replaceable>scostamento</replaceable><replaceable>DST</replaceable>, dove
+        <replaceable>STD</replaceable> è una abbreviazione di fuso, <replaceable>scostamento</replaceable> è uno
+        scostamento numerico in ore a sinistra da UTC, e <replaceable>DST</replaceable> è un
+        opzionale  abbreviazione di "zona di ora estiva", presupponendo di stare un'ora avanti
+        dallo scostamento fornito. Per esempio, se <literal>EST5EDT</literal> non è
+        un nome riconosciuto di fuso orario, esso sarà accettato e sarà funzionalmente
+        equivalente all'ora della costa est degli USA. Quando è presente
+        un nome di fuso di ora legale, si presuppone che sarà usato
+        con le stesse regole di transizione all'ora estiva usate nelle voci
+        <filename>posixrule</filename> del database di fusi orari <literal>zic</literal>.
+        In una installazione <productname>PostgreSQL</productname> standard,
+        <filename>posixrules</filename> è identico a <literal>US/Eastern</literal>, così
+        che le specificazioni di fusi orari in stile POSIX seguono le regole dell'ora estiva
+        USA. Se necessario, è possibile modificare questo comportamento sostituendo
+        il file <filename>posixrules</filename>.
+        
        </para>
       </listitem>
      </itemizedlist>
 
-     In short, this is the difference between abbreviations
-     and full names: abbreviations always represent a fixed offset from
-     UTC, whereas most of the full names imply a local daylight-savings time
-     rule, and so have two possible UTC offsets.
+     In breve, c'è una differenza concettuale e pratica tra le abbreviazioni
+     e i nomi completi: le abbreviazioni rappresentano sempre uno scostamento fisso dall'UTC,
+     mentre la maggior parte dei nomi completi implica una regola di gestione dell'ora estiva
+     locale per cui si hanno due possibili scostamenti UTC.
     </para>
 
     <para>
-     One should be wary that the POSIX-style time zone feature can
-     lead to silently accepting bogus input, since there is no check on the
-     reasonableness of the zone abbreviations.  For example, <literal>SET
-     TIMEZONE TO FOOBAR0</literal> will work, leaving the system effectively using
-     a rather peculiar abbreviation for UTC.
-     Another issue to keep in mind is that in POSIX time zone names,
-     positive offsets are used for locations <emphasis>west</emphasis> of Greenwich.
-     Everywhere else, <productname>PostgreSQL</productname> follows the
-     ISO-8601 convention that positive timezone offsets are <emphasis>east</emphasis>
-     of Greenwich.
+     Bisogna stare attenti che lo stile POSIX di fuso orario può
+     portare ad accettare passivamente input fasullo, dato che non c'è alcun controllo
+     sulla logicità delle abbreviazioni di fuso. Per esempio, <literal>SET
+     TIMEZONE TO FOOBAR0</literal> funzionerà, lasciando che il sistema usi effettivamente
+     un'abbreviazione piuttosto strana per UTC.
+     Un altra questione da tenere a mente è che nei nomi di fusi orari POSIX,
+     vengono usati scostamenti positivi per locazioni ad <emphasis>ovest</emphasis> di Greenwich.
+     In qualsiasi altro luogo, <productname>PostgreSQL</productname> segue la
+     convenzione ISO-8601 che gli scostamenti positivi del fuso orario sono ad <emphasis>est</emphasis>
+     di Greenwich.
     </para>
 
     <para>
-     In all cases, timezone names are recognized case-insensitively.
-     (This is a change from <productname>PostgreSQL</productname> versions
-     prior to 8.2, which were case-sensitive in some contexts but not others.)
+     In ogni casi, i nomi di fusi orari sono riconosciuti insensibili alle maiuscole. (Ciò
+     è diverso dalle versioni di <productname>PostgreSQL</productname> precedenti alla 8.2,
+     dove c'era distinzione tra le maiuscole e le minuscole in alcuni contesti e non in altri).
     </para>
 
     <para>
-     Neither full names nor abbreviations are hard-wired into the server;
-     they are obtained from configuration files stored under
-     <filename>.../share/timezone/</filename> and <filename>.../share/timezonesets/</filename>
-     of the installation directory
-     (see <xref linkend="datetime-config-files"/>).
+     Nè i nomi completi nè le abbreviazioni sono incorporati nel server;
+     essi vengono ottenuti dai file di configurazione memorizzati sotto
+     <filename>.../share/timezone/</filename> e <filename>.../share/timezonesets/</filename>
+     della directory di installazione
+     (vedere <xref linkend="datetime-config-files" />).
     </para>
 
     <para>
-     The <xref linkend="guc-timezone"/> configuration parameter can
-     be set in the file <filename>postgresql.conf</filename>, or in any of the
-     other standard ways described in <xref linkend="runtime-config"/>.
-     There are also several special ways to set it:
+     Il parametro di configurazione <xref linkend="guc-timezone" /> può
+     essere impostato nel file <filename>postgresql.conf</filename>, o in qualcuno degli
+     altri modi standard descritti nel <xref linkend="runtime-config" />.
+     Ci sono anche altri modi speciali per impostarlo:
 
      <itemizedlist>
       <listitem>
        <para>
-        If <varname>timezone</varname> is not specified in
-        <filename>postgresql.conf</filename> or as a server command-line option,
-        the server attempts to use the value of the <envar>TZ</envar>
-        environment variable as the default time zone.  If <envar>TZ</envar>
-        is not defined or is not any of the time zone names known to
-        <productname>PostgreSQL</productname>, the server attempts to
-        determine the operating system's default time zone by checking the
-        behavior of the C library function <literal>localtime()</literal>.  The
-        default time zone is selected as the closest match among
-        <productname>PostgreSQL</productname>'s known time zones.
-        (These rules are also used to choose the default value of
-        <xref linkend="guc-log-timezone"/>, if not specified.)
+        Se <varname>timezone</varname> non è specificato nè in <filename>postgresql.conf</filename>
+        e neanche come una opzione a linea di comando per il server,
+        il server prova ad utilizzare il valore della variabile di ambiente
+        <envar>TZ</envar> come fuso orario predefinito. Se <envar>TZ</envar>
+        non è definito o non è uno dei nomi di fusi orari conosciuti da
+        <productname>PostgreSQL</productname>, il server tenta di
+        determinare il fuso orario predefinito del sistema verificando il
+        comportamento della funzione della libreria C <literal>localtime()</literal>. Il fuso orario
+        predefinito viene selezionato come la corrispondenza più vicina ai fusi orari
+        conosciuti da <productname>PostgreSQL</productname>.
+        (Queste regole vengono anche utilizzate per scegliere il valore predefinito di
+        <xref linkend="guc-log-timezone" />, se non è stato specificato).
+        
        </para>
       </listitem>
 
       <listitem>
        <para>
-        The <acronym>SQL</acronym> command <command>SET TIME ZONE</command>
-        sets the time zone for the session.  This is an alternative spelling
-        of <command>SET TIMEZONE TO</command> with a more SQL-spec-compatible syntax.
+        Il comando <acronym>SQL</acronym> <command>SET TIME ZONE</command>
+        imposta il fuso orario per la sessione. Questa è una versione alternativa
+        di <command>SET TIMEZONE TO</command> con una sintassi più compatibile alle specifiche SQL.
        </para>
       </listitem>
 
       <listitem>
        <para>
-        The <envar>PGTZ</envar> environment variable is used by
-        <application>libpq</application> clients
-        to send a <command>SET TIME ZONE</command>
-        command to the server upon connection.
+        La variabile di ambiente <envar>PGTZ</envar>
+        è utilizzata dai client <application>libpq</application>
+        per inviare un comando <command>SET TIME ZONE</command> al server al
+        momento della connessione.
+        
        </para>
       </listitem>
      </itemizedlist>
@@ -2457,205 +2487,207 @@ January 8 04:05:06 1999 PST
    </sect2>
 
    <sect2 id="datatype-interval-input">
-    <title>Interval Input</title>
+     <title>Input di Intervalli</title>
 
     <indexterm>
-     <primary>interval</primary>
+     <primary>intervallo</primary>
     </indexterm>
 
      <para>
-      <type>interval</type> values can be written using the following
-      verbose syntax:
+       I valori <type>interval</type> possono essere scritti usando la seguente 
+        sintassi:
 
 <synopsis>
 <optional>@</optional> <replaceable>quantity</replaceable> <replaceable>unit</replaceable> <optional><replaceable>quantity</replaceable> <replaceable>unit</replaceable>...</optional> <optional><replaceable>direction</replaceable></optional>
 </synopsis>
 
-     where <replaceable>quantity</replaceable> is a number (possibly signed);
-     <replaceable>unit</replaceable> is <literal>microsecond</literal>,
-     <literal>millisecond</literal>, <literal>second</literal>,
-     <literal>minute</literal>, <literal>hour</literal>, <literal>day</literal>,
-     <literal>week</literal>, <literal>month</literal>, <literal>year</literal>,
-     <literal>decade</literal>, <literal>century</literal>, <literal>millennium</literal>,
-     or abbreviations or plurals of these units;
-     <replaceable>direction</replaceable> can be <literal>ago</literal> or
-     empty.  The at sign (<literal>@</literal>) is optional noise.  The amounts
-     of the different units are implicitly added with appropriate
-     sign accounting.  <literal>ago</literal> negates all the fields.
-     This syntax is also used for interval output, if
-     <xref linkend="guc-intervalstyle"/> is set to
-     <literal>postgres_verbose</literal>.
+      Dove: <replaceable>quantità</replaceable> è un numero (possibilmente con segno);
+      <replaceable>unità</replaceable> è <literal>microsecondo</literal>,
+      <literal>millisecondo</literal>, <literal>secondo</literal>,
+      <literal>minuto</literal>, <literal>ora</literal>, <literal>giorno</literal>,
+      <literal>settimana</literal>, <literal>mese</literal>, <literal>anno</literal>,
+      <literal>decennio</literal>, <literal>secolo</literal>, <literal>millennio</literal>,
+      o abbreviazioni o plurali di queste unità;
+      <replaceable>direzione</replaceable> può essere <literal>ago</literal> o
+      vuoto. Il simbolo at (<literal>@</literal>) è un opzionale. Le
+      quantità delle diverse unità vengono implicitamente sommate con la
+      appropriata registrazione del segno.
+        <literal>ago</literal> nega tutti i campi.
+        Questa sintassi è usata anche per l'output di intervalli, se
+        <xref linkend="guc-intervalstyle"/> è impostata a 
+        <literal>postgres_verbose</literal>.
+
     </para>
 
     <para>
-     Quantities of days, hours, minutes, and seconds can be specified without
-     explicit unit markings.  For example, <literal>'1 12:59:10'</literal> is read
-     the same as <literal>'1 day 12 hours 59 min 10 sec'</literal>.  Also,
-     a combination of years and months can be specified with a dash;
-     for example <literal>'200-10'</literal> is read the same as <literal>'200 years
-     10 months'</literal>.  (These shorter forms are in fact the only ones allowed
-     by the <acronym>SQL</acronym> standard, and are used for output when
-     <varname>IntervalStyle</varname> is set to <literal>sql_standard</literal>.)
+      Le quantità di giorni, ore, minuti e secondi possono essere specificate senza una
+      esplicita marcatura delle unità. Per esempio, <literal>'1 12:59:10'</literal> viene letto
+      nella stessa modo di <literal>'1 day 12 hours 59 min 10 sec'</literal>. Inoltre,
+        una combinazione di anni e mesi può essere specificata con un trattino;
+        Per esempio,  <literal>'200-10'</literal> verrà letto come <literal>'200 anni 10 mesi'</literal>.         
+        (Queste forme contratte sono infatti le sole permesse dallo standard <acronym>SQL</acronym>, 
+        e sono usate per l'output quando <varname>IntervalStyle</varname> è impostato a <literal>sql_standard</literal>.) 
     </para>
 
     <para>
-     Interval values can also be written as ISO 8601 time intervals, using
-     either the <quote>format with designators</quote> of the standard's section
-     4.4.3.2 or the <quote>alternative format</quote> of section 4.4.3.3.  The
-     format with designators looks like this:
+        Valori di intervallo possono anche essere scritti come intervalli di tempo ISO 8601,
+<!-- /TODO designator ?? -->
+        usando sia il <quote>formato con designator</quote> della sezione 4.4.3.2
+        dello standard, o il <quote>formato alternativo</quote> della sezione 4.4.3.3. 
+        Il formato con designator si esprime così:
 <synopsis>
 P <replaceable>quantity</replaceable> <replaceable>unit</replaceable> <optional> <replaceable>quantity</replaceable> <replaceable>unit</replaceable> ...</optional> <optional> T <optional> <replaceable>quantity</replaceable> <replaceable>unit</replaceable> ...</optional></optional>
 </synopsis>
-      The string must start with a <literal>P</literal>, and may include a
-      <literal>T</literal> that introduces the time-of-day units.  The
-      available unit abbreviations are given in <xref
-      linkend="datatype-interval-iso8601-units"/>.  Units may be
-      omitted, and may be specified in any order, but units smaller than
-      a day must appear after <literal>T</literal>.  In particular, the meaning of
-      <literal>M</literal> depends on whether it is before or after
-      <literal>T</literal>.
+        La stringa deve iniziare con una <literal>P</literal>, e può includere una
+        <literal>T</literal> che introduce le unità orario-del-giorno. Le
+        abbreviazioni di unità disponibili sono presenti in <xref
+        linkend="datatype-interval-iso8601-units"/>. Le unità potrebbero essere 
+        omesse, e potrebbero essere specificate in qualsiasi ordine, ma unità più piccole di
+        un giorno devono apparire dopo <literal>T</literal>. In particolare, il significato di 
+        <literal>M</literal> dipende dal fatto che sia prima o dopo la 
+        <literal>T</literal>.
      </para>
 
      <table id="datatype-interval-iso8601-units">
-      <title>ISO 8601 interval unit abbreviations</title>
+      <title>Abbreviazioni delle unità di intervallo ISO 8601</title>
      <tgroup cols="2">
        <thead>
         <row>
-         <entry>Abbreviation</entry>
-         <entry>Meaning</entry>
+         <entry>Abbreviatione</entry>
+         <entry>Significato</entry>
         </row>
        </thead>
        <tbody>
         <row>
          <entry>Y</entry>
-         <entry>Years</entry>
+         <entry>Anni</entry>
         </row>
         <row>
          <entry>M</entry>
-         <entry>Months (in the date part)</entry>
+         <entry>Mesi (nella parte data)</entry>
         </row>
         <row>
          <entry>W</entry>
-         <entry>Weeks</entry>
+         <entry>Settimane</entry>
         </row>
         <row>
          <entry>D</entry>
-         <entry>Days</entry>
+         <entry>Giorni</entry>
         </row>
         <row>
          <entry>H</entry>
-         <entry>Hours</entry>
+         <entry>Ore</entry>
         </row>
         <row>
          <entry>M</entry>
-         <entry>Minutes (in the time part)</entry>
+         <entry>Minute (nella parte orario)</entry>
         </row>
         <row>
          <entry>S</entry>
-         <entry>Seconds</entry>
+         <entry>Secondi</entry>
         </row>
        </tbody>
       </tgroup>
      </table>
 
      <para>
-      In the alternative format:
+        Nei formati alternativi:
 <synopsis>
 P <optional> <replaceable>years</replaceable>-<replaceable>months</replaceable>-<replaceable>days</replaceable> </optional> <optional> T <replaceable>hours</replaceable>:<replaceable>minutes</replaceable>:<replaceable>seconds</replaceable> </optional>
 </synopsis>
-      the string must begin with <literal>P</literal>, and a
-      <literal>T</literal> separates the date and time parts of the interval.
-      The values are given as numbers similar to ISO 8601 dates.
+        la stringa deve iniziare con <literal>P</literal>, e una
+        <literal>T</literal> separa le parti di data e ora dell'intervallo.
+        I valori sono dati come numeri simili alle date ISO 8601.
     </para>
 
     <para>
-     When writing an interval constant with a <replaceable>fields</replaceable>
-     specification, or when assigning a string to an interval column that was
-     defined with a <replaceable>fields</replaceable> specification, the interpretation of
-     unmarked quantities depends on the <replaceable>fields</replaceable>.  For
-     example <literal>INTERVAL '1' YEAR</literal> is read as 1 year, whereas
-     <literal>INTERVAL '1'</literal> means 1 second.  Also, field values
-     <quote>to the right</quote> of the least significant field allowed by the
-     <replaceable>fields</replaceable> specification are silently discarded.  For
-     example, writing <literal>INTERVAL '1 day 2:03:04' HOUR TO MINUTE</literal>
-     results in dropping the seconds field, but not the day field.
+        Quando si scrive un intervallo costante con la specificazione di <replaceable>campi</replaceable>,
+        o quando si assegna una stringa a una colonna di intervallo che è stata
+        definita con una specificazione di <replaceable>campi</replaceable>, l'interpretazione di
+        quantità senza segno dipende dai <replaceable>campi</replaceable>. Per
+        esempio <literal>INTERVAL '1' YEAR</literal> è letto come 1 anno, dal momento che
+         <literal>INTERVAL '1'</literal> significa 1 secondo. Inoltre, valori di campo
+        <quote>alla destra</quote> del campo meno significativo permesso dalla specifica dei
+         <replaceable>campi</replaceable> sono scartati automaticamente. Per 
+        esempio, scrivere <literal>INTERVAL '1 day 2:03:04' HOUR TO MINUTE</literal>
+        elimina il secondo campo, ma non il campo "day" (giorno).
     </para>
 
     <para>
-     According to the <acronym>SQL</acronym> standard all fields of an interval
-     value must have the same sign, so a leading negative sign applies to all
-     fields; for example the negative sign in the interval literal
-     <literal>'-1 2:03:04'</literal> applies to both the days and hour/minute/second
-     parts.  <productname>PostgreSQL</productname> allows the fields to have different
-     signs, and traditionally treats each field in the textual representation
-     as independently signed, so that the hour/minute/second part is
-     considered positive in this example.  If <varname>IntervalStyle</varname> is
-     set to <literal>sql_standard</literal> then a leading sign is considered
-     to apply to all fields (but only if no additional signs appear).
-     Otherwise the traditional <productname>PostgreSQL</productname> interpretation is
-     used.  To avoid ambiguity, it's recommended to attach an explicit sign
-     to each field if any field is negative.
+        In accordo allo standard <acronym>SQL</acronym> tutti i campi di un valore di intervallo
+        devono avere lo stesso segno, così un segno meno in cima si applica a tutti i campi;
+        per esempio, il segno negativo nell'intervallo letterale
+        <literal>'-1 2:03:04'</literal> si applica sia alla parte dei giorni che alla parte ore/minuti/secondi.
+        <productname>PostgreSQL</productname> permette ai campi di avere segno differente,
+        e tradizionalmente tratta ogni campo nella rappresentazione testuale
+        come avente segno indipendente, così la parte ore/minuti/secondi è 
+        considerata positiva in questo esempio. Se <varname>IntervalStyle</varname> è 
+        impostato a <literal>sql_standard</literal> allora il segno principale è considerato 
+        da applicare a tutti i campi (ma solo se non appaiono segni aggiuntivi).
+        Altrimentii viene usata l'interpretazione tradizionale <productname>PostgreSQL</productname>. 
+        Per evitare ambiguità, è raccomandato aggiungere un segno esplicito
+        ad ogni campo se qualcuno è negativo.
     </para>
 
     <para>
-     Internally <type>interval</type> values are stored as months, days,
-     and seconds. This is done because the number of days in a month
-     varies, and a day can have 23 or 25 hours if a daylight savings
-     time adjustment is involved.  The months and days fields are integers
-     while the seconds field can store fractions.  Because intervals are
-     usually created from constant strings or <type>timestamp</type> subtraction,
-     this storage method works well in most cases. Functions
-     <function>justify_days</function> and <function>justify_hours</function> are
-     available for adjusting days and hours that overflow their normal
-     ranges.
+        Internamente i valori <type>interval</type> sono immagazzinati come mesi, giorni 
+        e secondi. Viene fatto questo perchè il numero di giorni in un mese 
+        varia, e un giorno puà avere 23 o 25 ore se è coinvolto un cambiamento di orario.
+        I campi mesi e giorni sono interi
+        mentre il campo secondi può avere frazioni. Dato che gli intervalli sono
+        solitamente creati da stringhe costanti o sottrazioni di <type>timestamp</type>,
+        questo metodo di immagazzinamento lavora bene in molti casi. Sono 
+        disponibili le funzioni  <function>justify_days</function> e <function>justify_hours</function>
+        per aggiustare giorni e ore che superano i loro normali 
+        range.
     </para>
 
     <para>
-     In the verbose input format, and in some fields of the more compact
-     input formats, field values can have fractional parts; for example
-     <literal>'1.5 week'</literal> or <literal>'01:02:03.45'</literal>.  Such input is
-     converted to the appropriate number of months, days, and seconds
-     for storage.  When this would result in a fractional number of
-     months or days, the fraction is added to the lower-order fields
-     using the conversion factors 1 month = 30 days and 1 day = 24 hours.
-     For example, <literal>'1.5 month'</literal> becomes 1 month and 15 days.
-     Only seconds will ever be shown as fractional on output.
+        Nel formato di input prolisso, ed in alcuni campi dei formati di input
+        più compatti, i valori dei campi possono avere parti frazionali; per esempio
+        <literal>'1.5 week'</literal> o <literal>'01:02:03.45'</literal>. Questi valori di input sono
+        convertiti nell'appropriato numero di mesi, giorni, e secondi
+        per l'immagazzinamento. Quando questo risulterebbe in un numero frazionale
+        di mesi o giorni, la frazione è aggiunta ai campi di ordine più basso
+        usando i fattori di conversione 1 mese = 30  giorni e 1 giorno = 24 ore.
+        Per esempio,  <literal>'1.5 month'</literal> diventa 1 mese e 15 giorni.
+        Solo i secondi saranno sempre mostrati come frazionali in output.
     </para>
 
     <para>
-     <xref linkend="datatype-interval-input-examples"/> shows some examples
-     of valid <type>interval</type> input.
+     <xref linkend="datatype-interval-input-examples"/> mostra alcuni esempi di input validi di 
+     <type>intervallo</type>.
     </para>
 
      <table id="datatype-interval-input-examples">
-      <title>Interval Input</title>
+      <title>Input di intervalli</title>
       <tgroup cols="2">
        <thead>
         <row>
-         <entry>Example</entry>
-         <entry>Description</entry>
+         <entry>Esempio</entry>
+         <entry>Descrizione</entry>
         </row>
        </thead>
        <tbody>
         <row>
          <entry>1-2</entry>
-         <entry>SQL standard format: 1 year 2 months</entry>
+         <entry>formato SQL standard: 1 anno 2 mesi</entry>
         </row>
         <row>
          <entry>3 4:05:06</entry>
-         <entry>SQL standard format: 3 days 4 hours 5 minutes 6 seconds</entry>
+         <entry>formato SQL standard: 3 giorni 4 ore 5 minuti 6 secondi</entry>
         </row>
         <row>
          <entry>1 year 2 months 3 days 4 hours 5 minutes 6 seconds</entry>
-         <entry>Traditional Postgres format: 1 year 2 months 3 days 4 hours 5 minutes 6 seconds</entry>
+         <entry>Formato tradizionale di Postgres: 1 anno 2 mesi 3 giorni 4 ore 5 minuti 6 secondi</entry>
         </row>
         <row>
          <entry>P1Y2M3DT4H5M6S</entry>
-         <entry>ISO 8601 <quote>format with designators</quote>: same meaning as above</entry>
+         <entry>ISO 8601 <quote>formato con designators</quote>: stesso significato di sopra</entry>
         </row>
         <row>
          <entry>P0001-02-03T04:05:06</entry>
-         <entry>ISO 8601 <quote>alternative format</quote>: same meaning as above</entry>
+         <entry>ISO 8601 <quote>formato alternativo</quote>: stesso significato di sopra</entry>
         </row>
        </tbody>
       </tgroup>
@@ -2664,61 +2696,60 @@ P <optional> <replaceable>years</replaceable>-<replaceable>months</replaceable>-
    </sect2>
 
    <sect2 id="datatype-interval-output">
-    <title>Interval Output</title>
+    <title>Output di intervalli</title>
 
     <indexterm>
-     <primary>interval</primary>
-     <secondary>output format</secondary>
-     <seealso>formatting</seealso>
+     <primary>intervallo</primary>
+     <secondary>formato di output</secondary>
+     <seealso>formattazione</seealso>
     </indexterm>
 
     <para>
-     The output format of the interval type can be set to one of the
-     four styles <literal>sql_standard</literal>, <literal>postgres</literal>,
-     <literal>postgres_verbose</literal>, or <literal>iso_8601</literal>,
-     using the command <literal>SET intervalstyle</literal>.
-     The default is the <literal>postgres</literal> format.
-     <xref linkend="interval-style-output-table"/> shows examples of each
-     output style.
+        Il formato di output del tipo intervallo puà essere impostato ad uno 
+        dei quattro stili  <literal>sql_standard</literal>, <literal>postgres</literal>,
+        <literal>postgres_verbose</literal>, o <literal>iso_8601</literal>,
+        usando il comando <literal>SET intervalstyle</literal>.
+        <literal>postgres</literal> è il formato di default.
+        <xref linkend="interval-style-output-table"/> mostra esempi di 
+        ogni stile di output.
     </para>
 
     <para>
-     The <literal>sql_standard</literal> style produces output that conforms to
-     the SQL standard's specification for interval literal strings, if
-     the interval value meets the standard's restrictions (either year-month
-     only or day-time only, with no mixing of positive
-     and negative components).  Otherwise the output looks like a standard
-     year-month literal string followed by a day-time literal string,
-     with explicit signs added to disambiguate mixed-sign intervals.
+        Lo stile <literal>sql_standard</literal> produce output conforme alle
+        specifiche dello standard SQL per stringhe letterali di intervalli, se
+        il valore di intervallo rispetta le restrizioni dello standard (sia solo anno-mese
+        o solo giorno-ora, senza componenti miste negative e positive). Altrimenti l'output 
+        sarà una stringa letterale anno-mese seguita da una stringa letterale giorno-ora,
+        con segni espliciti aggiunti per rendere non ambigui intervalli con segni misti.
     </para>
 
     <para>
-     The output of the <literal>postgres</literal> style matches the output of
-     <productname>PostgreSQL</productname> releases prior to 8.4 when the
-     <xref linkend="guc-datestyle"/> parameter was set to <literal>ISO</literal>.
+        L'output dello stile <literal>postgres</literal> corrisponde all'output dello stile 
+        delle versioni precedenti la 8.4 di  <productname>PostgreSQL</productname>, quando il parametro
+        <xref linkend="guc-datestyle"/> era impostato a <literal>ISO</literal>.
     </para>
 
     <para>
-     The output of the <literal>postgres_verbose</literal> style matches the output of
-     <productname>PostgreSQL</productname> releases prior to 8.4 when the
-     <varname>DateStyle</varname> parameter was set to non-<literal>ISO</literal> output.
+     L'output dello stile <literal>postgres_verbose</literal> corrisponde all'output dello stile
+    delle versioni precedenti la 8.4 di <productname>PostgreSQL</productname>, quando il parametro
+     <varname>DateStyle</varname> era impostato a non-<literal>ISO</literal>.
     </para>
 
     <para>
-     The output of the <literal>iso_8601</literal> style matches the <quote>format
-     with designators</quote> described in section 4.4.3.2 of the
-     ISO 8601 standard.
+        L'output dello stile <literal>iso_8601</literal> corrisponde al <quote>formato 
+        con designator</quote> descritto nella sezione 4.4.3.2 dello standard 
+        ISO 8601.
     </para>
 
      <table id="interval-style-output-table">
-       <title>Interval Output Style Examples</title>
+       <title>Esempi di stile di output per gli intervalli</title>
        <tgroup cols="4">
         <thead>
          <row>
-          <entry>Style Specification</entry>
-          <entry>Year-Month Interval</entry>
-          <entry>Day-Time Interval</entry>
-          <entry>Mixed Interval</entry>
+          <entry>Specifice di stile</entry>
+          <entry>Intervallo anno-mese</entry>
+          <entry>Intervallo giorno-ora</entry>
+          <entry>Intervallo misto</entry>
          </row>
         </thead>
         <tbody>
@@ -2753,30 +2784,31 @@ P <optional> <replaceable>years</replaceable>-<replaceable>months</replaceable>-
    </sect2>
 
    <sect2 id="datatype-datetime-internals">
+<!-- /TODO Internals ?? -->
     <title>Internals</title>
 
     <para>
-     <productname>PostgreSQL</productname> uses Julian dates
-     for all date/time calculations. This has the useful property of correctly
-     calculating dates from 4713 BC
-     to far into the future, using the assumption that the length of the
-     year is 365.2425 days.
+     <productname>PostgreSQL</productname> utilizza le date Giuliane
+     per tutti i calcoli data/ora. Esse hanno la buona proprietà di
+     calcolare correttamente ogni data più recente del 4713 AC
+     e lontana nel futuro, usando l'assunzione che la lunghezza dell'anno
+     è di 365,2425 giorni.
     </para>
 
     <para>
-     Date conventions before the 19th century make for interesting reading,
-     but are not consistent enough to warrant coding into a date/time handler.
+     La convenzioni per le date precedenti al 19° secolo servono per una interessante lettura,
+     ma non sono abbastanza consistenti da garantire la codificazione in un gestore di data/ora.
     </para>
    </sect2>
 
   </sect1>
 
   <sect1 id="datatype-boolean">
-   <title>Boolean Type</title>
+   <title>Tipo booleano</title>
 
    <indexterm zone="datatype-boolean">
     <primary>Boolean</primary>
-    <secondary>data type</secondary>
+    <secondary>tipo di dato</secondary>
    </indexterm>
 
    <indexterm zone="datatype-boolean">
@@ -2788,71 +2820,69 @@ P <optional> <replaceable>years</replaceable>-<replaceable>months</replaceable>-
    </indexterm>
 
    <para>
-    <productname>PostgreSQL</productname> provides the
-    standard <acronym>SQL</acronym> type <type>boolean</type>;
-    see <xref linkend="datatype-boolean-table"/>.
-    The <type>boolean</type> type can have one of only two states:
-    <quote>true</quote> or <quote>false</quote>.  A third state,
-    <quote>unknown</quote>, is represented by the
-    <acronym>SQL</acronym> null value.
+    
+    <productname>PostgreSQL</productname> fornisce il tipo
+    standard <acronym>SQL</acronym> <type>boolean</type>.
+    Il tipo <type>boolean</type> può avere solo uno dei due stati:
+    <quote>true</quote> o <quote>false</quote>. Un terzo stato,
+    <quote>unknown</quote>, è rappresentato dal valore
+    <acronym>SQL</acronym> null.
    </para>
 
    <table id="datatype-boolean-table">
-    <title>Boolean Data Type</title>
+    <title>Tipo di dato boolean</title>
     <tgroup cols="3">
      <thead>
       <row>
-       <entry>Name</entry>
-       <entry>Storage Size</entry>
-       <entry>Description</entry>
+       <entry>Nome</entry>
+       <entry>Dimensione</entry>
+       <entry>Descrizione</entry>
       </row>
      </thead>
      <tbody>
       <row>
        <entry><type>boolean</type></entry>
        <entry>1 byte</entry>
-       <entry>state of true or false</entry>
+       <entry>stato true o false</entry>
       </row>
      </tbody>
     </tgroup>
    </table>
 
    <para>
-    Valid literal values for the <quote>true</quote> state are:
+    Validi valori letterali per lo stato <quote>true</quote> sono:
     <simplelist>
      <member><literal>TRUE</literal></member>
      <member><literal>'t'</literal></member>
      <member><literal>'true'</literal></member>
      <member><literal>'y'</literal></member>
      <member><literal>'yes'</literal></member>
-     <member><literal>'on'</literal></member>
      <member><literal>'1'</literal></member>
     </simplelist>
-    For the <quote>false</quote> state, the following values can be
-    used:
+    Per lo stato <quote>false</quote>, possono essere usati i
+    seguenti valori:
     <simplelist>
      <member><literal>FALSE</literal></member>
      <member><literal>'f'</literal></member>
      <member><literal>'false'</literal></member>
      <member><literal>'n'</literal></member>
      <member><literal>'no'</literal></member>
-     <member><literal>'off'</literal></member>
      <member><literal>'0'</literal></member>
     </simplelist>
-    Leading or trailing whitespace is ignored, and case does not matter.
-    The key words
-    <literal>TRUE</literal> and <literal>FALSE</literal> are the preferred
-    (<acronym>SQL</acronym>-compliant) usage.
+    Spazi bianchi in testa ed in coda vengono ignorati. È preferibile
+    (ed è conforme a <acronym>SQL</acronym>) usare le parole chiave
+    <literal>TRUE</literal> e <literal>FALSE</literal>.
    </para>
 
+
    <para>
-    <xref linkend="datatype-boolean-example"/> shows that
-    <type>boolean</type> values are output using the letters
-    <literal>t</literal> and <literal>f</literal>.
+    L'<xref linkend="datatype-boolean-example" /> mostra che i valori
+    <type>boolean</type> vengono scritti in output usando le lettere
+    <literal>t</literal> ed <literal>f</literal>.
    </para>
 
    <example id="datatype-boolean-example">
-    <title>Using the <type>boolean</type> type</title>
+    <title>Usando il tipo <type>boolean</type></title>
 
 <programlisting>
 CREATE TABLE test1 (a boolean, b text);
@@ -2872,41 +2902,49 @@ SELECT * FROM test1 WHERE a;
    </example>
   </sect1>
 
+
+
+
+
+
+
+
+
   <sect1 id="datatype-enum">
-   <title>Enumerated Types</title>
+   <title>Tipi enumerati</title>
 
    <indexterm zone="datatype-enum">
-    <primary>data type</primary>
-    <secondary>enumerated (enum)</secondary>
+    <primary>tipo di dato</primary>
+    <secondary>enumerato (enum)</secondary>
    </indexterm>
 
    <indexterm zone="datatype-enum">
-    <primary>enumerated types</primary>
+    <primary>tipi enumerati</primary>
    </indexterm>
 
    <para>
-    Enumerated (enum) types are data types that
-    comprise a static, ordered set of values.
-    They are equivalent to the <type>enum</type>
-    types supported in a number of programming languages. An example of an enum
-    type might be the days of the week, or a set of status values for
-    a piece of data.
+    I tipi enumerati (enum) sono tipi di dati che fanno parte
+    di un predefinito insieme, statico, di valori con uno
+    specifico ordine. Essi sono equivalenti ai tipi <type>enum</type>
+    contenuti in un certo numero di linguaggi di programmazione. Un esempio di tipo enum
+    potrebbe essere i giorni della settimana, o un insieme di valori di stato per
+    una certa parte di dati.
    </para>
 
    <sect2>
-    <title>Declaration of Enumerated Types</title>
+    <title>Dichiarazione di tipi enumerati</title>
 
     <para>
-     Enum types are created using the <xref
-     linkend="sql-createtype"/> command,
-     for example:
+     I tipi enum vengono creati usando il comando <xref
+     linkend="sql-createtype" endterm="sql-createtype-title" />,
+     per esempio:
 
 <programlisting>
 CREATE TYPE mood AS ENUM ('sad', 'ok', 'happy');
 </programlisting>
 
-     Once created, the enum type can be used in table and function
-     definitions much like any other type:
+     Una volta creato, il tipo enum può essere usato in definizioni di
+     tabelle e funzioni come qualsiasi altro tipo:
 <programlisting>
 CREATE TYPE mood AS ENUM ('sad', 'ok', 'happy');
 CREATE TABLE person (
@@ -2924,13 +2962,14 @@ SELECT * FROM person WHERE current_mood = 'happy';
     </sect2>
 
     <sect2>
-     <title>Ordering</title>
+     <title>Ordinamento</title>
 
      <para>
-      The ordering of the values in an enum type is the
-      order in which the values were listed when the type was created.
-      All standard comparison operators and related
-      aggregate functions are supported for enums.  For example:
+    
+      L'ordinamento dei valori in un tipo enum è l'ordine nel quale
+      i valori sono stati elencati quando il tipo è stato dichiarato.
+      Tutti gli operatori di confronto e le relative funzioni aggregate
+      sono supportati per enum. Per esempio:
  
 <programlisting>
 INSERT INTO person VALUES ('Larry', 'sad');
@@ -2961,11 +3000,11 @@ WHERE current_mood = (SELECT MIN(current_mood) FROM person);
    </sect2>
 
    <sect2>
-    <title>Type Safety</title>
+    <title>Sicurezza del tipo</title>
 
     <para>
-     Each enumerated data type is separate and cannot
-     be compared with other enumerated types.  See this example:
+     I tipi enumerati sono tipi dati completamente separati e non possono
+     essere confrontati con nessun altro.
 
 <programlisting>
 CREATE TYPE happiness AS ENUM ('happy', 'very happy', 'ecstatic');
@@ -2985,8 +3024,8 @@ ERROR:  operator does not exist: mood = happiness
     </para>
 
     <para>
-     If you really need to do something like that, you can either
-     write a custom operator or add explicit casts to your query:
+     Se si vuole realmente fare qualcosa di simile a questo, è possibile scrivere
+     un operatore personalizzato o aggiungere una conversione esplicita alla propria query:
 
 <programlisting>
 SELECT person.name, holidays.num_weeks FROM person, holidays
@@ -3001,153 +3040,155 @@ SELECT person.name, holidays.num_weeks FROM person, holidays
    </sect2>
 
    <sect2>
-    <title>Implementation Details</title>
+    <title>Dettagli di implementazione</title>
     
     <para>
      An enum value occupies four bytes on disk.  The length of an enum
      value's textual label is limited by the <symbol>NAMEDATALEN</symbol>
      setting compiled into <productname>PostgreSQL</productname>; in standard
      builds this means at most 63 bytes.
+     Un valore enum occupa 4 byte su disco. La lunghezza del valore di una
+     etichetta testuale di un enum è limitata dall'impostazione di <symbol>NAMEDATALEN</symbol>
+     compilata in <productname>PostgreSQL</productname>; nelle compilazioni
+     standard sarà al massimo 63 byte.
     </para>
 
     <para>
-     Enum labels are case sensitive, so
-     <type>'happy'</type> is not the same as <type>'HAPPY'</type>.
-     White space in the labels is significant too.
+     Le etichette di enum sono sensibili alle maiuscole, per cui
+     <type>'happy'</type> non è uguale a <type>'HAPPY'</type>.
+     Inoltre, gli spazi nelle etichette sono significativi.
     </para>
 
     <para>
-     The translations from internal enum values to textual labels are
-     kept in the system catalog
-     <link linkend="catalog-pg-enum"><structname>pg_enum</structname></link>.
-     Querying this catalog directly can be useful.
+        Le traduzioni da valori interni di enum a etichette testuali sono
+        tenute nel catalogo di sistema
+        <link linkend="catalog-pg-enum"><structname>pg_enum</structname></link>.
+        Interroggare questo catalogo direttamente può essere utile.
     </para>
 
    </sect2>
   </sect1>
 
   <sect1 id="datatype-geometric">
-   <title>Geometric Types</title>
+   <title>Tipi geometrici</title>
 
    <para>
-    Geometric data types represent two-dimensional spatial
-    objects. <xref linkend="datatype-geo-table"/> shows the geometric
-    types available in <productname>PostgreSQL</productname>.  The
-    most fundamental type, the point, forms the basis for all of the
-    other types.
+    I tipi dati geometrici rappresentano oggetti spaziali a due
+    dimensioni. La <xref linkend="datatype-geo-table" /> mostra i tipi
+    geometrici disponibili in <productname>PostgreSQL</productname>. Il
+    tipo fondamentale, il punto, forma la base per tutti gli
+    altri tipi.
    </para>
 
     <table id="datatype-geo-table">
-     <title>Geometric Types</title>
+     <title>Tipi geometrici</title>
      <tgroup cols="4">
       <thead>
        <row>
-        <entry>Name</entry>
-        <entry>Storage Size</entry>
-        <entry>Representation</entry>
-        <entry>Description</entry>
+        <entry>Nome</entry>
+        <entry>Dimensione</entry>
+        <entry>Rappresentazione</entry>
+        <entry>Descrizione</entry>
        </row>
       </thead>
       <tbody>
        <row>
         <entry><type>point</type></entry>
-        <entry>16 bytes</entry>
-        <entry>Point on a plane</entry>
+        <entry>16 byte</entry>
+        <entry>Punto nel piano</entry>
         <entry>(x,y)</entry>
        </row>
        <row>
         <entry><type>line</type></entry>
-        <entry>32 bytes</entry>
-        <entry>Infinite line (not fully implemented)</entry>
+        <entry>32 byte</entry>
+        <entry>Linea infinita (non implementata completamente)</entry>
         <entry>((x1,y1),(x2,y2))</entry>
        </row>
        <row>
         <entry><type>lseg</type></entry>
-        <entry>32 bytes</entry>
-        <entry>Finite line segment</entry>
+        <entry>32 byte</entry>
+        <entry>Segmento di linea finito</entry>
         <entry>((x1,y1),(x2,y2))</entry>
        </row>
        <row>
         <entry><type>box</type></entry>
-        <entry>32 bytes</entry>
-        <entry>Rectangular box</entry>
+        <entry>32 byte</entry>
+        <entry>Box rettangolare</entry>
         <entry>((x1,y1),(x2,y2))</entry>
        </row>
        <row>
         <entry><type>path</type></entry>
-        <entry>16+16n bytes</entry>
-        <entry>Closed path (similar to polygon)</entry>
+        <entry>16+16n byte</entry>
+        <entry>Tracciato chiuso (simile a poligono)</entry>
         <entry>((x1,y1),...)</entry>
        </row>
        <row>
         <entry><type>path</type></entry>
-        <entry>16+16n bytes</entry>
-        <entry>Open path</entry>
+        <entry>16+16n byte</entry>
+        <entry>Percorso aperto</entry>
         <entry>[(x1,y1),...]</entry>
        </row>
        <row>
         <entry><type>polygon</type></entry>
-        <entry>40+16n bytes</entry>
-        <entry>Polygon (similar to closed path)</entry>
+        <entry>40+16n byte</entry>
+        <entry>Poligono (simile a tracciato chiuso)</entry>
         <entry>((x1,y1),...)</entry>
        </row>
        <row>
         <entry><type>circle</type></entry>
-        <entry>24 bytes</entry>
-        <entry>Circle</entry>
-        <entry>&lt;(x,y),r&gt; (center point and radius)</entry>
+        <entry>24 byte</entry>
+        <entry>Cerchio</entry>
+        <entry>&lt;(x,y),r&gt; (centro e raggio)</entry>
        </row>
       </tbody>
      </tgroup>
     </table>
 
    <para>
-    A rich set of functions and operators is available to perform various geometric
-    operations such as scaling, translation, rotation, and determining
-    intersections.  They are explained in <xref linkend="functions-geometry"/>.
+    Un ricco insieme di funzioni e operatori è disponibile per effettuare diverse operazioni
+    geometriche come scalare, traslare, ruotare e determinare
+    intersezioni. Queste sono spiegate in <xref linkend="functions-geometry" />.
    </para>
 
    <sect2>
-    <title>Points</title>
+    <title>Punti</title>
 
     <indexterm>
-     <primary>point</primary>
+     <primary>punto</primary>
     </indexterm>
 
     <para>
-     Points are the fundamental two-dimensional building block for geometric
-     types.  Values of type <type>point</type> are specified using either of
-     the following syntaxes:
+     I punti sono il blocco fondamentale per la costruzione dei tipi geometrici a due dimensioni.
+     I valori del tipo <type>point</type> vengono specificati usando le seguenti sintassi:
 
 <synopsis>
 ( <replaceable>x</replaceable> , <replaceable>y</replaceable> )
   <replaceable>x</replaceable> , <replaceable>y</replaceable>
 </synopsis>
 
-     where <replaceable>x</replaceable> and <replaceable>y</replaceable> are the respective
-     coordinates, as floating-point numbers.
+     dove <replaceable>x</replaceable> e <replaceable>y</replaceable> sono le rispettive coordinate
+     espresse con numeri in virgola mobile.
     </para>
 
     <para>
-     Points are output using the first syntax.
+        I punti sono espressi in output usando la prima sintassi
     </para>
    </sect2>
 
    <sect2>
-    <title>Line Segments</title>
+    <title>Segmenti di linea</title>
 
     <indexterm>
      <primary>lseg</primary>
     </indexterm>
 
     <indexterm>
-     <primary>line segment</primary>
+     <primary>segmenti di linea</primary>
     </indexterm>
 
     <para>
-     Line segments (<type>lseg</type>) are represented by pairs of points.
-     Values of type <type>lseg</type> are specified using any of the following
-     syntaxes:
+     I segmenti di linea (<type>lseg</type>) sono rappresentati da coppie di punti.
+     I valori di tipo <type>lseg</type> vengono specificati usando le seguenti sintassi:
 
 <synopsis>
 [ ( <replaceable>x1</replaceable> , <replaceable>y1</replaceable> ) , ( <replaceable>x2</replaceable> , <replaceable>y2</replaceable> ) ]
@@ -3156,34 +3197,33 @@ SELECT person.name, holidays.num_weeks FROM person, holidays
     <replaceable>x1</replaceable> , <replaceable>y1</replaceable>   ,   <replaceable>x2</replaceable> , <replaceable>y2</replaceable>
 </synopsis>
 
-     where
+     dove
      <literal>(<replaceable>x1</replaceable>,<replaceable>y1</replaceable>)</literal>
-     and
+     e
      <literal>(<replaceable>x2</replaceable>,<replaceable>y2</replaceable>)</literal>
-     are the end points of the line segment.
+     sono i punti finali del segmento di linea.
     </para>
 
     <para>
-     Line segments are output using the first syntax.
+        I segmenti di linea sono espressi in output usando la prima sintassi.
     </para>
    </sect2>
 
    <sect2>
-    <title>Boxes</title>
+    <title>Box</title>
 
     <indexterm>
-     <primary>box (data type)</primary>
+     <primary>box (tipo di dato)</primary>
     </indexterm>
 
     <indexterm>
-     <primary>rectangle</primary>
+     <primary>rettangolo</primary>
     </indexterm>
 
     <para>
-     Boxes are represented by pairs of points that are opposite
-     corners of the box.
-     Values of type <type>box</type> are specified using any of the following
-     syntaxes:
+        I box sono espressi da coppie di punti che sono gli angoli 
+        opposti del box.
+        I valori del tipo <type>box</type> sono specificati usando una delle seguenti sintassi:
 
 <synopsis>
 ( ( <replaceable>x1</replaceable> , <replaceable>y1</replaceable> ) , ( <replaceable>x2</replaceable> , <replaceable>y2</replaceable> ) )
@@ -3191,42 +3231,41 @@ SELECT person.name, holidays.num_weeks FROM person, holidays
     <replaceable>x1</replaceable> , <replaceable>y1</replaceable>   ,   <replaceable>x2</replaceable> , <replaceable>y2</replaceable>
 </synopsis>
 
-     where
+     dove
      <literal>(<replaceable>x1</replaceable>,<replaceable>y1</replaceable>)</literal>
-     and
+     e
      <literal>(<replaceable>x2</replaceable>,<replaceable>y2</replaceable>)</literal>
-     are any two opposite corners of the box.
+        sono qualsiasi coppia di angoli opposti del box.
     </para>
 
     <para>
-     Boxes are output using the second syntax.
+        I box sono espressi in output usando la seconda sintassi.
     </para>
 
     <para>
-     Any two opposite corners can be supplied on input, but the values
-     will be reordered as needed to store the
-     upper right and lower left corners, in that order.
+        Qualsiasi coppia di angoli opposti può essere specificata in input, ma i valori
+        sono riordinati se necessario per immagazzinare l'angolo superiore destro
+        e inferiore sinistro, nell'ordine.
     </para>
    </sect2>
 
    <sect2>
-    <title>Paths</title>
+    <title>Tracciati</title>
 
     <indexterm>
-     <primary>path (data type)</primary>
+     <primary>tracciato (tipo di dato)</primary>
     </indexterm>
 
     <para>
-     Paths are represented by lists of connected points. Paths can be
-     <firstterm>open</firstterm>, where
-     the first and last points in the list are considered not connected, or
-     <firstterm>closed</firstterm>,
-     where the first and last points are considered connected.
+     I tracciati sono rappresentati da una elenco di punti connessi. I tracciati possono essere
+     <firstterm>aperti</firstterm>, dove il
+     primo e l'ultimo punto della lista non vengono considerati connessi, o
+     <firstterm>chiusi</firstterm>,
+     dove il primo e l'ultimo punto vengono considerati connessi.
     </para>
 
     <para>
-     Values of type <type>path</type> are specified using any of the following
-     syntaxes:
+     I valori di tipo <type>path</type> vengono specificati usando le seguenti sintassi:
 
 <synopsis>
 [ ( <replaceable>x1</replaceable> , <replaceable>y1</replaceable> ) , ... , ( <replaceable>xn</replaceable> , <replaceable>yn</replaceable> ) ]
@@ -3236,34 +3275,34 @@ SELECT person.name, holidays.num_weeks FROM person, holidays
     <replaceable>x1</replaceable> , <replaceable>y1</replaceable>   , ... ,   <replaceable>xn</replaceable> , <replaceable>yn</replaceable>
 </synopsis>
 
-     where the points are the end points of the line segments
-     comprising the path.  Square brackets (<literal>[]</literal>) indicate
-     an open path, while parentheses (<literal>()</literal>) indicate a
-     closed path.  When the outermost parentheses are omitted, as
-     in the third through fifth syntaxes, a closed path is assumed.
+     
+    dove i punti sono i punti finali dei segmenti di linee
+     compresi nel tracciato. Le parentesi quadre (<literal>[]</literal>) indicano
+     un percorso aperto, mentre le parentesi (<literal>()</literal>) indicano un
+     percorso chiuso.
     </para>
 
     <para>
-     Paths are output using the first or second syntax, as appropriate.
+        I tracciati sono espressi in output usando in modo appropriato la prima o la seconda sintassi.
     </para>
    </sect2>
 
    <sect2>
-    <title>Polygons</title>
+    <title>Poligoni</title>
 
     <indexterm>
-     <primary>polygon</primary>
+     <primary>poligono</primary>
     </indexterm>
 
     <para>
-     Polygons are represented by lists of points (the vertexes of the
-     polygon). Polygons are very similar to closed paths, but are
-     stored differently and have their own set of support routines.
+     I poligoni sono rappresentati da un elenco di punti (i vertici del
+     poligono). I poligoni dovrebbero verosimilmente essere
+     considerati equivalenti ai percorsi chiusi, ma vengono memorizzati differentemente 
+     e hanno un loro insieme di routine di supporto.
     </para>
 
     <para>
-     Values of type <type>polygon</type> are specified using any of the
-     following syntaxes:
+     I valori di tipo <type>polygon</type> vengono specificati usando le seguenti sintassi:
 
 <synopsis>
 ( ( <replaceable>x1</replaceable> , <replaceable>y1</replaceable> ) , ... , ( <replaceable>xn</replaceable> , <replaceable>yn</replaceable> ) )

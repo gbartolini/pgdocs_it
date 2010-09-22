@@ -3317,16 +3317,16 @@ SELECT person.name, holidays.num_weeks FROM person, holidays
    </sect2>
 
    <sect2>
-    <title>Circles</title>
+    <title>Cerchi</title>
 
     <indexterm>
-     <primary>circle</primary>
+     <primary>cerchio</primary>
     </indexterm>
 
     <para>
-     Circles are represented by a center point and radius.
-     Values of type <type>circle</type> are specified using any of the
-     following syntaxes:
+     I cerchi vengono rappresentati da un punto centrale e un raggio.
+     I valori di tipo <type>circle</type> vengono specificati usando le seguenti sintassi:
+
 
 <synopsis>
 &lt; ( <replaceable>x</replaceable> , <replaceable>y</replaceable> ) , <replaceable>r</replaceable> &gt;
@@ -3335,64 +3335,64 @@ SELECT person.name, holidays.num_weeks FROM person, holidays
     <replaceable>x</replaceable> , <replaceable>y</replaceable>   , <replaceable>r</replaceable>
 </synopsis>
 
-     where
+     dove
      <literal>(<replaceable>x</replaceable>,<replaceable>y</replaceable>)</literal>
-     is the center point and <replaceable>r</replaceable> is the radius of the
-     circle.
+     è il centro e <replaceable>r</replaceable> è il raggio del cerchio.
     </para>
 
     <para>
-     Circles are output using the first syntax.
+        I cerchi sono espressi in output usando la prima sintassi.
     </para>
    </sect2>
 
   </sect1>
 
   <sect1 id="datatype-net-types">
-   <title>Network Address Types</title>
+   <title>Tipi indirizzi di rete</title>
 
    <indexterm zone="datatype-net-types">
-    <primary>network</primary>
-    <secondary>data types</secondary>
+    <primary>rete</primary>
+    <secondary>tipi di dato</secondary>
    </indexterm>
 
    <para>
-    <productname>PostgreSQL</productname> offers data types to store IPv4, IPv6, and MAC
-    addresses, as shown in <xref linkend="datatype-net-types-table"/>.  It
-    is better to use these types instead of plain text types to store
-    network addresses, because
-    these types offer input error checking and specialized
-    operators and functions (see <xref linkend="functions-net"/>).
+
+    <productname>PostgreSQL</productname> offre tipi di dato per memorizzare indirizzi IPv4, IPv6
+    e MAC, come mostrato nella <xref linkend="datatype-net-types-table" />. È
+    preferibile usare questi tipi invece dei tipi in testo normale per memorizzare
+    indirizzi di rete, in quanto
+    questi tipi offrono il controllo degli errori in input e diversi operatori e
+    funzioni specializzati (vedere dentro <xref linkend="functions-net" />).
    </para>
 
     <table tocentry="1" id="datatype-net-types-table">
-     <title>Network Address Types</title>
+     <title>Tipi per gli indirizzi di rete</title>
      <tgroup cols="3">
       <thead>
        <row>
-        <entry>Name</entry>
-        <entry>Storage Size</entry>
-        <entry>Description</entry>
+        <entry>Nome</entry>
+        <entry>Dimensione</entry>
+        <entry>Descrizione</entry>
        </row>
       </thead>
       <tbody>
 
        <row>
         <entry><type>cidr</type></entry>
-        <entry>7 or 19 bytes</entry>
-        <entry>IPv4 and IPv6 networks</entry>
+        <entry>7 o 19 byte</entry>
+        <entry>reti IPv4 e IPv6</entry>
        </row>
 
        <row>
         <entry><type>inet</type></entry>
-        <entry>7 or 19 bytes</entry>
-        <entry>IPv4 and IPv6 hosts and networks</entry>
+        <entry>7 o 19 byte</entry>
+        <entry>host e reti IPv4 e IPv6</entry>
        </row>
 
        <row>
         <entry><type>macaddr</type></entry>
-        <entry>6 bytes</entry>
-        <entry>MAC addresses</entry>
+        <entry>6 byte</entry>
+        <entry>indirizzi MAC</entry>
        </row>
 
       </tbody>
@@ -3400,9 +3400,10 @@ SELECT person.name, holidays.num_weeks FROM person, holidays
     </table>
 
    <para>
-    When sorting <type>inet</type> or <type>cidr</type> data types,
-    IPv4 addresses will always sort before IPv6 addresses, including
-    IPv4 addresses encapsulated or mapped to IPv6 addresses, such as
+    
+    Quando si ordinano tipi di dati <type>inet</type> o <type>cidr</type>,
+    gli indirizzi IPv4 saranno sempre ordinati prima degli indirizzi IPv6, compresi gli
+    indirizzi IPv4 incapsulati o mappati dentro indirizzi IPv6, come
     ::10.2.3.4 or ::ffff:10.4.3.2.
    </para>
 
@@ -3411,36 +3412,36 @@ SELECT person.name, holidays.num_weeks FROM person, holidays
     <title><type>inet</type></title>
 
     <indexterm>
-     <primary>inet (data type)</primary>
+     <primary>inet (tipo di dato)</primary>
     </indexterm>
 
     <para>
-     The <type>inet</type> type holds an IPv4 or IPv6 host address, and
-     optionally its subnet, all in one field.
-     The subnet is represented by the number of network address bits
-     present in the host address (the
-     <quote>netmask</quote>).  If the netmask is 32 and the address is IPv4,
-     then the value does not indicate a subnet, only a single host.
-     In IPv6, the address length is 128 bits, so 128 bits specify a
-     unique host address.  Note that if you
-     want to accept only networks, you should use the
-     <type>cidr</type> type rather than <type>inet</type>.
+     Il tipo <type>inet</type> contiene un indirizzo host IPv4 o IPv6, e
+     opzionalmente l'identità della subnet, tutto in un campo.
+     L'identità della subnet è rappresentata dichiarando quanti bit dell'indirizzo
+     dell'host rappresentano l'indirizzo di rete (il
+     <quote>netmask</quote>). Se il netmask è 32 e l'indirizzo è IPv4,
+     allora il valore non indica una subnet, ma solo un singolo host.
+     In IPv6, la lunghezza dell'indirizzo è di 128 bit, per cui 128 bit specificano un
+     unico indirizzo di host. Notare che se si vuole
+     accettare solo reti, bisogna usare il tipo
+     <type>cidr</type> piuttosto che il tipo <type>inet</type>.
     </para>
 
     <para>
-      The input format for this type is
-      <replaceable class="parameter">address/y</replaceable>
-      where
-      <replaceable class="parameter">address</replaceable>
-      is an IPv4 or IPv6 address and
+      Il formato di input per questo tipo è
+      <replaceable class="parameter">indirizzo/y</replaceable>
+      dove
+      <replaceable class="parameter">indirizzo</replaceable>
+      è un indirizzo IPv4 o IPv6 e
       <replaceable class="parameter">y</replaceable>
-      is the number of bits in the netmask.  If the
+      è il numero di bit nella netmask. Se la parte
       <replaceable class="parameter">/y</replaceable>
-      portion is missing, the
-      netmask is 32 for IPv4 and 128 for IPv6, so the value represents
-      just a single host.  On display, the
+      non è indicata, allora il
+      netmask è 32 per IPv4 e 128 per IPv6, per cui il valore rappresenta
+      solo un singolo host. In visualizzazione, la parte
       <replaceable class="parameter">/y</replaceable>
-      portion is suppressed if the netmask specifies a single host.
+      è soppressa se la netmask specifica un singolo host.
     </para>
    </sect2>
 
@@ -3452,27 +3453,28 @@ SELECT person.name, holidays.num_weeks FROM person, holidays
     </indexterm>
 
     <para>
-     The <type>cidr</type> type holds an IPv4 or IPv6 network specification.
-     Input and output formats follow Classless Internet Domain Routing
-     conventions.
-     The format for specifying networks is <replaceable
-     class="parameter">address/y</replaceable> where <replaceable
-     class="parameter">address</replaceable> is the network represented as an
-     IPv4 or IPv6 address, and <replaceable
-     class="parameter">y</replaceable> is the number of bits in the netmask.  If
-     <replaceable class="parameter">y</replaceable> is omitted, it is calculated
-     using assumptions from the older classful network numbering system, except
-     it will be at least large enough to include all of the octets
-     written in the input.  It is an error to specify a network address
-     that has bits set to the right of the specified netmask.
+     Il tipo <type>cidr</type> contiene una specificazione di rete IPv4 o IPv6.
+     I formati di input e output seguono le convenzioni di instradamento di domini
+     internet senza classi (Classless Internet Domain Routing) CIDR.
+     Il formato per specificare la rete è <replaceable
+     class="parameter">indirizzo/y</replaceable> dove <replaceable
+     class="parameter">indirizzo</replaceable> è la rete rappresentata come un
+     indirizzo IPv4 o IPv6, e <replaceable class="parameter">y</replaceable> è il
+     numero di bit nella netmask. Se <replaceable class="parameter">y</replaceable>
+     è omesso, esso viene calcolato usando l'assunzione dal vecchio
+     sistema di numerazione di rete basato sulla classe, eccetto che
+     dovrà essere almeno abbastanza largo da comprendere tutti gli ottetti
+     scritti nell'input. È un errore specificare un indirizzo di rete
+     che ha bit settati alla destra della netmask specificata.
+     
     </para>
 
     <para>
-     <xref linkend="datatype-net-cidr-table"/> shows some examples.
+     <xref linkend="datatype-net-cidr-table"/> mostra qualche esempio.
     </para>
 
      <table id="datatype-net-cidr-table">
-      <title><type>cidr</type> Type Input Examples</title>
+      <title>Esempi di input di<type>cidr</type></title>
       <tgroup cols="3">
        <thead> 
         <row> 
@@ -3568,19 +3570,19 @@ SELECT person.name, holidays.num_weeks FROM person, holidays
    </sect2>
 
    <sect2 id="datatype-inet-vs-cidr">
-    <title><type>inet</type> vs. <type>cidr</type></title>
+    <title><type>inet</type> contro <type>cidr</type></title>
 
     <para>
-    The essential difference between <type>inet</type> and <type>cidr</type>
-    data types is that <type>inet</type> accepts values with nonzero bits to
-    the right of the netmask, whereas <type>cidr</type> does not.
+    La differenza essenziale tra i tipi dato <type>inet</type> e <type>cidr</type>
+    è che <type>inet</type> accetta valori con bit non zero alla
+    destra della netmask, mentre <type>cidr</type> invece no.
     </para>
 
       <tip>
         <para>
-        If you do not like the output format for <type>inet</type> or
-        <type>cidr</type> values, try the functions <function>host</function>,
-        <function>text</function>, and <function>abbrev</function>.
+        Se non piace il formato di output dei valori per <type>inet</type> o
+        <type>cidr</type>, provare le funzioni <function>host</function>,
+        <function>text</function>, e <function>abbrev</function>.
         </para>
       </tip>
    </sect2>
@@ -3589,19 +3591,20 @@ SELECT person.name, holidays.num_weeks FROM person, holidays
     <title><type>macaddr</type></title>
 
     <indexterm>
-     <primary>macaddr (data type)</primary>
+     <primary>macaddr (tipo di dato)</primary>
     </indexterm>
 
     <indexterm>
-     <primary>MAC address</primary>
+     <primary>indirizzo MAC</primary>
      <see>macaddr</see>
     </indexterm>
 
     <para>
-     The <type>macaddr</type> type stores MAC addresses, known for example
-     from Ethernet card hardware addresses (although MAC addresses are
-     used for other purposes as well).  Input is accepted in the
-     following formats:
+     
+        Il tipo <type>macaddr</type> memorizza indirizzi MAC, cioè,
+        indirizzi hardware di schede Ethernet (anche se gli indirizzi MAC vengono
+        usati altrettanto bene per altri scopi). L'input viene accettato in diversi
+        formati, quali:
 
      <simplelist>
       <member><literal>'08:00:2b:01:02:03'</literal></member>
@@ -3612,32 +3615,31 @@ SELECT person.name, holidays.num_weeks FROM person, holidays
       <member><literal>'08002b010203'</literal></member>
      </simplelist>
 
-     These examples would all specify the same address.  Upper and
-     lower case is accepted for the digits
-     <literal>a</literal> through <literal>f</literal>.  Output is always in the
-     first of the forms shown.
+     questi esempi specificano tutti lo stesso
+     indirizzo. Sia le maiuscole che le minuscole sono accettate per le cifre da
+     <literal>a</literal> a <literal>f</literal>. L'output è sempre nella prima
+     delle forme mostrate.
     </para>
 
     <para>
-     IEEE Std 802-2001 specifies the second shown form (with hyphens)
-     as the canonical form for MAC addresses, and specifies the first
-     form (with colons) as the bit-reversed notation, so that
-     08-00-2b-01-02-03 = 01:00:4D:08:04:0C.  This convention is widely
-     ignored nowadays, and it is only relevant for obsolete network
-     protocols (such as Token Ring).  PostgreSQL makes no provisions
-     for bit reversal, and all accepted formats use the canonical LSB
-     order.
+        Lo standard IEEE Std 802-2001 specifica la senda forma mostrata (con i trattini)
+        come la forma canonica per indirizzi MAC, e specifica la prima
+        forma (con i due punti) come la notazione "bit-reversed", così 
+        08-00-2b-01-02-03 = 01:00:4D:08:04:0C. Questa convenzione è largamente 
+        ignorata oggigiorno, ed è rilevante solo per protocolli di rete 
+        obsoleti (come il Token Ring). PostgreSQL non prevede il "bit-reverse",
+        e tutti i formati accettati usano l'ordine canonico LSB.
     </para>
 
     <para>
-     The remaining four input formats are not part of any standard.
+        I rimanento quattro formati di input non sono parte di nessuno standard.
     </para>
    </sect2>
 
   </sect1>
 
   <sect1 id="datatype-bit">
-   <title>Bit String Types</title>
+   <title>Tipi stringa di bit</title>
 
    <indexterm zone="datatype-bit">
     <primary>bit string</primary>
@@ -3645,46 +3647,48 @@ SELECT person.name, holidays.num_weeks FROM person, holidays
    </indexterm>
 
    <para>
-    Bit strings are strings of 1's and 0's.  They can be used to store
-    or visualize bit masks.  There are two SQL bit types:
-    <type>bit(<replaceable>n</replaceable>)</type> and <type>bit
-    varying(<replaceable>n</replaceable>)</type>, where
-    <replaceable>n</replaceable> is a positive integer.
+    Le stringhe di bit sono stringhe di 1 e 0. Esse possono essere usate per
+    memorizzare o visualizzare maschere di bit. Ci sono due tipi di bit SQL:
+    <type>bit(<replaceable>n</replaceable>)</type> e <type>bit
+    varying(<replaceable>n</replaceable>)</type>, dove
+    <replaceable>n</replaceable> è un intero positivo.
    </para>
 
    <para>
-    <type>bit</type> type data must match the length
-    <replaceable>n</replaceable> exactly; it is an error to attempt to
-    store shorter or longer bit strings.  <type>bit varying</type> data is
-    of variable length up to the maximum length
-    <replaceable>n</replaceable>; longer strings will be rejected.
-    Writing <type>bit</type> without a length is equivalent to
-    <literal>bit(1)</literal>, while <type>bit varying</type> without a length
-    specification means unlimited length.
+    I dati di tipo <type>bit</type> devono rispettare esattamente la lunghezza
+    <replaceable>n</replaceable>; È un errore tentare di memorizzare
+    stringhe di bit più corte o più lunghe. Il dato <type>bit varying</type>
+    è di lunghezza variabile fino alla lunghezza massima
+    <replaceable>n</replaceable>; stringhe più lunghe saranno rifiutate.
+    Scrivere <type>bit</type> senza una lunghezza è equivalente a
+    <literal>bit(1)</literal>, mentre <type>bit varying</type> senza una specificazione
+    di lunghezza significa lunghezza illimitata.
    </para>
 
    <note>
     <para>
-     If one explicitly casts a bit-string value to
-     <type>bit(<replaceable>n</replaceable>)</type>, it will be truncated or
-     zero-padded on the right to be exactly <replaceable>n</replaceable> bits,
-     without raising an error.  Similarly,
-     if one explicitly casts a bit-string value to
-     <type>bit varying(<replaceable>n</replaceable>)</type>, it will be truncated
-     on the right if it is more than <replaceable>n</replaceable> bits.
+     
+    Se viene esplicitamente convertito un valore stringa di bit a
+     <type>bit(<replaceable>n</replaceable>)</type>, esso sarà troncato o
+     riempito con zeri a destra per essere esattamente di <replaceable>n</replaceable> bit,
+     senza generare un errore. In maniera simile, se viene
+     esplicitamente convertito un valore stringa di bit a 
+     <type>bit varying(<replaceable>n</replaceable>)</type>, Esso sarà troncato
+     sulla destra se è maggiore di <replaceable>n</replaceable> bit.
     </para>
    </note>
 
    <para>
-    Refer to <xref
-    linkend="sql-syntax-bit-strings"/> for information about the syntax
-    of bit string constants.  Bit-logical operators and string
-    manipulation functions are available; see <xref
-    linkend="functions-bitstring"/>.
+    
+    Vedere dentro <xref
+    linkend="sql-syntax-bit-strings" /> per informazioni circa la sintassi
+    delle costanti stringa di bit. Gli operatori logici a livello di bit e le funzioni
+    di manipolazione stringhe sono disponibili; Vedere <xref
+    linkend="functions-bitstring" />.
    </para>
 
    <example>
-    <title>Using the bit string types</title>
+    <title>Utilizzo dei tipi stringa di bit</title>
 
 <programlisting>
 CREATE TABLE test (a BIT(3), b BIT VARYING(5));
@@ -3705,24 +3709,24 @@ SELECT * FROM test;
    </example>
 
    <para>
-    A bit string value requires 1 byte for each group of 8 bits, plus
-    5 or 8 bytes overhead depending on the length of the string
-    (but long values may be compressed or moved out-of-line, as explained
-    in <xref linkend="datatype-character"/> for character strings).
+    Un valore stringa di bit richiede 1 byte per ogni gruppo di 8 bit, più
+    5 o 8 byte in testa in dipendenza della lunghezza della stringa
+    (ma valori lunghi possono essere compressi o spostati fuori della riga, come spiegato
+    in <xref linkend="datatype-character" /> per la stringhe di caratteri).
    </para>
   </sect1>
 
   <sect1 id="datatype-textsearch">
-   <title>Text Search Types</title>
+   <title>Tipi ricerca testo</title>
 
    <indexterm zone="datatype-textsearch">
-    <primary>full text search</primary>
-    <secondary>data types</secondary>
+    <primary>ricerca completa testo</primary>
+    <secondary>tipo di dato</secondary>
    </indexterm>
 
    <indexterm zone="datatype-textsearch">
-    <primary>text search</primary>
-    <secondary>data types</secondary>
+    <primary>ricerca testo</primary>
+    <secondary>tipi di dato</secondary>
    </indexterm>
 
    <para>
@@ -3736,13 +3740,24 @@ SELECT * FROM test;
     <xref linkend="textsearch"/> provides a detailed explanation of this
     facility, and <xref linkend="functions-textsearch"/> summarizes the
     related functions and operators.
+   
+     <productname>PostgreSQL</productname> fornisce due tipi di dato che
+    sono destinati a supportare ricerche complete di testo, che è l'attività di
+    ricerca tramite una raccolta  di <firstterm>documenti</firstterm> in linguaggio-naturale
+    per individuare quello che meglio corrisponde ad una <firstterm>query</firstterm>.
+    Il tipo <type>tsvector</type> rappresenta  un documento in una forma adatta
+    per la ricerca di testo, mentre il tipo <type>tsquery</type> similmente rappresenta
+    una query.
+    Il <xref linkend="textsearch" /> fornisce una spiegazione dettagliata di queste
+    strutture, e <xref linkend="functions-textsearch" /> riassume le 
+    funzioni e gli operatori connessi.
    </para>
 
    <sect2 id="datatype-tsvector">
     <title><type>tsvector</type></title>
 
     <indexterm>
-     <primary>tsvector (data type)</primary>
+     <primary>tsvector (tipo di dato)</primary>
     </indexterm>
 
     <para>
@@ -3752,6 +3767,12 @@ SELECT * FROM test;
      (see <xref linkend="textsearch"/> for details).  Sorting and
      duplicate-elimination are done automatically during input, as shown in
      this example:
+     Un valore <type>tsvector</type> è una lista ordinata di distinti
+     <firstterm>lessemi</firstterm>, che sono parole
+     <firstterm>normalizzate</firstterm> per raggruppare diverse varianti somiglianti della stessa
+     parola (vedere il <xref linkend="textsearch" /> per dettagli). L'ordinamento e
+     l'eliminazione dei duplicati sono fatti automaticamente durante l'input, come mostrato
+     in questo esempio:
 
 <programlisting>
 SELECT 'a fat cat sat on a mat and ate a fat rat'::tsvector;
@@ -3760,8 +3781,8 @@ SELECT 'a fat cat sat on a mat and ate a fat rat'::tsvector;
  'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'
 </programlisting>
 
-     To represent
-     lexemes containing whitespace or punctuation, surround them with quotes:
+        Per rappresentare
+        lessemi contenenti spazi bianchi o segni di punteggiatura, usare gli apici:
 
 <programlisting>
 SELECT $$the lexeme '    ' contains spaces$$::tsvector;
@@ -3770,9 +3791,9 @@ SELECT $$the lexeme '    ' contains spaces$$::tsvector;
  '    ' 'contains' 'lexeme' 'spaces' 'the'
 </programlisting>
 
-     (We use dollar-quoted string literals in this example and the next one
-     to avoid the confusion of having to double quote marks within the
-     literals.)  Embedded quotes and backslashes must be doubled:
+        (In questo esempio e nel prossimo usiamo il dollaro per evitare
+        la confusione di dover raddoppiare gli apici all'interno dei letterali.)
+        Gli apici  e le barre inverse interne devono essere raddoppiate:
 
 <programlisting>
 SELECT $$the lexeme 'Joe''s' contains a quote$$::tsvector;
@@ -3783,6 +3804,8 @@ SELECT $$the lexeme 'Joe''s' contains a quote$$::tsvector;
 
      Optionally, integer <firstterm>positions</firstterm>
      can be attached to lexemes:
+     Opzionalmente, <firstterm>posizioni</firstterm> intere
+     possono essere aggiunte a uno o a tutti i lessemi:
 
 <programlisting>
 SELECT 'a:1 fat:2 cat:3 sat:4 on:5 a:6 mat:7 and:8 ate:9 a:10 fat:11 rat:12'::tsvector;
@@ -3791,11 +3814,11 @@ SELECT 'a:1 fat:2 cat:3 sat:4 on:5 a:6 mat:7 and:8 ate:9 a:10 fat:11 rat:12'::ts
  'a':1,6,10 'and':8 'ate':9 'cat':3 'fat':2,11 'mat':7 'on':5 'rat':12 'sat':4
 </programlisting>
 
-     A position normally indicates the source word's location in the
-     document.  Positional information can be used for
-     <firstterm>proximity ranking</firstterm>.  Position values can
-     range from 1 to 16383; larger numbers are silently set to 16383.
-     Duplicate positions for the same lexeme are discarded.
+     Una posizione indica normalmente la posizione della parola sorgente nel
+     documento. L'informazione posizionale può essere usata per
+     una <firstterm>classificazione di prossimità</firstterm>. I valori di posizione possono
+     estendersi da 1 a 16383; numeri più grandi vengono automaticamente impostati a 16383.
+     Posizioni duplicate per lo stesso lessema vengono scartate.
     </para>
 
     <para>
@@ -3803,6 +3826,12 @@ SELECT 'a:1 fat:2 cat:3 sat:4 on:5 a:6 mat:7 and:8 ate:9 a:10 fat:11 rat:12'::ts
      <firstterm>weight</firstterm>, which can be <literal>A</literal>,
      <literal>B</literal>, <literal>C</literal>, or <literal>D</literal>.
      <literal>D</literal> is the default and hence is not shown on output:
+     
+        I lessemi che hanno posizioni possono ulteriormente essere etichettati con un
+     <firstterm>peso</firstterm>, che può essere <literal>A</literal>,
+     <literal>B</literal>, <literal>C</literal>, o <literal>D</literal>.
+     <literal>D</literal> è il predefinito e quindi non viene visualizzato in uscita:
+
 
 <programlisting>
 SELECT 'a:1A fat:2B,4C cat:5D'::tsvector;
@@ -3811,17 +3840,17 @@ SELECT 'a:1A fat:2B,4C cat:5D'::tsvector;
  'a':1A 'cat':5 'fat':2B,4C
 </programlisting>
 
-     Weights are typically used to reflect document structure, for example
-     by marking title words differently from body words.  Text search
-     ranking functions can assign different priorities to the different
-     weight markers.
+     I pesi vengono normalmente usati per riflettere la struttura del documento, per esempio
+     per marcare le parole del titolo differentemente dalle parole del corpo. Le funzioni di
+     classificazione nella ricerca di testo possono assegnare diverse priorità ai diversi
+     marcatori di peso.
     </para>
 
     <para>
-     It is important to understand that the
-     <type>tsvector</type> type itself does not perform any normalization;
-     it assumes the words it is given are normalized appropriately
-     for the application.  For example,
+     È importante capire che il tipo
+     <type>tsvector</type> non effettua nessuna normalizzazione;
+     esso assume che le parole fornite siano adeguatamente normalizzate
+     per l'applicazione. Per esempio,
 
 <programlisting>
 select 'The Fat Rats'::tsvector;
@@ -3830,11 +3859,11 @@ select 'The Fat Rats'::tsvector;
  'Fat' 'Rats' 'The'
 </programlisting>
 
-     For most English-text-searching applications the above words would
-     be considered non-normalized, but <type>tsvector</type> doesn't care.
-     Raw document text should usually be passed through
-     <function>to_tsvector</function> to normalize the words appropriately
-     for searching:
+     Per la maggior parte delle applicazioni di ricerca-testo-inglese le parole
+     viste sopra sarebbero considerate non-normalizzate, ma <type>tsvector</type>
+     non se ne cura. I documenti di testo grezzo devono usualmente essere passati attraverso
+     <function>to_tsvector</function> per normalizzare le parole appropriatamente
+     per la ricerca:
 
 <programlisting>
 SELECT to_tsvector('english', 'The Fat Rats');         
@@ -3843,7 +3872,7 @@ SELECT to_tsvector('english', 'The Fat Rats');
  'fat':2 'rat':3
 </programlisting>
 
-     Again, see <xref linkend="textsearch"/> for more detail.
+     Per ulteriori dettagli, vedere nel <xref linkend="textsearch" />.
     </para>
 
    </sect2>
@@ -3852,15 +3881,16 @@ SELECT to_tsvector('english', 'The Fat Rats');
     <title><type>tsquery</type></title>
 
     <indexterm>
-     <primary>tsquery (data type)</primary>
+     <primary>tsquery (tipo di dato)</primary>
     </indexterm>
 
     <para>
-     A <type>tsquery</type> value stores lexemes that are to be
-     searched for, and combines them honoring the Boolean operators
-     <literal>&amp;</literal> (AND), <literal>|</literal> (OR), and
-     <literal>!</literal> (NOT).  Parentheses can be used to enforce grouping
-     of the operators:
+     Un valore <type>tsquery</type> memorizza lessemi che devono essere
+     ricercati, e li combina utilizzando gli operatori booleani
+     <literal>&amp;</literal> (AND), <literal>|</literal> (OR), e
+     <literal>!</literal> (NOT). Possono essere utilizzate parentesi per far rispettare
+     il raggruppamento degli operatori:
+
 
 <programlisting>
 SELECT 'fat &amp; rat'::tsquery;
@@ -3879,15 +3909,16 @@ SELECT 'fat &amp; rat &amp; ! cat'::tsquery;
  'fat' &amp; 'rat' &amp; !'cat'
 </programlisting>
 
-     In the absence of parentheses, <literal>!</literal> (NOT) binds most tightly,
-     and <literal>&amp;</literal> (AND) binds more tightly than
+<!-- /TODO da rivedere -->
+     In assenza di parentesi, <literal>!</literal> (NOT) lega il più strettamente
+     possibile e <literal>&amp;</literal> (AND) lega più strettamente di
      <literal>|</literal> (OR).
     </para>
 
     <para>
-     Optionally, lexemes in a <type>tsquery</type> can be labeled with
-     one or more weight letters, which restricts them to match only
-     <type>tsvector</type> lexemes with matching weights:
+     Opzionalmente, i lessemi in un <type>tsquery</type> possono essere identificati con
+     una o più lettere di peso, che li costringono ad abbinarsi solo con 
+     lessemi <type>tsvector</type> di peso corrispondente:
 
 <programlisting>
 SELECT 'fat:ab &amp; cat'::tsquery;
@@ -3898,24 +3929,25 @@ SELECT 'fat:ab &amp; cat'::tsquery;
     </para>
 
     <para>
-     Also, lexemes in a <type>tsquery</type> can be labeled with <literal>*</literal>
-     to specify prefix matching:
+        Inoltre, i lessemi in un <type>tsquery</type> possono essere etichettati con <literal>*</literal>,
+        per specificarei il prefisso di corrispondenza: 
 <programlisting>
 SELECT 'super:*'::tsquery;
   tsquery  
 -----------
  'super':*
 </programlisting>
-     This query will match any word in a <type>tsvector</type> that begins
-     with <quote>super</quote>.
+        Questa query troverà ogni parola in un <type>tsvector</type> che comincia  
+        con <quote>super</quote>.
     </para>
 
     <para>
-     Quoting rules for lexemes are the same as described previously for
-     lexemes in <type>tsvector</type>; and, as with <type>tsvector</type>,
-     any required normalization of words must be done before converting
-     to the <type>tsquery</type> type.  The <function>to_tsquery</function>
-     function is convenient for performing such normalization:
+     
+    Le regole per quotare i lessemi sono le stesse descritte precedentemente per
+     i lessemi in <type>tsvector</type>; E, come con <type>tsvector</type>,
+     ogni normalizzazione richiesta delle parole deve essere fatta prima
+     della conversione  al tipo <type>tsquery</type>. La funzione <function>to_tsquery</function>
+     è conveniente per realizzare tale normalizzazione: 
 
 <programlisting>
 SELECT to_tsquery('Fat:ab &amp; Cats');
@@ -3930,39 +3962,41 @@ SELECT to_tsquery('Fat:ab &amp; Cats');
   </sect1>
 
   <sect1 id="datatype-uuid">
-   <title><acronym>UUID</acronym> Type</title>
+   <title>Tipo <acronym>UUID</acronym></title>
 
    <indexterm zone="datatype-uuid">
     <primary>UUID</primary>
    </indexterm>
 
    <para>
-    The data type <type>uuid</type> stores Universally Unique Identifiers
-    (UUID) as defined by RFC 4122, ISO/IEC 9834-8:2005, and related standards.
-    (Some systems refer to this data type as a globally unique identifier, or
-    GUID,<indexterm><primary>GUID</primary></indexterm> instead.)  This
-    identifier is a 128-bit quantity that is generated by an algorithm chosen
-    to make it very unlikely that the same identifier will be generated by
-    anyone else in the known universe using the same algorithm.  Therefore,
-    for distributed systems, these identifiers provide a better uniqueness
-    guarantee than sequence generators, which
-    are only unique within a single database.
+    
+    Il tipo dato <type>uuid</type> memorizza Universally Unique Identifiers
+    (UUID) come definito da RFC 4122, ISO/IEC 9834-8:2005, e relativi standard.
+    (Alcuni sistemi si riferiscono a questo tipo dato comei identificatore unico globale, o
+    GUID <indexterm><primary>GUID</primary></indexterm>). Questo 
+    identificatore è una quantità di 128 bit generata da un algoritmo scelto
+    per rendere molto improbabile che lo stesso identificatore verrà generato da
+    qualcun'altro nell'universo conosciuto usando lo stesso algoritmo. Per cui,
+    per i sistemi distribuiti, questi identificatori forniscono una garanzia di
+    unicità migliore di quella ottenuta utilizzando i generatori di sequenza, che
+    sono unici solo in un singolo database.
    </para>
 
    <para>
-    A UUID is written as a sequence of lower-case hexadecimal digits,
-    in several groups separated by hyphens, specifically a group of 8
-    digits followed by three groups of 4 digits followed by a group of
-    12 digits, for a total of 32 digits representing the 128 bits.  An
-    example of a UUID in this standard form is:
+    Un UUID è scritto come una sequenza di cifre esadecimali in minuscolo,
+    in diversi gruppi separati da trattini, specificatamente un gruppo di 8
+    cifre seguito da tre gruppi di 4 cifre seguiti da un gruppo di 12 cifre,
+    per un totale di 32 cifre che corrispondono a 128 bit. Un
+    esempio di un UUID in questa forma standard è il seguente:
 <programlisting>
 a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11
 </programlisting>
-    <productname>PostgreSQL</productname> also accepts the following
-    alternative forms for input:
-    use of upper-case digits, the standard format surrounded by
-    braces, omitting some or all hyphens, adding a hyphen after any
-    group of four digits.  Examples are:
+    <productname>PostgreSQL</productname> accetta anche le seguenti
+    forme alternative in input:
+    utilizzo di cifre maiuscole, il formato standard racchiuso tra
+    parentesi, l'omissione di alcuni, o tutti, i trattini, e l'aggiunta 
+    di trattini dopo qualsiasi gruppo di cifre.
+    Esempi sono:
 <programlisting>
 A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11
 {a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11}
@@ -3970,60 +4004,63 @@ a0eebc999c0b4ef8bb6d6bb9bd380a11
 a0ee-bc99-9c0b-4ef8-bb6d-6bb9-bd38-0a11
 {a0eebc99-9c0b4ef8-bb6d6bb9-bd380a11}
 </programlisting>
-    Output is always in the standard form.
+        L'output è sempre nella forma standard.
    </para>
 
    <para>
-    <productname>PostgreSQL</productname> provides storage and comparison
-    functions for UUIDs, but the core database does not include any
-    function for generating UUIDs, because no single algorithm is well
-    suited for every application.  The contrib module
-    <filename>contrib/uuid-ossp</filename> provides functions that implement 
-    several standard algorithms.
-    Alternatively, UUIDs could be generated by client applications or
-    other libraries invoked through a server-side function.
+    <productname>PostgreSQL</productname> fornisce, per gli UUID, funzioni di
+    memorizzazione e di confronto, ma il core del database non comprende nessuna
+    funzione per la generazione di UUID, perchè nessun singolo 
+    algoritmo è valido per ogni applicazione. Il modulo contrib 
+    <filename>contrib/uuid-ossp</filename> fornisce funzioni che implementano 
+    alcuni algoritmi standard.
+    In alternativa, gli UUID possono essere generati da applicazioni client o
+    altre librerie chiamate tramite una funzione lato server.
    </para>
   </sect1>
 
   <sect1 id="datatype-xml">
-   <title><acronym>XML</acronym> Type</title>
+   <title>Tipo <acronym>XML</acronym></title>
 
    <indexterm zone="datatype-xml">
     <primary>XML</primary>
    </indexterm>
 
    <para>
-    The <type>xml</type> data type can be used to store XML data.  Its
-    advantage over storing XML data in a <type>text</type> field is that it
-    checks the input values for well-formedness, and there are support
-    functions to perform type-safe operations on it; see <xref
-    linkend="functions-xml"/>.  Use of this data type requires the
-    installation to have been built with <command>configure 
+   
+     Il tipo di dato <type>xml</type> può essere usato per memorizzare dati XML.
+    Il suo vantaggio, rispetto alla memorizzazazione di dati XML in un campo <type>text</type>,
+    è che esso controlla che i valori in input abbiano una buona
+    formattazione, e ci sono funzioni di supporto per realizzare con esso operazioni
+    di tipo sicuro; Vedere <xref linkend="functions-xml" />.  L'utilizzo di questo
+    tipo di dato richiede che l'installazione sia stata compilata con <command>configure 
     --with-libxml</command>.
    </para>
 
    <para>
-    The <type>xml</type> type can store well-formed
-    <quote>documents</quote>, as defined by the XML standard, as well
-    as <quote>content</quote> fragments, which are defined by the
-    production <literal>XMLDecl? content</literal> in the XML
-    standard.  Roughly, this means that content fragments can have
-    more than one top-level element or character node.  The expression
+
+<!-- /TODO da rivedere -->
+    Il tipo <type>xml</type> può memorizzare <quote>documenti</quote>
+    ben formattati, come definito dallo standard XML, come pure una parte di frammenti di
+    <quote>contenuto</quote>, come sono definiti dalla
+    <literal>XMLDecl? content</literal> nello standard XML.
+    Approssimativamente, questo significa che i frammenti di contenuto possono avere
+    più di un elemento di alto livello o nodi di carattere. L'espressione
     <literal><replaceable>xmlvalue</replaceable> IS DOCUMENT</literal>
-    can be used to evaluate whether a particular <type>xml</type>
-    value is a full document or only a content fragment.
+    può essere usata per valutare se un particolare valore di <type>xml</type>
+    è un documento completo o solo una parte del contenuto.
    </para>
 
    <sect2>
-    <title>Creating XML Values</title>
+    <title>Creare valori XML</title>
    <para>
-    To produce a value of type <type>xml</type> from character data,
-    use the function
+    Per produrre un valore di tipo <type>xml</type> da dati carattere,
+    utilizzare la funzione
     <function>xmlparse</function>:<indexterm><primary>xmlparse</primary></indexterm>
 <synopsis>
 XMLPARSE ( { DOCUMENT | CONTENT } <replaceable>value</replaceable>)
 </synopsis>
-    Examples:
+    Esempi:
 <programlisting><![CDATA[
 XMLPARSE (DOCUMENT '<?xml version="1.0"?><book><title>Manual</title><chapter>...</chapter></book>')
 XMLPARSE (CONTENT 'abc<foo>bar</foo><bar>foo</bar>')
@@ -4031,35 +4068,40 @@ XMLPARSE (CONTENT 'abc<foo>bar</foo><bar>foo</bar>')
     While this is the only way to convert character strings into XML
     values according to the SQL standard, the PostgreSQL-specific
     syntaxes:
+    Mentre questo è  il solo modo per convertire stringhe di caratteri in
+    valori XML secondo la standard SQL, anche le specifiche sintassi di
+    PostgreSQL:
 <programlisting><![CDATA[
 xml '<foo>bar</foo>'
 '<foo>bar</foo>'::xml
 ]]></programlisting>
-    can also be used.
+    possono essere usate.
    </para>
 
    <para>
-    The <type>xml</type> type does not validate input values
-    against a document type declaration
-    (DTD),<indexterm><primary>DTD</primary></indexterm>
-    even when the input value specifies a DTD.
-    There is also currently no built-in support for validating against
-    other XML schema languages such as XML Schema.
+    
+    Il tipo <type>xml</type> non valida i valori in input secondo una dichiarazione di tipo di documento 
+    (DTD),<indexterm><primary>DTD</primary></indexterm>, anche quando il valore di input specifica un DTD.
+    Attualmente non c'è un supporto incluso per la validazione
+    in base ad altri linguaggi tipo XML Schema.
+        
    </para>
 
    <para>
-    The inverse operation, producing a character string value from
-    <type>xml</type>, uses the function
+    L'operazione inversa, la produzione di un valore di tipo stringa di caratteri
+    da un <type>xml</type>, utilizza la funzione
     <function>xmlserialize</function>:<indexterm><primary>xmlserialize</primary></indexterm>
+    
 <synopsis>
 XMLSERIALIZE ( { DOCUMENT | CONTENT } <replaceable>value</replaceable> AS <replaceable>type</replaceable> )
 </synopsis>
-    <replaceable>type</replaceable> can be
-    <type>character</type>, <type>character varying</type>, or
-    <type>text</type> (or an alias for one of those).  Again, according
-    to the SQL standard, this is the only way to convert between type
-    <type>xml</type> and character types, but PostgreSQL also allows
-    you to simply cast the value.
+
+    Il parametro <replaceable>type</replaceable> può essere del tipo
+    <type>character</type>, <type>character varying</type>, o
+    <type>text</type> (o un nome alias per essi). Inoltre, secondo
+    lo standard SQL, questo è il solo modo per effettuare la conversione
+    tra un tipo <type>xml</type> e i tipi carattere, ma PostgreSQL consente anche
+    di effettuare semplicemente una conversione al valore.
    </para>
 
    <para>
@@ -4071,118 +4113,132 @@ XMLSERIALIZE ( { DOCUMENT | CONTENT } <replaceable>value</replaceable> AS <repla
     <indexterm><primary>XML option</primary></indexterm>
     session configuration parameter, which can be set using the
     standard command:
+    
+    Quando un valore stringa di caratteri viene convertito ad, o da, un tipo <type>xml</type>
+    senza passare da <type>XMLPARSE</type> o <type>XMLSERIALIZE</type>,
+    rispettivamente, la scelta di <literal>DOCUMENT</literal> rispetto a
+    <literal>CONTENT</literal> è determinata dall'<quote>opzione XML</quote>
+    del parametro di configurazione di sessione  
+    <indexterm><primary>XML option</primary></indexterm>,
+    che può essere impostato usando il
+    comando standard
 <synopsis>
 SET XML OPTION { DOCUMENT | CONTENT };
 </synopsis>
-    or the more PostgreSQL-like syntax
+    o la sintassi più vicina a PostgreSQL:
 <synopsis>
 SET xmloption TO { DOCUMENT | CONTENT };
 </synopsis>
-    The default is <literal>CONTENT</literal>, so all forms of XML
-    data are allowed.
+    Il valore predefinito è <literal>CONTENT</literal>, per cui tutte le forme di
+    dati XML sono consentite.
    </para>
 
    <note>
     <para>
-     With the default XML option setting, you cannot directly cast
-     character strings to type <type>xml</type> if they contain a
-     document type declaration, because the definition of XML content
-     fragment does not accept them.  If you need to do that, either
-     use <literal>XMLPARSE</literal> or change the XML option.
+        Con il valore di default dell'opzione XML, non è possibile convertire direttamente
+        stringhe di caratteri al tipo <type>xml</type> se contengono una
+        dichiarazione di tipo di documento, perchè la definizione di frammenti di contenuto XML
+        non le accetta. Se si ha bisogno di farlo, usare <literal>XMLPARSE</literal>
+        o cambiare l'opzione XML.
     </para>
    </note>
 
    </sect2>
 
    <sect2>
-    <title>Encoding Handling</title>
+    <title>Gestire la codifica</title>
    <para>
-    Care must be taken when dealing with multiple character encodings
-    on the client, server, and in the XML data passed through them.
-    When using the text mode to pass queries to the server and query
-    results to the client (which is the normal mode), PostgreSQL
-    converts all character data passed between the client and the
-    server and vice versa to the character encoding of the respective
-    end; see <xref linkend="multibyte"/>.  This includes string
-    representations of XML values, such as in the above examples.
-    This would ordinarily mean that encoding declarations contained in
-    XML data can become invalid as the character data is converted
-    to other encodings while travelling between client and server,
-    because the embedded encoding declaration is not changed.  To cope
-    with this behavior, encoding declarations contained in
-    character strings presented for input to the <type>xml</type> type
-    are <emphasis>ignored</emphasis>, and content is assumed
-    to be in the current server encoding.  Consequently, for correct
-    processing, character strings of XML data must be sent
-    from the client in the current client encoding.  It is the
-    responsibility of the client to either convert documents to the
-    current client encoding before sending them to the server, or to
-    adjust the client encoding appropriately.  On output, values of
-    type <type>xml</type> will not have an encoding declaration, and
-    clients should assume all data is in the current client
-    encoding.
+    
+    Bisogna avere molta cura quando ci si occupa di codifiche multiple di
+    caratteri nel client, nel server e nei dati XML passati tramite essi.
+    Quando si utilizza il modo testo per passare query al server e i risultati
+    delle query al client (che è il modo normale), PostgreSQL
+    converte tutti i dati carattere, passati tra il client ed il
+    server e viceversa, alla codifica di caratteri della rispettiva
+    fine; vedere <xref linkend="multibyte" />. Questo comprende
+    rappresentazioni stringa di valori XML, come negli esempi precedenti.
+    Questo normalmente significherebbe che dichiarazioni di codifica contenute 
+    dentro dati XML potrebbero diventare non valide quando i dati carattere vengono
+    convertiti ad altre codifiche mentre viaggiano tra il client ed il server,
+    mentre la dichiarazione di codifica incorporata non è stata cambiata. Per
+    far fronte a questo tipo di comportamento, una dichiarazione di codifica
+    contenuta in una stringa di caratteri in input ad un tipo <type>xml</type> viene 
+    <emphasis>ignorata</emphasis>, e si assume che il suo contenuto 
+    sia nell'attuale codifica del server. Di conseguenza, per una corretta
+    elaborazione, tali stringhe di caratteri di dati XML dovranno essere mandate
+    dal client nella codifica corrente del client. È
+    responsabilità del client, o di convertire il documento alla
+    codifica corrente del server prima di inviarlo al server, oppure
+    modificare opportunamente la codifica del client. In output, i valori di
+    tipo <type>xml</type> non dovranno avere una dichiarazione di codifica, e
+    i client dovranno assumere che il dato sia nella corrente codifica del
+    client.
+   </para>
+
+
+   <para>
+    Quando si utilizza il modo binario per passare parametri delle query al server
+    e risultati delle query indietro al client, nessuna conversione viene effettuata
+    per il set di caratteri, per cui la situazione è differente. In questo caso,
+    una dichiarazione di codifica nei dati XML sarà osservata, ed in sua
+    assenza, il dato verrà assunto essere in UTF-8 (come richiesto dallo
+    standard XML; notare che PostgreSQL non supporta UTF-16 per
+    niente). In output, i dati dovranno avere una dichiarazione di codifica
+    che specifica la codifica del client, a meno che la codifica del client non sia
+    UTF-8, in quel caso essa può essere omessa.
    </para>
 
    <para>
-    When using binary mode to pass query parameters to the server
-    and query results back to the client, no character set conversion
-    is performed, so the situation is different.  In this case, an
-    encoding declaration in the XML data will be observed, and if it
-    is absent, the data will be assumed to be in UTF-8 (as required by
-    the XML standard; note that PostgreSQL does not support UTF-16).
-    On output, data will have an encoding declaration
-    specifying the client encoding, unless the client encoding is
-    UTF-8, in which case it will be omitted.
-   </para>
-
-   <para>
-    Needless to say, processing XML data with PostgreSQL will be less
-    error-prone and more efficient if the XML data encoding, client encoding,
-    and server encoding are the same.  Since XML data is internally
-    processed in UTF-8, computations will be most efficient if the
-    server encoding is also UTF-8.
+    
+    Come è logico, l'elaborazione di dati XML con PostgreSQL sarà meno
+    soggetta a errori e più efficiente se la codifica dei dati XML, la codifica
+    del client e la codifica del server sono le stesse. Poichè i dati XML sono
+    internamente elaborati in UTF-8, i calcoli saranno più efficienti se anche la
+    codifica del server è UTF-8.
    </para>
 
    <caution>
     <para>
-     Some XML-related functions may not work at all on non-ASCII data
-     when the server encoding is not UTF-8.  This is known to be an
-     issue for <function>xpath()</function> in particular.
+        Qualche funzione relativa all'XML potrebbe non funzionare su dati non ASCII
+        quando la codifica del server non è UTF-8. Questo è un problema noto per
+        <function>xpath()</function> in particolare.
     </para>
    </caution>
    </sect2>
 
    <sect2>
-   <title>Accessing XML Values</title>
+   <title>Accedere ai valori XML</title>
 
    <para>
-    The <type>xml</type> data type is unusual in that it does not
-    provide any comparison operators.  This is because there is no
-    well-defined and universally useful comparison algorithm for XML
-    data.  One consequence of this is that you cannot retrieve rows by
-    comparing an <type>xml</type> column against a search value.  XML
-    values should therefore typically be accompanied by a separate key
-    field such as an ID.  An alternative solution for comparing XML
-    values is to convert them to character strings first, but note
-    that character string comparison has little to do with a useful
-    XML comparison method.
+    
+    Il tipo dato <type>xml</type> è insolito in quanto non fornisce
+    nessun operatore di confronto. Questo perchè non c'è un
+    algoritmo di comparazione ben definito ed universalmente utilizzato per i
+    dati XML. Una conseguenza di questo è che non possono essere richiamate righe
+    confrontando una colonna <type>xml</type> con un valore di ricerca. I valori XML
+    dovranno quindi essere normalmente accompagnati da un campo chiave separato
+    tipo un ID. Una soluzione alternativa per confrontare valori XML
+    è di convertirli prima in stringhe di caratteri, ma si noti che
+    i confronti di stringhe di caratteri hanno poco a che fare con un metodo
+    di confronto XML utile.
    </para>
 
    <para>
-    Since there are no comparison operators for the <type>xml</type>
-    data type, it is not possible to create an index directly on a
-    column of this type.  If speedy searches in XML data are desired,
-    possible workarounds include casting the expression to a
-    character string type and indexing that, or indexing an XPath
-    expression.  Of course, the actual query would have to be adjusted
-    to search by the indexed expression.
+    Poichè non ci sono operatori di confronto per il tipo dato
+    <type>xml</type>, non è possibile creare un indice direttamente
+    su una colonna di questo tipo. Se si desidera una ricerca veloce nei
+    dati XML, una possibile soluzione può essere la conversione ad
+    un tipo stringa di caratteri e indicizzarla, o indicizzare un'espressione XPath.
+    La query effettiva dovrebbe naturalmente essere adeguata per
+    la ricerca di espressioni indicizzate.
+    
    </para>
 
    <para>
-    The text-search functionality in PostgreSQL can also be used to speed
-    up full-document searches of XML data.  The necessary
-    preprocessing support is, however, not yet available in the PostgreSQL
-    distribution.
+    La funzionalità ricerca di testo in PostgreSQL può anche essere usata
+    per velocizzare ricerche di documenti completi di dati XML. Il necessario supporto
+    di pre-elaborazione, però, non è ancora disponibile nella distribuzione
+    PostgreSQL.
    </para>
    </sect2>
   </sect1>
@@ -4191,12 +4247,13 @@ SET xmloption TO { DOCUMENT | CONTENT };
 
   &rowtypes;
 
+
   <sect1 id="datatype-oid">
-   <title>Object Identifier Types</title>
+   <title>Tipi identificatori di oggetto</title>
 
    <indexterm zone="datatype-oid">
-    <primary>object identifier</primary>
-    <secondary>data type</secondary>
+    <primary>identificatore di oggetto</primary>
+    <secondary>tipo dato</secondary>
    </indexterm>
 
    <indexterm zone="datatype-oid">
@@ -4248,47 +4305,50 @@ SET xmloption TO { DOCUMENT | CONTENT };
    </indexterm>
 
    <para>
-    Object identifiers (OIDs) are used internally by
-    <productname>PostgreSQL</productname> as primary keys for various
-    system tables.  OIDs are not added to user-created tables, unless
-    <literal>WITH OIDS</literal> is specified when the table is
-    created, or the <xref linkend="guc-default-with-oids"/>
-    configuration variable is enabled.  Type <type>oid</type> represents
-    an object identifier.  There are also several alias types for
+    
+    Gli identificatori di oggetto (OIDs) sono usati internamente da
+    <productname>PostgreSQL</productname> come chiavi primarie per diverse
+    tabelle di sistema.  Gli OID non vengono aggiunti alle tabelle create
+    dagli utenti, a meno che sia stato specificato <literal>WITH OIDS</literal>
+    quando è stata creata la tabella, o sia stata abilitata la variabile
+    di configurazione <xref linkend="guc-default-with-oids" />. I tipi <type>oid</type> rappresentano
+    un identificatore di oggetti.  Ci sono anche diversi alias per i tipi
     <type>oid</type>: <type>regproc</type>, <type>regprocedure</type>,
     <type>regoper</type>, <type>regoperator</type>, <type>regclass</type>,
-    <type>regtype</type>, <type>regconfig</type>, and <type>regdictionary</type>.
-    <xref linkend="datatype-oid-table"/> shows an overview.
+    <type>regtype</type>, <type>regconfig</type>, e <type>regdictionary</type>.
+    La <xref linkend="datatype-oid-table" /> ne mostra una veduta d'insieme.
    </para>
 
    <para>
-    The <type>oid</type> type is currently implemented as an unsigned
-    four-byte integer.  Therefore, it is not large enough to provide
-    database-wide uniqueness in large databases, or even in large
-    individual tables.  So, using a user-created table's OID column as
-    a primary key is discouraged.  OIDs are best used only for
-    references to system tables.
+    
+    Il tipo <type>oid</type> attualmente è implementato come un intero
+    di quattro byte senza segno. Per cui, non è abbastanza grande da fornire
+    l'unicità nell'intero database in database di grandi dimensioni, o anche in grandi
+    tabelle individuali. Per cui, usare una colonna OID come chiave primaria, in una
+    tabella creata dall'utente, è sconsigliato. Gli OID sono usati al meglio solo per
+    riferimenti alle tabelle di sistema.
    </para>
 
    <para>
-    The <type>oid</type> type itself has few operations beyond comparison.
-    It can be cast to integer, however, and then manipulated using the
-    standard integer operators.  (Beware of possible
-    signed-versus-unsigned confusion if you do this.)
+    
+    Il tipo <type>oid</type> stesso ha poche altre operazioni oltre al confronto.
+    Esso può, tuttavia, essere convertito a intero e quindi manipolato usando
+    gli operatori standard degli interi. (Attenzione alla possibile confusione nella conversione
+    da con segno a senza segno se si esegue questa operazione).
    </para>
 
    <para>
-    The OID alias types have no operations of their own except
-    for specialized input and output routines.  These routines are able
-    to accept and display symbolic names for system objects, rather than
-    the raw numeric value that type <type>oid</type> would use.  The alias
-    types allow simplified lookup of OID values for objects.  For example,
-    to examine the <structname>pg_attribute</structname> rows related to a table
-    <literal>mytable</literal>, one could write:
+    I tipi alias OID non hanno loro proprie operazioni tranne che per
+    routine specializzate di input e output. Queste routine sono in grado
+    di accettare e visualizzare nomi simbolici per oggetti di sistema, oltre che
+    il valore numerico grezzo utilizzato dal tipo <type>oid</type>. I tipi alias
+    consentono la ricerca semplificata di valori OID per gli oggetti. Per esempio,
+    per esaminare il <structname>pg_attribute</structname> delle righe relative a una tabella
+    <literal>mytable</literal>, è possibile scrivere:
 <programlisting>
 SELECT * FROM pg_attribute WHERE attrelid = 'mytable'::regclass;
 </programlisting>
-    rather than:
+    piuttosto che:
 <programlisting>
 SELECT * FROM pg_attribute
   WHERE attrelid = (SELECT oid FROM pg_class WHERE relname = 'mytable');
@@ -4301,17 +4361,27 @@ SELECT * FROM pg_attribute
     to the schema path setting, and so it does the <quote>right thing</quote>
     automatically.  Similarly, casting a table's OID to
     <type>regclass</type> is handy for symbolic display of a numeric OID.
+
+<!-- /TODO !!!! -->
+    Mentre non sembra vedere il peggio di se stesso, è comunque ultra semplificato.
+    Una vasta e complicata sub-select sarebbe necessaria per
+    selezionare il giusto OID se ci sono più tabelle chiamate
+    <literal>mytable</literal> in differenti schemi.
+    Il convertitore in input a <type>regclass</type> gestisce la ricerca di tabelle secondo
+    l'impostazione del percorso di schema, e così  fa la  <quote>cosa giusta</quote>
+    automaticamente. Similmente, convertire un OID di tabella a
+    <type>regclass</type> è utile per la visualizzazione simbolica di un UID numerico.
    </para>
 
     <table id="datatype-oid-table">
-     <title>Object Identifier Types</title>
+     <title>Tipi identificatori di oggetto</title>
      <tgroup cols="4">
       <thead>
        <row>
-        <entry>Name</entry>
-        <entry>References</entry>
-        <entry>Description</entry>
-        <entry>Value Example</entry>
+        <entry>Nome</entry>
+        <entry>Riferimenti</entry>
+        <entry>Descrizione</entry>
+        <entry>Esempio di valori</entry>
        </row>
       </thead>
 
@@ -4319,18 +4389,18 @@ SELECT * FROM pg_attribute
 
        <row>
         <entry><type>oid</type></entry>
-        <entry>any</entry>
-        <entry>numeric object identifier</entry>
+        <entry>qualsiasi</entry>
+        <entry>identificatori numerico di oggetto</entry>
         <entry><literal>564182</literal></entry>
        </row>
 
        <row>
         <entry><type>regproc</type></entry>
         <entry><structname>pg_proc</structname></entry>
-        <entry>function name</entry>
+        <entry>nome di funzione</entry>
         <entry><literal>sum</literal></entry>
        </row>
-
+<!-- ###################################################################################### -->
        <row>
         <entry><type>regprocedure</type></entry>
         <entry><structname>pg_proc</structname></entry>

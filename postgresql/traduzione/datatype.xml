@@ -4400,53 +4400,53 @@ SELECT * FROM pg_attribute
         <entry>nome di funzione</entry>
         <entry><literal>sum</literal></entry>
        </row>
-<!-- ###################################################################################### -->
-       <row>
+       
+    <row>
         <entry><type>regprocedure</type></entry>
         <entry><structname>pg_proc</structname></entry>
-        <entry>function with argument types</entry>
+        <entry>tipi funzione con argomento</entry>
         <entry><literal>sum(int4)</literal></entry>
        </row>
 
        <row>
         <entry><type>regoper</type></entry>
         <entry><structname>pg_operator</structname></entry>
-        <entry>operator name</entry>
+        <entry>nome operatore</entry>
         <entry><literal>+</literal></entry>
        </row>
 
        <row>
         <entry><type>regoperator</type></entry>
         <entry><structname>pg_operator</structname></entry>
-        <entry>operator with argument types</entry>
+        <entry>tipi operatore con argomento</entry>
         <entry><literal>*(integer,integer)</literal> or <literal>-(NONE,integer)</literal></entry>
        </row>
 
        <row>
         <entry><type>regclass</type></entry>
         <entry><structname>pg_class</structname></entry>
-        <entry>relation name</entry>
+        <entry>nome relazione</entry>
         <entry><literal>pg_type</literal></entry>
        </row>
 
        <row>
         <entry><type>regtype</type></entry>
         <entry><structname>pg_type</structname></entry>
-        <entry>data type name</entry>
+        <entry>nome tipo dato</entry>
         <entry><literal>integer</literal></entry>
        </row>
 
        <row>
         <entry><type>regconfig</type></entry>
         <entry><structname>pg_ts_config</structname></entry>
-        <entry>text search configuration</entry>
+        <entry>configurazione ricerca testo</entry>
         <entry><literal>english</literal></entry>
        </row>
 
        <row>
         <entry><type>regdictionary</type></entry>
         <entry><structname>pg_ts_dict</structname></entry>
-        <entry>text search dictionary</entry>
+        <entry>dizionario ricerca testo</entry>
         <entry><literal>simple</literal></entry>
        </row>
       </tbody>
@@ -4454,58 +4454,60 @@ SELECT * FROM pg_attribute
     </table>
 
    <para>
-    All of the OID alias types accept schema-qualified names, and will
-    display schema-qualified names on output if the object would not
-    be found in the current search path without being qualified.
-    The <type>regproc</type> and <type>regoper</type> alias types will only
-    accept input names that are unique (not overloaded), so they are
-    of limited use; for most uses <type>regprocedure</type> or
-    <type>regoperator</type> are more appropriate.  For <type>regoperator</type>,
-    unary operators are identified by writing <literal>NONE</literal> for the unused
-    operand.
+    Tutti i tipi alias di OID accettano nomi qualificati da schema, e visualizzano
+    in output nomi qualificati da schema se l'oggetto non viene
+    trovato nel percorso di ricerca corrente senza essere qualificato.
+    I tipi alias <type>regproc</type> e <type>regoper</type> accettano solo nomi in
+    input che sono unique (non sovraccaricati), per cui essi sono di uso
+    limitato; per la maggior parte degli usi sono più adatti
+    <type>regprocedure</type> o <type>regoperator</type>. Per <type>regoperator</type>,
+    gli operatori costituiti da un solo elemento (unari) sono identificati scrivendo
+    <literal>NONE</literal> per l'operando non usato.
+    
    </para>
 
    <para>
-    An additional property of the OID alias types is the creation of
-    dependencies.  If a
-    constant of one of these types appears in a stored expression
-    (such as a column default expression or view), it creates a dependency
-    on the referenced object.  For example, if a column has a default
-    expression <literal>nextval('my_seq'::regclass)</literal>,
+    Una proprietà supplementare dei tipi alias di OID è la creazione di 
+    dipendenze. Se una
+    costante di uno di questi tipi compare in una espressione memorizzata
+    (tipo una espressione o vista di default di colonna), essi creano una dipendenza
+    dall'oggetto referenziato. Per esempio, se una colonna ha una espressione
+    di default <literal>nextval('my_seq'::regclass)</literal>,
     <productname>PostgreSQL</productname>
-    understands that the default expression depends on the sequence
-    <literal>my_seq</literal>; the system will not let the sequence be dropped
-    without first removing the default expression.
+    capisce che l'espressione predefinita dipende dalla sequenza
+    <literal>my_seq</literal>; Il sistema non lascerà che la sequenza venga eliminata senza che
+    sia rimossa prima l'espressione di default.
    </para>
 
    <para>
-    Another identifier type used by the system is <type>xid</type>, or transaction
-    (abbreviated <abbrev>xact</abbrev>) identifier.  This is the data type of the system columns
-    <structfield>xmin</structfield> and <structfield>xmax</structfield>.  Transaction identifiers are 32-bit quantities.
+    Un altro tipo di identificatore usato dal sistema è <type>xid</type>, o identificatore
+    di transazione (abbreviato <abbrev>xact</abbrev>). Questo è il tipo di dato delle colonne di sistema
+    <structfield>xmin</structfield> e <structfield>xmax</structfield>. Gli identificatori di transazione sono quantità a 32 bit.
    </para>
 
    <para>
-    A third identifier type used by the system is <type>cid</type>, or
-    command identifier.  This is the data type of the system columns
-    <structfield>cmin</structfield> and <structfield>cmax</structfield>. Command identifiers are also 32-bit quantities.
+    Un terzo tipo di identificatore usato dal sistema è <type>cid</type>, o
+    identificatore di comando. Questo è il tipo dato delle colonne di sistema
+    <structfield>cmin</structfield> e <structfield>cmax</structfield>.Gli identificatori di comando sono anch'essi a 32 bit.
    </para>
 
    <para>
-    A final identifier type used by the system is <type>tid</type>, or tuple
-    identifier (row identifier).  This is the data type of the system column
-    <structfield>ctid</structfield>.  A tuple ID is a pair
-    (block number, tuple index within block) that identifies the
-    physical location of the row within its table.
+    
+    Infine, un tipo di identificatore usato dal sistema è <type>tid</type>, o identificatore
+    di tupla (identificatore di riga). Questo è il tipo di dato per la colonna di sistema
+    <structfield>ctid</structfield>. Un ID di tupla è una coppia
+    (numero blocco, indice di tupla nel blocco) che identifica la locazione
+    fisica della riga dentro la tabella.
    </para>
 
    <para>
-    (The system columns are further explained in <xref
-    linkend="ddl-system-columns"/>.)
+    (Le colonne di sistema vengono ulteriormente spiegate in <xref
+    linkend="ddl-system-columns" />).
    </para>
   </sect1>
 
   <sect1 id="datatype-pseudo">
-   <title>Pseudo-Types</title>
+   <title>Pseudo-tipi</title>
 
    <indexterm zone="datatype-pseudo">
     <primary>record</primary>
@@ -4555,126 +4557,129 @@ SELECT * FROM pg_attribute
     <primary>opaque</primary>
    </indexterm>
 
+
    <para>
-    The <productname>PostgreSQL</productname> type system contains a
-    number of special-purpose entries that are collectively called
-    <firstterm>pseudo-types</firstterm>.  A pseudo-type cannot be used as a
-    column data type, but it can be used to declare a function's
-    argument or result type.  Each of the available pseudo-types is
-    useful in situations where a function's behavior does not
-    correspond to simply taking or returning a value of a specific
-    <acronym>SQL</acronym> data type.  <xref
-    linkend="datatype-pseudotypes-table"/> lists the existing
-    pseudo-types.
+    I tipi sistema di <productname>PostgreSQL</productname> contengono un
+    numero di elementi per usi speciali che sono collettivamente chiamati
+    <firstterm>pseudo-tipi</firstterm>. Un pseudo-tipo non può essere usato come
+    un tipo di dato di colonna, ma può essere usato per dichiarare un'argomento
+    di funzione o il tipo di un risultato. Ugnuno degli pseudo-tipi disponibili è
+    utile in situazioni dove il comportamento di una funzione non
+    corrisponde semplicemente a prendere o restituire un valore di uno specifico 
+    tipo di dato <acronym>SQL</acronym>. La <xref
+    linkend="datatype-pseudotypes-table" /> elenca gli 
+    pseudo-tipi esistenti.
    </para>
 
     <table id="datatype-pseudotypes-table">
-     <title>Pseudo-Types</title>
+     <title>Pseudo-tipi</title>
      <tgroup cols="2">
       <thead>
        <row>
-        <entry>Name</entry>
-        <entry>Description</entry>
+        <entry>Nome</entry>
+        <entry>Descrizione</entry>
        </row>
       </thead>
 
       <tbody>
        <row>
         <entry><type>any</type></entry>
-        <entry>Indicates that a function accepts any input data type.</entry>
+        <entry>Indica che una funzione accetta ogni input di qualsiasi tipo dato.</entry>
        </row>
 
        <row>
         <entry><type>anyarray</type></entry>
-        <entry>Indicates that a function accepts any array data type
-        (see <xref linkend="extend-types-polymorphic"/>).</entry>
+        <entry>Indica che una funzione accetta ogni tipo dato array
+        (vedere <xref linkend="extend-types-polymorphic" />).</entry>
        </row>
 
        <row>
         <entry><type>anyelement</type></entry>
-        <entry>Indicates that a function accepts any data type
-        (see <xref linkend="extend-types-polymorphic"/>).</entry>
+        <entry>Indica che una funzione accetta ogni tipo dato
+        (vedere <xref linkend="extend-types-polymorphic" />).</entry>
        </row>
 
        <row>
-        <entry><type>anyenum</type></entry>
-        <entry>Indicates that a function accepts any enum data type
-        (see <xref linkend="extend-types-polymorphic"/> and
-        <xref linkend="datatype-enum"/>).</entry>
+        <entry><type>anyenum</type></entry> 
+        <entry>Indica che una funzione accetta ogni tipo dato enum
+        (vedere <xref linkend="extend-types-polymorphic" /> e
+        <xref linkend="datatype-enum" />).</entry>
        </row>
 
        <row>
         <entry><type>anynonarray</type></entry>
-        <entry>Indicates that a function accepts any non-array data type
-        (see <xref linkend="extend-types-polymorphic"/>).</entry>
+        <entry>Indica che una funzione accetta ogni tipo dato non-array
+        (vedere <xref linkend="extend-types-polymorphic" />).</entry>
        </row>
 
        <row>
         <entry><type>cstring</type></entry>
-        <entry>Indicates that a function accepts or returns a null-terminated C string.</entry>
+        <entry>Indica che una funzione accetta o restituisce una stringa C terminata con null.</entry>
        </row>
 
        <row>
         <entry><type>internal</type></entry>
-        <entry>Indicates that a function accepts or returns a server-internal
-        data type.</entry>
+        <entry>Indica che una funzione accetta o restituisce un tipo dato interno
+        al server.</entry>
        </row>
 
        <row>
         <entry><type>language_handler</type></entry>
-        <entry>A procedural language call handler is declared to return <type>language_handler</type>.</entry>
+        <entry>Viene dichiarato un gestore di chiamata al linguaggio procedurale per restituire un <type>language_handler</type>.</entry>
        </row>
 
        <row>
         <entry><type>record</type></entry>
-        <entry>Identifies a function returning an unspecified row type.</entry>
+        <entry>Identifica una funzione che restituisce un tipo riga non specificato.</entry>
        </row>
 
        <row>
         <entry><type>trigger</type></entry>
-        <entry>A trigger function is declared to return <type>trigger.</type></entry>
+        <entry>Viene dichiarata una funzione trigger per restituire un <type>trigger.</type></entry>
        </row>
 
        <row>
         <entry><type>void</type></entry>
-        <entry>Indicates that a function returns no value.</entry>
+        <entry>Indica che una funzione non restituisce nessun valore.</entry>
        </row>
 
        <row>
         <entry><type>opaque</type></entry>
-        <entry>An obsolete type name that formerly served all the above purposes.</entry>
+        <entry>Un nome tipo obsoleto che serviva in precedenza per tutti gli usi di cui sopra.</entry>
        </row>
       </tbody>
      </tgroup>
     </table>
 
+
    <para>
-    Functions coded in C (whether built-in or dynamically loaded) can be
-    declared to accept or return any of these pseudo data types.  It is up to
-    the function author to ensure that the function will behave safely
-    when a pseudo-type is used as an argument type.
+    
+    Funzioni codificate in C (sia incorporate che caricate dinamicamente) possono essere
+    dichiarate per accettare o restituire ognuno di questi specifici pseudo tipi di dati. Spetta
+    all'autore della funzione il compito di garantire che la funzione si comporti in sicurezza
+    quando viene usato un pseudo-tipo come tipo di argomento.
    </para>
 
    <para>
-    Functions coded in procedural languages can use pseudo-types only as
-    allowed by their implementation languages.  At present the procedural
-    languages all forbid use of a pseudo-type as argument type, and allow
-    only <type>void</type> and <type>record</type> as a result type (plus
-    <type>trigger</type> when the function is used as a trigger).  Some also
-    support polymorphic functions using the types <type>anyarray</type>,
-    <type>anyelement</type>, <type>anyenum</type>, and <type>anynonarray</type>.
+    Funzioni codificate in linguaggi procedurali possono usare pseudo-tipi solo come
+    consentito dal loro linguaggio di implementazione. Al momento tutti i linguaggi
+    procedurali proibiscono l'uso di un pseudo-tipo come tipo di argomento, e consentono
+    solo <type>void</type> e <type>record</type> come tipo di risultato (più
+    <type>trigger</type> quando la funzione viene utilizzata come un trigger). Alcuni supportano
+    anche funzioni polimorfiche utilizzando i tipi <type>anyarray</type>,
+    <type>anyelement</type>, <type>anyenum</type>, e <type>anynonarray</type>.
    </para>
 
    <para>
-    The <type>internal</type> pseudo-type is used to declare functions
-    that are meant only to be called internally by the database
-    system, and not by direct invocation in an <acronym>SQL</acronym>
-    query.  If a function has at least one <type>internal</type>-type
-    argument then it cannot be called from <acronym>SQL</acronym>.  To
-    preserve the type safety of this restriction it is important to
-    follow this coding rule: do not create any function that is
-    declared to return <type>internal</type> unless it has at least one
-    <type>internal</type> argument.
+    Lo pseudo-tipo <type>internal</type> è usato per dichiarare funzioni
+    che sono intese solo per essere chiamate internamente al sistema di
+    database, e non da chiamate dirette in una query <acronym>SQL</acronym>.
+    Se una funzione ha almeno un argomento tipo <type>internal</type>
+    allora non può essere chiamata da <acronym>SQL</acronym>. Per
+    preservare la sicurezza di tipo di questa restrizione è importante
+    seguire questa regola di codificazione: non creare nessuna funzione che viene
+    dichiarata per restituire <type>internal</type> a meno che non abbia almeno un
+    argomento <type>internal</type>.
    </para>
 
   </sect1>

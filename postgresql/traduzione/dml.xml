@@ -2,26 +2,25 @@
 <!-- $PostgreSQL$ -->
 
 <chapter id="dml">
- <title>Data Manipulation</title>
+ <title>Manipolazione dei dati</title>
 
  <remark>
-  This chapter is still quite incomplete.
+  Questo capitolo è  ancora abbastanza incompleto.
  </remark>
 
  <para>
-  The previous chapter discussed how to create tables and other
-  structures to hold your data.  Now it is time to fill the tables
-  with data.  This chapter covers how to insert, update, and delete
-  table data.  The chapter
-  after this will finally explain how to extract your long-lost data
-  from the database.
+  Il capitolo precedente ha discusso come creare le tabelle e le altre strutture
+  che dovranno contenere i vostri dati. Ora è il momento di riempire le
+  tabelle con i dati. Questo capitolo spiega come inserire, aggiornare e cancellare
+  i dati nelle tabelle. Il capitolo successivo a questo spiegherà infine come estrarre
+  dal database i vostri dati persi da tempo.
  </para>
 
  <sect1 id="dml-insert">
-  <title>Inserting Data</title>
+  <title>Inserimento dati</title>
 
   <indexterm zone="dml-insert">
-   <primary>inserting</primary>
+   <primary>inserimento</primary>
   </indexterm>
 
   <indexterm zone="dml-insert">
@@ -29,19 +28,19 @@
   </indexterm>
 
   <para>
-   When a table is created, it contains no data.  The first thing to
-   do before a database can be of much use is to insert data.  Data is
-   conceptually inserted one row at a time.  Of course you can also
-   insert more than one row, but there is no way to insert less than
-   one row.  Even if you know only some column values, a
-   complete row must be created.
+   Quando viene creata una tabella, essa non contiene dati. La prima cosa
+   da fare prima di utilizzare un database è di inserire i dati. I dati sono
+   concettualmente inseriti una riga per volta. Naturalmente è possibile
+   inserire più di una riga, ma non è possibile inserire meno di una
+   riga alla volta. Anche se si conoscono solo i valori di alcune colonne, deve essere
+   creata una riga completa.
   </para>
 
   <para>
-   To create a new row, use the <xref linkend="sql-insert"/>
-   command.  The command requires the
-   table name and column values.  For
-   example, consider the products table from <xref linkend="ddl"/>:
+   Per creare una nuova riga, usare il comando <xref linkend="sql-insert"
+   endterm="sql-insert-title" />. Il comando richiede il nome
+   della tabella e un valore per ognuna delle colonne della tabella. Per
+   esempio, considerate la tabella prodotti del <xref linkend="ddl" />:
 <programlisting>
 CREATE TABLE products (
     product_no integer,
@@ -49,77 +48,82 @@ CREATE TABLE products (
     price numeric
 );
 </programlisting>
-   An example command to insert a row would be:
+   Un comando di esempio per l'inserimento di una riga potrebbe essere:
 <programlisting>
 INSERT INTO products VALUES (1, 'Cheese', 9.99);
 </programlisting>
-   The data values are listed in the order in which the columns appear
-   in the table, separated by commas.  Usually, the data values will
-   be literals (constants), but scalar expressions are also allowed.
+   I valori dei dati sono elencati nell'ordine nel quale compaiono nella
+   tabella, separati da virgole. Normalmente, i valori dei dati saranno
+   letterali (costanti), ma sono anche consentite espressioni scalari.
   </para>
 
   <para>
-   The above syntax has the drawback that you need to know the order
-   of the columns in the table.  To avoid this you can also list the
-   columns explicitly.  For example, both of the following commands
-   have the same effect as the one above:
+   La sintassi vista sopra ha lo svantaggio che è necessario conoscere
+   l'ordine delle colonne nella tabella. Per evitare questo è possibile
+   elencare le colonne esplicitamente. Per esempio, ambedue i seguenti comandi
+   hanno lo stesso effetto del comando visto sopra:
 <programlisting>
 INSERT INTO products (product_no, name, price) VALUES (1, 'Cheese', 9.99);
 INSERT INTO products (name, price, product_no) VALUES ('Cheese', 9.99, 1);
 </programlisting>
-   Many users consider it good practice to always list the column
-   names.
+   Molti utenti considerano un buon metodo elencare sempre i nomi delle
+   colonne.
   </para>
 
   <para>
-   If you don't have values for all the columns, you can omit some of
-   them.  In that case, the columns will be filled with their default
-   values.  For example:
+   Se non avete i valori per tutte le colonne, potete omettere alcuni di essi.
+   In questo caso, le colonne saranno riempite con i loro valori predefiniti.
+   Per esempio:
 <programlisting>
 INSERT INTO products (product_no, name) VALUES (1, 'Cheese');
 INSERT INTO products VALUES (1, 'Cheese');
+
 </programlisting>
-   The second form is a <productname>PostgreSQL</productname>
-   extension.  It fills the columns from the left with as many values
-   as are given, and the rest will be defaulted.
+   La seconda forma è una estensione di <productname>PostgreSQL</productname>.
+   Essa riempie le colonne da sinistra a destra nello stesso ordine in cui
+   sono state fornite, e il resto sarà riempito con i valori predefiniti.
   </para>
 
   <para>
-   For clarity, you can also request default values explicitly, for
-   individual columns or for the entire row:
+   Per chiarezza, è anche possibile richiedere esplicitamente i
+   valori predefiniti, per singole colonne o per l'intera riga:
 <programlisting>
+
 INSERT INTO products (product_no, name, price) VALUES (1, 'Cheese', DEFAULT);
 INSERT INTO products DEFAULT VALUES;
+
 </programlisting>
   </para>
 
   <para>
-   You can insert multiple rows in a single command:
+   Potete inserire righe multiple con un singolo comando:
 <programlisting>
+
 INSERT INTO products (product_no, name, price) VALUES
     (1, 'Cheese', 9.99),
     (2, 'Bread', 1.99),
     (3, 'Milk', 2.99);
+
 </programlisting>
   </para>
 
   <tip>
    <para>
-    When inserting a lot of data at the same time, considering using
-    the <xref linkend="sql-copy"/> command.
-    It is not as flexible as the <xref linkend="sql-insert"/>
-    command, but is more efficient. Refer
-    to <xref linkend="populate"/> for more information on improving
-    bulk loading performance.
+    Quando inserite molti dati nello stesso tempo, considerate l'uso
+    del comando <xref linkend="sql-copy" endterm="sql-copy-title" />.
+    Esso non è flessibile come il comando <xref linkend="sql-insert"
+    endterm="sql-insert-title" />, ma è molto efficiente. Per ulteriori
+    informazioni circa il miglioramento delle prestazioni, per grossi
+    caricamenti, vedere dentro <xref linkend="populate" />.
    </para>
   </tip>
  </sect1>
 
  <sect1 id="dml-update">
-  <title>Updating Data</title>
+  <title>Aggiornamento dati</title>
 
   <indexterm zone="dml-update">
-   <primary>updating</primary>
+   <primary>aggiornamento</primary>
   </indexterm>
 
   <indexterm zone="dml-update">
@@ -127,94 +131,90 @@ INSERT INTO products (product_no, name, price) VALUES
   </indexterm>
 
   <para>
-   The modification of data that is already in the database is
-   referred to as updating.  You can update individual rows, all the
-   rows in a table, or a subset of all rows.  Each column can be
-   updated separately; the other columns are not affected.
+   La modifica dei dati che sono già presenti nel database si
+   identifica come aggiornamento. Potete aggiornare righe individuali, tutte le
+   righe in una tabella, o un sottoinsieme di tutte le righe. Ogni colonna può essere
+   aggiornata separatamente; le altre colonne non sono interessate.
   </para>
 
   <para>
-   To update existing rows, use the <xref linkend="sql-update"/>
-   command.  This requires
-   three pieces of information:
+   Per effettuare un aggiornamento, avete bisogno di tre informazioni:
    <orderedlist spacing="compact">
     <listitem>
-     <para>The name of the table and column to update</para>
+     <para>Il nome della tabella e della colonna da aggiornare,</para>
     </listitem>
 
     <listitem>
-     <para>The new value of the column</para>
+     <para>Il nuovo valore della colonna,</para>
     </listitem>
 
     <listitem>
-     <para>Which row(s) to update</para>
+     <para>Quale riga o righe aggiornare.</para>
     </listitem>
    </orderedlist>
   </para>
 
   <para>
-   Recall from <xref linkend="ddl"/> that SQL does not, in general,
-   provide a unique identifier for rows.  Therefore it is not
-   always possible to directly specify which row to update.
-   Instead, you specify which conditions a row must meet in order to
-   be updated.  Only if you have a primary key in the table (independent of
-   whether you declared it or not) can you reliably address individual rows
-   by choosing a condition that matches the primary key.
-   Graphical database access tools rely on this fact to allow you to
-   update rows individually.
+   Ricordarsi dal <xref linkend="ddl" /> che SQL, in generale, non
+   fornisce un identificatore unico per le righe. Di conseguenze, non
+   è possibile specificare direttamente quale riga aggiornare.
+   Dovete, invece, specificare quali condizioni una riga deve soddisfare
+   per essere aggiornata. Solo se avete nella tabella una chiave primaria (non importa
+   se l'avete dichiarata oppure no) potete indirizzare individualmente le righe,
+   scegliendo una condizione che uguaglia la chiave primaria.
+   Gli strumenti di accesso ai database grafici contano su questo fatto per consentirvi di
+   aggiornare le righe individualmente.
   </para>
 
   <para>
-   For example, this command updates all products that have a price of
-   5 to have a price of 10:
+   Per esempio, questo comando aggiorna tutti i prodotti che hanno un prezzo di 5
+   portandolo a 10:
 <programlisting>
 UPDATE products SET price = 10 WHERE price = 5;
 </programlisting>
-    This might cause zero, one, or many rows to be updated.  It is not
-    an error to attempt an update that does not match any rows.
+    Questo comando può causare l'aggiornamento di zero, uno, o più righe. Non è
+    un errore tentare un aggiornamento che non soddisfa nessuna riga.
   </para>
 
   <para>
-   Let's look at that command in detail. First is the key word
-   <literal>UPDATE</literal> followed by the table name.  As usual,
-   the table name can be schema-qualified, otherwise it is looked up
-   in the path.  Next is the key word <literal>SET</literal> followed
-   by the column name, an equal sign, and the new column value.  The
-   new column value can be any scalar expression, not just a constant.
-   For example, if you want to raise the price of all products by 10%
-   you could use:
+   Guardiamo il comando in dettaglio. In testa c'è la parola chiave 
+   <literal>UPDATE</literal> seguita dal nome della tabella. Come di consueto,
+   il nome della tabella può essere qualificato con schema, altrimenti viene cercato
+   nel percorso. Dopo c'è la parola chiave <literal>SET</literal> seguita
+   dal nome della colonna, un segno uguale ed il nuovo valore della colonna. Il
+   nuovo valore della colonna può essere una espressione scalare, non solo una costante.
+   Per esempio, se volete incrementare il prezzo di tutti i prodotti del 10%
+   dovrete usare:
 <programlisting>
 UPDATE products SET price = price * 1.10;
 </programlisting>
-   As you see, the expression for the new value can refer to the existing
-   value(s) in the row.  We also left out the <literal>WHERE</literal> clause.
-   If it is omitted, it means that all rows in the table are updated.
-   If it is present, only those rows that match the
-   <literal>WHERE</literal> condition are updated.  Note that the equals
-   sign in the <literal>SET</literal> clause is an assignment while
-   the one in the <literal>WHERE</literal> clause is a comparison, but
-   this does not create any ambiguity.  Of course, the
-   <literal>WHERE</literal> condition does
-   not have to be an equality test.  Many other operators are
-   available (see <xref linkend="functions"/>).  But the expression
-   needs to evaluate to a Boolean result.
+   Come potete vedere, l'espressione relativa al nuovo valore può far riferimento ai valori
+   esistenti nelle righe. Non è stata utilizzata la clausula <literal>WHERE</literal>.
+   Se è stata omessa, significa che tutte le righe della tabella verranno aggiornate.
+   Se è presente, solo le righe che soddisfano la condizione <literal>WHERE</literal>
+   verranno aggiornate. Notare che il segno uguale nella clausula <literal>SET</literal> è
+   un'assegnazione mentre lo stesso segno uguale nella clausula <literal>WHERE</literal> è
+   un confronto, ma questo non crea nessuna ambiguità. Naturalmente, la condizione
+   <literal>WHERE</literal> non deve essere usata come test di uguaglianza. Per fare questo sono
+   disponibili molti altri operatori (vedere il <xref linkend="functions" />). Ma l'espressione
+   deve portare a valutare un risultato di tipo Booleano.
   </para>
 
   <para>
-   You can update more than one column in an
-   <command>UPDATE</command> command by listing more than one
-   assignment in the <literal>SET</literal> clause.  For example:
+   Potete aggiornare più di una colonna in un comando
+   <command>UPDATE</command> inserendo più di un assegnamento
+   nella clausula <literal>SET</literal>. Per esempio:
 <programlisting>
-UPDATE mytable SET a = 5, b = 3, c = 1 WHERE a &gt; 0;
+UPDATE miatabella SET a = 5, b = 3, c = 1 WHERE a &gt; 0;
 </programlisting>
   </para>
  </sect1>
 
  <sect1 id="dml-delete">
-  <title>Deleting Data</title>
+  <title>Cancellazione dati</title>
 
   <indexterm zone="dml-delete">
-   <primary>deleting</primary>
+   <primary>cancellare</primary>
   </indexterm>
 
   <indexterm zone="dml-delete">
@@ -222,35 +222,35 @@ UPDATE mytable SET a = 5, b = 3, c = 1 WHERE a &gt; 0;
   </indexterm>
 
   <para>
-   So far we have explained how to add data to tables and how to
-   change data.  What remains is to discuss how to remove data that is
-   no longer needed.  Just as adding data is only possible in whole
-   rows, you can only remove entire rows from a table.  In the
-   previous section we explained that SQL does not provide a way to
-   directly address individual rows.  Therefore, removing rows can
-   only be done by specifying conditions that the rows to be removed
-   have to match.  If you have a primary key in the table then you can
-   specify the exact row.  But you can also remove groups of rows
-   matching a condition, or you can remove all rows in the table at
-   once.
+   Fino ad ora abbiamo spiegato come aggiungere i dati nelle tabella e come
+   cambiarli. Rimane da vedere come rimuovere dati che non sono più
+   necessari. Come per l'aggiunta dei dati, questo è possibile solamente
+   per la riga intera, potete rimuovere solo righe intere da una tabella. Nella precedente
+   sezione abbiamo spiegato che SQL non fornisce un modo per indirizzare direttamente
+   righe individuali. Di conseguenza, le righe possono essere rimosse solamente specificando
+   le condizioni che dovranno soddisfare. Potrete specificare una riga esatta
+   da rimuovere solamente se nella tabella avete una chiave primaria. Ma potrete anche
+   rimuovere gruppi di righe che soddisfano una condizione, o potrete rimuovere completamente
+   tutte le righe di una tabella.
   </para>
 
   <para>
-   You use the <xref linkend="sql-delete"/>
-   command to remove rows; the syntax is very similar to the
-   <command>UPDATE</command> command.  For instance, to remove all
-   rows from the products table that have a price of 10, use:
+   Per rimuovere le righe potete usare il comando
+   <xref linkend="sql-delete" endterm="sql-delete-title" />; La sintassi è molto simile
+   al comando <command>UPDATE</command>. Per esempio, per rimuovere tutte le
+   righe che hanno un prezzo di 10 dalla tabella prodotti, usare:
 <programlisting>
 DELETE FROM products WHERE price = 10;
 </programlisting>
   </para>
 
   <para>
-   If you simply write:
+   Se scrivete semplicemente:
 <programlisting>
 DELETE FROM products;
 </programlisting>
-   then all rows in the table will be deleted!  Caveat programmer.
+   verranno cancellate tutte le righe della tabella! Avvertenza per i programmatori.
   </para>
  </sect1>
 </chapter>
+

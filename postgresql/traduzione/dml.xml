@@ -236,7 +236,7 @@ UPDATE miatabella SET a = 5, b = 3, c = 1 WHERE a &gt; 0;
 
   <para>
    Per rimuovere le righe potete usare il comando
-   <xref linkend="sql-delete" endterm="sql-delete-title" />; La sintassi è molto simile
+   <xref linkend="sql-delete" />; La sintassi è molto simile
    al comando <command>UPDATE</command>. Per esempio, per rimuovere tutte le
    righe che hanno un prezzo di 10 dalla tabella prodotti, usare:
 <programlisting>

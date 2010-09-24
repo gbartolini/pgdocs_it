@@ -1033,8 +1033,13 @@
 
 
    <note>
+    
+    <note>
+        <para>
+            Nota per il revisore: coercizioni è urend....
+        </para>
+    </note>
     <para>
-<!-- /TODO coercizioni ??? -->
      Prima di <productname>PostgreSQL</productname> 8.3, queste funzioni
      accettavano tacitamente anche valori di molti tipi di dato non-stringa,
      a causa della presenza di implicite coercizioni da quei tipi di dato a
@@ -3675,13 +3680,11 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
    </para>
 
    <para>
-
-<!-- /TODO brutto corrisponde a una corrispondenza -->
     Un atomo quantificato è un <firstterm>atomo</firstterm> 
     seguito da un singolo <firstterm>quantificatore</firstterm>.
-    Senza un quantificatore, esso corrisponde ad un corrispondenza per l'atomo.
+    Senza un quantificatore, esso corrisponde ad un occorrenza dell'atomo.
     Con un quantificatore, esso può corrispondere ad un certo numero
-    di corrispondenze dell'atomo. Un <firstterm>atomo</firstterm> può
+    di occorrenze dell'atomo. Un <firstterm>atomo</firstterm> può
     essere una delle possibilità mostrate nella <xref linkend="posix-atoms-table" />.
     I possibili quantificatori ed il loro significato sono mostrati nella
     <xref linkend="posix-quantifiers-table" />.
@@ -3976,7 +3979,12 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
     in ARE.
    </para>
 
-<!-- /TODO ,,,,, -->
+    <note>
+        <para>
+            Nota per il revisore: il paragrafo successivo mi dà problemi, specialmente 
+            il verbo collate, che in italiano è urend (collazionare). 
+        </para>
+    </note>
    <para>
     Within a bracket expression, a collating element (a character, a
     multiple-character sequence that collates as if it were a single
@@ -4416,7 +4424,12 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
    </para>
 
    <para>
-<!-- /TODO director? -->
+    
+    <note>
+        <para>
+            Nota per il revisore: director? 
+        </para>
+    </note>
         Una RE può cominciare con uno dei due prefissi <firstterm>director</firstterm> speciali.
         Se una RE comincia con <literal>***:</literal>,
         il resto della RE è preso come una ARE. (Questo normalmente non ha effetto in
@@ -4583,8 +4596,12 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
     e il loro uso è deprecabile; conviene utilizzare invece la sintassi espansa.
    </para>
 
-<!-- /TODO Director? -->
-   <para>
+<note>
+    <para>
+        Nota per il revisore: director?
+    </para>
+</note>
+    <para>
     <emphasis>Nessuna</emphasis> di queste espansioni di metasintassi sarà disponibile
     se un director iniziale <literal>***=</literal>
     ha specificato che l'input dell'utente sarà trattato come una stringa letterale
@@ -4593,235 +4610,235 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
    </sect3>
 
 
-<!-- ********************************************************************************************** -->
-
-
-
    <sect3 id="posix-matching-rules">
-    <title>Regular Expression Matching Rules</title>
+    <title>Regole di confronto nelle espressioni regolari</title>
 
    <para>
-    In the event that an RE could match more than one substring of a given
-    string, the RE matches the one starting earliest in the string.
-    If the RE could match more than one substring starting at that point,
-    either the longest possible match or the shortest possible match will
-    be taken, depending on whether the RE is <firstterm>greedy</firstterm> or
-    <firstterm>non-greedy</firstterm>.
+    Nel caso che una RE possa abbinare più di una sottostringa in una stringa
+    fornita, la RE combacia con quella che viene incontrata per prima nella stringa.
+    A questo punto, se la RE può abbinare più di una sottostringa,
+    sarà preso l'abbinamento più lungo possibile o il più corto
+    possibile, a seconda che la RE sia <firstterm>avida</firstterm> o
+    <firstterm>non-avida</firstterm>.
    </para>
 
+   
+
    <para>
-    Whether an RE is greedy or not is determined by the following rules:
+    Se una RE è avida o meno, viene determinato dalle seguenti regole:
     <itemizedlist>
      <listitem>
       <para>
-       Most atoms, and all constraints, have no greediness attribute (because
-       they cannot match variable amounts of text anyway).
+       La maggior parte degli atomi e tutti i vincoli, non hanno attributo di avidità (perchè
+       essi non possono comunque abbinare variabili di testo).
       </para>
      </listitem>
      <listitem>
       <para>
-       Adding parentheses around an RE does not change its greediness.
+       L'aggiunta di parentesi intorno ad una RE non modifica il suo attributo di avidità.
       </para>
      </listitem>
      <listitem>
       <para>
-       A quantified atom with a fixed-repetition quantifier
+       Un atomo quantificato con un quantificatore di ripetizione fissato
        (<literal>{</literal><replaceable>m</replaceable><literal>}</literal>
-       or
+       o
        <literal>{</literal><replaceable>m</replaceable><literal>}?</literal>)
-       has the same greediness (possibly none) as the atom itself.
+       ha lo stesso attributo di avidità (probabilmente nessuno) dell'atomo stesso.
       </para>
      </listitem>
      <listitem>
       <para>
-       A quantified atom with other normal quantifiers (including
+       Un atomo quantificato con altri normali quantificatori (compreso
        <literal>{</literal><replaceable>m</replaceable><literal>,</literal><replaceable>n</replaceable><literal>}</literal>
-       with <replaceable>m</replaceable> equal to <replaceable>n</replaceable>)
-       is greedy (prefers longest match).
+       con <replaceable>m</replaceable> uguale a <replaceable>n</replaceable>)
+       è avido (preferisce l'abbinamneto più lungo).
       </para>
      </listitem>
      <listitem>
       <para>
-       A quantified atom with a non-greedy quantifier (including
+       Un atomo quantificato con un quantificatore non-avido (compreso
        <literal>{</literal><replaceable>m</replaceable><literal>,</literal><replaceable>n</replaceable><literal>}?</literal>
-       with <replaceable>m</replaceable> equal to <replaceable>n</replaceable>)
-       is non-greedy (prefers shortest match).
+       con <replaceable>m</replaceable> uguale a <replaceable>n</replaceable>)
+       è non-avido (preferisce l'abbinamento più corto).
       </para>
      </listitem>
      <listitem>
       <para>
-       A branch &mdash; that is, an RE that has no top-level
-       <literal>|</literal> operator &mdash; has the same greediness as the first
-       quantified atom in it that has a greediness attribute.
+       Un ramo &mdash; che è, una RE che non ha un operatore
+       <literal>|</literal> di livello superiore &mdash; ha lo stesso attributo di avidità del primo
+       atomo quantificato, contenuto in esso, che ha un attributo di avidità.
       </para>
      </listitem>
      <listitem>
       <para>
-       An RE consisting of two or more branches connected by the
-       <literal>|</literal> operator is always greedy.
+       Una RE consistente di due o più rami connessi dall'operatore
+       <literal>|</literal> è sempre avido.
       </para>
      </listitem>
     </itemizedlist>
    </para>
 
    <para>
-    The above rules associate greediness attributes not only with individual
-    quantified atoms, but with branches and entire REs that contain quantified
-    atoms.  What that means is that the matching is done in such a way that
-    the branch, or whole RE, matches the longest or shortest possible
-    substring <emphasis>as a whole</emphasis>.  Once the length of the entire match
-    is determined, the part of it that matches any particular subexpression
-    is determined on the basis of the greediness attribute of that
-    subexpression, with subexpressions starting earlier in the RE taking
-    priority over ones starting later.
+    Le regole sopra associano gli attributi di avidità non solo con singoli
+    atomi quantificati, ma con i rami e le intere RE che contengono atomi quantificati.
+    Questo significa che l'abbinamento viene fatto in modo che il ramo, o l'intera RE,
+    abbinano <emphasis>complessivamente</emphasis> la più lunga o la più corta
+    possibile sottostringa. Una volta determinata la lunghezza dell'intero abbinamento,
+    la parte di esso che abbina ogni particolare sottoespressione viene determinata
+    sulla base dell'attributo di avidità di quella sottoespressione,
+    con le sottoespressioni che cominciano prima nella RE che prendono la
+    priorità su quelle che cominciano dopo.
    </para>
 
+
    <para>
-    An example of what this means:
+    Un esempio di cosa significa questo:
 <screen>
 SELECT SUBSTRING('XY1234Z', 'Y*([0-9]{1,3})');
 <lineannotation>Result: </lineannotation><computeroutput>123</computeroutput>
 SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
 <lineannotation>Result: </lineannotation><computeroutput>1</computeroutput>
 </screen>
-    In the first case, the RE as a whole is greedy because <literal>Y*</literal>
-    is greedy.  It can match beginning at the <literal>Y</literal>, and it matches
-    the longest possible string starting there, i.e., <literal>Y123</literal>.
-    The output is the parenthesized part of that, or <literal>123</literal>.
-    In the second case, the RE as a whole is non-greedy because <literal>Y*?</literal>
-    is non-greedy.  It can match beginning at the <literal>Y</literal>, and it matches
-    the shortest possible string starting there, i.e., <literal>Y1</literal>.
-    The subexpression <literal>[0-9]{1,3}</literal> is greedy but it cannot change
-    the decision as to the overall match length; so it is forced to match
-    just <literal>1</literal>.
+    Nel primo caso, la RE è complessivamente avida perchè <literal>Y*</literal>
+    è avido. Esso può abbinare cominciando dalla <literal>Y</literal>, e abbina 
+    la stringa più lunga possibile partendo da lì, cioè, <literal>Y123</literal>.
+    L'output è la parte tra parentesi di essa, o <literal>123</literal>.
+    Nel secondo caso, la RE è complessivamente non-avida perchè <literal>Y*?</literal>
+    è non-avido. Essa può abbinare cominciando dalla <literal>Y</literal>, e abbinare
+    la stringa più corta possibile partendo da lì, cioè, <literal>Y1</literal>.
+    La sottoespressione <literal>[0-9]{1,3}</literal> è avida ma essa non può cambiare
+    la decisione relativa alla lunghezza complessiva dell'abbinamento; per cui è forzata ad
+    abbinare solo <literal>1</literal>.
    </para>
 
    <para>
-    In short, when an RE contains both greedy and non-greedy subexpressions,
-    the total match length is either as long as possible or as short as
-    possible, according to the attribute assigned to the whole RE.  The
-    attributes assigned to the subexpressions only affect how much of that
-    match they are allowed to <quote>eat</quote> relative to each other.
+    
+    In breve, quando una RE contiene sottoespressioni sia avide che non-avide,
+    la lunghezza totale dell'abbinamento può essere la più lunga possibile
+    o la più corta possibile, in funzione dell'attributo assegnato all'intera RE.
+    Gli attributi assegnati alle sottoespressioni riguardano solo la quantità di 
+    abbinamenti che essi possono <quote>mangiare</quote> rispetto ad ogni altro.
    </para>
 
    <para>
-    The quantifiers <literal>{1,1}</literal> and <literal>{1,1}?</literal>
-    can be used to force greediness or non-greediness, respectively,
-    on a subexpression or a whole RE.
+    I quantificatori <literal>{1,1}</literal> e <literal>{1,1}?</literal>
+    possono essere usati per forzare, rispettivamente, avidità o non-avidità 
+    in una sottoespressione o in una intera RE.
    </para>
 
    <para>
-    Match lengths are measured in characters, not collating elements.
-    An empty string is considered longer than no match at all.
-    For example:
+    Le lunghezze degli abbinamenti sono misurate in caratteri e non in elementi di collazione.
+    Una stringa vuota è considerata più lunga di nessun abbinamento.
+    Per esempio:
     <literal>bb*</literal>
-    matches the three middle characters of <literal>abbbc</literal>;
+    abbina i tre caratteri in mezzo ad <literal>abbbc</literal>;
     <literal>(week|wee)(night|knights)</literal>
-    matches all ten characters of <literal>weeknights</literal>;
-    when <literal>(.*).*</literal>
-    is matched against <literal>abc</literal> the parenthesized subexpression
-    matches all three characters; and when
-    <literal>(a*)*</literal> is matched against <literal>bc</literal>
-    both the whole RE and the parenthesized
-    subexpression match an empty string.
+    abbina tutti e dieci i caratteri di <literal>weeknights</literal>;
+    quando <literal>(.*).*</literal>
+    viene confrontata con <literal>abc</literal> la sottoespressione tra parentesi
+    abbina tutti e tre i caratteri; e quando
+    <literal>(a*)*</literal> viene confrontata con <literal>bc</literal>
+    sia l'intera RE che la sottoespressione tra parentesi
+    abbinano una stringa vuota.
    </para>
 
    <para>
-    If case-independent matching is specified,
-    the effect is much as if all case distinctions had vanished from the
-    alphabet.
-    When an alphabetic that exists in multiple cases appears as an
-    ordinary character outside a bracket expression, it is effectively
-    transformed into a bracket expression containing both cases,
-    e.g., <literal>x</literal> becomes <literal>[xX]</literal>.
-    When it appears inside a bracket expression, all case counterparts
-    of it are added to the bracket expression, e.g.,
-    <literal>[x]</literal> becomes <literal>[xX]</literal>
-    and <literal>[^x]</literal> becomes <literal>[^xX]</literal>.
+    Se si specifica un confronto non sensibile alle maiuscole,
+    l'effetto è che tutte le distinzioni tra maiuscole e minuscole scompaiono
+    dall'alfabeto.
+    Quando un carattere alfabetico che esiste sia nel formato maiuscolo che minuscolo compare come un
+    carattere ordinario al di fuori di una parentesi quadra, esso viene effettivamente
+    trasformato in una espressione tra parentesi quadre, contenente ambedue i formati,
+    p.e. <literal>x</literal> diventa <literal>[xX]</literal>.
+    Quando esso appare dentro una espressione tra parentesi quadre, tutti i formati complementari
+    ad esso vengono aggiunti nella espressione tra parentesi quadre, per esempio
+    <literal>[x]</literal> diventa <literal>[xX]</literal>
+    e <literal>[^x]</literal> diventa <literal>[^xX]</literal>.
    </para>
 
    <para>
-    If newline-sensitive matching is specified, <literal>.</literal>
-    and bracket expressions using <literal>^</literal>
-    will never match the newline character
-    (so that matches will never cross newlines unless the RE
-    explicitly arranges it)
-    and <literal>^</literal>and <literal>$</literal>
-    will match the empty string after and before a newline
-    respectively, in addition to matching at beginning and end of string
-    respectively.
-    But the ARE escapes <literal>\A</literal> and <literal>\Z</literal>
-    continue to match beginning or end of string <emphasis>only</emphasis>.
+    Se si specifica un confronto sensibile al newline, il <literal>.</literal>
+    e le espressioni tra parentesi quadre che utilizzano <literal>^</literal>
+    non abbineranno mai il carattere di newline
+    (per cui tutti i confronti non incroceranno mai newline a meno che la RE
+    non lo disponga esplicitamente)
+    e <literal>^</literal> e <literal>$</literal>
+    abbineranno la stringa vuota, rispettivamente, dopo e prima un newline,
+    in aggiunta all'abbinamento rispettivamente all'inizio e alla fine
+    della stringa.
+    Ma gli escape ARE <literal>\A</literal> e <literal>\Z</literal>
+    continueranno ad abbinare <emphasis>solo</emphasis> l'inizio e la fine della stringa.
    </para>
 
    <para>
-    If partial newline-sensitive matching is specified,
-    this affects <literal>.</literal> and bracket expressions
-    as with newline-sensitive matching, but not <literal>^</literal>
-    and <literal>$</literal>.
+    Se viene specificato un confronto parzialmente sensibile al newline,
+    questo influenza il <literal>.</literal> e le espressioni tra parentesi quadre
+    come con il confronto sensibile al newline, ma non <literal>^</literal>
+    e <literal>$</literal>.
    </para>
 
    <para>
-    If inverse partial newline-sensitive matching is specified,
-    this affects <literal>^</literal> and <literal>$</literal>
-    as with newline-sensitive matching, but not <literal>.</literal>
-    and bracket expressions.
-    This isn't very useful but is provided for symmetry.
+Se viene specificato un confronto inverso parzialmente sensibile al newline,
+    questo influenza <literal>^</literal> e <literal>$</literal>
+    come con il confronto sensibile al newline, ma non il <literal>.</literal>
+    e le espressioni tra parentesi quadre.
+    Questo non è molto utile, ma è fornito per simmetria..
    </para>
    </sect3>
 
    <sect3 id="posix-limits-compatibility">
-    <title>Limits and Compatibility</title>
+    <title>Limiti e compatibilità</title>
 
    <para>
-    No particular limit is imposed on the length of REs in this
-    implementation.  However,
-    programs intended to be highly portable should not employ REs longer
-    than 256 bytes,
-    as a POSIX-compliant implementation can refuse to accept such REs.
+    Nessun limite particolare è imposto sulla lunghezza delle RE in questa
+    implementazione. Tuttavia,
+    i programmi intesi per essere altamente portabili non dovrebbero impiegare RE più 
+    lunghe di 256 byte,
+    poichè un'implementazione conforme-POSIX può rifiutarsi di accettare tali RE.
    </para>
 
    <para>
-    The only feature of AREs that is actually incompatible with
-    POSIX EREs is that <literal>\</literal> does not lose its special
-    significance inside bracket expressions.
-    All other ARE features use syntax which is illegal or has
-    undefined or unspecified effects in POSIX EREs;
-    the <literal>***</literal> syntax of directors likewise is outside the POSIX
-    syntax for both BREs and EREs.
+    
+    La sola caratteristica delle ARE che è attualmente incompatibile con
+    le ERE POSIX è che <literal>\</literal> non perde il suo significato
+    speciale nelle espressioni tra parentesi quadre.
+    Tutte le altre caratteristiche ARE usano una sintassi che è illegale o ha
+    effetti non definiti o non specificati nelle ERE;
+    la sintassi dei director <literal>***</literal> è anch'essa al di fuori della
+    sintassi POSIX sia per le BRE che per le ERE.
    </para>
 
    <para>
-    Many of the ARE extensions are borrowed from Perl, but some have
-    been changed to clean them up, and a few Perl extensions are not present.
-    Incompatibilities of note include <literal>\b</literal>, <literal>\B</literal>,
-    the lack of special treatment for a trailing newline,
-    the addition of complemented bracket expressions to the things
-    affected by newline-sensitive matching,
-    the restrictions on parentheses and back references in lookahead
-    constraints, and the longest/shortest-match (rather than first-match)
-    matching semantics.
+    Molte delle estensioni ARE sono prese in prestito dal Perl, ma alcune sono
+    state cambiate per pulirle, e alcune altre estensioni Perl non sono presenti.
+    La note di incompatibilità includono <literal>\b</literal>, <literal>\B</literal>,
+    l'assenza di un trattamento speciale per le newline finale,
+    l'aggiunta di espressioni tra parentesi quadre complementate alle cose
+    influenzate dai confronti sensibili al newline,
+    le restrizioni nelle parentesi e nei riferimenti all'indietro nei vincoli
+    lookahead, e la semantica di confronto  più lungo/più corto (invece di quella prima-occorrenza).
    </para>
 
    <para>
-    Two significant incompatibilities exist between AREs and the ERE syntax
-    recognized by pre-7.4 releases of <productname>PostgreSQL</productname>:
+    Due incompatibilità significative esistono tra la sintassi delle ARE e delle ERE
+    riconosciuta dalle versioni precedenti la 7.4 di <productname>PostgreSQL</productname>:
 
     <itemizedlist>
      <listitem>
       <para>
-       In AREs, <literal>\</literal> followed by an alphanumeric character is either
-       an escape or an error, while in previous releases, it was just another
-       way of writing the alphanumeric.
-       This should not be much of a problem because there was no reason to
-       write such a sequence in earlier releases.
+       Nelle ARE, <literal>\</literal> seguito da un carattere alfabetico o è un escape
+       oppure un errore, mentre nelle versioni precedenti, esso era solo un altro
+       modo per scrivere l'alfanumerico.
+       Questo non doveva essere un grande problema in quanto non c'era ragione di
+       scrivere una tale sequenza, nelle versioni precedenti.
       </para>
      </listitem>
      <listitem>
       <para>
-       In AREs, <literal>\</literal> remains a special character within
-       <literal>[]</literal>, so a literal <literal>\</literal> within a bracket
-       expression must be written <literal>\\</literal>.
+       Nelle ARE, <literal>\</literal> rimane un carattere speciale dentro
+       <literal>[]</literal>, per cui un letterale <literal>\</literal> dentro una espressione
+       tra parentesi quadre deve essere scritto in questo modo: <literal>\\</literal>.
       </para>
      </listitem>
     </itemizedlist>
@@ -4829,32 +4846,32 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
    </sect3>
 
    <sect3 id="posix-basic-regexes">
-    <title>Basic Regular Expressions</title>
+    <title>Espressioni regolari di base</title>
 
    <para>
-    BREs differ from EREs in several respects.
-    In BREs, <literal>|</literal>, <literal>+</literal>, and <literal>?</literal>
-    are ordinary characters and there is no equivalent
-    for their functionality.
-    The delimiters for bounds are
-    <literal>\{</literal> and <literal>\}</literal>,
-    with <literal>{</literal> and <literal>}</literal>
-    by themselves ordinary characters.
-    The parentheses for nested subexpressions are
-    <literal>\(</literal> and <literal>\)</literal>,
-    with <literal>(</literal> and <literal>)</literal> by themselves ordinary characters.
-    <literal>^</literal> is an ordinary character except at the beginning of the
-    RE or the beginning of a parenthesized subexpression,
-    <literal>$</literal> is an ordinary character except at the end of the
-    RE or the end of a parenthesized subexpression,
-    and <literal>*</literal> is an ordinary character if it appears at the beginning
-    of the RE or the beginning of a parenthesized subexpression
-    (after a possible leading <literal>^</literal>).
-    Finally, single-digit back references are available, and
-    <literal>\&lt;</literal> and <literal>\&gt;</literal>
-    are synonyms for
-    <literal>[[:&lt;:]]</literal> and <literal>[[:&gt;:]]</literal>
-    respectively; no other escapes are available in BREs.
+    Le BRE differiscono dalle ERE per diversi aspetti.
+    Nelle BRE, <literal>|</literal>, <literal>+</literal>, e <literal>?</literal>
+    sono caratteri ordinari e non c'è equivalenza
+    per le loro funzionalità.
+    I delimitatori per i limiti sono
+    <literal>\{</literal> e <literal>\}</literal>,
+    con <literal>{</literal> e <literal>}</literal>
+    da soli caratteri ordinari.
+    Le parentesi per le sottoespressioni annidate sono
+    <literal>\(</literal> e <literal>\)</literal>,
+    con <literal>(</literal> e <literal>)</literal> da soli caratteri ordinari.
+    <literal>^</literal> è un carattere ordinario eccetto che all'inizio della
+    RE o all'inizio di una subespressione tra parentesi,
+    <literal>$</literal> è un carattere ordinario eccetto alla fine della
+    RE o alla fine di una subespressione tra parentasi,
+    e <literal>*</literal> è un carattere ordinario se appare all'inizio
+    della RE o all'inizio di una espressione tra parentesi
+    (dopo un possibile <literal>^</literal> iniziale).
+    Infine, sono disponibili riferimenti all'indietro a cifra singola, e
+    <literal>\&lt;</literal> e <literal>\&gt;</literal>
+    sono sinonimi, rispettivamente, per
+    <literal>[[:&lt;:]]</literal> e <literal>[[:&gt;:]]</literal>;
+    nelle BRE non sono disponibili altri escape.
    </para>
    </sect3>
 
@@ -4866,9 +4883,10 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
 
   <sect1 id="functions-formatting">
    <title>Data Type Formatting Functions</title>
+   <title>Funzioni di formattazione dei tipi di dato</title>
 
    <indexterm>
-    <primary>formatting</primary>
+    <primary>formattazione</primary>
    </indexterm>
 
    <indexterm>
@@ -4885,90 +4903,92 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
    </indexterm>
 
    <para>
-    The <productname>PostgreSQL</productname> formatting functions
-    provide a powerful set of tools for converting various data types
-    (date/time, integer, floating point, numeric) to formatted strings
-    and for converting from formatted strings to specific data types.
-    <xref linkend="functions-formatting-table"/> lists them.
-    These functions all follow a common calling convention: the first
-    argument is the value to be formatted and the second argument is a
-    template that defines the output or input format.
+    La funzioni di formattazione di <productname>PostgreSQL</productname>
+    forniscono un potente insieme di strumenti per convertire diversi tipi di dati
+    (date/orari, interi, a virgola mobile, numerici) ad una stringa formattata
+    e per convertire da una stringa formattata agli specifici tipi di dato.
+    La <xref linkend="functions-formatting-table" /> le elenca.
+    Tutte queste funzioni seguono una convenzione di chiamata comune: il primo
+    argomento è il valore che sarà formattato e il secondo argomento è un
+    modello che definisce il formato di uscita o di entrata.
    </para>
    <para>
-    A single-argument <function>to_timestamp</function> function is also
-    available;  it accepts a
-    <type>double precision</type> argument and converts from Unix epoch
-    (seconds since 1970-01-01 00:00:00+00) to
+    La funzione <function>to_timestamp</function> può anche prendere un singolo 
+    argomento a <type>doppia precisione</type> per convertire da Unix epoch 
+    (i secondi da 01/01/1970 00:00:00+00)  in 
     <type>timestamp with time zone</type>.
-    (<type>Integer</type> Unix epochs are implicitly cast to
-    <type>double precision</type>.)
+    (L'<type>Intero</type> Unix epoch viene implicitamente convertito a 
+    <type>doppia precisione</type>.)
    </para>
 
+    
+
+
     <table id="functions-formatting-table">
-     <title>Formatting Functions</title>
+     <title>Funzioni di formattazione</title>
      <tgroup cols="4">
       <thead>
        <row>
-        <entry>Function</entry>
-        <entry>Return Type</entry>
-        <entry>Description</entry>
-        <entry>Example</entry>
+        <entry>Funzione</entry>
+        <entry>Tipo restituito</entry>
+        <entry>Descrizione</entry>
+        <entry>Esempio</entry>
        </row>
       </thead>
       <tbody>
        <row>
         <entry><literal><function>to_char(<type>timestamp</type>, <type>text</type>)</function></literal></entry>
         <entry><type>text</type></entry>
-        <entry>convert time stamp to string</entry>
+        <entry>converte un timestamp in stringa</entry>
         <entry><literal>to_char(current_timestamp, 'HH12:MI:SS')</literal></entry>
        </row>
        <row>
         <entry><literal><function>to_char(<type>interval</type>, <type>text</type>)</function></literal></entry>
         <entry><type>text</type></entry>
-        <entry>convert interval to string</entry>
+        <entry>converte un intervallo in una stringa</entry>
         <entry><literal>to_char(interval '15h&nbsp;2m&nbsp;12s', 'HH24:MI:SS')</literal></entry>
        </row>
        <row>
         <entry><literal><function>to_char(<type>int</type>, <type>text</type>)</function></literal></entry>
         <entry><type>text</type></entry>
-        <entry>convert integer to string</entry>
+        <entry>converte un intero in una stringa</entry>
         <entry><literal>to_char(125, '999')</literal></entry>
        </row>
        <row>
         <entry><literal><function>to_char</function>(<type>double precision</type>,
         <type>text</type>)</literal></entry>
         <entry><type>text</type></entry>
-        <entry>convert real/double precision to string</entry>
+        <entry>converte un real/a doppia precisione in una stringa</entry>
         <entry><literal>to_char(125.8::real, '999D9')</literal></entry>
        </row>
        <row>
         <entry><literal><function>to_char(<type>numeric</type>, <type>text</type>)</function></literal></entry>
         <entry><type>text</type></entry>
-        <entry>convert numeric to string</entry>
+        <entry>converte un numeric in una stringa</entry>
         <entry><literal>to_char(-125.8, '999D99S')</literal></entry>
        </row>
        <row>
         <entry><literal><function>to_date(<type>text</type>, <type>text</type>)</function></literal></entry>
         <entry><type>date</type></entry>
-        <entry>convert string to date</entry>
+        <entry>converte una stringa in una data</entry>
         <entry><literal>to_date('05&nbsp;Dec&nbsp;2000', 'DD&nbsp;Mon&nbsp;YYYY')</literal></entry>
        </row>
        <row>
         <entry><literal><function>to_number(<type>text</type>, <type>text</type>)</function></literal></entry>
         <entry><type>numeric</type></entry>
-        <entry>convert string to numeric</entry>
+        <entry>converte una stringa in un numeric</entry>
         <entry><literal>to_number('12,454.8-', '99G999D9S')</literal></entry>
        </row>
        <row>
         <entry><literal><function>to_timestamp(<type>text</type>, <type>text</type>)</function></literal></entry>
         <entry><type>timestamp with time zone</type></entry>
-        <entry>convert string to time stamp</entry>
+        <entry>converte stringhe in tipestamp</entry>
         <entry><literal>to_timestamp('05&nbsp;Dec&nbsp;2000', 'DD&nbsp;Mon&nbsp;YYYY')</literal></entry>
        </row>
        <row>
         <entry><literal><function>to_timestamp(<type>double precision</type>)</function></literal></entry>
         <entry><type>timestamp with time zone</type></entry>
-        <entry>convert Unix epoch to time stamp</entry>
+        <entry>converte Unix epoch in timestamp</entry>
         <entry><literal>to_timestamp(1284352323)</literal></entry>
        </row>
       </tbody>
@@ -4976,445 +4996,460 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
     </table>
 
    <para>
-    In a <function>to_char</function> output template string, there are certain
-    patterns that are recognized and replaced with appropriately-formatted
-    data based on the given value.  Any text that is not a template pattern is
-    simply copied verbatim.  Similarly, in an input template string (for the
-    other functions), template patterns identify the values to be supplied by
-    the input data string.
+        In una stringa di modello di output per la funzione <function>to_char</function>, ci sono certi
+        schemi che sono riconosciuti e sostituiti con dati appropriatamente formattati
+        in base al valore fornito. Ogni testo che non è un modello viene
+        semplicemente copiato letteralmente. Similmente, in una stringa di modello di input (per le
+        altre funzioni), gli schemi di modelli identificano i valori da essere forniti
+        dalla stringa di input dei dati.
+    
    </para>
 
   <para>
-   <xref linkend="functions-formatting-datetime-table"/> shows the
-   template patterns available for formatting date and time values.
+   La <xref linkend="functions-formatting-datetime-table" /> mostra i
+   modelli di maschere disponibili per formattare valori di data e orario.
   </para>
 
-    <table id="functions-formatting-datetime-table">
-     <title>Template Patterns for Date/Time Formatting</title>
+
+<table id="functions-formatting-datetime-table">
+     <title>Modelli di maschere per formattazioni Data/Orario</title>
      <tgroup cols="2">
       <thead>
        <row>
-        <entry>Pattern</entry>
-        <entry>Description</entry>
+        <entry>Modello</entry>
+        <entry>Descrizione</entry>
        </row>
       </thead>
       <tbody>
        <row>
         <entry><literal>HH</literal></entry>
-        <entry>hour of day (01-12)</entry>
+        <entry>ora del giorno (01-12)</entry>
        </row>
        <row>
         <entry><literal>HH12</literal></entry>
-        <entry>hour of day (01-12)</entry>
+        <entry>ora del giorno (01-12)</entry>
        </row>       
        <row>
         <entry><literal>HH24</literal></entry>
-        <entry>hour of day (00-23)</entry>
+        <entry>ora del giorno (00-23)</entry>
        </row>       
        <row>
         <entry><literal>MI</literal></entry>
-        <entry>minute (00-59)</entry>
+        <entry>minuti (00-59)</entry>
        </row>   
        <row>
         <entry><literal>SS</literal></entry>
-        <entry>second (00-59)</entry>
+        <entry>secondi (00-59)</entry>
        </row>
        <row>
         <entry><literal>MS</literal></entry>
-        <entry>millisecond (000-999)</entry>
+        <entry>millisecondi (000-999)</entry>
        </row>
        <row>
         <entry><literal>US</literal></entry>
-        <entry>microsecond (000000-999999)</entry>
+        <entry>microsecondi (000000-999999)</entry>
        </row>
        <row>
         <entry><literal>SSSS</literal></entry>
-        <entry>seconds past midnight (0-86399)</entry>
+        <entry>secondi dopo la mezzanotte (0-86399)</entry>
        </row>
        <row>
-        <entry><literal>AM</literal>, <literal>am</literal>,
-        <literal>PM</literal> or <literal>pm</literal></entry>
-        <entry>meridiem indicator (without periods)</entry>
+        <entry><literal>AM</literal> o <literal>A.M.</literal> or
+        <literal>PM</literal> o <literal>P.M.</literal></entry>
+        <entry>indicatore mattina pomeriggio (maiuscolo)</entry>
        </row>
        <row>
-        <entry><literal>A.M.</literal>, <literal>a.m.</literal>,
-        <literal>P.M.</literal> or <literal>p.m.</literal></entry>
-        <entry>meridiem indicator (with periods)</entry>
+        <entry><literal>am</literal> o <literal>a.m.</literal> or
+        <literal>pm</literal> o <literal>p.m.</literal></entry>
+        <entry>indicatore mattina pomeriggio (minuscolo)</entry>
        </row>
        <row>
         <entry><literal>Y,YYY</literal></entry>
-        <entry>year (4 and more digits) with comma</entry>
+        <entry>anno (4 e più cifre) con virgola</entry>
        </row>
        <row>
         <entry><literal>YYYY</literal></entry>
-        <entry>year (4 and more digits)</entry>
+        <entry>anno (4 e più cifre)</entry>
        </row>
        <row>
         <entry><literal>YYY</literal></entry>
-        <entry>last 3 digits of year</entry>
+        <entry>ultime 3 cifre dell'anno</entry>
        </row>
        <row>
         <entry><literal>YY</literal></entry>
-        <entry>last 2 digits of year</entry>
+        <entry>ultime 2 cifre dell'anno</entry>
        </row>
        <row>
         <entry><literal>Y</literal></entry>
-        <entry>last digit of year</entry>
+        <entry>ultima cifra dell'anno</entry>
        </row>
        <row>
         <entry><literal>IYYY</literal></entry>
-        <entry>ISO year (4 and more digits)</entry>
+        <entry>anno ISO (4 e più cifre)</entry>
        </row>
        <row>
         <entry><literal>IYY</literal></entry>
-        <entry>last 3 digits of ISO year</entry>
+        <entry>ultime 3 cifre dell'anno ISO</entry>
        </row>
        <row>
         <entry><literal>IY</literal></entry>
-        <entry>last 2 digits of ISO year</entry>
+        <entry>ultime 2 cifre dell'anno ISO</entry>
        </row>
        <row>
         <entry><literal>I</literal></entry>
-        <entry>last digit of ISO year</entry>
+        <entry>ultima cifra dell'anno ISO</entry>
        </row>
        <row>
-        <entry><literal>BC</literal>, <literal>bc</literal>,
-        <literal>AD</literal> or <literal>ad</literal></entry>
-        <entry>era indicator (without periods)</entry>
+        <entry><literal>BC</literal> o <literal>B.C.</literal> or
+        <literal>AD</literal> o <literal>A.D.</literal></entry>
+        <entry>indicatore dell'era (maiuscolo)</entry>
        </row>
        <row>
-        <entry><literal>B.C.</literal>, <literal>b.c.</literal>,
-        <literal>A.D.</literal> or <literal>a.d.</literal></entry>
-        <entry>era indicator (with periods)</entry>
+        <entry><literal>bc</literal> o <literal>b.c.</literal> or
+        <literal>ad</literal> o <literal>a.d.</literal></entry>
+        <entry>indicatore dell'era (minuscolo)</entry>
        </row>
        <row>
         <entry><literal>MONTH</literal></entry>
-        <entry>full upper case month name (blank-padded to 9 chars)</entry>
-       </row>
-       <row>
-        <entry><literal>Month</literal></entry>
-        <entry>full capitalized month name (blank-padded to 9 chars)</entry>
+        <entry>nome del mese completo in maiuscolo (allungato a 9 caratteri con blank)</entry>
        </row>
        <row>
         <entry><literal>month</literal></entry>
-        <entry>full lower case month name (blank-padded to 9 chars)</entry>
+        <entry>nome del mese completo in caratteri minuscoli (allungato a 9 caratteri con blank)</entry>
        </row>
        <row>
         <entry><literal>MON</literal></entry>
-        <entry>abbreviated upper case month name (3 chars in English, localized lengths vary)</entry>
+        <entry>nome del mese abbreviato in maiuscolo (3 caratteri in inglese, in varie lunghezze se localizzato)</entry>
        </row>
        <row>
         <entry><literal>Mon</literal></entry>
-        <entry>abbreviated capitalized month name (3 chars in English, localized lengths vary)</entry>
+        <entry>nome del mese abbreviato in caratteri misti (3 caratteri in inglese, in varie lunghezze se localizzato)</entry>
        </row>
        <row>
         <entry><literal>mon</literal></entry>
-        <entry>abbreviated lower case month name (3 chars in English, localized lengths vary)</entry>
+        <entry>nome del mese abbreviato in minuscolo (3 caratteri in inglese, in varie lunghezze se localizzato)</entry>
        </row>
        <row>
         <entry><literal>MM</literal></entry>
-        <entry>month number (01-12)</entry>
+        <entry>numero del mese (01-12)</entry>
        </row>
        <row>
         <entry><literal>DAY</literal></entry>
-        <entry>full upper case day name (blank-padded to 9 chars)</entry>
+        <entry>nome del giorno completo in maiuscolo (allungato a 9 caratteri con blank)</entry>
        </row>
        <row>
         <entry><literal>Day</literal></entry>
-        <entry>full capitalized day name (blank-padded to 9 chars)</entry>
+        <entry>nome del giorno completo in caratteri misti (allungato a 9 caratteri se localizzato)</entry>
        </row>
        <row>
         <entry><literal>day</literal></entry>
-        <entry>full lower case day name (blank-padded to 9 chars)</entry>
+        <entry>nome del giorno completo in minuscolo (allungato a 9 caratteri con blank)</entry>
        </row>
        <row>
         <entry><literal>DY</literal></entry>
-        <entry>abbreviated upper case day name (3 chars in English, localized lengths vary)</entry>
+        <entry>nome del giorno abbreviato in maiuscolo (3 caratteri in inglese, in varie lunghezze se localizzato)</entry>
        </row>
        <row>
         <entry><literal>Dy</literal></entry>
-        <entry>abbreviated capitalized day name (3 chars in English, localized lengths vary)</entry>
+        <entry>nome del giorno abbreviato in caratteri misti (3 caratteri in inglese, in varie lunghezzza se localizzato)</entry>
        </row>
        <row>
         <entry><literal>dy</literal></entry>
-        <entry>abbreviated lower case day name (3 chars in English, localized lengths vary)</entry>
+        <entry>nome del giorno abbreviato in minuscolo (3 caratteri in inglese, in varie lunghezze se localizzato)</entry>
        </row>
        <row>
         <entry><literal>DDD</literal></entry>
-        <entry>day of year (001-366)</entry>
+        <entry>giorno dell'anno (001-366)</entry>
        </row>
        <row>
         <entry><literal>IDDD</literal></entry>
-        <entry>ISO day of year (001-371; day 1 of the year is Monday of the first ISO week.)</entry>
+        <entry>giorno dell'anno ISO (001-371; il giorno 1 dell'anno è il lunedi della prima settimana ISO).</entry>
        </row>
        <row>
         <entry><literal>DD</literal></entry>
-        <entry>day of month (01-31)</entry>
+        <entry>giorno del mese (01-31)</entry>
        </row>
        <row>
         <entry><literal>D</literal></entry>
-        <entry>day of the week, Sunday(<literal>1</literal>) to Saturday(<literal>7</literal>)</entry>
+        <entry>giorno della settimana, Domenica(<literal>1</literal>) a Sabato(<literal>7</literal>)</entry>
        </row>
        <row>
         <entry><literal>ID</literal></entry>
-        <entry>ISO day of the week, Monday(<literal>1</literal>) to Sunday(<literal>7</literal>)</entry>
+        <entry>giorno della settimana ISO, Lunedi(<literal>1</literal>) a Domenica(<literal>7</literal>)</entry>
        </row>
        <row>
         <entry><literal>W</literal></entry>
-        <entry>week of month (1-5) (The first week starts on the first day of the month.)</entry>
+        <entry>settimana del mese (1-5) (La prima settimana comincia dal primo giorno del mese).</entry>
        </row> 
        <row>
         <entry><literal>WW</literal></entry>
-        <entry>week number of year (1-53) (The first week starts on the first day of the year.)</entry>
+        <entry>numero di settimana dell'anno (1-53) (La prima settimana comincia dal primo giorno dell'anno).</entry>
        </row>
        <row>
         <entry><literal>IW</literal></entry>
-        <entry>ISO week number of year (01 - 53; the first Thursday of the new year is in week 1.)</entry>
+        <entry>numero di settimana dell'anno ISO (1 - 53; il primo giovedi del nuovo anno è nella settimana 1).</entry>
        </row>
        <row>
         <entry><literal>CC</literal></entry>
-        <entry>century (2 digits) (The twenty-first century starts on 2001-01-01.)</entry>
+        <entry>secolo (2 cifre) (Il ventunesimo secolo comincia il 2001-01-01.)</entry>
        </row>
        <row>
         <entry><literal>J</literal></entry>
-        <entry>Julian Day (days since November 24, 4714 BC at midnight)</entry>
+        <entry>Giorno Giuliano (i giorni cominciano dalla mezzanotte del 24 Novembre 4714 AC)</entry>
        </row>
        <row>
         <entry><literal>Q</literal></entry>
-        <entry>quarter (ignored by <function>to_date</function> and <function>to_timestamp</function>)</entry>
+        <entry>trimestre</entry>
        </row>
        <row>
         <entry><literal>RM</literal></entry>
-        <entry>month in upper case Roman numerals (I-XII; I=January)</entry>
+        <entry>mese in numeri romani (I-XII; I=Gennaio) (maiuscolo)</entry>
        </row>
        <row>
         <entry><literal>rm</literal></entry>
-        <entry>month in lower case Roman numerals (i-xii; i=January)</entry>
+        <entry>mese in numeri romani (i-xii; i=Gennaio) (minuscolo)</entry>
        </row>
        <row>
         <entry><literal>TZ</literal></entry>
-        <entry>upper case time-zone name</entry>
+        <entry>nome di fuso orario (maiuscolo)</entry>
        </row>
        <row>
         <entry><literal>tz</literal></entry>
-        <entry>lower case time-zone name</entry>
+        <entry>nome di fuso orario (minuscolo)</entry>
        </row>
       </tbody>
      </tgroup>
     </table>
 
+
+
+
+
+
+
+
    <para>
-    Modifiers can be applied to any template pattern to alter its
-    behavior.  For example, <literal>FMMonth</literal>
-    is the <literal>Month</literal> pattern with the
-    <literal>FM</literal> modifier.
-    <xref linkend="functions-formatting-datetimemod-table"/> shows the
-    modifier patterns for date/time formatting.
+    Certi modificatori possono essere applicati ad ogni modello di maschera per modificare
+    il suo comportamento. Per esempio, <literal>FMMonth</literal>
+    è la maschera <literal>Month</literal> con il
+    modificatore <literal>FM</literal>.
+    La <xref linkend="functions-formatting-datetimemod-table" /> mostra i
+    modificatori di modelli per le formattazioni data/orario.
    </para>
 
-    <table id="functions-formatting-datetimemod-table">
-     <title>Template Pattern Modifiers for Date/Time Formatting</title>
+
+    
+<table id="functions-formatting-datetimemod-table">
+     <title>Modificatori modelli di maschere per formattazioni Data/Orario</title>
      <tgroup cols="3">
       <thead>
        <row>
-        <entry>Modifier</entry>
-        <entry>Description</entry>
-        <entry>Example</entry>
+        <entry>Modificatore</entry>
+        <entry>Descrizione</entry>
+        <entry>Esempio</entry>
        </row>
       </thead>
       <tbody>
        <row>
-        <entry><literal>FM</literal> prefix</entry>
-        <entry>fill mode (suppress padding blanks and zeroes)</entry>
+        <entry><literal>FM</literal> prefisso</entry>
+        <entry>modo riempimento (sopprime i blank e gli zero di riempimento)</entry>
         <entry><literal>FMMonth</literal></entry>
        </row>
        <row>
-        <entry><literal>TH</literal> suffix</entry>
-        <entry>upper case ordinal number suffix</entry>
-        <entry><literal>DDTH</literal>, e.g., <literal>12TH</literal></entry>
+        <entry>suffisso <literal>TH</literal></entry>
+        <entry>suffiso per numero ordinale maiuscolo</entry>
+        <entry><literal>DDTH</literal>, ad es.,  <literal>12TH</literal></entry>
        </row>   
        <row>
-        <entry><literal>th</literal> suffix</entry>
-        <entry>lower case ordinal number suffix</entry>
-        <entry><literal>DDth</literal>, e.g., <literal>12th</literal></entry>
+        <entry>suffisso <literal>th</literal></entry>
+        <entry>suffisso per numero ordinale minuscolo</entry>
+        <entry><literal>DDth</literal>, ad es., <literal>12th</literal></entry>
        </row>
        <row>
-        <entry><literal>FX</literal> prefix</entry>
-        <entry>fixed format global option (see usage notes)</entry>
+        <entry>prefisso <literal>FX</literal></entry>
+        <entry>opzione globale di formato fissato (vedere le note di uso)</entry>
         <entry><literal>FX&nbsp;Month&nbsp;DD&nbsp;Day</literal></entry>
        </row>   
        <row>
-        <entry><literal>TM</literal> prefix</entry>
-        <entry>translation mode (print localized day and month names based on
-         <xref linkend="guc-lc-time"/>)</entry>
+        <entry>prefisso <literal>TM</literal></entry>
+        <entry>modoi di traduzione (stampa i nomi del giorno e del mese basati su
+        <xref linkend="guc-lc-time"/>)</entry>
         <entry><literal>TMMonth</literal></entry>
        </row>       
        <row>
-        <entry><literal>SP</literal> suffix</entry>
-        <entry>spell mode (not implemented)</entry>
+        <entry>suffisso <literal>SP</literal></entry>
+        <entry>modo spell (non ancora implementato)</entry>
         <entry><literal>DDSP</literal></entry>
        </row>       
       </tbody>
      </tgroup>
     </table>
 
+
    <para>
-    Usage notes for date/time formatting:
+    Note d'uso per le formattazione di data/orario:
 
     <itemizedlist>
      <listitem>
       <para>
-       <literal>FM</literal> suppresses leading zeroes and trailing blanks
-       that would otherwise be added to make the output of a pattern be
-       fixed-width.  In <productname>PostgreSQL</productname>,
-       <literal>FM</literal> modifies only the next specification, while in
-       Oracle <literal>FM</literal> affects all subsequent
-       specifications, and repeated <literal>FM</literal> modifiers
-       toggle fill mode on and off.
+            <literal>FM</literal> sopprime gli zeri frontali e gli spazi vuoti in coda
+            che altrimenti sarebbero aggiunti per far sì che l'output sia
+            a larghezza fissa. In <productname>PostgreSQL</productname>,
+            <literal>FM</literal> modifica solo la prossima specifica, mentre in 
+             Oracle, <literal>FM</literal> ha effetto su tutti le specificazioni seguenti,
+            e i modificatori ripetuti <literal>FM</literal>
+            attiva e disattiva il modo fill.
+            
+       
       </para>
      </listitem>
 
      <listitem>
       <para>
-       <literal>TM</literal> does not include trailing blanks.
+       <literal>TM</literal> non include spazi bianchi in coda.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       <function>to_timestamp</function> and <function>to_date</function>
-       skip multiple blank spaces in the input string unless the
-       <literal>FX</literal> option is used. For example,
-       <literal>to_timestamp('2000&nbsp;&nbsp;&nbsp;&nbsp;JUN', 'YYYY MON')</literal> works, but
-       <literal>to_timestamp('2000&nbsp;&nbsp;&nbsp;&nbsp;JUN', 'FXYYYY MON')</literal> returns an error
-       because <function>to_timestamp</function> expects one space only.
-       <literal>FX</literal> must be specified as the first item in
-       the template.
+       <function>to_timestamp</function> e <function>to_date</function>
+       saltano i diversi spazi bianchi nella stringa di input 
+       a meno che non venga usata l'opzione <literal>FX</literal>. 
+       Per esempio, 
+       <literal>to_timestamp('2000&nbsp;&nbsp;&nbsp;&nbsp;JUN', 'YYYY MON')</literal> funziona, ma
+       <literal>to_timestamp('2000&nbsp;&nbsp;&nbsp;&nbsp;JUN', 'FXYYYY MON')</literal> restituisce un errore,
+       perchè <function>to_timestamp</function> si aspetta un solo spazio.
+       <literal>FX</literal> dev'essere specificato come primo elemento nel
+       modello. 
       </para>
      </listitem>
 
      <listitem>
       <para>
-       Ordinary text is allowed in <function>to_char</function>
-       templates and will be output literally.  You can put a substring
-       in double quotes to force it to be interpreted as literal text
-       even if it contains pattern key words.  For example, in
-       <literal>'"Hello Year "YYYY'</literal>, the <literal>YYYY</literal>
-       will be replaced by the year data, but the single <literal>Y</literal> in <literal>Year</literal>
-       will not be.  In <function>to_date</function>, <function>to_number</function>,
-       and <function>to_timestamp</function>, double-quoted strings skip the number of
-       input characters contained in the string, e.g. <literal>"XX"</literal>
-       skips two input characters.
+       Il comune testo è ammesso nelle maschere <function>to_char</function>
+       e verrà restituito in uscita letteralmente. È possibile immettere una sottostringa
+       tra doppi apici per forzarne l'interpretazione come testo letterale
+       anche se la stessa contiene parole chiave del modello. Per esempio, in
+       <literal>'"Hello Year "YYYY'</literal>, <literal>YYYY</literal>
+       verrà rimpiazzato dal dato dell'anno, ma il singolo <literal>Y</literal> di <literal>Year</literal>
+       rimarrà invariato.
+        In <function>to_date</function>, <function>to_number</function> 
+        e <function>to_timestamp</function>, stringhe con doppi apici saltano il numero
+        di caratteri di input contenuti nella stringa, ad es. <literal>"XX"</literal>
+        salta due caratteri di input.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       If you want to have a double quote in the output you must
-       precede it with a backslash, for example <literal>E'\\"YYYY
+    Se si vogliono avere doppi apici in output è necessario farli
+       precedere da una barra inversa, per esempio <literal>E'\\"YYYY
        Month\\"'</literal>. <!-- "" font-lock sanity :-) -->
-       (Two backslashes are necessary because the backslash
-       has special meaning when using the escape string syntax.)
+       (Sono necessarie due barre inverse perchè la barra inversa ha già
+       uno speciale significato quando si utilizza la sintassi escape di stringa).
       </para>
      </listitem>
 
      <listitem>
       <para>
-       The <literal>YYYY</literal> conversion from string to <type>timestamp</type> or
-       <type>date</type> has a restriction when processing years with more than 4 digits. You must
-       use some non-digit character or template after <literal>YYYY</literal>,
-       otherwise the year is always interpreted as 4 digits. For example
-       (with the year 20000):
-       <literal>to_date('200001131', 'YYYYMMDD')</literal> will be 
-       interpreted as a 4-digit year; instead use a non-digit 
-       separator after the year, like
-       <literal>to_date('20000-1131', 'YYYY-MMDD')</literal> or
+       La conversione di <literal>YYYY</literal> da stringa a <type>timestamp</type> o
+       <type>date</type> ha una restrizione se si utilizza un anno con più di 4 cifre. Bisognerà 
+       usare qualche carattere che non sia una cifra o una maschera dopo <literal>YYYY</literal>,
+       altrimenti l'anno verrà sempre interpretato essere di 4 cifre. Per esempio
+       (con l'anno 20000):
+       <literal>to_date('200001131', 'YYYYMMDD')</literal> sarà
+       interpretato come un anno di 4 cifre; usare invece un separatore che non sia una
+       cifra dopo l'anno, tipo
+       <literal>to_date('20000-1131', 'YYYY-MMDD')</literal> o
        <literal>to_date('20000Nov31', 'YYYYMonDD')</literal>.
+       
       </para>
      </listitem>
 
      <listitem>
       <para>
-       In conversions from string to <type>timestamp</type> or
-       <type>date</type>, the <literal>CC</literal> (century) field is ignored
-       if there is a <literal>YYY</literal>, <literal>YYYY</literal> or
-       <literal>Y,YYY</literal> field. If <literal>CC</literal> is used with
-       <literal>YY</literal> or <literal>Y</literal> then the year is computed
-       as <literal>(CC-1)*100+YY</literal>.
+        Nelle conversioni da stringa a <type>timestamp</type> o
+       <type>date</type>, il campo <literal>CC</literal> è ignorato se c'è un
+       campo <literal>YYY</literal>, <literal>YYYY</literal> o
+       <literal>Y,YYY</literal>. Se <literal>CC</literal> è utilizzato con
+       <literal>YY</literal> o <literal>Y</literal> allora l'anno viene calcolato
+       come <literal>(CC-1)*100+YY</literal>.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       An ISO week date (as distinct from a Gregorian date) can be
-       specified to <function>to_timestamp</function> and
+            Una settimana in ISO (invece di una data Gregoriana) può essere specificata 
+            per <function>to_timestamp</function> e <function>to_date</function> in due modi:
        <function>to_date</function> in one of two ways:
        <itemizedlist>
         <listitem>
          <para>
-          Year, week, and weekday:  for example <literal>to_date('2006-42-4',
-          'IYYY-IW-ID')</literal> returns the date
-          <literal>2006-10-19</literal>.  If you omit the weekday it
-          is assumed to be 1 (Monday).
+            Anno, settimana e giorno della settimana: per esempio <literal>to_date('2006-42-4', 'IYYY-IW-ID')</literal> 
+            restituisce la data <literal>2006-10-19</literal>. 
+            Se si omette il giorno della settimana viene supposto che sia 1 (Lunedi).
          </para>
         </listitem>
         <listitem>
          <para>
-          Year and day of year:  for example <literal>to_date('2006-291',
-          'IYYY-IDDD')</literal> also returns <literal>2006-10-19</literal>.
+            Anno e giorno dell'anno: per esempio <literal>to_date('2006-291', 'IYYY-IDDD')</literal> 
+            anch'esso restituisce <literal>2006-10-19</literal>.
          </para>
         </listitem>
        </itemizedlist>
       </para>
       <para>
-       Attempting to construct a date using a mixture of ISO week and
-       Gregorian date fields is nonsensical, and will cause an error.  In the
-       context of an ISO year, the concept of a <quote>month</quote> or <quote>day
-       of month</quote> has no meaning.  In the context of a Gregorian year, the
-       ISO week has no meaning.  Users should avoid mixing Gregorian and
-       ISO date specifications.
+
+        Il tentativo di costruire una data usando un miscuglio di settimana ISO 
+        e campi data Gregoriani non ha senso, e causerà un errore. 
+        Nel contesto di anno ISO, il concetto di <quote>mese</quote> o <quote>giorno
+        del mese</quote> non ha significato. 
+        Nel contesto di anno Gregoriano, la settimana ISO non ha significato. 
+        Gli utenti dovranno evitare di mischiare le specifiche delle date Gregoriane e ISO.
+       
       </para>
      </listitem>
 
      <listitem>
       <para>
-       In a conversion from string to <type>timestamp</type>, millisecond
-       (<literal>MS</literal>) or microsecond (<literal>US</literal>)
-       values are used as the
-       seconds digits after the decimal point. For example 
-       <literal>to_timestamp('12:3', 'SS:MS')</literal> is not 3 milliseconds,
-       but 300, because the conversion counts it as 12 + 0.3 seconds.
-       This means for the format <literal>SS:MS</literal>, the input values
-       <literal>12:3</literal>, <literal>12:30</literal>, and <literal>12:300</literal> specify the
-       same number of milliseconds. To get three milliseconds, one must use
-       <literal>12:003</literal>, which the conversion counts as
-       12 + 0.003 = 12.003 seconds.
+       
+        In una conversione da stringa a <type>timestamp</type>, 
+        i valori dei millisecondi (<literal>MS</literal>) e microsecondi (<literal>US</literal>)
+        sono usati come parte del
+        secondo dopo il punto decimale. Per esempio 
+        <literal>to_timestamp('12:3', 'SS:MS')</literal> non è 3 millisecondi,
+        ma 300, perchè il conteggio nella conversione è 12 + 0.3 secondi.
+        Questo significa, per il formato <literal>SS:MS</literal>, i valori di input
+        <literal>12:3</literal>, <literal>12:30</literal>, e <literal>12:300</literal> specificano
+        lo stesso numero di millisecondi. Per ottenere tre millisecondi, bisogna usare 
+        <literal>12:003</literal>, dove  la conversione è considerata come
+        12 + 0.003 = 12.003 secondi.
       </para>
 
       <para>
-       Here is a more 
-       complex example: 
+       Questo è un esempio più
+       complesso: 
        <literal>to_timestamp('15:12:02.020.001230', 'HH:MI:SS.MS.US')</literal>
-       is 15 hours, 12 minutes, and 2 seconds + 20 milliseconds +
-       1230 microseconds = 2.021230 seconds. 
+       è 15 ore, 12 minuti, e 2 secondi + 20 millisecondi +
+       1230 microsecondi = 2.021230 secondi. 
       </para>
      </listitem>
 
      <listitem>
       <para>
-        <function>to_char(..., 'ID')</function>'s day of the week numbering
-        matches the <function>extract(isodow from ...)</function> function, but
-        <function>to_char(..., 'D')</function>'s does not match
-        <function>extract(dow from ...)</function>'s day numbering.
+       La numerazione del giorno della settimana di <function>to_char(..., 'ID')</function>
+       uguaglia la funzione <function>extract('isodow', ...)</function>, ma
+       <function>to_char(..., 'D')</function> non uguaglia la numerazione dei giorni di
+       <function>extract('dow', ...)</function>.
       </para>
      </listitem>
 
      <listitem>
-      <para>
-        <function>to_char(interval)</function> formats <literal>HH</literal> and
-        <literal>HH12</literal> as shown on a 12-hour clock, i.e. zero hours
-        and 36 hours output as <literal>12</literal>, while <literal>HH24</literal>
-        outputs the full hour value, which can exceed 23 for intervals.
+      <para> La funzione <function>to_char(interval)</function> formatta <literal>HH</literal> e 
+        <literal>HH12</literal> come in un orologio da 12 ore,
+        per es. l'ora 0 e 36 diventa in output <literal>12</literal>,     
+        mentre <literal>HH24</literal>
+        rende in output il valore intero dell'ora, che può eccedere di 23 per gli intervalli.
       </para>
      </listitem>
 
@@ -5422,160 +5457,172 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
    </para>
 
   <para>
-   <xref linkend="functions-formatting-numeric-table"/> shows the
-   template patterns available for formatting numeric values.
+    La <xref linkend="functions-formatting-numeric-table"/> mostra i
+    modelli della maschere disponibili per formattare valori numerici.
   </para>
 
+
+
+
+
+
+
     <table id="functions-formatting-numeric-table">
-     <title>Template Patterns for Numeric Formatting</title>
+     <title>Modelli di maschere per formattazioni numeriche</title>
      <tgroup cols="2">
       <thead>
        <row>
-        <entry>Pattern</entry>
-        <entry>Description</entry>
+        <entry>Modello</entry>
+        <entry>Descrizione</entry>
        </row>
       </thead>
       <tbody>
        <row>
         <entry><literal>9</literal></entry>
-        <entry>value with the specified number of digits</entry>
+        <entry>valore con il numero di cifre specificato</entry>
        </row>
        <row>
         <entry><literal>0</literal></entry>
-        <entry>value with leading zeros</entry>
+        <entry>valore con zeri non significativi in testa</entry>
        </row>
        <row>
-        <entry><literal>.</literal> (period)</entry>
-        <entry>decimal point</entry>
+        <entry><literal>.</literal> (punto)</entry>
+        <entry>punto decimale</entry>
        </row>       
        <row>
-        <entry><literal>,</literal> (comma)</entry>
-        <entry>group (thousand) separator</entry>
+        <entry><literal>,</literal> (virgola)</entry>
+        <entry>separatore di gruppo (migliaia)</entry>
        </row>
        <row>
         <entry><literal>PR</literal></entry>
-        <entry>negative value in angle brackets</entry>
+        <entry>valori negativi racchiusi tra i simboli maggiore e minore</entry>
        </row>
        <row>
         <entry><literal>S</literal></entry>
-        <entry>sign anchored to number (uses locale)</entry>
+        <entry>segno ancorato al numero (usa la localizzazione)</entry>
        </row>
        <row>
         <entry><literal>L</literal></entry>
-        <entry>currency symbol (uses locale)</entry>
+        <entry>simbolo di valuta (usa la localizzazione)</entry>
        </row>
        <row>
         <entry><literal>D</literal></entry>
-        <entry>decimal point (uses locale)</entry>
+        <entry>punto decimale (usa la localizzazione)</entry>
        </row>
        <row>
         <entry><literal>G</literal></entry>
-        <entry>group separator (uses locale)</entry>
+        <entry>separatore di gruppo (usa la localizzazione)</entry>
        </row>
        <row>
         <entry><literal>MI</literal></entry>
-        <entry>minus sign in specified position (if number &lt; 0)</entry>
+        <entry>segno meno in una specificata posizione (se il numero è &lt; 0)</entry>
        </row>
        <row>
         <entry><literal>PL</literal></entry>
-        <entry>plus sign in specified position (if number &gt; 0)</entry>
+        <entry>segno più in una specificata posizione(if number &gt; 0)</entry>
        </row>
        <row>
         <entry><literal>SG</literal></entry>
-        <entry>plus/minus sign in specified position</entry>
+        <entry>segno più/meno in una specificata posizione</entry>
        </row>
        <row>
         <entry><literal>RN</literal></entry>
-        <entry>Roman numeral (input between 1 and 3999)</entry>
+        <entry>numero romano (input tra 1 e 3999)</entry>
        </row>
        <row>
         <entry><literal>TH</literal> or <literal>th</literal></entry>
-        <entry>ordinal number suffix</entry>
+        <entry>suffizzo per numero ordinale</entry>
        </row>
        <row>
         <entry><literal>V</literal></entry>
-        <entry>shift specified number of digits (see notes)</entry>
+        <entry>slittamento di uno specificato numero di cifre (vedere le note)</entry>
        </row>
        <row>
         <entry><literal>EEEE</literal></entry>
-        <entry>exponent for scientific notation</entry>
+        <entry>notazione scientifica (non ancora implementata)</entry>  
        </row>
       </tbody>
      </tgroup>
     </table>
 
+
+
+
+
    <para>
-    Usage notes for numeric formatting:
+    Note di uso per la formattazione numerica:
 
     <itemizedlist>
      <listitem>
       <para>
-       A sign formatted using <literal>SG</literal>, <literal>PL</literal>, or
-       <literal>MI</literal> is not anchored to
-       the number; for example,
-       <literal>to_char(-12, 'MI9999')</literal> produces <literal>'-&nbsp;&nbsp;12'</literal>
-       but <literal>to_char(-12, 'S9999')</literal> produces <literal>'&nbsp;&nbsp;-12'</literal>.
-       The Oracle implementation does not allow the use of
-       <literal>MI</literal> before <literal>9</literal>, but rather
-       requires that <literal>9</literal> precede
+       Un segno formattato utilizzando <literal>SG</literal>, <literal>PL</literal>, o
+       <literal>MI</literal> non è ancorato al
+       numero; per esempio,
+       <literal>to_char(-12, 'MI9999')</literal> produce <literal>'-&nbsp;&nbsp;12'</literal>
+       ma <literal>to_char(-12, 'S9999')</literal> produce <literal>'&nbsp;&nbsp;-12'</literal>.
+       L'implementazione Oracle non permette l'uso di 
+       <literal>MI</literal> prima di <literal>9</literal>, ma nemmeno richiede
+       che <literal>9</literal> preceda
        <literal>MI</literal>.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       <literal>9</literal> results in a value with the same number of 
-       digits as there are <literal>9</literal>s. If a digit is
-       not available it outputs a space.
+       
+        I <literal>9</literal> generano un valore con un numero di cifre identico
+       alla quantità di <literal>9</literal> inseriti. Se una cifra non è
+       disponibile, in output verrà prodotto uno spazio. 
       </para>
      </listitem>
 
      <listitem>
       <para>
-       <literal>TH</literal> does not convert values less than zero
-       and does not convert fractional numbers.
+       <literal>TH</literal> non converte valori inferiori a zero
+       e non converte numeri frazionali.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       <literal>PL</literal>, <literal>SG</literal>, and
-       <literal>TH</literal> are <productname>PostgreSQL</productname>
-       extensions. 
+       <literal>PL</literal>, <literal>SG</literal> e
+       <literal>TH</literal> sono estensioni 
+       di <productname>PostgreSQL</productname>. 
       </para>
      </listitem>
 
      <listitem>
       <para>
-       <literal>V</literal> effectively
-       multiplies the input values by
-       <literal>10^<replaceable>n</replaceable></literal>, where
-       <replaceable>n</replaceable> is the number of digits following
-       <literal>V</literal>.
-       <function>to_char</function> does not support the use of
-       <literal>V</literal> combined with a decimal point
-       (e.g., <literal>99.9V99</literal> is not allowed).
+       <literal>V</literal> moltiplica
+       effettivamente i valori in input per
+       <literal>10^<replaceable>n</replaceable></literal>, dove
+       <replaceable>n</replaceable> è il numero di cifre che seguono
+       <literal>V</literal>. 
+       La funzione <function>to_char</function> non supporta l'uso di
+       <literal>V</literal> combinato con un punto decimale.
+       (Es., <literal>99.9V99</literal> non è consentito).
       </para>
      </listitem>
 
      <listitem>
       <para>
-       <literal>EEEE</literal> (scientific notation) cannot be used in
-       combination with any of the other formatting patterns or
-       modifiers other than digit and decimal point patterns, and must be at the end of the format string
-       (e.g., <literal>9.99EEEE</literal> is a valid pattern).
+            L'<literal>EEEE</literal> (notazione scientifica) non può essere usata in combinazione
+            con nessuno degli altri modelli di formattazione o
+            modificatori diversi da modelli di cifra o punti decimali, 
+            e deve essere alla fine della stringa di formattazione
+            (per es., <literal>9.99EEEE</literal> è un modello valido).
       </para>
      </listitem>
     </itemizedlist>
    </para>
 
    <para>
-    Certain modifiers can be applied to any template pattern to alter its
-    behavior.  For example, <literal>FM9999</literal>
-    is the <literal>9999</literal> pattern with the
-    <literal>FM</literal> modifier.
-    <xref linkend="functions-formatting-numericmod-table"/> shows the
-    modifier patterns for numeric formatting.
+        Certi modificatori possono essere applicati a qualsiasi modello per alterare
+        il loro comportamento. Per esempio, <literal>FM9999</literal>
+        è il modello <literal>9999</literal> con il modificatore 
+        <literal>FM</literal>.
+        La <xref linkend="functions-formatting-numericmod-table"/> mostra 
+        i modificatori di modello per la formattazione dei numeri.
    </para>
 
     <table id="functions-formatting-numericmod-table">
@@ -5583,25 +5630,25 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
      <tgroup cols="3">
       <thead>
        <row>
-        <entry>Modifier</entry>
-        <entry>Description</entry>
-        <entry>Example</entry>
+        <entry>Modificatore</entry>
+        <entry>Descrizione</entry>
+        <entry>Esempio</entry>
        </row>
       </thead>
       <tbody>
        <row>
-        <entry><literal>FM</literal> prefix</entry>
-        <entry>fill mode (suppress padding blanks and zeroes)</entry>
+        <entry>prefisso <literal>FM</literal></entry>
+        <entry>modalità fill (sopprime spazi bianchi e zeri in più)</entry>
         <entry><literal>FM9999</literal></entry>
        </row>
        <row>
-        <entry><literal>TH</literal> suffix</entry>
-        <entry>upper case ordinal number suffix</entry>
+        <entry>suffisso <literal>TH</literal></entry>
+        <entry>suffisso maiuscolo per numeri ordinali</entry>
         <entry><literal>999TH</literal></entry>
        </row>   
        <row>
-        <entry><literal>th</literal> suffix</entry>
-        <entry>lower case ordinal number suffix</entry>
+        <entry>suffisso <literal>th</literal></entry>
+        <entry>suffisso minuscolo per numeri ordinali</entry>
         <entry><literal>999th</literal></entry>
        </row>
       </tbody>
@@ -5609,17 +5656,17 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
     </table>
 
   <para>
-   <xref linkend="functions-formatting-examples-table"/> shows some
-   examples of the use of the <function>to_char</function> function.
+   La <xref linkend="functions-formatting-examples-table" /> mostra alcuni
+   esempi di utilizzo della funzione <function>to_char</function>.
   </para>
 
     <table id="functions-formatting-examples-table">
-     <title><function>to_char</function> Examples</title>
+     <title>Esempi della funzione <function>to_char</function></title>
      <tgroup cols="2">
       <thead>
        <row>
-        <entry>Expression</entry>
-        <entry>Result</entry>
+        <entry>Espressione</entry>
+        <entry>Risultato</entry>
        </row>
       </thead>
       <tbody>
@@ -5779,45 +5826,47 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
 
 
   <sect1 id="functions-datetime">
-   <title>Date/Time Functions and Operators</title>
+   <title>Funzioni e operatori di data/orario</title>
 
   <para>
-   <xref linkend="functions-datetime-table"/> shows the available
-   functions for date/time value processing, with details appearing in
-   the following subsections.  <xref
-   linkend="operators-datetime-table"/> illustrates the behaviors of
-   the basic arithmetic operators (<literal>+</literal>,
-   <literal>*</literal>, etc.).  For formatting functions, refer to
-   <xref linkend="functions-formatting"/>.  You should be familiar with
-   the background information on date/time data types from <xref
-   linkend="datatype-datetime"/>.
+    La <xref linkend="functions-datetime-table" /> mostra le funzioni
+   disponibili per l'elaborazione dei valori data/orario, con i dettagli
+   che compaiono nelle sottosezioni successive. La <xref
+   linkend="operators-datetime-table" /> illustra il comportamento degli
+   operatori aritmetici di base (<literal>+</literal>,
+   <literal>*</literal>, ecc.). Per le funzioni di formattazione, consultare
+   <xref linkend="functions-formatting" />. Dovreste avere familiarit&agrave; con
+   le informazioni di base sui tipi dati data/orario fornite da <xref
+   linkend="datatype-datetime" />.
   </para>
 
   <para>
-   All the functions and operators described below that take <type>time</type> or <type>timestamp</type>
-   inputs actually come in two variants: one that takes <type>time with time zone</type> or <type>timestamp
-   with time zone</type>, and one that takes <type>time without time zone</type> or <type>timestamp without time zone</type>.
-   For brevity, these variants are not shown separately.  Also, the
-   <literal>+</literal> and <literal>*</literal> operators come in commutative pairs (for
-   example both date + integer and integer + date); we show only one of each
-   such pair.
+   
+    Tutte le funzioni e gli operatori descritti in seguito che prendono l'input da <type>time</type> o <type>timestamp</type>,
+    attualmente lo prendono in due varianti: una che prende <type>time with time zone</type> o <type>timestamp
+    with time zone</type>, e l'altra che prende <type>time without time zone</type> o <type>timestamp without time zone</type>.
+    Per brevit&agrave;, queste varianti non vengono mostrate separatamente. Inoltre, gli
+    operatori <literal>+</literal> e <literal>*</literal> si esprimono in coppie commutative (per
+    esempio sia data + intero che intero + data); Verr&agrave; mostrato solo uno di
+    ciascuna coppia.
   </para>
 
-    <table id="operators-datetime-table">
-     <title>Date/Time Operators</title>
+   
+<table id="operators-datetime-table">
+     <title>Operatori di data/orario</title>
 
      <tgroup cols="3">
       <thead>
        <row>
-        <entry>Operator</entry>
-        <entry>Example</entry>
-        <entry>Result</entry>
+        <entry>Operatore</entry>
+        <entry>Esempio</entry>
+        <entry>Risultato</entry>
        </row>
       </thead>
 
       <tbody>
        <row>
-        <entry> <literal>+</literal> </entry>
+        <entry><literal>+</literal> </entry>
         <entry><literal>date '2001-09-28' + integer '7'</literal></entry>
         <entry><literal>date '2001-10-05'</literal></entry>
        </row>
@@ -5989,15 +6038,15 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
    </indexterm>
 
     <table id="functions-datetime-table">
-     <title>Date/Time Functions</title>
+     <title>Funzioni di data/orario </title>
      <tgroup cols="5">
       <thead>
        <row>
-        <entry>Function</entry>
-        <entry>Return Type</entry>
-        <entry>Description</entry>
-        <entry>Example</entry>
-        <entry>Result</entry>
+        <entry>Funczione</entry>
+        <entry>Tipo di ritorno</entry>
+        <entry>Descrizione</entry>
+        <entry>Esempio</entry>
+        <entry>Risultato</entry>
        </row>
       </thead>
 
@@ -6005,8 +6054,8 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>age(<type>timestamp</type>, <type>timestamp</type>)</function></literal></entry>
         <entry><type>interval</type></entry>
-        <entry>Subtract arguments, producing a <quote>symbolic</quote> result that
-        uses years and months</entry>
+        <entry>Sottrae gli argomenti, producendo un risultato <quote>simbolico</quote> 
+        che usa anni e mesi</entry>
         <entry><literal>age(timestamp '2001-04-10', timestamp '1957-06-13')</literal></entry>
         <entry><literal>43 years 9 mons 27 days</literal></entry>
        </row>
@@ -6014,7 +6063,7 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>age(<type>timestamp</type>)</function></literal></entry>
         <entry><type>interval</type></entry>
-        <entry>Subtract from <function>current_date</function> (at midnight)</entry>
+        <entry>Sottrae da <function>current_date</function> (alla mezzanotte)</entry>
         <entry><literal>age(timestamp '1957-06-13')</literal></entry>
         <entry><literal>43 years 8 mons 3 days</literal></entry>
        </row>
@@ -6032,8 +6081,7 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>current_date</function></literal></entry>
         <entry><type>date</type></entry>
-        <entry>Current date;
-         see <xref linkend="functions-datetime-current"/>
+        <entry>La data corrente; Vedere <xref linkend="functions-datetime-current"/>
         </entry>
         <entry></entry>
         <entry></entry>
@@ -6042,8 +6090,8 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>current_time</function></literal></entry>
         <entry><type>time with time zone</type></entry>
-        <entry>Current time of day;
-         see <xref linkend="functions-datetime-current"/>
+        <entry>L'ora attuale del giorno;
+         Vedere <xref linkend="functions-datetime-current"/>
         </entry>
         <entry></entry>
         <entry></entry>
@@ -6052,8 +6100,8 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>current_timestamp</function></literal></entry>
         <entry><type>timestamp with time zone</type></entry>
-        <entry>Current date and time (start of current transaction);
-         see <xref linkend="functions-datetime-current"/>
+        <entry>Data e orario corrente (all'inizio della transazione corrente);
+         Vedere <xref linkend="functions-datetime-current"/>
         </entry>
         <entry></entry>
         <entry></entry>
@@ -6062,8 +6110,8 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>date_part(<type>text</type>, <type>timestamp</type>)</function></literal></entry>
         <entry><type>double precision</type></entry>
-        <entry>Get subfield (equivalent to <function>extract</function>);
-         see <xref linkend="functions-datetime-extract"/>
+        <entry>Ottiene un sottocampo (equivalente a <function>extract</function>);
+         Vedere <xref linkend="functions-datetime-extract"/>
         </entry>
         <entry><literal>date_part('hour', timestamp '2001-02-16 20:38:40')</literal></entry>
         <entry><literal>20</literal></entry>
@@ -6072,8 +6120,8 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>date_part(<type>text</type>, <type>interval</type>)</function></literal></entry>
         <entry><type>double precision</type></entry>
-        <entry>Get subfield (equivalent to
-         <function>extract</function>); see <xref linkend="functions-datetime-extract"/>
+        <entry>Ottiene un sottocampo (equivalente a
+         <function>extract</function>); Vedere <xref linkend="functions-datetime-extract"/>
         </entry>
         <entry><literal>date_part('month', interval '2 years 3 months')</literal></entry>
         <entry><literal>3</literal></entry>
@@ -6082,7 +6130,7 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>date_trunc(<type>text</type>, <type>timestamp</type>)</function></literal></entry>
         <entry><type>timestamp</type></entry>
-        <entry>Truncate to specified precision; see also <xref linkend="functions-datetime-trunc"/>
+        <entry>Tronca con la precisione specificata; Vedere anche <xref linkend="functions-datetime-trunc"/>
         </entry>
         <entry><literal>date_trunc('hour', timestamp '2001-02-16 20:38:40')</literal></entry>
         <entry><literal>2001-02-16 20:00:00</literal></entry>
@@ -6092,7 +6140,7 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
         <entry><literal><function>extract</function>(<parameter>field</parameter> from
          <type>timestamp</type>)</literal></entry>
         <entry><type>double precision</type></entry>
-        <entry>Get subfield; see <xref linkend="functions-datetime-extract"/>
+        <entry>Ottiene un sottocampo; Vedere <xref linkend="functions-datetime-extract"/>
         </entry>
         <entry><literal>extract(hour from timestamp '2001-02-16 20:38:40')</literal></entry>
         <entry><literal>20</literal></entry>
@@ -6102,7 +6150,7 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
         <entry><literal><function>extract</function>(<parameter>field</parameter> from
          <type>interval</type>)</literal></entry>
         <entry><type>double precision</type></entry>
-        <entry>Get subfield; see <xref linkend="functions-datetime-extract"/>
+        <entry>Ottiene un sottocampo; Vedere <xref linkend="functions-datetime-extract"/>
         </entry>
         <entry><literal>extract(month from interval '2 years 3 months')</literal></entry>
         <entry><literal>3</literal></entry>
@@ -6111,15 +6159,15 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>isfinite(<type>date</type>)</function></literal></entry>
         <entry><type>boolean</type></entry>
-        <entry>Test for finite date (not +/-infinity)</entry>
+        <entry>Test per date finite (non +/-infinito)</entry>
         <entry><literal>isfinite(date '2001-02-16')</literal></entry>
         <entry><literal>true</literal></entry>
        </row>
 
-       <row>
+       <row>3
         <entry><literal><function>isfinite(<type>timestamp</type>)</function></literal></entry>
         <entry><type>boolean</type></entry>
-        <entry>Test for finite time stamp (not +/-infinity)</entry>
+        <entry>Test per timestamp finiti (non +/-infinito)</entry>
         <entry><literal>isfinite(timestamp '2001-02-16 21:28:30')</literal></entry>
         <entry><literal>true</literal></entry>
        </row>
@@ -6127,7 +6175,7 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>isfinite(<type>interval</type>)</function></literal></entry>
         <entry><type>boolean</type></entry>
-        <entry>Test for finite interval</entry>
+        <entry>Test per intervalli finiti</entry>
         <entry><literal>isfinite(interval '4 hours')</literal></entry>
         <entry><literal>true</literal></entry>
        </row>
@@ -6135,7 +6183,7 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>justify_days(<type>interval</type>)</function></literal></entry>
         <entry><type>interval</type></entry>
-        <entry>Adjust interval so 30-day time periods are represented as months</entry>
+        <entry>Aggiusta l'intervallo per rappresentare periodi di 30 giorni come mesi</entry>
         <entry><literal>justify_days(interval '35 days')</literal></entry>
         <entry><literal>1 mon 5 days</literal></entry>
        </row>
@@ -6143,7 +6191,7 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>justify_hours(<type>interval</type>)</function></literal></entry>
         <entry><type>interval</type></entry>
-        <entry>Adjust interval so 24-hour time periods are represented as days</entry>
+        <entry>Aggiusta l'intervallo per rappresentare periodi di 24 ore come giorni</entry>
         <entry><literal>justify_hours(interval '27 hours')</literal></entry>
         <entry><literal>1 day 03:00:00</literal></entry>
        </row>
@@ -6151,7 +6199,8 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>justify_interval(<type>interval</type>)</function></literal></entry>
         <entry><type>interval</type></entry>
-        <entry>Adjust interval using <function>justify_days</function> and <function>justify_hours</function>, with additional sign adjustments</entry>
+        <entry>Aggiusta l'intervallo usando <function>justify_days</function> e <function>justify_hours</function>, 
+            con aggiustamenti addizionali di segno</entry>
         <entry><literal>justify_interval(interval '1 mon -1 hour')</literal></entry>
         <entry><literal>29 days 23:00:00</literal></entry>
        </row>
@@ -6159,8 +6208,8 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>localtime</function></literal></entry>
         <entry><type>time</type></entry>
-        <entry>Current time of day;
-         see <xref linkend="functions-datetime-current"/>
+        <entry>Orario del giorno corrente;
+         Vedere <xref linkend="functions-datetime-current"/>
         </entry>
         <entry></entry>
         <entry></entry>
@@ -6169,8 +6218,8 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>localtimestamp</function></literal></entry>
         <entry><type>timestamp</type></entry>
-        <entry>Current date and time (start of current transaction);
-         see <xref linkend="functions-datetime-current"/>
+        <entry>Data e ora corrente (all'inizio dell'attuale transazione);
+         Vedere <xref linkend="functions-datetime-current"/>
         </entry>
         <entry></entry>
         <entry></entry>
@@ -6179,8 +6228,8 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>now()</function></literal></entry>
         <entry><type>timestamp with time zone</type></entry>
-        <entry>Current date and time (start of current transaction);
-         see <xref linkend="functions-datetime-current"/>
+        <entry>Data e ora corrente (all'inizio dell'attuale transazione);
+         Vedere <xref linkend="functions-datetime-current"/>
         </entry>
         <entry></entry>
         <entry></entry>
@@ -6189,8 +6238,8 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>statement_timestamp()</function></literal></entry>
         <entry><type>timestamp with time zone</type></entry>
-        <entry>Current date and time (start of current statement);
-         see <xref linkend="functions-datetime-current"/>
+        <entry>Data e ora corrente (all'inizio dell'attuale transazione);
+         Vedere <xref linkend="functions-datetime-current"/>
         </entry>
         <entry></entry>
         <entry></entry>
@@ -6199,9 +6248,9 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>timeofday()</function></literal></entry>
         <entry><type>text</type></entry>
-        <entry>Current date and time
-         (like <function>clock_timestamp</function>, but as a <type>text</type> string);
-         see <xref linkend="functions-datetime-current"/>
+        <entry>Data e ora corrente
+         (simile a <function>clock_timestamp</function>, ma come stringhe <type>text</type>);
+         Vedere <xref linkend="functions-datetime-current"/>
         </entry>
         <entry></entry>
         <entry></entry>
@@ -6210,8 +6259,8 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
        <row>
         <entry><literal><function>transaction_timestamp()</function></literal></entry>
         <entry><type>timestamp with time zone</type></entry>
-        <entry>Current date and time (start of current transaction);
-         see <xref linkend="functions-datetime-current"/>
+        <entry>Data e ora corrente (all'inizio dell'attuale transazione);
+         Vedere <xref linkend="functions-datetime-current"/>
         </entry>
         <entry></entry>
         <entry></entry>
@@ -6221,24 +6270,24 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
     </table>
 
    <para>
-    In addition to these functions, the SQL <literal>OVERLAPS</literal> operator is
-    supported:
+    In aggiunta a queste funzioni, &egrave; supportato l'operatore SQL 
+    <literal>OVERLAPS</literal>:
 <synopsis>
 (<replaceable>start1</replaceable>, <replaceable>end1</replaceable>) OVERLAPS (<replaceable>start2</replaceable>, <replaceable>end2</replaceable>)
 (<replaceable>start1</replaceable>, <replaceable>length1</replaceable>) OVERLAPS (<replaceable>start2</replaceable>, <replaceable>length2</replaceable>)
 </synopsis>
-    This expression yields true when two time periods (defined by their
-    endpoints) overlap, false when they do not overlap.  The endpoints
-    can be specified as pairs of dates, times, or time stamps; or as
-    a date, time, or time stamp followed by an interval.  When a pair
-    of values is provided, either the start or the end can be written
-    first; <literal>OVERLAPS</literal> automatically takes the earlier value
-    of the pair as the start.  Each time period is considered to
-    represent the half-open interval <replaceable>start</replaceable> <literal>&lt;=</literal>
-    <replaceable>time</replaceable> <literal>&lt;</literal> <replaceable>end</replaceable>, unless
-    <replaceable>start</replaceable> and <replaceable>end</replaceable> are equal in which case it
-    represents that single time instant.  This means for instance that two
-    time periods with only an endpoint in common do not overlap.
+        L'espressione restituisce vero quando due periodi di tempo (definiti dai loro
+        punti finali) si sovrappongono, falso quando non lo fanno. I punti finali
+        possono essere specificati come coppie di date, orari, o timestamp; O come
+        una data, orario, o timestamp seguito da un intervallo. Quando viene fornita
+        una coppia di valori, sia l'inizio che la fine può essere scritta
+        per prima; <literal>OVERLAPS</literal> automaticamente prende il valore anteriore
+        della coppia come inizio. Ogni periodo di tempo è considerato 
+        rappresentare l'intervallo mezzo aperto <replaceable>start</replaceable> <literal>&lt;=</literal>
+        <replaceable>time</replaceable> <literal>&lt;</literal> <replaceable>end</replaceable>, a meno che
+        <replaceable>start</replaceable> e <replaceable>end</replaceable> siano uguali, nel qual caso rappresenta
+        quel singolo istante. Questo significa per esempio che due periodi di 
+        tempo con solo un punto finale in comune non si sovrappongono.
    </para>
 
 <screen>
@@ -6256,11 +6305,8 @@ SELECT (DATE '2001-10-30', DATE '2001-10-30') OVERLAPS
 <lineannotation>Result: </lineannotation><computeroutput>true</computeroutput>
 </screen>
 
+<!-- /TODO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
   <para>
-   When adding an <type>interval</type> value to (or subtracting an 
-   <type>interval</type> value from) a <type>timestamp with time zone</type> 
-   value, the days component advances (or decrements) the date of the 
-   <type>timestamp with time zone</type> by the indicated number of days. 
    Across daylight saving time changes (with the session time zone set to a 
    time zone that recognizes DST), this means <literal>interval '1 day'</literal> 
    does not necessarily equal <literal>interval '24 hours'</literal>. 
@@ -6273,15 +6319,16 @@ SELECT (DATE '2001-10-30', DATE '2001-10-30') OVERLAPS
    a change in daylight saving time at <literal>2005-04-03 02:00</literal> in time zone 
    <literal>CST7CDT</literal>.
   </para>
+<!-- /TODO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
   <para>
-   Note there can be ambiguity in the <literal>months</literal> returned by
-   <function>age</function> because different months have a different number of
-   days.  <productname>PostgreSQL</productname>'s approach uses the month from the
-   earlier of the two dates when calculating partial months.  For example,
-   <literal>age('2004-06-01', '2004-04-30')</literal> uses April to yield
-   <literal>1 mon 1 day</literal>, while using May would yield <literal>1 mon 2
-   days</literal> because May has 31 days, while April has only 30.
+    Notare che ci può essere ambiguità nei <literal>mesi</literal> ritornati da
+    <function>age</function> dato che differenti mesi hanno un numero differente di
+    giorni. L'approccio di <productname>PostgreSQL</productname> usa il mese dalla
+    data minore delle due quando calcola i mesi parziali. Per esempio,
+    <literal>age('2004-06-01', '2004-04-30')</literal> usa Aprile per produrre
+    <literal>1 mon 1 day</literal>, mentre usare May produrrebbe <literal>1 mon 2
+    days</literal> dato che Maggio ha 31 giorni, mentre Aprile ne ha solo 30.
   </para>
 
   <sect2 id="functions-datetime-extract">

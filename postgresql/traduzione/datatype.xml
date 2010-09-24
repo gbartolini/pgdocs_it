@@ -272,7 +272,12 @@
   <note>
    <title>Compatibilità</title>
    <para>
-<!-- /TODO or spelling thereof ? -->
+<note>
+    <para>
+        Nota per il revisore: spellings thereof? 
+    </para>
+</note>
+
     I seguenti tipi (or spellings thereof) sono specificati dall'<acronym>SQL</acronym>: 
     <type>bigint</type>, <type>bit</type>, <type>bit
     varying</type>, <type>boolean</type>, <type>char</type>,
@@ -1161,7 +1166,13 @@ SELECT b, char_length(b) FROM test2;
     La lunghezza massima preimpostata potrebbe essere
     cambiata in un futuro rilascio. Il tipo <type>"char"</type>
     (notare gli apici) è diverso da <type>char(1)</type> in quanto
-<!-- /TODO tipo di enumerazione semplicistica??? -->
+<note>
+    <para>
+        Nota per il revisore: enumerazione semplicistica? - 
+        testo originale: It is internally used in the system
+        catalogs as a simplistic enumeration type.
+    </para>
+</note>
     usa solo un byte di memorizzazione. Viene usato internamente nei cataloghi di
     sistema come tipo di enumerazione semplicistica.
    </para>
@@ -1305,8 +1316,8 @@ SELECT E'\\xDEADBEEF';
         Se, dal punto di vista dell'applicazione, rappresentare i byte 
         come caratteri ha senso, allora questa rappresentazione può essere
         conveniente. Ma in pratica, di solito questo è fuorviante, in quanto
-        maschera la distinzione fra stringhe binarie e stringhe di caratteri.
-<!-- /TODO and also the particular escape mechanism that was chosen is somewhat unwieldy. -->        
+        maschera la distinzione fra stringhe binarie e stringhe di caratteri,
+        inoltre il meccanismo particolare che è stato scelto per l'escape è in qualche modo ingombrante.
         Per questo, questo formato dovrebbe probabilmente essere evitato per la
         maggior parte delle nuove applicazioni.
    </para>
@@ -2531,7 +2542,14 @@ January 8 04:05:06 1999 PST
 
     <para>
         Valori di intervallo possono anche essere scritti come intervalli di tempo ISO 8601,
-<!-- /TODO designator ?? -->
+<note>
+    <para>
+        Nota per il revisore: designator? - 
+        testo originale: Interval values can also be written as ISO 8601 time intervals, using
+     either the <quote>format with designators</quote> of the standard's section
+     4.4.3.2 or the <quote>alternative format</quote> of section 4.4.3.3.
+    </para>
+</note>
         usando sia il <quote>formato con designator</quote> della sezione 4.4.3.2
         dello standard, o il <quote>formato alternativo</quote> della sezione 4.4.3.3. 
         Il formato con designator si esprime così:
@@ -2784,7 +2802,11 @@ P <optional> <replaceable>years</replaceable>-<replaceable>months</replaceable>-
    </sect2>
 
    <sect2 id="datatype-datetime-internals">
-<!-- /TODO Internals ?? -->
+<note>
+    <para>
+        Nota per il revisore: Internals?
+    </para>
+</note>    
     <title>Internals</title>
 
     <para>
@@ -3909,9 +3931,9 @@ SELECT 'fat &amp; rat &amp; ! cat'::tsquery;
  'fat' &amp; 'rat' &amp; !'cat'
 </programlisting>
 
-<!-- /TODO da rivedere -->
-     In assenza di parentesi, <literal>!</literal> (NOT) lega il più strettamente
-     possibile e <literal>&amp;</literal> (AND) lega più strettamente di
+
+     In assenza di parentesi, <literal>!</literal> (NOT) ha la precedenza
+     e <literal>&amp;</literal> (AND) ha la precedenza su
      <literal>|</literal> (OR).
     </para>
 
@@ -4039,7 +4061,11 @@ a0ee-bc99-9c0b-4ef8-bb6d-6bb9-bd38-0a11
 
    <para>
 
-<!-- /TODO da rivedere -->
+<note>
+    <para>
+        Nota per il revisore: da rivedere!!!
+    </para>
+</note>
     Il tipo <type>xml</type> può memorizzare <quote>documenti</quote>
     ben formattati, come definito dallo standard XML, come pure una parte di frammenti di
     <quote>contenuto</quote>, come sono definiti dalla
@@ -4362,7 +4388,11 @@ SELECT * FROM pg_attribute
     automatically.  Similarly, casting a table's OID to
     <type>regclass</type> is handy for symbolic display of a numeric OID.
 
-<!-- /TODO !!!! -->
+<note>
+    <para>
+        Nota per il revisore: da rivedere !!!
+    </para>
+</note>
     Mentre non sembra vedere il peggio di se stesso, è comunque ultra semplificato.
     Una vasta e complicata sub-select sarebbe necessaria per
     selezionare il giusto OID se ci sono più tabelle chiamate

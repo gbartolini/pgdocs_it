@@ -4882,7 +4882,6 @@ Se viene specificato un confronto inverso parzialmente sensibile al newline,
 
 
   <sect1 id="functions-formatting">
-   <title>Data Type Formatting Functions</title>
    <title>Funzioni di formattazione dei tipi di dato</title>
 
    <indexterm>
@@ -7263,7 +7262,7 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
      Alcuni di questi tipi hanno anche un operatore <literal>=</literal>, ma
      <literal>=</literal> confronta
      solo per <emphasis>aree</emphasis> uguali. Gli altri operatori di confronto scalari
-     (<literal>&lt;=</literal> e cos&igrave; via) similmente confrontano aree per questi tipi.
+     (<literal>&lt;=</literal> e così via) similmente confrontano aree per questi tipi.
     </para>
    </caution>
 
@@ -8345,7 +8344,7 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
    linkend="datatype-xml" /> per informazioni circa il tipo <type>xml</type>.
    Le espressioni <function>xmlparse</function>
    e <function>xmlserialize</function> per conversioni a e da 
-   <type>xml</type> non sono ripetute qu&igrave;. L'utilizzo per molte
+   <type>xml</type> non sono ripetute quì. L'utilizzo per molte
    di queste funzioni richiede che l'installazione sia stata compilata
    con <command>configure --with-libxml</command>.
   </para>
@@ -9835,7 +9834,7 @@ SELECT NULLIF(value, '(none)') ...
 
   <para>
    
-    I confronti tra gli array confrontano il contenuto degli array elemento-per-elemento,
+    I confronti tra gli array operano sul contenuto degli array elemento-per-elemento,
    usando la funzione di confronto B-Tree predefinita per il tipo dato dell'elemento.
    Negli array multidimensionali gli elementi sono esaminati nell'ordine row-major
    (l'ultimo subscritto varia più rapidamente).
@@ -10081,41 +10080,39 @@ SELECT NULLIF(value, '(none)') ...
   </sect1>
 
 
-<!-- *********************************************************************************************************************************** -->
-<!-- *********************************************************************************************************************************** -->
-<!-- *********************************************************************************************************************************** -->
 
 
  <sect1 id="functions-aggregate">
-  <title>Aggregate Functions</title>
+  <title>Funzioni aggregate</title>
 
   <indexterm zone="functions-aggregate">
-   <primary>aggregate function</primary>
-   <secondary>built-in</secondary>
+   <primary>funzione aggregata</primary>
+   <secondary>incorporata</secondary>
   </indexterm>
 
   <para>
-   <firstterm>Aggregate functions</firstterm> compute a single result
-   from a set of input values.  The built-in aggregate functions
-   are listed in
-   <xref linkend="functions-aggregate-table"/> and
-   <xref linkend="functions-aggregate-statistics-table"/>.
-   The special syntax considerations for aggregate
-   functions are explained in <xref linkend="syntax-aggregates"/>.
-   Consult <xref linkend="tutorial-agg"/> for additional introductory
-   information.
+   
+    Le <firstterm>funzioni aggregate</firstterm> calcolano un singolo 
+   risultato da un insieme di valori di input. Le funzioni aggregate incorporate
+   sono elencate nella
+   <xref linkend="functions-aggregate-table" /> e nella
+   <xref linkend="functions-aggregate-statistics-table" />. 
+   Speciali considerazioni sulla sintassi delle le funzioni
+   aggregate sono spiegate in <xref linkend="syntax-aggregates" />.
+   Consultare <xref linkend="tutorial-agg" /> per ulteriori informazioni
+   introduttive.
   </para>
 
   <table id="functions-aggregate-table">
-   <title>General-Purpose Aggregate Functions</title>
+   <title>Funzioni aggregate di uso generale</title>
 
    <tgroup cols="4">
     <thead>
      <row>
-      <entry>Function</entry>
-      <entry>Argument Type(s)</entry>
-      <entry>Return Type</entry>
-      <entry>Description</entry>
+      <entry>Funzione</entry>
+      <entry>Tipo argomento</entry>
+      <entry>Tipo restituito</entry>
+      <entry>Descrizione</entry>
      </row>
     </thead>
 
@@ -10128,12 +10125,12 @@ SELECT NULLIF(value, '(none)') ...
        <function>array_agg(<replaceable class="parameter">expression</replaceable>)</function>
       </entry>
       <entry>
-       any
+       qualsiasi
       </entry>
       <entry>
-       array of the argument type
+       array del tipo dell'argomento
       </entry>
-      <entry>input values, including nulls, concatenated into an array</entry>
+      <entry>valori in input, inclusi valori null, concatenati in un array</entry>
      </row>
 
      <row>
@@ -10146,14 +10143,14 @@ SELECT NULLIF(value, '(none)') ...
       <entry>
        <type>smallint</type>, <type>int</type>,
        <type>bigint</type>, <type>real</type>, <type>double
-       precision</type>, <type>numeric</type>, or <type>interval</type>
+       precision</type>, <type>numeric</type>, o <type>interval</type>
       </entry>
       <entry>
-       <type>numeric</type> for any integer-type argument,
-       <type>double precision</type> for a floating-point argument,
-       otherwise the same as the argument data type
+       <type>numeric</type> per ogni argomento di tipo intero,
+       <type>double precision</type> per argomenti a virgola mobile,
+        altrimenti lo stesso tipo di dato dell'argomento
       </entry>
-      <entry>the average (arithmetic mean) of all input values</entry>
+      <entry>la media (aritmetica) di tutti i valori in input</entry>
      </row>
 
      <row>
@@ -10164,13 +10161,13 @@ SELECT NULLIF(value, '(none)') ...
        <function>bit_and(<replaceable class="parameter">expression</replaceable>)</function>
       </entry>
       <entry>
-       <type>smallint</type>, <type>int</type>, <type>bigint</type>, or
+       <type>smallint</type>, <type>int</type>, <type>bigint</type>, o
        <type>bit</type>
       </entry>
       <entry>
-        same as argument data type
+        stesso tipo di dato dell'argomento
       </entry>
-      <entry>the bitwise AND of all non-null input values, or null if none</entry>
+      <entry>l'AND di bit di tutti i valori non-null in input, null se assenti</entry>
      </row>
 
      <row>
@@ -10181,13 +10178,13 @@ SELECT NULLIF(value, '(none)') ...
        <function>bit_or(<replaceable class="parameter">expression</replaceable>)</function>
       </entry>
       <entry>
-       <type>smallint</type>, <type>int</type>, <type>bigint</type>, or
+       <type>smallint</type>, <type>int</type>, <type>bigint</type>, o
        <type>bit</type>
       </entry>
       <entry>
-        same as argument data type
+        stesso tipo di dato dell'argomento
       </entry>
-      <entry>the bitwise OR of all non-null input values, or null if none</entry>
+      <entry>l'OR di bit di tutti i valori non-null in input, null se assenti</entry>
      </row>
 
      <row>
@@ -10203,7 +10200,7 @@ SELECT NULLIF(value, '(none)') ...
       <entry>
        <type>bool</type>
       </entry>
-      <entry>true if all input values are true, otherwise false</entry>
+      <entry>true se tutti i valori in input sono true, altrimenti false</entry>
      </row>
 
      <row>
@@ -10219,14 +10216,14 @@ SELECT NULLIF(value, '(none)') ...
       <entry>
        <type>bool</type>
       </entry>
-      <entry>true if at least one input value is true, otherwise false</entry>
+      <entry>true se almeno un valore in input è true, altrimenti false</entry>
      </row>
 
      <row>
       <entry><function>count(*)</function></entry>
       <entry></entry>
       <entry><type>bigint</type></entry>
-      <entry>number of input rows</entry>
+      <entry>numero di righe in input</entry>
      </row>
 
      <row>
@@ -10234,8 +10231,8 @@ SELECT NULLIF(value, '(none)') ...
       <entry>any</entry>
       <entry><type>bigint</type></entry>
       <entry>
-       number of input rows for which the value of <replaceable
-       class="parameter">expression</replaceable> is not null
+            numero di righe per le quali il valore di <replaceable
+             class="parameter">expression</replaceable> non è null
       </entry>
      </row>
 
@@ -10252,28 +10249,26 @@ SELECT NULLIF(value, '(none)') ...
       <entry>
        <type>bool</type>
       </entry>
-      <entry>equivalent to <function>bool_and</function></entry>
+      <entry>equivalente a <function>bool_and</function></entry>
      </row>
 
      <row>
       <entry><function>max(<replaceable class="parameter">expression</replaceable>)</function></entry>
-      <entry>any array, numeric, string, or date/time type</entry>
-      <entry>same as argument type</entry>
+      <entry>qualsiasi tipo  array, numerico, stringa o data/orario</entry>
+      <entry>stesso tipo dell'argomento</entry>
       <entry>
-       maximum value of <replaceable
-       class="parameter">expression</replaceable> across all input
-       values
+       il massimo valore di <replaceable
+       class="parameter">expression</replaceable> attraverso tutti i valori in input
       </entry>
      </row>
 
      <row>
       <entry><function>min(<replaceable class="parameter">expression</replaceable>)</function></entry>
-      <entry>any array, numeric, string, or date/time type</entry>
-      <entry>same as argument type</entry>
+      <entry>qualsiasi tipo  array, numerico, stringa o data/orario</entry>
+      <entry>stesso tipo dell'argomento</entry>
       <entry>
-       minimum value of <replaceable
-       class="parameter">expression</replaceable> across all input
-       values
+       il minimo valore di <replaceable
+       class="parameter">expression</replaceable> attraverso tutti i valori in input
       </entry>
      </row>
 
@@ -10293,7 +10288,7 @@ SELECT NULLIF(value, '(none)') ...
       <entry>
        <type>text</type>
       </entry>
-      <entry>input values concatenated into a string, separated by delimiter</entry>
+      <entry>i valori in input concatenati in una stringa, separati da un delimitatore</entry>
      </row>
 
      <row>
@@ -10301,17 +10296,17 @@ SELECT NULLIF(value, '(none)') ...
       <entry>
        <type>smallint</type>, <type>int</type>,
        <type>bigint</type>, <type>real</type>, <type>double
-       precision</type>, <type>numeric</type>, or
+       precision</type>, <type>numeric</type> o
        <type>interval</type>
       </entry>
       <entry>
-       <type>bigint</type> for <type>smallint</type> or
-       <type>int</type> arguments, <type>numeric</type> for
-       <type>bigint</type> arguments, <type>double precision</type>
-       for floating-point arguments, otherwise the same as the
-       argument data type
+       <type>bigint</type> per argomenti <type>smallint</type> o
+       <type>int</type>, <type>numeric</type> per argomenti
+       <type>bigint</type>, <type>double precision</type>
+       per argomenti floating-point, altrimenti lo stesso tipo di dato
+        dell'argomento
       </entry>
-      <entry>sum of <replaceable class="parameter">expression</replaceable> across all input values</entry>
+      <entry>la somma di <replaceable class="parameter">expression</replaceable> attraverso tutti i valori in input</entry>
      </row>
 
      <row>
@@ -10327,20 +10322,18 @@ SELECT NULLIF(value, '(none)') ...
       <entry>
        <type>xml</type>
       </entry>
-      <entry>concatenation of XML values (see also <xref linkend="functions-xml-xmlagg"/>)</entry>
+      <entry>concatenazione di valori XML (vedere anche <xref linkend="functions-xml-xmlagg"/>)</entry>
      </row>
     </tbody>
    </tgroup>
   </table>
 
   <para>
-   It should be noted that except for <function>count</function>,
-   these functions return a null value when no rows are selected.  In
-   particular, <function>sum</function> of no rows returns null, not
-   zero as one might expect, and <function>array_agg</function>
-   returns null rather than an empty array when there are no input
-   rows.  The <function>coalesce</function> function can be used to
-   substitute zero or an empty array for null when necessary.
+   Prendere nota che eccetto <function>count</function>, queste
+   funzioni restituiscono un valore null quando non ci sono righe selezionate. In
+   particolare, <function>sum</function> senza nessuna riga restituisce null, non
+   zero come ci si potrebbe aspettare. La funzione <function>coalesce</function>
+   può essere usata per sostituire zero a null quando necesario.
   </para>
 
   <note>
@@ -10351,84 +10344,85 @@ SELECT NULLIF(value, '(none)') ...
       <primary>SOME</primary>
     </indexterm>
     <para>
-      Boolean aggregates <function>bool_and</function> and
-      <function>bool_or</function> correspond to standard SQL aggregates
-      <function>every</function> and <function>any</function> or
-      <function>some</function>.
-      As for <function>any</function> and <function>some</function>,
-      it seems that there is an ambiguity built into the standard syntax:
+      
+    Le aggregate booleane <function>bool_and</function> e 
+      <function>bool_or</function> corrispondono alle aggregate standard SQL
+      <function>every</function> e <function>any</function> o
+      <function>some</function>. 
+      Per quanto riguarda <function>any</function> e <function>some</function>, 
 <programlisting>
 SELECT b1 = ANY((SELECT b2 FROM t2 ...)) FROM t1 ...;
 </programlisting>
-      Here <function>ANY</function> can be considered either as introducing
-      a subquery, or as being an aggregate function, if the subquery
-      returns one row with a Boolean value.
-      Thus the standard name cannot be given to these aggregates.
+      Dove <function>ANY</function> può essere considerata o come intriduzione di una
+      sottoquery oppure come una aggregata se l'espressione selezionata restituisce 1 riga con un valore booleano.
+      Pertanto il nome standard non può essere fornito a queste aggregate.
     </para>
   </note>
 
   <note>
    <para>
-    Users accustomed to working with other SQL database management
-    systems might be disappointed by the performance of the
-    <function>count</function> aggregate when it is applied to the
-    entire table. A query like:
+    
+    Gli utenti abituati a lavorare con altri sistemi di gestione di database
+    SQL possono rimanere delusi  dalle prestazioni dell'aggregata
+    <function>count</function> quando è applicata alla tabella 
+    intera. Una simile query:
 <programlisting>
 SELECT count(*) FROM sometable;
 </programlisting>
-    will be executed by <productname>PostgreSQL</productname> using a
-    sequential scan of the entire table.
+    sarà eseguita da <productname>PostgreSQL</productname> usando una
+    scansione sequenziale dell'intera tabella.
    </para>
   </note>
 
   <para>
-   The aggregate functions <function>array_agg</function>,
-   <function>string_agg</function>,
-   and <function>xmlagg</function>, as well as similar user-defined
-   aggregate functions, produce meaningfully different result values
-   depending on the order of the input values.  This ordering is
-   unspecified by default, but can be controlled by writing an
-   <literal>ORDER BY</literal> clause within the aggregate call, as shown in
-   <xref linkend="syntax-aggregates"/>.
-   Alternatively, supplying the input values from a sorted subquery
-   will usually work.  For example:
+        Le funzioni aggregate <function>array_agg</function>,
+        <function>string_agg</function>,
+        e <function>xmlagg</function>, cos' come funzioni aggregate simili 
+        definite dall'utente, producono  risultati molto differenti che dipendendono 
+        dall'ordine dai valori in input. Questo ordinamento non è
+        specificato di default, ma può essere controllato scrivendo una clausola
+        <literal>ORDER BY</literal> all'interno della chiamata alla funzione aggregata,
+        come mostrato in <xref linkend="syntax-aggregates"/>.
+        Alternativamente, fornire valori in input da una sottoquery ordinata
+        di solito funzionerà. Per esempio:
 
 <screen><![CDATA[
 SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
 ]]></screen>
 
-   But this syntax is not allowed in the SQL standard, and is
-   not portable to other database systems.
+        Ma questa sintassi non è permessa nello standard SQL, e non
+        è portabile ad altri sistemi di database.
   </para>
 
   <para>
-   <xref linkend="functions-aggregate-statistics-table"/> shows
-   aggregate functions typically used in statistical analysis.
-   (These are separated out merely to avoid cluttering the listing
-   of more-commonly-used aggregates.)  Where the description mentions
-   <replaceable class="parameter">N</replaceable>, it means the
-   number of input rows for which all the input expressions are non-null.
-   In all cases, null is returned if the computation is meaningless,
-   for example when <replaceable class="parameter">N</replaceable> is zero.
+   
+    La <xref linkend="functions-aggregate-statistics-table" /> mostra
+   le funzioni aggregate normalmente utilizzate nelle analisi statistiche.
+   (Esse sono  trattate separatamente per evitare di ingombrare la lista
+   deglle funzioni aggregate usate più comunemente). Dove la descrizione menziona
+   la <replaceable class="parameter">N</replaceable>,  si intende il
+   numero di righe in input nelle quali tutte le espressioni in input sono non-null.
+   In tutti i casi, se il calcolo è senza senso viene restituito null,
+   per esempio quando <replaceable class="parameter">N</replaceable> è zero.
   </para>
 
   <indexterm>
-   <primary>statistics</primary>
+   <primary>statistiche</primary>
   </indexterm>
   <indexterm>
-   <primary>linear regression</primary>
+   <primary>regressione lineare</primary>
   </indexterm>
 
   <table id="functions-aggregate-statistics-table">
-   <title>Aggregate Functions for Statistics</title>
+   <title>Funzioni aggregate per statistiche</title>
 
    <tgroup cols="4">
     <thead>
      <row>
-      <entry>Function</entry>
-      <entry>Argument Type</entry>
-      <entry>Return Type</entry>
-      <entry>Description</entry>
+      <entry>Funzione</entry>
+      <entry>Tipo argomento</entry>
+      <entry>Tipo restituito</entry>
+      <entry>Descrizione</entry>
      </row>
     </thead>
 
@@ -10437,7 +10431,7 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
      <row>
       <entry>
        <indexterm>
-        <primary>correlation</primary>
+        <primary>correlazione</primary>
        </indexterm>
        <function>corr(<replaceable class="parameter">Y</replaceable>, <replaceable class="parameter">X</replaceable>)</function>
       </entry>
@@ -10447,14 +10441,14 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>double precision</type>
       </entry>
-      <entry>correlation coefficient</entry>
+      <entry>coefficiente di correlazione</entry>
      </row>
 
      <row>
       <entry>
        <indexterm>
-        <primary>covariance</primary>
-        <secondary>population</secondary>
+        <primary>covarianza</primary>
+        <secondary>popolazione</secondary>
        </indexterm>
        <function>covar_pop(<replaceable class="parameter">Y</replaceable>, <replaceable class="parameter">X</replaceable>)</function>
       </entry>
@@ -10464,14 +10458,14 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>double precision</type>
       </entry>
-      <entry>population covariance</entry>
+      <entry>covarianza di popolazione</entry>
      </row>
 
      <row>
       <entry>
        <indexterm>
-        <primary>covariance</primary>
-        <secondary>sample</secondary>
+        <primary>covarianza</primary>
+        <secondary>campione</secondary>
        </indexterm>
        <function>covar_samp(<replaceable class="parameter">Y</replaceable>, <replaceable class="parameter">X</replaceable>)</function>
       </entry>
@@ -10481,7 +10475,7 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>double precision</type>
       </entry>
-      <entry>sample covariance</entry>
+      <entry>covarianza di campione</entry>
      </row>
 
      <row>
@@ -10494,7 +10488,7 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>double precision</type>
       </entry>
-      <entry>average of the independent variable
+      <entry>media di variabile indipendente
       (<literal>sum(<replaceable class="parameter">X</replaceable>)/<replaceable class="parameter">N</replaceable></literal>)</entry>
      </row>
 
@@ -10508,7 +10502,7 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>double precision</type>
       </entry>
-      <entry>average of the dependent variable
+      <entry>media di variabile dipendente
       (<literal>sum(<replaceable class="parameter">Y</replaceable>)/<replaceable class="parameter">N</replaceable></literal>)</entry>
      </row>
 
@@ -10522,7 +10516,7 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>bigint</type>
       </entry>
-      <entry>number of input rows in which both expressions are nonnull</entry>
+      <entry>numero di righe in input nelle quali ambedue le espressioni sono non-null</entry>
      </row>
 
      <row>
@@ -10538,10 +10532,11 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>double precision</type>
       </entry>
-      <entry>y-intercept of the least-squares-fit linear equation
-      determined by the (<replaceable
-      class="parameter">X</replaceable>, <replaceable
-      class="parameter">Y</replaceable>) pairs</entry>
+      <entry><note><para>Nota per il revisore: Whaaaaaaaat?</para></note>
+        y-intercept of the least-squares-fit linear equation
+        determined by the (<replaceable
+        class="parameter">X</replaceable>, <replaceable
+        class="parameter">Y</replaceable>) pairs</entry>
      </row>
 
      <row>
@@ -10554,13 +10549,13 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>double precision</type>
       </entry>
-      <entry>square of the correlation coefficient</entry>
+      <entry>quadrato del coefficiente di correlazione</entry>
      </row>
 
      <row>
       <entry>
        <indexterm>
-        <primary>regression slope</primary>
+        <primary>pendenza di regressione</primary>
        </indexterm>
        <function>regr_slope(<replaceable class="parameter">Y</replaceable>, <replaceable class="parameter">X</replaceable>)</function>
       </entry>
@@ -10570,7 +10565,8 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>double precision</type>
       </entry>
-      <entry>slope of the least-squares-fit linear equation determined
+      <entry><note><para>Nota per il revisore: Sei tu lo statista.... </para></note> 
+        slope of the least-squares-fit linear equation determined
       by the (<replaceable class="parameter">X</replaceable>,
       <replaceable class="parameter">Y</replaceable>) pairs</entry>
      </row>
@@ -10642,17 +10638,17 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
        precision</type>, or <type>numeric</type>
       </entry>
       <entry>
-       <type>double precision</type> for floating-point arguments,
-       otherwise <type>numeric</type>
+       <type>double precision</type> per asrgomenti in virgola mobile,
+       altrimenti <type>numeric</type>
       </entry>
-      <entry>historical alias for <function>stddev_samp</function></entry>
+      <entry>alias storico per di <function>stddev_samp</function></entry>
      </row>
 
      <row>
       <entry>
        <indexterm>
-        <primary>standard deviation</primary>
-        <secondary>population</secondary>
+        <primary>deviazione standard</primary>
+        <secondary>popolazione</secondary>
        </indexterm>
        <function>stddev_pop(<replaceable class="parameter">expression</replaceable>)</function>
       </entry>
@@ -10662,10 +10658,10 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
        precision</type>, or <type>numeric</type>
       </entry>
       <entry>
-       <type>double precision</type> for floating-point arguments,
-       otherwise <type>numeric</type>
+       <type>double precision</type> per argomenti a virgola mobile,
+       altrimenti <type>numeric</type>
       </entry>
-      <entry>population standard deviation of the input values</entry>
+      <entry>deviazione standard della popolazione dei valori in input</entry>
      </row>
 
      <row>
@@ -10679,52 +10675,52 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>smallint</type>, <type>int</type>,
        <type>bigint</type>, <type>real</type>, <type>double
-       precision</type>, or <type>numeric</type>
+       precision</type> o <type>numeric</type>
       </entry>
       <entry>
-       <type>double precision</type> for floating-point arguments,
-       otherwise <type>numeric</type>
+       <type>double precision</type> per argomenti a vorgola mobile,
+       altrimenti <type>numeric</type>
       </entry>
-      <entry>sample standard deviation of the input values</entry>
+      <entry>deviazione standard di campione dei valori di input</entry>
      </row>
 
      <row>
       <entry>
        <indexterm>
-        <primary>variance</primary>
+        <primary>varianza</primary>
        </indexterm>
        <function>variance</function>(<replaceable class="parameter">expression</replaceable>)
       </entry>
       <entry>
        <type>smallint</type>, <type>int</type>,
        <type>bigint</type>, <type>real</type>, <type>double
-       precision</type>, or <type>numeric</type>
+       precision</type> o <type>numeric</type>
       </entry>
       <entry>
-       <type>double precision</type> for floating-point arguments,
-       otherwise <type>numeric</type>
+       <type>double precision</type> per argomenti a virgola mobile,
+       altrimenti <type>numeric</type>
       </entry>
-      <entry>historical alias for <function>var_samp</function></entry>
+      <entry>alias storico di <function>var_samp</function></entry>
      </row>
 
      <row>
       <entry>
        <indexterm>
-        <primary>variance</primary>
-        <secondary>population</secondary>
+        <primary>varianza</primary>
+        <secondary>popolazione</secondary>
        </indexterm>
        <function>var_pop</function>(<replaceable class="parameter">expression</replaceable>)
       </entry>
       <entry>
        <type>smallint</type>, <type>int</type>,
        <type>bigint</type>, <type>real</type>, <type>double
-       precision</type>, or <type>numeric</type>
+       precision</type> o <type>numeric</type>
       </entry>
       <entry>
-       <type>double precision</type> for floating-point arguments,
-       otherwise <type>numeric</type>
+       <type>double precision</type> per argomenti a virgola mobile,
+       altrimenti <type>numeric</type>
       </entry>
-      <entry>population variance of the input values (square of the population standard deviation)</entry>
+      <entry>varianza di popolazione dei valori in input  (quadrato della deviazione standard della popolazione)</entry>
      </row>
 
      <row>
@@ -10738,13 +10734,13 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>smallint</type>, <type>int</type>,
        <type>bigint</type>, <type>real</type>, <type>double
-       precision</type>, or <type>numeric</type>
+       precision</type>, o <type>numeric</type>
       </entry>
       <entry>
-       <type>double precision</type> for floating-point arguments,
-       otherwise <type>numeric</type>
+       <type>double precision</type> per argomenti a virgola mobile,
+       altrimenti <type>numeric</type>
       </entry>
-      <entry>sample variance of the input values (square of the sample standard deviation)</entry>
+      <entry>varianza di campione dei valori in input (quadrato della varianza standard della popolazione)</entry>
      </row>
     </tbody>
    </tgroup>
@@ -10753,44 +10749,43 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
  </sect1>
 
  <sect1 id="functions-window">
-  <title>Window Functions</title>
+  <title>Funzioni finestra</title>
 
   <indexterm zone="functions-window">
-   <primary>window function</primary>
-   <secondary>built-in</secondary>
+   <primary>funzione finestra</primary>
+   <secondary>incorporata</secondary>
   </indexterm>
 
   <para>
-   <firstterm>Window functions</firstterm> provide the ability to perform
-   calculations across sets of rows that are related to the current query
-   row.  See <xref linkend="tutorial-window"/> for an introduction to this
-   feature.
+        Le <firstterm>funzioni finestra</firstterm> hanno l'abilità di eseguire
+        calcoli su insiemi di righe che sono correlate alla riga interrogata correntement.
+        Vedere  <xref linkend="tutorial-window"/> per un'introduzione a questa caratteristica.
   </para>
 
   <para>
-   The built-in window functions are listed in
-   <xref linkend="functions-window-table"/>.  Note that these functions
-   <emphasis>must</emphasis> be invoked using window function syntax; that is an
-   <literal>OVER</literal> clause is required.
+        Le funzioni finestra incorporate sono elencate in 
+        <xref linkend="functions-window-table"/>. Notare che queste funzioni
+        <emphasis>devono</emphasis> essere invocate usando la sintassi della funzione finestra; Dove cioè
+        è richiesta una clausola <literal>OVER</literal>.
   </para>
 
   <para>
-   In addition to these functions, any built-in or user-defined aggregate
-   function can be used as a window function (see
-   <xref linkend="functions-aggregate"/> for a list of the built-in aggregates).
-   Aggregate functions act as window functions only when an <literal>OVER</literal>
-   clause follows the call; otherwise they act as regular aggregates.
+        In aggiunta a queste funzioni, qualsiasi funzione aggregata incorporata o definita dall'utente
+        può essere usata come una funzione finestra (vedere
+        <xref linkend="functions-aggregate"/> per un elenco delle aggretate incorporate).
+        Le funzioni aggregate agiscono come funzioni finestra solo quando una clausola <literal>OVER</literal>
+        segue la chiamata; Altrimenti si comportano come funzioni aggregate normali.
   </para>
 
   <table id="functions-window-table">
-   <title>General-Purpose Window Functions</title>
+   <title>Funzioni finestra di utilizzo generale</title>
 
    <tgroup cols="3">
     <thead>
      <row>
-      <entry>Function</entry>
-      <entry>Return Type</entry>
-      <entry>Description</entry>
+      <entry>Funzione</entry>
+      <entry>Tipo di ritorno</entry>
+      <entry>Descrizione</entry>
      </row>
     </thead>
 
@@ -10805,7 +10800,7 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>bigint</type>
       </entry>
-      <entry>number of the current row within its partition, counting from 1</entry>
+      <entry>numero della riga corrente all'interno della sua partizione, partendo da 1</entry>
      </row>
 
      <row>
@@ -10818,7 +10813,7 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>bigint</type>
       </entry>
-      <entry>rank of the current row with gaps; same as <function>row_number</function> of its first peer</entry>
+      <entry><note><para>Nota per il revisore: non capisco</para></note> rank of the current row with gaps; same as <function>row_number</function> of its first peer</entry>
      </row>
 
      <row>
@@ -10857,7 +10852,7 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>double precision</type>
       </entry>
-      <entry>relative rank of the current row: (number of rows preceding or peer with current row) / (total rows)</entry>
+      <entry>grado relativo della riga corrente: (numero di righe che precedono la riga corrente) / (righe totali)</entry>
      </row>
 
      <row>
@@ -10874,6 +10869,8 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
        partition as equally as possible</entry>
      </row>
 
+
+
      <row>
       <entry>
        <indexterm>
@@ -10886,18 +10883,18 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
        </function>
       </entry>
       <entry>
-       <type>same type as <replaceable class="parameter">value</replaceable></type>
+       <type>stesso tipo di <replaceable class="parameter">value</replaceable></type>
       </entry>
       <entry>
-       returns <replaceable class="parameter">value</replaceable> evaluated at
-       the row that is <replaceable class="parameter">offset</replaceable>
-       rows before the current row within the partition; if there is no such
-       row, instead return <replaceable class="parameter">default</replaceable>.
-       Both <replaceable class="parameter">offset</replaceable> and
-       <replaceable class="parameter">default</replaceable> are evaluated
-       with respect to the current row.  If omitted,
-       <replaceable class="parameter">offset</replaceable> defaults to 1 and
-       <replaceable class="parameter">default</replaceable> to null
+            ritorna <replaceable class="parameter">value</replaceable> valutato 
+            alla riga che è scostato di <replaceable class="parameter">offset</replaceable>
+            righe prima la riga corrente all'interno della partizione; Se non c'è quella 
+            riga, invece di restituire <replaceable class="parameter">default</replaceable>.
+            Sia <replaceable class="parameter">offset</replaceable> che
+            <replaceable class="parameter">default</replaceable> sono valutati
+            con rispetto alla riga corrente. Se omesso,
+            <replaceable class="parameter">offset</replaceable> diventa 1 e  
+            <replaceable class="parameter">default</replaceable> diventa null.
       </entry>
      </row>
 
@@ -10913,18 +10910,18 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
        </function>
       </entry>
       <entry>
-       <type>same type as <replaceable class="parameter">value</replaceable></type>
+       <type>stesso tipo di <replaceable class="parameter">value</replaceable></type>
       </entry>
       <entry>
-       returns <replaceable class="parameter">value</replaceable> evaluated at
-       the row that is <replaceable class="parameter">offset</replaceable>
-       rows after the current row within the partition; if there is no such
-       row, instead return <replaceable class="parameter">default</replaceable>.
-       Both <replaceable class="parameter">offset</replaceable> and
-       <replaceable class="parameter">default</replaceable> are evaluated
-       with respect to the current row.  If omitted,
-       <replaceable class="parameter">offset</replaceable> defaults to 1 and
-       <replaceable class="parameter">default</replaceable> to null
+            ritorna <replaceable class="parameter">value</replaceable> valutato 
+            alla riga che è scostato di <replaceable class="parameter">offset</replaceable>
+            righe dopo la riga corrente all'interno della partizione; Se non c'è quella 
+            riga, invece di restituire <replaceable class="parameter">default</replaceable>.
+            Sia <replaceable class="parameter">offset</replaceable> che
+            <replaceable class="parameter">default</replaceable> sono valutati
+            con rispetto alla riga corrente. Se omesso,
+            <replaceable class="parameter">offset</replaceable> diventa 1 e  
+            <replaceable class="parameter">default</replaceable> diventa null.
       </entry>
      </row>
 
@@ -10936,11 +10933,12 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
        <function>first_value(<replaceable class="parameter">value</replaceable> <type>any</type>)</function>
       </entry>
       <entry>
-       <type>same type as <replaceable class="parameter">value</replaceable></type>
+       <type>stesso tipo di <replaceable class="parameter">value</replaceable></type>
       </entry>
       <entry>
-       returns <replaceable class="parameter">value</replaceable> evaluated
-       at the row that is the first row of the window frame
+       ritorna  <replaceable class="parameter">value</replaceable> valutato
+        alla riga che è la prima
+        della cornice di finestra
       </entry>
      </row>
 
@@ -10952,11 +10950,13 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
        <function>last_value(<replaceable class="parameter">value</replaceable> <type>any</type>)</function>
       </entry>
       <entry>
-       <type>same type as <replaceable class="parameter">value</replaceable></type>
+       <type>stesso tipo di <replaceable class="parameter">value</replaceable></type>
       </entry>
       <entry>
-       returns <replaceable class="parameter">value</replaceable> evaluated
-       at the row that is the last row of the window frame
+       ritorna  <replaceable class="parameter">value</replaceable> valutato
+        alla riga che è l'ultima
+        della cornice di finestra
+       
       </entry>
      </row>
 
@@ -10970,12 +10970,12 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
        </function>
       </entry>
       <entry>
-       <type>same type as <replaceable class="parameter">value</replaceable></type>
+       <type>stesso tipo di <replaceable class="parameter">value</replaceable></type>
       </entry>
       <entry>
-       returns <replaceable class="parameter">value</replaceable> evaluated
-       at the row that is the <replaceable class="parameter">nth</replaceable>
-       row of the window frame (counting from 1); null if no such row
+        ritorna <replaceable class="parameter">value</replaceable> valutato
+        alla riga che è la <replaceable class="parameter">nth</replaceable>-sima
+        della cornice di finestra (contando da 1); null se non esiste
       </entry>
      </row>
     </tbody>
@@ -10983,58 +10983,57 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
   </table>
 
   <para>
-   All of the functions listed in
-   <xref linkend="functions-window-table"/> depend on the sort ordering
-   specified by the <literal>ORDER BY</literal> clause of the associated window
-   definition.  Rows that are not distinct in the <literal>ORDER BY</literal>
-   ordering are said to be <firstterm>peers</firstterm>; the four ranking functions
-   are defined so that they give the same answer for any two peer rows.
+        Tutte le funzioni elencate in 
+        <xref linkend="functions-window-table"/> dipendono dal tipo di ordinamento
+        specificato dalla clausola <literal>ORDER BY</literal> della definizione di finestra associata.
+        Righe che non sono distinte nell'ordinamento <literal>ORDER BY</literal>
+        sono chiamate <firstterm>peer</firstterm>; Le quattro funzioni di classificazione
+        sono definite per dare la stessa risposta per ogni due righe peer.
   </para>
 
   <para>
-   Note that <function>first_value</function>, <function>last_value</function>, and
-   <function>nth_value</function> consider only the rows within the <quote>window
-   frame</quote>, which by default contains the rows from the start of the
-   partition through the last peer of the current row.  This is
-   likely to give unhelpful results for <function>last_value</function> and
-   sometimes also <function>nth_value</function>.  You can redefine the frame by
-   adding a suitable frame specification (<literal>RANGE</literal> or
-   <literal>ROWS</literal>) to the <literal>OVER</literal> clause.
-   See <xref linkend="syntax-window-functions"/> for more information
-   about frame specifications.
+        Notare che <function>first_value</function>, <function>last_value</function> e
+        <function>nth_value</function> considerano solo le righe all'interno della <quote>cornice di
+        finestra</quote>, che per default contiene le righe dall'inizio della partizione
+        all'ultimo peer della riga corrente. Queso, probabilmente,
+        darà risultati non autili per <function>last_value</function> e
+        a volte anche <function>nth_value</function>. È possibile ridefinire la cornice
+        aggiungendo una specificazione di finestra adatta (<literal>RANGE</literal> o 
+        <literal>ROWS</literal>) alla clausola  <literal>OVER</literal>.
+        Vedere <xref linkend="syntax-window-functions"/> per maggiori informazioni 
+        sulle specificazioni di cornice.
   </para>
 
   <para>
-   When an aggregate function is used as a window function, it aggregates
-   over the rows within the current row's window frame.
-   An aggregate used with <literal>ORDER BY</literal> and the default window frame
-   definition produces a <quote>running sum</quote> type of behavior, which may or
-   may not be what's wanted.  To obtain
-   aggregation over the whole partition, omit <literal>ORDER BY</literal> or use
-   <literal>ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING</literal>.
-   Other frame specifications can be used to obtain other effects.
+        Quando una funziona aggregata è usata come una funzione finestra, essa aggrega
+        le righe all'interno la cornice di finestra corrente.
+        Un'aggregata usata con <literal>ORDER BY</literal> e la definizione di cornice di finestra predefinita,
+        produce un tipo di comportamento "<quote>running sum</quote>", che potrebbe essere voluto 
+        o no. Per ottenere aggregazione sull'intera partizione, omettere <literal>ORDER BY</literal> o usare
+        <literal>ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING</literal>.
+        Altre specificazioni di cornice possono essere usate per ottenere altri effetti.
   </para>
 
   <note>
    <para>
-    The SQL standard defines a <literal>RESPECT NULLS</literal> or
-    <literal>IGNORE NULLS</literal> option for <function>lead</function>, <function>lag</function>,
-    <function>first_value</function>, <function>last_value</function>, and
-    <function>nth_value</function>.  This is not implemented in
-    <productname>PostgreSQL</productname>: the behavior is always the
-    same as the standard's default, namely <literal>RESPECT NULLS</literal>.
-    Likewise, the standard's <literal>FROM FIRST</literal> or <literal>FROM LAST</literal>
-    option for <function>nth_value</function> is not implemented: only the
-    default <literal>FROM FIRST</literal> behavior is supported.  (You can achieve
-    the result of <literal>FROM LAST</literal> by reversing the <literal>ORDER BY</literal>
-    ordering.)
+        Lo standard SQL definisce un'opzione <literal>RESPECT NULLS</literal> o 
+        <literal>IGNORE NULLS</literal> per <function>lead</function>, <function>lag</function>,
+        <function>first_value</function>, <function>last_value</function> e
+        <function>nth_value</function>.  Questo non è implementato in 
+        <productname>PostgreSQL</productname>: il comportamento è sempre lo
+        stesso di quello predefinito dello standard, cioè <literal>RESPECT NULLS</literal>.
+        Ugualmente, l'opzione standard <literal>FROM FIRST</literal> o <literal>FROM LAST</literal>
+        per <function>nth_value</function> non è implementata: solo il comportamento
+        <literal>FROM FIRST</literal> è supportato. (Puoi ottenere il risultato
+        di <literal>FROM LAST</literal> invertendo l'ordine con <literal>ORDER BY</literal>.)
    </para>
   </note>
+
 
  </sect1>
 
  <sect1 id="functions-subquery">
-  <title>Subquery Expressions</title>
+  <title>Espressioni sottoquery</title>
 
   <indexterm>
    <primary>EXISTS</primary>
@@ -11061,14 +11060,14 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
   </indexterm>
 
   <indexterm>
-   <primary>subquery</primary>
+   <primary>sottoquery</primary>
   </indexterm>
 
   <para>
-   This section describes the <acronym>SQL</acronym>-compliant subquery
-   expressions available in <productname>PostgreSQL</productname>.
-   All of the expression forms documented in this section return
-   Boolean (true/false) results.
+   Questa sezione descrive le espressioni sottoquery conformi-<acronym>SQL</acronym>
+   disponibili in <productname>PostgreSQL</productname>.
+   Tutte le forme delle espressioni documentate in questa sezione restituiscono
+   risultati booleani (true/false).
   </para>
 
   <sect2>
@@ -11079,40 +11078,43 @@ EXISTS (<replaceable>subquery</replaceable>)
 </synopsis>
 
   <para>
-   The argument of <token>EXISTS</token> is an arbitrary <command>SELECT</command> statement,
-   or <firstterm>subquery</firstterm>.  The
-   subquery is evaluated to determine whether it returns any rows.
-   If it returns at least one row, the result of <token>EXISTS</token> is
-   <quote>true</quote>; if the subquery returns no rows, the result of <token>EXISTS</token>
-   is <quote>false</quote>.
+   
+    L'argomento di <token>EXISTS</token> è una arbitraria istruzione <command>SELECT</command>
+   o una <firstterm>sottoquery</firstterm>. La
+   sottoquery viene valutata per determinare se essa restituisce qualche riga.
+   Se restituisce almeno una riga, il risultato di <token>EXISTS</token> è
+   <quote>true</quote>; se la sottoquery non restituisce righe, il risultato di <token>EXISTS</token> 
+   è <quote>false</quote>.
   </para>
 
   <para>
-   The subquery can refer to variables from the surrounding query,
-   which will act as constants during any one evaluation of the subquery.
+   La sottoquery può fare riferimento alle variabili della query circostante,
+   che fungeranno da costanti durante qualsiasi valutazione della subquery.
   </para>
 
   <para>
-   The subquery will generally only be executed long enough to determine
-   whether at least one row is returned, not all the way to completion.
-   It is unwise to write a subquery that has side effects (such as
-   calling sequence functions); whether the side effects occur
-   might be unpredictable.
+   La sottoquery viene generalmente eseguita solo quanto basta per determinare
+   se viene restituita almeno una riga, non fino al suo completamento.
+   È sconsigliabile scrivere una sottoquery che ha effetti secondari (come chiamare
+   funzioni di sequenza); se si verificano effetti secondari o no
+   potrebbe essere difficile da prevedere.
   </para>
 
   <para>
-   Since the result depends only on whether any rows are returned,
-   and not on the contents of those rows, the output list of the
-   subquery is normally unimportant.  A common coding convention is
-   to write all <literal>EXISTS</literal> tests in the form
-   <literal>EXISTS(SELECT 1 WHERE ...)</literal>.  There are exceptions to
-   this rule however, such as subqueries that use <token>INTERSECT</token>.
+   
+    Dato che il risultato dipende solo dalle presenza o no di qualche riga restituita,
+   e non dal contenuto di queste righe, l'elenco di output della sottoquery
+   non è normalmente interessante. Una convenzione di codifica comune è
+   di scrivere i controlli <literal>EXISTS</literal> nella forma
+   <literal>EXISTS(SELECT 1 WHERE ...)</literal>. Tuttavia ci sono eccezioni a
+   questa regola, tipo le sottoquery che usano <token>INTERSECT</token>.
   </para>
 
   <para>
-   This simple example is like an inner join on <literal>col2</literal>, but
-   it produces at most one output row for each <literal>tab1</literal> row,
-   even if there are several matching <literal>tab2</literal> rows:
+   
+    Questo semplice esempio è simile ad un inner join sulla <literal>col2</literal>, ma
+   esso produce al massimo una riga d'uscita per ogni riga di <literal>tab1</literal>,
+   anche se ci sono corrispondenze multiple con le righe di <literal>tab2</literal>:
 <screen>
 SELECT col1
 FROM tab1
@@ -11129,12 +11131,13 @@ WHERE EXISTS (SELECT 1 FROM tab2 WHERE col2 = tab1.col2);
 </synopsis>
 
   <para>
-   The right-hand side is a parenthesized
-   subquery, which must return exactly one column.  The left-hand expression
-   is evaluated and compared to each row of the subquery result.
-   The result of <token>IN</token> is <quote>true</quote> if any equal subquery row is found.
-   The result is <quote>false</quote> if no equal row is found (including the
-   case where the subquery returns no rows).
+   
+    La parte a destra è una sottoquery tra parentesi, che deve restituire
+   esattamente una colonna. L'espressione a sinistra viene valutata e confrontata
+   con ogni riga del risultato della sottoquery. Il risultato di <token>IN</token>
+   è <quote>true</quote> se qualche riga uguale viene trovata nella sottoquery. Il
+   risultato è <quote>false</quote> se non viene trovata nessuna riga uguale
+   (compreso il caso speciale in cui la sottoquery non restituisca nessuna riga).
   </para>
 
   <para>
@@ -11146,8 +11149,8 @@ WHERE EXISTS (SELECT 1 FROM tab2 WHERE col2 = tab1.col2);
   </para>
 
   <para>
-   As with <token>EXISTS</token>, it's unwise to assume that the subquery will
-   be evaluated completely.
+   Come con <token>EXISTS</token>, è sconsigliabile presumere che la sottoquery sarà
+   valutata completamente.
   </para>
 
 <synopsis>
@@ -11155,25 +11158,26 @@ WHERE EXISTS (SELECT 1 FROM tab2 WHERE col2 = tab1.col2);
 </synopsis>
 
   <para>
-   The left-hand side of this form of <token>IN</token> is a row constructor,
-   as described in <xref linkend="sql-syntax-row-constructors"/>.
-   The right-hand side is a parenthesized
-   subquery, which must return exactly as many columns as there are
-   expressions in the left-hand row.  The left-hand expressions are
-   evaluated and compared row-wise to each row of the subquery result.
-   The result of <token>IN</token> is <quote>true</quote> if any equal subquery row is found.
-   The result is <quote>false</quote> if no equal row is found (including the
-   case where the subquery returns no rows).
+   La parte sinistra di questa forma di <token>IN</token> è un costruttore di riga,
+   come descritto in <xref linkend="sql-syntax-row-constructors" />.
+   La parte destra è una subquery tra parentesi,
+   che deve restituire esattamente tante colonne per quante ce ne sono
+   nella riga contenuta nell'espressione della parte sinistra. L'espressione della parte sinistra viene
+   valutata e confrontata con ogni riga risultante dalla sottoquery.
+   Il risultato di <token>IN</token> è <quote>true</quote> se qualche riga uguale viene trovata nella sottoquery.
+   Il risultato è <quote>false</quote> se nessuna riga uguale viene trovata (compreso il caso speciale
+   dove la sottoquery non restituisca nessuna riga).
   </para>
-
+  
   <para>
-   As usual, null values in the rows are combined per
-   the normal rules of SQL Boolean expressions.  Two rows are considered
-   equal if all their corresponding members are non-null and equal; the rows
-   are unequal if any corresponding members are non-null and unequal;
-   otherwise the result of that row comparison is unknown (null).
-   If all the per-row results are either unequal or null, with at least one
-   null, then the result of <token>IN</token> is null.
+   
+    Come al solito, i valori null nelle righe vengono combinati con
+   le normali regole delle espressioni SQL booleane. Due righe sono considerate
+   uquali se tutti i loro corrispondenti membri sono non-null e uguali; le righe
+   sono non uguali se uno qualsiasi dei corrispondenti membri è non-null e non uguale;
+   altrimenti il risultato di quel confronto di riga è sconosciuto (null).
+   Se tutti i risultati per riga sono o non uguali oppure null, con almeno un
+   null, allora il risultato di <token>IN</token> è null.
   </para>
   </sect2>
 
@@ -11181,29 +11185,32 @@ WHERE EXISTS (SELECT 1 FROM tab2 WHERE col2 = tab1.col2);
    <title><literal>NOT IN</literal></title>
 
 <synopsis>
-<replaceable>expression</replaceable> NOT IN (<replaceable>subquery</replaceable>)
+<replaceable>espressione</replaceable> NOT IN (<replaceable>subquery</replaceable>)
 </synopsis>
 
   <para>
-   The right-hand side is a parenthesized
-   subquery, which must return exactly one column.  The left-hand expression
-   is evaluated and compared to each row of the subquery result.
-   The result of <token>NOT IN</token> is <quote>true</quote> if only unequal subquery rows
-   are found (including the case where the subquery returns no rows).
-   The result is <quote>false</quote> if any equal row is found.
+   
+    La parte destra è una sottoquery tra parentesi,
+   che restituisce esattamente una colonna. L'espressione della parte sinistra
+   viene valutata e confrontata ad ogni riga del risultato della subquery.
+   Il risultato di <token>NOT IN</token> è <quote>true</quote> se solo righe non uguali
+   sono trovate nella subquery (compreso il caso speciale in cui la subquery non restituisce nessuna riga).
+   Il risultato è <quote>false</quote> se viene trovata qualche riga uguale.
   </para>
 
   <para>
-   Note that if the left-hand expression yields null, or if there are
-   no equal right-hand values and at least one right-hand row yields
-   null, the result of the <token>NOT IN</token> construct will be null, not true.
-   This is in accordance with SQL's normal rules for Boolean combinations
-   of null values.
+   
+    Notare che se l'espressione della parte sinistra rende null, o se non ci sono
+   valori uguali nella parte destra e almeno una riga della parte destra rende
+   null, il risultato del costrutto <token>NOT IN</token> sarà null, non true.
+   Questo è conforme con le normali regole SQL per le combinazioni booleane
+   di valori null.
   </para>
 
   <para>
-   As with <token>EXISTS</token>, it's unwise to assume that the subquery will
-   be evaluated completely.
+   
+    Come con <token>EXISTS</token>, è sconsigliabile presumere che la sottoquery sarà
+   valutata completamente.
   </para>
 
 <synopsis>
@@ -11211,25 +11218,26 @@ WHERE EXISTS (SELECT 1 FROM tab2 WHERE col2 = tab1.col2);
 </synopsis>
 
   <para>
-   The left-hand side of this form of <token>NOT IN</token> is a row constructor,
-   as described in <xref linkend="sql-syntax-row-constructors"/>.
-   The right-hand side is a parenthesized
-   subquery, which must return exactly as many columns as there are
-   expressions in the left-hand row.  The left-hand expressions are
-   evaluated and compared row-wise to each row of the subquery result.
-   The result of <token>NOT IN</token> is <quote>true</quote> if only unequal subquery rows
-   are found (including the case where the subquery returns no rows).
-   The result is <quote>false</quote> if any equal row is found.
+    La parte sinistra di questa forma di <token>NOT IN</token> è un costruttore di riga,
+   come descritto dentro <xref linkend="sql-syntax-row-constructors" />.
+   La parte destra è una sottoquery tra parenthesi
+   che deve restituire esattamente tante colonne per quante ce ne sono
+   nella riga contenuta nell'espressione della parte sinistra. L'espressione nella parte sinistra viene
+   valutata e confrontata row-wise con ogni riga risultante dalla subquery.
+   Il risultato di <token>NOT IN</token> è <quote>true</quote> se solo righe non uguali vengono trovate
+   nella subquery (compreso il caso speciale in cui la subquery non restituisce nessuna riga).
+   Il risultato è <quote>false</quote> se viene trovata qualche riga uguale.
   </para>
 
   <para>
-   As usual, null values in the rows are combined per
-   the normal rules of SQL Boolean expressions.  Two rows are considered
-   equal if all their corresponding members are non-null and equal; the rows
-   are unequal if any corresponding members are non-null and unequal;
-   otherwise the result of that row comparison is unknown (null).
-   If all the per-row results are either unequal or null, with at least one
-   null, then the result of <token>NOT IN</token> is null.
+   
+    Come al solito, i valori null nelle righe vengono combinati con
+   le normali regole SQL per le espressioni booleane. Due righe sono considerate
+   uquali se tutti i loro corrispondenti membri sono non-null e uguali; le righe
+   sono non uguali se uno qualsiasi dei corrispondenti membri è non-null e non uguale;
+   altrimenti il risultato di quel confronto di riga è sconosciuto (null).
+   Se tutti i risultati per riga sono o non uguali oppure null, con almeno un
+   null, allora il risultato di <token>NOT IN</token> è null.
   </para>
   </sect2>
 
@@ -11242,32 +11250,33 @@ WHERE EXISTS (SELECT 1 FROM tab2 WHERE col2 = tab1.col2);
 </synopsis>
 
   <para>
-   The right-hand side is a parenthesized
-   subquery, which must return exactly one column.  The left-hand expression
-   is evaluated and compared to each row of the subquery result using the
-   given <replaceable>operator</replaceable>, which must yield a Boolean
-   result.
-   The result of <token>ANY</token> is <quote>true</quote> if any true result is obtained.
-   The result is <quote>false</quote> if no true result is found (including the
-   case where the subquery returns no rows).
+   
+    La parte destra è una sottoquery tra parentesi,
+   che deve restituire esattamente una colonna. L'espressione della parte sinistra
+   viene valutata e confrontata con ogni riga risultante della sottoquery usando
+   l'<replaceable>operator</replaceable> fornito, che dovrà rendere un risultato
+   booleano.
+   Il risultato di <token>ANY</token> è <quote>true</quote> se è ottenuto un risultato vero.
+   Il risultato è <quote>false</quote> se non è stato trovato un risultato vero (compreso il
+   caso speciale in cui la subquery non restituisca nessuna riga).
   </para>
 
   <para>
-   <token>SOME</token> is a synonym for <token>ANY</token>.
-   <token>IN</token> is equivalent to <literal>= ANY</literal>.
+   <token>SOME</token> è un sinonimo per <token>ANY</token>.
+   <token>IN</token> è equivalente a <literal>= ANY</literal>.
   </para>
 
   <para>
-   Note that if there are no successes and at least one right-hand row yields
-   null for the operator's result, the result of the <token>ANY</token> construct
-   will be null, not false.
-   This is in accordance with SQL's normal rules for Boolean combinations
-   of null values.
+   Notare che se non ci sono successi ed almeno una riga della parte destra rende
+   null come risultato dell'operatore, il risultato del costrutto <token>ANY</token>
+   sarà null, non falso.
+   Questo è conforme con le normali regole SQL per le combinazioni booleane
+   di valori null.
   </para>
 
   <para>
-   As with <token>EXISTS</token>, it's unwise to assume that the subquery will
-   be evaluated completely.
+    Come con <token>EXISTS</token>, è sconsigliabile presumere che la sottoquery sarà
+    valutata completamente.
   </para>
 
 <synopsis>
@@ -11276,25 +11285,26 @@ WHERE EXISTS (SELECT 1 FROM tab2 WHERE col2 = tab1.col2);
 </synopsis>
 
   <para>
-   The left-hand side of this form of <token>ANY</token> is a row constructor,
-   as described in <xref linkend="sql-syntax-row-constructors"/>.
-   The right-hand side is a parenthesized
-   subquery, which must return exactly as many columns as there are
-   expressions in the left-hand row.  The left-hand expressions are
-   evaluated and compared row-wise to each row of the subquery result,
-   using the given <replaceable>operator</replaceable>.
-   The result of <token>ANY</token> is <quote>true</quote> if the comparison
-   returns true for any subquery row.
-   The result is <quote>false</quote> if the comparison returns false for every
-   subquery row (including the case where the subquery returns no
-   rows).
-   The result is NULL if the comparison does not return true for any row,
-   and it returns NULL for at least one row.
+   
+    La parte sinistra di questa forma di <token>ANY</token> è un costruttore di riga,
+   come descritto dentro <xref linkend="sql-syntax-row-constructors" />.
+   La parte destra è una sottoquery tra parentesi
+   che deve restituire esattamente tante colonne per quante ce ne sono
+   nella riga contenuta nell'espressione della parte sinistra. L'espressione nella parte sinistra viene
+   valutata e confrontata "row-wise" con ogni riga risultante dalla sottoquery,
+   usando l'<replaceable>operatore</replaceable> fornito.
+   Il risultato di <token>ANY</token> è <quote>true</quote> se il confronto
+   restituisce true per qualsiasi riga della sottoquery.
+   Il risultato è <quote>false</quote> se il confronto restituisce false per ogni
+   riga della sottoquery (compreso il caso speciale in cui la subquery non restituisce nessuna
+   riga).
+   IL risultato è NULL se il confronto non restituisce true per ogni riga,
+   e restituisce NULL per almeno una riga.
   </para>
 
   <para>
-   See <xref linkend="row-wise-comparison"/> for details about the meaning
-   of a row-wise comparison.
+   Vedere <xref linkend="row-wise-comparison" /> per dettagli sul significato 
+   di  confronto "row-wise".
   </para>
   </sect2>
 
@@ -11306,25 +11316,26 @@ WHERE EXISTS (SELECT 1 FROM tab2 WHERE col2 = tab1.col2);
 </synopsis>
 
   <para>
-   The right-hand side is a parenthesized
-   subquery, which must return exactly one column.  The left-hand expression
-   is evaluated and compared to each row of the subquery result using the
-   given <replaceable>operator</replaceable>, which must yield a Boolean
-   result.
-   The result of <token>ALL</token> is <quote>true</quote> if all rows yield true
-   (including the case where the subquery returns no rows).
-   The result is <quote>false</quote> if any false result is found.
-   The result is NULL if the comparison does not return false for any row,
-   and it returns NULL for at least one row.
+   
+    La parte destra è una sottoquery tra parentesi,
+   che deve restituire esattamente una colonna. L'espressione della parte sinistra
+   viene valutata e confrontata con ogni riga risultante della sottoquery usando
+   l'<replaceable>operatore</replaceable> fornito, che dovrà rendere un risultato
+   booleano.
+   Il risultato di <token>ALL</token> è <quote>true</quote> se tutte le righe rendono true
+   (compreso il caso speciale in cui la subquery non restituisca nessuna riga).
+   Il risultato è <quote>false</quote> se viene trovato qualche risultato false.
+   Il risultato è NULL se il confronto non restituisce false per ogni riga,
+   e restituisce NULL per almeno una riga.
   </para>
 
   <para>
-   <token>NOT IN</token> is equivalent to <literal>&lt;&gt; ALL</literal>.
+   <token>NOT IN</token> è equivalente a <literal>&lt;&gt; ALL</literal>.
   </para>
 
   <para>
-   As with <token>EXISTS</token>, it's unwise to assume that the subquery will
-   be evaluated completely.
+   Come con <token>EXISTS</token>, sconsigliabile presumere che la sottoquery sarà
+   valutata completamente.
   </para>
 
 <synopsis>
@@ -11332,30 +11343,30 @@ WHERE EXISTS (SELECT 1 FROM tab2 WHERE col2 = tab1.col2);
 </synopsis>
 
   <para>
-   The left-hand side of this form of <token>ALL</token> is a row constructor,
-   as described in <xref linkend="sql-syntax-row-constructors"/>.
-   The right-hand side is a parenthesized
-   subquery, which must return exactly as many columns as there are
-   expressions in the left-hand row.  The left-hand expressions are
-   evaluated and compared row-wise to each row of the subquery result,
-   using the given <replaceable>operator</replaceable>.
-   The result of <token>ALL</token> is <quote>true</quote> if the comparison
-   returns true for all subquery rows (including the
-   case where the subquery returns no rows).
-   The result is <quote>false</quote> if the comparison returns false for any
-   subquery row.
-   The result is NULL if the comparison does not return false for any
-   subquery row, and it returns NULL for at least one row.
+        Il lato sinistro di questa forma di <token>ALL</token> è un costruttore di riga,
+        come descritto in <xref linkend="sql-syntax-row-constructors"/>.
+        Il lato destro è una sottoquery tra parentesi,
+        che deve restituire esattamente tante colonne quante espressioni 
+        ci sono nella riga sulla sinistra. Le espressioni sulla sinistra sono
+        valutate e confrontate in modo row-wise ad ogni riga del risultato della sottoquery,
+        usando l'<replaceable>operatore</replaceable> dato.
+        Il risultato di <token>ALL</token> è <quote>true</quote> se il confronto
+        restituisce true per tutte le righe della sottoquery (incluso il
+        caso in cui la sottoquery non restituisce righe).
+        Il risultato è <quote>false</quote> se il confronto ritorna false per ogni
+        riga della sottoquery.
+        Il risultato è NULL se il confronto non restituisce false per ogni
+        riga della sottoquey, e ritorna NULL per almeno una riga.
   </para>
 
   <para>
-   See <xref linkend="row-wise-comparison"/> for details about the meaning
-   of a row-wise comparison.
+        vedere <xref linkend="row-wise-comparison"/> per dettagli sul significato 
+        di un confronto row-wise.
   </para>
   </sect2>
 
   <sect2>
-   <title>Row-wise Comparison</title>
+   <title>Confronto row-wise</title>
 
    <indexterm zone="functions-subquery">
     <primary>comparison</primary>
@@ -11367,25 +11378,25 @@ WHERE EXISTS (SELECT 1 FROM tab2 WHERE col2 = tab1.col2);
 </synopsis>
 
   <para>
-   The left-hand side is a row constructor,
-   as described in <xref linkend="sql-syntax-row-constructors"/>.
-   The right-hand side is a parenthesized subquery, which must return exactly
-   as many columns as there are expressions in the left-hand row. Furthermore,
-   the subquery cannot return more than one row.  (If it returns zero rows,
-   the result is taken to be null.)  The left-hand side is evaluated and
-   compared row-wise to the single subquery result row.
+        Il lato sinistro è un costruttore di riga,
+        come descritto in <xref linkend="sql-syntax-row-constructors"/>.
+        Il lato destro è una sottoquery tra parentesi, che restituisce esattamente
+        quante colonne quante espressioni ci sono nella riga sulla sinistra. Inoltre,
+        la sottoquery non può ritornare più di una riga. (Se restituisce zero righe,
+        il risultato è considerato essere null.) Il lato sinistro è valutato 
+        e confrontato in modo row-wise alla singola riga risultante dalla sottoquery.
   </para>
 
   <para>
-   See <xref linkend="row-wise-comparison"/> for details about the meaning
-   of a row-wise comparison.
+        Vedere <xref linkend="row-wise-comparison"/> per dettagli sul significato
+        di un confronto "row-wise".
   </para>
   </sect2>
  </sect1>
 
 
  <sect1 id="functions-comparisons">
-  <title>Row and Array Comparisons</title>
+  <title>Confronti di array e righe</title>
 
   <indexterm>
    <primary>IN</primary>
@@ -11408,11 +11419,11 @@ WHERE EXISTS (SELECT 1 FROM tab2 WHERE col2 = tab1.col2);
   </indexterm>
 
   <indexterm>
-   <primary>row-wise comparison</primary>
+   <primary>confronto row-wise</primary>
   </indexterm>
 
   <indexterm>
-   <primary>comparison</primary>
+   <primary>confronto</primary>
    <secondary>row-wise</secondary>
   </indexterm>
 
@@ -11425,15 +11436,16 @@ WHERE EXISTS (SELECT 1 FROM tab2 WHERE col2 = tab1.col2);
   </indexterm>
 
   <para>
-   This section describes several specialized constructs for making
-   multiple comparisons between groups of values.  These forms are
-   syntactically related to the subquery forms of the previous section,
-   but do not involve subqueries.
-   The forms involving array subexpressions are
-   <productname>PostgreSQL</productname> extensions; the rest are
-   <acronym>SQL</acronym>-compliant.
-   All of the expression forms documented in this section return
-   Boolean (true/false) results.
+   
+    Questa sezione descrive diversi costrutti specializzati per fare
+   confronti multipli tra gruppi di valori. Queste forme sono
+   riferite sintatticamente alle forme di sottoquery della sezione precedente,
+   ma non coinvolgono le subquery.
+   Le forme che coinvolgono subespressioni array sono
+   estensioni di <productname>PostgreSQL</productname>; le restanti sono
+   conformi-<acronym>SQL</acronym>.
+   Tutte le forme di espressioni documentate in questa sezione restituiscono
+   risultati Booleani (true/false).
   </para>
 
   <sect2>
@@ -11444,10 +11456,10 @@ WHERE EXISTS (SELECT 1 FROM tab2 WHERE col2 = tab1.col2);
 </synopsis>
 
   <para>
-   The right-hand side is a parenthesized list
-   of scalar expressions.  The result is <quote>true</quote> if the left-hand expression's
-   result is equal to any of the right-hand expressions.  This is a shorthand
-   notation for
+   La parte destra è una lista di espressioni scalari tra parentesi.
+   Il risultato è <quote>vero</quote> se il risultato dell'espressione nella parte sinistra
+   è uguale a qualcuna delle righe nell'espressione della parte destra. Questa è
+   una notazione abbreviata per
 
 <synopsis>
 <replaceable>expression</replaceable> = <replaceable>value1</replaceable>
@@ -11459,11 +11471,11 @@ OR
   </para>
 
   <para>
-   Note that if the left-hand expression yields null, or if there are
-   no equal right-hand values and at least one right-hand expression yields
-   null, the result of the <token>IN</token> construct will be null, not false.
-   This is in accordance with SQL's normal rules for Boolean combinations
-   of null values.
+   Notare che se l'espressione a sinistra rende null, o se non ci sono
+   valori uguali nella parte destra e almeno una espressione nella parte destra rende
+   null, il risultato del costrutto <token>IN</token> sarà null, non falso.
+   Questo è conforme con le normali regole SQL per le combinazioni Booleane
+   di valori null.
   </para>
   </sect2>
 
@@ -11475,10 +11487,11 @@ OR
 </synopsis>
 
   <para>
-   The right-hand side is a parenthesized list
-   of scalar expressions.  The result is <quote>true</quote> if the left-hand expression's
-   result is unequal to all of the right-hand expressions.  This is a shorthand
-   notation for
+   
+    La parte destra è un elenco di espressioni scalari tra parentesi. Il risultato
+   è <quote>vero</quote> se il risultato dell'espressione della parte sinistra
+   è non uguale a tutte le espressioni della parte destra. Questa è una
+   notazione abbreviata per
 
 <synopsis>
 <replaceable>expression</replaceable> &lt;&gt; <replaceable>value1</replaceable>
@@ -11490,20 +11503,20 @@ AND
   </para>
 
   <para>
-   Note that if the left-hand expression yields null, or if there are
-   no equal right-hand values and at least one right-hand expression yields
-   null, the result of the <token>NOT IN</token> construct will be null, not true
-   as one might naively expect.
-   This is in accordance with SQL's normal rules for Boolean combinations
-   of null values.
+    Notare che se l'espressione nella parte sinistra rende null, o se non ci sono
+   valori uguali nella parte destra e almeno una espressione nella parte destra rende
+   null, il risultato del costrutto <token>NOT IN</token> sarà null, non vero
+   come ci si potrebbe ingenuamente aspettare.
+   Questo è conforme alle normali regole SQL per le combinazioni Booleane
+   di valori null.
   </para>
 
   <tip>
   <para>
-   <literal>x NOT IN y</literal> is equivalent to <literal>NOT (x IN y)</literal> in all
-   cases.  However, null values are much more likely to trip up the novice when
-   working with <token>NOT IN</token> than when working with <token>IN</token>.
-   It is best to express your condition positively if possible.
+   La forma <literal>x NOT IN y</literal> è equivalente a <literal>NOT (x IN y)</literal> in tutti
+   i casi. Tuttavia, è molto più probabile inciampare in valori null
+   quando si lavora con <token>NOT IN</token>, che quando si lavora con <token>IN</token>.
+   Se possibile, è meglio esprimere le condizioni positivamente.
   </para>
   </tip>
   </sect2>
@@ -11517,31 +11530,32 @@ AND
 </synopsis>
 
   <para>
-   The right-hand side is a parenthesized expression, which must yield an
-   array value.
-   The left-hand expression
-   is evaluated and compared to each element of the array using the
-   given <replaceable>operator</replaceable>, which must yield a Boolean
-   result.
-   The result of <token>ANY</token> is <quote>true</quote> if any true result is obtained.
-   The result is <quote>false</quote> if no true result is found (including the
-   case where the array has zero elements).
+   
+    La parte destra è una espressione tra parentesi, che rende un
+   valore array.
+   L'espressione a sinistra
+   viene valutata e confrontata con ogni elemento dell'array utilizzando
+   l'<replaceable>operatore</replaceable> fornito, che deve rendere un risultato
+   Booleano.
+   Il risultato di <token>ANY</token> è <quote>true</quote> se viene ottenuto qualche risultato vero.
+   Il risultato è <quote>false</quote> se non viene ottenuto nessun risultato vero (compreso il caso
+   speciale in cui l'array ha zero elementi).
   </para>
 
   <para>
-   If the array expression yields a null array, the result of
-   <token>ANY</token> will be null.  If the left-hand expression yields null,
-   the result of <token>ANY</token> is ordinarily null (though a non-strict
-   comparison operator could possibly yield a different result).
-   Also, if the right-hand array contains any null elements and no true
-   comparison result is obtained, the result of <token>ANY</token>
-   will be null, not false (again, assuming a strict comparison operator).
-   This is in accordance with SQL's normal rules for Boolean combinations
-   of null values.
+    Se l'espressione array rende un array null, il risultato di
+   <token>ANY</token> sarà null. Se l'espressione della parte sinistra rende null,
+   il risultato di <token>ANY</token> è normalmente null (sebbene un operatore di
+   confronto non-rigoroso potrebbe dare un risultato diverso).
+   Inoltre, se l'array nella parte destra contiene alcuni elementi null e non viene
+   ottenuto nessun risultato di confronto vero, il risultato di <token>ANY</token>
+   sarà null, non falso (ancora, presumendo un operatore di confronto rigoroso).
+   Questo è conforme alle normali regole SQL per le combinazioni Booleane
+   di valori null.
   </para>
 
   <para>
-   <token>SOME</token> is a synonym for <token>ANY</token>.
+   <token>SOME</token> è un sinonimo di <token>ANY</token>.
   </para>
   </sect2>
 
@@ -11553,84 +11567,87 @@ AND
 </synopsis>
 
   <para>
-   The right-hand side is a parenthesized expression, which must yield an
-   array value.
-   The left-hand expression
-   is evaluated and compared to each element of the array using the
-   given <replaceable>operator</replaceable>, which must yield a Boolean
-   result.
-   The result of <token>ALL</token> is <quote>true</quote> if all comparisons yield true
-   (including the case where the array has zero elements).
-   The result is <quote>false</quote> if any false result is found.
+   
+    La parte destra è una espressione tra parentesi, che deve rendere un
+   valore array.
+   L'espressione a sinistra
+   viene valutata e confrontata con ogni elemento dell'array usando
+   l'<replaceable>operatore</replaceable> fornito, che deve rendere un risultato
+   Booleano.
+   Il risultato di <token>ALL</token> è <quote>true</quote> se tutti i confronti rendono vero
+   (compreso il caso speciale in cui l'array ha zero elementi).
+   Il risultato è <quote>false</quote> se viene trovato qualche risultato falso.
   </para>
 
   <para>
-   If the array expression yields a null array, the result of
-   <token>ALL</token> will be null.  If the left-hand expression yields null,
-   the result of <token>ALL</token> is ordinarily null (though a non-strict
-   comparison operator could possibly yield a different result).
-   Also, if the right-hand array contains any null elements and no false
-   comparison result is obtained, the result of <token>ALL</token>
-   will be null, not true (again, assuming a strict comparison operator).
-   This is in accordance with SQL's normal rules for Boolean combinations
-   of null values.
+   Se l'espressione array rende un array null, il risultato di
+   <token>ALL</token> sarà null. Se l'espressione nella parte sinistra rende null,
+   il risultato di <token>ALL</token> è normalmente null (sebbene un operatore
+   di confronto non-rigoroso potrebbe dare un risultato diverso).
+   Inoltre, se l'array a destra contiene qualche elemento null nessun risultato falso
+   viene ottenuto dal confronto, il risultato di <token>ALL</token>
+   sarà null, non vero (ancora, presumendo un operatore di confronto rigoroso).
+   Questo è conforme alle normali regole SQL per le combinazioni Booleane
+   di valori null.
   </para>
   </sect2>
 
   <sect2 id="row-wise-comparison">
-   <title>Row-wise Comparison</title>
+   <title>Confronto Row-wise</title>
 
 <synopsis>
 <replaceable>row_constructor</replaceable> <replaceable>operator</replaceable> <replaceable>row_constructor</replaceable>
 </synopsis>
 
   <para>
-   Each side is a row constructor,
-   as described in <xref linkend="sql-syntax-row-constructors"/>.
-   The two row values must have the same number of fields.
-   Each side is evaluated and they are compared row-wise.  Row comparisons
-   are allowed when the <replaceable>operator</replaceable> is
+   
+    Ambedue le parti destra e sinistra sono costruttori di riga,
+   come descritto dentro <xref linkend="sql-syntax-row-constructors" />.
+   I due valori di riga devono avere lo stesso numero di campi.
+   Ogni parte viene valutata e quindi confrontata row-wise.  I confronti di riga
+   sono consentiti quando l'<replaceable>operatore</replaceable> è
    <literal>=</literal>,
    <literal>&lt;&gt;</literal>,
    <literal>&lt;</literal>,
    <literal>&lt;=</literal>,
-   <literal>&gt;</literal> or
+   <literal>&gt;</literal> o
    <literal>&gt;=</literal>,
-   or has semantics similar to one of these.  (To be specific, an operator
-   can be a row comparison operator if it is a member of a B-tree operator
-   class, or is the negator of the <literal>=</literal> member of a B-tree operator
-   class.)
+   o ha una semantica simile ad uno di questi. (Per chiarire, un operatore
+   può essere un operatore di confronto di riga se è un membro di una classe di
+   operatori B-Tree, oppure è la negazione del membro <literal>=</literal> di una classe di operatori
+   B-Tree).
   </para>
 
   <para>
-   The <literal>=</literal> and <literal>&lt;&gt;</literal> cases work slightly differently
-   from the others.  Two rows are considered
-   equal if all their corresponding members are non-null and equal; the rows
-   are unequal if any corresponding members are non-null and unequal;
-   otherwise the result of the row comparison is unknown (null).
+   
+    I casi <literal>=</literal> e <literal>&lt;&gt;</literal> lavorano in modo leggermente diverso
+   dagli altri. Due righe vengono considerate
+   uguali se tutti i loro membri corrispondenti sono non-null ed uguali; le righe
+   sono non uguali se alcuni membri corrispondenti sono non-null e non-uguali;
+   altrimenti il risultato del confronto di riga è sconosciuto (null).
   </para>
 
   <para>
-   For the <literal>&lt;</literal>, <literal>&lt;=</literal>, <literal>&gt;</literal> and
-   <literal>&gt;=</literal> cases, the row elements are compared left-to-right,
-   stopping as soon as an unequal or null pair of elements is found.
-   If either of this pair of elements is null, the result of the
-   row comparison is unknown (null); otherwise comparison of this pair
-   of elements determines the result.  For example,
+   Per i casi <literal>&lt;</literal>, <literal>&lt;=</literal>, <literal>&gt;</literal> e
+   <literal>&gt;=</literal>, gli elementi di riga sono confrontati da sinistra a destra,
+   fermandosi non appene viene trovata una coppia di elementi non uguali o null.
+   Se ognuno degli elementi della coppia è null, il risultato del confronto
+   di riga è sconosciuto (null); altrimenti il confronto di questa coppia
+   di elementi determina il risultato. Per esempio,
    <literal>ROW(1,2,NULL) &lt; ROW(1,3,0)</literal>
-   yields true, not null, because the third pair of elements are not
-   considered.
+   rende vero, non null, perchè il terzo paio di elementi non viene
+   considerato.
   </para>
 
   <note>
    <para>
-    Prior to <productname>PostgreSQL</productname> 8.2, the
-    <literal>&lt;</literal>, <literal>&lt;=</literal>, <literal>&gt;</literal> and <literal>&gt;=</literal>
-    cases were not handled per SQL specification.  A comparison like
+    Prima di <productname>PostgreSQL</productname> 8.2, i casi
+    <literal>&lt;</literal>, <literal>&lt;=</literal>, <literal>&gt;</literal> e <literal>&gt;=</literal>
+    non erano gestiti per le specifiche SQL. Un confronto tipo
     <literal>ROW(a,b) &lt; ROW(c,d)</literal>
-    was implemented as
+    era implementato come
     <literal>a &lt; c AND b &lt; d</literal>
-    whereas the correct behavior is equivalent to
+    mentre il comportamento corretto è equivalente a
     <literal>a &lt; c OR (a = c AND b &lt; d)</literal>.
    </para>
   </note>
@@ -11640,11 +11657,11 @@ AND
 </synopsis>
 
   <para>
-   This construct is similar to a <literal>&lt;&gt;</literal> row comparison,
-   but it does not yield null for null inputs.  Instead, any null value is
-   considered unequal to (distinct from) any non-null value, and any two
-   nulls are considered equal (not distinct).  Thus the result will
-   either be true or false, never null.
+   Questo costrutto è simile al confronto di riga <literal>&lt;&gt;</literal>,
+   ma esso non rende null per valori di input null. Invece, qualsiasi valore null viene
+   considerato non uguale a (distinct from) ogni valore non-null, e ogni due
+   null sono considerati uguali (not distinct). Per cui, il risultato sarà
+   sempre true o false, mai null.
   </para>
 
 <synopsis>
@@ -11652,24 +11669,25 @@ AND
 </synopsis>
 
   <para>
-   This construct is similar to a <literal>=</literal> row comparison,
-   but it does not yield null for null inputs.  Instead, any null value is
-   considered unequal to (distinct from) any non-null value, and any two
-   nulls are considered equal (not distinct).  Thus the result will always
-   be either true or false, never null.
+
+   Questo costrutto è simile al confronto di riga <literal>=</literal>,
+   ma esso non rende null per ingressi null. Invece ogni valore null viene considerato
+   non uguale a (distinct from) ogni valore non null, e due valori 
+   null sono considerati uguali (not distinct). Per cui il risultato sarà sempre
+   vero o falso, mai null.
   </para>
 
   <note>
    <para>
-    The SQL specification requires row-wise comparison to return NULL if the
-    result depends on comparing two NULL values or a NULL and a non-NULL.
-    <productname>PostgreSQL</productname> does this only when comparing the
-    results of two row constructors or comparing a row constructor to the
-    output of a subquery (as in <xref linkend="functions-subquery"/>).
-    In other contexts where two composite-type values are compared, two
-    NULL field values are considered equal, and a NULL is considered larger
-    than a non-NULL.  This is necessary in order to have consistent sorting
-    and indexing behavior for composite types.
+        La specifica SQL richiede che il confronto row-wise renda NULL se 
+        il risultato dipende dal confronto di valori NULL o di un NULL e un non-NULL.
+       <productname>PostgreSQL</productname> fa questo solo quando si confrontano i risultati
+        di 2 costruttori di riga o si confronta un costruttore di riga con l'output
+        di una sottoquery (come in <xref linkend="functions-subquery"/>).
+        In altri contesti dove due valori di tipi-composti sono comparati, due
+        valori NULL sono considerati uguali, ue un NULL è considerato più grande 
+        di un non-NULL. Questo è necessario per avere comportamenti di ordinamento e indicizzazione consistenti
+        per i tipi composti.
    </para>
   </note>
 
@@ -11677,11 +11695,11 @@ AND
  </sect1>
 
  <sect1 id="functions-srf">
-  <title>Set Returning Functions</title>
+  <title>Funzioni che ritornano insiemi</title>
 
   <indexterm zone="functions-srf">
-   <primary>set returning functions</primary>
-   <secondary>functions</secondary>
+   <primary>funzioni che ritornano insiemi</primary>
+   <secondary>funzioni</secondary>
   </indexterm>
 
   <indexterm>
@@ -11689,52 +11707,51 @@ AND
   </indexterm>
 
   <para>
-   This section describes functions that possibly return more than one row.
-   Currently the only functions in this class are series generating functions,
-   as detailed in <xref linkend="functions-srf-series"/> and
-   <xref linkend="functions-srf-subscripts"/>.
+   Questa sezione descrive le funzioni che possono restituire più di una riga.
+   Attualmente le sole funzioni in questa classe sono le funzioni di generazione serie,
+   come specificato dettagliatamente in <xref linkend="functions-srf-series" /> e <xref linkend="functions-srf-subscripts"/>..
   </para>
 
   <table id="functions-srf-series">
-   <title>Series Generating Functions</title>
+   <title>Funzioni di generazione serie</title>
    <tgroup cols="4">
     <thead>
      <row>
-      <entry>Function</entry>
-      <entry>Argument Type</entry>
-      <entry>Return Type</entry>
-      <entry>Description</entry>
+      <entry>Funzione</entry>
+      <entry>Tipo argomento</entry>
+      <entry>Tipo restituito</entry>
+      <entry>Descrizione</entry>
      </row>
     </thead>
 
     <tbody>
      <row>
       <entry><literal><function>generate_series(<parameter>start</parameter>, <parameter>stop</parameter>)</function></literal></entry>
-      <entry><type>int</type> or <type>bigint</type></entry>
-      <entry><type>setof int</type> or <type>setof bigint</type> (same as argument type)</entry>
+      <entry><type>int</type> o <type>bigint</type></entry>
+      <entry><type>setof int</type> o <type>setof bigint</type> (stesso tipo dell'argomento)</entry>
       <entry>
-       Generate a series of values, from <parameter>start</parameter> to <parameter>stop</parameter>
-       with a step size of one
+       Genera una serie di valori , da <parameter>start</parameter> a <parameter>stop</parameter>
+       con dimensione del passo di uno
       </entry>
      </row>
 
      <row>
       <entry><literal><function>generate_series(<parameter>start</parameter>, <parameter>stop</parameter>, <parameter>step</parameter>)</function></literal></entry>
-      <entry><type>int</type> or <type>bigint</type></entry>
-      <entry><type>setof int</type> or <type>setof bigint</type> (same as argument type)</entry>
+      <entry><type>int</type> o <type>bigint</type></entry>
+      <entry><type>setof int</type> o <type>setof bigint</type> (stesso tipo dell'argomento)</entry>
       <entry>
-       Generate a series of values, from <parameter>start</parameter> to <parameter>stop</parameter>
-       with a step size of <parameter>step</parameter>
+       Genera una serie di valori , da <parameter>start</parameter> a <parameter>stop</parameter>
+       con dimensione del passo <parameter>step</parameter>
       </entry>
      </row>
 
      <row>
       <entry><literal><function>generate_series(<parameter>start</parameter>, <parameter>stop</parameter>, <parameter>step</parameter> <type>interval</type>)</function></literal></entry>
-      <entry><type>timestamp</type> or <type>timestamp with time zone</type></entry>
-      <entry><type>setof timestamp</type> or <type>setof timestamp with time zone</type> (same as argument type)</entry>
+      <entry><type>timestamp</type> o <type>timestamp with time zone</type></entry>
+      <entry><type>setof timestamp</type> o <type>setof timestamp with time zone</type> (tesso tipo dell'argomento</entry>
       <entry>
-       Generate a series of values, from <parameter>start</parameter> to <parameter>stop</parameter>
-       with a step size of <parameter>step</parameter>
+       Genera una serie di valori , da <parameter>start</parameter> a <parameter>stop</parameter>
+       con dimensione del passo <parameter>step</parameter>
       </entry>
      </row>
 
@@ -11743,12 +11760,13 @@ AND
   </table>
 
   <para>
-   When <parameter>step</parameter> is positive, zero rows are returned if
-   <parameter>start</parameter> is greater than <parameter>stop</parameter>.
-   Conversely, when <parameter>step</parameter> is negative, zero rows are
-   returned if <parameter>start</parameter> is less than <parameter>stop</parameter>.
-   Zero rows are also returned for <literal>NULL</literal> inputs. It is an error
-   for <parameter>step</parameter> to be zero. Some examples follow:
+   
+    Quando <parameter>step</parameter> è positivo, vengono restituite zero righe se
+   <parameter>start</parameter> è maggiore di <parameter>stop</parameter>.
+   Al contrario, quando <parameter>step</parameter> è negativo, zero righe sono
+   restituite se <parameter>start</parameter> è minore di <parameter>stop</parameter>.
+   Vengono restituite zero righe anche per input <literal>NULL</literal>. Un valore zero
+   per <parameter>step</parameter> è considerato errore. Seguono alcuni esempi:
 <programlisting>
 SELECT * FROM generate_series(2,4);
  generate_series
@@ -11771,7 +11789,7 @@ SELECT * FROM generate_series(4,3);
 -----------------
 (0 rows)
 
--- this example relies on the date-plus-integer operator
+-- questo esempip fa uso dell'operatore data-più-intero 
 SELECT current_date + s.a AS dates FROM generate_series(0,14,7) AS s(a);
    dates
 ------------
@@ -11802,9 +11820,9 @@ SELECT * FROM generate_series('2008-03-01 00:00'::timestamp,
    <tgroup cols="3">
     <thead>
      <row>
-      <entry>Function</entry>
-      <entry>Return Type</entry>
-      <entry>Description</entry>
+      <entry>Funzione</entry>
+      <entry>Tipo di ritorno</entry>
+      <entry>Descrizione</entry>
      </row>
     </thead>
 
@@ -11813,7 +11831,7 @@ SELECT * FROM generate_series('2008-03-01 00:00'::timestamp,
       <entry><literal><function>generate_subscripts(<parameter>array anyarray</parameter>, <parameter>dim int</parameter>)</function></literal></entry>
       <entry><type>setof int</type></entry>
       <entry>
-       Generate a series comprising the given array's subscripts.
+            Genera una serie comprendente i sottoscript dell'array fornito.
       </entry>
      </row>
 
@@ -11821,9 +11839,9 @@ SELECT * FROM generate_series('2008-03-01 00:00'::timestamp,
       <entry><literal><function>generate_subscripts(<parameter>array anyarray</parameter>, <parameter>dim int</parameter>, <parameter>reverse boolean</parameter>)</function></literal></entry>
       <entry><type>setof int</type></entry>
       <entry>
-       Generate a series comprising the given array's subscripts. When
-       <parameter>reverse</parameter> is true, the series is returned in
-       reverse order.
+            Genera una serie contenente i sottoscript dell'array fornito. Quando 
+            <parameter>reverse</parameter> è true, la serie viene restituita con
+            ordine invertito.
       </entry>
      </row>
 
@@ -11836,14 +11854,14 @@ SELECT * FROM generate_series('2008-03-01 00:00'::timestamp,
   </indexterm>
 
   <para>
-   <function>generate_subscripts</function> is a convenience function that generates
-   the set of valid subscripts for the specified dimension of the given
-   array.
-   Zero rows are returned for arrays that do not have the requested dimension,
-   or for NULL arrays (but valid subscripts are returned for NULL array
-   elements).  Some examples follow:
+        <function>generate_subscripts</function> è una funzione utile che genera
+        l'insieme di sottoscript validi per la dimensione specificata dell'array
+        fornito.
+        Per gli array che non hanno la dimensione richiesta o per array NULL, sono ritornate zero righe
+        (ma per array NULL sono ritornati i sottoscript validi per gli elementi).
+        Seguono alcuni esempi:
 <programlisting>
--- basic usage
+-- uso di base
 SELECT generate_subscripts('{NULL,1,NULL,2}'::int[], 1) AS s;
  s 
 ---
@@ -11894,64 +11912,65 @@ postgres=# SELECT * FROM unnest2(ARRAY[[1,2],[3,4]]);
 
  </sect1>
 
+
  <sect1 id="functions-info">
-  <title>System Information Functions</title>
+  <title>Funzioni per informazioni di sistema</title>
 
   <para>
-   <xref linkend="functions-info-session-table"/> shows several
-   functions that extract session and system information.
+   La <xref linkend="functions-info-session-table" /> mostra diverse
+   funzioni che estraggono informazioni di sessione e di sistema.
   </para>
 
   <para>
-   In addition to the functions listed in this section, there are a number of
-   functions related to the statistics system that also provide system
-   information. See <xref linkend="monitoring-stats-views"/> for more
-   information.
+   In aggiunta alle funzioni elencate in questa sezione, ci sono un certo numero di
+   funzioni relative alle statistiche di sistema che forniscono informazioni di
+   sistema. Vedere <xref linkend="monitoring-stats-views" /> per ulteriori
+   informazioni.
   </para>
 
    <table id="functions-info-session-table">
-    <title>Session Information Functions</title>
+  <title>Funzioni per informazioni di sessione</title>
     <tgroup cols="3">
      <thead>
-      <row><entry>Name</entry> <entry>Return Type</entry> <entry>Description</entry></row>
+      <row><entry>Nome</entry> <entry>Tipo di ritorno</entry> <entry>Descrizione</entry></row>
      </thead>
 
      <tbody>
       <row>
        <entry><literal><function>current_catalog</function></literal></entry>
        <entry><type>name</type></entry>
-       <entry>name of current database (called <quote>catalog</quote> in the SQL standard)</entry>
+       <entry>nome del database corrente (chiamato <quote>catalog</quote> nello standard SQL)</entry>
       </row>
 
       <row>
        <entry><literal><function>current_database()</function></literal></entry>
        <entry><type>name</type></entry>
-       <entry>name of current database</entry>
+       <entry>nome del database corrente</entry>
       </row>
 
       <row>
        <entry><literal><function>current_schema</function>[()]</literal></entry>
        <entry><type>name</type></entry>
-       <entry>name of current schema</entry>
+       <entry>nome dello schema corrente</entry>
       </row>
 
       <row>
        <entry><literal><function>current_schemas(<type>boolean</type>)</function></literal></entry>
        <entry><type>name[]</type></entry>
-       <entry>names of schemas in search path, optionally including implicit schemas</entry>
+       <entry>nomi degli schemi nel percorso di ricerca, includendo opzionalmente includendo schemi</entry>
       </row>
 
       <row>
        <entry><literal><function>current_user</function></literal></entry>
        <entry><type>name</type></entry>
-       <entry>user name of current execution context</entry>
+       <entry>nome utente dell'attuale contesto in esecuzione</entry>
       </row>
 
       <row>
        <entry><literal><function>current_query()</function></literal></entry>
        <entry><type>text</type></entry>
-       <entry>text of the currently executing query, as submitted
-       by the client (might contain more than one statement)</entry>
+       <entry>testo della query attualmente in esecuzione, come inviata dal client,
+        (potrebbe contenere più di una istruzione)</entry>
       </row>
 
       <row>
@@ -11959,80 +11978,80 @@ postgres=# SELECT * FROM unnest2(ARRAY[[1,2],[3,4]]);
        <entry><literal><function>pg_backend_pid()</function></literal></entry>
        <entry><type>int</type></entry>
        <entry>
-        Process ID of the server process attached to the current session
+            ID di processo del server per la sessione corrente
        </entry>
       </row>
 
       <row>
        <entry><literal><function>pg_listening_channels()</function></literal></entry>
        <entry><type>setof text</type></entry>
-       <entry>channel names that the session is currently listening on</entry>
+       <entry>nomi dei canali sui quali la sessione corrente sta ascoltando</entry>
       </row>
 
       <row>
        <entry><literal><function>inet_client_addr()</function></literal></entry>
        <entry><type>inet</type></entry>
-       <entry>address of the remote connection</entry>
+       <entry>indirizzo della connessione remote</entry>
       </row>
 
       <row>
        <entry><literal><function>inet_client_port()</function></literal></entry>
        <entry><type>int</type></entry>
-       <entry>port of the remote connection</entry>
+       <entry>porta della connessione remota</entry>
       </row>
 
       <row>
        <entry><literal><function>inet_server_addr()</function></literal></entry>
        <entry><type>inet</type></entry>
-       <entry>address of the local connection</entry>
+       <entry>indirizzo della connessione locale</entry>
       </row>
 
       <row>
        <entry><literal><function>inet_server_port()</function></literal></entry>
        <entry><type>int</type></entry>
-       <entry>port of the local connection</entry>
+       <entry>porta della connessione locale</entry>
       </row>
 
       <row>
        <entry><literal><function>pg_my_temp_schema()</function></literal></entry>
        <entry><type>oid</type></entry>
-       <entry>OID of session's temporary schema, or 0 if none</entry>
+       <entry>OID dello schema temporaneo della sessione, o 0 se non presente</entry>
       </row>
 
       <row>
        <entry><literal><function>pg_is_other_temp_schema(<type>oid</type>)</function></literal></entry>
        <entry><type>boolean</type></entry>
-       <entry>is schema another session's temporary schema?</entry>
+       <entry>lo schema è lo schema temporaneo di un'altra sessione?</entry>
       </row>
 
       <row>
        <entry><literal><function>pg_postmaster_start_time()</function></literal></entry>
        <entry><type>timestamp with time zone</type></entry>
-       <entry>server start time</entry>
+       <entry>orario di avvio del server</entry>
       </row>
 
       <row>
        <entry><literal><function>pg_conf_load_time()</function></literal></entry>
        <entry><type>timestamp with time zone</type></entry>
-       <entry>configuration load time</entry>
+       <entry>tempo di caricamento della configurazione</entry>
       </row>
 
       <row>
        <entry><literal><function>session_user</function></literal></entry>
        <entry><type>name</type></entry>
-       <entry>session user name</entry>
+       <entry>nome utente della sessione</entry>
       </row>
 
       <row>
        <entry><literal><function>user</function></literal></entry>
        <entry><type>name</type></entry>
-       <entry>equivalent to <function>current_user</function></entry>
+       <entry>equivalente a <function>current_user</function></entry>
       </row>
 
       <row>
        <entry><literal><function>version()</function></literal></entry>
        <entry><type>text</type></entry>
-       <entry><productname>PostgreSQL</productname> version information</entry>
+       <entry>informazioni sulla versione di <productname>PostgreSQL</productname></entry>
       </row>
      </tbody>
     </tgroup>
@@ -12042,26 +12061,26 @@ postgres=# SELECT * FROM unnest2(ARRAY[[1,2],[3,4]]);
     <para>
      <function>current_catalog</function>, <function>current_schema</function>,
      <function>current_user</function>, <function>session_user</function>,
-     and <function>user</function> have special syntactic status
-     in <acronym>SQL</acronym>: they must be called without trailing
-     parentheses.  (In PostgreSQL, parentheses can optionally be used with
-     <function>current_schema</function>, but not with the others.)
+     e <function>user</function> hanno stati sintattici speciali 
+     in <acronym>SQL</acronym>: devono essere chiamati senza parentesi in fondo.
+     (In PostgreSQL, le parentesi possono essere usati opzionalmente con
+     <function>current_schema</function>, ma non con le altre.)
     </para>
    </note>
 
    <indexterm>
-    <primary>user</primary>
-    <secondary>current</secondary>
+    <primary>utente</primary>
+    <secondary>corrente</secondary>
    </indexterm>
 
    <indexterm>
     <primary>schema</primary>
-    <secondary>current</secondary>
+    <secondary>corrente</secondary>
    </indexterm>
 
    <indexterm>
-    <primary>search path</primary>
-    <secondary>current</secondary>
+    <primary>percorso di ricerca</primary>
+    <secondary>corrente</secondary>
    </indexterm>
 
    <indexterm>
@@ -12081,33 +12100,34 @@ postgres=# SELECT * FROM unnest2(ARRAY[[1,2],[3,4]]);
    </indexterm>
 
    <para>
-    The <function>session_user</function> is normally the user who initiated
-    the current database connection; but superusers can change this setting
-    with <xref linkend="sql-set-session-authorization"/>.
-    The <function>current_user</function> is the user identifier
-    that is applicable for permission checking. Normally it is equal
-    to the session user, but it can be changed with
-    <xref linkend="sql-set-role"/>.
-    It also changes during the execution of
-    functions with the attribute <literal>SECURITY DEFINER</literal>.
-    In Unix parlance, the session user is the <quote>real user</quote> and
-    the current user is the <quote>effective user</quote>.
+    Il <function>session_user</function> è normalmente l'utente che ha iniziato
+    la connessione corrente di database; ma il superutente può cambiare questa impostazione
+    con <xref linkend="sql-set-session-authorization" endterm="sql-set-session-authorization-title" />.
+    Il <function>current_user</function> è l'identificatore dell'utente
+    che è applicabile per il controllo dei permessi. Normalmente, esso è uguale
+    all'utente di sessione,ma può essere cambiato con
+    <xref linkend="sql-set-role" endterm="sql-set-role-title" />.
+    Esso può anche essere cambiato durante l'esecuzione di
+    funzioni con l'attributo <literal>SECURITY DEFINER</literal>.
+    Nel gergo Unix, l'utente di sessione è identificato come <quote>real user</quote> e
+    l'utente corrente è identificato come <quote>effective user</quote>.
    </para>
 
    <para>
-    <function>current_schema</function> returns the name of the schema that is
-    first in the search path (or a null value if the search path is
-    empty).  This is the schema that will be used for any tables or
-    other named objects that are created without specifying a target schema.
-    <function>current_schemas(boolean)</function> returns an array of the names of all
-    schemas presently in the search path.  The Boolean option determines whether or not
-    implicitly included system schemas such as <literal>pg_catalog</literal> are included in the
-    returned search path.
+    
+    La funzione <function>current_schema</function> restituisce il nome dello schema che è
+    in testa al percorso di ricerca (o un valore null se il percorso di ricerca è
+    vuoto). Questo è lo schema che sarà usato per ogni tabella o ogni altro
+    oggetto chiamato che è stato creato senza specificare uno schema.
+    La funzione <function>current_schemas(booleana)</function> restituirà un array dei nomi di tutti
+    gli schemi al momento presenti nel percorso di ricerca. L'opzione Booleana determina se gli
+    schemi di sistema implicitamente inclusi quale <literal>pg_catalog</literal> sono inclusi nel percorso di
+    ricerca restituito oppure no.
    </para>
 
    <note>
     <para>
-     The search path can be altered at run time.  The command is:
+     Il percorso di ricerca può essere alterato in fase di esecuzione. Il comando è:
 <programlisting>
 SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>schema</replaceable>, ...</optional>
 </programlisting>
@@ -12119,9 +12139,9 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
    </indexterm>
 
    <para>
-    <function>pg_listening_channels</function> returns a set of names of
-    channels that the current session is listening to.  See <xref
-    linkend="sql-listen"/> for more information.
+        <function>pg_listening_channels</function> restituisce un insieme di nomi di canali
+        sui quali la sessione corrente sta ascoltando. Vedere <xref
+        linkend="sql-listen"/> per maggiori informazioni.
    </para>
 
    <indexterm>
@@ -12141,14 +12161,14 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
    </indexterm>
 
    <para>
-     <function>inet_client_addr</function> returns the IP address of the
-     current client, and <function>inet_client_port</function> returns the
-     port number.
-     <function>inet_server_addr</function> returns the IP address on which
-     the server accepted the current connection, and
-     <function>inet_server_port</function> returns the port number.
-     All these functions return NULL if the current connection is via a
-     Unix-domain socket.
+     La funzione <function>inet_client_addr</function> restituisce l'indirizzo IP del
+     client corrente, e <function>inet_client_port</function> restituisce il
+     numero della porta.
+     La funzione <function>inet_server_addr</function> restituisce l'indirizzo IP col quale
+     il server ha accettato la connessione corrente, e
+     <function>inet_server_port</function> restituisce il numero della porta.
+     Tutte queste funzioni restituiscono null se la connessione corrente avviene tramite un
+     socket di dominio Unix.
    </para>
 
    <indexterm>
@@ -12160,13 +12180,13 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
    </indexterm>
 
    <para>
-    <function>pg_my_temp_schema</function> returns the OID of the current
-    session's temporary schema, or zero if it has none (because it has not
-    created any temporary tables).
-    <function>pg_is_other_temp_schema</function> returns true if the
-    given OID is the OID of another session's temporary schema.
-    (This can be useful, for example, to exclude other sessions' temporary
-    tables from a catalog display.)
+    La funzione <function>pg_my_temp_schema</function> restituisce l'OID dello
+    schema temporaneo della sessione corrente, oppure 0 se non non c'è (perchè esso non ha
+    creato una tabella temporanea).
+    La funzione <function>pg_is_other_temp_schema</function> restituisce vero se
+    l'OID fornito è l'OID di un altro schema temporaneo di sessione.
+    (Questo può essere utile, per esempio, per escludere altre tabelle temporanee di sessione
+    da un catalogo visualizzato).
    </para>
 
    <indexterm>
@@ -12174,9 +12194,9 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
    </indexterm>
 
    <para>
-    <function>pg_postmaster_start_time</function> returns the
-    <type>timestamp with time zone</type> when the
-    server started.
+     La funzione <function>pg_postmaster_start_time</function> restituisce il
+     <type>timestamp with time zone</type> quando il server
+     viene è stato avviato.
    </para>
 
    <indexterm>
@@ -12184,13 +12204,13 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
    </indexterm>
 
    <para>
-    <function>pg_conf_load_time</function> returns the
-    <type>timestamp with time zone</type> when the
-    server configuration files were last loaded.
-    (If the current session was alive at the time, this will be the time
-    when the session itself re-read the configuration files, so the
-    reading will vary a little in different sessions.  Otherwise it is
-    the time when the postmaster process re-read the configuration files.)
+        <function>pg_conf_load_time</function> restituisce il
+        <type>timestamp with time zone</type> di quando sono stati
+        caricati i file di configurazione del server.
+        (Se la sessione corrente era in vita a quel tempo, questo è l'orario
+        in cui la sessione stessa ha ri-letto i file di configurazione, così
+        la lettura cambierà un poco in differenti sessioni. Altrimenti 
+        è l'orario in cui il processo postmaster ha ri-letto i file di configurazione.)
    </para>
 
    <indexterm>
@@ -12198,27 +12218,27 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
    </indexterm>
 
    <para>
-    <function>version</function> returns a string describing the
-    <productname>PostgreSQL</productname> server's version.
+    La funzione <function>version</function> restituisce una stringa che descrive
+    la versione del server di <productname>PostgreSQL</productname>.
    </para>
 
   <indexterm>
-   <primary>privilege</primary>
-   <secondary>querying</secondary>
+   <primary>privilegio</primary>
+   <secondary>interrogazione</secondary>
   </indexterm>
 
   <para>
-   <xref linkend="functions-info-access-table"/> lists functions that
-   allow the user to query object access privileges programmatically.
-   See <xref linkend="ddl-priv"/> for more information about
-   privileges.
+   La <xref linkend="functions-info-access-table" /> elenca le funzioni che consentono
+   all'utente di interrogare programmaticamente i privilegi di accesso degli oggetti.
+   Vedere <xref linkend="ddl-priv" /> per ulteriori informazioni circa i
+   privilegi.
   </para>
 
    <table id="functions-info-access-table">
-    <title>Access Privilege Inquiry Functions</title>
+    <title>Funzioni di interrogazione privilegi di accesso</title>
     <tgroup cols="3">
      <thead>
-      <row><entry>Name</entry> <entry>Return Type</entry> <entry>Description</entry></row>
+      <row><entry>Nome</entry> <entry>Tipo di ritorno</entry> <entry>Descrizione</entry></row>
      </thead>
 
      <tbody>
@@ -12228,14 +12248,14 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does user have privilege for any column of table</entry>
+       <entry>verifica che l'utente abbia il privilegio per qualsiasi colonna della tabella</entry>
       </row>
       <row>
        <entry><literal><function>has_any_column_privilege</function>(<parameter>table</parameter>,
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does current user have privilege for any column of table</entry>
+       <entry>verifica che l'utente corrente abbia il privilegio per qualsiasi colonna della tabella</entry>
       </row>
       <row>
        <entry><literal><function>has_column_privilege</function>(<parameter>user</parameter>,
@@ -12244,7 +12264,7 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does user have privilege for column</entry>
+       <entry>verifica che l'utente abbia privilegio sulla colonna</entry>
       </row>
       <row>
        <entry><literal><function>has_column_privilege</function>(<parameter>table</parameter>,
@@ -12252,7 +12272,7 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does current user have privilege for column</entry>
+       <entry>verifica che l'utente corrente abbia privilegio sulla colonna</entry>
       </row>
       <row>
        <entry><literal><function>has_database_privilege</function>(<parameter>user</parameter>,
@@ -12261,13 +12281,14 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
        </entry>
        <entry><type>boolean</type></entry>
        <entry>does user have privilege for database</entry>
+       <entry>verifica che l'utente abbia privilegio per il database</entry>
       </row>
       <row>
        <entry><literal><function>has_database_privilege</function>(<parameter>database</parameter>,
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does current user have privilege for database</entry>
+       <entry>verifica che l'utente corrente abbia privilegio per il database</entry>
       </row>
       <row>
        <entry><literal><function>has_foreign_data_wrapper_privilege</function>(<parameter>user</parameter>,
@@ -12275,7 +12296,7 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does user have privilege for foreign-data wrapper</entry>
+       <entry><note><para>Nota per il revisore: non ho capito</para></note> does user have privilege for foreign-data wrapper</entry>
       </row>
       <row>
        <entry><literal><function>has_foreign_data_wrapper_privilege</function>(<parameter>fdw</parameter>,
@@ -12290,14 +12311,14 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does user have privilege for function</entry>
+       <entry>verifica che l'utente abbia privilegio per la funzione</entry>
       </row>
       <row>
        <entry><literal><function>has_function_privilege</function>(<parameter>function</parameter>,
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does current user have privilege for function</entry>
+       <entry>verifica che l'utente corrente abbia privilegio per la funzione</entry>
       </row>
       <row>
        <entry><literal><function>has_language_privilege</function>(<parameter>user</parameter>,
@@ -12305,14 +12326,14 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does user have privilege for language</entry>
+       <entry>verifica che l'utente abbia privilegio per il linguaggio</entry>
       </row>
       <row>
        <entry><literal><function>has_language_privilege</function>(<parameter>language</parameter>,
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does current user have privilege for language</entry>
+       <entry>verifica che l'utente corrente abbia privilegio per il linguaggio</entry>
       </row>
       <row>
        <entry><literal><function>has_schema_privilege</function>(<parameter>user</parameter>,
@@ -12327,7 +12348,7 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does current user have privilege for schema</entry>
+       <entry>verifica che l'utente corrente abbia privilegio per lo schema</entry>
       </row>
       <row>
        <entry><literal><function>has_server_privilege</function>(<parameter>user</parameter>,
@@ -12350,14 +12371,14 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does user have privilege for sequence</entry>
+       <entry>verifica che l'utente abbia privilegio per la sequenza</entry>
       </row>
       <row>
        <entry><literal><function>has_sequence_privilege</function>(<parameter>sequence</parameter>,
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does current user have privilege for sequence</entry>
+       <entry>verifica che l'utente corrente abbia privilegio per la sequenza</entry>
       </row>
       <row>
        <entry><literal><function>has_table_privilege</function>(<parameter>user</parameter>,
@@ -12365,14 +12386,14 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does user have privilege for table</entry>
+       <entry>verifica che l'utente abbia privilegio per la tabella</entry>
       </row>
       <row>
        <entry><literal><function>has_table_privilege</function>(<parameter>table</parameter>,
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does current user have privilege for table</entry>
+       <entry>verifica che l'utente corrente abbia privilegio per la tabella</entry>
       </row>
       <row>
        <entry><literal><function>has_tablespace_privilege</function>(<parameter>user</parameter>,
@@ -12380,14 +12401,14 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does user have privilege for tablespace</entry>
+       <entry>verifica che l'utente abbia privilegio per il tablespace</entry>
       </row>
       <row>
        <entry><literal><function>has_tablespace_privilege</function>(<parameter>tablespace</parameter>,
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does current user have privilege for tablespace</entry>
+       <entry>verifica che l'utente corrente abbia privilegio per il tablespace</entry>
       </row>
       <row>
        <entry><literal><function>pg_has_role</function>(<parameter>user</parameter>,
@@ -12395,14 +12416,15 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does user have privilege for role</entry>
+       <entry>verifica che l'utente abbia il privilegio per i role</entry>
+    
       </row>
       <row>
        <entry><literal><function>pg_has_role</function>(<parameter>role</parameter>,
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>does current user have privilege for role</entry>
+       <entry>verifica che l'utente corrente abbia il privilegio per i role</entry>
       </row>
      </tbody>
     </tgroup>
@@ -12446,28 +12468,23 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
    </indexterm>
 
    <para>
-    <function>has_table_privilege</function> checks whether a user
-    can access a table in a particular way.  The user can be
-    specified by name or by OID
-    (<literal>pg_authid.oid</literal>), or if the argument is
-    omitted
-    <function>current_user</function> is assumed.  The table can be specified
-    by name or by OID.  (Thus, there are actually six variants of
-    <function>has_table_privilege</function>, which can be distinguished by
-    the number and types of their arguments.)  When specifying by name,
-    the name can be schema-qualified if necessary.
-    The desired access privilege type
-    is specified by a text string, which must evaluate to one of the
-    values <literal>SELECT</literal>, <literal>INSERT</literal>,
-    <literal>UPDATE</literal>, <literal>DELETE</literal>, <literal>TRUNCATE</literal>,
-    <literal>REFERENCES</literal>, or <literal>TRIGGER</literal>.  Optionally,
-    <literal>WITH GRANT OPTION</literal> can be added to a privilege type to test
-    whether the privilege is held with grant option.  Also, multiple privilege
-    types can be listed separated by commas, in which case the result will
-    be <literal>true</literal> if any of the listed privileges is held.
-    (Case of the privilege string is not significant, and extra whitespace
-    is allowed between but not within privilege names.)
-    Some examples:
+    La funzione <function>has_table_privilege</function> controlla se un utente
+    può accedere ad una tabella in un particolare modo. L'utente può essere
+    specificato dal nome o dall'OID
+    (<literal>pg_authid.oid</literal>), oppure se l'argomento è
+    omesso
+    è assunto <function>current_user</function>. La tabella può essere specificata
+    dal nome o dall'OID. (Per cui, ci sono attualmente sei varianti di
+    <function>has_table_privilege</function>, che possono essere distinti dal
+    numero e dal tipo dei loro argomenti). Quando specificato dal nome,
+    il nome può essere qualificato con schema se necessario.
+    Il tipo di privilegio di accesso desiderato
+    è specificato da una stringa di testo, che deve valutare ad uno dei
+    valori <literal>SELECT</literal>, <literal>INSERT</literal>,
+    <literal>UPDATE</literal>, <literal>DELETE</literal>,
+    <literal>REFERENCES</literal>, o <literal>TRIGGER</literal>.
+    (Il carattere della stringa può essere indifferentemente maiuscolo o minuscolo).
+    Un esempio è:
 <programlisting>
 SELECT has_table_privilege('myschema.mytable', 'select');
 SELECT has_table_privilege('joe', 'mytable', 'INSERT, SELECT WITH GRANT OPTION');
@@ -12475,72 +12492,70 @@ SELECT has_table_privilege('joe', 'mytable', 'INSERT, SELECT WITH GRANT OPTION')
    </para>
 
    <para>
-    <function>has_sequence_privilege</function> checks whether a user
-    can access a sequence in a particular way.  The possibilities for its
-    arguments are analogous to <function>has_table_privilege</function>.
-    The desired access privilege type must evaluate to one of
-    <literal>USAGE</literal>,
-    <literal>SELECT</literal>, or
-    <literal>UPDATE</literal>.
+        La funzione <function>has_sequence_privilege</function> controlla se un utente 
+        può accedere ad una sequenza in un modo particolare. Le possibilità per i suoi
+        argomenti sono analoghe a <function>has_table_privilege</function>.
+        Il tipo di privilegio d'accesso desiderato deve essere uno tra
+        <literal>USAGE</literal>,
+        <literal>SELECT</literal>, o
+        <literal>UPDATE</literal>.
    </para>
 
    <para>
-    <function>has_any_column_privilege</function> checks whether a user can
-    access any column of a table in a particular way.
-    Its argument possibilities
-    are analogous to <function>has_table_privilege</function>,
-    except that the desired access privilege type must evaluate to some
-    combination of
+        <function>has_any_column_privilege</function> controlla se un utente può
+        accedere una qualsiasi colonna in un modo particolare.
+        I suoi argomenti sono analoghi alla <function>has_table_privilege</function>,
+        ad eccezione che il tipo di accesso desiderato deve essere una combinazione di
+        <literal>SELECT</literal>,
+        <literal>INSERT</literal>,
+        <literal>UPDATE</literal>, o
+        <literal>REFERENCES</literal>.  
+        Notare che avere qualcuno di questi privilegi
+        a livello di tabella implicitamente lo garantisce per ogni colonna della tabella,
+        così <function>has_any_column_privilege</function> restituirà sempre 
+        <literal>true</literal> se lo fa <function>has_table_privilege</function> per gli stessi
+        argomenti. Ma <function>has_any_column_privilege</function> ha successo anche se 
+        c'è una concessione di privilegio a livello colonna per almeno una colonna.
+   </para>
+
+   <para>
+        <function>has_column_privilege</function> controlla se un utente
+        poò accedere a una colonna in un modo particolare.
+        I suoi argomenti sono analoghi alla <function>has_table_privilege</function>,
+        con l'aggiunta che la colonna può essere specificata sia dal nome
+        che dal numero dell'attributo.
+
+            Il tipo di privilegio di accesso desiderato deve essere una qualche combinazione di
     <literal>SELECT</literal>,
     <literal>INSERT</literal>,
     <literal>UPDATE</literal>, or
-    <literal>REFERENCES</literal>.  Note that having any of these privileges
-    at the table level implicitly grants it for each column of the table,
-    so <function>has_any_column_privilege</function> will always return
-    <literal>true</literal> if <function>has_table_privilege</function> does for the same
-    arguments.  But <function>has_any_column_privilege</function> also succeeds if
-    there is a column-level grant of the privilege for at least one column.
+    <literal>REFERENCES</literal>.  
+        Notare che avere qualcuno di questi privilegi
+        a livello di tabella implicitamente lo garantisce per ogni colonna della tabella.
    </para>
 
    <para>
-    <function>has_column_privilege</function> checks whether a user
-    can access a column in a particular way.
-    Its argument possibilities
-    are analogous to <function>has_table_privilege</function>,
-    with the addition that the column can be specified either by name
-    or attribute number.
-    The desired access privilege type must evaluate to some combination of
-    <literal>SELECT</literal>,
-    <literal>INSERT</literal>,
-    <literal>UPDATE</literal>, or
-    <literal>REFERENCES</literal>.  Note that having any of these privileges
-    at the table level implicitly grants it for each column of the table.
-   </para>
-
-   <para>
-    <function>has_database_privilege</function> checks whether a user
-    can access a database in a particular way.
-    Its argument possibilities
-    are analogous to <function>has_table_privilege</function>.
-    The desired access privilege type must evaluate to some combination of
+    La <function>has_database_privilege</function> controlla se l'utente può
+    accedere al database in un particolare modo. Le possibilità per i suoi
+    argomenti sono analoghe a quelle della funzione <function>has_table_privilege</function>.
+    Il tipo di privilegio di accesso desiderato deve essere
     <literal>CREATE</literal>,
     <literal>CONNECT</literal>,
-    <literal>TEMPORARY</literal>, or
-    <literal>TEMP</literal> (which is equivalent to
+    <literal>TEMPORARY</literal>, o
+    <literal>TEMP</literal> (che è equivalente a
     <literal>TEMPORARY</literal>).
    </para>
 
    <para>
-    <function>has_function_privilege</function> checks whether a user
-    can access a function in a particular way.
-    Its argument possibilities
-    are analogous to <function>has_table_privilege</function>.
-    When specifying a function by a text string rather than by OID,
-    the allowed input is the same as for the <type>regprocedure</type> data type
-    (see <xref linkend="datatype-oid"/>).
-    The desired access privilege type must evaluate to
+    La funzione <function>has_function_privilege</function> controlla se un utente
+    può accedere ad una funzione in un particolare modo. Le possibilità per i suoi
+    argomenti sono analoghe a quelle della funzione <function>has_table_privilege</function>.
+    Quando si specifica una funzione da una stringa di accesso anzichè da un OID,
+    l'input consentito è lo stesso di quello per il tipo dato <type>regprocedure</type>
+    (consultare <xref linkend="datatype-oid" />).
+    IL tipo di privilegio di accesso desiderato deve valutare
     <literal>EXECUTE</literal>.
-    An example is:
+    Un esempio è:
 <programlisting>
 SELECT has_function_privilege('joeuser', 'myfunc(int, text)', 'execute');
 </programlisting>
@@ -12556,75 +12571,71 @@ SELECT has_function_privilege('joeuser', 'myfunc(int, text)', 'execute');
    </para>
 
    <para>
-    <function>has_language_privilege</function> checks whether a user
-    can access a procedural language in a particular way.
-    Its argument possibilities
-    are analogous to <function>has_table_privilege</function>.
-    The desired access privilege type must evaluate to
+    La funzione <function>has_language_privilege</function> controlla se un utente
+    può accedere ad un linguaggio procedurale in un particolare modo. Le possibilità
+    per i suoi argomenti sono analoghe a quelle della funzione <function>has_table_privilege</function>.
+    Il tipo di privilegio di accesso desiderato deve valutare
     <literal>USAGE</literal>.
    </para>
 
    <para>
-    <function>has_schema_privilege</function> checks whether a user
-    can access a schema in a particular way.
-    Its argument possibilities
-    are analogous to <function>has_table_privilege</function>.
-    The desired access privilege type must evaluate to some combination of
-    <literal>CREATE</literal> or
+    La funzione <function>has_schema_privilege</function> controlla se un utente
+    può accedere ad uno schema in un particolare modo. Le possibilità per
+    i suoi argomenti sono analoghe a quelle della funzione <function>has_table_privilege</function>.
+     Il tipo di privilegio di accesso desiderato deve valutare
+    <literal>CREATE</literal> o
     <literal>USAGE</literal>.
    </para>
 
    <para>
-    <function>has_server_privilege</function> checks whether a user
-    can access a foreign server in a particular way.
-    Its argument possibilities
-    are analogous to <function>has_table_privilege</function>.
-    The desired access privilege type must evaluate to
+        <function>has_server_privilege</function> controlla se un utente 
+        può accedere un server esterno in un particolare modo.
+        I suoi argomenti sono
+        analoghi a quelli di <function>has_table_privilege</function>.
+        Il tipo di privilegio di accesso desiderato deve valutare
     <literal>USAGE</literal>.
    </para>
 
    <para>
-    <function>has_tablespace_privilege</function> checks whether a user
-    can access a tablespace in a particular way.
-    Its argument possibilities
-    are analogous to <function>has_table_privilege</function>.
-    The desired access privilege type must evaluate to
+    La funzione <function>has_tablespace_privilege</function> controlla se un utente
+    può accedere ad un tablespace in un particolare modo. Le possibilità per i suoi
+    argomenti sono analoghe a quelle della funzione <function>has_table_privilege</function>.
+    Il tipo di privilegio di accesso desiderato deve valutare
     <literal>CREATE</literal>.
    </para>
 
    <para>
-    <function>pg_has_role</function> checks whether a user
-    can access a role in a particular way.
-    Its argument possibilities
-    are analogous to <function>has_table_privilege</function>.
-    The desired access privilege type must evaluate to some combination of
-    <literal>MEMBER</literal> or
+    La funzione <function>pg_has_role</function> controlla se un utente
+    può accedere ad un role in un particolare modo. Le possibilità per i suoi
+    argomenti sono analoghe a quelle della funzione <function>has_table_privilege</function>.
+    Il tipo di privilegio di accesso desiderato deve valutare
+    <literal>MEMBER</literal> o
     <literal>USAGE</literal>.
-    <literal>MEMBER</literal> denotes direct or indirect membership in
-    the role (that is, the right to do <command>SET ROLE</command>), while
-    <literal>USAGE</literal> denotes whether the privileges of the role
-    are immediately available without doing <command>SET ROLE</command>.
+    <literal>MEMBER</literal> denota l'appartenenza diretta o indiretta
+    nel ruolo (ovvero, il diritto di fare <command>SET ROLE</command>), mentre
+    <literal>USAGE</literal> denota se i privilegi del ruolo sono
+    immediatamente disponibile senza fare <command>SET ROLE</command>.
    </para>
 
   <para>
-   <xref linkend="functions-info-schema-table"/> shows functions that
-   determine whether a certain object is <firstterm>visible</firstterm> in the
-   current schema search path.
-   For example, a table is said to be visible if its
-   containing schema is in the search path and no table of the same
-   name appears earlier in the search path.  This is equivalent to the
-   statement that the table can be referenced by name without explicit
-   schema qualification.  To list the names of all visible tables:
+   La <xref linkend="functions-info-schema-table" /> mostra le funzioni che
+   determinano se un certo oggetto è <firstterm>visibile</firstterm> nel
+   percorso di ricerca del corrente schema.
+   Per esempio, una tabella è detta essere visibile se lo schema che
+   la contiene è nel percorso di ricerca e nessuna tabella con lo stesso
+   nome compare nel percorso di ricerca. Questo è equivalente all'asserzione
+   che la tabella può essere referenziata dal nome senza una esplicita
+   qualificazione di schema. Per elencare i nomi di tutte le tabelle visibili:
 <programlisting>
 SELECT relname FROM pg_class WHERE pg_table_is_visible(oid);
 </programlisting>
   </para>
 
    <table id="functions-info-schema-table">
-    <title>Schema Visibility Inquiry Functions</title>
+    <title>Funzioni di richiesta informazioni sulla visibilità dello schema</title>
     <tgroup cols="3">
      <thead>
-      <row><entry>Name</entry> <entry>Return Type</entry> <entry>Description</entry></row>
+      <row><entry>Nome</entry> <entry>Tipo restituito</entry> <entry>Descrizione</entry></row>
      </thead>
 
      <tbody>
@@ -12632,61 +12643,61 @@ SELECT relname FROM pg_class WHERE pg_table_is_visible(oid);
        <entry><literal><function>pg_conversion_is_visible(<parameter>conversion_oid</parameter>)</function></literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>is conversion visible in search path</entry>
+       <entry>è una conversione visibile nel percorso di ricerca</entry>
       </row>
       <row>
        <entry><literal><function>pg_function_is_visible(<parameter>function_oid</parameter>)</function></literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>is function visible in search path</entry>
+       <entry>è una funzione visibile nel percorso di ricerca</entry>
       </row>
       <row>
        <entry><literal><function>pg_operator_is_visible(<parameter>operator_oid</parameter>)</function></literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>is operator visible in search path</entry>
+       <entry>è un operatore visibile nel percorso di ricerca</entry>
       </row>
       <row>
        <entry><literal><function>pg_opclass_is_visible(<parameter>opclass_oid</parameter>)</function></literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>is operator class visible in search path</entry>
+       <entry>è una classe operatore visibile nel percorso di ricerca</entry>
       </row>
       <row>
        <entry><literal><function>pg_table_is_visible(<parameter>table_oid</parameter>)</function></literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>is table visible in search path</entry>
+       <entry>è una tabella visibile nel percorso di ricerca</entry>
       </row>
       <row>
        <entry><literal><function>pg_ts_config_is_visible(<parameter>config_oid</parameter>)</function></literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>is text search configuration visible in search path</entry>
+       <entry>è una configurazione di ricerca di testo visibile nel percorso di ricerca</entry>
       </row>
       <row>
        <entry><literal><function>pg_ts_dict_is_visible(<parameter>dict_oid</parameter>)</function></literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>is text search dictionary visible in search path</entry>
+       <entry>è un dizionario di ricerca di testo visibile nel percorso di ricerca</entry>
       </row>
       <row>
        <entry><literal><function>pg_ts_parser_is_visible(<parameter>parser_oid</parameter>)</function></literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>is text search parser visible in search path</entry>
+       <entry>è un parse di ricerca teso visible nel percorso di ricerca</entry>
       </row>
       <row>
        <entry><literal><function>pg_ts_template_is_visible(<parameter>template_oid</parameter>)</function></literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>is text search template visible in search path</entry>
+       <entry>è un modello di ricerca di testo visibile nel percorso di ricerca</entry>
       </row>
       <row>
        <entry><literal><function>pg_type_is_visible(<parameter>type_oid</parameter>)</function></literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>is type (or domain) visible in search path</entry>
+       <entry>è un tipo (o dominio) visibile nel percorso di ricerca</entry>
       </row>
      </tbody>
     </tgroup>
@@ -12724,27 +12735,28 @@ SELECT relname FROM pg_class WHERE pg_table_is_visible(oid);
    </indexterm>
 
    <para>
-    Each function performs the visibility check for one type of database
-    object.  Note that <function>pg_table_is_visible</function> can also be used
-    with views, indexes and sequences; <function>pg_type_is_visible</function>
-    can also be used with domains. For functions and operators, an object in
-    the search path is visible if there is no object of the same name
-    <emphasis>and argument data type(s)</emphasis> earlier in the path.  For operator
-    classes, both name and associated index access method are considered.
+    Ogni funzione compie il controllo di visibilità per un tipo di oggetto di
+    database. Notare che <function>pg_table_is_visible</function> può anche essere
+    usata con le viste, gli indici e le sequenze; <function>pg_type_is_visible</function>
+    può anche essere usata con i domini. Per le funzioni e gli operatori, un oggetto nel
+    percorso di ricerca è visibile se non c'è un oggetto con lo stesso nome
+    <emphasis>e tipo dato dell'argomento(i)</emphasis> in precedenza nel percorso. Per le classi di
+    operatore, vengono considerati sia i nomi che i metodi di accesso collegati all'indice.
    </para>
 
    <para>
-    All these functions require object OIDs to identify the object to be
-    checked.  If you want to test an object by name, it is convenient to use
-    the OID alias types (<type>regclass</type>, <type>regtype</type>,
+    
+    Tutte queste funzioni richiedono l'OID dell'oggetto per identificare gli oggetti da
+    controllare. Se si vuole controllare un oggetto dal nome, conviene usare
+    i tipi alias per l'OID (<type>regclass</type>, <type>regtype</type>,
     <type>regprocedure</type>, <type>regoperator</type>, <type>regconfig</type>,
-    or <type>regdictionary</type>),
-    for example:
+    o <type>regdictionary</type>),
+    per esempio:
 <programlisting>
 SELECT pg_type_is_visible('myschema.widget'::regtype);
 </programlisting>
-    Note that it would not make much sense to test a non-schema-qualified
-    type name in this way &mdash; if the name can be recognized at all, it must be visible.
+    Notare che non avrebbe alcun senso controllare un nome non qualificato in
+    questo modo &mdash; Se il nome non può essere riconosciuto per niente, deve essere visibile.
    </para>
 
    <indexterm>
@@ -12811,38 +12823,42 @@ SELECT pg_type_is_visible('myschema.widget'::regtype);
     <primary>pg_typeof</primary>
    </indexterm>
 
+
+
+
+
   <para>
-   <xref linkend="functions-info-catalog-table"/> lists functions that
-   extract information from the system catalogs.
+   <xref linkend="functions-info-catalog-table"/> elenca funzioni che
+        estraggono informazioni dai cataloghi di sistema.
   </para>
 
    <table id="functions-info-catalog-table">
-    <title>System Catalog Information Functions</title>
+    <title>Funzioni di informazione su cataloghi di sistema</title>
     <tgroup cols="3">
      <thead>
-      <row><entry>Name</entry> <entry>Return Type</entry> <entry>Description</entry></row>
+      <row><entry>Nome</entry> <entry>Tipo di ritorno</entry> <entry>Descrizione</entry></row>
      </thead>
 
      <tbody>
       <row>
        <entry><literal><function>format_type(<parameter>type_oid</parameter>, <parameter>typemod</parameter>)</function></literal></entry>
        <entry><type>text</type></entry>
-       <entry>get SQL name of a data type</entry>
+       <entry>ottiene il nome SQL di un tipo di dato</entry>
       </row>
       <row>
        <entry><literal><function>pg_get_keywords()</function></literal></entry>
        <entry><type>setof record</type></entry>
-       <entry>get list of SQL keywords and their categories</entry>
+       <entry>ottiene l'elenco di parole chiave SQL e le loro categorie</entry>
       </row>
       <row>
        <entry><literal><function>pg_get_constraintdef(<parameter>constraint_oid</parameter>)</function></literal></entry>
        <entry><type>text</type></entry>
-       <entry>get definition of a constraint</entry>
+       <entry>ottiene la definizione di un vincolo</entry>
       </row>
       <row>
        <entry><literal><function>pg_get_constraintdef(<parameter>constraint_oid</parameter>, <parameter>pretty_bool</parameter>)</function></literal></entry>
        <entry><type>text</type></entry>
-       <entry>get definition of a constraint</entry>
+       <entry>ottiene la definizione di un vincolo</entry>
       </row>
       <row>
        <entry><literal><function>pg_get_expr(<parameter>pg_node_tree</parameter>, <parameter>relation_oid</parameter>)</function></literal></entry>
@@ -12859,27 +12875,27 @@ SELECT pg_type_is_visible('myschema.widget'::regtype);
       <row>
        <entry><literal><function>pg_get_functiondef(<parameter>func_oid</parameter>)</function></literal></entry>
        <entry><type>text</type></entry>
-       <entry>get definition of a function</entry>
+       <entry>ottiene la definizione di una funzione</entry>
       </row>
       <row>
        <entry><literal><function>pg_get_function_arguments(<parameter>func_oid</parameter>)</function></literal></entry>
        <entry><type>text</type></entry>
-       <entry>get argument list of function's definition (with default values)</entry>
+       <entry>ottiene l'elenco degli argomenti di una funzione (con valori di default)</entry>
       </row>
       <row>
        <entry><literal><function>pg_get_function_identity_arguments(<parameter>func_oid</parameter>)</function></literal></entry>
        <entry><type>text</type></entry>
-       <entry>get argument list to identify a function (without default values)</entry>
+       <entry>ottiene l'elenco degli argomenti per identificare una funzione (senza valori di default)</entry>
       </row>
       <row>
        <entry><literal><function>pg_get_function_result(<parameter>func_oid</parameter>)</function></literal></entry>
        <entry><type>text</type></entry>
-       <entry>get <literal>RETURNS</literal> clause for function</entry>
+       <entry>ottiene la clausola <literal>RETURNS</literal> per la funzione</entry>
       </row>
       <row>
        <entry><literal><function>pg_get_indexdef(<parameter>index_oid</parameter>)</function></literal></entry>
        <entry><type>text</type></entry>
-       <entry>get <command>CREATE INDEX</command> command for index</entry>
+       <entry>ottiene il comando <command>CREATE INDEX</command> per l'indice</entry>
       </row>
       <row>
        <entry><literal><function>pg_get_indexdef(<parameter>index_oid</parameter>, <parameter>column_no</parameter>, <parameter>pretty_bool</parameter>)</function></literal></entry>
@@ -12912,12 +12928,12 @@ SELECT pg_type_is_visible('myschema.widget'::regtype);
       <row>
        <entry><function>pg_get_triggerdef</function>(<parameter>trigger_oid</parameter>, <parameter>pretty_bool</parameter>)</entry>
        <entry><type>text</type></entry>
-       <entry>get <command>CREATE [ CONSTRAINT ] TRIGGER</command> command for trigger</entry>
+       <entry>ottiene un comando <command>CREATE [ CONSTRAINT ] TRIGGER</command> per il trigger</entry>
       </row>
       <row>
        <entry><literal><function>pg_get_userbyid(<parameter>role_oid</parameter>)</function></literal></entry>
        <entry><type>name</type></entry>
-       <entry>get role name with given OID</entry>
+       <entry>ottiene il nome di un ruolo dato l'OID</entry>
       </row>
       <row>
        <entry><literal><function>pg_get_viewdef(<parameter>view_name</parameter>)</function></literal></entry>
@@ -12942,90 +12958,100 @@ SELECT pg_type_is_visible('myschema.widget'::regtype);
       <row>
        <entry><literal><function>pg_tablespace_databases(<parameter>tablespace_oid</parameter>)</function></literal></entry>
        <entry><type>setof oid</type></entry>
-       <entry>get the set of database OIDs that have objects in the tablespace</entry>
+       <entry>ottiene l'insieme degli OID che hanno oggetti nel tablespace</entry>
       </row>
       <row>
        <entry><literal><function>pg_typeof(<parameter>any</parameter>)</function></literal></entry>
        <entry><type>regtype</type></entry>
-       <entry>get the data type of any value</entry>
+       <entry>ottiene il tipo di dato di qualsiasi valore</entry>
       </row>
      </tbody>
     </tgroup>
    </table>
 
   <para>
-   <function>format_type</function> returns the SQL name of a data type that
-   is identified by its type OID and possibly a type modifier.  Pass NULL
-   for the type modifier if no specific modifier is known.
+   La funzione <function>format_type</function> restituisce il nome SQL di un tipo dato che
+   viene identificato tramite il suo OID di tipo e possibilmente un modificatore di tipo. Immettere NULL
+   per il modificatore di tipo se non è conosciuto nessuno specifico modificatore.
   </para>
 
   <para>
-   <function>pg_get_keywords</function> returns a set of records describing
-   the SQL keywords recognized by the server. The <structfield>word</structfield> column
-   contains the keyword.  The <structfield>catcode</structfield> column contains a
-   category code: <literal>U</literal> for unreserved, <literal>C</literal> for column name,
-   <literal>T</literal> for type or function name, or <literal>R</literal> for reserved.
-   The <structfield>catdesc</structfield> column contains a possibly-localized string
-   describing the category.
+        <function>pg_get_keywords</function> restituisce un insieme di record che descrivono
+        le parole chiave SQL riconosciute dal server. La colonna <structfield>word</structfield>
+        contiene la parola chiave. La colonna <structfield>catcode</structfield> contiene un 
+        codice di categoria: <literal>U</literal> per non riservato, <literal>C</literal> per il nome della colonna,
+        <literal>T</literal> per il nome del tipo o della funzione, o <literal>R</literal> per riservato.
+        La colonna <structfield>catdesc</structfield> contiene una stringa possibilmente localizzata 
+        che descrive la categoria.
   </para>
 
   <para>
-   <function>pg_get_constraintdef</function>,
+   
+    Le funzioni <function>pg_get_constraintdef</function>,
    <function>pg_get_indexdef</function>, <function>pg_get_ruledef</function>,
-   and <function>pg_get_triggerdef</function>, respectively reconstruct the
-   creating command for a constraint, index, rule, or trigger. (Note that this
-   is a decompiled reconstruction, not the original text of the command.)
-   <function>pg_get_expr</function> decompiles the internal form of an
-   individual expression, such as the default value for a column.  It can be
-   useful when examining the contents of system catalogs.  If the expression
-   might contain Vars, specify the OID of the relation they refer to as the
-   second parameter; if no Vars are expected, zero is sufficient.
-   <function>pg_get_viewdef</function> reconstructs the <command>SELECT</command>
-   query that defines a view. Most of these functions come in two variants,
-   one of which can optionally <quote>pretty-print</quote> the result.  The
-   pretty-printed format is more readable, but the default format is more
-   likely to be interpreted the same way by future versions of
-   <productname>PostgreSQL</productname>; avoid using pretty-printed output for dump
-   purposes.  Passing <literal>false</literal> for the pretty-print parameter yields
-   the same result as the variant that does not have the parameter at all.
+   e <function>pg_get_triggerdef</function>, ricostruiscono rispettivamente il
+   comando di creazione per un vincolo, un indice, una regola, o un trigger. (Notare che questo
+   è una ricostruzione decompilata, non il testo originale del comando).
+   La funzione <function>pg_get_expr</function> decompila la forma interna di una
+   espressione individuale, quale il valore preimpostato di una colonna. Essa può
+   usata per esaminare il contenuto dei cataloghi di sistema.
+   La funzione <function>pg_get_viewdef</function> ricostruisce la query <command>SELECT</command>
+   che definisce una vista. Molte di queste funzioni hanno due varianti, una delle quali
+   può opzionalmente può fornire il risultato in <quote>pretty-print</quote>
+   (bella copia). Il formato stampato in pretty-print è più leggibile,
+   ma il formato predefinito è più adatto ad essere interpretato nello stesso
+   modo dalle future versioni di <productname>PostgreSQL</productname>; evitare di usare l'uscita pretty-print
+   per scopi di dump. Passando <literal>false</literal> come parametro per pretty-print produce
+   lo stesso risultato come la variante senza il parametro.
   </para>
 
   <para>
-   <function>pg_get_functiondef</function> returns a complete
-   <command>CREATE OR REPLACE FUNCTION</command> statement for a function.
-   <function>pg_get_function_arguments</function> returns the argument list
-   of a function, in the form it would need to appear in within
-   <command>CREATE FUNCTION</command>.
-   <function>pg_get_function_result</function> similarly returns the
-   appropriate <literal>RETURNS</literal> clause for the function.
-   <function>pg_get_function_identity_arguments</function> returns the
-   argument list necessary to identify a function, in the form it
-   would need to appear in within <command>ALTER FUNCTION</command>, for
-   instance.  This form omits default values.
+        <function>pg_get_functiondef</function> restituisce un'istruzione completa 
+        <command>CREATE OR REPLACE FUNCTION</command> per una funzione.
+        <function>pg_get_function_arguments</function> ritorna l'elenco degli argomenti
+        di una funzione, nella forma in cui dovrebbe apparire all'interno di 
+        <command>CREATE FUNCTION</command>.
+        <function>pg_get_function_result</function> similmente restiruisce 
+        la clausola <literal>RETURNS</literal>  appropriata per la funzione.
+        <function>pg_get_function_identity_arguments</function> ritorna l'elenco di 
+        argomenti necessaria identificare una funzione, nella forma
+        in cui dovrebbe apparire all'interno di <command>ALTER FUNCTION</command>,
+        per esempio. Questa forma omette valori di default.
   </para>
 
   <para>
-   <function>pg_get_serial_sequence</function> returns the name of the
-   sequence associated with a column, or NULL if no sequence is associated
-   with the column.  The first input parameter is a table name with
-   optional schema, and the second parameter is a column name.  Because
-   the first parameter is potentially a schema and table, it is not treated
-   as a double-quoted identifier, meaning it is lower cased by default,
-   while the second parameter, being just a column name, is treated as
-   double-quoted and has its case preserved.  The function returns a value
-   suitably formatted for passing to sequence functions (see <xref
-   linkend="functions-sequence"/>).  This association can be modified or
-   removed with <command>ALTER SEQUENCE OWNED BY</command>.  (The function
-   probably should have been called
-   <function>pg_get_owned_sequence</function>; its current name reflects the fact
-   that it's typically used with <type>serial</type> or <type>bigserial</type>
-   columns.)
+   
+    La funzione <function>pg_get_serial_sequence</function> restituisce il nome della
+   sequenza associata con una colonna, o NULL se nessuna sequenza è associata
+   con la colonna. Il primo parametro in input è una tabella nominata con lo
+   schema facoltativo, e il secondo parametro è un nome di colonna. Poichè
+   il primo parametro è potenzialmente uno schema e una tabella, esso non viene
+   trattato come un identificatore tra doppi apici, il che significa che è minuscolo
+   per impostazione predefinita, mentre il secondo parametro, che è un nome di colonna,
+   viene trattato come tra doppi apici e conserva il suo formato maiuscolo o minuscolo. La
+   funzione restituisce un valore formattato adeguatamente per passarlo alla funzione di
+   manipolazione sequenze (consultare <xref linkend="functions-sequence"/>). Questa associazione
+   può essere modificata o rimossa con <command>ALTER SEQUENCE OWNED BY</command>. (La funzione
+   probabilmente dovrebbe essere chiamata
+   <function>pg_get_owned_sequence</function>; il suo nome riflette il fatto
+   che essa viene principalmente usata con colonne <type>serial</type> o
+   <type>bigserial</type>).
   </para>
 
+
   <para>
-   <function>pg_get_userbyid</function> extracts a role's name given
-   its OID.
+   La funzione <function>pg_get_userbyid</function> estrae il nome del ruolo dato 
+   il suo OID.
   </para>
+
+
+<!-- *************************************************************************************************************** -->
+<!-- *************************************************************************************************************** -->
+<!-- *************************************************************************************************************** -->
+<!-- *************************************************************************************************************** -->
+<!-- *************************************************************************************************************** -->
+
+
 
   <para>
    <function>pg_tablespace_databases</function> allows a tablespace to be
@@ -14105,6 +14131,7 @@ SELECT (pg_stat_file('filename')).modification;
        </entry>
        <entry><type>boolean</type></entry>
        <entry>Obtain shared advisory lock if available</entry>
+       <entry>Ottiene un advisory lock condiviso se disponibile</entry>
       </row>
 
       <row>
@@ -14112,14 +14139,14 @@ SELECT (pg_stat_file('filename')).modification;
         <literal><function>pg_advisory_unlock(<parameter>key</parameter> <type>bigint</type>)</function></literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>Release an exclusive advisory lock</entry>
+       <entry>Rilascia un advisory lock condiviso</entry>
       </row>
       <row>
        <entry>
         <literal><function>pg_advisory_unlock(<parameter>key1</parameter> <type>int</type>, <parameter>key2</parameter> <type>int</type>)</function></literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>Release an exclusive advisory lock</entry>
+       <entry>Rilascia un advisory lock esclusivo</entry>
       </row>
 
       <row>
@@ -14127,7 +14154,7 @@ SELECT (pg_stat_file('filename')).modification;
         <literal><function>pg_advisory_unlock_shared(<parameter>key</parameter> <type>bigint</type>)</function></literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>Release a shared advisory lock</entry>
+       <entry>Rilascia un advisory lock condiviso</entry>
       </row>
       <row>
        <entry>
@@ -14142,7 +14169,7 @@ SELECT (pg_stat_file('filename')).modification;
         <literal><function>pg_advisory_unlock_all()</function></literal>
        </entry>
        <entry><type>void</type></entry>
-       <entry>Release all advisory locks held by the current session</entry>
+       <entry>Rilascia tutti gli advisory lock della sessione corrente</entry>
       </row>
 
      </tbody>
@@ -14153,74 +14180,73 @@ SELECT (pg_stat_file('filename')).modification;
     <primary>pg_advisory_lock</primary>
    </indexterm>
    <para>
-    <function>pg_advisory_lock</function> locks an application-defined resource,
-    which can be identified either by a single 64-bit key value or two
-    32-bit key values (note that these two key spaces do not overlap). 
-    The key type is specified in <literal>pg_locks.objid</literal>.  If
-    another session already holds a lock on the same resource, the
-    function will wait until the resource becomes available.  The lock
-    is exclusive.  Multiple lock requests stack, so that if the same resource
-    is locked three times it must be also unlocked three times to be
-    released for other sessions' use.
+    La funzione <function>pg_advisory_lock</function> blocca una risorsa definita in una applicazione,
+    che può essere identificata o tramite un singolo valore chiave a 64-bit oppure tramite
+    due valori chiave a 32-bit (notare che questi due spazi chiave non si sovrappongono). Se
+    un altra sessione è già titolare di un blocco sulla stessa risorsa, la
+    funzione dovrà attendere finchè la risorsa diventa disponibile. Il blocco
+    è esclusivo. Le richieste multiple di blocco vengono messe in stack, per cui se la
+    stessa risorsa è stata bloccata tre volte essa dovrà essere sbloccata tre
+    volte prima di essere rilasciata per l'utilizzo in altre sessioni.
    </para>
 
    <indexterm>
     <primary>pg_advisory_lock_shared</primary>
    </indexterm>
    <para>
-    <function>pg_advisory_lock_shared</function> works the same as
+    La funzione <function>pg_advisory_lock_shared</function> lavora come
     <function>pg_advisory_lock</function>,
-    except the lock can be shared with other sessions requesting shared locks.
-    Only would-be exclusive lockers are locked out.
+    eccetto che il blocco può essere condiviso con altre sessioni che richiedono un blocco condiviso.
+    Solo chi aspira ad un blocco esclusivo verrà escluso.
    </para>
 
    <indexterm>
     <primary>pg_try_advisory_lock</primary>
    </indexterm>
    <para>
-    <function>pg_try_advisory_lock</function> is similar to
-    <function>pg_advisory_lock</function>, except the function will not wait for the
-    lock to become available.  It will either obtain the lock immediately and
-    return <literal>true</literal>, or return <literal>false</literal> if the lock cannot be
-    acquired immediately.
+    La funzione <function>pg_try_advisory_lock</function> è simile alla
+    <function>pg_advisory_lock</function>, eccetto che essa non dovrà aspettare
+    che il blocco diventi disponibile. Essa potrà ottenere il blocco immediatamente e
+    restituire <literal>true</literal>, oppure restituire <literal>false</literal> se il blocco non può
+    essere immediatamente acquisito.
    </para>
 
    <indexterm>
     <primary>pg_try_advisory_lock_shared</primary>
    </indexterm>
    <para>
-    <function>pg_try_advisory_lock_shared</function> works the same as
-    <function>pg_try_advisory_lock</function>, except it attempts to acquire
-    a shared rather than an exclusive lock.
+    La funzione <function>pg_try_advisory_lock_shared</function> lavora nello stesso modo della
+    <function>pg_try_advisory_lock</function>, eccetto che essa tenta di acquisire blocchi condivisi
+    anziche blocchi esclusivi.
    </para>
 
    <indexterm>
     <primary>pg_advisory_unlock</primary>
    </indexterm>
    <para>
-    <function>pg_advisory_unlock</function> will release a previously-acquired
-    exclusive advisory lock.  It
-    returns <literal>true</literal> if the lock is successfully released.
-    If the lock was not held, it will return <literal>false</literal>,
-    and in addition, an SQL warning will be raised by the server.
+    La funzione <function>pg_advisory_unlock</function> rilascia un advisory lock esclusivo
+    acquisito in precedenza. Essa
+    restituirà <literal>true</function> se il blocco è stato rilasciato con successo.
+    Se il blocco non è di fatto tenuto, verrà restituito <literal>false</literal>,
+    e in aggiunta, il server rileverà un warning SQL.
    </para>
 
    <indexterm>
     <primary>pg_advisory_unlock_shared</primary>
    </indexterm>
    <para>
-    <function>pg_advisory_unlock_shared</function> works the same as
-    <function>pg_advisory_unlock</function>,
-    except it releases a shared advisory lock.
+    La funzione <function>pg_advisory_unlock_shared</function> lavora nello stesso modo della
+    <function>pg_advisory_unlock</function>, 
+    solo che rilascia un advisory lock condiviso.
    </para>
 
    <indexterm>
     <primary>pg_advisory_unlock_all</primary>
    </indexterm>
    <para>
-    <function>pg_advisory_unlock_all</function> will release all advisory locks
-    held by the current session.  (This function is implicitly invoked
-    at session end, even if the client disconnects ungracefully.)
+    La funzione <function>pg_advisory_unlock_all</function> rilascia tutti gli advisory lock
+    mantenuti nella sessione corrente. (Questa funzione viene implicitamente chiamata
+    alla fine della sessione, anche se il client si disconnette in modo non corretto).
    </para>
 
   </sect1>

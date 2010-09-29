@@ -1,292 +1,280 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $PostgreSQL$ -->
 
- <chapter id="functions">
-  <title>Funzioni e Operatori</title>
+<chapter id="functions">
+    <title>Funzioni e Operatori</title>
 
-  <indexterm zone="functions">
-   <primary>funzioni</primary>
-  </indexterm>
-
-  <indexterm zone="functions">
-   <primary>operatori</primary>
-  </indexterm>
-
-  <para>
-   <productname>PostgreSQL</productname> fornisce un gran numero di
-   funzioni e operatori per i tipi dati incorporati. Gli utenti possono anche
-   definire le proprie funzioni e operatori, come descritto nella
-   <xref linkend="server-programming" />. I comandi <application>psql</application>
-   <command>\df</command> e <command>\do</command> possono essere usati per
-   visualizzare, rispettivamente, l'elenco di tutte le funzioni e di tutti gli
-   operatori attualmente disponibili.
-  </para>
-
-  <para>
-   Se si ha preoccupazione circa la portabilità notare che la maggior
-   parte delle funzioni e degli operatori descritti in questo capitolo, con
-   l'eccezione degli operatori aritmetici e di confronto più banali
-   e di alcune funzioni segnalate esplicitamente, non sono specificate dallo
-   standard <acronym>SQL</acronym>. Qualcuna di queste funzionalità
-   è presente in altri sistemi di gestione di database <acronym>SQL</acronym>,
-   e in molti casi è compatibile e coerente
-   tra le diverse implementazioni. Inoltre questo capitolo non è
-   esaustivo; funzioni aggiuntive vengono visualizzate nelle sezioni di pertinenza 
-   del manuale.
-  </para>
-
-
- <sect1 id="functions-logical">
-   <title>Operatori logici</title>
-
-   <indexterm zone="functions-logical">
-    <primary>operatore</primary>
-    <secondary>logico</secondary>
-   </indexterm>
-
-   <indexterm>
-    <primary>Booleani</primary>
-    <secondary>operatori</secondary>
-    <see>operatori, logici</see>
-   </indexterm>
-
-   <para>
-    Sono disponibili gli usuali operatori logici:
-
-    <indexterm>
-     <primary>AND (operatore)</primary>
+    <indexterm zone="functions">
+        <primary>funzioni</primary>
+    </indexterm>
+    <indexterm zone="functions">
+        <primary>operatori</primary>
     </indexterm>
 
-    <indexterm>
-     <primary>OR (operatore)</primary>
-    </indexterm>
-
-    <indexterm>
-     <primary>NOT (operatore)</primary>
-    </indexterm>
-
-    <indexterm>
-     <primary>congiunzione</primary>
-    </indexterm>
-
-    <indexterm>
-     <primary>disgiunzione</primary>
-    </indexterm>
-
-    <indexterm>
-     <primary>negazione</primary>
-    </indexterm>
-
-    <simplelist>
-     <member><literal>AND</literal></member>
-     <member><literal>OR</literal></member>
-     <member><literal>NOT</literal></member>
-    </simplelist>
-
-    <acronym>SQL</acronym> utilizza una logica a tre-valori dove il null rappresenta un valore
-    <quote>sconosciuto</quote>. Osservere la seguente tabella della verità:
-
-    <informaltable>
-     <tgroup cols="4">
-      <thead>
-       <row>
-        <entry><replaceable>a</replaceable></entry>
-        <entry><replaceable>b</replaceable></entry>
-        <entry><replaceable>a</replaceable> AND <replaceable>b</replaceable></entry>
-        <entry><replaceable>a</replaceable> OR <replaceable>b</replaceable></entry>
-       </row>
-    </thead>
-
-      <tbody>
-       <row>
-        <entry>TRUE</entry>
-        <entry>TRUE</entry>
-        <entry>TRUE</entry>
-        <entry>TRUE</entry>
-       </row>
-
-       <row>
-        <entry>TRUE</entry>
-        <entry>FALSE</entry>
-        <entry>FALSE</entry>
-        <entry>TRUE</entry>
-       </row>
-
-       <row>
-        <entry>TRUE</entry>
-        <entry>NULL</entry>
-        <entry>NULL</entry>
-        <entry>TRUE</entry>
-       </row>
-
-       <row>
-        <entry>FALSE</entry>
-        <entry>FALSE</entry>
-        <entry>FALSE</entry>
-        <entry>FALSE</entry>
-       </row>
-
-       <row>
-        <entry>FALSE</entry>
-        <entry>NULL</entry>
-        <entry>FALSE</entry>
-        <entry>NULL</entry>
-       </row>
-
-       <row>
-        <entry>NULL</entry>
-        <entry>NULL</entry>
-        <entry>NULL</entry>
-        <entry>NULL</entry>
-       </row>
-      </tbody>
-     </tgroup>
-    </informaltable>
-
-    <informaltable>
-     <tgroup cols="2">
-      <thead>
-       <row>
-        <entry><replaceable>a</replaceable></entry>
-        <entry>NOT <replaceable>a</replaceable></entry>
-       </row>
-      </thead>
-
-      <tbody>
-       <row>
-        <entry>TRUE</entry>
-        <entry>FALSE</entry>
-       </row>
-
-       <row>
-        <entry>FALSE</entry>
-        <entry>TRUE</entry>
-       </row>
-
-       <row>
-        <entry>NULL</entry>
-        <entry>NULL</entry>
-       </row>
-      </tbody>
-     </tgroup>
-    </informaltable>
-   </para>
-
-   <para>
-    Gli operatori <literal>AND</literal> e <literal>OR</literal> sono
-    commutativi, che significa che è possibile commutare gli operandi di destra e di sinistra
-    senza influenzare il risultato. Consultare <xref
-    linkend="syntax-express-eval" /> per ulteriori informazioni circa l'ordine
-    di calcolo delle espressioni.
-   </para>
-  </sect1>
-
-  <sect1 id="functions-comparison">
-   <title>Operatori di confronto</title>
-
-   <indexterm zone="functions-comparison">
-    <primary>confronto</primary>
-    <secondary>operatori</secondary>
-   </indexterm>
-
-   <para>
-    Sono disponibili gli usuali operatori di confronto, visualizzati nella <xref
-    linkend="functions-comparison-table" />.
-   </para>
-
-
-   <table id="functions-comparison-table">
-    <title>Operatori di confronto</title>
-    <tgroup cols="2">
-     <thead>
-      <row>
-       <entry>Operatore</entry>
-       <entry>Descrizione</entry>
-      </row>
-     </thead>
-
-     <tbody>
-      <row>
-       <entry> <literal>&lt;</literal> </entry>
-       <entry>minore di</entry>
-      </row>
-
-      <row>
-       <entry> <literal>&gt;</literal> </entry>
-       <entry>maggiore di</entry>
-      </row>
-
-      <row>
-       <entry> <literal>&lt;=</literal> </entry>
-       <entry>minore di o uguale a</entry>
-      </row>
-
-      <row>
-       <entry> <literal>&gt;=</literal> </entry>
-       <entry>maggiore di o uguale a</entry>
-      </row>
-
-      <row>
-       <entry> <literal>=</literal> </entry>
-       <entry>uguale</entry>
-      </row>
-
-      <row>
-       <entry> <literal>&lt;&gt;</literal> o <literal>!=</literal> </entry>
-       <entry>diverso</entry>
-      </row>
-     </tbody>
-    </tgroup>
-   </table>
-
-   <note>
     <para>
-     L'operatore <literal>!=</literal> viene convertito in
-     <literal>&lt;&gt;</literal> nello stadio di analisi. Non è
-     possibile
-     possible implementare gli operatori <literal>!=</literal> e
-     <literal>&lt;&gt;</literal> per fargli fare cose diverse.
+<productname>PostgreSQL</productname> fornisce un gran numero di
+funzioni e operatori per i tipi dati incorporati. Gli utenti possono anche
+definire le proprie funzioni e operatori, come descritto nella
+<xref linkend="server-programming" />. I comandi <application>psql</application>
+<command>\df</command> e <command>\do</command> possono essere usati per
+visualizzare, rispettivamente, l'elenco di tutte le funzioni e di tutti gli
+operatori attualmente disponibili.
     </para>
-   </note>
 
-   <para>
-    Gli operatori di confronto sono disponibili per tutti i tipi di dato dove il loro
-    utilizzo ha un senso. Tutti gli operatori di confronto sono operatori binari che
-    restituiscono un valore di tipo <type>booleano</type>; una espressione tipo
-    <literal>1 &lt; 2 &lt; 3</literal> non è valida (in quanto non c'è 
-    un operatore <literal>&lt;</literal> per confrontare un valore booleano con
-    <literal>3</literal>).
-   </para>
+    <para>
+Se ci si preoccupa della portabilità notare che la maggior
+parte delle funzioni e degli operatori descritti in questo capitolo, con
+l'eccezione degli operatori aritmetici e di confronto più banali
+e di alcune funzioni segnalate esplicitamente, non sono specificate dallo
+standard <acronym>SQL</acronym>. Qualcuna di queste funzionalità
+è presente in altri sistemi di gestione di database <acronym>SQL</acronym>,
+e in molti casi è compatibile e coerente
+tra le diverse implementazioni. Inoltre questo capitolo non è
+esaustivo; Funzioni aggiuntive vengono visualizzate nelle sezioni di pertinenza 
+del manuale.
+    </para>
 
+    <sect1 id="functions-logical">
+        <title>Operatori logici</title>
 
+        <indexterm zone="functions-logical">
+            <primary>operatore</primary>
+            <secondary>logico</secondary>
+        </indexterm>
+        <indexterm>
+            <primary>Booleani</primary>
+            <secondary>operatori</secondary>
+            <see>operatori, logici</see>
+        </indexterm>
 
-   <para>
-    <indexterm>
-     <primary>BETWEEN</primary>
+        <para>
+Sono disponibili gli usuali operatori logici:
+
+        <indexterm>
+            <primary>AND (operatore)</primary>
+        </indexterm>
+        <indexterm>
+            <primary>OR (operatore)</primary>
+        </indexterm>
+        <indexterm>
+            <primary>NOT (operatore)</primary>
+        </indexterm>
+        <indexterm>
+            <primary>congiunzione</primary>
+        </indexterm>
+        <indexterm>
+            <primary>disgiunzione</primary>
+        </indexterm>
+        <indexterm>
+            <primary>negazione</primary>
+        </indexterm>
+
+        <simplelist>
+            <member><literal>AND</literal></member>
+            <member><literal>OR</literal></member>
+            <member><literal>NOT</literal></member>
+        </simplelist>
+
+<acronym>SQL</acronym> utilizza una logica a tre-valori dove il null rappresenta un valore
+<quote>sconosciuto</quote>. Osservare la seguente tabella della verità:
+
+        <informaltable>
+            <tgroup cols="4">
+            <thead>
+                <row>
+                    <entry><replaceable>a</replaceable></entry>
+                    <entry><replaceable>b</replaceable></entry>
+                    <entry><replaceable>a</replaceable> AND 
+                    <replaceable>b</replaceable></entry>
+                    <entry><replaceable>a</replaceable> OR 
+                    <replaceable>b</replaceable></entry>
+                </row>
+            </thead>
+            <tbody>
+                <row>
+                    <entry>TRUE</entry>
+                    <entry>TRUE</entry>
+                    <entry>TRUE</entry>
+                    <entry>TRUE</entry>
+                </row>
+                <row>
+                    <entry>TRUE</entry>
+                    <entry>FALSE</entry>
+                    <entry>FALSE</entry>
+                    <entry>TRUE</entry>
+                </row>
+                <row>
+                    <entry>TRUE</entry>
+                    <entry>NULL</entry>
+                    <entry>NULL</entry>
+                    <entry>TRUE</entry>
+                </row>
+                <row>
+                    <entry>FALSE</entry>
+                    <entry>FALSE</entry>
+                    <entry>FALSE</entry>
+                    <entry>FALSE</entry>
+                </row>
+                <row>
+                    <entry>FALSE</entry>
+                    <entry>NULL</entry>
+                    <entry>FALSE</entry>
+                    <entry>NULL</entry>
+                </row>
+                <row>
+                    <entry>NULL</entry>
+                    <entry>NULL</entry>
+                    <entry>NULL</entry>
+                    <entry>NULL</entry>
+                </row>
+            </tbody>
+            </tgroup>
+        </informaltable>
+        <informaltable>
+            <tgroup cols="2">
+            <thead>
+                <row>
+                    <entry><replaceable>a</replaceable></entry>
+                    <entry>NOT <replaceable>a</replaceable></entry>
+                </row>
+            </thead>
+            <tbody>
+                <row>
+                    <entry>TRUE</entry>
+                    <entry>FALSE</entry>
+                </row>
+                <row>
+                    <entry>FALSE</entry>
+                    <entry>TRUE</entry>
+                </row>
+                <row>
+                    <entry>NULL</entry>
+                    <entry>NULL</entry>
+                </row>
+            </tbody>
+            </tgroup>
+        </informaltable>
+    </para>
+
+    <para>
+        Gli operatori <literal>AND</literal> e <literal>OR</literal> sono
+        commutativi, che significa che è possibile 
+        commutare gli operandi di destra e di sinistra
+        senza influenzare il risultato. Consultare <xref
+        linkend="syntax-express-eval" /> per ulteriori informazioni 
+        circa l'ordine di calcolo delle espressioni.
+    </para>
+</sect1>
+
+<sect1 id="functions-comparison">
+    <title>Operatori di confronto</title>
+
+    <indexterm zone="functions-comparison">
+        <primary>confronto</primary>
+        <secondary>operatori</secondary>
     </indexterm>
-    In aggiunta agli operatori di confronto, è  disponibile il costrutto
-    speciale <token>BETWEEN</token>:
+
+    <para>
+        Sono disponibili gli usuali operatori di confronto, visualizzati nella <xref
+        linkend="functions-comparison-table" />.
+    </para>
+
+    <table id="functions-comparison-table">
+        <title>Operatori di confronto</title>
+        <tgroup cols="2">
+        <thead>
+            <row>
+                <entry>Operatore</entry>
+                <entry>Descrizione</entry>
+            </row>
+        </thead>
+        <tbody>
+            <row>
+                <entry> <literal>&lt;</literal> </entry>
+                <entry>minore di</entry>
+            </row>
+            <row>
+                <entry> <literal>&gt;</literal> </entry>
+                <entry>maggiore di</entry>
+            </row>
+            <row>
+                <entry> <literal>&lt;=</literal> </entry>
+                <entry>minore di o uguale a</entry>
+            </row>
+            <row>
+                <entry> <literal>&gt;=</literal> </entry>
+                <entry>maggiore di o uguale a</entry>
+            </row>
+            <row>
+                <entry> <literal>=</literal> </entry>
+                <entry>uguale</entry>
+            </row>
+            <row>
+                <entry> <literal>&lt;&gt;</literal> o <literal>!=</literal> </entry>
+                <entry>diverso</entry>
+            </row>
+        </tbody>
+        </tgroup>
+    </table>
+
+    <note>
+        <para>
+L'operatore <literal>!=</literal> viene convertito in
+<literal>&lt;&gt;</literal> nello stadio di analisi. Non è
+possibile implementare gli operatori <literal>!=</literal> e
+<literal>&lt;&gt;</literal> per fargli fare cose diverse.
+        </para>
+    </note>
+
+    <para>
+Gli operatori di confronto sono disponibili per tutti i tipi di dato dove il loro
+utilizzo ha un senso. Tutti gli operatori di confronto sono operatori binari che
+restituiscono un valore di tipo <type>boolean</type>; Una espressione tipo
+<literal>1 &lt; 2 &lt; 3</literal> non è valida (in quanto non c'è 
+un operatore <literal>&lt;</literal> per confrontare un valore boolean con
+<literal>3</literal>).
+    </para>
+
+    <para>
+        <indexterm>
+            <primary>BETWEEN</primary>
+        </indexterm>
+In aggiunta agli operatori di confronto, è  disponibile il costrutto
+speciale <token>BETWEEN</token>:
+
 <synopsis>
-<replaceable>a</replaceable> BETWEEN <replaceable>x</replaceable> AND <replaceable>y</replaceable>
+    <replaceable>a</replaceable> BETWEEN <replaceable>x</replaceable> 
+    AND <replaceable>y</replaceable>
 </synopsis>
-    è equivalente a
+    
+è equivalente a
+
 <synopsis>
-<replaceable>a</replaceable> &gt;= <replaceable>x</replaceable> AND <replaceable>a</replaceable> &lt;= <replaceable>y</replaceable>
+    <replaceable>a</replaceable> &gt;= <replaceable>x</replaceable> 
+    AND <replaceable>a</replaceable> &lt;= <replaceable>y</replaceable>
 </synopsis>
-    Notare che <token>BETWEEN</token> tratta i valori dei punti finali come inclusi 
+    
+    Notare che <token>BETWEEN</token> tratta i valori i punti finali come inclusi 
     nell'intervallo.
     <literal>NOT BETWEEN</literal> fa il confronto opposto:
+
 <synopsis>
-<replaceable>a</replaceable> NOT BETWEEN <replaceable>x</replaceable> AND <replaceable>y</replaceable>
+    <replaceable>a</replaceable> NOT BETWEEN <replaceable>x</replaceable> 
+    AND <replaceable>y</replaceable>
 </synopsis>
+    
     è equivalente a
+
 <synopsis>
-<replaceable>a</replaceable> &lt; <replaceable>x</replaceable> OR <replaceable>a</replaceable> &gt; <replaceable>y</replaceable>
+    <replaceable>a</replaceable> &lt; <replaceable>x</replaceable> 
+    OR <replaceable>a</replaceable> &gt; <replaceable>y</replaceable>
 </synopsis>
+    
     <indexterm>
-     <primary>BETWEEN SYMMETRIC</primary>
+        <primary>BETWEEN SYMMETRIC</primary>
     </indexterm>
-        è lo stesso di <literal>BETWEEN</literal>
+        
+è lo stesso di <literal>BETWEEN</literal>
         ad eccezione che non richiede che l'argomento a sinistra di 
          <literal>AND</literal> sia minore o uguale all'argomento di destra.
         Se non lo è, questi due argomenti vengono scambiati automaticamente, così
@@ -701,7 +689,8 @@
 
      <tbody>
       <row>
-       <entry><literal><function>abs</function>(<replaceable>x</replaceable>)</literal></entry>
+       <entry><literal><function>abs</function>
+        (<replaceable>x</replaceable>)</literal></entry>
        <entry>(uguale a <replaceable>x</replaceable>)</entry>
        <entry>valore assoluto</entry>
        <entry><literal>abs(-17.4)</literal></entry>
@@ -889,11 +878,13 @@
       </row>
 
       <row>
-       <entry><literal><function>width_bucket</function>(<parameter>op</parameter> <type>numeric</type>, <parameter>b1</parameter> <type>numeric</type>, <parameter>b2</parameter> <type>numeric</type>, <parameter>count</parameter> <type>int</type>)</literal></entry>
+        <entry><literal><function>width_bucket</function>(<parameter>op</parameter> <type>numeric</type>, <parameter>b1</parameter> <type>numeric</type>, <parameter>b2</parameter> <type>numeric</type>, <parameter>count</parameter> <type>int</type>)</literal></entry>
        <entry><type>int</type></entry>
        <entry>restituisce il segmento (bucket) al quale <parameter>op</parameter> sarà 
-       assegnato in un istogramma equi-dept con <parameter>count</parameter> segmenti (bucket),
-       nella sequenza di valori da <parameter>b1</parameter> a <parameter>b2</parameter></entry>
+       assegnato in un istogramma equi-dept con 
+        <parameter>count</parameter> segmenti (bucket),
+        nella sequenza di valori da <parameter>b1</parameter> 
+        a <parameter>b2</parameter></entry>
        <entry><literal>width_bucket(5.35, 0.024, 10.06, 5)</literal></entry>
        <entry><literal>3</literal></entry>
       </row>
@@ -1172,38 +1163,39 @@
       </row>
 
       <row>
-       <entry><literal><function>overlay</function>(<parameter>stringa</parameter> placing <parameter>substringa</parameter> from <type>int1</type> <optional>for <type>int2</type></optional>)</literal></entry>
+       <entry><literal><function>overlay</function>(<parameter>string</parameter> placing <parameter>substring</parameter> from <type>int1</type> <optional>for <type>int2</type></optional>)</literal></entry>
        <entry><type>text</type></entry>
        <entry>
-        Rimpiazza gli int2 caratteri di stringa con i caratteri di substringa partendo dalla posizione int1
+        Rimpiazza gli int2 caratteri di stringa con i caratteri di substring 
+        partendo dalla posizione int1
        </entry>
-       <entry><literal>overlay('Txxxxaso' placing 'omm' from 2 for 4)</literal></entry>
-       <entry><literal>Tommaso</literal></entry>
+       <entry><literal>overlay('Txxxxas' placing 'hom' from 2 for 4)</literal></entry>
+       <entry><literal>Thomas</literal></entry>
       </row>
 
       <row>
-       <entry><literal><function>position</function>(<parameter>substringa</parameter> in <parameter>stringa</parameter>)</literal></entry>
+       <entry><literal><function>position</function>(<parameter>sottostringa</parameter> in <parameter>stringa</parameter>)</literal></entry>
        <entry><type>int</type></entry>
-       <entry>Posizione della substringa specificata</entry>
-       <entry><literal>position('om' in 'Tommaso')</literal></entry>
-       <entry><literal>2</literal></entry>
+       <entry>Posizione della sottostringa specificata</entry>
+       <entry><literal>position('om' in 'Thomas')</literal></entry>
+       <entry><literal>3</literal></entry>
       </row>
 
       <row>
        <entry><literal><function>substring</function>(<parameter>stringa</parameter> <optional>from <type>int</type></optional> <optional>for <type>int</type></optional>)</literal></entry>
        <entry><type>text</type></entry>
        <entry>
-        Estrae substringa
+        Estrae sottostringa
        </entry>
-       <entry><literal>substring('Tommaso' from 2 for 3)</literal></entry>
-       <entry><literal>omm</literal></entry>
+       <entry><literal>substring('Thomas' from 2 for 3)</literal></entry>
+       <entry><literal>hom</literal></entry>
       </row>
 
       <row>
        <entry><literal><function>substring</function>(<parameter>stringa</parameter> from <replaceable>modello</replaceable>)</literal></entry>
        <entry><type>text</type></entry>
        <entry>
-        Estrae la substringa che corrisponde all'espressione regolare POSIX. Consultare
+        Estrae la sottostringa che corrisponde all'espressione regolare POSIX. Consultare
         <xref linkend="functions-matching" /> per ulteriori informazioni sui confronti
         con modelli.
        </entry>
@@ -1215,7 +1207,7 @@
        <entry><literal><function>substring</function>(<parameter>stringa</parameter> from <replaceable>modello</replaceable> for <replaceable>escape</replaceable>)</literal></entry>
        <entry><type>text</type></entry>
        <entry>
-        Estrae la substringa che corrisponde all'espressione regolare <acronym>SQL</acronym>.
+        Estrae la sottostringa che corrisponde all'espressione regolare <acronym>SQL</acronym>.
         Consultare <xref linkend="functions-matching" /> per ulteriori informazioni sui confronti
         con modelli.
        </entry>
@@ -1494,8 +1486,8 @@
         resto in minuscolo. Le parole sono sequenze di caratteri
         alfanumerici separati da un carattere non-alfabetico.
        </entry>
-       <entry><literal>initcap('ciao TOMMASO')</literal></entry>
-       <entry><literal>Ciao Tommaso</literal></entry>
+       <entry><literal>initcap('hi THOMAS')</literal></entry>
+       <entry><literal>Hi Thomas</literal></entry>
       </row>
 
       <row>
@@ -1639,7 +1631,7 @@
        <entry><literal><function>regexp_replace</function>(<parameter>stringa</parameter> <type>text</type>, <parameter>modello</parameter> <type>text</type>, <parameter>sostituzione</parameter> <type>text</type> [, <parameter>flag</parameter> <type>text</type>])</literal></entry>
        <entry><type>text</type></entry>
        <entry>
-        Rimpiazza substringa(e) confrontando una espressione regolare POSIX. Consultare
+        Rimpiazza sottostringa(e) confrontando una espressione regolare POSIX. Consultare
         <xref linkend="functions-posix-regexp" /> per ulteriori informazioni.
        </entry>
        <entry><literal>regexp_replace('Thomas', '.[mN]a.', 'M')</literal></entry>
@@ -1684,8 +1676,8 @@
        <parameter>da</parameter> <type>text</type>,
        <parameter>a</parameter> <type>text</type>)</literal></entry>
        <entry><type>text</type></entry>
-       <entry>Sostituisce tutte le occorrenze in <parameter>stringa</parameter> della substringa
-        <parameter>da</parameter> con la substringa <parameter>a</parameter>
+       <entry>Sostituisce tutte le occorrenze in <parameter>stringa</parameter> della sottostringa
+        <parameter>da</parameter> con la sottostringa <parameter>a</parameter>
        </entry>
        <entry><literal>replace('abcdefabcdef', 'cd', 'XX')</literal></entry>
        <entry><literal>abXXefabXXef</literal></entry>
@@ -1736,11 +1728,11 @@
       </row>
 
       <row>
-       <entry><literal><function>strpos</function>(<parameter>stringa</parameter>, <parameter>substringa</parameter>)</literal></entry>
+       <entry><literal><function>strpos</function>(<parameter>stringa</parameter>, <parameter>sottostringa</parameter>)</literal></entry>
        <entry><type>int</type></entry>
        <entry>
-        Posizione della substringa specificata(come
-        <literal>position(<parameter>substringa</parameter> in
+        Posizione della sottostringa specificata(come
+        <literal>position(<parameter>sottostringa</parameter> in
         <parameter>stringa</parameter>)</literal>,ma, notare l'inversione
         nell'ordine degli argomenti)         
        </entry>
@@ -1752,7 +1744,7 @@
        <entry><literal><function>substr</function>(<parameter>string</parameter>, <parameter>posiz</parameter> <optional>, <parameter>numcarat</parameter></optional>)</literal></entry>
        <entry><type>text</type></entry>
        <entry>
-        Estrae una substringa (come
+        Estrae una sottostringa (come
         <literal>substring(<parameter>stringa</parameter> from <parameter>posiz</parameter> for <parameter>numcarat</parameter>)</literal>)
        </entry> 
        <entry><literal>substr('alfabeto', 3, 2)</literal></entry>
@@ -2703,9 +2695,9 @@
       </row>
 
       <row>
-       <entry><literal><function>position</function>(<parameter>substringa</parameter> in <parameter>stringa</parameter>)</literal></entry>
+       <entry><literal><function>position</function>(<parameter>sottostringa</parameter> in <parameter>stringa</parameter>)</literal></entry>
        <entry><type>int</type></entry>
-       <entry>Posizione di una substringa specificata</entry>
+       <entry>Posizione di una sottostringa specificata</entry>
       <entry><literal>position(E'\\000om'::bytea in E'Th\\000omas'::bytea)</literal></entry>
        <entry><literal>3</literal></entry>
       </row>
@@ -2742,7 +2734,7 @@
        <entry><literal><function>substring</function>(<parameter>stringa</parameter> <optional>from <type>int</type></optional> <optional>for <type>int</type></optional>)</literal></entry>
        <entry><type>bytea</type></entry>
        <entry>
-        Estrae una substringa
+        Estrae una sottostringa
         <indexterm>
          <primary>substring</primary>
         </indexterm>
@@ -3462,7 +3454,7 @@ substring('foobar' from 'o(.)b')   <lineannotation>o</lineannotation>
      Il parametro <replaceable>flags</replaceable> è un stringa di testo opzionale contenente
      zero o più flag a lettera singola che cambiano il comportamento
      della funzione. Il flag <literal>i</literal> specifica un confronto non sensibile alle
-     maiuscole, mentre il flag <literal>g</literal> specifica la sostituzione di ogni substringa
+     maiuscole, mentre il flag <literal>g</literal> specifica la sostituzione di ogni sottostringa
      abbinata e non solo della prima. Altri flag supportati sono
      descritti nella <xref linkend="posix-embedded-options-table" />.
     </para>
@@ -3675,7 +3667,8 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
    <para>
     Una diramazione è composta da zero o più <firstterm>atomi quantificati</firstterm> o
     <firstterm>vincoli</firstterm>, concatenati tra loro.
-    Essa corrisponde ad un confronto per il primo, seguita da un confronto per il secondo, ecc;
+    Essa corrisponde ad un confronto per il primo, 
+    seguita da un confronto per il secondo, ecc;
     Una ramificazione vuota equivale a una stringa vuota.
    </para>
 
@@ -3692,7 +3685,8 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
 
    <para>
     
-    Un <firstterm>vincolo</firstterm> corrisponde ad una stringa vuota, ma combacia solo quando
+    Un <firstterm>vincolo</firstterm> corrisponde ad una stringa vuota, 
+    ma combacia solo quando
     vengono incontrate specifiche condizioni. Un vincolo può essere usato quando può
     essere usato un atomo, ad eccezione che esso non sia seguito da un quantificatore.
     Un semplice vincolo è mostrato nella
@@ -3720,7 +3714,9 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
        </row>
 
        <row>
-       <entry> <literal>(?:</literal><replaceable>re</replaceable><literal>)</literal> </entry>
+       <entry> 
+        <literal>(?:</literal><replaceable>re</replaceable><literal>)</literal> 
+        </entry>
        <entry> come sopra, ma il confronto non è notato per un rapporto
        (un insieme di parentesi <quote>non-catturanti</quote>)
        (solo ARE) </entry>
@@ -3749,8 +3745,10 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
        <entry> <literal>\</literal><replaceable>c</replaceable> </entry>
        <entry> dove <replaceable>c</replaceable> è alfanumerico
        (eventualmente seguito da altri caratteri)
-       è un <firstterm>escape</firstterm>, consultare <xref linkend="posix-escape-sequences" />
-       (solo per le ARE; nelle ERE e nelle BRE, viene confrontato <replaceable>c</replaceable>) </entry>
+       è un <firstterm>escape</firstterm>, 
+        consultare <xref linkend="posix-escape-sequences" />
+       (solo per le ARE; Nelle ERE e nelle BRE, 
+        viene confrontato <replaceable>c</replaceable>) </entry>
        </row>
 
        <row>
@@ -3772,7 +3770,6 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
 
 
    <para>
-    An RE cannot end with <literal>\</literal>.
         Una RE non puà terminare con  <literal>\</literal>.
    </para>
 
@@ -3817,12 +3814,15 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
 
        <row>
        <entry> <literal>{</literal><replaceable>m</replaceable><literal>}</literal> </entry>
-       <entry> una sequenza di esattamente <replaceable>m</replaceable> confronti dell'atomo </entry>
+       <entry> 
+            una sequenza di esattamente <replaceable>m</replaceable> 
+            confronti dell'atomo </entry>
        </row>
 
        <row>
        <entry> <literal>{</literal><replaceable>m</replaceable><literal>,}</literal> </entry>
-       <entry> una sequenza di <replaceable>m</replaceable> o più confronti dell'atomo </entry>
+       <entry> una sequenza di <replaceable>m</replaceable> 
+            o più confronti dell'atomo </entry>
        </row>
 
        <row>
@@ -3870,18 +3870,21 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
 
    
    <para>
-    Le forme che utilizzano <literal>{</literal><replaceable>...</replaceable><literal>}</literal>
+    Le forme che utilizzano 
+    <literal>{</literal><replaceable>...</replaceable><literal>}</literal>
     sono conosciute come <firstterm>limiti</firstterm>.
     I numeri <replaceable>m</replaceable> e <replaceable>n</replaceable> in un limite sono
     interi decimali senza segno con estensione consentita da 0 a 255 compreso.
    </para>
 
     <para>
-     I quantificatori <firstterm>Non-golosi</firstterm> (disponibili solo nelle ARE) confrontano
-     le stessa possibilità dei loro simili corrispondenti normali (<firstterm>golosi</firstterm>),
+        I quantificatori <firstterm>non-avidi</firstterm> 
+        (disponibili solo nelle ARE) confrontano
+        le stessa possibilità dei loro simili corrispondenti normali 
+        (<firstterm>avidi</firstterm>),
      ma preferiscono il più piccolo numero di confronti invece del massimo
      numero di confronti.
-     Consultare <xref linkend="posix-matching-rules" /> per ulteriori dettagli..
+     Consultare <xref linkend="posix-matching-rules" /> per ulteriori dettagli.
    </para>
 
    <note>
@@ -3917,16 +3920,20 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
        </row>
 
        <row>
-       <entry> <literal>(?=</literal><replaceable>re</replaceable><literal>)</literal> </entry>
+       <entry> 
+        <literal>(?=</literal><replaceable>re</replaceable><literal>)</literal> 
+       </entry>
        <entry> <firstterm>lookahead positivo</firstterm> confronta ogni punto
-       in cui una substringa abbina l'inizio della <replaceable>re</replaceable>
+       in cui una sottostringa abbina l'inizio della <replaceable>re</replaceable>
        (solo ARE) </entry>
        </row>
 
        <row>
-       <entry> <literal>(?!</literal><replaceable>re</replaceable><literal>)</literal> </entry>
+       <entry> 
+        <literal>(?!</literal><replaceable>re</replaceable><literal>)</literal> 
+        </entry>
        <entry> <firstterm>lookahead negativo</firstterm> confronta ogni punto
-       in cui una substringa non abbina l'inizio della <replaceable>re</replaceable>
+       in cui una sottostringa non abbina l'inizio della <replaceable>re</replaceable>
        (solo ARE) </entry>
        </row>
       </tbody>
@@ -4034,7 +4041,8 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
     <literal>xdigit</literal>. Questo sta per le classi di caratteri
     definite in
     <citerefentry><refentrytitle>ctype</refentrytitle><manvolnum>3</manvolnum></citerefentry>.
-    Una localizzazione può prevederne altre. Una classe di caratteri non può essere usata come
+    Una localizzazione può prevederne altre. 
+    Una classe di caratteri non può essere usata come
     un punto finale di un intervallo.
    </para>
 
@@ -4102,12 +4110,12 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
 
    <para>
     Un <firstterm>riferimento all'indietro</firstterm> (<literal>\</literal><replaceable>n</replaceable>) abbina la
-    stessa stringa abbinata dalla precedente subespressione specificata
+    stessa stringa abbinata dalla precedente sottoespressione specificata
     dal numero <replaceable>n</replaceable>
     (consultare la <xref linkend="posix-constraint-backref-table" />). Per esempio,
     <literal>([bc])\1</literal> abbina <literal>bb</literal> o <literal>cc</literal>
     ma non <literal>bc</literal> o <literal>cb</literal>.
-    La subespressione deve interamente precedere il riferimento all'indietro nelle RE.
+    La sottoespressione deve interamente precedere il riferimento all'indietro nelle RE.
     Le subespressioni sono numerate secondo l'ordine della parentesi di apertura.
     Le parentesi non-catturanti non definiscono subespressioni.
    </para>
@@ -4393,7 +4401,7 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
        <replaceable>nn</replaceable> sono alcune altre cifre, ed il valore decimale
        <replaceable>mnn</replaceable> non è maggiore del numero di parentesi chiuse catturanti viste
        finora) 
-       un riferimento all'indietro alla <replaceable>mnn</replaceable>-esima subespressione </entry>
+       un riferimento all'indietro alla <replaceable>mnn</replaceable>-esima sottoespressione </entry>
        </row>
       </tbody>
      </tgroup>
@@ -4408,7 +4416,7 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
      Una cifra singola diversa da zero, non seguita da un altra cifra,
      viene sempre presa come un riferimento all'indietro.
      Una sequenza di diverse cifre che non ha uno zero in testa viene presa come un riferimento 
-     all'indietro se viene dopo una adatta subespressione
+     all'indietro se viene dopo una adatta sottoespressione
      (cioè il numero è compreso nell'intervallo valido per un riferimento all'indietro),
      altrimenti viene considerato come ottale.
     </para>
@@ -4861,9 +4869,9 @@ Se viene specificato un confronto inverso parzialmente sensibile al newline,
     <literal>\(</literal> e <literal>\)</literal>,
     con <literal>(</literal> e <literal>)</literal> da soli caratteri ordinari.
     <literal>^</literal> è un carattere ordinario eccetto che all'inizio della
-    RE o all'inizio di una subespressione tra parentesi,
+    RE o all'inizio di una sottoespressione tra parentesi,
     <literal>$</literal> è un carattere ordinario eccetto alla fine della
-    RE o alla fine di una subespressione tra parentasi,
+    RE o alla fine di una sottoespressione tra parentasi,
     e <literal>*</literal> è un carattere ordinario se appare all'inizio
     della RE o all'inizio di una espressione tra parentesi
     (dopo un possibile <literal>^</literal> iniziale).
@@ -9605,7 +9613,7 @@ SELECT a,
    </para>
 
    <para>
-    Una espressione <token>CASE</token> non valuta nessuna subespressione
+    Una espressione <token>CASE</token> non valuta nessuna sottoespressione
     che non sia necessaria per determinare il risultato. Per esempio, questo è un
     possibile modo di evitare il fallimento di divisione per zero:
 <programlisting>
@@ -10001,11 +10009,15 @@ SELECT NULLIF(value, '(none)') ...
        <row>
         <entry>
          <literal>
-          <function>array_to_string</function>(<type>anyarray</type>, <type>text</type> <optional>, <type>text</type></optional>)
+            <function>array_to_string</function>(<type>anyarray</type>, 
+            <type>text</type> <optional>, <type>text</type></optional>)
          </literal>
         </entry>
         <entry><type>text</type></entry>
-        <entry>concatena elementi di array usando i delimitatori forniti e opzionalmente stringe null</entry>
+        <entry>
+            concatena elementi di array usando i delimitatori forniti e 
+            opzionalmente stringe null
+        </entry>
         <entry><literal>array_to_string(ARRAY[1, 2, 3, NULL, 5], ',', '*')</literal></entry>
         <entry><literal>1,2,3,*,5</literal></entry>
        </row>
@@ -10027,7 +10039,9 @@ SELECT NULLIF(value, '(none)') ...
          </literal>
         </entry>
         <entry><type>text[]</type></entry>
-        <entry>scinde la stringa in elementi di array usando i delimitatori forniti e opzionalmente stringhe null</entry>
+        <entry>
+            scinde la stringa in elementi di array usando i 
+            delimitatori forniti e opzionalmente stringhe null</entry>
         <entry><literal>string_to_array('xx~^~yy~^~zz', '~^~', 'yy')</literal></entry>
         <entry><literal>{xx,NULL,zz}</literal></entry>
        </row>
@@ -10068,8 +10082,8 @@ SELECT NULLIF(value, '(none)') ...
         dalle versioni precedenti la 9.1 di <productname>PostgreSQL</productname>.
         Primo, essa restituirà un array vuoto (zero elementi) piuttosto che NULL, quando
         la stringa di input è di lunghezza zero. Secondo, se la stringa delimitatrice è 
-        NULL, la funzione divide l'input in caratteri individuali, piuttosto che ritornare NULL 
-        come prima.
+        NULL, la funzione divide l'input in caratteri individuali, 
+        piuttosto che ritornare NULL come prima.
     </para>
    </note>
 
@@ -10227,7 +10241,8 @@ SELECT NULLIF(value, '(none)') ...
      </row>
 
      <row>
-      <entry><function>count(<replaceable class="parameter">expression</replaceable>)</function></entry>
+      <entry>
+        <function>count(<replaceable class="parameter">expression</replaceable>)</function></entry>
       <entry>any</entry>
       <entry><type>bigint</type></entry>
       <entry>
@@ -10253,7 +10268,8 @@ SELECT NULLIF(value, '(none)') ...
      </row>
 
      <row>
-      <entry><function>max(<replaceable class="parameter">expression</replaceable>)</function></entry>
+      <entry>
+    <function>max(<replaceable class="parameter">expression</replaceable>)</function></entry>
       <entry>qualsiasi tipo  array, numerico, stringa o data/orario</entry>
       <entry>stesso tipo dell'argomento</entry>
       <entry>
@@ -10263,7 +10279,8 @@ SELECT NULLIF(value, '(none)') ...
      </row>
 
      <row>
-      <entry><function>min(<replaceable class="parameter">expression</replaceable>)</function></entry>
+      <entry>
+<function>min(<replaceable class="parameter">expression</replaceable>)</function></entry>
       <entry>qualsiasi tipo  array, numerico, stringa o data/orario</entry>
       <entry>stesso tipo dell'argomento</entry>
       <entry>
@@ -10494,7 +10511,8 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
 
      <row>
       <entry>
-       <function>regr_avgy(<replaceable class="parameter">Y</replaceable>, <replaceable class="parameter">X</replaceable>)</function>
+       <function>regr_avgy(<replaceable class="parameter">Y</replaceable>, 
+        <replaceable class="parameter">X</replaceable>)</function>
       </entry>
       <entry>
        <type>double precision</type>
@@ -10508,7 +10526,8 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
 
      <row>
       <entry>
-       <function>regr_count(<replaceable class="parameter">Y</replaceable>, <replaceable class="parameter">X</replaceable>)</function>
+        <function>regr_count(<replaceable class="parameter">Y</replaceable>, 
+        <replaceable class="parameter">X</replaceable>)</function>
       </entry>
       <entry>
        <type>double precision</type>
@@ -10524,7 +10543,8 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
        <indexterm>
         <primary>regression intercept</primary>
        </indexterm>
-       <function>regr_intercept(<replaceable class="parameter">Y</replaceable>, <replaceable class="parameter">X</replaceable>)</function>
+        <function>regr_intercept(<replaceable class="parameter">Y</replaceable>, 
+        <replaceable class="parameter">X</replaceable>)</function>
       </entry>
       <entry>
        <type>double precision</type>
@@ -10557,7 +10577,8 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
        <indexterm>
         <primary>pendenza di regressione</primary>
        </indexterm>
-       <function>regr_slope(<replaceable class="parameter">Y</replaceable>, <replaceable class="parameter">X</replaceable>)</function>
+        <function>regr_slope(<replaceable class="parameter">Y</replaceable>, 
+        <replaceable class="parameter">X</replaceable>)</function>
       </entry>
       <entry>
        <type>double precision</type>
@@ -10720,7 +10741,8 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
        <type>double precision</type> per argomenti a virgola mobile,
        altrimenti <type>numeric</type>
       </entry>
-      <entry>varianza di popolazione dei valori in input  (quadrato della deviazione standard della popolazione)</entry>
+        <entry>varianza di popolazione dei valori in input  
+        (quadrato della deviazione standard della popolazione)</entry>
      </row>
 
      <row>
@@ -10740,7 +10762,8 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
        <type>double precision</type> per argomenti a virgola mobile,
        altrimenti <type>numeric</type>
       </entry>
-      <entry>varianza di campione dei valori in input (quadrato della varianza standard della popolazione)</entry>
+        <entry>varianza di campione dei valori in input 
+        (quadrato della varianza standard della popolazione)</entry>
      </row>
     </tbody>
    </tgroup>
@@ -10765,15 +10788,18 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
   <para>
         Le funzioni finestra incorporate sono elencate in 
         <xref linkend="functions-window-table"/>. Notare che queste funzioni
-        <emphasis>devono</emphasis> essere invocate usando la sintassi della funzione finestra; Dove cioè
+        <emphasis>devono</emphasis> essere invocate usando la sintassi 
+        della funzione finestra; Dove cioè
         è richiesta una clausola <literal>OVER</literal>.
   </para>
 
   <para>
-        In aggiunta a queste funzioni, qualsiasi funzione aggregata incorporata o definita dall'utente
+        In aggiunta a queste funzioni, qualsiasi funzione aggregata 
+        incorporata o definita dall'utente
         può essere usata come una funzione finestra (vedere
         <xref linkend="functions-aggregate"/> per un elenco delle aggretate incorporate).
-        Le funzioni aggregate agiscono come funzioni finestra solo quando una clausola <literal>OVER</literal>
+        Le funzioni aggregate agiscono come funzioni finestra 
+        solo quando una clausola <literal>OVER</literal>
         segue la chiamata; Altrimenti si comportano come funzioni aggregate normali.
   </para>
 
@@ -10800,7 +10826,9 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>bigint</type>
       </entry>
-      <entry>numero della riga corrente all'interno della sua partizione, partendo da 1</entry>
+      <entry>
+        numero della riga corrente all'interno della sua partizione, 
+        partendo da 1</entry>
      </row>
 
      <row>
@@ -10966,7 +10994,9 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
         <primary>nth_value</primary>
        </indexterm>
        <function>
-         nth_value(<replaceable class="parameter">value</replaceable> <type>any</type>, <replaceable class="parameter">nth</replaceable> <type>integer</type>)
+         nth_value(<replaceable class="parameter">value</replaceable> 
+        <type>any</type>, <replaceable class="parameter">nth</replaceable> 
+        <type>integer</type>)
        </function>
       </entry>
       <entry>
@@ -11141,11 +11171,11 @@ WHERE EXISTS (SELECT 1 FROM tab2 WHERE col2 = tab1.col2);
   </para>
 
   <para>
-   Note that if the left-hand expression yields null, or if there are
-   no equal right-hand values and at least one right-hand row yields
-   null, the result of the <token>IN</token> construct will be null, not false.
-   This is in accordance with SQL's normal rules for Boolean combinations
-   of null values.
+Notare che se l'espressione a sinistra produce null, o se ci sono
+valori a destra non uguali e almeno una riga a destra produce null,
+il risultato del costrutto <token>IN</token> sarà null, non false.
+Questo è in accordo alle normali regole SQL per le combinazioni booleane 
+dei valori null.
   </para>
 
   <para>
@@ -11290,13 +11320,15 @@ WHERE EXISTS (SELECT 1 FROM tab2 WHERE col2 = tab1.col2);
    come descritto dentro <xref linkend="sql-syntax-row-constructors" />.
    La parte destra è una sottoquery tra parentesi
    che deve restituire esattamente tante colonne per quante ce ne sono
-   nella riga contenuta nell'espressione della parte sinistra. L'espressione nella parte sinistra viene
+   nella riga contenuta nell'espressione della parte sinistra. 
+    L'espressione nella parte sinistra viene
    valutata e confrontata "row-wise" con ogni riga risultante dalla sottoquery,
    usando l'<replaceable>operatore</replaceable> fornito.
    Il risultato di <token>ANY</token> è <quote>true</quote> se il confronto
    restituisce true per qualsiasi riga della sottoquery.
    Il risultato è <quote>false</quote> se il confronto restituisce false per ogni
-   riga della sottoquery (compreso il caso speciale in cui la subquery non restituisce nessuna
+   riga della sottoquery 
+    (compreso il caso speciale in cui la subquery non restituisce nessuna
    riga).
    IL risultato è NULL se il confronto non restituisce true per ogni riga,
    e restituisce NULL per almeno una riga.
@@ -11339,7 +11371,9 @@ WHERE EXISTS (SELECT 1 FROM tab2 WHERE col2 = tab1.col2);
   </para>
 
 <synopsis>
-<replaceable>row_constructor</replaceable> <replaceable>operator</replaceable> ALL (<replaceable>subquery</replaceable>)
+    <replaceable>row_constructor</replaceable> 
+    <replaceable>operator</replaceable> 
+    ALL (<replaceable>subquery</replaceable>)
 </synopsis>
 
   <para>
@@ -11374,7 +11408,8 @@ WHERE EXISTS (SELECT 1 FROM tab2 WHERE col2 = tab1.col2);
    </indexterm>
 
 <synopsis>
-<replaceable>row_constructor</replaceable> <replaceable>operator</replaceable> (<replaceable>subquery</replaceable>)
+    <replaceable>row_constructor</replaceable> 
+    <replaceable>operator</replaceable> (<replaceable>subquery</replaceable>)
 </synopsis>
 
   <para>
@@ -11452,7 +11487,8 @@ WHERE EXISTS (SELECT 1 FROM tab2 WHERE col2 = tab1.col2);
    <title><literal>IN</literal></title>
 
 <synopsis>
-<replaceable>expression</replaceable> IN (<replaceable>value</replaceable> <optional>, ...</optional>)
+    <replaceable>expression</replaceable> 
+    IN (<replaceable>value</replaceable> <optional>, ...</optional>)
 </synopsis>
 
   <para>
@@ -11483,7 +11519,8 @@ OR
    <title><literal>NOT IN</literal></title>
 
 <synopsis>
-<replaceable>expression</replaceable> NOT IN (<replaceable>value</replaceable> <optional>, ...</optional>)
+    <replaceable>expression</replaceable> 
+    NOT IN (<replaceable>value</replaceable> <optional>, ...</optional>)
 </synopsis>
 
   <para>
@@ -11513,10 +11550,11 @@ AND
 
   <tip>
   <para>
-   La forma <literal>x NOT IN y</literal> è equivalente a <literal>NOT (x IN y)</literal> in tutti
-   i casi. Tuttavia, è molto più probabile inciampare in valori null
-   quando si lavora con <token>NOT IN</token>, che quando si lavora con <token>IN</token>.
-   Se possibile, è meglio esprimere le condizioni positivamente.
+    La forma <literal>x NOT IN y</literal> è equivalente a 
+    <literal>NOT (x IN y)</literal> in tutti
+    i casi. Tuttavia, è molto più probabile inciampare in valori null
+    quando si lavora con <token>NOT IN</token>, che quando si lavora con <token>IN</token>.
+    Se possibile, è meglio esprimere le condizioni positivamente.
   </para>
   </tip>
   </sect2>
@@ -11525,8 +11563,10 @@ AND
    <title><literal>ANY</literal>/<literal>SOME</literal> (array)</title>
 
 <synopsis>
-<replaceable>expression</replaceable> <replaceable>operator</replaceable> ANY (<replaceable>array expression</replaceable>)
-<replaceable>expression</replaceable> <replaceable>operator</replaceable> SOME (<replaceable>array expression</replaceable>)
+<replaceable>expression</replaceable> <replaceable>operator</replaceable> 
+ANY (<replaceable>array expression</replaceable>)
+<replaceable>expression</replaceable> <replaceable>operator</replaceable> 
+SOME (<replaceable>array expression</replaceable>)
 </synopsis>
 
   <para>
@@ -11537,8 +11577,10 @@ AND
    viene valutata e confrontata con ogni elemento dell'array utilizzando
    l'<replaceable>operatore</replaceable> fornito, che deve rendere un risultato
    Booleano.
-   Il risultato di <token>ANY</token> è <quote>true</quote> se viene ottenuto qualche risultato vero.
-   Il risultato è <quote>false</quote> se non viene ottenuto nessun risultato vero (compreso il caso
+   Il risultato di <token>ANY</token> è <quote>true</quote> 
+    se viene ottenuto qualche risultato vero.
+   Il risultato è <quote>false</quote> se non viene ottenuto 
+    nessun risultato vero (compreso il caso
    speciale in cui l'array ha zero elementi).
   </para>
 
@@ -11642,7 +11684,8 @@ AND
   <note>
    <para>
     Prima di <productname>PostgreSQL</productname> 8.2, i casi
-    <literal>&lt;</literal>, <literal>&lt;=</literal>, <literal>&gt;</literal> e <literal>&gt;=</literal>
+    <literal>&lt;</literal>, <literal>&lt;=</literal>, 
+    <literal>&gt;</literal> e <literal>&gt;=</literal>
     non erano gestiti per le specifiche SQL. Un confronto tipo
     <literal>ROW(a,b) &lt; ROW(c,d)</literal>
     era implementato come
@@ -11686,8 +11729,9 @@ AND
         di una sottoquery (come in <xref linkend="functions-subquery"/>).
         In altri contesti dove due valori di tipi-composti sono comparati, due
         valori NULL sono considerati uguali, ue un NULL è considerato più grande 
-        di un non-NULL. Questo è necessario per avere comportamenti di ordinamento e indicizzazione consistenti
-        per i tipi composti.
+        di un non-NULL. 
+        Questo è necessario per avere comportamenti di ordinamento e 
+        indicizzazione consistenti per i tipi composti.
    </para>
   </note>
 
@@ -11709,7 +11753,8 @@ AND
   <para>
    Questa sezione descrive le funzioni che possono restituire più di una riga.
    Attualmente le sole funzioni in questa classe sono le funzioni di generazione serie,
-   come specificato dettagliatamente in <xref linkend="functions-srf-series" /> e <xref linkend="functions-srf-subscripts"/>..
+   come specificato dettagliatamente in <xref linkend="functions-srf-series" /> 
+    e <xref linkend="functions-srf-subscripts"/>.
   </para>
 
   <table id="functions-srf-series">
@@ -11730,28 +11775,36 @@ AND
       <entry><type>int</type> o <type>bigint</type></entry>
       <entry><type>setof int</type> o <type>setof bigint</type> (stesso tipo dell'argomento)</entry>
       <entry>
-       Genera una serie di valori , da <parameter>start</parameter> a <parameter>stop</parameter>
-       con dimensione del passo di uno
+       Genera una serie di valori , da <parameter>start</parameter> 
+        a <parameter>stop</parameter>
+        con dimensione del passo di uno
       </entry>
      </row>
 
      <row>
-      <entry><literal><function>generate_series(<parameter>start</parameter>, <parameter>stop</parameter>, <parameter>step</parameter>)</function></literal></entry>
+      <entry><literal><function>generate_series(<parameter>start</parameter>, 
+    <parameter>stop</parameter>, <parameter>step</parameter>)</function></literal></entry>
       <entry><type>int</type> o <type>bigint</type></entry>
-      <entry><type>setof int</type> o <type>setof bigint</type> (stesso tipo dell'argomento)</entry>
+      <entry><type>setof int</type> o <type>setof bigint</type> 
+        (stesso tipo dell'argomento)</entry>
       <entry>
-       Genera una serie di valori , da <parameter>start</parameter> a <parameter>stop</parameter>
-       con dimensione del passo <parameter>step</parameter>
+        Genera una serie di valori, 
+        da <parameter>start</parameter> a <parameter>stop</parameter>
+        con dimensione del passo <parameter>step</parameter>
       </entry>
      </row>
 
      <row>
-      <entry><literal><function>generate_series(<parameter>start</parameter>, <parameter>stop</parameter>, <parameter>step</parameter> <type>interval</type>)</function></literal></entry>
-      <entry><type>timestamp</type> o <type>timestamp with time zone</type></entry>
-      <entry><type>setof timestamp</type> o <type>setof timestamp with time zone</type> (tesso tipo dell'argomento</entry>
+      <entry><literal><function>generate_series(<parameter>start</parameter>, 
+        <parameter>stop</parameter>, <parameter>step</parameter> 
+        <type>interval</type>)</function></literal></entry>
+        <entry><type>timestamp</type> o <type>timestamp with time zone</type></entry>
+        <entry><type>setof timestamp</type> o <type>setof timestamp with 
+        time zone</type> (tesso tipo dell'argomento</entry>
       <entry>
-       Genera una serie di valori , da <parameter>start</parameter> a <parameter>stop</parameter>
-       con dimensione del passo <parameter>step</parameter>
+       Genera una serie di valori, 
+        da <parameter>start</parameter> a <parameter>stop</parameter>
+        con dimensione del passo <parameter>step</parameter>
       </entry>
      </row>
 
@@ -11762,11 +11815,11 @@ AND
   <para>
    
     Quando <parameter>step</parameter> è positivo, vengono restituite zero righe se
-   <parameter>start</parameter> è maggiore di <parameter>stop</parameter>.
-   Al contrario, quando <parameter>step</parameter> è negativo, zero righe sono
-   restituite se <parameter>start</parameter> è minore di <parameter>stop</parameter>.
-   Vengono restituite zero righe anche per input <literal>NULL</literal>. Un valore zero
-   per <parameter>step</parameter> è considerato errore. Seguono alcuni esempi:
+    <parameter>start</parameter> è maggiore di <parameter>stop</parameter>.
+    Al contrario, quando <parameter>step</parameter> è negativo, zero righe sono
+    restituite se <parameter>start</parameter> è minore di <parameter>stop</parameter>.
+    Vengono restituite zero righe anche per input <literal>NULL</literal>. Un valore zero
+    per <parameter>step</parameter> è considerato errore. Seguono alcuni esempi:
 <programlisting>
 SELECT * FROM generate_series(2,4);
  generate_series
@@ -11828,15 +11881,18 @@ SELECT * FROM generate_series('2008-03-01 00:00'::timestamp,
 
     <tbody>
      <row>
-      <entry><literal><function>generate_subscripts(<parameter>array anyarray</parameter>, <parameter>dim int</parameter>)</function></literal></entry>
-      <entry><type>setof int</type></entry>
+      <entry><literal><function>generate_subscripts(<parameter>array anyarray</parameter>, 
+        <parameter>dim int</parameter>)</function></literal></entry>
+        <entry><type>setof int</type></entry>
       <entry>
             Genera una serie comprendente i sottoscript dell'array fornito.
       </entry>
      </row>
 
      <row>
-      <entry><literal><function>generate_subscripts(<parameter>array anyarray</parameter>, <parameter>dim int</parameter>, <parameter>reverse boolean</parameter>)</function></literal></entry>
+      <entry><literal><function>generate_subscripts(<parameter>array anyarray</parameter>, 
+        <parameter>dim int</parameter>, 
+        <parameter>reverse boolean</parameter>)</function></literal></entry>
       <entry><type>setof int</type></entry>
       <entry>
             Genera una serie contenente i sottoscript dell'array fornito. Quando 
@@ -11857,7 +11913,8 @@ SELECT * FROM generate_series('2008-03-01 00:00'::timestamp,
         <function>generate_subscripts</function> è una funzione utile che genera
         l'insieme di sottoscript validi per la dimensione specificata dell'array
         fornito.
-        Per gli array che non hanno la dimensione richiesta o per array NULL, sono ritornate zero righe
+        Per gli array che non hanno la dimensione richiesta o per array NULL, 
+        sono ritornate zero righe
         (ma per array NULL sono ritornati i sottoscript validi per gli elementi).
         Seguono alcuni esempi:
 <programlisting>
@@ -11939,7 +11996,8 @@ postgres=# SELECT * FROM unnest2(ARRAY[[1,2],[3,4]]);
       <row>
        <entry><literal><function>current_catalog</function></literal></entry>
        <entry><type>name</type></entry>
-       <entry>nome del database corrente (chiamato <quote>catalog</quote> nello standard SQL)</entry>
+       <entry>nome del database corrente 
+        (chiamato <quote>catalog</quote> nello standard SQL)</entry>
       </row>
 
       <row>
@@ -12101,7 +12159,7 @@ postgres=# SELECT * FROM unnest2(ARRAY[[1,2],[3,4]]);
 
    <para>
     Il <function>session_user</function> è normalmente l'utente che ha iniziato
-    la connessione corrente di database; ma il superutente può cambiare questa impostazione
+    la connessione corrente di database; ma il superuser può cambiare questa impostazione
     con <xref linkend="sql-set-session-authorization" endterm="sql-set-session-authorization-title" />.
     Il <function>current_user</function> è l'identificatore dell'utente
     che è applicabile per il controllo dei permessi. Normalmente, esso è uguale
@@ -12119,9 +12177,12 @@ postgres=# SELECT * FROM unnest2(ARRAY[[1,2],[3,4]]);
     in testa al percorso di ricerca (o un valore null se il percorso di ricerca è
     vuoto). Questo è lo schema che sarà usato per ogni tabella o ogni altro
     oggetto chiamato che è stato creato senza specificare uno schema.
-    La funzione <function>current_schemas(booleana)</function> restituirà un array dei nomi di tutti
-    gli schemi al momento presenti nel percorso di ricerca. L'opzione Booleana determina se gli
-    schemi di sistema implicitamente inclusi quale <literal>pg_catalog</literal> sono inclusi nel percorso di
+    La funzione <function>current_schemas(booleana)</function> 
+    restituirà un array dei nomi di tutti
+    gli schemi al momento presenti nel percorso di ricerca. 
+    L'opzione Booleana determina se gli
+    schemi di sistema implicitamente inclusi quale 
+    <literal>pg_catalog</literal> sono inclusi nel percorso di
     ricerca restituito oppure no.
    </para>
 
@@ -12243,9 +12304,10 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
 
      <tbody>
       <row>
-       <entry><literal><function>has_any_column_privilege</function>(<parameter>user</parameter>,
-                                  <parameter>table</parameter>,
-                                  <parameter>privilege</parameter>)</literal>
+       <entry>
+        <literal><function>has_any_column_privilege</function>(<parameter>user</parameter>,
+                    <parameter>table</parameter>,
+                    <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
        <entry>verifica che l'utente abbia il privilegio per qualsiasi colonna della tabella</entry>
@@ -12473,7 +12535,7 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
     specificato dal nome o dall'OID
     (<literal>pg_authid.oid</literal>), oppure se l'argomento è
     omesso
-    è assunto <function>current_user</function>. La tabella può essere specificata
+    è assunto essere <function>current_user</function>. La tabella può essere specificata
     dal nome o dall'OID. (Per cui, ci sono attualmente sei varianti di
     <function>has_table_privilege</function>, che possono essere distinti dal
     numero e dal tipo dei loro argomenti). Quando specificato dal nome,
@@ -12740,7 +12802,8 @@ SELECT relname FROM pg_class WHERE pg_table_is_visible(oid);
     usata con le viste, gli indici e le sequenze; <function>pg_type_is_visible</function>
     può anche essere usata con i domini. Per le funzioni e gli operatori, un oggetto nel
     percorso di ricerca è visibile se non c'è un oggetto con lo stesso nome
-    <emphasis>e tipo dato dell'argomento(i)</emphasis> in precedenza nel percorso. Per le classi di
+    <emphasis>e tipo dato dell'argomento/i</emphasis> in precedenza nel percorso. 
+    Per le classi di
     operatore, vengono considerati sia i nomi che i metodi di accesso collegati all'indice.
    </para>
 
@@ -12756,7 +12819,8 @@ SELECT relname FROM pg_class WHERE pg_table_is_visible(oid);
 SELECT pg_type_is_visible('myschema.widget'::regtype);
 </programlisting>
     Notare che non avrebbe alcun senso controllare un nome non qualificato in
-    questo modo &mdash; Se il nome non può essere riconosciuto per niente, deve essere visibile.
+    questo modo &mdash; Se il nome non può essere riconosciuto per niente, 
+    deve essere visibile.
    </para>
 
    <indexterm>
@@ -13000,9 +13064,11 @@ SELECT pg_type_is_visible('myschema.widget'::regtype);
    può opzionalmente può fornire il risultato in <quote>pretty-print</quote>
    (bella copia). Il formato stampato in pretty-print è più leggibile,
    ma il formato predefinito è più adatto ad essere interpretato nello stesso
-   modo dalle future versioni di <productname>PostgreSQL</productname>; evitare di usare l'uscita pretty-print
-   per scopi di dump. Passando <literal>false</literal> come parametro per pretty-print produce
-   lo stesso risultato come la variante senza il parametro.
+   modo dalle future versioni di <productname>PostgreSQL</productname>; 
+    Evitare di usare l'uscita pretty-print
+   per scopi di dump. Passare <literal>false</literal> 
+    come parametro per pretty-print produce
+   lo stesso risultato della variante senza il parametro.
   </para>
 
   <para>
@@ -13030,10 +13096,12 @@ SELECT pg_type_is_visible('myschema.widget'::regtype);
    per impostazione predefinita, mentre il secondo parametro, che è un nome di colonna,
    viene trattato come tra doppi apici e conserva il suo formato maiuscolo o minuscolo. La
    funzione restituisce un valore formattato adeguatamente per passarlo alla funzione di
-   manipolazione sequenze (consultare <xref linkend="functions-sequence"/>). Questa associazione
-   può essere modificata o rimossa con <command>ALTER SEQUENCE OWNED BY</command>. (La funzione
-   probabilmente dovrebbe essere chiamata
-   <function>pg_get_owned_sequence</function>; il suo nome riflette il fatto
+   manipolazione sequenze (consultare <xref linkend="functions-sequence"/>). 
+    Questa associazione
+    può essere modificata o rimossa con 
+    <command>ALTER SEQUENCE OWNED BY</command>. (La funzione
+    probabilmente dovrebbe essere chiamata
+    <function>pg_get_owned_sequence</function>; il suo nome riflette il fatto
    che essa viene principalmente usata con colonne <type>serial</type> o
    <type>bigserial</type>).
   </para>
@@ -13045,31 +13113,27 @@ SELECT pg_type_is_visible('myschema.widget'::regtype);
   </para>
 
 
-<!-- *************************************************************************************************************** -->
-<!-- *************************************************************************************************************** -->
-<!-- *************************************************************************************************************** -->
-<!-- *************************************************************************************************************** -->
-<!-- *************************************************************************************************************** -->
 
 
 
   <para>
-   <function>pg_tablespace_databases</function> allows a tablespace to be
-   examined. It returns the set of OIDs of databases that have objects stored
-   in the tablespace. If this function returns any rows, the tablespace is not
-   empty and cannot be dropped. To display the specific objects populating the
-   tablespace, you will need to connect to the databases identified by
-   <function>pg_tablespace_databases</function> and query their
-   <structname>pg_class</structname> catalogs.
+    <function>pg_tablespace_databases</function> permette a un tablespace di
+    essere esaminato. Restituisce l'insieme di OID dei database che hanno oggetti
+    immagazzinati nel tablespace. Se questa funzione restituisce qualunque riga, 
+    il tablespace non è
+    vuoto e non può essere eliminato. Per mostrare gli oggetti specifici che popolano
+    il tablespace, sarà necessario connettersi al database identificato da
+    <function>pg_tablespace_databases</function> ed eseguire una query sui suoi catalogi
+    <structname>pg_class</structname>.
   </para>
 
   <para>
-   <function>pg_typeof</function> returns the OID of the data type of the
-   value that is passed to it.  This can be helpful for troubleshooting or
-   dynamically constructing SQL queries.  The function is declared as
-   returning <type>regtype</type>, which is an OID alias type (see
-   <xref linkend="datatype-oid"/>); this means that it is the same as an
-   OID for comparison purposes but displays as a type name.  For example:
+        <function>pg_typeof</function> ritorna l'OID del tipo di dato del 
+        valore che gli viene passato. Questo può essere utile per risolvere i problemi o 
+        costruire dinamicamente query SQL. La funzione dichiarata 
+        ritorna <type>regtype</type>, che è un tipo alias di OID (vedere
+        <xref linkend="datatype-oid"/>); Questo significa che è lo stesso di
+        OID per scopi di comparazione ma visualizzato come un nome di tipo. Per esempio:
 <programlisting>
 SELECT pg_typeof(33);
 
@@ -13099,74 +13163,79 @@ SELECT typlen FROM pg_type WHERE oid = pg_typeof(33);
    </indexterm>
 
    <indexterm>
-    <primary>comment</primary>
-    <secondary sortas="database objects">about database objects</secondary>
+    <primary>commento</primary>
+    <secondary sortas="database objects">sugli oggetti del database</secondary>
    </indexterm>
 
    <para>
-    The functions shown in <xref linkend="functions-info-comment-table"/>
-    extract comments previously stored with the <xref linkend="sql-comment"/>
-    command.  A null value is returned if no
-    comment could be found for the specified parameters.
+La funzione mostrata in <xref linkend="functions-info-comment-table"/>
+estrae commenti immagazzinati precedentemente con il comando <xref linkend="sql-comment"/>.
+Un valore null viene restituito se nessun
+commento può essere trovato per i parametri specificati.
    </para>
 
    <table id="functions-info-comment-table">
     <title>Comment Information Functions</title>
+    <title>Funzioni su commenti d'informazione</title>
     <tgroup cols="3">
      <thead>
-      <row><entry>Name</entry> <entry>Return Type</entry> <entry>Description</entry></row>
+    <row>
+        <entry>Nome</entry> 
+        <entry>Tipo di ritorno</entry> 
+        <entry>Descrizione</entry>
+    </row>
      </thead>
 
      <tbody>
       <row>
        <entry><literal><function>col_description(<parameter>table_oid</parameter>, <parameter>column_number</parameter>)</function></literal></entry>
        <entry><type>text</type></entry>
-       <entry>get comment for a table column</entry>
+       <entry>ottiene il commento per una colonna di tabella</entry>
       </row>
       <row>
        <entry><literal><function>obj_description(<parameter>object_oid</parameter>, <parameter>catalog_name</parameter>)</function></literal></entry>
        <entry><type>text</type></entry>
-       <entry>get comment for a database object</entry>
+       <entry>ottiene il commento per un oggetto di database</entry>
       </row>
       <row>
        <entry><literal><function>obj_description(<parameter>object_oid</parameter>)</function></literal></entry>
        <entry><type>text</type></entry>
-       <entry>get comment for a database object (<emphasis>deprecated</emphasis>)</entry>
+       <entry>ottiene il commento per un oggetto di database (<emphasis>deprecato</emphasis>)</entry>
       </row>
       <row>
        <entry><literal><function>shobj_description(<parameter>object_oid</parameter>, <parameter>catalog_name</parameter>)</function></literal></entry>
        <entry><type>text</type></entry>
-       <entry>get comment for a shared database object</entry>
+       <entry>ottiene il commento per un oggetto di database condiviso</entry>
       </row>
      </tbody>
     </tgroup>
    </table>
 
    <para>
-    <function>col_description</function> returns the comment for a table column,
-    which is specified by the OID of its table and its column number.
-    <function>obj_description</function> cannot be used for table columns since
-    columns do not have OIDs of their own.
+<function>col_description</function>  ritorna il commento per una colonna di tabella,
+che è specificata dall'OID della sua tabella e il suo numero di colonna.
+<function>obj_description</function> non può  essere usata per colonne di tabella dato che
+le colonne non hanno OID propri.
    </para>
 
    <para>
-    The two-parameter form of <function>obj_description</function> returns the
-    comment for a database object specified by its OID and the name of the
-    containing system catalog.  For example,
-    <literal>obj_description(123456,'pg_class')</literal>
-    would retrieve the comment for the table with OID 123456.
-    The one-parameter form of <function>obj_description</function> requires only
-    the object OID.  It is deprecated since there is no guarantee that
-    OIDs are unique across different system catalogs; therefore, the wrong
-    comment might be returned.
+La forma a due parametri di <function>obj_description</function> ritorna il
+per un oggetto di database specificato dal suo OID e il nome del catalogo
+di sistema che lo contiene. Per esempio,
+<literal>obj_description(123456,'pg_class')</literal>
+recupererebbe il commento per la tabella con OID 123456.
+La forma a un parametro di <function>obj_description</function> richiede solo
+l'OID dell'oggetto. È deprecato dato che non c'è garanzia che 
+gli OID siano unici in cataloghi di sistema differenti; Perciò, potrebbe
+essere restituito il commento  sbagliato.
    </para>
 
    <para>
-    <function>shobj_description</function> is used just like
-    <function>obj_description</function> except it is used for retrieving
-    comments on shared objects.  Some system catalogs are global to all
-    databases within each cluster and their descriptions are stored globally
-    as well.
+<function>shobj_description</function> viene usata esattamente come
+<function>obj_description</function> ad eccezione che essa fornisce 
+commenti su oggetti condivisi. Alcuni cataloghi di sistema sono globali a tutti i
+database all'interno di ogni cluster e le loro descrizioni sono immagazzinate 
+anch'esse globalmente.
    </para>
 
    <indexterm>
@@ -13194,63 +13263,66 @@ SELECT typlen FROM pg_type WHERE oid = pg_typeof(33);
    </indexterm>
 
    <para>
-    The functions shown in <xref linkend="functions-txid-snapshot"/>
-    provide server transaction information in an exportable form.  The main
-    use of these functions is to determine which transactions were committed
-    between two snapshots.
+Le funzioni viste in <xref linkend="functions-txid-snapshot"/>
+forniscono informazioni sulle transazioni del server in una forma esportabile. L'uso
+principale di queste funzioni è determinare quali transazioni sono state eseguite
+tra due istanti.
    </para>
 
    <table id="functions-txid-snapshot">
     <title>Transaction IDs and snapshots</title>
+    <title>ID si transazione e snapshot</title>
     <tgroup cols="3">
      <thead>
-      <row><entry>Name</entry> <entry>Return Type</entry> <entry>Description</entry></row>
+        <row><entry>Nome</entry> 
+        <entry>Tipo di ritorno</entry> 
+        <entry>Descrizione</entry></row>
      </thead>
 
      <tbody>
       <row>
        <entry><literal><function>txid_current()</function></literal></entry>
        <entry><type>bigint</type></entry>
-       <entry>get current transaction ID</entry>
+       <entry>ottiene l'ID di transazione corrente</entry>
       </row>
       <row>
        <entry><literal><function>txid_current_snapshot()</function></literal></entry>
        <entry><type>txid_snapshot</type></entry>
-       <entry>get current snapshot</entry>
+       <entry>ottiene lo snapshot corrente</entry>
       </row>
       <row>
        <entry><literal><function>txid_snapshot_xmin(<parameter>txid_snapshot</parameter>)</function></literal></entry>
        <entry><type>bigint</type></entry>
-       <entry>get xmin of snapshot</entry>
+       <entry>ottiene l'xmin dello snapshot</entry>
       </row>
       <row>
        <entry><literal><function>txid_snapshot_xmax(<parameter>txid_snapshot</parameter>)</function></literal></entry>
        <entry><type>bigint</type></entry>
-       <entry>get xmax of snapshot</entry>
+       <entry>ottiene l'xmax dello snapshot</entry>
       </row>
       <row>
        <entry><literal><function>txid_snapshot_xip(<parameter>txid_snapshot</parameter>)</function></literal></entry>
        <entry><type>setof bigint</type></entry>
-       <entry>get in-progress transaction IDs in snapshot</entry>
+       <entry>ottiene l'ID di transazione in corso nello snapshot</entry>
       </row>
       <row>
        <entry><literal><function>txid_visible_in_snapshot(<parameter>bigint</parameter>, <parameter>txid_snapshot</parameter>)</function></literal></entry>
        <entry><type>boolean</type></entry>
-       <entry>is transaction ID visible in snapshot? (do not use with subtransaction ids)</entry>
+       <entry>l'ID di transazione è visibile nello snapshot? (non usare con ID di sottotransazione)</entry>
       </row>
      </tbody>
     </tgroup>
    </table>
 
    <para>
-    The internal transaction ID type (<type>xid</type>) is 32 bits wide and
-    wraps around every 4 billion transactions.  However, these functions
-    export a 64-bit format that is extended with an <quote>epoch</quote> counter
-    so it will not wrap around during the life of an installation.
-    The data type used by these functions, <type>txid_snapshot</type>,
-    stores information about transaction ID
-    visibility at a particular moment in time.  Its components are
-    described in <xref linkend="functions-txid-snapshot-parts"/>.
+Il tipo interno ID di transazione (<type>xid</type>) è a 32 bit e 
+gestisce 4 bilioni di transazioni. Comunque, queste funzioni
+esportano un formato a 64 bit esteso con un contatore di <quote>epoch</quote>
+così che non si incarti durante la vita di un'installazione.
+Il tipo di dato usato da queste funzioni,  <type>txid_snapshot</type>,
+immagazzina informazioni sulla visibilità dell'ID di transzione
+in un particolare momento. Le sue componenti sono
+descritte in <xref linkend="functions-txid-snapshot-parts"/>.
    </para>
 
    <table id="functions-txid-snapshot-parts">
@@ -13258,8 +13330,8 @@ SELECT typlen FROM pg_type WHERE oid = pg_typeof(33);
     <tgroup cols="2">
      <thead>
       <row>
-       <entry>Name</entry>
-       <entry>Description</entry>
+       <entry>Nome</entry>
+       <entry>Descrizione</entry>
       </row>
      </thead>
 
@@ -13268,31 +13340,31 @@ SELECT typlen FROM pg_type WHERE oid = pg_typeof(33);
       <row>
        <entry><type>xmin</type></entry>
        <entry>
-         Earliest transaction ID (txid) that is still active.  All earlier
-         transactions will either be committed and visible, or rolled
-         back and dead.
+Il più vecchio ID di transazione (txid) che è ancora attivo. Tutte le transazioni
+più vecchie saranno o state completate e visibili, o saranno state revertite 
+e morte.
        </entry>
       </row>
 
       <row>
        <entry><type>xmax</type></entry>
        <entry>
-        First as-yet-unassigned txid.  All txids greater than or equal to this
-        are not yet started as of the time of the snapshot, and thus invisible.
+Il primo dei txid non ancora assegnati. Tutti i txid maggiori di, o uguali, a questo,
+non sono ancora partiti al tempo dello snapshot, è sono perciò invisibili.
        </entry>
       </row>
 
       <row>
        <entry><type>xip_list</type></entry>
        <entry>
-        Active txids at the time of the snapshot.  The list
-        includes only those active txids between <literal>xmin</literal>
-        and <literal>xmax</literal>; there might be active txids higher
-        than <literal>xmax</literal>.  A txid that is <literal>xmin &lt;= txid &lt;
-        xmax</literal> and not in this list was already completed
-        at the time of the snapshot, and thus either visible or
-        dead according to its commit status.  The list does not
-        include txids of subtransactions.
+I txid attivi al tempo dello snapshot. L'elenco include
+solo quelli attivi compresi tra <literal>xmin</literal> e
+<literal>xmax</literal>; ci potrebbero essere txid attivi più alti
+di <literal>xmax</literal>. Un txid che è <literal>xmin &lt;= txid &lt;
+xmax</literal> e non in questo elenco è stato già completato 
+al tempo dello snapshot, e così sarà visibile o 
+morto a seconda del suo stato di commit. L'elenco non
+include txid di sottotransazioni.
        </entry>
       </row>
 
@@ -13303,24 +13375,26 @@ SELECT typlen FROM pg_type WHERE oid = pg_typeof(33);
    <para>
     <type>txid_snapshot</type>'s textual representation is
     <literal><replaceable>xmin</replaceable>:<replaceable>xmax</replaceable>:<replaceable>xip_list</replaceable></literal>.
-    For example <literal>10:20:10,14,15</literal> means
+    Per esempio <literal>10:20:10,14,15</literal> significa
     <literal>xmin=10, xmax=20, xip_list=10, 14, 15</literal>.
    </para>
   </sect1>
 
   <sect1 id="functions-admin">
-   <title>System Administration Functions</title>
+   <title>Funzioni di amministrazione di sistema</title>
 
    <para>
-    <xref linkend="functions-admin-set-table"/> shows the functions
-    available to query and alter run-time configuration parameters.
+<xref linkend="functions-admin-set-table"/> mostra le funzioni
+disponibili per interrogare e modificare parametri di configurazione durante l'esecuzione. 
    </para>
 
    <table id="functions-admin-set-table">
-    <title>Configuration Settings Functions</title>
+    <title>Funzioni per impostazioni di configurazione</title>
     <tgroup cols="3">
      <thead>
-      <row><entry>Name</entry> <entry>Return Type</entry> <entry>Description</entry></row>
+      <row><entry>Nome</entry> 
+            <entry>Tipo di ritorno</entry> 
+            <entry>Descrizione</entry></row>
      </thead>
 
      <tbody>
@@ -13329,7 +13403,7 @@ SELECT typlen FROM pg_type WHERE oid = pg_typeof(33);
         <literal><function>current_setting(<parameter>setting_name</parameter>)</function></literal>
        </entry>
        <entry><type>text</type></entry>
-       <entry>get current value of setting</entry>
+       <entry>ottiene il valore corrente dell'impostazione</entry>
       </row>
       <row>
        <entry>
@@ -13338,7 +13412,7 @@ SELECT typlen FROM pg_type WHERE oid = pg_typeof(33);
                              <parameter>is_local</parameter>)</function></literal>
        </entry>
        <entry><type>text</type></entry>
-       <entry>set parameter and return new value</entry>
+       <entry>imposta il parametro e ritorna il nuovo valore</entry>
       </row>
      </tbody>
     </tgroup>
@@ -13353,16 +13427,16 @@ SELECT typlen FROM pg_type WHERE oid = pg_typeof(33);
    </indexterm>
 
    <indexterm>
-    <primary>configuration</primary>
-    <secondary sortas="server">of the server</secondary>
-    <tertiary>functions</tertiary>
+    <primary>configurazione</primary>
+    <secondary sortas="server">del server</secondary>
+    <tertiary>funzioni</tertiary>
    </indexterm>
 
    <para>
-    The function <function>current_setting</function> yields the
-    current value of the setting <parameter>setting_name</parameter>.
-    It corresponds to the <acronym>SQL</acronym> command
-    <command>SHOW</command>.  An example:
+La funzione  <function>current_setting</function> fornisce il 
+valore corrente dell'impostazione <parameter>setting_name</parameter>.
+Essa corrisponde al comando <acronym>SQL</acronym> 
+<command>SHOW</command>. Un esempio:
 <programlisting>
 SELECT current_setting('datestyle');
 
@@ -13374,14 +13448,14 @@ SELECT current_setting('datestyle');
    </para>
 
    <para>
-    <function>set_config</function> sets the parameter
-    <parameter>setting_name</parameter> to
-    <parameter>new_value</parameter>.  If
-    <parameter>is_local</parameter> is <literal>true</literal>, the
-    new value will only apply to the current transaction. If you want
-    the new value to apply for the current session, use
-    <literal>false</literal> instead. The function corresponds to the
-    SQL command <command>SET</command>. An example:
+<function>set_config</function> imposta il parametro
+<parameter>setting_name</parameter> a 
+<parameter>new_value</parameter>. Se 
+<parameter>is_local</parameter> è <literal>true</literal>, il
+nuovo valore sarà applicato solo alla transazione corrente. Se si vuole
+il nuovo valore da applicare per la sessione corrente, usare invece
+<literal>false</literal>. La funzione corrisponde al comando SQL
+<command>SET</command>. Un esempio:
 <programlisting>
 SELECT set_config('log_statement_stats', 'off', false);
 
@@ -13406,22 +13480,25 @@ SELECT set_config('log_statement_stats', 'off', false);
    </indexterm>
 
    <indexterm>
-    <primary>signal</primary>
-    <secondary sortas="backend">backend processes</secondary>
+    <primary>segnale</primary>
+    <secondary sortas="backend">processi di backend</secondary>
    </indexterm>
 
    <para>
-    The functions shown in <xref
-    linkend="functions-admin-signal-table"/> send control signals to
-    other server processes.  Use of these functions is restricted
-    to superusers.
+La funzione mostrata in <xref 
+linkend="functions-admin-signal-table"/> manda segnali di controllo agli
+altri processi del server. L'uso di queste funzioni è limitato
+ai speruser.
    </para>
 
    <table id="functions-admin-signal-table">
     <title>Server Signalling Functions</title>
+    <title>Funzioni di segnalazione al server</title>
     <tgroup cols="3">
      <thead>
-      <row><entry>Name</entry> <entry>Return Type</entry> <entry>Description</entry>
+      <row><entry>Nome</entry> 
+        <entry>Tipo di ritorno</entry> 
+        <entry>Descrizione</entry>
       </row>
      </thead>
 
@@ -13431,61 +13508,61 @@ SELECT set_config('log_statement_stats', 'off', false);
         <literal><function>pg_cancel_backend(<parameter>pid</parameter> <type>int</type>)</function></literal>
         </entry>
        <entry><type>boolean</type></entry>
-       <entry>Cancel a backend's current query</entry>
+       <entry>Cancella la query di backend corrente</entry>
       </row>
       <row>
        <entry>
         <literal><function>pg_terminate_backend(<parameter>pid</parameter> <type>int</type>)</function></literal>
         </entry>
        <entry><type>boolean</type></entry>
-       <entry>Terminate a backend</entry>
+       <entry>Termina un backend</entry>
       </row>
       <row>
        <entry>
         <literal><function>pg_reload_conf()</function></literal>
         </entry>
        <entry><type>boolean</type></entry>
-       <entry>Cause server processes to reload their configuration files</entry>
+       <entry>Fa si che i processi del server ricarichino i loro file di configurazione</entry>
       </row>
       <row>
        <entry>
         <literal><function>pg_rotate_logfile()</function></literal>
         </entry>
        <entry><type>boolean</type></entry>
-       <entry>Rotate server's log file</entry>
+       <entry>Ruota il file di log del server</entry>
       </row>
      </tbody>
     </tgroup>
    </table>
 
    <para>
-    Each of these functions returns <literal>true</literal> if
-    successful and <literal>false</literal> otherwise.
+Ognuna di queste funzioni ritorna <literal>true</literal> se
+ha successo e <literal>false</literal> altrimenti.
    </para>
 
    <para>
-    <function>pg_cancel_backend</function> and <function>pg_terminate_backend</function>
-    send signals (<systemitem>SIGINT</systemitem> or <systemitem>SIGTERM</systemitem>
-    respectively) to backend processes identified by process ID.
-    The process ID of an active backend can be found from
-    the <structfield>procpid</structfield> column of the
-    <structname>pg_stat_activity</structname> view, or by listing the
-    <command>postgres</command> processes on the server (using
-    <application>ps</application> on Unix or the <application>Task
-    Manager</application> on <productname>Windows</productname>).
+<function>pg_cancel_backend</function> e <function>pg_terminate_backend</function>
+mandano segnali (<systemitem>SIGINT</systemitem> o <systemitem>SIGTERM</systemitem>
+rispettivamente) sui processi di backend identificati dall'ID di processo.
+L'ID di processo di un backend attivo può essere trovato con
+la colonna <structfield>procpid</structfield> della vista
+<structname>pg_stat_activity</structname>, o elencando i processi
+<command>postgres</command> sul server (usando
+<application>ps</application> su Unix o il <application>Task
+Manager</application> su <productname>Windows</productname>).
    </para>
 
    <para>
-    <function>pg_reload_conf</function> sends a <systemitem>SIGHUP</systemitem> signal
-    to the server, causing configuration files
-    to be reloaded by all server processes.
+<function>pg_reload_conf</function> invia un segnale <systemitem>SIGHUP</systemitem>
+al server, facendo si che i file di configurazione siano ricaricati
+da tutti i processi del server.
    </para>
 
    <para>
-    <function>pg_rotate_logfile</function> signals the log-file manager to switch
-    to a new output file immediately.  This works only when the built-in
-    log collector is running, since otherwise there is no log-file manager 
-    subprocess.
+<function>pg_rotate_logfile</function> segnala al gestore del file di log di cambiare
+file di output immediatamente. Questo funziona solo quando il log collector incorporato
+sta viaggiando, dato che altrimenti non c'è nessun sottoprocesso di gestione 
+del file di log.
    </para>
 
    <indexterm>
@@ -13514,17 +13591,20 @@ SELECT set_config('log_statement_stats', 'off', false);
    </indexterm>
 
    <para>
-    The functions shown in <xref
-    linkend="functions-admin-backup-table"/> assist in making on-line backups.
-    These functions cannot be executed during recovery.
-    Use of the first three functions is restricted to superusers.
+Le funzioni mostrate in <xref
+linkend="functions-admin-backup-table"/> aiutano a fare backup on-line.
+Queste funzioni non possono essere eseguite durante un recovery.
+L'uso di queste tre funzioni è limitato ai superuser.
    </para>
 
+
+
+
    <table id="functions-admin-backup-table">
-    <title>Backup Control Functions</title>
+    <title>Funzioni di controllo del backup</title>
     <tgroup cols="3">
      <thead>
-      <row><entry>Name</entry> <entry>Return Type</entry> <entry>Description</entry>
+      <row><entry>Nome</entry> <entry>Tipo di ritorno</entry> <entry>Descrizione</entry>
       </row>
      </thead>
 
@@ -13534,63 +13614,77 @@ SELECT set_config('log_statement_stats', 'off', false);
         <literal><function>pg_start_backup(<parameter>label</parameter> <type>text</type> <optional>, <parameter>fast</parameter> <type>boolean</type> </optional>)</function></literal>
         </entry>
        <entry><type>text</type></entry>
-       <entry>Prepare for performing on-line backup</entry>
+       <entry>
+            Predispone per il backup on-line
+        </entry>
       </row>
       <row>
        <entry>
         <literal><function>pg_stop_backup()</function></literal>
         </entry>
        <entry><type>text</type></entry>
-       <entry>Finish performing on-line backup</entry>
+       <entry>
+            Termina il backup on-line
+        </entry>
       </row>
       <row>
        <entry>
         <literal><function>pg_switch_xlog()</function></literal>
         </entry>
        <entry><type>text</type></entry>
-       <entry>Force switch to a new transaction log file</entry>
+       <entry>Forza il passaggio a un file di log di transazione nuovo</entry>
       </row>
       <row>
        <entry>
         <literal><function>pg_current_xlog_location()</function></literal>
         </entry>
        <entry><type>text</type></entry>
-       <entry>Get current transaction log write location</entry>
+       <entry>
+            Rende la locazione di scritture del log di transazione corrente
+        </entry>
       </row>
       <row>
        <entry>
         <literal><function>pg_current_xlog_insert_location()</function></literal>
         </entry>
        <entry><type>text</type></entry>
-       <entry>Get current transaction log insert location</entry>
+       <entry>
+            Rende la locazione di inserimento del log di transazione corrente
+        </entry>
       </row>
       <row>
        <entry>
         <literal><function>pg_xlogfile_name_offset(<parameter>location</parameter> <type>text</type>)</function></literal>
         </entry>
        <entry><type>text</type>, <type>integer</type></entry>
-       <entry>Convert transaction log location string to file name and decimal byte offset within file</entry>
+       <entry>
+            Converte la stringa di locazione del log di transazione in un nome di file e 
+            lo scostamento decimale di byte all'interno del file
+        </entry>
       </row>
       <row>
        <entry>
         <literal><function>pg_xlogfile_name(<parameter>location</parameter> <type>text</type>)</function></literal>
         </entry>
        <entry><type>text</type></entry>
-       <entry>Convert transaction log location string to file name</entry>
+       <entry>
+            Converte la stringa di locazione del log in un nome di file
+        </entry>
       </row>
      </tbody>
     </tgroup>
    </table>
 
+
    <para>
-    <function>pg_start_backup</function> accepts an
-    arbitrary user-defined label for the backup.  (Typically this would be
-    the name under which the backup dump file will be stored.)  The function
-    writes a backup label file (<filename>backup_label</filename>) into the
-    database cluster's data directory, performs a checkpoint,
-    and then returns the backup's starting transaction log location as text.
-    The user can ignore this result value, but it is
-    provided in case it is useful.
+<function>pg_start_backup</function> accetta un'etichetta arbitraria definita dall'utente
+per il backup. (Tipicamente questa sarebbe 
+il nome sotto il quale il file  dump di backup sarà immagazzinato.) La funzione
+scrive un file etichetta di backup (<filename>backup_label</filename>) nella
+directory dati del cluster di database, esegue un checkpoint,
+e poi restituisce la locazione del log dell'inizio della transazione di backup come testo.
+L'utente può ignorare questo valore, ma viene fornito
+nel caso fosse utile.
 <programlisting>
 postgres=# select pg_start_backup('label_goes_here');
  pg_start_backup
@@ -13598,53 +13692,57 @@ postgres=# select pg_start_backup('label_goes_here');
  0/D4445B8
 (1 row)
 </programlisting>
-    There is an optional second parameter of type <type>boolean</type>.  If <literal>true</literal>,
-    it specifies executing <function>pg_start_backup</function> as quickly as
-    possible.  This forces an immediate checkpoint which will cause a
-    spike in I/O operations, slowing any concurrently executing queries.
+C'è un secondo parametro opzionale di tipo <type>boolean</type>.
+Se <literal>true</literal>, esso specifica di eseguire 
+<function>pg_start_backup</function>
+il più velocemente possibile. Questo forza un checkpoint immediato che causerà
+un blocco delle operazioni di I/O, rallentando qualsiasi query eseguita concorrentemente.
    </para>
 
    <para>
-    <function>pg_stop_backup</function> removes the label file created by
-    <function>pg_start_backup</function>, and creates a backup history file in
-    the transaction log archive area.  The history file includes the label given to
-    <function>pg_start_backup</function>, the starting and ending transaction log locations for
-    the backup, and the starting and ending times of the backup.  The return
-    value is the backup's ending transaction log location (which again
-    can be ignored).  After recording the ending location, the current
-    transaction log insertion
-    point is automatically advanced to the next transaction log file, so that the
-    ending transaction log file can be archived immediately to complete the backup.
+<function>pg_stop_backup</function> rimuove il file etichetta creato da
+<function>pg_start_backup</function>, e crea un file storico per il backup nell'area
+archivio del log di transazione. Il file storico include l'etichetta fornita a
+<function>pg_start_backup</function>, le locazioni di inizio e fine del log di transazione
+per il backup e gli orari di inizio e di fine del backup. Il valore di ritorno
+è la locazione del log di fine transazione di backup (che di nuovo,
+può essere ignorato). Dopo aver registrato la locazione finale, il punto 
+di inserimento del log di transazione corrente viene
+automaticamente avanzato al prossimo file di log di transazione, così che 
+il file di log di fine transazione possa essere archiviato immediatamente 
+per completare il backup.
    </para>
 
    <para>
-    <function>pg_switch_xlog</function> moves to the next transaction log file, allowing the
-    current file to be archived (assuming you are using continuous archiving).
-    The return value is the ending transaction log location + 1 within the just-completed transaction log file.
-    If there has been no transaction log activity since the last transaction log switch,
-    <function>pg_switch_xlog</function> does nothing and returns the start location
-    of the transaction log file currently in use.
+<function>pg_switch_xlog</function> si muove al prossimo file di log di transazione, 
+permettendo che il file corrente sia archiviato (assumendi che si stia usando archiviazione continua).
+Il valore di ritorno è la locazione del log di fine transazione +1 all'interno del file
+di log di transazione appena completato.
+Se non c'è stat attività di log di transazione dall'ultimo cambio di log di transazione,
+<function>pg_switch_xlog</function> non fa niente e restituisce la locazione di inizio
+del file di log di transazione attualmente in uso.
    </para>
 
    <para>
-    <function>pg_current_xlog_location</function> displays the current transaction log write
-    location in the same format used by the above functions.  Similarly,
-    <function>pg_current_xlog_insert_location</function> displays the current transaction log
-    insertion point.  The insertion point is the <quote>logical</quote> end
-    of the transaction log
-    at any instant, while the write location is the end of what has actually
-    been written out from the server's internal buffers.  The write location
-    is the end of what can be examined from outside the server, and is usually
-    what you want if you are interested in archiving partially-complete transaction log
-    files.  The insertion point is made available primarily for server
-    debugging purposes.  These are both read-only operations and do not
-    require superuser permissions.
+<function>pg_current_xlog_location</function> mostra la locazione attuale del log di transazione
+ma nello stesso formato usato della funzioni viste sopra. Similarmente,
+<function>pg_current_xlog_insert_location</function> mostra il punto di inserimento
+nel log della transazione corrente.
+Il punto di inserimento è la fine <quote>logica</quote> del
+log di transazione
+in qualsiasi istante, mentre la locazione di scritture è la fine di quello che attualmente
+è stato trascritto dai buffer interni del server. La locazione di scrittura
+è la fine di quello che può essere esaminato dall'esterno del server, solitamente
+è quello che vuoi se sei interessato nell'archiviazione di file di log di transazione 
+parzialmente completi. Il punto di inserimento è reso disponibile principalmente per
+scopi di debug del seerver. Queste due sono operazioni di sola lettura e non 
+richiedono i permessi di superuser.
    </para>
 
    <para>
-    You can use <function>pg_xlogfile_name_offset</function> to extract the
-    corresponding transaction log file name and byte offset from the results of any of the
-    above functions.  For example:
+È possibile usare <function>pg_xlogfile_name_offset</function> per estrarre 
+il nome del file di log di transazione corrispondente e lo scostamento di byte dal
+risultato di una delle funzioni viste sopra. Per esempio:
 <programlisting>
 postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
         file_name         | file_offset 
@@ -13652,17 +13750,18 @@ postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
  00000001000000000000000D |     4039624
 (1 row)
 </programlisting>
-    Similarly, <function>pg_xlogfile_name</function> extracts just the transaction log file name.
-    When the given transaction log location is exactly at a transaction log file boundary, both
-    these functions return the name of the preceding transaction log file.
-    This is usually the desired behavior for managing transaction log archiving
-    behavior, since the preceding file is the last one that currently
-    needs to be archived.
+Similarmente, <function>pg_xlogfile_name</function> estrae solo il nome del file di log.
+Quando la locazione del log di transazione fornito è esattamente al confine 
+di un file di log di transazione, tutte e due le funzioni
+ritornano il nome del file di log di transazione precedente.
+Questo di solito è il comportamento desiderato per gestire l'archiviazione dei 
+log di transazione, dato che il file precedente è l'ultimo che attualmente
+ha bisogno di essere archiviato.
    </para>
 
    <para>
-    For details about proper usage of these functions, see
-    <xref linkend="continuous-archiving"/>.
+Per dettagli circa il giusto uso di queste funzioni, vedere
+<xref linkend="continuous-archiving"/>.
    </para>
 
    <indexterm>
@@ -13676,12 +13775,17 @@ postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
    </indexterm>
 
    <para>
-    The functions shown in <xref
-    linkend="functions-recovery-info-table"/> provide information
-    about the current status of the standby.
-    These functions may be executed during both recovery and in normal running.
+Le funzioni mostrate in <xref
+linkend="functions-recovery-info-table"/> forniscono informazioni
+sullo stato corrente dello standby.
+Queste funzioni possono essere eseguite sia durante il recovery che durante la normale 
+esecuzione.
    </para>
 
+<!-- ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]] -->
+<!-- ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]] -->
+<!-- ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]] -->
+<!-- ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]] -->
    <table id="functions-recovery-info-table">
     <title>Recovery Information Functions</title>
     <tgroup cols="3">
@@ -13731,10 +13835,14 @@ postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
      </tbody>
     </tgroup>
    </table>
+<!-- ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]] -->
+<!-- ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]] -->
+<!-- ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]] -->
+<!-- ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]] -->
 
    <para>
-    The functions shown in <xref linkend="functions-admin-dbsize"/> calculate
-    the disk space usage of database objects.
+Le funzioni mostrate in <xref linkend="functions-admin-dbsize"/> calcolano
+l'uso dello sapzio del disco da parte degli oggetti del database.
    </para>
 
    <indexterm>
@@ -13763,10 +13871,10 @@ postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
    </indexterm>
 
    <table id="functions-admin-dbsize">
-    <title>Database Object Size Functions</title>
+    <title>Funzioni sulla dimensione degli oggetti di database</title>
     <tgroup cols="3">
      <thead>
-      <row><entry>Name</entry> <entry>Return Type</entry> <entry>Description</entry>
+      <row><entry>Nome</entry> <entry>Tipo di ritorno</entry> <entry>Descrizione</entry>
       </row>
      </thead>
 
@@ -13774,7 +13882,10 @@ postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
       <row>
        <entry><literal><function>pg_column_size(<type>any</type>)</function></literal></entry>
        <entry><type>int</type></entry>
-       <entry>Number of bytes used to store a particular value (possibly compressed)</entry>
+       <entry>
+            Numero di byte usati per immagazzinare un valore particolare 
+                (possibilmente compresso)
+        </entry>
       </row>
       <row>
        <entry>
@@ -13782,8 +13893,8 @@ postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
         </entry>
        <entry><type>bigint</type></entry>
        <entry>
-        Total disk space used by the table with the specified OID or name,
-        including all indexes and <acronym>TOAST</acronym> data
+    Spazio su disco totale usato dalla tabella con OID o nome specificato, 
+    inclusi tutti gli indici e dati <acronym>TOAST</acronym>
        </entry>
       </row>
       <row>
@@ -13792,9 +13903,9 @@ postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
         </entry>
        <entry><type>bigint</type></entry>
        <entry>
-        Disk space used by the table with the specified OID or name,
-        excluding indexes (but including TOAST, free space map, and visibility
-        map)
+    Spazio su disco totale usato dalla tabella con OID o nome specificato, 
+    esclusi gli indici (ma inclusi <acronym>TOAST</acronym>, mappa dello spazio libero
+    e mappa di visibilità)
        </entry>
       </row>
       <row>
@@ -13803,8 +13914,8 @@ postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
         </entry>
        <entry><type>bigint</type></entry>
        <entry>
-        Total disk space used by indexes attached to the table with the
-        specified OID or name
+Spazio su disco totale usato dagli indici connessi alla tabella con 
+OID o nome specificato
        </entry>
       </row>
       <row>
@@ -13812,28 +13923,37 @@ postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
         <literal><function>pg_database_size(<type>oid</type>)</function></literal>
         </entry>
        <entry><type>bigint</type></entry>
-       <entry>Disk space used by the database with the specified OID</entry>
+       <entry>
+    Spazio su disco usato dal database con l'OID specificato
+        </entry>
       </row>
       <row>
        <entry>
         <literal><function>pg_database_size(<type>name</type>)</function></literal>
         </entry>
        <entry><type>bigint</type></entry>
-       <entry>Disk space used by the database with the specified name</entry>
+       <entry>
+            Spazio su disco usato dal databse con il nome specificato
+        </entry>
+        
       </row>
       <row>
        <entry>
         <literal><function>pg_tablespace_size(<type>oid</type>)</function></literal>
         </entry>
        <entry><type>bigint</type></entry>
-       <entry>Disk space used by the tablespace with the specified OID</entry>
+       <entry>
+            Spazio su disco usato dal tablespace con l'OID specificato
+        </entry>
       </row>
       <row>
        <entry>
         <literal><function>pg_tablespace_size(<type>name</type>)</function></literal>
         </entry>
        <entry><type>bigint</type></entry>
-       <entry>Disk space used by the tablespace with the specified name</entry>
+       <entry>  
+    Spazio su disco usato dal tablespace con il nome specificato
+        </entry>
       </row>
       <row>
        <entry>
@@ -13841,9 +13961,9 @@ postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
         </entry>
        <entry><type>bigint</type></entry>
        <entry>
-        Disk space used by the specified fork (<literal>'main'</literal>,
-        <literal>'fsm'</literal> or <literal>'vm'</literal>)
-        of the table or index with the specified OID or name
+    Spazio su disco usato del fork specificato (<literal>'main'</literal>,
+    <literal>'fsm'</literal> or <literal>'vm'</literal>)
+    della tabella o dell'indice con l'OID o il nome fornito
        </entry>
       </row>
       <row>
@@ -13853,6 +13973,7 @@ postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
        <entry><type>bigint</type></entry>
        <entry>
         Shorthand for <literal>pg_relation_size(..., 'main')</literal>
+    Scorciatoia per <literal>pg_relation_size(..., 'main')</literal>
        </entry>
       </row>
       <row>
@@ -13860,67 +13981,79 @@ postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
         <literal><function>pg_size_pretty(<type>bigint</type>)</function></literal>
         </entry>
        <entry><type>text</type></entry>
-       <entry>Converts a size in bytes into a human-readable format with size units</entry>
+       <entry>
+    Converte una dimensione in byte in un formato leggibile con unità di dimensione
+        </entry>
       </row>
      </tbody>
     </tgroup>
    </table>
 
    <para>
-    <function>pg_column_size</function> shows the space used to store any individual
-    data value.
+<function>pg_column_size</function> mostra lo sapzio usato per immagazzinare ogni singolo 
+valore di dato.
+   </para>
+
+<note>
+    <para>
+        Nota per il revisore: toast tabel ?
+    </para>
+</note>
+   <para>
+<function>pg_total_relation_size</function> acceta l'OID o il nome di 
+una tabella o di una toast table, e restituisce lo spazio su disco totale usato per
+quella tabella, includendo tutti gli indici associati. Questa funzione è 
+equivalente a <function>pg_table_size</function>
+<literal>+</literal> <function>pg_indexes_size</function>.
    </para>
 
    <para>
-    <function>pg_total_relation_size</function> accepts the OID or name of a
-    table or toast table, and returns the total on-disk space used for
-    that table, including all associated indexes.  This function is
-    equivalent to <function>pg_table_size</function>
-    <literal>+</literal> <function>pg_indexes_size</function>.
+<function>pg_table_size</function> accetta l'OID o il nome di una tabella e 
+restituisce lo spazio su disco necessario per quella tabella, escluso gli indici.
+(incluso spazio TOAST, mappa dello spazio libero e mappa di visibilità.)
    </para>
 
    <para>
-    <function>pg_table_size</function> accepts the OID or name of a table and
-    returns the disk space needed for that table, exclusive of indexes.
-    (TOAST space, free space map, and visibility map are included.)
+<function>pg_indexes_size</function> accetta l'OID o il nome di una tabella e 
+restituisce lo spazio su disco totale usato da tutti gli indici connessi a quella
+tabella.
    </para>
 
    <para>
-    <function>pg_indexes_size</function> accepts the OID or name of a table and
-    returns the total disk space used by all the indexes attached to that
-    table.
+<function>pg_database_size</function> e <function>pg_tablespace_size</function>
+accettano l'OID o il nome di un database o un tablespace, 
+e restituiscono lo spazio su disco
+usato ivi contenuto.
+   </para>
+
+<note>
+    <para>
+        Nota per il revisore: data fork ?
+    </para>
+</note>
+   <para>
+<function>pg_relation_size</function> accetta l'OID o il nome di una tabella, indice o
+tabella toast, e restituisce lo spazio su disco in byte. Specificare
+<literal>'main'</literal> o lasciare vuoto il secondo argomento restituisce la
+dimensione del fork principale dei dati della relazione. Specificare
+<literal>'fsm'</literal> restituisce la dimensione della 
+Mappa dello spazio libero (vedere <xref linkend="storage-fsm"/>) associata alla
+relazione. Specificare <literal>'vm'</literal> restituisce la dimensione della
+Mappa di visibilità (vedere <xref linkend="storage-vm"/>) associata con la
+relazione. Notare che questa funzione mostra la dimensione di solo un fork;
+Per la mamaggior parte degli scopi è più conveniente usare le funzioni a più alto livello
+<function>pg_total_relation_size</function> o <function>pg_table_size</function>.
    </para>
 
    <para>
-    <function>pg_database_size</function> and <function>pg_tablespace_size</function>
-    accept the OID or name of a database or tablespace, and return the total
-    disk space used therein.
+<function>pg_size_pretty</function> puà essere usata per formattare il risultato di una 
+delle altre funzioni in maniera leggibile dall'uomo, usando kB, MB, GB o TB come
+appropriato.
    </para>
 
    <para>
-    <function>pg_relation_size</function> accepts the OID or name of a table, index or
-    toast table, and returns the on-disk size in bytes. Specifying
-    <literal>'main'</literal> or leaving out the second argument returns the
-    size of the main data fork of the relation. Specifying
-    <literal>'fsm'</literal> returns the size of the
-    Free Space Map (see <xref linkend="storage-fsm"/>) associated with the
-    relation. Specifying <literal>'vm'</literal> returns the size of the
-    Visibility Map (see <xref linkend="storage-vm"/>) associated with the
-    relation.  Note that this function shows the size of only one fork;
-    for most purposes it is more convenient to use the higher-level
-    functions <function>pg_total_relation_size</function> or
-    <function>pg_table_size</function>.
-   </para>
-
-   <para>
-    <function>pg_size_pretty</function> can be used to format the result of one of
-    the other functions in a human-readable way, using kB, MB, GB or TB as
-    appropriate.
-   </para>
-
-   <para>
-    The functions shown in <xref linkend="functions-admin-dblocation"/> assist
-    in identifying the specific disk files associated with database objects.
+Le funzioni mostrate in <xref linkend="functions-admin-dblocation"/> aiutano 
+nell'identificare i file disco specifici associati con gli oggetti del database.
    </para>
 
    <indexterm>
@@ -13931,10 +14064,10 @@ postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
    </indexterm>
 
    <table id="functions-admin-dblocation">
-    <title>Database Object Location Functions</title>
+    <title>Funzioni di locazione di oggetti di database</title>
     <tgroup cols="3">
      <thead>
-      <row><entry>Name</entry> <entry>Return Type</entry> <entry>Description</entry>
+      <row><entry>Nome</entry> <entry>Tipo di ritorno</entry> <entry>Descrizione</entry>
       </row>
      </thead>
 
@@ -13945,7 +14078,7 @@ postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
         </entry>
        <entry><type>oid</type></entry>
        <entry>
-        Filenode number of the relation with the specified OID or name
+        numero filenode della relazione con l'OID o il nome specificato
        </entry>
       </row>
       <row>
@@ -13954,7 +14087,7 @@ postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
         </entry>
        <entry><type>text</type></entry>
        <entry>
-        File path name of the relation with the specified OID or name
+        Percorso del file della relazione con il nome o l'OID specificato
        </entry>
       </row>
      </tbody>
@@ -13962,39 +14095,41 @@ postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
    </table>
 
    <para>
-    <function>pg_relation_filenode</function> accepts the OID or name of a table,
-    index, sequence, or toast table, and returns the <quote>filenode</quote> number
-    currently assigned to it.  The filenode is the base component of the file
-    name(s) used for the relation (see <xref linkend="storage-file-layout"/>
-    for more information).  For most tables the result is the same as
-    <structname>pg_class</structname>.<structfield>relfilenode</structfield>, but for certain
-    system catalogs <structfield>relfilenode</structfield> is zero and this function must
-    be used to get the correct value.  The function returns NULL if passed
-    a relation that does not have storage, such as a view.
+<function>pg_relation_filenode</function> accetta l'OID o il nome di una tabella,
+indice, sequenza o tabella toast, e restituisce il numero di <quote>filenode</quote>
+attualmente assegnato ad esso. Il filenode è il componente base del nome del/i file
+usato/i per la relazzione (vedere <xref linkend="storage-file-layout"/>
+per maggiori informazioni). Per la maggior parte delle tabelle il risultato è lo stesso 
+di <structname>pg_class</structname>.<structfield>relfilenode</structfield>, 
+ma per certi 
+cataloghi di sistema <structfield>relfilenode</structfield> è zero e questa funzione deve
+essere usato per ottenete il valore corretto. La funzione restituisce NULL se viene passata
+una relazione che non ha immagazzinamento, tipo una vista.
    </para>
 
    <para>
-    <function>pg_relation_filepath</function> is similar to
-    <function>pg_relation_filenode</function>, but it returns the entire file path name
-    (relative to the database cluster's data directory <varname>PGDATA</varname>) of
-    the relation.
+<function>pg_relation_filepath</function> è simile a
+<function>pg_relation_filenode</function>, ma restituisce l'intero percorso del file
+(relativo alla directory dati <varname>PGDATA</varname> del cluster di database) della 
+relazione.
    </para>
 
    <para>
-    The functions shown in <xref
-    linkend="functions-admin-genfile"/> provide native access to
-    files on the machine hosting the server. Only files within the
-    database cluster directory and the <varname>log_directory</varname> can be
-    accessed.  Use a relative path for files in the cluster directory,
-    and a path matching the <varname>log_directory</varname> configuration setting
-    for log files.  Use of these functions is restricted to superusers.
+La funzione mostrata in <xref
+linkend="functions-admin-genfile"/> fornisce accesso nativo a 
+file sulla macchina che esegue l'hosting del server. Solo i file all'interno della
+directory cluster di database e la <varname>log_directory</varname> possono essere
+accesse. Usare un percorso relativo per i file nella directory cluster,
+e un percorso che corrisponde all'impostazione di configurazione 
+<varname>log_directory</varname> 
+per i file di log. L'uso di queste funzioni è limitato al superuser.
    </para>
 
    <table id="functions-admin-genfile">
-    <title>Generic File Access Functions</title>
+    <title>Funzioni di accesso ai file</title>
     <tgroup cols="3">
      <thead>
-      <row><entry>Name</entry> <entry>Return Type</entry> <entry>Description</entry>
+      <row><entry>Nome</entry> <entry>Tipo di ritorno</entry> <entry>Descrizione</entry>
       </row>
      </thead>
 
@@ -14004,21 +14139,21 @@ postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
         <literal><function>pg_ls_dir(<parameter>dirname</parameter> <type>text</type>)</function></literal>
        </entry>
        <entry><type>setof text</type></entry>
-       <entry>List the contents of a directory</entry>
+       <entry>Lista i contenuti di una directory</entry>
       </row>
       <row>
        <entry>
         <literal><function>pg_read_file(<parameter>filename</parameter> <type>text</type>, <parameter>offset</parameter> <type>bigint</type>, <parameter>length</parameter> <type>bigint</type>)</function></literal>
        </entry>
        <entry><type>text</type></entry>
-       <entry>Return the contents of a text file</entry>
+       <entry>Restituisce i contenuti di un file di testo</entry>
       </row>
       <row>
        <entry>
         <literal><function>pg_stat_file(<parameter>filename</parameter> <type>text</type>)</function></literal>
        </entry>
        <entry><type>record</type></entry>
-       <entry>Return information about a file</entry>
+       <entry>Restituisce informazioni su un file</entry>
       </row>
      </tbody>
     </tgroup>
@@ -14028,30 +14163,30 @@ postgres=# SELECT * FROM pg_xlogfile_name_offset(pg_stop_backup());
     <primary>pg_ls_dir</primary>
    </indexterm>
    <para>
-    <function>pg_ls_dir</function> returns all the names in the specified
-    directory, except the special entries <quote><literal>.</literal></quote> and
-    <quote><literal>..</literal></quote>.
+<function>pg_ls_dir</function> restituisce tutti i nomi nella specifica 
+directory, ad eccezione delle voci speciali <quote><literal>.</literal></quote> e
+<quote><literal>..</literal></quote> .
    </para>
 
    <indexterm>
     <primary>pg_read_file</primary>
    </indexterm>
    <para>
-    <function>pg_read_file</function> returns part of a text file, starting
-    at the given <parameter>offset</parameter>, returning at most <parameter>length</parameter>
-    bytes (less if the end of file is reached first).  If <parameter>offset</parameter>
-    is negative, it is relative to the end of the file.
+<function>pg_read_file</function> restituisce parte di un file di testo, cominciando
+all'<parameter>offset</parameter> fornito, e ritorna al massimo <parameter>length</parameter>
+byte (meno se la fine del file viene raggiunta prima). Se <parameter>offset</parameter>
+è negativo, partirà dalla fine del file.
    </para>
 
    <indexterm>
     <primary>pg_stat_file</primary>
    </indexterm>
    <para>
-    <function>pg_stat_file</function> returns a record containing the file
-    size, last accessed time stamp, last modified time stamp,
-    last file status change time stamp (Unix platforms only),
-    file creation time stamp (Windows only), and a <type>boolean</type>
-    indicating if it is a directory.  Typical usages include:
+<function>pg_stat_file</function> ritorna un record contenente la dimensione
+del file, il timestamp dell'ultimo accesso, il timestamp dell'ultima modifica,
+il timestamp dell'ultimo cambiamento di stato del file (solo su piattaforme Unix),
+il timestamp della creazione del file (solo Windows), e un <type>boolean</type>
+indicante se è una directory. Utilizzi tipici includono:
 <programlisting>
 SELECT * FROM pg_stat_file('filename');
 SELECT (pg_stat_file('filename')).modification;
@@ -14059,16 +14194,19 @@ SELECT (pg_stat_file('filename')).modification;
    </para>
 
    <para>
-    The functions shown in <xref linkend="functions-advisory-locks"/> manage
-    advisory locks.  For details about proper use of these functions, see
-    <xref linkend="advisory-locks"/>.
+Le funzioni mostrate in <xref linkend="functions-advisory-locks"/> gestiscono 
+i lock consultivi. Per dettagli circa l'uso corretto di queste funzioni, vedere
+<xref linkend="advisory-locks"/>.
+
    </para>
 
    <table id="functions-advisory-locks">
-    <title>Advisory Lock Functions</title>
+    <title>Funzioni di lock consultivi</title>
     <tgroup cols="3">
      <thead>
-      <row><entry>Name</entry> <entry>Return Type</entry> <entry>Description</entry>
+      <row><entry>Nome</entry> 
+            <entry>Tipo di ritorno</entry> 
+            <entry>Descrizione</entry>
       </row>
      </thead>
 
@@ -14078,14 +14216,14 @@ SELECT (pg_stat_file('filename')).modification;
         <literal><function>pg_advisory_lock(<parameter>key</parameter> <type>bigint</type>)</function></literal>
        </entry>
        <entry><type>void</type></entry>
-       <entry>Obtain exclusive advisory lock</entry>
+       <entry>Ottiene un lock consultivo esclusivo</entry>
       </row>
       <row>
        <entry>
         <literal><function>pg_advisory_lock(<parameter>key1</parameter> <type>int</type>, <parameter>key2</parameter> <type>int</type>)</function></literal>
        </entry>
        <entry><type>void</type></entry>
-       <entry>Obtain exclusive advisory lock</entry>
+       <entry>Ottiene un lock consultivo esclusivo</entry>
       </row>
 
       <row>
@@ -14093,14 +14231,14 @@ SELECT (pg_stat_file('filename')).modification;
         <literal><function>pg_advisory_lock_shared(<parameter>key</parameter> <type>bigint</type>)</function></literal>
        </entry>
        <entry><type>void</type></entry>
-       <entry>Obtain shared advisory lock</entry>
+        <entry>Ottiene un lock consultivo condiviso</entry>
       </row>
       <row>
        <entry>
         <literal><function>pg_advisory_lock_shared(<parameter>key1</parameter> <type>int</type>, <parameter>key2</parameter> <type>int</type>)</function></literal>
        </entry>
        <entry><type>void</type></entry>
-       <entry>Obtain shared advisory lock</entry>
+        <entry>Ottiene un lock consultivo condiviso</entry>
       </row>
 
       <row>
@@ -14108,14 +14246,14 @@ SELECT (pg_stat_file('filename')).modification;
         <literal><function>pg_try_advisory_lock(<parameter>key</parameter> <type>bigint</type>)</function></literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>Obtain exclusive advisory lock if available</entry>
+       <entry>Ottiene un lock consultivo esclusivo se disponibile</entry>
       </row>
       <row>
        <entry>
         <literal><function>pg_try_advisory_lock(<parameter>key1</parameter> <type>int</type>, <parameter>key2</parameter> <type>int</type>)</function></literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>Obtain exclusive advisory lock if available</entry>
+       <entry>Ottiene un lock consultivo esclusivo se disponibile</entry>
       </row>
 
       <row>
@@ -14123,7 +14261,7 @@ SELECT (pg_stat_file('filename')).modification;
         <literal><function>pg_try_advisory_lock_shared(<parameter>key</parameter> <type>bigint</type>)</function></literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>Obtain shared advisory lock if available</entry>
+       <entry>Ottiene un lock consultivo condiviso se disponibile</entry>
       </row>
       <row>
        <entry>
@@ -14131,7 +14269,7 @@ SELECT (pg_stat_file('filename')).modification;
        </entry>
        <entry><type>boolean</type></entry>
        <entry>Obtain shared advisory lock if available</entry>
-       <entry>Ottiene un advisory lock condiviso se disponibile</entry>
+       <entry>Ottiene un  lock consultivo condiviso se disponibile</entry>
       </row>
 
       <row>
@@ -14169,7 +14307,7 @@ SELECT (pg_stat_file('filename')).modification;
         <literal><function>pg_advisory_unlock_all()</function></literal>
        </entry>
        <entry><type>void</type></entry>
-       <entry>Rilascia tutti gli advisory lock della sessione corrente</entry>
+       <entry>Rilascia tutti i lock consultivi della sessione corrente</entry>
       </row>
 
      </tbody>
@@ -14226,7 +14364,7 @@ SELECT (pg_stat_file('filename')).modification;
    <para>
     La funzione <function>pg_advisory_unlock</function> rilascia un advisory lock esclusivo
     acquisito in precedenza. Essa
-    restituirà <literal>true</function> se il blocco è stato rilasciato con successo.
+    restituirà <literal>true</literal> se il blocco è stato rilasciato con successo.
     Se il blocco non è di fatto tenuto, verrà restituito <literal>false</literal>,
     e in aggiunta, il server rileverà un warning SQL.
    </para>
@@ -14252,7 +14390,7 @@ SELECT (pg_stat_file('filename')).modification;
   </sect1>
 
   <sect1 id="functions-trigger">
-   <title>Trigger Functions</title>
+   <title>Funzioni trigger</title>
 
    <indexterm>
      <primary>suppress_redundant_updates_trigger</primary>
@@ -14270,18 +14408,18 @@ SELECT (pg_stat_file('filename')).modification;
     </para>
 
     <para>
-      Ideally, you should normally avoid running updates that don't actually
-      change the data in the record. Redundant updates can cost considerable
-      unnecessary time, especially if there are lots of indexes to alter,
-      and space in dead rows that will eventually have to be vacuumed.
-      However, detecting such situations in client code is not
-      always easy, or even possible, and writing expressions to detect
-      them can be error-prone. An alternative is to use 
-      <function>suppress_redundant_updates_trigger</function>, which will skip
-      updates that don't change the data. You should use this with care,
-      however. The trigger takes a small but non-trivial time for each record, 
-      so if most of the records affected by an update are actually changed,
-      use of this trigger will actually make the update run slower.
+Idealmente, si dovrebbero evitare aggiornamenti che di fatto non 
+cambiano i dati nel record. Aggiornamenti ridondanti posso costare tempo
+non necessario, specialmente se ci sono molti indici da cambiare,
+e spazio in righe morte che eventualmente debba essere svuotato.
+Comunque, rilevare quelle situazioni nel codice di un client non è 
+sempre facile, o possibile, e scrivere espressioni per rilevarli 
+può essere portatore di errori. Un'alternativa è di usare
+<function>suppress_redundant_updates_trigger</function>, che salterà
+aggiornamenti che non modificano i dati. Si dovrebbe usarla comunque con cura.
+Il trigger usa poco e insignificante tempo per ogni record, 
+così se la maggior parte dei record interessati dall'aggiornamento sono di fatto cambiati,
+usare questo trigger di fatto renderà più lento l'aggiornamento.
     </para>
 
     <para>

@@ -2,141 +2,145 @@
 <!-- $PostgreSQL$ -->
 
 <chapter id="indexes">
- <title>Indexes</title>
+ <title>Indici</title>
 
  <indexterm zone="indexes">
-  <primary>index</primary>
+  <primary>indice</primary>
  </indexterm>
 
  <para>
-  Indexes are a common way to enhance database performance.  An index
-  allows the database server to find and retrieve specific rows much
-  faster than it could do without an index.  But indexes also add
-  overhead to the database system as a whole, so they should be used
-  sensibly.
+  Gli indici sono un comune mezzo per migliorare le prestazioni del database. Un
+  indice consente al server di database di trovare e recuperare le righe specifiche molto
+  più velocemente di quanto potrebbe fare senza un indice. Ma essi rappresentano anche
+  un carico aggiuntivo all'intero sistema di database, per cui dovrebbero essere usati 
+  assennatamente.
  </para>
 
 
  <sect1 id="indexes-intro">
-  <title>Introduction</title>
+  <title>Introduzione</title>
 
   <para>
-   Suppose we have a table similar to this:
+   Supponendo di avere una tabella simile a questa:
 <programlisting>
 CREATE TABLE test1 (
     id integer,
     content varchar
 );
 </programlisting>
-   and the application issues many queries of the form:
+   e che l'applicazione richiede molte query della forma:
 <programlisting>
 SELECT content FROM test1 WHERE id = <replaceable>constant</replaceable>;
 </programlisting>
-   With no advance preparation, the system would have to scan the entire
-   <structname>test1</structname> table, row by row, to find all
-   matching entries.  If there are many rows in
-   <structname>test1</structname> and only a few rows (perhaps zero
-   or one) that would be returned by such a query, this is clearly an
-   inefficient method.  But if the system has been instructed to maintain an
-   index on the <structfield>id</structfield> column, it can use a more
-   efficient method for locating matching rows.  For instance, it
-   might only have to walk a few levels deep into a search tree.
+   Senza una preparazione avanzata, il sistema dovrebbe scandire l'intera
+   tabella <structname>test1</structname>, riga per riga, per cercare tutte
+   le corrispondenze. Se ci sono molte righe in <structname>test1</structname>
+   e solo alcune di esse (forse solo zero o una) verrebbero restituite da una
+   tale query, questo sarebbe chiaramente un metodo inefficiente. Ma se il
+   sistema è stato istruito per mantenere un indice sulla colonna
+   <structfield>id</structfield>, esso potrà usare un metodo più
+   efficiente per localizzare le righe corrispondenti. Per esempio, è
+   probabile che esso debba scorrere solo qualche livello in un albero di ricerca.
   </para>
 
   <para>
-   A similar approach is used in most non-fiction books:  terms and
-   concepts that are frequently looked up by readers are collected in
-   an alphabetic index at the end of the book.  The interested reader
-   can scan the index relatively quickly and flip to the appropriate
-   page(s), rather than having to read the entire book to find the
-   material of interest.  Just as it is the task of the author to
-   anticipate the items that readers are likely to look up,
-   it is the task of the database programmer to foresee which indexes
-   will be useful.
+   Un approccio simile è usato nei libri non-romanzeschi: i termini e
+   i concetti che sono cercati frequentemente dai lettori sono raccolti in
+   un indice alfabetico alla fine del libro. Il lettore interessato
+   può scandire l'indice e andare alla pagina appropriata,
+   senza dover leggere l'intero libro per trovare il
+   materiale interessato. Come è incarico dell'autore
+   prevedere gli elementi che i lettori ricercheranno,
+   è compito del programmatore di database prevedere quali
+   indici saranno vantaggiosi.
   </para>
 
   <para>
-   The following command can be used to create an index on the
-   <structfield>id</structfield> column, as discussed:
+   Per creare l'indice nella colonna <structfield>id</structfield>,
+   come discusso sopra, si potrà usare il seguente comando:
 <programlisting>
 CREATE INDEX test1_id_index ON test1 (id);
 </programlisting>
-   The name <structname>test1_id_index</structname> can be chosen
-   freely, but you should pick something that enables you to remember
-   later what the index was for.
+   Il nome <structname>test1_id_index</structname> può essere scelto
+   liberamente, ma bisogna scegliere qualcosa che consenta di ricordare
+   in seguito per cosa è stato creato l'indice.
   </para>
 
   <para>
-   To remove an index, use the <command>DROP INDEX</command> command.
-   Indexes can be added to and removed from tables at any time.
+   Per rimuovere un indice, usare il comando <command>DROP INDEX</command>.
+   Gli indici possono essere aggiunti e rimossi dalle tabelle in qualsiasi momento.
   </para>
 
   <para>
-   Once an index is created, no further intervention is required: the
-   system will update the index when the table is modified, and it will
-   use the index in queries when it thinks doing so would be more efficient
-   than a sequential table scan.  But you might have to run the
-   <command>ANALYZE</command> command regularly to update
-   statistics to allow the query planner to make educated decisions.
-   See <xref linkend="performance-tips"/> for information about
-   how to find out whether an index is used and when and why the
-   planner might choose <emphasis>not</emphasis> to use an index.
+   
+Una volta creato l'indice, nessun intervento ulteriore è richiesto: Il
+   sistema aggiornerà l'indice quando la tabella viene modificata, e lo
+   utilizzerà nelle query quando pensa che il suo utilizzo sarà
+   più efficiente rispetto ad una scansione sequenziale della tabella. 
+   Ma potreste dover attivare regolarmente il comando <command>ANALYZE</command>
+   per aggiornare le statistiche in modo che il planner delle query prenda decisioni
+   erudite. Consultare il <xref linkend="performance-tips" /> per aver informazioni
+   su come scoprire se un indice è usato e quando e perchè il 
+   planner potrebbe scegliere di <emphasis>non</emphasis> usare un indice.
   </para>
 
   <para>
-   Indexes can also benefit <command>UPDATE</command> and
-   <command>DELETE</command> commands with search conditions.
-   Indexes can moreover be used in join searches.  Thus,
-   an index defined on a column that is part of a join condition can
-   also significantly speed up queries with joins.
+   Gli indici possono trarre beneficio dai comandi <command>UPDATE</command> e
+   <command>DELETE</command> con le condizioni di ricerca. Gli indici
+   possono essere inoltre usati nelle ricerche join. Per cui, un indice
+   definito su una colonna che è parte di una condizione join può
+   aumentare significativamente la velocità della query con join.
   </para>
 
   <para>
-   Creating an index on a large table can take a long time.  By default,
-   <productname>PostgreSQL</productname> allows reads (<command>SELECT</command> statements) to occur
-   on the table in parallel with index creation, but writes (<command>INSERT</command>,
-   <command>UPDATE</command>, <command>DELETE</command>) are blocked until the index build is finished.
-   In production environments this is often unacceptable.
-   It is possible to allow writes to occur in parallel with index
-   creation, but there are several caveats to be aware of &mdash;
-   for more information see <xref linkend="SQL-CREATEINDEX-CONCURRENTLY"
-   endterm="SQL-CREATEINDEX-CONCURRENTLY-title"/>.
+   
+    Creare un indice in una grande tabella può richiedere molto tempo. Per impostazione
+   predefinita,<productname>PostgreSQL</productname> consente che le letture (select) avvengano
+   sulla tabella in parallelo con la creazione di un indice, mentre le scritture (insert,
+   update, delete) saranno bloccate fino a che la costruzione dell'indice non è finita.
+   In ambienti di produzione questo è spesso inaccettabile. 
+   È possibile consentire alle scritture di verificarsi in parallelo con la creazione
+   dell'indice, ma bisogna considerare diversi avvertimenti &mdash;
+   per ulteriori informazioni consultare <xref linkend="SQL-CREATEINDEX-CONCURRENTLY"
+   endterm="SQL-CREATEINDEX-CONCURRENTLY-title" />.
   </para>
 
   <para>
-   After an index is created, the system has to keep it synchronized with the
-   table.  This adds overhead to data manipulation operations.
-   Therefore indexes that are seldom or never used in queries
-   should be removed.
+   Dopo aver creato un indice, il sistema deve mantenerlo sincronizzato con la
+   tabella. Questo aggiunge un carico alle operazioni di manipolazione dei dati.
+   Per cui gli indici che vengono usati raramente o mai nelle query,
+   dovrebbero essere rimossi.
   </para>
  </sect1>
 
 
  <sect1 id="indexes-types">
-  <title>Index Types</title>
+  <title>Tipi di indice</title>
 
   <para>
-   <productname>PostgreSQL</productname> provides several index types:
-   B-tree, Hash, GiST and GIN.  Each index type uses a different
-   algorithm that is best suited to different types of queries.
-   By default, the <command>CREATE INDEX</command> command creates
-   B-tree indexes, which fit the most common situations.
+   
+    <productname>PostgreSQL</productname> fornisce diversi tipi di indici:
+   B-tree, Hash, GiST and GIN. Ogni tipo di indice utilizza differenti
+   algoritmi che si adattano ai diversi tipi di query. Per impostazione
+   predefinita, il comando <command>CREATE INDEX</command> crea un
+   indice B-tree, che è adatto alle situazioni più comuni.
   </para>
 
   <para>
    <indexterm>
-    <primary>index</primary>
+    <primary>indice</primary>
     <secondary>B-tree</secondary>
    </indexterm>
    <indexterm>
     <primary>B-tree</primary>
-    <see>index</see>
+    <see>indice</see>
    </indexterm>
-   B-trees can handle equality and range queries on data that can be sorted
-   into some ordering.
-   In particular, the <productname>PostgreSQL</productname> query planner
-   will consider using a B-tree index whenever an indexed column is
-   involved in a comparison using one of these operators:
+   
+   I  B-tree possono gestire query di uguaglianza e di intervallo sui dati
+   che possono essere ordinati qualsiasi modo. In particolare, il planner
+   delle query di <productname>PostgreSQL</productname> considera la
+   possibilità di usare un indice B-tree quando una colonna indicizzata
+   è coinvolta in un confronto utilizzando uno di questi operatori:
 
    <simplelist>
     <member><literal>&lt;</literal></member>
@@ -146,43 +150,47 @@ CREATE INDEX test1_id_index ON test1 (id);
     <member><literal>&gt;</literal></member>
    </simplelist>
 
-   Constructs equivalent to combinations of these operators, such as
-   <literal>BETWEEN</literal> and <literal>IN</literal>, can also be implemented with
-   a B-tree index search.  Also, an <literal>IS NULL</literal> or <literal>IS NOT
-   NULL</literal> condition on an index column can be used with a B-tree index.
+   
+    Strutture equivalenti a combinazioni di questi operatori, quali
+   <literal>BETWEEN</literal> e <literal>IN</literal>, possono anche essere implementate con
+   un indice di ricerca B-tree. Anche una condizione <literal>IS NULL</literal> su
+   una colonna indicizzata può essere usata con un indice B-tree.
   </para>
 
   <para>
-   The optimizer can also use a B-tree index for queries involving the
-   pattern matching operators <literal>LIKE</literal> and <literal>~</literal>
-   <emphasis>if</emphasis> the pattern is a constant and is anchored to
-   the beginning of the string &mdash; for example, <literal>col LIKE
-   'foo%'</literal> or <literal>col ~ '^foo'</literal>, but not
-   <literal>col LIKE '%bar'</literal>. However, if your database does not
-   use the C locale you will need to create the index with a special
-   operator class to support indexing of pattern-matching queries; see
-   <xref linkend="indexes-opclass"/> below. It is also possible to use
-   B-tree indexes for <literal>ILIKE</literal> and
-   <literal>~*</literal>, but only if the pattern starts with
-   non-alphabetic characters, i.e., characters that are not affected by
-   upper/lower case conversion.
+   
+    L'ottimizzatore può anche usare un indice B-tree per query che
+   coinvologono gli operatori di corrispondenza di modello <literal>LIKE</literal>
+   e <literal>~</literal> <emphasis>se</emphasis> il modello è una
+   costante ed è ancorato all'inizio della stringa &mdash; per esempio,
+   <literal>col LIKE 'foo%'</literal> o <literal>col ~ '^foo'</literal>, ma
+   non <literal>col LIKE '%bar'</literal>. Tuttavia, se il proprio server non
+   usa il C locale bisognerà creare l'indice con una speciale classe
+   di operatore per supportare l'indicizzazione delle query di
+   corrispondenza-modelli. Consultare <xref linkend="indexes-opclass" /> sotto.
+   È anche possibile usare gli indici B-tree per <literal>ILIKE</literal>
+   and <literal>~*</literal>, ma solo se il modello inizia con caratteri
+   non-alfabetici, cioè caratteri che non sono interessati dalla
+   conversione maisucolo/minuscolo.   
   </para>
 
 
   <para>
    <indexterm>
-    <primary>index</primary>
+    <primary>indice</primary>
     <secondary>hash</secondary>
    </indexterm>
    <indexterm>
     <primary>hash</primary>
-    <see>index</see>
+    <see>indice</see>
    </indexterm>
-   Hash indexes can only handle simple equality comparisons.
-   The query planner will consider using a hash index whenever an
-   indexed column is involved in a comparison using the
-   <literal>=</literal> operator.
-   The following command is used to create a hash index:
+   Gli indici hash possono gestire solo semplici confronti di uguaglianza.
+   Il planner delle query considererà l'utilizzo di un indice hash quando una
+   colonna indicizzata viene coinvolta in un confronto che utilizza
+   l'operatore <literal>=</literal>. (Ma gli indici hash non supportano
+   ricerche <literal>IS NULL</literal>).
+   Il seguente comando viene utilizzato per creare un indice hash:
+  
 <synopsis>
 CREATE INDEX <replaceable>name</replaceable> ON <replaceable>table</replaceable> USING hash (<replaceable>column</replaceable>);
 </synopsis>
@@ -190,31 +198,34 @@ CREATE INDEX <replaceable>name</replaceable> ON <replaceable>table</replaceable>
 
   <note>
    <para>
-    Hash index operations are not presently WAL-logged,
-    so hash indexes might need to be rebuilt with <command>REINDEX</command>
-    after a database crash.
-    For this reason, hash index use is presently discouraged.
+    
+    Le operazioni sugli indici
+    hash non sono attualmente registrate da WAL, per cui gli indici hash potrebbero
+    aver bisogno di essere ricostruiti con <command>REINDEX</command>
+    dopo un crash del database.
+    Per questi motivi, l'uso degli indici hash è attualmente sconsigliato. 
    </para>
   </note>
 
   <para>
    <indexterm>
-    <primary>index</primary>
+    <primary>indice</primary>
     <secondary>GiST</secondary>
    </indexterm>
    <indexterm>
     <primary>GiST</primary>
-    <see>index</see>
+    <see>indice</see>
    </indexterm>
-   GiST indexes are not a single kind of index, but rather an infrastructure
-   within which many different indexing strategies can be implemented.
-   Accordingly, the particular operators with which a GiST index can be
-   used vary depending on the indexing strategy (the <firstterm>operator
-   class</firstterm>).  As an example, the standard distribution of
-   <productname>PostgreSQL</productname> includes GiST operator classes
-   for several two-dimensional geometric data types, which support indexed
-   queries using these operators:
 
+   Gli indici GiST non sono un singolo tipo di indice, ma piuttosto una infrastruttura
+   nella quale diverse strategie di indicizzazione possono essere implementate.
+   Di conseguenza, i particolari operatori con i quali l'indice GiST può
+   essere usato variano secondo la strategia di indicizzazione (la
+   <firstterm>classe operatore</firstterm>). Come esempio, la distribuzione standard di
+   <productname>PostgreSQL</productname> include la classe operatore GiST
+   per diversi tipi di dati geometrici bidimensionali, essa supporta le query
+   indicizzate che utilizzano questi operatori:
+   
    <simplelist>
     <member><literal>&lt;&lt;</literal></member>
     <member><literal>&amp;&lt;</literal></member>
@@ -230,31 +241,33 @@ CREATE INDEX <replaceable>name</replaceable> ON <replaceable>table</replaceable>
     <member><literal>&amp;&amp;</literal></member>
    </simplelist>
 
-   (See <xref linkend="functions-geometry"/> for the meaning of
-   these operators.)
-   Many other GiST operator
-   classes are available in the <literal>contrib</literal> collection or as separate
-   projects.  For more information see <xref linkend="GiST"/>.
+   
+    (Consultare <xref linkend="functions-geometry" /> per il significato di
+   questi operatori).
+   Diverse altre classi di operatori GiST
+   sono disponibili nel gruppo <literal>contrib</literal> o come progetti
+   separati. Per ulteriori informazioni consultare il <xref linkend="GiST" />.
   </para>
   <para>
    <indexterm>
-    <primary>index</primary>
+    <primary>indice</primary>
     <secondary>GIN</secondary>
    </indexterm>
    <indexterm>
     <primary>GIN</primary>
-    <see>index</see>
+    <see>indice</see>
    </indexterm>
-   GIN indexes are inverted indexes which can handle values that contain more
-   than one key, arrays for example. Like GiST, GIN can support
-   many different user-defined indexing strategies and the particular
-   operators with which a GIN index can be used vary depending on the
-   indexing strategy.
-   As an example, the standard distribution of
-   <productname>PostgreSQL</productname> includes GIN operator classes
-   for one-dimensional arrays, which support indexed
-   queries using these operators:
 
+   Gli indici GIN sono indici invertiti che possono gestire valori che contengono
+   più di una chiave, per esempio gli array. Come per GiST, GIN può supportare
+   molte differenti strategie di indicizzazione definite dall'utente, ed i particolari
+   operatori con i quali un indice GIN può essere usato, variano in dipendenza
+   della strategia di indicizzazione.
+   Come esempio, la distribuzione standard di
+   <productname>PostgreSQL</productname> include classi di operatore GIN
+   per array mono-dimensionali, le quali supportano query indicizzate
+   che utilizzano questi operatori: 
+   
    <simplelist>
     <member><literal>&lt;@</literal></member>
     <member><literal>@&gt;</literal></member>
@@ -262,26 +275,27 @@ CREATE INDEX <replaceable>name</replaceable> ON <replaceable>table</replaceable>
     <member><literal>&amp;&amp;</literal></member>
    </simplelist>
 
-   (See <xref linkend="functions-array"/> for the meaning of
-   these operators.)
-   Many other GIN operator
-   classes are available in the <literal>contrib</literal> collection or as separate
-   projects.  For more information see <xref linkend="GIN"/>.
+   
+    (Consultare <xref linkend="functions-array" /> per trovare il significato di
+   questi operatori).
+   Diverse altre classi di operatori GIN
+   sono disponibili nel gruppo <literal>contrib</literal> o come progetti
+   separati. Per ulteriori informazioni consultare il <xref linkend="GIN" />.
   </para>
  </sect1>
 
 
  <sect1 id="indexes-multicolumn">
-  <title>Multicolumn Indexes</title>
+  <title>Indici multicolonna</title>
 
   <indexterm zone="indexes-multicolumn">
-   <primary>index</primary>
-   <secondary>multicolumn</secondary>
+   <primary>indice</primary>
+   <secondary>multicolonna</secondary>
   </indexterm>
 
   <para>
-   An index can be defined on more than one column of a table.  For example, if
-   you have a table of this form:
+   Un indice può essere definito su più di una colonna di una tabella. Per esempio,
+   avendo una tabella di questo tipo:
 <programlisting>
 CREATE TABLE test2 (
   major int,
@@ -289,8 +303,8 @@ CREATE TABLE test2 (
   name varchar
 );
 </programlisting>
-   (say, you keep your <filename class="directory">/dev</filename>
-   directory in a database...) and you frequently issue queries like:
+   (Supponendo di avere la propria directory <filename class="directory">/dev</filename>
+   in un database....) ed effettuando frequentemente query del tipo:
 <programlisting>
 SELECT name FROM test2 WHERE major = <replaceable>constant</replaceable> AND minor = <replaceable>constant</replaceable>;
 </programlisting>
@@ -303,156 +317,162 @@ CREATE INDEX test2_mm_idx ON test2 (major, minor);
   </para>
 
   <para>
-   Currently, only the B-tree, GiST and GIN index types support multicolumn
-   indexes.  Up to 32 columns can be specified.  (This limit can be
-   altered when building <productname>PostgreSQL</productname>; see the
-   file <filename>pg_config_manual.h</filename>.)
+   
+    Attualmente, solo gli indici di tipo B-tree e GiST supportano gli indici multicolonna.
+   Possono essere specificate fino a 32 colonne. (Questo limite può essere
+   modificato quando si configura <productname>PostgreSQL</productname>; Consultare
+   il file <filename>pg_config_manual.h</filename>.)
   </para>
 
   <para>
-   A multicolumn B-tree index can be used with query conditions that
-   involve any subset of the index's columns, but the index is most
-   efficient when there are constraints on the leading (leftmost) columns.
-   The exact rule is that equality constraints on leading columns, plus
-   any inequality constraints on the first column that does not have an
-   equality constraint, will be used to limit the portion of the index
-   that is scanned.  Constraints on columns to the right of these columns
-   are checked in the index, so they save visits to the table proper, but
-   they do not reduce the portion of the index that has to be scanned.
-   For example, given an index on <literal>(a, b, c)</literal> and a
-   query condition <literal>WHERE a = 5 AND b &gt;= 42 AND c &lt; 77</literal>,
-   the index would have to be scanned from the first entry with
-   <literal>a</literal> = 5 and <literal>b</literal> = 42 up through the last entry with
-   <literal>a</literal> = 5.  Index entries with <literal>c</literal> &gt;= 77 would be
-   skipped, but they'd still have to be scanned through.
-   This index could in principle be used for queries that have constraints
-   on <literal>b</literal> and/or <literal>c</literal> with no constraint on <literal>a</literal>
-   &mdash; but the entire index would have to be scanned, so in most cases
-   the planner would prefer a sequential table scan over using the index.
+    Un indice B-tree multicolonna può essere usato con query che coinvolgono
+   qualsiasi sottoinsieme delle colonne dell'indice, ma l'indice è molto
+   più efficiente quando ci sono vincoli sulle colonne in testa (all'estrema
+   sinistra). La regola esatta è che vincoli di uguaglianza sulle colonne in
+   testa, più tutti i vincoli di diseguaglianza sulla prima colonna che non
+   ha un vincolo di uguaglianza, saranno usati per limitare la porzione dell'indice
+   che viene scandita. I vincoli sulle colonne alla destra di queste colonne sono
+   controllati nell'indice, per cui essi risparmiano consultazioni alla propria tabella,
+   ma non riducono la porzione dell'indice che deve essere scandita. Per esempio,
+   dato un indice su <literal>(a, b, c)</literal> e una condizione della query
+   <literal>WHERE a = 5 AND b &gt;= 42 AND c &lt; 77</literal>, l'indice dovrebbe essere
+   scandito dalla prima voce con <literal>a</literal> = 5 e <literal>b</literal> = 42 e
+   superiori fino all'ultima voce con <literal>a</literal> = 5. Le voci dell'indice con
+   <literal>c</literal> &gt;= 77 verrebbero saltate, ma dovranno tuttavia essere scandite.
+   Questo indice potrebbe in linea di principio essere usato per query che hanno
+   vincoli su <literal>b</literal> e/o <literal>c</literal> e senza nessun vincolo su <literal>a</literal>
+   &mdash; ma l'intero indice dovrà essere scandito, per cui nella maggior
+   parte dei casi il planner preferirebbe una scansione sequenziale della tabella  
+   all'utilizzo dell'indice.
+
   </para>
 
   <para>
-   A multicolumn GiST index can be used with query conditions that
-   involve any subset of the index's columns. Conditions on additional
-   columns restrict the entries returned by the index, but the condition on
-   the first column is the most important one for determining how much of
-   the index needs to be scanned.  A GiST index will be relatively
-   ineffective if its first column has only a few distinct values, even if
-   there are many distinct values in additional columns.
+    Un indice GiST multicolonna può essere usato con query che
+   coinvolgono qualunque sottoinsieme delle colonne dell'indice. Condizioni su colonne
+   supplementari restringono le voci restituite dall'indice, ma la condizione sulla
+   prima colonna è quella più importante per determinare quanta parte
+   dell'indice deve essere scandita. Un indice GiST sarà relativamente
+   inefficace se la sua prima colonna ha solo alcuni valori distinti, anche se
+   ci sono molti valori distinti nelle colonne supplementari.
   </para>
 
   <para>
-   A multicolumn GIN index can be used with query conditions that
-   involve any subset of the index's columns. Unlike B-tree or GiST,
-   index search effectiveness is the same regardless of which index column(s)
-   the query conditions use.
+        Un indice GIN multicolonna può essere usato con  query che 
+        coinvolgono qualsiasi sottoinsieme di colonne di indice. A differenza dei B-Tree o dei GiST,
+        l'efficienza dell'indice di ricerca è la stessa qualunque colonna/e indice  
+        venga usata dalla query.
   </para>
 
   <para>
-   Of course, each column must be used with operators appropriate to the index
-   type; clauses that involve other operators will not be considered.
+    Naturalmente, ogni colonna dovrà essere usata con operatori appropriati al tipo
+    di indice; Clausule che coinvolgono altri operatori non dovranno essere considerate.
   </para>
 
   <para>
-   Multicolumn indexes should be used sparingly.  In most situations,
-   an index on a single column is sufficient and saves space and time.
-   Indexes with more than three columns are unlikely to be helpful
-   unless the usage of the table is extremely stylized.  See also
-   <xref linkend="indexes-bitmap-scans"/> for some discussion of the
-   merits of different index configurations.
+   Gli indici multicolonna dovranno essere usati con parsimonia. Nella maggiorf parte delle
+   situazioni, un indice su una singola colonna è sufficiente e salva spazio e tempo.
+   Gli indici con più di tre colonne è improbabile che vengano usati a meno
+   che l'utilizzo della tabella non sia estremamente stilizzato. Consultare anche
+   <xref linkend="indexes-bitmap-scans" /> per ulteriori discussioni in merito alle
+   diverse impostazioni degli indici.
   </para>
  </sect1>
 
 
  <sect1 id="indexes-ordering">
-  <title>Indexes and <literal>ORDER BY</literal></title>
+  <title>Indici e <literal>ORDER BY</literal></title>
 
   <indexterm zone="indexes-ordering">
-   <primary>index</primary>
-   <secondary>and <literal>ORDER BY</literal></secondary>
+   <primary>indice</primary>
+   <secondary>e <literal>ORDER BY</literal></secondary>
   </indexterm>
 
   <para>
-   In addition to simply finding the rows to be returned by a query,
-   an index may be able to deliver them in a specific sorted order.
-   This allows a query's <literal>ORDER BY</literal> specification to be honored
-   without a separate sorting step.  Of the index types currently
-   supported by <productname>PostgreSQL</productname>, only B-tree
-   can produce sorted output &mdash; the other index types return
-   matching rows in an unspecified, implementation-dependent order.
+    In aggiunta alla semplice ricerca delle righe che saranno restituite da una query,
+   un indice può essere in grado di fornirle ordinate in una specificata maniera.
+   Questo consente che una specificazione <literal>ORDER BY</literal> di una query sia
+   soddisfatta senza una separata fase di ordinamento. Dei tipi di indice attualmente
+   supportati da <productname>PostgreSQL</productname>, solo i B-tree possono produrre
+   uscite ordinate &mdash; gli altri tipi di indice restituiscono le righe corrispondenti
+   in un ordine non specificato e dipendente dall'implementazione. 
   </para>
 
   <para>
-   The planner will consider satisfying an <literal>ORDER BY</literal> specification
-   either by scanning an available index that matches the specification,
-   or by scanning the table in physical order and doing an explicit
-   sort.  For a query that requires scanning a large fraction of the
-   table, an explicit sort is likely to be faster than using an index
-   because it requires
-   less disk I/O due to following a sequential access pattern.  Indexes are
-   more useful when only a few rows need be fetched.  An important
-   special case is <literal>ORDER BY</literal> in combination with
-   <literal>LIMIT</literal> <replaceable>n</replaceable>: an explicit sort will have to process
-   all the data to identify the first <replaceable>n</replaceable> rows, but if there is
-   an index matching the <literal>ORDER BY</literal>, the first <replaceable>n</replaceable>
-   rows can be retrieved directly, without scanning the remainder at all.
+   
+    Il planner considererà soddisfatta una specificazione <literal>ORDER BY</literal>
+   o tramite la scansione di tutti gli indici disponibili che soddisfano la specificazione
+   oppure tramite la scansione della tabella nell'ordine fisico e facendo un ordinamento
+   esplicito. Per una query che richiede di scansionare una grande frazione della tabella,
+   l'ordinamento esplicito sarà probabilmente più veloce perchè 
+   richiede meno accessi I/O su disco dovuti ad un modello di accesso meglio-ordinato, Gli
+   indici sono più utili quando solo poche righe hanno bisogno di essere prelevate.
+   Un caso particolarmente importante è <literal>ORDER BY</literal> in combinazione con
+   <literal>LIMIT</literal> <replaceable>n</replaceable>: un ordinamento esplicito che dovrà processare
+   tutti i dati per identificare le prime <replaceable>n</replaceable> righe, ma se c'è
+   un indice che abbina l'<literal>ORDER BY</literal> allora le prime <replaceable>n</replaceable>
+   righe  possono essere recuperate direttamente, senza scandire per niente il resto. 
   </para>
 
   <para>
-   By default, B-tree indexes store their entries in ascending order
-   with nulls last.  This means that a forward scan of an index on
-   column <literal>x</literal> produces output satisfying <literal>ORDER BY x</literal>
-   (or more verbosely, <literal>ORDER BY x ASC NULLS LAST</literal>).  The
-   index can also be scanned backward, producing output satisfying
+   
+    Per impostazione predefinita, gli indici B-tree memorizzano le loro voci in ordine
+   ascendente con i null in fondo. Questo significa che una scansione in avanti di un
+   indice su una colonna <literal>x</literal> produce un uscita che soddisfa <literal>ORDER BY x</literal>
+   (o più verbosamente, <literal>ORDER BY x ASC NULLS LAST</literal>). L'indice
+   può anche essere scandito all'indietro, producendo un uscita che soddisfa
    <literal>ORDER BY x DESC</literal>
-   (or more verbosely, <literal>ORDER BY x DESC NULLS FIRST</literal>, since
-   <literal>NULLS FIRST</literal> is the default for <literal>ORDER BY DESC</literal>).
+   (o più verbosamente, <literal>ORDER BY x DESC NULLS FIRST</literal>, dato che
+   <literal>NULLS FIRST</literal> è l'impostazione predefinita 
+    per <literal>ORDER BY DESC</literal>).
   </para>
 
   <para>
-   You can adjust the ordering of a B-tree index by including the
-   options <literal>ASC</literal>, <literal>DESC</literal>, <literal>NULLS FIRST</literal>,
-   and/or <literal>NULLS LAST</literal> when creating the index; for example:
+   È possibile modificare l'ordinamento di un indice B-tree includendo
+   le opzioni <literal>ASC</literal>, <literal>DESC</literal>, <literal>NULLS FIRST</literal>,
+   e/o <literal>NULLS LAST</literal> quando si crea l'indice; Per esempio:
 <programlisting>
 CREATE INDEX test2_info_nulls_low ON test2 (info NULLS FIRST);
 CREATE INDEX test3_desc_index ON test3 (id DESC NULLS LAST);
 </programlisting>
-   An index stored in ascending order with nulls first can satisfy
-   either <literal>ORDER BY x ASC NULLS FIRST</literal> or
-   <literal>ORDER BY x DESC NULLS LAST</literal> depending on which direction
-   it is scanned in.
+   Un indice memorizzato in ordine ascendente con i null in testa può essere
+   soddisfatto sia da <literal>ORDER BY x ASC NULLS FIRST</literal> che da
+   <literal>ORDER BY x DESC NULLS LAST</literal> in dipendenza della direzione nella quale
+   esso viene scansionato.
   </para>
 
   <para>
-   You might wonder why bother providing all four options, when two
-   options together with the possibility of backward scan would cover
-   all the variants of <literal>ORDER BY</literal>.  In single-column indexes
-   the options are indeed redundant, but in multicolumn indexes they can be
-   useful.  Consider a two-column index on <literal>(x, y)</literal>: this can
-   satisfy <literal>ORDER BY x, y</literal> if we scan forward, or
-   <literal>ORDER BY x DESC, y DESC</literal> if we scan backward.
-   But it might be that the application frequently needs to use
-   <literal>ORDER BY x ASC, y DESC</literal>.  There is no way to get that
-   ordering from a plain index, but it is possible if the index is defined
-   as <literal>(x ASC, y DESC)</literal> or <literal>(x DESC, y ASC)</literal>.
+   
+    È lecito domandarsi perchè fornire tutte le quattro opzioni, quando due
+   opzioni insieme con le possibilità di scansione a rovescio coprirebbero
+   tutte le varianti di <literal>ORDER BY</literal>. Negli indici a singola colonna 
+   le opzioni sono veramente rindondanti, ma negli indici multicolonna essi possono essere
+   utili. Considerare un indice a due-colonne su <literal>(x, y)</literal>: questo può
+   soddisfare <literal>ORDER BY x, y</literal> se si scandisce in avanti, oppure
+   <literal>ORDER BY x DESC, y DESC</literal> se si scandisce all'indietro.
+   Ma è probabile che l'applicazione necessita di usare frequentemente
+   <literal>ORDER BY x ASC, y DESC</literal>. Non c'è alcun modo per ottenere quell'ordinamento
+   da un indice regolare, ma sarà possibile se l'indice viene definito come
+   <literal>(x ASC, y DESC)</literal> o <literal>(x DESC, y ASC)</literal>.
   </para>
 
   <para>
-   Obviously, indexes with non-default sort orderings are a fairly
-   specialized feature, but sometimes they can produce tremendous
-   speedups for certain queries.  Whether it's worth maintaining such an
-   index depends on how often you use queries that require a special
-   sort ordering.
+   
+    Ovviamente, gli indici con un ordinamento di tipo non-predefinito sono una
+   caratteristica avanzata, ma qualche volta possono produrre
+   notevoli velocizzazioni per certe query. Se conviene mantenere un tale indice
+   dipende da quanto spesso si utilizzano le query che richiedono uno speciale
+   tipo di ordinamento. 
   </para>
  </sect1>
 
 
  <sect1 id="indexes-bitmap-scans">
-  <title>Combining Multiple Indexes</title>
+  <title>Combinare indici multipli</title>
 
   <indexterm zone="indexes-bitmap-scans">
-   <primary>index</primary>
-   <secondary>combining multiple indexes</secondary>
+   <primary>indice</primary>
+   <secondary>combinare infici multipli</secondary>
   </indexterm>
 
   <indexterm zone="indexes-bitmap-scans">
@@ -460,233 +480,240 @@ CREATE INDEX test3_desc_index ON test3 (id DESC NULLS LAST);
   </indexterm>
 
   <para>
-   A single index scan can only use query clauses that use the index's
-   columns with operators of its operator class and are joined with
-   <literal>AND</literal>.  For example, given an index on <literal>(a, b)</literal>
-   a query condition like <literal>WHERE a = 5 AND b = 6</literal> could
-   use the index, but a query like <literal>WHERE a = 5 OR b = 6</literal> could not
-   directly use the index.
+   
+    Una singola scansione di indice può usare solamente clausule di query che utilizzano
+   le colonne dell'indice con operatori della sua classe di operatori e che sono unite con
+   <literal>AND</literal>. Per esempio, dato un indice su <literal>(a, b)</literal>
+   una condizione di query tipo <literal>WHERE a = 5 AND b = 6</literal> potrebbe
+   utilizzare l'indice, ma una query tipo <literal>WHERE a = 5 OR b = 6</literal> non potrebbe
+   utilizzare direttamente l'indice.
   </para>
 
   <para>
-   Fortunately,
-   <productname>PostgreSQL</productname> has the ability to combine multiple indexes
-   (including multiple uses of the same index) to handle cases that cannot
-   be implemented by single index scans.  The system can form <literal>AND</literal>
-   and <literal>OR</literal> conditions across several index scans.  For example,
-   a query like <literal>WHERE x = 42 OR x = 47 OR x = 53 OR x = 99</literal>
-   could be broken down into four separate scans of an index on <literal>x</literal>,
-   each scan using one of the query clauses.  The results of these scans are
-   then ORed together to produce the result.  Another example is that if we
-   have separate indexes on <literal>x</literal> and <literal>y</literal>, one possible
-   implementation of a query like <literal>WHERE x = 5 AND y = 6</literal> is to
-   use each index with the appropriate query clause and then AND together
-   the index results to identify the result rows.
+    Forunatamente,
+   <productname>PostgreSQL</productname> ha la capacità di combinare indici multipli
+   (compresi usi multipli dello stesso indice) per gestire casi che non possono essere
+   implementati con una singola scansione dell'indice. Il sistema può formare
+   condizioni <literal>AND</literal> e <literal>OR</literal> tramite diverse scansioni dell'indice.
+   Per esempio, una query tipo <literal>WHERE x = 42 OR x = 47 OR x = 53 OR x = 99</literal>
+   può essere suddivisa in quattro separate scansioni di un indice su <literal>x</literal>,
+   ogni scansione userà una delle quattro clausule. I risultati di queste scansioni
+   vengono poi sottoposti ad OR per produrre il risultato. Un altro esempio è che,
+   se si hanno indici separati su <literal>x</literal> e <literal>y</literal>, una possibile implementazione
+   di una query tipo <literal>WHERE x = 5 AND y = 6</literal> è di usare ogni indice con la
+   appropriata clausula della query e quindi sottoporre a AND i due risultati di indice per
+   identificare le righe risultanti.
   </para>
 
   <para>
-   To combine multiple indexes, the system scans each needed index and
-   prepares a <firstterm>bitmap</firstterm> in memory giving the locations of
-   table rows that are reported as matching that index's conditions.
-   The bitmaps are then ANDed and ORed together as needed by the query.
-   Finally, the actual table rows are visited and returned.  The table rows
-   are visited in physical order, because that is how the bitmap is laid
-   out; this means that any ordering of the original indexes is lost, and
-   so a separate sort step will be needed if the query has an <literal>ORDER
-   BY</literal> clause.  For this reason, and because each additional index scan
-   adds extra time, the planner will sometimes choose to use a simple index
-   scan even though additional indexes are available that could have been
-   used as well.
+Per combinare indici multipli, il sistema scansiona ogni indice necessario e
+pepara una <firstterm>mappa di bit</firstterm> in memoria con le locazioni delle
+righe della tabella che sono riportate come corrispondenti alle condizioni di quell'indice.
+Le mappe di bit sono quindi sottoposte a AND od OR come richiesto dalla query.
+Infine, le righe effettive della tabella sono visitate e restituite. Le righe della tabella
+sono visitate in ordine fisico, perchè così è descritta la mappa di bit; 
+Questo significa che ogni ordinamento degli indici originali viene perso, e
+quindi un passo di ordinamento separato sarà necessario se la query ha una clausola <literal>ORDER
+BY</literal>. Per questa ragione, e siccome ogni scansione di indice addizionale 
+aggiunge tempo extra, il planner a volte sceglierà di usare una scansione di indice semplice, 
+sebbene indici addizionali siano disponibili e possono essere stati usati. 
+   
   </para>
 
   <para>
-   In all but the simplest applications, there are various combinations of
-   indexes that might be useful, and the database developer must make
-   trade-offs to decide which indexes to provide.  Sometimes multicolumn
-   indexes are best, but sometimes it's better to create separate indexes
-   and rely on the index-combination feature.  For example, if your
-   workload includes a mix of queries that sometimes involve only column
-   <literal>x</literal>, sometimes only column <literal>y</literal>, and sometimes both
-   columns, you might choose to create two separate indexes on
-   <literal>x</literal> and <literal>y</literal>, relying on index combination to
-   process the queries that use both columns.  You could also create a
-   multicolumn index on <literal>(x, y)</literal>.  This index would typically be
-   more efficient than index combination for queries involving both
-   columns, but as discussed in <xref linkend="indexes-multicolumn"/>, it
-   would be almost useless for queries involving only <literal>y</literal>, so it
-   should not be the only index.  A combination of the multicolumn index
-   and a separate index on <literal>y</literal> would serve reasonably well.  For
-   queries involving only <literal>x</literal>, the multicolumn index could be
-   used, though it would be larger and hence slower than an index on
-   <literal>x</literal> alone.  The last alternative is to create all three
-   indexes, but this is probably only reasonable if the table is searched
-   much more often than it is updated and all three types of query are
-   common.  If one of the types of query is much less common than the
-   others, you'd probably settle for creating just the two indexes that
-   best match the common types.
+   In tutte le applicazioni, ci sono diverse combinazioni di indici che possono
+   essere utilizzate e lo sviluppatore del database deve accettare un compromesso
+   per decidere quali indici utilizzare. A volte gli indici multicolonna sono i
+   migliori, altre volte è meglio creare indici separati e contare sulla
+   caratteristica di combinazione degli indici. Per esempio, se il proprio carico di
+   lavoro comprende un insieme di query che qualche volta coinvolgono solo la
+   colonna <literal>x</literal>, qualche volta solo la colonna <literal>y</literal> ed altre
+   volte ambedue le colonne, si potrebbe scegliere di creare due indici separati
+   su <literal>x</literal> e <literal>y</literal>, contando sulla combinazione di indici per
+   trattare le query che utilizzano ambedue le colonne. Si potrebbe anche creare un
+   indice multicolonna su <literal>(x, y)</literal>. Questo indice sarebbe normalmente 
+   più efficace della combinazione di indici per le query che coinvolgono
+   entrambe le colonne, ma come spiegato in <xref linkend="indexes-multicolumn" />,
+   sarebbe quasi inutile per le query che coinvologono solo <literal>y</literal>, per
+   cui non dovrebbe  essere l'unico indice. Una combinazione di un indice multicolonna
+   e di un indice separato su <literal>y</literal> funzionerebbe abbastanza bene. Per le query
+   che coinvolgono solo <literal>x</literal>, si potrebbe anche usare l'indice multicolonna,
+   nonstante sia più grande e quindi più lento di un indice sulla sola
+   <literal>x</literal>. L'ultima alternativa è di creare tutti e tre gli indici, ma
+   questo è probabilmente accettabile solo se la tabella viene cercata molto
+   più spesso di quanto viene aggiornata e se tutti e tre i tipi di query sono
+   comuni. Se uno dei tre tipi di query è molto meno comune degli altri,
+   probabilmente basterà creare solo i due indici che meglio confronteranno i
+   tipi comuni.   
+
   </para>
 
  </sect1>
 
 
  <sect1 id="indexes-unique">
-  <title>Unique Indexes</title>
+  <title>Indici unique</title>
 
   <indexterm zone="indexes-unique">
-   <primary>index</primary>
+   <primary>indice</primary>
    <secondary>unique</secondary>
   </indexterm>
 
   <para>
-   Indexes can also be used to enforce uniqueness of a column's value,
-   or the uniqueness of the combined values of more than one column.
+   Gli indici possono ache essere usati per imporre l'unicità del valore di una
+   colonna, o l'unicità dei valori combinati di più di una colonna. 
 <synopsis>
 CREATE UNIQUE INDEX <replaceable>name</replaceable> ON <replaceable>table</replaceable> (<replaceable>column</replaceable> <optional>, ...</optional>);
 </synopsis>
-   Currently, only B-tree indexes can be declared unique.
+   Attualmente, possono essere dichiarati unique solo gli indici B-tree.
   </para>
 
   <para>
-   When an index is declared unique, multiple table rows with equal
-   indexed values are not allowed.  Null values are not considered
-   equal.  A multicolumn unique index will only reject cases where all
-   indexed columns are equal in multiple rows.
+   
+    Quando un indice è dichiarato unique,  non è consentito che valori di
+   indice uguali siano presenti su più di una riga. I valori null non sono
+   considerati uguali. Un indice unique multicolonna può rifiutare solamente i
+   casi dove tutte le colonne dell'indice sono uguali in righe multiple.  
   </para>
 
   <para>
-   <productname>PostgreSQL</productname> automatically creates a unique
-   index when a unique constraint or primary key is defined for a table.
-   The index covers the columns that make up the primary key or unique
-   constraint (a multicolumn index, if appropriate), and is the mechanism
-   that enforces the constraint.
+   Quando per una tabella si definisce un vincolo unique o una chiave primaria,
+   <productname>PostgreSQL</productname> crea automaticamente un indice unique.
+   L'indice comprende le colonne che fanno parte della chiave primaria o le
+   colonne unique (un indice multicolonna, se adatto), ed è il meccanismo
+   che impone il vincolo.  
   </para>
 
   <note>
    <para>
-    The preferred way to add a unique constraint to a table is
-    <literal>ALTER TABLE ... ADD CONSTRAINT</literal>.  The use of
-    indexes to enforce unique constraints could be considered an
-    implementation detail that should not be accessed directly.
-    One should, however, be aware that there's no need to manually
-    create indexes on unique columns; doing so would just duplicate
-    the automatically-created index.
+    
+    Il modo migliore per aggiungere un vincolo unique ad una tabella è
+    <literal>ALTER TABLE ... ADD CONSTRAINT</literal>. L'uso di indici
+    per imporre vincoli unique potrebbe essere considerato un dettaglio
+    di implementazione che non dovrebbe essere acceduto direttamente.
+    Bisognerebbe, comunque, essere consapevoli che non c'è
+    bisogno di creare manualmente indici su colonne unique; Facendo questo,
+    si duplicherebbe solamente l'indice creato automaticamente.
    </para>
   </note>
  </sect1>
 
 
  <sect1 id="indexes-expressional">
-  <title>Indexes on Expressions</title>
+  <title>Indici sulle espressioni</title>
 
   <indexterm zone="indexes-expressional">
-   <primary>index</primary>
-   <secondary sortas="expressions">on expressions</secondary>
+   <primary>indice</primary>
+   <secondary sortas="expressions">sulle espressioni</secondary>
   </indexterm>
 
   <para>
-   An index column need not be just a column of the underlying table,
-   but can be a function or scalar expression computed from one or
-   more columns of the table.  This feature is useful to obtain fast
-   access to tables based on the results of computations.
+   Una colonna indice non deve necessariamente essere una colonna della tabella sottostante,
+   ma può essere una funzione o una espressione scalare calcolata da una o
+   più colonne della tabella. Questa caratteristica è utile per ottenere accesso
+   veloce alle tabelle basate sui risultati dei calcoli.
   </para>
 
   <para>
-   For example, a common way to do case-insensitive comparisons is to
-   use the <function>lower</function> function:
+   Per esempio, un modo comune per effettuare un confronto non sensibile alle maiuscole è
+   quello di usare la funzione <function>lower</function>:
 <programlisting>
 SELECT * FROM test1 WHERE lower(col1) = 'value';
 </programlisting>
-   This query can use an index if one has been
-   defined on the result of the <literal>lower(col1)</literal>
-   function:
+   Questa query può usare un indice, se è stato
+   definito sul risultato della funzione
+   <literal>lower(col1)</literal>:
 <programlisting>
 CREATE INDEX test1_lower_col1_idx ON test1 (lower(col1));
 </programlisting>
   </para>
 
   <para>
-   If we were to declare this index <literal>UNIQUE</literal>, it would prevent
-   creation of rows whose <literal>col1</literal> values differ only in case,
-   as well as rows whose <literal>col1</literal> values are actually identical.
-   Thus, indexes on expressions can be used to enforce constraints that
-   are not definable as simple unique constraints.
+   
+    Dichiarando questo indice <literal>UNIQUE</literal>, si impedisce la creazione di righe in
+   cui i valori di <literal>col1</literal> differiscono solo nel tipo di carattere (maiuscolo o
+   minuscolo), oltre a quelle in cui i valori di <literal>col1</literal> sono veramente identici.
+   Per cui, gli indici nelle espressioni possono essere usati per far rispettare vincoli
+   che non sono definibili come semplici vincoli unique.
   </para>
 
   <para>
-   As another example, if one often does queries like:
+   Come ulteriore esempio, se si utilizzano spesso query come questa:
 <programlisting>
 SELECT * FROM people WHERE (first_name || ' ' || last_name) = 'John Smith';
 </programlisting>
-   then it might be worth creating an index like this:
+   potrebbe essere utile la creazione di un indice come questo:
 <programlisting>
 CREATE INDEX people_names ON people ((first_name || ' ' || last_name));
 </programlisting>
   </para>
 
   <para>
-   The syntax of the <command>CREATE INDEX</command> command normally requires
-   writing parentheses around index expressions, as shown in the second
-   example.  The parentheses can be omitted when the expression is just
-   a function call, as in the first example.
+   La sintassi del comando <command>CREATE INDEX</command> richiede normalmente
+   di racchiudere tra parentesi le espressioni indice, come mostrato nel secondo
+   esempio. Le parentesi possono essere omesse quando l'espressione è 
+   solo una chiamata di funzione, come nel primo esempio.
   </para>
 
   <para>
-   Index expressions are relatively expensive to maintain, because the
-   derived expression(s) must be computed for each row upon insertion
-   and whenever it is updated.  However, the index expressions are
-   <emphasis>not</emphasis> recomputed during an indexed search, since they are
-   already stored in the index.  In both examples above, the system
-   sees the query as just <literal>WHERE indexedcolumn = 'constant'</literal>
-   and so the speed of the search is equivalent to any other simple index
-   query.  Thus, indexes on expressions are useful when retrieval speed
-   is more important than insertion and update speed.
+   
+    Le espressioni indice sono relativamente dispendiose da mantenere, perchè le
+   espressioni derivate devono essere calcolate per ogni riga negli inserimenti ed ogni
+   volta che c'è un aggiornamento. Tuttavia, le espressioni indice <emphasis>non</emphasis>
+   vengono ricalcolate durante una ricerca indicizzata, dato che sono già
+   memorizzate nell'indice. In ambedue gli esempi visti sopra, il sistema vede la query
+   come <literal>WHERE colonnaindicizzata = 'costante'</literal> e quindi la velocità della
+   ricerca è equivalente a qualsiasi altra semplice query indice. Per cui, gli
+   indici nelle espressioni sono utili quando la velocità della ricerca è
+   più importante della velocità di inserimento e di aggiornamento.
   </para>
  </sect1>
 
 
  <sect1 id="indexes-partial">
-  <title>Partial Indexes</title>
+  <title>Indici parziali</title>
 
   <indexterm zone="indexes-partial">
    <primary>index</primary>
-   <secondary>partial</secondary>
+   <secondary>parziale</secondary>
   </indexterm>
 
   <para>
-   A <firstterm>partial index</firstterm> is an index built over a
-   subset of a table; the subset is defined by a conditional
-   expression (called the <firstterm>predicate</firstterm> of the
-   partial index).  The index contains entries only for those table
-   rows that satisfy the predicate.  Partial indexes are a specialized
-   feature, but there are several situations in which they are useful.
+   
+    Un <firstterm>indice parziale</firstterm> è un indice costruito su un
+   sottoinsieme di una tabella; il sottoinsieme è definito da una espressione
+   condizionale (chiamata <firstterm>predicato</firstterm> dell'indice
+   parziale). L'indice contiene le voci di quelle righe della tabella
+   che soddisfano il predicato. Gli indici parziali sono una caratteristica
+   specializzata, ma ci sono diverse situazioni in cui possono risultare utili.
   </para>
 
   <para>
-   One major reason for using a partial index is to avoid indexing common
-   values.  Since a query searching for a common value (one that
-   accounts for more than a few percent of all the table rows) will not
-   use the index anyway, there is no point in keeping those rows in the
-   index at all.  This reduces the size of the index, which will speed
-   up those queries that do use the index.  It will also speed up many table
-   update operations because the index does not need to be
-   updated in all cases.  <xref linkend="indexes-partial-ex1"/> shows a
-   possible application of this idea.
+    La ragione principale per usare un indice parziale è di evitare l'indicizzazione
+   di valori comuni. Dato che una query di ricerca di un valore comune (un valore che si
+   ripete per più di una certa percentuale di tutte le righe della tabella) 
+   non userà comunque l'indice, non c'è motivo di tenere quelle righe
+   nell'indice. Questo riduce la dimensione dell'indice, che velocizzerà
+   le query che usano l'indice. Esso potrà velocizzare anche molte operazioni
+   di aggiornamento di tabelle perchè l'indice non deve essere
+   aggiornato in tutti i casi. La <xref linkend="indexes-partial-ex1" /> mostra
+   una possibile applicazione di questa idea.
   </para>
 
   <example id="indexes-partial-ex1">
-   <title>Setting up a Partial Index to Exclude Common Values</title>
+   <title>Impostare un indice parziale per escludere valori comuni.</title>
 
    <para>
-    Suppose you are storing web server access logs in a database.
-    Most accesses originate from the IP address range of your organization but
-    some are from elsewhere (say, employees on dial-up connections).
-    If your searches by IP are primarily for outside accesses,
-    you probably do not need to index the IP range that corresponds to your
-    organization's subnet.
+    Supporre di dover immagazzinare i log di accesso al server in un database.
+    La maggior parte degli accessi proviene dalla gamma di indirizzi IP della propria
+    organizzazione ma alcuni provengono da altre parti (vedi impiegati su connessioni
+    dial-up). Se le ricerche per IP servono principalmente per gli accessi esterni,
+    probabilmente non ci sarà bisogno di indicizzare la gamma di IP che corrisponde
+    alla subnet della propria organizzazione.      
    </para>
 
    <para>
-    Assume a table like this:
+    Assumere una tabella come la seguente:
 <programlisting>
 CREATE TABLE access_log (
     url varchar,
@@ -697,8 +724,8 @@ CREATE TABLE access_log (
    </para>
 
    <para>
-    To create a partial index that suits our example, use a command
-    such as this:
+    Per creare un  indice parziale che soddisfi questo esempio, utilizzare un comando
+    come questo:
 <programlisting>
 CREATE INDEX access_log_client_ip_ix ON access_log (client_ip)
 WHERE NOT (client_ip &gt; inet '192.168.100.0' AND
@@ -707,13 +734,13 @@ WHERE NOT (client_ip &gt; inet '192.168.100.0' AND
    </para>
 
    <para>
-    A typical query that can use this index would be:
+    Una tipica query che può utilizzare questo indice sarà:
 <programlisting>
 SELECT *
 FROM access_log
 WHERE url = '/index.html' AND client_ip = inet '212.78.10.32';
 </programlisting>
-    A query that cannot use this index is:
+    Una query che non può usare questo indice è:
 <programlisting>
 SELECT *
 FROM access_log
@@ -722,35 +749,39 @@ WHERE client_ip = inet '192.168.100.23';
    </para>
 
    <para>
-    Observe that this kind of partial index requires that the common
-    values be predetermined, so such partial indexes are best used for
-    data distributions that do not change.  The indexes can be recreated
-    occasionally to adjust for new data distributions, but this adds
-    maintenance effort.
-   </para>
+Osservare che questo tipo di indice parziale richiede che i valori comuni 
+siano predeterminati, perciò gli indici parziali sono usati per distribuzioni di 
+dati che non cambiano. Gli indici possono essere ricreati 
+occasionalmente per adattarsi a nuove distribuzioni di dati, ma questo
+aggiunge sforzi di manutenzione.
+    
+   
+    </para>
   </example>
 
   <para>
-   Another possible use for a partial index is to exclude values from the
-   index that the
-   typical query workload is not interested in; this is shown in <xref
-   linkend="indexes-partial-ex2"/>.  This results in the same
-   advantages as listed above, but it prevents the
-   <quote>uninteresting</quote> values from being accessed via that
-   index, even if an index scan might be profitable in that
-   case.  Obviously, setting up partial indexes for this kind of
-   scenario will require a lot of care and experimentation.
+   Un altro possibile uso di un indice parziale è quello di escludere
+   dall'indice i valori
+   che non sono interessanti nelle normali query di
+   lavoro; questo è mostrato nell'<xref linkend="indexes-partial-ex2" />.
+   Esso ottiene gli stessi vantaggi elencati sopra, ma impedisce che i valori
+   <quote>non interessanti</quote> siano raggiunti dall'indice, anche se
+   è probabile che una scansione di indice potrebbe essere vantaggiosa
+   in quel caso. Ovviamente, impostare indici parziali per questo tipo di
+   scenario richiederà molta cura e sperimentazione.
+   
   </para>
 
   <example id="indexes-partial-ex2">
-   <title>Setting up a Partial Index to Exclude Uninteresting Values</title>
+   <title>Impostare di un indice parziale per escludere valori non interessanti</title>
 
    <para>
-    If you have a table that contains both billed and unbilled orders,
-    where the unbilled orders take up a small fraction of the total
-    table and yet those are the most-accessed rows, you can improve
-    performance by creating an index on just the unbilled rows.  The
-    command to create the index would look like this:
+    
+    Se si ha una tabella che contiene sia ordini fatturati che non fatturati,
+    dove gli ordini non fatturati rappresentano una piccola porzione della tabella
+    totale ma anche le righe con i maggiori accessi, è possibile
+    incrementare la prestazioni creando un indice sulle sole righe non fatturate. Il
+    comando per creare l'indice somiglierebbe a questo:
 <programlisting>
 CREATE INDEX orders_unbilled_index ON orders (order_nr)
     WHERE billed is not true;
@@ -758,77 +789,77 @@ CREATE INDEX orders_unbilled_index ON orders (order_nr)
    </para>
 
    <para>
-    A possible query to use this index would be:
+    Una possibile query per utilizzare questo indice potrebbe essere:
 <programlisting>
 SELECT * FROM orders WHERE billed is not true AND order_nr &lt; 10000;
 </programlisting>
-    However, the index can also be used in queries that do not involve
-    <structfield>order_nr</structfield> at all, e.g.:
+    Tuttavia, l'indice potrà anche essere usato nelle query che non coinvolgono
+    per nulla <structfield>order_nr</structfield>, p.e.:
 <programlisting>
 SELECT * FROM orders WHERE billed is not true AND amount &gt; 5000.00;
 </programlisting>
-    This is not as efficient as a partial index on the
-    <structfield>amount</structfield> column would be, since the system has to
-    scan the entire index.  Yet, if there are relatively few unbilled
-    orders, using this partial index just to find the unbilled orders
-    could be a win.
+    Questo non è efficiente come potrebbe essere un indice parziale sulla
+    colonna <structfield>amount</structfield>, dato che il sistema deve scandire
+    l'intero indice. Tuttavia, se ci sono relativamente pochi ordini
+    non fatturati, usando questo indice parziale solo per trovare gli ordini non fatturati
+    potrebbe essere vincente.
    </para>
 
    <para>
-    Note that this query cannot use this index:
+    Notare che questa query non può usare questo indice:
 <programlisting>
 SELECT * FROM orders WHERE order_nr = 3501;
 </programlisting>
-    The order 3501 might be among the billed or unbilled
-    orders.
+    L'ordine 3501 potrebbe essere negli ordini fatturati o in quelli non
+    fatturati.
    </para>
   </example>
 
   <para>
-   <xref linkend="indexes-partial-ex2"/> also illustrates that the
-   indexed column and the column used in the predicate do not need to
-   match.  <productname>PostgreSQL</productname> supports partial
-   indexes with arbitrary predicates, so long as only columns of the
-   table being indexed are involved.  However, keep in mind that the
-   predicate must match the conditions used in the queries that
-   are supposed to benefit from the index.  To be precise, a partial
-   index can be used in a query only if the system can recognize that
-   the <literal>WHERE</literal> condition of the query mathematically implies
-   the predicate of the index.
-   <productname>PostgreSQL</productname> does not have a sophisticated
-   theorem prover that can recognize mathematically equivalent
-   expressions that are written in different forms.  (Not
-   only is such a general theorem prover extremely difficult to
-   create, it would probably be too slow to be of any real use.)
-   The system can recognize simple inequality implications, for example
-   <quote>x &lt; 1</quote> implies <quote>x &lt; 2</quote>; otherwise
-   the predicate condition must exactly match part of the query's
-   <literal>WHERE</literal> condition
-   or the index will not be recognized as usable. Matching takes
-   place at query planning time, not at run time. As a result,
-   parameterized query clauses do not work with a partial index. For
-   example a prepared query with a parameter might specify
-   <quote>x &lt; ?</quote> which will never imply
-   <quote>x &lt; 2</quote> for all possible values of the parameter.
+   La <xref linkend="indexes-partial-ex2" /> spiega anche che la colonna
+   indice e la colonna usata nel predicato non devono abbinarsi.
+   <productname>PostgreSQL</productname> supporta indici parziali con
+   predicato arbitrario, a condizione che siano implicate soltanto le
+   colonne della tabella indicizzata. Tuttavia, ricordarsi che il
+   predicato deve abbinare le condizioni usate nelle query che si suppone
+   debbano deneficiare dell'indice. Per essere precisi, un indice parziale
+   può essere usato in una query solo se il sistema può riconoscere che
+   la condizione <literal>WHERE</literal> della query implica matematicamente
+   il predicato dell'indice.
+   <productname>PostgreSQL</productname> non ha un sofisticato dimostratore
+   di teoremi che può riconoscere le espressioni matematicamente
+   equivalenti che sono scritte nelle diverse forme.  (Non solo
+   un simile dimostratore generale di teoremi sarebbe estremamente difficile da
+   creare, esso molto probabilmente sarebbe troppo lento per un reale utilizzo).
+   Il sistema può riconoscere semplici implicazioni di disuguaglianza, per esempio
+   <quote>x &lt; 1</quote> implica che <quote>x &lt; 2</quote>; altrimenti
+   la condizione predicato dovrebbe abbinare esattamente la parte della condizione
+   <literal>WHERE</literal> della query
+   o l'indice non sarebbe riconosciuto come utilizzabile. L'abbinamento avviene durante
+   la pianificazione della query, non durante l'esecuzione. Di conseguenza,
+   le clausule delle query parametrizzate non funzioneranno con un indice parziale. Per
+   esempio una query preparata con un parametro potrebbe specificare 
+   <quote>x &lt; ?</quote> che non implicherà mai  
+   <quote>x &lt; 2</quote> per tutti i possibili valori del parametro. 
   </para>
 
   <para>
-   A third possible use for partial indexes does not require the
-   index to be used in queries at all.  The idea here is to create
-   a unique index over a subset of a table, as in <xref
-   linkend="indexes-partial-ex3"/>.  This enforces uniqueness
-   among the rows that satisfy the index predicate, without constraining
-   those that do not.
+   Un terzo possibile uso degli indici parziali non richiede che
+   l'indice sia usato nelle query. L'idea è di creare
+   un indice unique in un sottoinsieme di tabella, come nella <xref
+   linkend="indexes-partial-ex3" />. Questo impone l'unicità nel
+   complesso delle righe che soddisfano l'indice predicato, senza vincolare
+   quelle che non lo soddisfano.
   </para>
 
   <example id="indexes-partial-ex3">
-   <title>Setting up a Partial Unique Index</title>
+   <title>Impostare un indice parziale unique</title>
 
    <para>
-    Suppose that we have a table describing test outcomes.  We wish
-    to ensure that there is only one <quote>successful</quote> entry for
-    a given subject and target combination, but there might be any number of
-    <quote>unsuccessful</quote> entries.  Here is one way to do it:
+    Supporre di avere una tabella che descriva i risultati di una prova. Volendo
+    assicurarsi che ci sia una sola voce <quote>successo</quote> per una determinata
+    combinazione soggetto e obiettivo, in un certo numero di voci
+    <quote>insuccesso</quote>. Questo è un modo per farlo:
 <programlisting>
 CREATE TABLE tests (
     subject text,
@@ -840,115 +871,115 @@ CREATE TABLE tests (
 CREATE UNIQUE INDEX tests_success_constraint ON tests (subject, target)
     WHERE success;
 </programlisting>
-    This is a particularly efficient approach when there are few
-    successful tests and many unsuccessful ones.
+    Questo è un modo particolarmente efficiente quando ci sono poche
+    prove "successo" e molte "insuccesso".
    </para>
   </example>
 
   <para>
-   Finally, a partial index can also be used to override the system's
-   query plan choices.  Also, data sets with peculiar
-   distributions might cause the system to use an index when it really
-   should not.  In that case the index can be set up so that it is not
-   available for the offending query.  Normally,
-   <productname>PostgreSQL</productname> makes reasonable choices about index
-   usage (e.g., it avoids them when retrieving common values, so the
-   earlier example really only saves index size, it is not required to
-   avoid index usage), and grossly incorrect plan choices are cause
-   for a bug report.
+   
+    Per concludere, un indice parziale può anche essere usato per avere la priorità
+   sul queryplan scelto dal sistema. Inoltre, insiemi di dati con particolari
+   distribuzioni possono indurre il sistema ad usare un indice quando non è realmente
+   necessario. In quel caso l'indice può essere impostato in modo che non sia
+   disponibile per query dannose. Normalmente,
+   <productname>PostgreSQL</productname> effettua scelte ragionevoli circa l'utilizzo degli
+   indici (p.e., li evita quando recupera valori comuni, per cui il primo esempio 
+   salva realmente soltanto la dimensione dell'indice, esso non è necessario per evitare l'utilizzo
+   dell'indice), e le scelte di piani grossolanamente scorrette sono causa
+   di segnalazioni di bug.
   </para>
 
   <para>
-   Keep in mind that setting up a partial index indicates that you
-   know at least as much as the query planner knows, in particular you
-   know when an index might be profitable.  Forming this knowledge
-   requires experience and understanding of how indexes in
-   <productname>PostgreSQL</productname> work.  In most cases, the advantage of a
-   partial index over a regular index will be minimal.
+   Ricordarsi che l'impostazione di un indice parziale indica che si conosce
+   almeno quanto conosce il pianificatore delle query, in particolare che si
+   conosce quando l'uso di un indice potrebbe essere vantaggioso. La formazione
+   di questa conoscenza richiede esperienza e anche di capire come gli indici
+   lavorano in <productname>PostgreSQL</productname>. Nella maggior parte dei casi, il
+   vantaggio di un indice parziale su un indice regolare sarà minimo.
   </para>
 
   <para>
-   More information about partial indexes can be found in <xref
-   linkend="STON89b"/>, <xref linkend="OLSON93"/>, and <xref
-   linkend="SESHADRI95"/>.
+   Ulteriori informazioni su indici parziali possono essere trovate in <xref
+   linkend="STON89b" />, <xref linkend="OLSON93" />, e in <xref
+   linkend="SESHADRI95" />.
   </para>
  </sect1>
 
 
  <sect1 id="indexes-opclass">
-  <title>Operator Classes and Operator Families</title>
+  <title>Classi operatore e famiglie di operatori</title>
 
   <indexterm zone="indexes-opclass">
-   <primary>operator class</primary>
+   <primary>classe operatore</primary>
   </indexterm>
 
   <indexterm zone="indexes-opclass">
-   <primary>operator family</primary>
+   <primary>famiglia operatore</primary>
   </indexterm>
 
   <para>
-   An index definition can specify an <firstterm>operator
-   class</firstterm> for each column of an index.
+   Una definizione di indice può specificare una <firstterm>classe
+   operatore</firstterm> per ogni colonna di un indice.
 <synopsis>
 CREATE INDEX <replaceable>name</replaceable> ON <replaceable>table</replaceable> (<replaceable>column</replaceable> <replaceable>opclass</replaceable> <optional><replaceable>sort options</replaceable></optional> <optional>, ...</optional>);
 </synopsis>
-   The operator class identifies the operators to be used by the index
-   for that column.  For example, a B-tree index on the type <type>int4</type>
-   would use the <literal>int4_ops</literal> class; this operator
-   class includes comparison functions for values of type <type>int4</type>.
-   In practice the default operator class for the column's data type is
-   usually sufficient.  The main reason for having operator classes is
-   that for some data types, there could be more than one meaningful
-   index behavior.  For example, we might want to sort a complex-number data
-   type either by absolute value or by real part.  We could do this by
-   defining two operator classes for the data type and then selecting
-   the proper class when making an index.  The operator class determines
-   the basic sort ordering (which can then be modified by adding sort options
-   <literal>ASC</literal>/<literal>DESC</literal> and/or
+   Le classe operatore identifica gli operatori che saranno usati dall'indice
+   per quella colonna. Per esempio, un indice B-tree sul tipo <type>int4</type>
+   userebbe la classe <literal>int4_ops</literal>; questa classe 
+   operatore include funzioni di confronto per valori di tipo <type>int4</type>.
+   In pratica la classe operatore predefinita per il tipo dato della colonna è
+   normalmente sufficiente. Il motivo principale per avere le classi operatore è
+   che per certi tipi di dato, ci potrebbero essere più di un comportamento
+   significativo per l'indice. Per esempio, si porebbe voler ordinare un tipo dato numerico
+   complesso o per il suo valore assoluto oppure per la sua parte reale. Si potrebbe
+   fare questo definendo per il tipo dato due classi operatore e quindi selezionare
+   la classe appropriata quando si imposta un indice. La classe operatore determina
+   il tipo di ordinamento di base (che potrà essere modificato aggiungendo le
+   opzione di ordinamento <literal>ASC</literal>/<literal>DESC</literal> e/o
    <literal>NULLS FIRST</literal>/<literal>NULLS LAST</literal>).
-  </para>
+    </para>    
 
   <para>
-   There are also some built-in operator classes besides the default ones:
+   Inoltre, ci sono altre classi operatore incorporate oltre quella predefinita:
 
    <itemizedlist>
     <listitem>
      <para>
-      The operator classes <literal>text_pattern_ops</literal>,
-      <literal>varchar_pattern_ops</literal>, and
-      <literal>bpchar_pattern_ops</literal> support B-tree indexes on
-      the types <type>text</type>, <type>varchar</type>, and
-      <type>char</type> respectively.  The
-      difference from the default operator classes is that the values
-      are compared strictly character by character rather than
-      according to the locale-specific collation rules.  This makes
-      these operator classes suitable for use by queries involving
-      pattern matching expressions (<literal>LIKE</literal> or POSIX
-      regular expressions) when the database does not use the standard
-      <quote>C</quote> locale.  As an example, you might index a
-      <type>varchar</type> column like this:
+      Le classi operatore <literal>text_pattern_ops</literal>,
+      <literal>varchar_pattern_ops</literal>,
+      <literal>bpchar_pattern_ops</literal>, e
+      <literal>name_pattern_ops</literal> supportano indici
+      B-tree, rispettivamente, sui tipi <type>text</type>,
+      <type>varchar</type>, <type>char</type>, e <type>name</type>. La
+      diffferenza dalle classi operatore preimpostate è che i valori
+      sono confrontati carattere per carattere piuttosto che
+      seguendo le regole di collazione specificate localmente. Ciò 
+      rende queste classi operatore adatte per l'uso in query che coinvolgono
+      espressioni di corrispondenza modelli (<literal>LIKE</literal> o
+      espressioni regolari POSIX) quando il server non usa lo standard
+      <quote>C</quote> locale. Come esempio, si potrebbe indicizzare una
+      colonna <type>varchar</type> come questa:
 <programlisting>
 CREATE INDEX test_index ON test_table (col varchar_pattern_ops);
 </programlisting>
-      Note that you should also create an index with the default operator
-      class if you want queries involving ordinary <literal>&lt;</literal>,
-      <literal>&lt;=</literal>, <literal>&gt;</literal>, or <literal>&gt;=</literal> comparisons
-      to use an index.  Such queries cannot use the
-      <literal><replaceable>xxx</replaceable>_pattern_ops</literal>
-      operator classes.  (Ordinary equality comparisons can use these
-      operator classes, however.)  It is possible to create multiple
-      indexes on the same column with different operator classes.
-      If you do use the C locale, you do not need the
-      <literal><replaceable>xxx</replaceable>_pattern_ops</literal>
-      operator classes, because an index with the default operator class
-      is usable for pattern-matching queries in the C locale.
+      Notare che bisognerebbe creare un indice con la classe operatore
+      predefinita se si vogliono query che comportano confronti comuni
+      nell'uso di un indice. Tali query non possono usare le classi operatore 
+      <literal><replaceable>xxx</replaceable>_pattern_ops</literal>.
+      È consentito creare indici multipli sulla stessa colonna con
+      diverse classi operatore. Se si utilizza il C locale, non ci
+      sarà bisogno delle classi operatore
+      <literal><replaceable>xxx</replaceable>_pattern_ops</literal>,
+      perchè per query di corrispondenza modelli nel C locale,
+      si può utilizzare un indice con la classe operatore predefinita.
      </para>
     </listitem>
    </itemizedlist>
   </para>
 
   <para>
-    The following query shows all defined operator classes:
+    La query seguente mostra tutte le classi operatore definite:
 
 <programlisting>
 SELECT am.amname AS index_method,
@@ -960,13 +991,13 @@ SELECT am.amname AS index_method,
   </para>
 
   <para>
-   An operator class is actually just a subset of a larger structure called an
-   <firstterm>operator family</firstterm>.  In cases where several data types have
-   similar behaviors, it is frequently useful to define cross-data-type
-   operators and allow these to work with indexes.  To do this, the operator
-   classes for each of the types must be grouped into the same operator
-   family.  The cross-type operators are members of the family, but are not
-   associated with any single class within the family.
+   Una classe operatore è semplicemente  un sottoinsieme di una struttura maggiore chiamata
+   <firstterm>famiglia dell'operatore</firstterm>. Nei casi in cui diversi tipi di dato hanno
+   comportamenti simili, è spesso utile definire operatori per tipi-dato-incrociati
+   e consentirgli di lavorare con indici. Per fare questo, le classi operatore
+   per ciascun tipo dovranno essere raggruppate dentro la stessa famiglia di operatori.
+   Gli operatori di tipo-incrociato sono membri della famiglia, ma non sono
+   associati con nessuna singola classe all'interno della famiglia.
   </para>
 
   <para>
@@ -986,72 +1017,76 @@ SELECT am.amname AS index_method,
 
 
  <sect1 id="indexes-examine">
-  <title>Examining Index Usage</title>
+  <title>Controllare l'utilizzo dell'indice</title>
 
   <indexterm zone="indexes-examine">
-   <primary>index</primary>
-   <secondary>examining usage</secondary>
+   <primary>indice</primary>
+   <secondary>esaminare l'utilizzo</secondary>
   </indexterm>
 
   <para>
-   Although indexes in <productname>PostgreSQL</productname> do not need
-   maintenance or tuning, it is still important to check
-   which indexes are actually used by the real-life query workload.
-   Examining index usage for an individual query is done with the
-   <xref linkend="sql-explain"/>
-   command; its application for this purpose is
-   illustrated in <xref linkend="using-explain"/>.
-   It is also possible to gather overall statistics about index usage
-   in a running server, as described in <xref linkend="monitoring-stats"/>.
+   
+    Anche se in <productname>PostgreSQL</productname> gli indici non richiedono manutenzione
+   o messa a punto, è comunque importante controllare
+   quali indici vengono realmente usati nei cicli di lavoro delle query.
+   L'esame di utilizzo degli indici per una singola query viene fatto con il comando
+   <xref linkend="sql-explain" endterm="sql-explain-title" />;
+   la sua applicazione per questo scopo è illustrata
+   in <xref linkend="using-explain" />.
+   È anche possibile raggruppare statistiche complessive circa l'utilizzo degli indici
+   in un server in funzione, come descritto in <xref linkend="monitoring-stats" />.
   </para>
 
   <para>
-   It is difficult to formulate a general procedure for determining
-   which indexes to create.  There are a number of typical cases that
-   have been shown in the examples throughout the previous sections.
-   A good deal of experimentation is often necessary.
-   The rest of this section gives some tips for that:
+   È difficile formulare una procedura generale per determinare
+   quali indici impostare. Ci sono un certo numero di casi tipici che
+   sono stati mostrati negli esempi illustrati nelle sezioni precedenti.
+   Nella maggior parte dei casi sarà necessaria molta sperimentazione.  
+   Il resto di questa sezione fornisce un certo numero di consigli per questo:
   </para>
 
   <itemizedlist>
    <listitem>
     <para>
-     Always run <xref linkend="sql-analyze"/>
-     first.  This command
-     collects statistics about the distribution of the values in the
-     table.  This information is required to estimate the number of rows
-     returned by a query, which is needed by the planner to assign
-     realistic costs to each possible query plan.  In absence of any
-     real statistics, some default values are assumed, which are
-     almost certain to be inaccurate.  Examining an application's
-     index usage without having run <command>ANALYZE</command> is
-     therefore a lost cause.
-     See <xref linkend="vacuum-for-statistics"/>
-     and <xref linkend="autovacuum"/> for more information.
+     
+        Eseguire sempre <xref linkend="sql-analyze"/> prima.
+        Questo comando
+        raccoglie le statistiche circa la distribuzione dei valori nelle
+        tabelle. Questa informazione è richiesta per calcolare il numero di
+        righe restituite da una query, che sono necessarie al planner per assegnare
+        costi realistici per ogni possibile queryplan. In assenza di reali
+        statistiche, vengono assunti valori predefiniti, che sono quasi certamente
+        inaccurati. Esaminare l'utilizzo dell'indice in una applicazione senza aver
+        utilizzato <command>ANALYZE</command> è perciò
+        una causa persa.
+        Vedere <xref linkend="vacuum-for-statistics"/>
+        e <xref linkend="autovacuum"/> per maggiori informazioni.
     </para>
    </listitem>
 
    <listitem>
     <para>
-     Use real data for experimentation.  Using test data for setting
-     up indexes will tell you what indexes you need for the test data,
-     but that is all.
+     Nelle sperimentazioni utilizzare dati reali. Utilizzare dati di prova per
+     l'impostazione degli indici vi dirà solo di quali indici avrete bisogno
+     per i dati di prova e nient'altro.
     </para>
 
     <para>
-     It is especially fatal to use very small test data sets.
-     While selecting 1000 out of 100000 rows could be a candidate for
-     an index, selecting 1 out of 100 rows will hardly be, because the
-     100 rows probably fit within a single disk page, and there
-     is no plan that can beat sequentially fetching 1 disk page.
+     
+    È particolarmente disastroso usare insiemi di dati di prova molto ridotti.
+     Mentre selezionare di 1000 righe da 100000 righe può essere un candidato per
+     un indice, la selezione di 1 riga da 100 righe potrà difficilmente esserlo, perchè
+     le 100 righe entreranno probabilmente in una singola pagina di disco, e non esiste un piano che 
+     può girare recuperando sequenzialmente 1 pagina di disco.
     </para>
 
     <para>
-     Also be careful when making up test data, which is often
-     unavoidable when the application is not yet in production.
-     Values that are very similar, completely random, or inserted in
-     sorted order will skew the statistics away from the distribution
-     that real data would have.
+     
+    Fare inoltre attenzione quando si selezionano i dati di prova, il cui utilizzo
+     è spesso inevitabile quando l'applicazione non è in produzione.
+     Valori molto simili, completamente casuali, o inseriti in modo ordinato daranno
+     alle statistiche una indicazione diversa rispetto alla distribuzione che i
+     dati avrebbero avuto in realtà.
     </para>
    </listitem>
 
@@ -1069,39 +1104,59 @@ SELECT am.amname AS index_method,
      used; for example, the query condition does not match the index.
      (What kind of query can use what kind of index is explained in
      the previous sections.)
+     
+     Quando gli indici non sono usati, può essere utile per i test provare a forzare il
+     loro utilizzo. Ci sono parametri che in fase di esecuzione possono bloccare
+     diversi tipi di piani (consultare <xref linkend="runtime-config-query-enable" />).
+     Per esempio, escludendo la scansione sequenziale
+     (<varname>enable_seqscan</varname>) e le join nested-loop
+     (<varname>enable_nestloop</varname>), che sono i piani fondamentali,
+     si forzerà il sistema ad utilizzare un piano differente. Se il sistema
+     sceglie tuttavia una scansione sequenziale o una join nested-loop ci sarà
+     probabilmente una diversa ragione per cui l'indice non viene 
+     usato; Per esempio, se la condizione della query non uguaglia l'indice.
+     (Che tipo di query può utilizzare un certo tipo di indice è spiegato
+     nelle sezioni precedenti).
     </para>
    </listitem>
 
    <listitem>
     <para>
-     If forcing index usage does use the index, then there are two
-     possibilities: Either the system is right and using the index is
-     indeed not appropriate, or the cost estimates of the query plans
-     are not reflecting reality.  So you should time your query with
-     and without indexes.  The <command>EXPLAIN ANALYZE</command>
-     command can be useful here.
+     
+    Se forzando l'uso dell'indice esso viene utilizzato, ci sono due
+     possibilità: o il sistema ha ragione e l'utilizzo dell'indice è
+     davvero inappropriato, oppure i costi stimati dal queryplan
+     non riflettono la realtà. Si dovrebbe misurare il tempo della
+     query con e senza l'indici. Il comando <command>EXPLAIN ANALYZE</command>
+     potrebbe quì essere utile.
     </para>
    </listitem>
 
    <listitem>
     <para>
-     If it turns out that the cost estimates are wrong, there are,
-     again, two possibilities.  The total cost is computed from the
-     per-row costs of each plan node times the selectivity estimate of
-     the plan node.  The costs estimated for the plan nodes can be adjusted
-     via run-time parameters (described in <xref
-     linkend="runtime-config-query-constants"/>).
-     An inaccurate selectivity estimate is due to
-     insufficient statistics.  It might be possible to improve this by
-     tuning the statistics-gathering parameters (see
-     <xref linkend="sql-altertable"/>).
+<note>
+    <para>
+        Nota per il revisore: oddio....
     </para>
+</note>
+     Se risulta che i costi stimati sono sbagliati, ci sono,
+     ancora, due possibilità. Il costo totale viene calcolato dal costo
+     per-riga di ogni periodo di nodo di piano stimato selettivamente dal
+     nodo di piano. I costi stimati per i nodi di piano possono essere modificati
+     tramite parametri durante l'esecuzionevia (descritti in <xref
+     linkend="runtime-config-query-constants" />).
+     Una valutazione di selettività inesatta è dovuta a 
+     insufficienti statistiche. È possibile migliorarla, regolando i
+     parametri di riunione-statistiche (vedere
+     <xref linkend="sql-altertable" endterm="sql-altertable-title" />).
+     </para>
 
     <para>
-     If you do not succeed in adjusting the costs to be more
-     appropriate, then you might have to resort to forcing index usage
-     explicitly.  You might also want to contact the
-     <productname>PostgreSQL</productname> developers to examine the issue.
+     
+    Se non si riuscirà ad adeguare il costo in modo più
+     appropriato, potrebbe essere necessario forzare esplicitamente l'utilizzo
+     dell'indice. Si potrebbe anche contattare gli sviluppatori
+     <productname>PostgreSQL</productname> per esaminare il problema.
     </para>
    </listitem>
   </itemizedlist>

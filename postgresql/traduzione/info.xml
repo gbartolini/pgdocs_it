@@ -2,11 +2,11 @@
 <!-- $PostgreSQL$ -->
 
 <sect1 id="resources">
- <title>Further Information</title>
+ <title>Ulteriori informazioni</title>
 
  <para>
-  Besides the documentation, that is, this book, there are other
-  resources about <productname>PostgreSQL</productname>:
+  Oltre alla documentazione fornita con questo libro, ci sono molte 
+  altre risorse relative a <productname>PostgreSQL</productname>:
 
   <variablelist>
 
@@ -14,54 +14,55 @@
     <term>Wiki</term>
     <listitem>
      <para>
-      The <productname>PostgreSQL</productname> <ulink
-      url="http://wiki.postgresql.org">wiki</ulink> contains the project's <ulink
-      url="http://wiki.postgresql.org/wiki/Frequently_Asked_Questions">FAQ</ulink>
-      (Frequently Asked Questions) list, <ulink
-      url="http://wiki.postgresql.org/wiki/Todo">TODO</ulink> list, and
-      detailed information about many more topics.
+        Il <ulink
+        url="http://wiki.postgresql.org">wiki</ulink> di <productname>PostgreSQL</productname> 
+        raccoglie l'elenco di  <ulink
+        url="http://wiki.postgresql.org/wiki/Frequently_Asked_Questions">FAQ</ulink>
+        (Frequently Asked Questions) del progetto, il <ulink
+        url="http://wiki.postgresql.org/wiki/Todo">TODO</ulink>, e
+        informazioni dettagliate su molti atri argomenti.
      </para>
     </listitem>
    </varlistentry>
 
    <varlistentry>
-    <term>Web Site</term>
+    <term>Sito web</term>
     <listitem>
      <para>
-      The <productname>PostgreSQL</productname> 
-      <ulink url="http://www.postgresql.org">web site</ulink>
-      carries details on the latest release and other
-      information to make your work or play with
-      <productname>PostgreSQL</productname> more productive.
+       Il <ulink url="http://www.postgresql.org">sito web</ulink>
+      di <productname>PostgreSQL</productname> 
+      ha dettagli sull'ultima versione e altre informazioni
+    per farti lavorare o giocare con
+      <productname>PostgreSQL</productname> in maniera più produttiva.
      </para>
     </listitem>
    </varlistentry>
 
    <varlistentry>
-    <term>Mailing Lists</term>
+    <term>Mailing List</term>
     <listitem>
      <para>
-      The mailing lists are a good place to have your questions
-      answered, to share experiences with other users, and to contact
-      the developers.  Consult the <productname>PostgreSQL</productname> web site
-      for details.
+Le mailing list sono un buon posto per ottenere risposte alle proprie domande,
+per condividere esperienze con altri utenti, e contattare 
+gli sviluppatori. Consultare il sito web di <productname>PostgreSQL</productname>
+per dettagli.
      </para>
     </listitem>
    </varlistentry>
 
    <varlistentry>
-    <term>Yourself!</term>
+    <term>Voi stessi!</term>
     <listitem>
      <para>
-      <productname>PostgreSQL</productname> is an open-source project.
-      As such, it depends on the user community for ongoing support.
-      As you begin to use <productname>PostgreSQL</productname>, you
-      will rely on others for help, either through the documentation
-      or through the mailing lists.  Consider contributing your
-      knowledge back. Read the mailing lists and answer questions.  If
-      you learn something which is not in the documentation, write it
-      up and contribute it.  If you add features to the code,
-      contribute them.
+      <productname>PostgreSQL</productname> è un progetto open-source.
+      Pertanto, esso dipende dalla comunità degli utenti per un supporto continuo.
+      Dato che state cominciando ad usare <productname>PostgreSQL</productname>,
+      potrete fare affidamento sugli altri per aiuto, oltre che sulla documentazione
+      o tramite le mailing list. Considerate la possibilità di contribuire per
+      la vostra parte di conoscenza. Leggete le mailing list e rispondete alle domande. se
+      imparate qualcosa che non è nella documentazione, provvedete a scriverla
+      e darete anche un vostro contributo. Se aggiungete delle caratteristiche al codice,
+      darete un vostro contributo.
      </para>
     </listitem>
    </varlistentry>

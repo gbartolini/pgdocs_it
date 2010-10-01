@@ -2,45 +2,45 @@
 <!-- $PostgreSQL$ -->
 
 <sect1 id="notation">
- <title>Conventions</title>
+ <title>Convenzioni</title>
 
  <para>
-  This book uses the following typographical conventions to mark
-  certain portions of text: new terms, foreign phrases, and other
-  important passages are emphasized in <emphasis>italics</emphasis>.
-  Everything that represents input or output of the computer, in
-  particular commands, program code, and screen output, is shown in a
-  monospaced font (<literal>example</literal>).  Within such
-  passages, italics (<replaceable>example</replaceable>) indicate
-  placeholders; you must insert an actual value instead of the placeholder.
-  On occasion, parts of program code are emphasized in bold face
-  (<emphasis role="bold"><literal>example</literal></emphasis>), if they have been
-  added or changed since the preceding example.
+  Questo libro usa le seguenti convenzioni tipografiche per marcare
+  certe porzioni di testo: nuovi termini, frasi estere, ed altri
+  importanti passaggi sono evidenziati in <emphasis>italics</emphasis>.
+  Tutto ciò che rappresenta input o output del computer, 
+  comandi particolari, codice di programma, e output su schermo, è
+  visualizzato in un font monospaziato (<literal>esempio</literal>). Dentro tali
+  passaggi, italics (<replaceable>esempio</replaceable>) indica un
+  suggerimento; bisognerà inserire il valore reale al posto del suggerimento.
+  Occasionalmente, parti di codice di programma sono evidenziati in grassetto
+  (<emphasis role="bold"><literal>esempio</literal></emphasis>), se sono stati
+  aggiunti o sono stati cambiati dal precedente esempio.
  </para>
 
  <para>
-  The following conventions are used in the synopsis of a command:
-  brackets (<literal>[</literal> and <literal>]</literal>) indicate
-  optional parts.  (In the synopsis of a Tcl command, question marks
-  (<literal>?</literal>) are used instead, as is usual in Tcl.)  Braces
-  (<literal>{</literal> and <literal>}</literal>) and vertical lines
-  (<literal>|</literal>) indicate that you must choose one
-  alternative.  Dots (<literal>...</literal>) mean that the preceding element
-  can be repeated.
+  Le convenzioni seguenti sono usate nella sintassi di un comando: 
+  le parentesi quadre (<literal>[</literal> e <literal>]</literal>) indicano
+  parti opzionali. (Nella sintassi di un comando Tcl, viene invece utilizzato
+  il punto interrogativo (<literal>?</literal>), come è normale in Tcl). Le
+  parentesi graffe (<literal>{</literal> e <literal>}</literal>) e le linee verticali
+  (<literal>|</literal>) indicano che bisogna scegliere una
+  alternativa. I punti (<literal>...</literal>) indicano che l'elemento precedente
+  può essere ripetuto.
  </para>
 
  <para>
-  Where it enhances the clarity, SQL commands are preceded by the
-  prompt <literal>=&gt;</literal>, and shell commands are preceded by the
-  prompt <literal>$</literal>.  Normally, prompts are not shown, though.
+  Dove migliora la chiarezza, i comandi SQL sono preceduti dal   
+  prompt <literal>=&gt;</literal>, e i comandi della shell sono preceduti dal
+  prompt <literal>$</literal>. Normalmente, i prompt non vengono però mostrati.
  </para>
 
  <para>
-  An <firstterm>administrator</firstterm> is generally a person who is
-  in charge of installing and running the server.  A <firstterm>user</firstterm>
-  could be anyone who is using, or wants to use, any part of the
-  <productname>PostgreSQL</productname> system.  These terms should not
-  be interpreted too narrowly; this book does not have fixed
-  presumptions about system administration procedures.
+  Un <firstterm>amministratore</firstterm> è generalmente una persona che è
+  incaricata di installare e far funzionare il server. Un <firstterm>utente</firstterm>
+  è chiunque stia usando, o desidera usare qualsiasi parte del sistema  
+  <productname>PostgreSQL</productname>. Questi termini non dovrebbero essere interpretati
+  in maniera restrittiva; Questo libro non fa previsioni sulle procedure di
+  amministrazione del sistema.
  </para>
 </sect1>

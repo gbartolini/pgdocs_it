@@ -6,10 +6,10 @@
 
  <para>
     Questo capitolo tratta la creazione delle strutture del database che
-    conterranno i dati. In un database relazionale, i dati grezzi sono
+    andranno a contenere i dati. In un database relazionale, i dati grezzi sono
     memorizzati in tabelle. La maggior parte di questo capitolo è dedicata a
-    illustrare come le tabelle vengano create e modificate e quali caratteristiche siano
-    a disposizione per il controllo dei dati.
+    illustrare come le tabelle siano create e modificate e quali caratteristiche siano
+    a disposizione dell'amministratore per il controllo dei dati.
     Successivamente, verrà affrontato come organizzare le tabelle in
     schemi, e come assegnare privilegi alle tabelle. Infine,
     verranno brevemente esposte le altre funzionalità riguardanti la memorizzazione dei dati,
@@ -38,32 +38,32 @@
     variabile &mdash; riflette la quantità di dati immagazzinati in un dato momento.
     SQL non dà alcuna garanzia circa l'ordine delle righe in una
     tabella. Quando una tabella viene letta, le righe appariranno in ordine non specificato,
-    a meno che un ordinamento non sia esplicitamente richiesto. Questo argomento è trattato in <xref
+    a meno che un preciso ordinamento non sia esplicitamente richiesto. Questo argomento è trattato in <xref
     linkend="queries"/>. Inoltre, SQL non assegna identificatori unici
     alle righe, così è possibile avere diverse righe
     completamente uguali in una tabella. Questa è una conseguenza del
-    modello matematico sottostante ad SQL, ma di solito non è desiderabile.
+    modello matematico sottostante ad SQL, ma di solito non rappresenta il comportamento desiderato.
     Questo argomento verrà comunque affrontato più avanti nel corso di questo capitolo.
   </para>
 
   <para>
     Ogni colonna ha un tipo di dato. Il tipo di dato regola l'insieme di
-    possibili valori che può essere assegnato a una colonna ed fornisce
-    semantica ai dati immagazzinati nella colonna (in modo da poter essere utilizzati per calcoli computazionali). 
+    possibili valori che può essere assegnato a una colonna e fornisce
+    semantica ai dati immagazzinati nella colonna stessa (in modo da poter essere utilizzati per calcoli computazionali). 
     Per esempio, una colonna dichiarata come tipo
     numerico non accetterà stringhe di testo arbitrarie, e i dati
     contenuti in quella colonna potranno essere usati per calcoli matematici.
     Al contrario, una colonna dichiarata per contenere stringhe di caratteri,
-    accetterà quasi ogni tipo di dati ma non si presterà
-    a calcoli matematici, benchè altre operazioni, come la concatenazione di stringhe,
+    accetterà quasi ogni tipo di dato ma non si presterà
+    a calcoli matematici, benché altre operazioni, come la concatenazione di stringhe,
     siano possibili.
   </para>
 
   <para>
     <productname>PostgreSQL</productname> include un insieme rilevante di tipi di dato
-    che risultano adatti a molte applicazioni. Gli utenti possono inoltre
+    che risultano adatti per molte applicazioni. Gli utenti possono inoltre
     definire i loro propri tipi di dato. Molti dei tipi di dato nativi hanno
-    nomi e semantica ovvia, perciò si rimanda a <xref 
+    nomi e semantica ovvia, perciò si rimanda al <xref 
     linkend="datatype"/> per una spiegazione dettagliata. Alcuni dei tipi di dato usati frequentemente sono
     <type>integer</type> per i numeri interi, <type>numeric</type> per
     i numeri a virgola mobile, <type>text</type> per stringhe
@@ -95,7 +95,7 @@ CREATE TABLE my_first_table (
     <type>text</type>; la seconda colonna si chiama
     <literal>second_column</literal> ed è di tipo <type>integer</type>.
     I nomi di tabella e colonna seguono la sintassi per gli identificatori, descritta
-    in <xref linkend="sql-syntax-identifiers"/>. Anche i nomi dei tipi sono
+    nella <xref linkend="sql-syntax-identifiers"/>. Anche i nomi dei tipi sono
     di solito identificatori, ma esistono delle eccezioni. Si noti che
     la lista di colonne è separata da virgole e racchiusa all'interno di parentesi.
   </para>
@@ -111,7 +111,7 @@ CREATE TABLE products (
 );
 </programlisting>
    (Il tipo <type>numeric</type> può contenere componenti frazionarie,
-    tipico di somme in valuta.)
+    tipico di somme in valuta, ad esempio.)
   </para>
 
   <tip>
@@ -150,7 +150,7 @@ DROP TABLE products;
   </para>
 
   <para>
-    Per la modifica di tabelle esistenti, fare riferimento a <xref
+    Per la modifica di tabelle esistenti, fare riferimento alla <xref
    linkend="ddl-alter"/>, descritta più avanti in questo capitolo.
   </para>
 
@@ -159,12 +159,9 @@ DROP TABLE products;
     Il resto di questo capitolo riguarda funzionalità aggiuntive
     alla definizione di tabelle per garantire l'integrità dei dati,
     la sicurezza o per semplice comodità. L'utente ansioso di riempire le proprie tabelle con dati
-    può saltare direttamente alla sezione <xref linkend="dml"/> e leggere il resto di questo capitolo in un secondo momento.
+    può saltare direttamente al <xref linkend="dml"/> e leggere il resto di questo capitolo in un secondo momento.
   </para>
  </sect1>
-
-
-
 
 
  <sect1 id="ddl-default">
@@ -179,15 +176,15 @@ DROP TABLE products;
     viene creata e non sono specificati valori per alcune colonne, queste 
     verranno riempite con i loro rispettivi valori di default. Un
     comando di manipolazione dei dati può anche richiedere esplicitamente che una colonna
-    sia impostata al suo valore di default, senza dover sapere che valore sia.
-    (Dettagli riguardanti i comandi di manipolazione dei dati sono in <xref linkend="dml"/>.)
+    sia impostata al suo valore di default, senza dover sapere che valore sia
+    (dettagli riguardanti i comandi di manipolazione dei dati sono nel <xref linkend="dml"/>).
   </para>
 
   <para>
    <indexterm><primary>valore null</primary><secondary>valore di default</secondary></indexterm>
     Se un valore di default non è dichiarato esplicitamente, il valore di default è il
-    valore null. Questo di solito ha senso perchè un valore null può
-    essere considerato rappresentativo di un dato sconosciuto.
+    valore null. Ciò di solito ha senso in quanto un valore null può
+    essere considerato rappresentativo di un dato non conosciuto o non definito.
   </para>
 
   <para>
@@ -210,7 +207,7 @@ CREATE TABLE products (
     che verrà impostato al momento dell'inserimento della riga. Un altro esempio comune
     è la generazione di un <quote>numero di serie</quote> per ogni riga.
     In <productname>PostgreSQL</productname> questo viene tipicamente fatto con 
-    qualcosa di simile a:
+    qualcosa simile a:
 <programlisting>
 CREATE TABLE products (
     product_no integer <emphasis>DEFAULT nextval('products_product_no_seq')</emphasis>,
@@ -218,7 +215,7 @@ CREATE TABLE products (
 );
 </programlisting>
     dove la funzione <literal>nextval()</literal> fornisce valori successivi  
-    da una <firstterm>sequenza</firstterm> (vedi <xref 
+    da una <firstterm>sequenza</firstterm> (si veda la <xref 
     linkend="functions-sequence"/>). Questo espediente è talmente comune
     da avere una speciale scorciatoia:
 <programlisting>
@@ -227,7 +224,7 @@ CREATE TABLE products (
     ...
 );
 </programlisting>
-   L'abbreviazione <literal>SERIAL</literal> è discussa approfonditamente in <xref
+   L'abbreviazione <literal>SERIAL</literal> è discussa approfonditamente nella <xref
    linkend="datatype-serial"/>.
   </para>
  </sect1>
@@ -247,15 +244,15 @@ CREATE TABLE products (
     tipo di dato standard che accetti esclusivamente numeri positivi. Un altro problema è
     rappresentato dal voler vincolare il dato di una colonna rispetto ai dati di
     altre colonne o persino righe. Ad esempio, in una tabella contenente informazioni
-    su un prodotto, ci dovrebbe essere soltano una riga per ogni numero di prodotto.
+    su un prodotto, ci dovrebbe essere soltanto una riga per ogni numero di prodotto.
   </para>
 
   <para>
-    Per questo, SQL permette di definire vincoli sulle colonne e le
+    Per questo, SQL permette di definire vincoli sulle colonne e sulle
     tabelle. I vincoli permettono di controllare a proprio piacimento i dati contenuti nelle tabella.
     Se un utente tenta di immagazzinare dati in una colonna
     violando un vincolo, viene generato un errore. Questo si applica
-    anche se il valore veniva dalla definizione del valore di default.
+    anche se il valore proviene dalla definizione del valore di default.
   </para>
 
   <sect2>
@@ -272,8 +269,8 @@ CREATE TABLE products (
 
    <para>
         Il vincolo check è del tipo più generico. Permette
-        di specificare che il valore di una certa colonna deve soddisfare
-        un'espressione Booleana (valore-verità). Per esempio, per richiedere prezzi positivi
+        di specificare che il valore di una certa colonna debba soddisfare
+        un'espressione booleana (valore-verità). Per esempio, per richiedere prezzi positivi
         per i prodotti, usare:
 <programlisting>
 CREATE TABLE products (
@@ -302,7 +299,7 @@ CREATE TABLE products (
    <para>
         Si può anche dare un nome al vincolo. Questo chiarifica
         i messaggi di errore e permette di individuare il vincolo quando 
-        bisogna cambiarlo. La sintassi è:
+        questo debba essere modificato. La sintassi è:
 <programlisting>
 CREATE TABLE products (
     product_no integer,
@@ -311,15 +308,15 @@ CREATE TABLE products (
 );
 </programlisting>
         Così, per specificare un vincolo con nome, usare la parola chiave
-        <literal>CONSTRAINT</literal> seguita da un identificatore, seguito
-        dalla definizione del vincolo. (Se non si specifica un nome per il vincolo
-        in questo modo, il sistema ne sceglierà uno.)
+        <literal>CONSTRAINT</literal> seguita da un identificatore e
+        dalla definizione del vincolo (qualora non venga specificato un nome in modo esplicito,
+        il sistema ne sceglierà uno.)
    </para>
 
    <para>
-        Un vincolo check può anche riguardare diverse colonne. Mettiamo
-        di avere un prezzo regolare e un prezzo scontato, e vogliamo
-        assicurarci che il prezzo scontato sia minore che il prezzo regolare:
+        Un vincolo check può anche riguardare diverse colonne. Si supponga
+        di avere un prezzo regolare e un prezzo scontato, e di volersi
+        assicurare che il prezzo scontato sia minore del prezzo regolare:
 <programlisting>
 CREATE TABLE products (
     product_no integer,
@@ -332,22 +329,21 @@ CREATE TABLE products (
    </para>
 
    <para>
-        I primi 2 vincoli dovrebbero essere familiari. Il terzo
-        usa una nuova sintassi. Esso non è attaccato a una particolare colonna,
-        invece appare come un oggetto separato nella lista delle colonne separata da virgole.
-        Le definizioni delle colonne e dei vincoli possono essere elencati in ordine sparso.
+        I primi due vincoli dovrebbero essere familiari. Il terzo
+        usa una nuova sintassi. Esso non è vincolato a una particolare colonna
+        ed appare invece come un oggetto separato all'interno della lista delle colonne separate da virgola.
+        Le definizioni delle colonne e dei vincoli possono essere elencate in ordine sparso.
    </para>
 
    <para>
-        Abbiamo detto che i primi due vincoli sono vincoli di colonna, mentre il     
-        terzo è un vincolo di tabella perchè è scritto separatamente 
-        da ogni definizione di colonna. I vincoli di colonna possono anche
+        Il terzo è comunemente detto <emphasis>vincolo di tabella</emphasis> perchè non è legato a una particolare
+        definizione di colonna. I vincoli di colonna possono anche
         essere scritti come vincoli di tabella, mentre il contrario non è possibile,
         dato che un vincolo di colonna si riferisce solo alla colonna
-        a cui è attaccato. (<productname>PostgreSQL</productname> non
-        impone questa regola, ma dovrebbe essere seguita se si vuole che le definizioni delle tabelle
-        funzionino con altri sistemi di database.) L'esempio precedente poteva
-        essere scritto anche:
+        per cui è definito (<productname>PostgreSQL</productname> non
+        impone questa regola, ma dovrebbe essere seguita qualora si richieda che le definizioni delle tabelle
+        funzionino con altri sistemi di database). L'esempio precedente avrebbe potuto
+        essere scritto in uno dei seguenti modi:
 <programlisting>
 CREATE TABLE products (
     product_no integer,
@@ -369,12 +365,12 @@ CREATE TABLE products (
     CHECK (discounted_price &gt; 0 AND price &gt; discounted_price)
 );
 </programlisting>
-     È una questione di gusti.
+     È una questione di gusto.
    </para>
 
    <para>
         I nomi possono essere assegnati ai vincoli di tabella nello stesso modo 
-        dei vincoli di colonna:
+        in cui vengono assegnati ai vincoli di colonna:
 <programlisting>
 CREATE TABLE products (
     product_no integer,
@@ -416,7 +412,7 @@ CREATE TABLE products (
    </indexterm>
 
    <para>
-        Un vincolo not-null semplicemente specifica che una colonna non deve assumere
+        Un vincolo not-null semplicemente specifica che una colonna non può assumere in nessun caso
         il valore null. Un esempio di sintassi:
 <programlisting>
 CREATE TABLE products (

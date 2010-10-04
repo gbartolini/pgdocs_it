@@ -82,7 +82,7 @@ h4 {
   padding-bottom: 1.1em;
 }
 
-#txtFrontFeaureLink a {
+#txtFrontFeatureLink a {
   font-size: 1.2em;
   font-weight: bold;
   padding-left: 5px;
@@ -129,7 +129,7 @@ h4 {
 /* Link Styles */
 
 a:link                          { color:#0085B0; text-decoration: underline; }
-a:visited                       { color:#0085B0; text-decoration: underline; }
+a:visited                       { color:#004E66; text-decoration: underline; }
 a:active                        { color:#0085B0; text-decoration: underline; }
 a:hover                         { color:#000000; text-decoration: underline; }
 
@@ -137,6 +137,15 @@ a:hover                         { color:#000000; text-decoration: underline; }
 #pgFooter a:visited             { color:#666; text-decoration: underline; }
 #pgFooter a:active              { color:#666; text-decoration: underline; }
 #pgFooter a:hover               { color:#000000; text-decoration: underline; }
+
+#txtFrontUserName a:link                { color:#666; text-decoration: underline; }
+#txtFrontUserName a:visited             { color:#666; text-decoration: underline; }
+#txtFrontUserName a:active              { color:#666; text-decoration: underline; }
+#txtFrontUserName a:hover               { color:#000; text-decoration: underline; }
+
+#txtArchives a:visited	{ color:#00536E; text-decoration: underline; }
+#txtArchives pre 	{ word-wrap: break-word; font-size: 150%; }
+#txtArchives tt 	{ word-wrap: break-word; font-size: 150%; }
 
 #pgFrontUSSContainer h2, #pgFrontUSSContainer h3 {
   margin: 0;

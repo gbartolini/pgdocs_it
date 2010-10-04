@@ -6,6 +6,25 @@
 
 /* Page Container */
 
+#docHeader {
+    background-image: url("http://www.postgresql.org/layout/images/docs/bg_hdr.png");
+    height: 83px;
+    margin: 0px;
+    padding: 0px;
+    display: block;
+}
+div#docHeaderLogo
+{
+    float:left;
+}
+div#docHeaderItpugLogo
+{
+    float:right;
+    padding:5px;
+}
+
+
+
 #pgContainerWrap {
   text-align: center; /* Win IE5 */
 }
@@ -111,6 +130,7 @@
 #pgContent {
   clear: both;
   display: block;
+    padding:10px 20px;
 }
 
 #pgFrontContainer {
@@ -347,6 +367,14 @@ div.pgFrontUserContent {
   margin-top: 10px;
 }
 
+div#docFooter
+{
+    font-size: 90%; 
+    color: #666; 
+    line-height: 1.3em; 
+    text-align:center;
+}
+
 #pgSponsorWrap ul {
   background-image: url(http://docs.postgresql.fr/theme/img/images/nav_tbl_btm.png);
   background-position: bottom left;
@@ -370,6 +398,8 @@ div.pgFrontUserContent {
 #pgSponsorWrap li img {
   border: 0;
 }
+
+
 
 #pgAdminWrap {
   padding-top: 10px;

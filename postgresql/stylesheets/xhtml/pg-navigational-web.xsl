@@ -167,8 +167,8 @@
     <xsl:variable name="row" select="count($prev) &gt; 0 or count($up) &gt; 0
             or count($next) &gt; 0 or generate-id($home) != generate-id(.)"/>
     <xsl:if test="$row">
-      <div class="navfooter tblBasic">
-        <table summary="Barre de navigation">
+      <div class="navfooter">
+        <table summary="Barra di navigazione">
 	  <tr class="firstrow">
 	    <td class="left colFirst">
               <xsl:call-template name="user.header.content"/>

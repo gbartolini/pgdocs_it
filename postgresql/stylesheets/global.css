@@ -3,7 +3,7 @@
 */
 
 body {
-  margin: 10px;
+  margin: 0;
   padding: 0;
   font-family: verdana, sans-serif;
   font-size: 69%;
@@ -78,44 +78,3 @@ pre {
 strong, b {
   font-weight: bold;
 }
-
-p.question {
-  text-align: justify;
-  text-decoration: none;
-  font-size: 100%;
-  font-weight: bold;
-  background-color: lightgrey;
-}
-
-p.detail {
-  text-align: justify;
-  padding: 10;
-  font: Helvetica, Arial, Verdana, sans-serif;
-}
-
-p.commentaire {
-  text-decoration:      none;
-  font-weight:          bold;
-  font-size:            small;
-  color:                green;
-}
-
-dt {
-  text-align: justify;
-  text-decoration: none;
-  font-size: 100%;
-  font-weight: bold;
-  background-color: lightgrey;
-}
-
-
-
-dd {
-  text-align: justify;
-  padding: 20;
-  font: Helvetica, Arial, Verdana, sans-serif;
-}
-
-
-
-

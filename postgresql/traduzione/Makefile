@@ -13,6 +13,7 @@ include ../Makefile.config
 
 HTM_OUTPUT := pgsql-$(VER)-it
 WEB_OUTPUT := web-$(VER)-it
+WEBTEST_OUTPUT := web-$(VER)-it-TEST
 TGZ_OUTPUT := pg$(MAJORVER).tar.gz
 ZIP_OUTPUT := pg$(MAJORVER).zip
 PDF_OUTPUT := pg$(MAJORVER).pdf
@@ -24,6 +25,7 @@ NOCHUNKS_OUTPUT := pg$(MAJORVER).html
 CHUNK_QUIET=0
 VPATH = $(BASEDIR):$(BASEDIR)/ref
 src = *.xml ref/*.xml
+srctest = test.xml
 
 all: xsl html webhtml pdf manpages INSTALL.html INSTALL.txt
 
@@ -90,6 +92,31 @@ webhtml: $(src)
 	  sed -i -e "s@text/html@application/xhtml+xml@g" $$filename; \
 	done;
 	cd $(BASEDIR)/$(WEB_OUTPUT)/; sed -i -e "s@</body>@</body><script type=\"text/javascript\">var gaJsHost = ((\"https:\" == document.location.protocol) ? \"https://ssl.\" : \"http://www.\"); document.write(unescape(\"%3Cscript src='\" + gaJsHost + \"google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E\")); </script> <script type=\"text/javascript\"> var pageTracker = _gat._getTracker(\"UA-140513-1\"); pageTracker._initData(); pageTracker._trackPageview(); </script>@g" *.html
+
+webtest: $(srctest)
+	[ -d $(BASEDIR)/$(WEBTEST_OUTPUT) ] || mkdir -p $(BASEDIR)/$(WEBTEST_OUTPUT)
+	xsltproc --xinclude --nonet -stringparam profile.condition html \
+		-stringparam  profile.attribute  "standalone" -stringparam  profile.value  "no" \
+		-stringparam chunk.quietly $(CHUNK_QUIET) \
+		-stringparam use.id.as.filename "yes" \
+		-stringparam base.dir $(BASEDIR)/$(WEBTEST_OUTPUT)/ \
+		../stylesheets/pg-chunked-web.xsl test.xml
+
+	[ -d $(BASEDIR)/$(WEB_OUTPUT)/stylesheets ] || mkdir $(BASEDIR)/$(WEBTEST_OUTPUT)/stylesheets
+	cp ../stylesheets/*.css $(BASEDIR)/$(WEBTEST_OUTPUT)/stylesheets
+
+	[ -d $(BASEDIR)/$(WEBTEST_OUTPUT)/images ] || mkdir $(BASEDIR)/$(WEBTEST_OUTPUT)/images
+	cp ../stylesheets/img/*.png $(BASEDIR)/$(WEBTEST_OUTPUT)/images
+	cd $(BASEDIR)/$(WEBTEST_OUTPUT)/; sed -i -e "s@../stylesheets@stylesheets@g" *.html
+	cd $(BASEDIR)/$(WEBTEST_OUTPUT)/; sed -i -e "s@\.\./images@images@g" *.html
+	cd $(BASEDIR)/$(WEBTEST_OUTPUT)/; sed -i -e 's@border="1"@border="0"@g' *.html
+
+#	for filename in `find $(BASEDIR)/$(WEB_OUTPUT) -name "*.html"`; do \
+#	  tidy -config tidy.conf $$filename; \
+#	  true; \
+#	  sed -i -e "s@text/html@application/xhtml+xml@g" $$filename; \
+#	done;
+	cd $(BASEDIR)/$(WEBTEST_OUTPUT)/; sed -i -e "s@</body>@</body><script type=\"text/javascript\">var gaJsHost = ((\"https:\" == document.location.protocol) ? \"https://ssl.\" : \"http://www.\"); document.write(unescape(\"%3Cscript src='\" + gaJsHost + \"google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E\")); </script> <script type=\"text/javascript\"> var pageTracker = _gat._getTracker(\"UA-140513-1\"); pageTracker._initData(); pageTracker._trackPageview(); </script>@g" *.html
 
 pdf: $(PDF_OUTPUT)
 $(PDF_OUTPUT): $(src)

@@ -109,22 +109,22 @@ il problema. Il minimo che possiamo fare è rendere l'elenco TODO più chiaro.
   <title>Cosa segnalare</title>
 
   <para>
-   The most important thing to remember about bug reporting is to state all
-   the facts and only facts. Do not speculate what you think went wrong, what
-   <quote>it seemed to do</quote>, or which part of the program has a fault.
-   If you are not familiar with the implementation you would probably guess
-   wrong and not help us a bit. And even if you are, educated explanations are
-   a great supplement to but no substitute for facts. If we are going to fix
-   the bug we still have to see it happen for ourselves first.
-   Reporting the bare facts
-   is relatively straightforward (you can probably copy and paste them from the
-   screen) but all too often important details are left out because someone
-   thought it does not matter or the report would be understood
-   anyway.
+La cosa più importante da ricordare sulla segnalazione di bug è di esporre tutti
+i fatti e solo i fatti. Non supporre quello che si pensa sia andato male, cosa
+<quote>è sembrato essere successo</quote>, 
+o quale parte del programma ne abbia colpa.
+Se non si ha familiarità con l'implementazione probabilmente supporrai sbagliato
+e non ci aiuterai. Ed anche se si ha, spegazioni educate sono un ottimo 
+supplemento ma non sostituiscono i fatti. Se boddiamo risolvere il bug 
+dovremmo comunque vederlo accadere, prima. 
+Segnalare i fatti è relativamente semplice (probabilmente si potrà copiarli e
+incollarli dallo schermo) ma molto spesso vengono tralasciati importanti dettagli 
+perchè si pensa non siano importanti o che la segnalazione sia comunque
+comprensibile.
   </para>
 
   <para>
-   The following items should be contained in every bug report:
+I seguenti punti dovrebbero essere contenuti in ogni segnalazione di bug:
 
    <itemizedlist>
     <listitem>

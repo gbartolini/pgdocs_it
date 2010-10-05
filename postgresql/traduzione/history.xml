@@ -151,12 +151,10 @@
     </listitem>
 
     <listitem>
-<note>
-    <para>
-        Nota per il revisore: non ho capito 
-    </para>
-</note>
      <para>
+<warning>
+    <para>Per il revisore: da tradurre!</para>
+</warning>
       The large-object interface was overhauled. The inversion large
       objects were the only mechanism for storing large objects.  (The
       inversion file system was removed.)

@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DROPROLE">
+<refentry id="sql-droprole">
  <refmeta>
   <refentrytitle>DROP ROLE</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -84,7 +84,7 @@ DROP ROLE [ IF EXISTS ] <replaceable class="PARAMETER">name</replaceable> [, ...
 
   <para>
    <productname>PostgreSQL</productname> includes a program <xref
-   linkend="APP-DROPUSER"/> that has the
+   linkend="app-dropuser"/> that has the
    same functionality as this command (in fact, it calls this command)
    but can be run from the command shell.
   </para>

@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-MOVE">
+<refentry id="sql-move">
  <refmeta>
   <refentrytitle>MOVE</refentrytitle>
   <manvolnum>7</manvolnum>

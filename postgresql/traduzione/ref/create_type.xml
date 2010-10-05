@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-CREATETYPE">
+<refentry id="sql-createtype">
  <refmeta>
   <refentrytitle>CREATE TYPE</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -85,7 +85,7 @@ CREATE TYPE <replaceable class="parameter">name</replaceable>
   </para>
   </refsect2>
 
-  <refsect2 id="SQL-CREATETYPE-enum">
+  <refsect2 id="sql-createtype-enum">
    <title>Enumerated Types</title>
 
    <para>
@@ -614,7 +614,7 @@ CREATE TYPE <replaceable class="parameter">name</replaceable>
   </variablelist>
  </refsect1>
 
- <refsect1 id="SQL-CREATETYPE-notes">
+ <refsect1 id="sql-createtype-notes">
   <title>Notes</title>
 
   <para>
@@ -765,7 +765,7 @@ CREATE TABLE big_objs (
   </para>
  </refsect1>
 
- <refsect1 id="SQL-CREATETYPE-compatibility">
+ <refsect1 id="sql-createtype-compatibility">
   <title>Compatibility</title>
 
   <para>
@@ -776,7 +776,7 @@ CREATE TABLE big_objs (
   </para>
  </refsect1>
 
- <refsect1 id="SQL-CREATETYPE-see-also">
+ <refsect1 id="sql-createtype-see-also">
   <title>See Also</title>
 
   <simplelist type="inline">

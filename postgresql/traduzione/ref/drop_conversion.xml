@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $PostgreSQL$ -->
 
-<refentry id="SQL-DROPCONVERSION">
+<refentry id="sql-dropconversion">
  <refmeta>
   <refentrytitle>DROP CONVERSION</refentrytitle>
   <manvolnum>7</manvolnum>

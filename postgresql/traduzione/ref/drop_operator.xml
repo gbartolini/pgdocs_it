@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DROPOPERATOR">
+<refentry id="sql-dropoperator">
  <refmeta>
   <refentrytitle>DROP OPERATOR</refentrytitle>
   <manvolnum>7</manvolnum>

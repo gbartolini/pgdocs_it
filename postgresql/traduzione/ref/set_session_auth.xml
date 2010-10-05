@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $PostgreSQL$ -->
-<refentry id="SQL-SET-SESSION-AUTHORIZATION">
+<refentry id="sql-set-session-authorization">
  <refmeta>
   <refentrytitle>SET SESSION AUTHORIZATION</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -55,7 +55,7 @@ RESET SESSION AUTHORIZATION
 
   <para>
    The <literal>SESSION</literal> and <literal>LOCAL</literal> modifiers act the same
-   as for the regular <xref linkend="SQL-SET"/>
+   as for the regular <xref linkend="sql-set"/>
    command.
   </para>
 

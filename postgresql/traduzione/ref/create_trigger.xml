@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-CREATETRIGGER">
+<refentry id="sql-createtrigger">
  <refmeta>
   <refentrytitle>CREATE TRIGGER</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -225,7 +225,7 @@ UPDATE OF <replaceable>column_name1</replaceable> [, <replaceable>column_name2</
   </variablelist>
  </refsect1>
 
- <refsect1 id="SQL-CREATETRIGGER-notes">
+ <refsect1 id="sql-createtrigger-notes">
   <title>Notes</title>
 
   <para>
@@ -282,7 +282,7 @@ UPDATE OF <replaceable>column_name1</replaceable> [, <replaceable>column_name2</
   </para>
  </refsect1>
 
- <refsect1 id="SQL-CREATETRIGGER-examples">
+ <refsect1 id="sql-createtrigger-examples">
   <title>Examples</title>
 
   <para>
@@ -335,7 +335,7 @@ CREATE TRIGGER log_update
   </para>
  </refsect1>
 
- <refsect1 id="SQL-CREATETRIGGER-compatibility">
+ <refsect1 id="sql-createtrigger-compatibility">
   <title>Compatibility</title>
 
   <para>

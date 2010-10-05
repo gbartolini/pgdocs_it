@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-INSERT">
+<refentry id="sql-insert">
  <refmeta>
   <refentrytitle>INSERT</refentrytitle>
   <manvolnum>7</manvolnum>

@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-SET">
+<refentry id="sql-set">
  <refmeta>
   <refentrytitle>SET</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -323,8 +323,8 @@ SET TIME ZONE 'Europe/Rome';
   <title>See Also</title>
 
   <simplelist type="inline">
-   <member><xref linkend="SQL-RESET"/></member>
-   <member><xref linkend="SQL-SHOW"/></member>
+   <member><xref linkend="sql-reset"/></member>
+   <member><xref linkend="sql-show"/></member>
   </simplelist>
  </refsect1>
 </refentry>

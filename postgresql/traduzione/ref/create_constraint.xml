@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-CREATECONSTRAINT">
+<refentry id="sql-createconstraint">
  <refmeta>
   <refentrytitle>CREATE CONSTRAINT TRIGGER</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -40,7 +40,7 @@ CREATE CONSTRAINT TRIGGER <replaceable class="parameter">name</replaceable>
    <command>CREATE CONSTRAINT TRIGGER</command> creates a
    <firstterm>constraint trigger</firstterm>.  This is the same as a regular trigger
    except that the timing of the trigger firing can be adjusted using
-   <xref linkend="SQL-SET-CONSTRAINTS"/>.
+   <xref linkend="sql-set-constraints"/>.
    Constraint triggers must be <literal>AFTER ROW</literal> triggers.  They can
    be fired either at the end of the statement causing the triggering event,
    or at the end of the containing transaction; in the latter case they are
@@ -117,7 +117,7 @@ CREATE CONSTRAINT TRIGGER <replaceable class="parameter">name</replaceable>
      <para>
       A Boolean expression that determines whether the trigger function
       will actually be executed.  This acts the same as in <xref
-      linkend="SQL-CREATETRIGGER"/>.
+      linkend="sql-createtrigger"/>.
       Note in particular that evaluation of the <literal>WHEN</literal>
       condition is not deferred, but occurs immediately after the row
       update operation is performed.  If the condition does not evaluate
@@ -132,7 +132,7 @@ CREATE CONSTRAINT TRIGGER <replaceable class="parameter">name</replaceable>
     <listitem>
      <para>
       The function to call when the trigger is fired. See <xref
-      linkend="SQL-CREATETRIGGER"/> for
+      linkend="sql-createtrigger"/> for
       details.
      </para>
     </listitem>
@@ -143,7 +143,7 @@ CREATE CONSTRAINT TRIGGER <replaceable class="parameter">name</replaceable>
     <listitem>
      <para>
       Optional argument strings to pass to the trigger function. See <xref
-      linkend="SQL-CREATETRIGGER"/> for
+      linkend="sql-createtrigger"/> for
       details.
      </para>
     </listitem>

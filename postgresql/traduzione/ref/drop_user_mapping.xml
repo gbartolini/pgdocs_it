@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DROPUSERMAPPING">
+<refentry id="sql-dropusermapping">
  <refmeta>
   <refentrytitle>DROP USER MAPPING</refentrytitle>
   <manvolnum>7</manvolnum>

@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-ALTERTABLESPACE">
+<refentry id="sql-altertablespace">
  <refmeta>
   <refentrytitle>ALTER TABLESPACE</refentrytitle>
   <manvolnum>7</manvolnum>

@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DROPTRIGGER">
+<refentry id="sql-droptrigger">
  <refmeta>
   <refentrytitle>DROP TRIGGER</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -91,7 +91,7 @@ DROP TRIGGER [ IF EXISTS ] <replaceable class="PARAMETER">name</replaceable> ON 
   </variablelist>
  </refsect1>
 
- <refsect1 id="SQL-DROPTRIGGER-examples">
+ <refsect1 id="sql-droptrigger-examples">
   <title>Examples</title>
 
   <para>
@@ -104,7 +104,7 @@ DROP TRIGGER if_dist_exists ON films;
   </para>
  </refsect1>
  
- <refsect1 id="SQL-DROPTRIGGER-compatibility">
+ <refsect1 id="sql-droptrigger-compatibility">
   <title>Compatibility</title>
   
   <para>

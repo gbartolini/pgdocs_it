@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-SAVEPOINT">
+<refentry id="sql-savepoint">
  <refmeta>
   <refentrytitle>SAVEPOINT</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -65,8 +65,8 @@ SAVEPOINT <replaceable>savepoint_name</replaceable>
   <title>Notes</title>
 
   <para>
-   Use <xref linkend="SQL-ROLLBACK-TO"/> to
-   rollback to a savepoint.  Use <xref linkend="SQL-RELEASE-SAVEPOINT"/>
+   Use <xref linkend="sql-rollback-to"/> to
+   rollback to a savepoint.  Use <xref linkend="sql-release-savepoint"/>
    to destroy a savepoint, keeping
    the effects of commands executed after it was established.
   </para>

@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DROPGROUP">
+<refentry id="sql-dropgroup">
  <refmeta>
   <refentrytitle>DROP GROUP</refentrytitle>
   <manvolnum>7</manvolnum>

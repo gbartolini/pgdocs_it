@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="APP-INITDB">
+<refentry id="app-initdb">
  <refmeta>
   <refentrytitle>initdb</refentrytitle>
   <manvolnum>1</manvolnum>
@@ -32,7 +32,7 @@ PostgreSQL documentation
   </cmdsynopsis>
  </refsynopsisdiv>
 
- <refsect1 id="R1-APP-INITDB-1">
+ <refsect1 id="R1-app-initdb-1">
   <title>
    Description
   </title>

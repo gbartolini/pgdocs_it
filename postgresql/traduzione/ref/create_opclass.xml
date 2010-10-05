@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-CREATEOPCLASS">
+<refentry id="sql-createopclass">
  <refmeta>
   <refentrytitle>CREATE OPERATOR CLASS</refentrytitle>
   <manvolnum>7</manvolnum>

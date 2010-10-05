@@ -3,7 +3,7 @@
 $PostgreSQL$
 -->
 
-<refentry id="SQL-CREATEFUNCTION">
+<refentry id="sql-createfunction">
  <refmeta>
   <refentrytitle>CREATE FUNCTION</refentrytitle>
   <manvolnum>7</manvolnum>

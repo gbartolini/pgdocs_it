@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DROPTABLE">
+<refentry id="sql-droptable">
  <refmeta>
   <refentrytitle>DROP TABLE</refentrytitle>
   <manvolnum>7</manvolnum>

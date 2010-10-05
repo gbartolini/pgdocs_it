@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-LISTEN">
+<refentry id="sql-listen">
  <refmeta>
   <refentrytitle>LISTEN</refentrytitle>
   <manvolnum>7</manvolnum>

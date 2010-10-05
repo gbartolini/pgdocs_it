@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-EXPLAIN">
+<refentry id="sql-explain">
  <refmeta>
   <refentrytitle>EXPLAIN</refentrytitle>
   <manvolnum>7</manvolnum>

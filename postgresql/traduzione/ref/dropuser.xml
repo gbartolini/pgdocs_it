@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="APP-DROPUSER">
+<refentry id="app-dropuser">
  <refmeta>
   <refentrytitle><application>dropuser</application></refentrytitle>
   <manvolnum>1</manvolnum>
@@ -43,7 +43,7 @@ PostgreSQL documentation
 
   <para>
    <application>dropuser</application> is a wrapper around the
-   <acronym>SQL</acronym> command <xref linkend="SQL-DROPROLE"/>.
+   <acronym>SQL</acronym> command <xref linkend="sql-droprole"/>.
    There is no effective difference between dropping users via
    this utility and via other methods for accessing the server.
   </para>
@@ -223,8 +223,8 @@ PostgreSQL documentation
   <title>Diagnostics</title>
 
   <para>
-   In case of difficulty, see <xref linkend="SQL-DROPROLE"/>
-   and <xref linkend="APP-PSQL"/> for
+   In case of difficulty, see <xref linkend="sql-droprole"/>
+   and <xref linkend="app-psql"/> for
    discussions of potential problems and error messages.
    The database server must be running at the
    targeted host.  Also, any default connection settings and environment

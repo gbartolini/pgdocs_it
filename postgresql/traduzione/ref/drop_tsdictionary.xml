@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DROPTSDICTIONARY">
+<refentry id="sql-droptsdictionary">
  <refmeta>
   <refentrytitle>DROP TEXT SEARCH DICTIONARY</refentrytitle>
   <manvolnum>7</manvolnum>

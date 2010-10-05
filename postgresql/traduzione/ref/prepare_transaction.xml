@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-PREPARE-TRANSACTION">
+<refentry id="sql-prepare-transaction">
  <refmeta>
   <refentrytitle>PREPARE TRANSACTION</refentrytitle>
   <manvolnum>7</manvolnum>

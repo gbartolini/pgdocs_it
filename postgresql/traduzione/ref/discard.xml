@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DISCARD">
+<refentry id="sql-discard">
  <refmeta>
   <refentrytitle>DISCARD</refentrytitle>
   <manvolnum>7</manvolnum>

@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="APP-PGCONTROLDATA">
+<refentry id="app-pgcontroldata">
  <refmeta>
   <refentrytitle><application>pg_controldata</application></refentrytitle>
   <manvolnum>1</manvolnum>
@@ -27,7 +27,7 @@ PostgreSQL documentation
   </cmdsynopsis>
  </refsynopsisdiv>
 
- <refsect1 id="R1-APP-PGCONTROLDATA-1">
+ <refsect1 id="R1-app-pgcontroldata-1">
   <title>Description</title>
   <para>
    <command>pg_controldata</command> prints information initialized during

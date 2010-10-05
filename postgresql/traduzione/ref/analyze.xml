@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-ANALYZE">
+<refentry id="sql-analyze">
  <refmeta>
   <refentrytitle>ANALYZE</refentrytitle>
   <manvolnum>7</manvolnum>

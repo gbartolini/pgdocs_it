@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DROPVIEW">
+<refentry id="sql-dropview">
  <refmeta>
   <refentrytitle>DROP VIEW</refentrytitle>
   <manvolnum>7</manvolnum>

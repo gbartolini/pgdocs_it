@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-EXECUTE">
+<refentry id="sql-execute">
  <refmeta>
   <refentrytitle>EXECUTE</refentrytitle>
   <manvolnum>7</manvolnum>

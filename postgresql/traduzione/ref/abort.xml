@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-ABORT">
+<refentry id="sql-abort">
  <refmeta>
   <refentrytitle>ABORT</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -34,7 +34,7 @@ ABORT [ WORK | TRANSACTION ]
    all the updates made by the transaction to be discarded. 
    This command is identical
    in behavior to the standard <acronym>SQL</acronym> command
-   <xref linkend="SQL-ROLLBACK"/>,
+   <xref linkend="sql-rollback"/>,
    and is present only for historical reasons.
   </para>
  </refsect1>
@@ -59,7 +59,7 @@ ABORT [ WORK | TRANSACTION ]
   <title>Notes</title>
 
   <para>
-   Use <xref linkend="SQL-COMMIT"/> to
+   Use <xref linkend="sql-commit"/> to
    successfully terminate a transaction.
   </para>
 

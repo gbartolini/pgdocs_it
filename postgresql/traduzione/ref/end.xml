@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-END">
+<refentry id="sql-end">
  <refmeta>
   <refentrytitle>END</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -58,7 +58,7 @@ END [ WORK | TRANSACTION ]
   <title>Notes</title>
 
   <para>
-   Use <xref linkend="SQL-ROLLBACK"/> to
+   Use <xref linkend="sql-rollback"/> to
    abort a transaction.
   </para>
 

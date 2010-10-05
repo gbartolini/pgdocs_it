@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-ALTERTSDICTIONARY">
+<refentry id="sql-altertsdictionary">
  <refmeta>
   <refentrytitle>ALTER TEXT SEARCH DICTIONARY</refentrytitle>
   <manvolnum>7</manvolnum>

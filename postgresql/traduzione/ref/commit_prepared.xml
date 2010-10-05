@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-COMMIT-PREPARED">
+<refentry id="sql-commit-prepared">
  <refmeta>
   <refentrytitle>COMMIT PREPARED</refentrytitle>
   <manvolnum>7</manvolnum>

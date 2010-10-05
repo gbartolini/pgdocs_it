@@ -79,7 +79,7 @@
 
   <para>
     Per creare una tabella, è possibile utilizzare il comando opportunamente chiamato 
-    <xref linkend="sql-createtable"/>.
+    <xref linkend="sql-createtable" />.
     All'interno di questo comando l'utente ha la possibilità di specificare, nella forma minima, un nome per la nuova tabella, i
     nomi delle colonne e il tipo di dato per ogni colonna. Per
     esempio:

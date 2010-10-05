@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DEALLOCATE">
+<refentry id="sql-deallocate">
  <refmeta>
   <refentrytitle>DEALLOCATE</refentrytitle>
   <manvolnum>7</manvolnum>

@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-REINDEX">
+<refentry id="sql-reindex">
  <refmeta>
   <refentrytitle>REINDEX</refentrytitle>
   <manvolnum>7</manvolnum>

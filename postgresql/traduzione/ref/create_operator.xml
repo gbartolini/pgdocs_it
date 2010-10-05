@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-CREATEOPERATOR">
+<refentry id="sql-createoperator">
  <refmeta>
   <refentrytitle>CREATE OPERATOR</refentrytitle>
   <manvolnum>7</manvolnum>

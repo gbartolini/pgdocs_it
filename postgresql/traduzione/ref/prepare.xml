@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-PREPARE">
+<refentry id="sql-prepare">
  <refmeta>
   <refentrytitle>PREPARE</refentrytitle>
   <manvolnum>7</manvolnum>

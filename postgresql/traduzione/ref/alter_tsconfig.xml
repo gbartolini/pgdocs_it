@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-ALTERTSCONFIG">
+<refentry id="sql-altertsconfig">
  <refmeta>
   <refentrytitle>ALTER TEXT SEARCH CONFIGURATION</refentrytitle>
   <manvolnum>7</manvolnum>

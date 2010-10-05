@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-CREATEAGGREGATE">
+<refentry id="sql-createaggregate">
  <refmeta>
   <refentrytitle>CREATE AGGREGATE</refentrytitle>
   <manvolnum>7</manvolnum>

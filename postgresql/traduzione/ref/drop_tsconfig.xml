@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DROPTSCONFIG">
+<refentry id="sql-droptsconfig">
  <refmeta>
   <refentrytitle>DROP TEXT SEARCH CONFIGURATION</refentrytitle>
   <manvolnum>7</manvolnum>

@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-UPDATE">
+<refentry id="sql-update">
  <refmeta>
   <refentrytitle>UPDATE</refentrytitle>
   <manvolnum>7</manvolnum>

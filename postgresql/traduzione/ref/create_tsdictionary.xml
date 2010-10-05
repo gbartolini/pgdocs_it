@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-CREATETSDICTIONARY">
+<refentry id="sql-createtsdictionary">
  <refmeta>
   <refentrytitle>CREATE TEXT SEARCH DICTIONARY</refentrytitle>
   <manvolnum>7</manvolnum>

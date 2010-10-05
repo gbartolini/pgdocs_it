@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-CREATEGROUP">
+<refentry id="sql-creategroup">
  <refmeta>
   <refentrytitle>CREATE GROUP</refentrytitle>
   <manvolnum>7</manvolnum>

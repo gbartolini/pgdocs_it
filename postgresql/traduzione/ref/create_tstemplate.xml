@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-CREATETSTEMPLATE">
+<refentry id="sql-createtstemplate">
  <refmeta>
   <refentrytitle>CREATE TEXT SEARCH TEMPLATE</refentrytitle>
   <manvolnum>7</manvolnum>

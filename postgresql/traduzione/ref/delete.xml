@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DELETE">
+<refentry id="sql-delete">
  <refmeta>
   <refentrytitle>DELETE</refentrytitle>
   <manvolnum>7</manvolnum>

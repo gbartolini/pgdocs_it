@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-CREATETABLE">
+<refentry id="sql-createtable">
  <refmeta>
   <refentrytitle>CREATE TABLE</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -816,7 +816,7 @@ CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE [ IF NOT EXISTS ] <repl
     for tables, and for indexes associated with a <literal>UNIQUE</literal>,
     <literal>PRIMARY KEY</literal>, or <literal>EXCLUDE</literal> constraint.
     Storage parameters for
-    indexes are documented in <xref linkend="SQL-CREATEINDEX"/>.
+    indexes are documented in <xref linkend="sql-createindex"/>.
     The storage parameters currently
     available for tables are listed below.  For each parameter, unless noted,
     there is an additional parameter with the same name prefixed with

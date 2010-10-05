@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-RESET">
+<refentry id="sql-reset">
  <refmeta>
   <refentrytitle>RESET</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -108,8 +108,8 @@ RESET timezone;
   <title>See Also</title>
 
   <simplelist type="inline">
-   <member><xref linkend="SQL-SET"/></member>
-   <member><xref linkend="SQL-SHOW"/></member>
+   <member><xref linkend="sql-set"/></member>
+   <member><xref linkend="sql-show"/></member>
   </simplelist>
  </refsect1>
 </refentry>

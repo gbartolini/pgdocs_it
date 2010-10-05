@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $PostgreSQL$ -->
 
-<refentry id="SQL-DROPCAST">
+<refentry id="sql-dropcast">
  <refmeta>
   <refentrytitle>DROP CAST</refentrytitle>
   <manvolnum>7</manvolnum>

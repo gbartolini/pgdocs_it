@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-FETCH">
+<refentry id="sql-fetch">
  <refmeta>
   <refentrytitle>FETCH</refentrytitle>
   <manvolnum>7</manvolnum>

@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-ALTEROPFAMILY">
+<refentry id="sql-alteropfamily">
  <refmeta>
   <refentrytitle>ALTER OPERATOR FAMILY</refentrytitle>
   <manvolnum>7</manvolnum>

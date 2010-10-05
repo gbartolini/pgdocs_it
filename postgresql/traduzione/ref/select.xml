@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-SELECT">
+<refentry id="sql-select">
  <refmeta>
   <refentrytitle>SELECT</refentrytitle>
   <manvolnum>7</manvolnum>

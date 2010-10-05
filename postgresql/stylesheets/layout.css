@@ -22,18 +22,18 @@ div#footer
 
 
 
-#docHeader {
+div#header{
     background-image: url("http://www.postgresql.org/layout/images/docs/bg_hdr.png");
     height: 83px;
     margin: 0px;
     padding: 0px;
     display: block;
 }
-div#docHeaderLogo
+div#header_sx
 {
     float:left;
 }
-div#docHeaderItpugLogo
+div#header_dx
 {
     float:right;
     padding:5px;

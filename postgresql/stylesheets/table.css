@@ -3,7 +3,9 @@ div.table h2 {
         margin: 25px 0 .5em 0;
 }
 
-div.table table {
+div.table table,
+div.informaltable table
+{
     background: #FFF;
     margin-bottom: 15px;
     border:2px solid #A7C6DF;
@@ -13,7 +15,9 @@ div.table table {
     border-spacing:0;
 }
 
-div.table table th {
+div.table table th, 
+div.informaltable table th 
+{
         padding-top: 10px;
         vertical-align: bottom;
         border:1px solid #A7C6DF;
@@ -22,12 +26,17 @@ div.table table th {
             color:#000;
 }
 
-div.table table td {
+div.table table td, 
+div.informaltable table td 
+{
         border: 1px solid #A7C6DF;
 }
 
 div.table table th,
-div.table table td {
+div.table table td,
+div.informaltable table th,
+div.informaltable table td
+{
         padding: 8px 11px;
         color: #555555;
 }

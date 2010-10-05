@@ -22,11 +22,11 @@
     <body>
         <xsl:call-template name="body.attributes"/>
 
-        <div id="docHeader">
-            <div id="docHeaderLogo">
+        <div id="header">
+            <div id="header_sx">
                 <a href="http://www.postgresql.org" title="PostgreSQL"><img src="http://www.postgresql.org/layout/images/docs/hdr_logo.png" width="206" height="80" alt="PostgreSQL" /></a>
             </div>
-            <div id="docHeaderItpugLogo">
+            <div id="header_dx">
                 <a href="http://www.itpug.org" title="ITPUG Italian PostgreSQL Users"><img src="images/logo.png" /></a>
             </div>
             <br style="clear:both;" />
@@ -55,12 +55,21 @@
 
    
     <div id="footer">
-        <p>
-        Powered by <a href="http://www.2ndquadrant.it">2ndQuadrant Italia</a><br />
-        Copyright © 1996 - 2010 PostgreSQL Global Development Group<br />
-        Copyright © 2010 Italian PostgreSQL Users Group<br />
-        <a href="http://www.itpug.org/privacy/index.it.html">Privacy</a> | <a href="http://www.itpug.org/thanks/index.it.html">Ringraziamenti</a>
+        <p style="float:left;">
+            Copyright © 1996 - 2010 PostgreSQL Global Development Group<br />
+            Copyright © 2010 Italian PostgreSQL Users Group<br />
+            <a href="http://www.itpug.org/privacy/index.it.html">Privacy</a> | <a href="http://www.itpug.org/thanks/index.it.html">Ringraziamenti</a>
         </p>
+        <p style="float:right;">
+            Powered by<br /> 
+            <a href="http://www.2ndquadrant.it">
+            <img src="images/2ndQuadrant-logo.png" 
+                alt="2ndQuadrant" 
+                width="441" 
+                height="90" />
+            </a>
+        </p>
+        <br style="clear:both;" />
     </div>
 
 

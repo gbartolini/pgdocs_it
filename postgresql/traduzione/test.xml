@@ -124,6 +124,22 @@
             </tbody>    
         </tgroup>
     </table>
+    <informaltable>
+        <tgroup cols="2">
+            <thead>
+                <row>
+                    <entry>Tabella Informale</entry>
+                    <entry>Colonna 2</entry>
+                </row>
+            </thead>
+            <tbody>
+                <row>
+                    <entry>Valore 1</entry>
+                    <entry>Valore 2</entry>
+                </row>
+            </tbody>    
+        </tgroup>
+    </informaltable>
     <itemizedlist>
         <listitem>
             <para>Questa è una lista di elementi</para>

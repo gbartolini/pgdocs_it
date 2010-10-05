@@ -102,7 +102,7 @@ webtest: $(srctest)
 		-stringparam base.dir $(BASEDIR)/$(WEBTEST_OUTPUT)/ \
 		../stylesheets/pg-chunked-web.xsl test.xml
 
-	[ -d $(BASEDIR)/$(WEB_OUTPUT)/stylesheets ] || mkdir $(BASEDIR)/$(WEBTEST_OUTPUT)/stylesheets
+	[ -d $(BASEDIR)/$(WEBTEST_OUTPUT)/stylesheets ] || mkdir $(BASEDIR)/$(WEBTEST_OUTPUT)/stylesheets
 	cp ../stylesheets/*.css $(BASEDIR)/$(WEBTEST_OUTPUT)/stylesheets
 
 	[ -d $(BASEDIR)/$(WEBTEST_OUTPUT)/images ] || mkdir $(BASEDIR)/$(WEBTEST_OUTPUT)/images

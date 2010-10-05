@@ -124,5 +124,16 @@
             </tbody>    
         </tgroup>
     </table>
-
+    <itemizedlist>
+        <listitem>
+            <para>Questa è una lista di elementi</para>
+        </listitem>
+        <listitem>
+            <para>Secondo elemento</para>
+        </listitem>
+        <listitem>
+            <para>Terzo elemento</para>
+        </listitem>
+    </itemizedlist>
+    <para>Questo è un acronimo: <acronym>GNU</acronym></para>
 </book>

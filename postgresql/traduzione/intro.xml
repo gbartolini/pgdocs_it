@@ -2,155 +2,154 @@
 <!-- $PostgreSQL$ -->
 
 <preface id="preface">
- <title>Preface</title>
+    <title>Prefazione</title>
 
  <para>
-  This book is the official documentation of
-  <productname>PostgreSQL</productname>.  It has been written by the
-  <productname>PostgreSQL</productname> developers and other
-  volunteers in parallel to the development of the
-  <productname>PostgreSQL</productname> software.  It describes all
-  the functionality that the current version of
-  <productname>PostgreSQL</productname> officially supports.
+Questo libro è la documentazione ufficiale di 
+<productname>PostgreSQL</productname>. È stato scritto dagli
+sviluppatori di <productname>PostgreSQL</productname> e
+da altri volontari parallelamente allo sviluppo di
+<productname>PostgreSQL</productname>. Questo libro descrive tutte le
+funzionalità che la versione corrente di
+<productname>PostgreSQL</productname> supporta ufficialmente.
  </para>
 
  <para>
-  To make the large amount of information about
-  <productname>PostgreSQL</productname> manageable, this book has been
-  organized in several parts.  Each part is targeted at a different
-  class of users, or at users in different stages of their
-  <productname>PostgreSQL</productname> experience:
+Per rendere gestibile la grande quantità di informazioni su
+<productname>PostgreSQL</productname>, questo libro è stato organizzato
+in diverse parti. Ogni parte è rivolta a un differente tipo di utenti,
+o ad utenti a diversi livelli di esperienza con
+<productname>PostgreSQL</productname>:
 
   <itemizedlist>
    <listitem>
     <para>
-     <xref linkend="tutorial"/> is an informal introduction for new users.
+<xref linkend="tutorial"/> è un'introduzione informale per i nuovi utenti.
     </para>
    </listitem>
 
    <listitem>
     <para>
-     <xref linkend="sql"/> documents the <acronym>SQL</acronym> query
-     language environment, including data types and functions, as well
-     as user-level performance tuning.  Every
-     <productname>PostgreSQL</productname> user should read this.
+<xref linkend="sql"/> documenta il linguaggio <acronym>SQL</acronym>, 
+inclusi i tipi di dato e le funzioni, così come la messa a punto
+a livello-utente. Ogni utente
+<productname>PostgreSQL</productname> dovrebbe leggerlo.
     </para>
    </listitem>
 
    <listitem>
     <para>
-     <xref linkend="admin"/> describes the installation and
-     administration of the server.  Everyone who runs a
-     <productname>PostgreSQL</productname> server, be it for private
-     use or for others, should read this part.
+<xref linkend="admin"/> descrive l'installazione e l'amministrazione
+del server. Chiunque gestisca un server
+<productname>PostgreSQL</productname>, sia per uso privato che per altro,
+dovrebbe leggere questa parte.
     </para>
    </listitem>
 
    <listitem>
     <para>
-     <xref linkend="client-interfaces"/> describes the programming
-     interfaces for <productname>PostgreSQL</productname> client
-     programs.
+<xref linkend="client-interfaces"/> descrive le interfaccie di programmazione
+per i programmi client <productname>PostgreSQL</productname>.
     </para>
    </listitem>
 
 
    <listitem>
     <para>
-     <xref linkend="server-programming"/> contains information for
-     advanced users about the extensibility capabilities of the
-     server.  Topics include user-defined data types and
-     functions.
+<xref linkend="server-programming"/> contiene informazioni per 
+utenti avanzati sulle capacità di estensione del server.
+Argomenti inclusi sono tipi di dato definiti dall'utente e 
+funzioni.
     </para>
    </listitem>
 
    <listitem>
     <para>
-     <xref linkend="reference"/> contains reference information about
-     SQL commands, client and server programs.  This part supports
-     the other parts with structured information sorted by command or
-     program.
+<xref linkend="reference"/> contiene informazioni di referenza sui
+comandi SQL e sui programmi client e server. Questa parte fà da supporto alle altre 
+parti con informazioni strutturate ordinate per comando o programma
     </para>
    </listitem>
 
    <listitem>
     <para>
-     <xref linkend="internals"/> contains assorted information that might be of
-     use to <productname>PostgreSQL</productname> developers.
+<xref linkend="internals"/> contiene informazioni assortite che potrebbero essere
+usate dagli sviluppatori di <productname>PostgreSQL</productname>.
     </para>
    </listitem>
   </itemizedlist>
  </para>
 
  <sect1 id="intro-whatis">
-  <title> What is <productname>PostgreSQL</productname>?</title>
+  <title>Cos'è <productname>PostgreSQL</productname>?</title>
 
   <para>
-   <productname>PostgreSQL</productname> is an object-relational
-   database management system (<acronym>ORDBMS</acronym>) based on
-   <ulink url="http://db.cs.berkeley.edu/postgres.html">
-   <productname>POSTGRES, Version 4.2</productname></ulink>,
-   developed at the University of California at Berkeley Computer Science
-   Department.  POSTGRES pioneered many concepts that only became
-   available in some commercial database systems much later.
+<productname>PostgreSQL</productname> è un sistema di gestione di database
+relazionale ad oggetti (<acronym>ORDBMS</acronym>) basato su
+<ulink url="http://db.cs.berkeley.edu/postgres.html">
+<productname>POSTGRES, Version 4.2</productname></ulink>,
+sviluppato alla "University of California", 
+nel dipartimento di informatica Berkeley.
+POSTGRES proponeva molti concetti che diventarono
+disponibili solo in alcuni sistemi di database commerciali molto più tardi.
   </para>
 
   <para>
-   <productname>PostgreSQL</productname> is an open-source descendant
-   of this original Berkeley code.  It supports a large part of the SQL
-   standard and offers many modern features:
+<productname>PostgreSQL</productname> è il discendente open-source
+di quel codice originale Berkeley. Supporta una parte molto grande dello standard
+SQL e offre molte altre funzionalità:
 
    <itemizedlist spacing="compact">
     <listitem>
-     <simpara>complex queries</simpara>
+     <simpara>query complesse</simpara>
     </listitem>
     <listitem>
-     <simpara>foreign keys</simpara>
+     <simpara>chiavi esterne</simpara>
     </listitem>
     <listitem>
-     <simpara>triggers</simpara>
+     <simpara>trigger</simpara>
     </listitem>
     <listitem>
-     <simpara>views</simpara>
+     <simpara>viste</simpara>
     </listitem>
     <listitem>
-     <simpara>transactional integrity</simpara>
+     <simpara>integrità transazionale</simpara>
     </listitem>
     <listitem>
-     <simpara>multiversion concurrency control</simpara>
+     <simpara>controllo concorrente multiversione</simpara>
     </listitem>
    </itemizedlist>
 
-   Also, <productname>PostgreSQL</productname> can be extended by the
-   user in many ways, for example by adding new
+Inoltre, <productname>PostgreSQL</productname> può essere esteso dall'utente
+in molti modi, per esempio aggiungendo nuovi
 
    <itemizedlist spacing="compact">
     <listitem>
-     <simpara>data types</simpara>
+     <simpara>tipi di dato</simpara>
     </listitem>
     <listitem>
-     <simpara>functions</simpara>
+     <simpara>funzioni</simpara>
     </listitem>
     <listitem>
-     <simpara>operators</simpara>
+     <simpara>operatori</simpara>
     </listitem>
     <listitem>
-     <simpara>aggregate functions</simpara>
+     <simpara>funzioni aggregate</simpara>
     </listitem>
     <listitem>
-     <simpara>index methods</simpara>
+     <simpara>metodi di indice</simpara>
     </listitem>
     <listitem>
-     <simpara>procedural languages</simpara>
+     <simpara>linguaggi procedurali</simpara>
     </listitem>
    </itemizedlist>
   </para>
 
   <para>
-   And because of the liberal license,
-   <productname>PostgreSQL</productname> can be used, modified, and
-   distributed by anyone free of charge for any purpose, be it
-   private, commercial, or academic.
+Data la licenza libera,
+<productname>PostgreSQL</productname> può essere usato, modificato e
+distribuito da chiunque gratuitamente per qualsiasi scopo, sia esso
+privato, commerciale, o accademico.
   </para>
  </sect1>
 
@@ -160,3 +159,4 @@
  &problems;
 
 </preface>
+

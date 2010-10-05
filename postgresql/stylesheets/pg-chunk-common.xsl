@@ -34,40 +34,40 @@
 
 
 
-
-
-
-  <div id="pgContent">
-    <div id="pgContentNav">
-
-
-      <xsl:call-template name="footer.navigation">
-        <xsl:with-param name="prev" select="$prev"/>
-        <xsl:with-param name="next" select="$next"/>
-        <xsl:with-param name="nav.context" select="$nav.context"/>
-      </xsl:call-template>
-
-      <xsl:copy-of select="$content"/>
-      
-      <xsl:call-template name="footer.navigation">
-        <xsl:with-param name="prev" select="$prev"/>
-        <xsl:with-param name="next" select="$next"/>
-        <xsl:with-param name="nav.context" select="$nav.context"/>
-      </xsl:call-template>
     
+    <div id="content">
+        <xsl:call-template name="upper.navigation">
+            <xsl:with-param name="prev" select="$prev"/>
+            <xsl:with-param name="next" select="$next"/>
+            <xsl:with-param name="nav.context" select="$nav.context"/>
+        </xsl:call-template>
+
+        <xsl:copy-of select="$content"/>
+      
+        <xsl:call-template name="lower.navigation">
+            <xsl:with-param name="prev" select="$prev"/>
+            <xsl:with-param name="next" select="$next"/>
+            <xsl:with-param name="nav.context" select="$nav.context"/>
+        </xsl:call-template>
     </div>
-  </div>
+
+
+
    
-<div id="docFooter">
-Copyright © 1996 - 2010 PostgreSQL Global Development Group<br />
-Copyright © 2010 Italian PostgreSQL Users Group<br />
-<a href="http://www.itpug.org/privacy/index.it.html">Privacy</a> | <a href="http://www.itpug.org/thanks/index.it.html">Ringraziamenti</a>
-</div>
+    <div id="footer">
+        <p>
+        Powered by <a href="http://www.2ndquadrant.it">2ndQuadrant Italia</a><br />
+        Copyright © 1996 - 2010 PostgreSQL Global Development Group<br />
+        Copyright © 2010 Italian PostgreSQL Users Group<br />
+        <a href="http://www.itpug.org/privacy/index.it.html">Privacy</a> | <a href="http://www.itpug.org/thanks/index.it.html">Ringraziamenti</a>
+        </p>
+    </div>
 
 
-    </body>
-  </html>
-  <xsl:value-of select="$chunk.append"/>
+</body>
+</html>
+
+<xsl:value-of select="$chunk.append"/>
 </xsl:template>
 
 </xsl:stylesheet>

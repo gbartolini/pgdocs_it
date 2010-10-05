@@ -1,53 +1,14 @@
-/*
-  PostgreSQL.org - "Blue" Style
-
-  Inspired by AListApart, PositionIsEverything, Mozilla, Red Hat, and many more.
-
-  Copyright (c) 2004, 2005 PostgreSQL Global Development Group
-  Copyright (c) 2004, 2005 Emily Boyd <emily@emilyboyd.com>
-  Copyright (c) 2004, 2005 Omar Kilani <omar@tinysofa.org>
-  
-  This file, and any imported stylesheets are licensed under the BSD license.
-  See http://www.postgresql.org/about/licence for details.
- 
- 
-*/
-
-
 @import url("global.css");
 @import url("layout.css");
 @import url("text.css");
 @import url("navigation.css"); 
-/* @import url("navigationclasses.css"); */
 @import url("table.css");
 
-@import url("iefixes.css");
-@import url("pgfr.css");
 
 
 
 
-div#pgSideWrap {
-  margin-top: -6px;
-  padding-top: 10px;
-}
 
-div#pgSideWrap h2 {
-  display: block;
-  margin-top: 0;
-}
-
-div#pgSideWrap form {
-  margin: 1ex;
-}
-
-dt {
-  background-color: white;
-}
-
-table {
-  width: 100%;
-}
 
 div.admonhead h3.admontitle {
   padding-top: 5px;
@@ -165,8 +126,9 @@ div.important,
 div.warning,
 div.caution,
 div.note,
-div.tblBasic {
-  color: #6495ed;
+div.tblBasic 
+{
+  color: #222;
   border-width: 1px 1px 1px 10px;
   border-style: solid;
   padding: 1ex 2ex;
@@ -189,56 +151,4 @@ tt.filename {
 }
 
 
-
-
-div.navfooter table {
-	width: 100%;
-	border: none;
-	border-collapse: collapse;
-	/* margin:auto; */
-	height: 30px;
-	color: #333333;
-    background:#DDDDDD;
-    padding:15px;
-  -moz-border-radius: 8px;
-  -webkit-border-radius: 8px;
-  -khtml-border-radius: 8px;
-  border-radius: 4px;
-}
-
-div.navfooter img {
-	border: 0px;
-	vertical-align: middle;
-}
-
-div.navfooter table td.left{
-	text-align: left;
-	vertical-align: middle;
-	width: 47%;
-	font-size: 92%;
-}
-
-div.navfooter table td.left img{
-	padding-right: 5px;
-	width: 24px;
-	height: 24px;	
-}
-
-div.navfooter table td.right{
-	text-align: right;
-	vertical-align: middle;
-	width: 47%;
-	font-size: 92%;
-}
-
-div.navfooter table td.right img{
-	padding-left: 5px;
-	width: 24px;
-	height: 24px;
-}
-
-div.navfooter table td.center{
-	vertical-align: top;
-	width: 6%;
-}
 

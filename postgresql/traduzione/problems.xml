@@ -129,66 +129,68 @@ I seguenti punti dovrebbero essere contenuti in ogni segnalazione di bug:
    <itemizedlist>
     <listitem>
      <para>
-      The exact sequence of steps <emphasis>from program
-      start-up</emphasis> necessary to reproduce the problem. This
-      should be self-contained; it is not enough to send in a bare
-      <command>SELECT</command> statement without the preceding
-      <command>CREATE TABLE</command> and <command>INSERT</command>
-      statements, if the output should depend on the data in the
-      tables. We do not have the time to reverse-engineer your
-      database schema, and if we are supposed to make up our own data
-      we would probably miss the problem.
+L'esatta sequenza di passi <emphasis>dall'avvio del programma</emphasis>
+necessaria a generare il problema. Questo dovrebbe essere
+autonomo; non è sufficiente fornire una sola istruzione 
+<command>SELECT</command> senza la <command>CREATE TABLE</command> precedente
+e le istruzioni <command>INSERT</command>, se l'output
+dovrebbe dipendere dai dati nelle tabelle.
+Non abbiamo il tempo per eseguire del "reverse-engineering" sullo schema del 
+database, e se dobbiamo utilizzare i nostri dati probabilmente
+perderemo il problema.
      </para>
 
      <para>
-      The best format for a test case for SQL-related problems is a
-      file that can be run through the <application>psql</application>
-      frontend that shows the problem. (Be sure to not have anything
-      in your <filename>~/.psqlrc</filename> start-up file.)  An easy
-      way to create this file is to use <application>pg_dump</application>
-      to dump out the table declarations and data needed to set the
-      scene, then add the problem query.  You are encouraged to
-      minimize the size of your example, but this is not absolutely
-      necessary.  If the bug is reproducible, we will find it either
-      way.
+Il miglior formato per un test su problemi relativi all'SQL è un 
+file che può essere eseguito attraverso 
+il frontend <application>psql</application>. (Assicurarsi di non avere niente
+nel file si avvio <filename>~/.psqlrc</filename>.) Un modo
+semplice per creare questo file è usare <application>pg_dump</application>
+per eseguire un dump delle dichiarazioni delle tabelle e dei dati
+necessari a impostare la scena, quindi aggiungere la query che dà problemi.
+Si incoraggia a minimizzare la dimensione del proprio esempio,       
+ma questo non è assolutamente necessario. Se il bug è riproducibile, 
+lo troveremo in ogni caso.
      </para>
 
      <para>
-      If your application uses some other client interface, such as <application>PHP</application>, then
-      please try to isolate the offending queries. We will probably not set up a
-      web server to reproduce your problem. In any case remember to provide
-      the exact input files; do not guess that the problem happens for
-      <quote>large files</quote> or <quote>midsize databases</quote>, etc. since this
-      information is too inexact to be of use.
+Se la propria applicazione usa qualche altra interfaccia client, 
+tipo <application>PHP</application>, allora preghiamo di provare a isolare 
+le query colpevoli. Probabilmente non metteremo su un server web per 
+riprodurre il vostro problema. In ogni caso, ricordarsi di fornire
+i file di input esatti; Non presumere che il problema succeda con
+<quote>file grandi</quote> o <quote>database di medie dimensioni</quote>, 
+ecc. dato che queste informazioni sono 
+troppo inesatte per essere d'aiuto.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      The output you got. Please do not say that it <quote>didn't work</quote> or
-      <quote>crashed</quote>. If there is an error message,
-      show it, even if you do not understand it. If the program terminates with
-      an operating system error, say which. If nothing at all happens, say so.
-      Even if the result of your test case is a program crash or otherwise obvious
-      it might not happen on our platform. The easiest thing is to copy the output
-      from the terminal, if possible.
+L'output ottenuto. Per favore, non dire che <quote>non ha funzionato</quote> o
+<quote>si è bloccato</quote>. Se c'è un messaggio di errore, 
+mostrarlo, anche se non lo si capisce. Se il programma termina con un errore
+del sistema operativo, dire quale. Se non succede niente, dirlo.
+Anche se il risultato del tuo test è un crash del programma, potrebbe non succedere
+sulla nostra piattaforma. La cosa più semplice da fare è copiare l'output
+dal terminale, se possibile.
      </para>
      <note>
       <para>
-       If you are reporting an error message, please obtain the most verbose
-       form of the message.  In <application>psql</application>, say <literal>\set
-       VERBOSITY verbose</literal> beforehand.  If you are extracting the message
-       from the server log, set the run-time parameter
-       <xref linkend="guc-log-error-verbosity"/> to <literal>verbose</literal> so that all
-       details are logged.
+Se si sta segnalando un messaggio di errore, per favore fornire la forma più
+prolissa del messaggio. In <application>psql</application>, dare un'occhiata 
+prima di tutto a <literal>\set  VERBOSITY verbose</literal>. 
+Se si sta estraendo il messaggio dal log del server, impostare il parametro  
+<xref linkend="guc-log-error-verbosity"/> a <literal>verbose</literal> così
+che tutti i dettagli siano riportati nel log.
       </para>
      </note>
      <note>
       <para>
-       In case of fatal errors, the error message reported by the client might
-       not contain all the information available. Please also look at the
-       log output of the database server. If you do not keep your server's log
-       output, this would be a good time to start doing so.
+In caso di errori fatali, il messaggio di error riportato dal client 
+potrebbe non contenere tutte le informazioni disponibili. Per favore, controllare
+anche l'output del log del server database. Se non si tiene traccia dell'output 
+del log del server, questo potrebbe essere un buon momento per iniziare a farlo.
       </para>
      </note>
     </listitem>

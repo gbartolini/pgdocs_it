@@ -2,98 +2,106 @@
 <!-- $PostgreSQL$ -->
 
 <sect1 id="bug-reporting">
- <title>Bug Reporting Guidelines</title>
+ <title>Linee guida per la segnalazione di bug</title>
 
  <para>
-  When you find a bug in <productname>PostgreSQL</productname> we want to
-  hear about it. Your bug reports play an important part in making
-  <productname>PostgreSQL</productname> more reliable because even the utmost
-  care cannot guarantee that every part of
-  <productname>PostgreSQL</productname> 
-  will work on every platform under every circumstance.
+Quando vengono trovati bug in <productname>PostgreSQL</productname> vogliamo
+saperlo. Le segnalazioni di bug giocano un ruolo importante nel rendere
+<productname>PostgreSQL</productname> più attendibile, 
+perchè anche la massima attenzione
+non può garantire che ogni parte di 
+<productname>PostgreSQL</productname>
+funzionerà su ogni piattaforma in ogni circostanza.
  </para>
 
  <para>
-  The following suggestions are intended to assist you in forming bug reports
-  that can be handled in an effective fashion. No one is required to follow
-  them but doing so tends to be to everyone's advantage.
+I seguenti suggerimenti sono intesi ad assistere nella creazione 
+di segnalazioni di bug
+che possando essere gestite con efficacia. Non è richiesto seguirli
+ma farlo costituirà un vantaggio per tutti.
  </para>
 
  <para>
-  We cannot promise to fix every bug right away. If the bug is obvious, critical,
-  or affects a lot of users, chances are good that someone will look into it. It
-  could also happen that we tell you to update to a newer version to see if the
-  bug happens there. Or we might decide that the bug
-  cannot be fixed before some major rewrite we might be planning is done. Or
-  perhaps it is simply too hard and there are more important things on the agenda.
-  If you need help immediately, consider obtaining a commercial support contract.
+Non possiamo promettre di risolvere subito ogni bug. Se il bug è evidente, critico,
+o coinvolge molti utenti, ci sono buone possibilità che qualcuno se ne occupi.
+Potrebbe anche capitare che venga consigliato di aggiornare ad una 
+versione più recente per vedere se il bug si ripresenta.
+O potremmo decidere che il bug
+non possa essere risolto prima che venga completata riscrittura importante. O
+forse è semplicemente troppo difficile e ci sono cose più importanti in agenda.
+Se si ha bisogno di aiuto istantaneo, considerare un contratto di supporto
+commerciale.
  </para>
 
  <sect2>
-  <title>Identifying Bugs</title>
+  <title>Identificare i bug</title>
 
   <para>
-   Before you report a bug, please read and re-read the
-   documentation to verify that you can really do whatever it is you are
-   trying. If it is not clear from the documentation whether you can do
-   something or not, please report that too; it is a bug in the documentation.
-   If it turns out that a program does something different from what the
-   documentation says, that is a bug. That might include, but is not limited to,
-   the following circumstances:
+Prima di segnalare un bug, preghiamo di leggere e ri-leggere la
+documentazione per verificare se sia possibile veramente fare quello che stai
+provando. Se dalla documentazione non è chiaro se si possa fare
+qualcosa o no, preghiamo di segnare anche questo; È un bug della documentazione.
+Se si dimostra che un programma fa qualcosa di differente da quello che dice 
+la documentazione, quello è un bug.
+Questo potrebbe includere, ma non essere limitato a,
+le seguenti circostanze:
 
    <itemizedlist>
     <listitem>
      <para>
-      A program terminates with a fatal signal or an operating system
-      error message that would point to a problem in the program. (A
-      counterexample might be a <quote>disk full</quote> message,
-      since you have to fix that yourself.)
+Un programma termina con un segnale fatale o un messaggio di errore del
+sistema operativo che indica un problema nel programma. (Un 
+esempio opposto potrebbe essere un messaggio di  <quote>disco pieno</quote>,
+dato devi risolvere il problema da solo.)
      </para>
     </listitem>
 
     <listitem>
      <para>
-      A program produces the wrong output for any given input.
+Un programma produce l'output sbagliato per ogni input fornito.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      A program refuses to accept valid input (as defined in the documentation).
+Un programma si rifiuta di accettare input validi 
+(come definiti nella documentazione).
      </para>
     </listitem>
 
     <listitem>
      <para>
-      A program accepts invalid input without a notice or error message.
-      But keep in mind that your idea of invalid input might be our idea of
-      an extension or compatibility with traditional practice.
+Un programma accetta input non validi senza notifica o messaggio di errore.
+Tenere a mente che l'idea che si ha di input non valido potrebbe essere
+per noi un'idea per un'estensione o per compatibilità con la pratica tradizionale.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      <productname>PostgreSQL</productname> fails to compile, build, or
-      install according to the instructions on supported platforms.
+<productname>PostgreSQL</productname> non riesce a compilare, fare il build,
+o installarsi, secondo le istruzioni per le piattaforme supportate.
      </para>
     </listitem>
    </itemizedlist>
 
-   Here <quote>program</quote> refers to any executable, not only the backend server.
+<quote>Programma</quote> si riferisce ad ogni eseguibile, non solo
+al server backend.    
   </para>
 
   <para>
-   Being slow or resource-hogging is not necessarily a bug. Read the
-   documentation or ask on one of the mailing lists for help in tuning your
-   applications. Failing to comply to the <acronym>SQL</acronym> standard is
-   not necessarily a bug either, unless compliance for the
-   specific feature is explicitly claimed.
+L'essere lento o l'accaparrare risorse non è necessariamente un bug. 
+Leggere la documentazione o chiedere su una delle mailing list per la 
+messa a punto delle applicazioni. 
+Nemmeno fallire nel soddisfare lo standard <acronym>SQL</acronym>
+è necessariamente un bug, a meno che la conformità per la specifica caratteristica
+sia esplicitamente richiesta.
   </para>
 
   <para>
-   Before you continue, check on the TODO list and in the FAQ to see if your bug is
-   already known. If you cannot decode the information on the TODO list, report your
-   problem. The least we can do is make the TODO list clearer.
+Prima di continuare, controllare sull'elenco TODO nelle FAQ per vedere se il bug è
+già noto. Se non si riesce a decifrare le informazioni dell'elenco TODO, riportare 
+il problema. Il minimo che possiamo fare è rendere l'elenco TODO più chiaro.
   </para>
  </sect2>
 

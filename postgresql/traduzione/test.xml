@@ -136,4 +136,9 @@
         </listitem>
     </itemizedlist>
     <para>Questo è un acronimo: <acronym>GNU</acronym></para>
+    <para>
+        <emphasis>Testo emphasis</emphasis>,
+        <literal>Testo literal</literal>,
+        <firstterm>Testo firstterm</firstterm>
+    </para>
 </book>

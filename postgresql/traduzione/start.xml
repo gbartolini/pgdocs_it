@@ -78,15 +78,13 @@ per mezzo dei client. Il programma server è chiamato <filename>postgres</filena
 
      <listitem>
       <para>
-      <warning><para>TODO</para></warning>
-       The user's client (frontend) application that wants to perform
-       database operations.  Client applications can be very diverse
-       in nature:  a client could be a text-oriented tool, a graphical
-       application, a web server that accesses the database to
-       display web pages, or a specialized database maintenance tool.
-       Some client applications are supplied with the
-       <productname>PostgreSQL</productname> distribution; most are
-       developed by users.
+L'applicazione client (frontend) dell'utente che vuole eseguire operazioni sul database. 
+Le applicazioni client possono essere di natura molto diversa: 
+un client potrebbe essere uno strumento testuale, un'applicazione grafica,
+un server web che ha accesso al database per visualizzare pagine web,
+oppure uno strumento specializzato per la manutenzione del database.
+Alcune appllicazioni client vengono fornite con la distribuzione di 
+<productname>PostgreSQL</productname>; la maggior parte sono sviluppate dagli utenti.
       </para>
      </listitem>
 
@@ -200,92 +198,88 @@ o impostare la variabile d'ambiente <envar>PGUSER</envar> per specificare il nom
    </para>
 
    <para>
-    If you have a user account but it does not have the privileges required to
-    create a database, you will see the following:
+Se si ha un account utente che non ha i privilegi richiesti per 
+creare un database, vedrai:
 <screen>
 createdb: database creation failed: ERROR:  permission denied to create database
 </screen>
-    Not every user has authorization to create new databases.  If
-    <productname>PostgreSQL</productname> refuses to create databases
-    for you then the site administrator needs to grant you permission
-    to create databases.  Consult your site administrator if this
-    occurs.  If you installed <productname>PostgreSQL</productname>
-    yourself then you should log in for the purposes of this tutorial
-    under the user account that you started the server as.
+Non ogni utente ha l'autorizzazione a creare nuovi database. Se 
+<productname>PostgreSQL</productname> si rifiuta di creare database
+allora l'amministratore del sito ha bisogno di concederi il permesso per farlo.
+Consultare l'amministratore se si verfica ciò.
+Se si è installto <productname>PostgreSQL</productname> da soli
+allora, per gli scopi di questo tutorial,  
+si dovrebbe effettuare il log in 
+con l'account utente col quale si è avviato il server.
 
     <footnote>
      <para>
-      As an explanation for why this works:
-      <productname>PostgreSQL</productname> user names are separate
-      from operating system user accounts.  When you connect to a
-      database, you can choose what
-      <productname>PostgreSQL</productname> user name to connect as;
-      if you don't, it will default to the same name as your current
-      operating system account.  As it happens, there will always be a
-      <productname>PostgreSQL</productname> user account that has the
-      same name as the operating system user that started the server,
-      and it also happens that that user always has permission to
-      create databases.  Instead of logging in as that user you can
-      also specify the <option>-U</option> option everywhere to select
-      a <productname>PostgreSQL</productname> user name to connect as.
+Una spiegazione sul perchè questo funziona:
+i nomi utente di <productname>PostgreSQL</productname> sono separati 
+dagli account utente del sistema operativo. Quando ci si connette a un
+database, è possibile scegliere con quale
+nome utente <productname>PostgreSQL</productname> connettersi;
+se non lo si fa, verrà preso come predefinito lo stesso nome dell'account  
+corrente del sistema operativo. Dato questo, ci sarà sempre un account utente 
+<productname>PostgreSQL</productname> che ha lo stesso nome 
+dell'utente del sistema operativo che ha avviato il server,
+e succede anche che quell'utente ha sempre il permesso di 
+creare database. Invece di effettuare il log in come quell'utente è possibile 
+anche specificare con l'opzione <option>-U</option> il nome utente col 
+quale connettersi.
      </para>
     </footnote>
    </para>
 
    <para>
-    You can also create databases with other names.
-    <productname>PostgreSQL</productname> allows you to create any
-    number of databases at a given site.  Database names must have an
-    alphabetic first character and are limited to 63 characters in
-    length.  A convenient choice is to create a database with the same
-    name as your current user name.  Many tools assume that database
-    name as the default, so it can save you some typing.  To create
-    that database, simply type:
+È anche possibile creare database con altri nomi.
+<productname>PostgreSQL</productname> permette la creazione di qualsiasi numero di 
+database per un dato sito. I nome di dei database devono avere il primo carattere alfabetico 
+e sono limitati a una lunghezza di 63 caratteri. Una scelta comoda è di creare
+un database con lo stesso nome del proprio nome utente corrente. 
+Molti strumenti assumono quel nome di database come predefinito, così da poter 
+risparmiare qualche battitura. Per creare quel database, digitare semplicemente:
 <screen>
 <prompt>$</prompt> <userinput>createdb</userinput>
 </screen>
    </para>
 
    <para>
-    If you do not want to use your database anymore you can remove it.
-    For example, if you are the owner (creator) of the database
-    <literal>mydb</literal>, you can destroy it using the following
-    command:
+Se non si vuole più usare il database è possibile rimuoverlo.
+Per esempio, se si è il possessore (creatore) del database
+<literal>mydb</literal>, è possibile eliminarlo usando il seguente comando:
 <screen>
 <prompt>$</prompt> <userinput>dropdb mydb</userinput>
 </screen>
-    (For this command, the database name does not default to the user
-    account name.  You always need to specify it.)  This action
-    physically removes all files associated with the database and
-    cannot be undone, so this should only be done with a great deal of
-    forethought.
+(Per questo comando, non viene usato un nome di database predefinito uguale al nome
+dell'utente. Si deve sempre specificarlo). Questa azione rimuove fisicamente 
+tutti i file associati al database e non è reversibile, 
+così dovrebbe essere fatta solo con grande premeditazione.
    </para>
 
    <para>
-    More about <command>createdb</command> and <command>dropdb</command> can
-    be found in <xref linkend="app-createdb"/> and <xref linkend="app-dropdb"/>
-    respectively.
+Più informazioni su <command>createdb</command> e <command>dropdb</command> possono 
+essere trovate rispettivamente in <xref linkend="app-createdb"/> e <xref linkend="app-dropdb"/>.
    </para>
   </sect1>
 
 
   <sect1 id="tutorial-accessdb">
-   <title>Accessing a Database</title>
+   <title>Accedere al database</title>
 
    <indexterm zone="tutorial-accessdb">
     <primary>psql</primary>
    </indexterm>
 
    <para>
-    Once you have created a database, you can access it by:
+Una volta che si è creato il database, è possibile accederci in vari modi:
 
     <itemizedlist spacing="compact" mark="bullet">
      <listitem>
       <para>
-       Running the <productname>PostgreSQL</productname> interactive
-       terminal program, called <application><firstterm>psql</firstterm></application>, which allows you
-       to interactively enter, edit, and execute
-       <acronym>SQL</acronym> commands.
+Eseguendo il terminale interattivo di <productname>PostgreSQL</productname> chiamato 
+<application><firstterm>psql</firstterm></application>, che permette 
+di inserire, editare ed eseguire comandi <acronym>SQL</acronym>.
       </para>
      </listitem>
 

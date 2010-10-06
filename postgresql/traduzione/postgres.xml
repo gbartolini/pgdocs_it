@@ -26,10 +26,10 @@
 ]>
 
 <book id="postgres" lang="it" xml:lang="it">
- <title>PostgreSQL &version; Documentation</title>
+ <title>Documentazione di PostgreSQL &version;</title>
 
  <bookinfo>
-  <corpauthor>The PostgreSQL Global Development Group</corpauthor>
+  <corpauthor>Il grubbo di sviluppo di PostgreSQL</corpauthor>
   <productname>PostgreSQL</productname>
   <productnumber>&version;</productnumber>
   &legal;
@@ -42,25 +42,23 @@
 
   <partintro>
    <para>
-    Welcome to the <productname>PostgreSQL</productname> Tutorial.  The
-    following few chapters are intended to give a simple introduction
-    to <productname>PostgreSQL</productname>, relational database
-    concepts, and the SQL language to those who are new to any one of
-    these aspects.  We only assume some general knowledge about how to
-    use computers.  No particular Unix or programming experience is
-    required.  This part is mainly intended to give you some hands-on
-    experience with important aspects of the
-    <productname>PostgreSQL</productname> system.  It makes no attempt
-    to be a complete or thorough treatment of the topics it covers.
+Benvenuti nel tutorial di <productname>PostgreSQL</productname>. I seguenti 
+capitoli sono intesi a fornire una semplice introduzione
+a <productname>PostgreSQL</productname>, ai concetti dei database relazionali e
+al linguaggio SQL per chi è nuovo a qualcuno di questi aspetti. 
+Daremo per scontata solo una conoscienza generale sull'utilizzo dei computer.
+Non è richiesta nessuna esperienza sulla programmazione Unix. 
+Questa parte è intesa principalmente per fare esperienza con
+importanti aspetti di <productname>PostgreSQL</productname>. Questo non vuole essere
+un trattamento completo o esauriente degli argomenti che tratta.
    </para>
 
    <para>
-    After you have worked through this tutorial you might want to move
-    on to reading <xref linkend="sql"/> to gain a more formal knowledge
-    of the SQL language, or <xref linkend="client-interfaces"/> for
-    information about developing applications for
-    <productname>PostgreSQL</productname>.  Those who set up and
-    manage their own server should also read <xref linkend="admin"/>.
+Dopo aver affrontato questo tutorial potresti voler continuare a leggere
+<xref linkend="sql"/> per avere una conoscienza più formale 
+del linguaggio SQL, o <xref linkend="client-interfaces"/> per informazioni
+sullo sviluppo di applicazioni per <productname>PostgreSQL</productname>.
+Chiunque gestisca il proprio server dovrebbe leggere <xref linkend="admin"/>.
    </para>
   </partintro>
 
@@ -75,15 +73,13 @@
 
   <partintro>
    <para>
-    This part describes the use of the <acronym>SQL</acronym> language
-    in <productname>PostgreSQL</productname>.  We start with
-    describing the general syntax of <acronym>SQL</acronym>, then
-    explain how to create the structures to hold data, how to populate
-    the database, and how to query it.  The middle part lists the
-    available data types and functions for use in
-    <acronym>SQL</acronym> commands.  The rest treats several
-    aspects that are important for tuning a database for optimal
-    performance.
+Questa parte descrive l'utilizzo del linguaggio <acronym>SQL</acronym>
+in <productname>PostgreSQL</productname>. Cominceremo 
+spiegando come creare le strutture per contenere i dati, come popolare
+il databasem, e come interrogarlo. La parte centrale elenca i tipi di dato
+disponibili e le funzioni per usare i comandi <acronym>SQL</acronym>.
+Il resto tratta diversi aspetti che sono importanti per la messa a punto
+del database per prestazioni ottimali.
    </para>
 
    <para>

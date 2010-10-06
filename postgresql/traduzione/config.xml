@@ -147,7 +147,7 @@ env PGOPTIONS='-c geqo=off' psql
 
    <para>
     Some parameters can be changed in individual <acronym>SQL</acronym>
-    sessions with the <xref linkend="SQL-SET"/>
+    sessions with the <xref linkend="sql-set"/>
     command, for example:
 <screen>
 SET ENABLE_SEQSCAN TO OFF;

@@ -145,7 +145,7 @@ CREATE USER MAPPING FOR dblink_regression_test SERVER fdtest OPTIONS (user 'dbli
 GRANT USAGE ON FOREIGN SERVER fdtest TO dblink_regression_test;
 GRANT SELECT ON TABLE foo TO dblink_regression_test;
 
-\set ORIGINAL_USER :USER
+\set ORIginAL_USER :USER
 \c - dblink_regression_test
 SELECT dblink_connect('myconn', 'fdtest');
  dblink_connect 
@@ -169,7 +169,7 @@ SELECT * FROM dblink('myconn','SELECT * FROM foo') AS t(a int, b text, c text[])
  10 | k | {a10,b10,c10}
 (11 rows)
 
-\c - :ORIGINAL_USER
+\c - :ORIginAL_USER
 REVOKE USAGE ON FOREIGN SERVER fdtest FROM dblink_regression_test;
 REVOKE SELECT ON TABLE foo FROM  dblink_regression_test;
 DROP USER MAPPING FOR dblink_regression_test SERVER fdtest;
@@ -749,7 +749,7 @@ dblink_open(text connname, text cursorname, text sql [, bool fail_on_error]) ret
    <para>
     Since a cursor can only persist within a transaction,
     <function>dblink_open</function> starts an explicit transaction block
-    (<command>BEGIN</command>) on the remote side, if the remote side was
+    (<command>BEgin</command>) on the remote side, if the remote side was
     not already within a transaction.  This transaction will be
     closed again when the matching <function>dblink_close</function> is
     executed.  Note that if
@@ -1273,7 +1273,7 @@ SELECT dblink_is_busy('dtest1');
   </refsect1>
  </refentry>
 
- <refentry id="CONTRIB-DBLINK-GET-NOTIFY">
+ <refentry id="contrib-dblink-get-notify">
   <refmeta>
    <refentrytitle>dblink_get_notify</refentrytitle>
    <manvolnum>3</manvolnum>
@@ -1651,7 +1651,7 @@ SELECT * FROM dblink_get_pkey('foobar');
   </refsect1>
  </refentry>
 
- <refentry id="CONTRIB-DBLINK-BUILD-SQL-INSERT">
+ <refentry id="CONTRIB-DBLINK-BUILD-sql-insert">
   <refmeta>
    <refentrytitle>dblink_build_sql_insert</refentrytitle>
    <manvolnum>3</manvolnum>
@@ -1782,7 +1782,7 @@ SELECT dblink_build_sql_insert('foo', '1 2', 2, '{"1", "a"}', '{"1", "b''a"}');
   </refsect1>
  </refentry>
 
- <refentry id="CONTRIB-DBLINK-BUILD-SQL-DELETE">
+ <refentry id="CONTRIB-DBLINK-BUILD-sql-delete">
   <refmeta>
    <refentrytitle>dblink_build_sql_delete</refentrytitle>
    <manvolnum>3</manvolnum>
@@ -1896,7 +1896,7 @@ SELECT dblink_build_sql_delete('"MyFoo"', '1 2', 2, '{"1", "b"}');
   </refsect1>
  </refentry>
 
- <refentry id="CONTRIB-DBLINK-BUILD-SQL-UPDATE">
+ <refentry id="CONTRIB-DBLINK-BUILD-sql-update">
   <refmeta>
    <refentrytitle>dblink_build_sql_update</refentrytitle>
    <manvolnum>3</manvolnum>

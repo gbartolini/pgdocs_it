@@ -425,7 +425,7 @@
     <entry></entry>
    </row>
    <row>
-    <entry><token>BEGIN</token></entry>
+    <entry><token>BEgin</token></entry>
     <entry>non-reserved</entry>
     <entry>reserved</entry>
     <entry>reserved</entry>
@@ -449,7 +449,7 @@
     <entry>reserved</entry>
    </row>
    <row>
-    <entry><token>BIGINT</token></entry>
+    <entry><token>BIginT</token></entry>
     <entry>non-reserved (cannot be function or type)</entry>
     <entry>reserved</entry>
     <entry>reserved</entry>
@@ -761,7 +761,7 @@
     <entry></entry>
    </row>
    <row>
-    <entry><token>CLASS_ORIGIN</token></entry>
+    <entry><token>CLASS_ORIgin</token></entry>
     <entry></entry>
     <entry>non-reserved</entry>
     <entry>non-reserved</entry>
@@ -2977,7 +2977,7 @@
     <entry></entry>
    </row>
    <row>
-    <entry><token>LOGIN</token></entry>
+    <entry><token>LOgin</token></entry>
     <entry>non-reserved</entry>
     <entry></entry>
     <entry></entry>
@@ -3369,7 +3369,7 @@
     <entry></entry>
    </row>
    <row>
-    <entry><token>NOLOGIN</token></entry>
+    <entry><token>NOLOgin</token></entry>
     <entry>non-reserved</entry>
     <entry></entry>
     <entry></entry>
@@ -5041,7 +5041,7 @@
     <entry></entry>
    </row>
    <row>
-    <entry><token>SUBCLASS_ORIGIN</token></entry>
+    <entry><token>SUBCLASS_ORIgin</token></entry>
     <entry></entry>
     <entry>non-reserved</entry>
     <entry>non-reserved</entry>

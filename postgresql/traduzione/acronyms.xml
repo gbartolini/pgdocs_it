@@ -232,19 +232,19 @@
    </varlistentry>
 
    <varlistentry>
-    <term><acronym>GIN</acronym></term>
+    <term><acronym>gin</acronym></term>
     <listitem>
      <para>
-      <link linkend="GIN">Generalized Inverted Index</link>
+      <link linkend="gin">Generalized Inverted Index</link>
      </para>
     </listitem>
    </varlistentry>
 
    <varlistentry>
-    <term><acronym>GiST</acronym></term>
+    <term><acronym>gist</acronym></term>
     <listitem>
      <para>
-      <link linkend="GiST">Generalized Search Tree</link>
+      <link linkend="gist">Generalized Search Tree</link>
      </para>
     </listitem>
    </varlistentry>

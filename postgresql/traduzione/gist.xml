@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $PostgreSQL$ -->
 
-<chapter id="GiST">
-<title>GiST Indexes</title>
+<chapter id="gist">
+<title>gist Indexes</title>
 
    <indexterm>
     <primary>index</primary>
-    <secondary>GiST</secondary>
+    <secondary>gist</secondary>
    </indexterm>
 
 <sect1 id="gist-intro">
  <title>Introduction</title>
 
  <para>
-   <acronym>GiST</acronym> stands for Generalized Search Tree.  It is a
+   <acronym>gist</acronym> stands for Generalized Search Tree.  It is a
    balanced, tree-structured access method, that acts as a base template in
    which to implement arbitrary indexing schemes. B-trees, R-trees and many
-   other indexing schemes can be implemented in <acronym>GiST</acronym>.
+   other indexing schemes can be implemented in <acronym>gist</acronym>.
  </para>
 
  <para>
-  One advantage of <acronym>GiST</acronym> is that it allows the development
+  One advantage of <acronym>gist</acronym> is that it allows the development
   of custom data types with the appropriate access methods, by
   an expert in the domain of the data type, rather than a database expert.
  </para>
 
   <para>
     Some of the information here is derived from the University of California
-    at Berkeley's GiST Indexing Project
+    at Berkeley's gist Indexing Project
     <ulink url="http://gist.cs.berkeley.edu/">web site</ulink> and
     Marcel Kornacker's thesis,
     <ulink url="http://www.sai.msu.su/~megera/postgres/gist/papers/concurrency/access-methods-for-next-generation.pdf.gz">
     Access Methods for Next-Generation Database Systems</ulink>.
-    The <acronym>GiST</acronym>
+    The <acronym>gist</acronym>
     implementation in <productname>PostgreSQL</productname> is primarily
     maintained by Teodor Sigaev and Oleg Bartunov, and there is more
     information on their
@@ -48,9 +48,9 @@
    Traditionally, implementing a new index access method meant a lot of
    difficult work.  It was necessary to understand the inner workings of the
    database, such as the lock manager and Write-Ahead Log.  The
-   <acronym>GiST</acronym> interface has a high level of abstraction,
+   <acronym>gist</acronym> interface has a high level of abstraction,
    requiring the access method implementer only to implement the semantics of
-   the data type being accessed.  The <acronym>GiST</acronym> layer itself
+   the data type being accessed.  The <acronym>gist</acronym> layer itself
    takes care of concurrency, logging and searching the tree structure.
  </para>
 
@@ -72,18 +72,18 @@
    than imagey</quote> and <quote>is imagex greater than imagey</quote>.
    Depending on how you define <quote>equals</quote>, <quote>less than</quote>
    and <quote>greater than</quote> in this context, this could be useful.
-   However, by using a <acronym>GiST</acronym> based index, you could create
+   However, by using a <acronym>gist</acronym> based index, you could create
    ways to ask domain-specific questions, perhaps <quote>find all images of
    horses</quote> or <quote>find all over-exposed images</quote>.
  </para>
 
  <para>
-   All it takes to get a <acronym>GiST</acronym> access method up and running
+   All it takes to get a <acronym>gist</acronym> access method up and running
    is to implement seven user-defined methods, which define the behavior of
    keys in the tree. Of course these methods have to be pretty fancy to
    support fancy queries, but for all the standard queries (B-trees,
    R-trees, etc.) they're relatively straightforward. In short,
-   <acronym>GiST</acronym> combines extensibility along with generality, code
+   <acronym>gist</acronym> combines extensibility along with generality, code
    reuse, and a clean interface.
   </para>
 
@@ -94,7 +94,7 @@
 
  <para>
    There are seven methods that an index operator class for
-   <acronym>GiST</acronym> must provide. Correctness of the index is ensured
+   <acronym>gist</acronym> must provide. Correctness of the index is ensured
    by proper implementation of the <function>same</function>, <function>consistent</function>
    and <function>union</function> methods, while efficiency (size and speed) of the
    index will depend on the <function>penalty</function> and <function>picksplit</function>
@@ -131,7 +131,7 @@
        system will automatically evaluate the
        <replaceable>indexable_operator</replaceable> against the actual row value to see
        if it is really a match.  This convention allows
-       <acronym>GiST</acronym> to support both lossless and lossy index
+       <acronym>gist</acronym> to support both lossless and lossy index
        structures.
       </para>
 
@@ -253,7 +253,7 @@ my_union(PG_FUNCTION_ARGS)
         where <literal>union(X, Y, Z) = union(union(X, Y), Z)</literal>. It's easy
         enough to support data types where this is not the case, by
         implementing the proper union algorithm in this
-        <acronym>GiST</acronym> support method.
+        <acronym>gist</acronym> support method.
       </para>
 
       <para>
@@ -521,7 +521,7 @@ my_picksplit(PG_FUNCTION_ARGS)
         is crucial to good performance of the index.  Designing suitable
         <function>penalty</function> and <function>picksplit</function> implementations
         is where the challenge of implementing well-performing
-        <acronym>GiST</acronym> indexes lies.
+        <acronym>gist</acronym> indexes lies.
       </para>
      </listitem>
     </varlistentry>
@@ -578,11 +578,11 @@ my_same(PG_FUNCTION_ARGS)
  <para>
   The <productname>PostgreSQL</productname> source distribution includes
   several examples of index methods implemented using
-  <acronym>GiST</acronym>.  The core system currently provides text search
+  <acronym>gist</acronym>.  The core system currently provides text search
   support (indexing for <type>tsvector</type> and <type>tsquery</type>) as well as
   R-Tree equivalent functionality for some of the built-in geometric data types
   (see <filename>src/backend/access/gist/gistproc.c</filename>).  The following
-  <filename>contrib</filename> modules also contain <acronym>GiST</acronym>
+  <filename>contrib</filename> modules also contain <acronym>gist</acronym>
   operator classes:
 
  <variablelist>
@@ -644,7 +644,7 @@ my_same(PG_FUNCTION_ARGS)
 
  <para>
   Usually, replay of the WAL log is sufficient to restore the integrity
-  of a GiST index following a database crash.  However, there are some
+  of a gist index following a database crash.  However, there are some
   corner cases in which the index state is not fully rebuilt.  The index
   will still be functionally correct, but there might be some performance
   degradation.  When this occurs, the index can be repaired by

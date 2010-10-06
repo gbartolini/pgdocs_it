@@ -575,7 +575,7 @@ typedef struct
      <listitem>
       <para>
        if a transaction manipulation command was attempted
-       (<command>BEGIN</command>,
+       (<command>BEgin</command>,
        <command>COMMIT</command>,
        <command>ROLLBACK</command>,
        <command>SAVEPOINT</command>,

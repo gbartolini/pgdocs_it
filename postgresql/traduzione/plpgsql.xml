@@ -189,7 +189,7 @@
 <optional> &lt;&lt;<replaceable>label</replaceable>&gt;&gt; </optional>
 <optional> DECLARE
     <replaceable>declarations</replaceable> </optional>
-BEGIN
+BEgin
     <replaceable>statements</replaceable>
 END <optional> <replaceable>label</replaceable> </optional>;
 </synopsis>
@@ -206,7 +206,7 @@ END <optional> <replaceable>label</replaceable> </optional>;
     <tip>
      <para>
       A common mistake is to write a semicolon immediately after
-      <literal>BEGIN</literal>.  This is incorrect and will result in a syntax error.
+      <literal>BEgin</literal>.  This is incorrect and will result in a syntax error.
      </para>
     </tip>
 
@@ -245,7 +245,7 @@ CREATE FUNCTION somefunc() RETURNS integer AS $$
 &lt;&lt; outerblock &gt;&gt;
 DECLARE
     quantity integer := 30;
-BEGIN
+BEgin
     RAISE NOTICE 'Quantity here is %', quantity;  -- Prints 30
     quantity := 50;
     --
@@ -253,7 +253,7 @@ BEGIN
     --
     DECLARE
         quantity integer := 80;
-    BEGIN
+    BEgin
         RAISE NOTICE 'Quantity here is %', quantity;  -- Prints 80
         RAISE NOTICE 'Outer quantity here is %', outerblock.quantity;  -- Prints 50
     END;
@@ -280,10 +280,10 @@ $$ LANGUAGE plpgsql;
 
     <para>
      It is important not to confuse the use of
-     <command>BEGIN</command>/<command>END</command> for grouping statements in
+     <command>BEgin</command>/<command>END</command> for grouping statements in
      <application>PL/pgSQL</application> with the similarly-named SQL commands
      for transaction
-     control.  <application>PL/pgSQL</application>'s <command>BEGIN</command>/<command>END</command>
+     control.  <application>PL/pgSQL</application>'s <command>BEgin</command>/<command>END</command>
      are only for grouping; they do not start or end a transaction.
      Functions and trigger procedures are always executed within a transaction
      established by an outer query &mdash; they cannot start or commit that
@@ -380,7 +380,7 @@ user_id CONSTANT integer := 10;
       for example:
 <programlisting>
 CREATE FUNCTION sales_tax(subtotal real) RETURNS real AS $$
-BEGIN
+BEgin
     RETURN subtotal * 0.06;
 END;
 $$ LANGUAGE plpgsql;
@@ -398,7 +398,7 @@ $$ LANGUAGE plpgsql;
 CREATE FUNCTION sales_tax(real) RETURNS real AS $$
 DECLARE
     subtotal ALIAS FOR $1;
-BEGIN
+BEgin
     RETURN subtotal * 0.06;
 END;
 $$ LANGUAGE plpgsql;
@@ -422,14 +422,14 @@ CREATE FUNCTION instr(varchar, integer) RETURNS integer AS $$
 DECLARE
     v_string ALIAS FOR $1;
     index ALIAS FOR $2;
-BEGIN
+BEgin
     -- some computations using v_string and index here
 END;
 $$ LANGUAGE plpgsql;
 
 
 CREATE FUNCTION concat_selected_fields(in_t sometablename) RETURNS text AS $$
-BEGIN
+BEgin
     RETURN in_t.f1 || in_t.f3 || in_t.f5 || in_t.f7;
 END;
 $$ LANGUAGE plpgsql;
@@ -448,7 +448,7 @@ $$ LANGUAGE plpgsql;
 
 <programlisting>
 CREATE FUNCTION sales_tax(subtotal real, OUT tax real) AS $$
-BEGIN
+BEgin
     tax := subtotal * 0.06;
 END;
 $$ LANGUAGE plpgsql;
@@ -464,7 +464,7 @@ $$ LANGUAGE plpgsql;
 
 <programlisting>
 CREATE FUNCTION sum_n_product(x int, y int, OUT sum int, OUT prod int) AS $$
-BEGIN
+BEgin
     sum := x + y;
     prod := x * y;
 END;
@@ -484,7 +484,7 @@ $$ LANGUAGE plpgsql;
 <programlisting>
 CREATE FUNCTION extended_sales(p_itemno int)
 RETURNS TABLE(quantity int, total numeric) AS $$
-BEGIN
+BEgin
     RETURN QUERY SELECT quantity, quantity * price FROM sales
                  WHERE itemno = p_itemno;
 END;
@@ -517,7 +517,7 @@ CREATE FUNCTION add_three_values(v1 anyelement, v2 anyelement, v3 anyelement)
 RETURNS anyelement AS $$
 DECLARE
     result ALIAS FOR $0;
-BEGIN
+BEgin
     result := v1 + v2 + v3;
     RETURN result;
 END;
@@ -535,7 +535,7 @@ $$ LANGUAGE plpgsql;
 CREATE FUNCTION add_three_values(v1 anyelement, v2 anyelement, v3 anyelement,
                                  OUT sum anyelement)
 AS $$
-BEGIN
+BEgin
     sum := v1 + v2 + v3;
 END;
 $$ LANGUAGE plpgsql;
@@ -667,7 +667,7 @@ user_id users.user_id%TYPE;
 CREATE FUNCTION merge_fields(t_row table1) RETURNS text AS $$
 DECLARE
     t2_row table2%ROWTYPE;
-BEGIN
+BEgin
     SELECT * INTO t2_row FROM table2 WHERE ... ;
     RETURN t_row.f1 || t2_row.f3 || t_row.f5 || t2_row.f7;
 END;
@@ -969,7 +969,7 @@ END IF;
      to catch the error, for example:
 
 <programlisting>
-BEGIN
+BEgin
     SELECT * INTO STRICT myrec FROM emp WHERE empname = myname;
     EXCEPTION
         WHEN NO_DATA_FOUND THEN
@@ -1392,7 +1392,7 @@ NULL;
     <para>
      For example, the following two fragments of code are equivalent:
 <programlisting>
-BEGIN
+BEgin
     y := x / 0;
 EXCEPTION
     WHEN division_by_zero THEN
@@ -1401,7 +1401,7 @@ END;
 </programlisting>
 
 <programlisting>
-BEGIN
+BEgin
     y := x / 0;
 EXCEPTION
     WHEN division_by_zero THEN  -- ignore the error
@@ -1571,7 +1571,7 @@ CREATE OR REPLACE FUNCTION getAllFoo() RETURNS SETOF foo AS
 $BODY$
 DECLARE
     r foo%rowtype;
-BEGIN
+BEgin
     FOR r IN SELECT * FROM foo
     WHERE fooid &gt; 0
     LOOP
@@ -1948,14 +1948,14 @@ EXIT <optional> <replaceable>label</replaceable> </optional> <optional> WHEN <re
 
        <para>
         When used with a
-        <literal>BEGIN</literal> block, <literal>EXIT</literal> passes
+        <literal>BEgin</literal> block, <literal>EXIT</literal> passes
         control to the next statement after the end of the block.
         Note that a label must be used for this purpose; an unlabelled
         <literal>EXIT</literal> is never considered to match a
-        <literal>BEGIN</literal> block.  (This is a change from
+        <literal>BEgin</literal> block.  (This is a change from
         pre-8.4 releases of <productname>PostgreSQL</productname>, which
         would allow an unlabelled <literal>EXIT</literal> to match
-        a <literal>BEGIN</literal> block.)
+        a <literal>BEgin</literal> block.)
        </para>
 
        <para>
@@ -1974,10 +1974,10 @@ LOOP
 END LOOP;
 
 &lt;&lt;ablock&gt;&gt;
-BEGIN
+BEgin
     -- some computations
     IF stocks &gt; 100000 THEN
-        EXIT ablock;  -- causes exit from the BEGIN block
+        EXIT ablock;  -- causes exit from the BEgin block
     END IF;
     -- computations here will be skipped when stocks &gt; 100000
 END;
@@ -2150,7 +2150,7 @@ END LOOP <optional> <replaceable>label</replaceable> </optional>;
 CREATE FUNCTION cs_refresh_mviews() RETURNS integer AS $$
 DECLARE
     mviews RECORD;
-BEGIN
+BEgin
     PERFORM cs_log('Refreshing materialized views...');
 
     FOR mviews IN SELECT * FROM cs_materialized_views ORDER BY sort_key LOOP
@@ -2228,15 +2228,15 @@ END LOOP <optional> <replaceable>label</replaceable> </optional>;
      By default, any error occurring in a <application>PL/pgSQL</application>
      function aborts execution of the function, and indeed of the
      surrounding transaction as well.  You can trap errors and recover
-     from them by using a <command>BEGIN</command> block with an
+     from them by using a <command>BEgin</command> block with an
      <literal>EXCEPTION</literal> clause.  The syntax is an extension of the
-     normal syntax for a <command>BEGIN</command> block:
+     normal syntax for a <command>BEgin</command> block:
 
 <synopsis>
 <optional> &lt;&lt;<replaceable>label</replaceable>&gt;&gt; </optional>
 <optional> DECLARE
     <replaceable>declarations</replaceable> </optional>
-BEGIN
+BEgin
     <replaceable>statements</replaceable>
 EXCEPTION
     WHEN <replaceable>condition</replaceable> <optional> OR <replaceable>condition</replaceable> ... </optional> THEN
@@ -2297,7 +2297,7 @@ WHEN SQLSTATE '22012' THEN ...
 
 <programlisting>
 INSERT INTO mytab(firstname, lastname) VALUES('Tom', 'Jones');
-BEGIN
+BEgin
     UPDATE mytab SET firstname = 'Joe' WHERE lastname = 'Jones';
     x := x + 1;
     y := x / 0;
@@ -2348,7 +2348,7 @@ CREATE TABLE db (a INT PRIMARY KEY, b TEXT);
 
 CREATE FUNCTION merge_db(key INT, data TEXT) RETURNS VOID AS
 $$
-BEGIN
+BEgin
     LOOP
         -- first try to update the key
         UPDATE db SET b = data WHERE a = key;
@@ -2358,7 +2358,7 @@ BEGIN
         -- not there, so try to insert the key
         -- if someone else inserts the same key concurrently,
         -- we could get a unique-key failure
-        BEGIN
+        BEgin
             INSERT INTO db(a,b) VALUES (key, data);
             RETURN;
         EXCEPTION WHEN unique_violation THEN
@@ -2792,13 +2792,13 @@ CREATE TABLE test (col text);
 INSERT INTO test VALUES ('123');
 
 CREATE FUNCTION reffunc(refcursor) RETURNS refcursor AS '
-BEGIN
+BEgin
     OPEN $1 FOR SELECT col FROM test;
     RETURN $1;
 END;
 ' LANGUAGE plpgsql;
 
-BEGIN;
+BEgin;
 SELECT reffunc('funccursor');
 FETCH ALL IN funccursor;
 COMMIT;
@@ -2812,14 +2812,14 @@ COMMIT;
 CREATE FUNCTION reffunc2() RETURNS refcursor AS '
 DECLARE
     ref refcursor;
-BEGIN
+BEgin
     OPEN ref FOR SELECT col FROM test;
     RETURN ref;
 END;
 ' LANGUAGE plpgsql;
 
 -- need to be in a transaction to use cursors.
-BEGIN;
+BEgin;
 SELECT reffunc2();
 
       reffunc2
@@ -2838,7 +2838,7 @@ COMMIT;
 
 <programlisting>
 CREATE FUNCTION myfunc(refcursor, refcursor) RETURNS SETOF refcursor AS $$
-BEGIN
+BEgin
     OPEN $1 FOR SELECT * FROM table_1;
     RETURN NEXT $1;
     OPEN $2 FOR SELECT * FROM table_2;
@@ -2847,7 +2847,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- need to be in a transaction to use cursors.
-BEGIN;
+BEgin;
 
 SELECT * FROM myfunc('a', 'b');
 
@@ -3011,7 +3011,7 @@ RAISE unique_violation USING MESSAGE = 'Duplicate user ID: ' || user_id;
 
    <para>
     The last variant of <command>RAISE</command> has no parameters at all.
-    This form can only be used inside a <literal>BEGIN</literal> block's
+    This form can only be used inside a <literal>BEgin</literal> block's
     <literal>EXCEPTION</literal> clause;
     it causes the error currently being handled to be re-thrown.
    </para>
@@ -3271,7 +3271,7 @@ CREATE TABLE emp (
 );
 
 CREATE FUNCTION emp_stamp() RETURNS trigger AS $emp_stamp$
-    BEGIN
+    BEgin
         -- Check that empname and salary are given
         IF NEW.empname IS NULL THEN
             RAISE EXCEPTION 'empname cannot be null';
@@ -3330,7 +3330,7 @@ CREATE TABLE emp_audit(
 );
 
 CREATE OR REPLACE FUNCTION process_emp_audit() RETURNS TRIGGER AS $emp_audit$
-    BEGIN
+    BEgin
         --
         -- Create a row in emp_audit to reflect the operation performed on emp,
         -- make use of the special variable TG_OP to work out the operation.
@@ -3422,7 +3422,7 @@ AS $maint_sales_summary_bytime$
         delta_amount_sold       numeric(15,2);
         delta_units_sold        numeric(12);
         delta_amount_cost       numeric(15,2);
-    BEGIN
+    BEgin
 
         -- Work out the increment/decrement amount(s).
         IF (TG_OP = 'DELETE') THEN
@@ -3468,7 +3468,7 @@ AS $maint_sales_summary_bytime$
 
             EXIT insert_update WHEN found;
 
-            BEGIN
+            BEgin
                 INSERT INTO sales_summary_bytime (
                             time_key,
                             amount_sold,
@@ -3590,7 +3590,7 @@ INSERT INTO dest (col) SELECT foo + bar FROM src;
 &lt;&lt;block&gt;&gt;
 DECLARE
     foo int;
-BEGIN
+BEgin
     foo := ...;
     INSERT INTO dest (col) SELECT block.foo + bar FROM src;
 </programlisting>
@@ -3647,7 +3647,7 @@ CREATE FUNCTION stamp_user(id int, comment text) RETURNS void AS $$
     #variable_conflict use_variable
     DECLARE
         curtime timestamp := now();
-    BEGIN
+    BEgin
         UPDATE users SET last_modified = curtime, comment = comment
           WHERE users.id = id;
     END;
@@ -3668,7 +3668,7 @@ CREATE FUNCTION stamp_user(id int, comment text) RETURNS void AS $$
     &lt;&lt;fn&gt;&gt;
     DECLARE
         curtime timestamp := now();
-    BEGIN
+    BEgin
         UPDATE users SET last_modified = fn.curtime, comment = stamp_user.comment
           WHERE users.id = stamp_user.id;
     END;
@@ -3807,7 +3807,7 @@ SELECT * INTO myrec FROM dictionary WHERE word LIKE search_term;
 
 <programlisting>
 CREATE FUNCTION logfunc1(logtxt text) RETURNS void AS $$
-    BEGIN
+    BEgin
         INSERT INTO logtable VALUES (logtxt, 'now');
     END;
 $$ LANGUAGE plpgsql;
@@ -3819,7 +3819,7 @@ $$ LANGUAGE plpgsql;
 CREATE FUNCTION logfunc2(logtxt text) RETURNS void AS $$
     DECLARE
         curtime timestamp;
-    BEGIN
+    BEgin
         curtime := 'now';
         INSERT INTO logtable VALUES (logtxt, curtime);
     END;
@@ -4175,7 +4175,7 @@ a_output := a_output || $$ if v_$$ || referrer_keys.kind || $$ like '$$
 CREATE OR REPLACE FUNCTION cs_fmt_browser_version(v_name varchar,
                                                   v_version varchar)
 RETURN varchar IS
-BEGIN
+BEgin
     IF v_version IS NULL THEN
         RETURN v_name;
     END IF;
@@ -4230,7 +4230,7 @@ show errors;
 CREATE OR REPLACE FUNCTION cs_fmt_browser_version(v_name varchar,
                                                   v_version varchar)
 RETURNS varchar AS $$
-BEGIN
+BEgin
     IF v_version IS NULL THEN
         RETURN v_name;
     END IF;
@@ -4265,9 +4265,9 @@ CREATE OR REPLACE PROCEDURE cs_update_referrer_type_proc IS
         SELECT * FROM cs_referrer_keys
         ORDER BY try_order;
     func_cmd VARCHAR(4000);
-BEGIN
+BEgin
     func_cmd := 'CREATE OR REPLACE FUNCTION cs_find_referrer_type(v_host IN VARCHAR,
-                 v_domain IN VARCHAR, v_url IN VARCHAR) RETURN VARCHAR IS BEGIN';
+                 v_domain IN VARCHAR, v_url IN VARCHAR) RETURN VARCHAR IS BEgin';
 
     FOR referrer_key IN referrer_keys LOOP
         func_cmd := func_cmd ||
@@ -4296,8 +4296,8 @@ DECLARE
         ORDER BY try_order;
     func_body text;
     func_cmd text;
-BEGIN
-    func_body := 'BEGIN';
+BEgin
+    func_body := 'BEgin';
 
     FOR referrer_key IN referrer_keys LOOP
         func_body := func_body ||
@@ -4370,7 +4370,7 @@ CREATE OR REPLACE PROCEDURE cs_parse_url(
 IS
     a_pos1 INTEGER;
     a_pos2 INTEGER;
-BEGIN
+BEgin
     v_host := NULL;
     v_path := NULL;
     v_query := NULL;
@@ -4414,7 +4414,7 @@ AS $$
 DECLARE
     a_pos1 INTEGER;
     a_pos2 INTEGER;
-BEGIN
+BEgin
     v_host := NULL;
     v_path := NULL;
     v_query := NULL;
@@ -4466,7 +4466,7 @@ SELECT * FROM cs_parse_url('http://foobar.com/query.cgi?baz');
 CREATE OR REPLACE PROCEDURE cs_create_job(v_job_id IN INTEGER) IS
     a_running_job_count INTEGER;
     PRAGMA AUTONOMOUS_TRANSACTION;<co id="co.plpgsql-porting-pragma"/>
-BEGIN
+BEgin
     LOCK TABLE cs_jobs IN EXCLUSIVE MODE;<co id="co.plpgsql-porting-locktable"/>
 
     SELECT count(*) INTO a_running_job_count FROM cs_jobs WHERE end_stamp IS NULL;
@@ -4480,7 +4480,7 @@ BEGIN
     DELETE FROM cs_active_job;
     INSERT INTO cs_active_job(job_id) VALUES (v_job_id);
 
-    BEGIN
+    BEgin
         INSERT INTO cs_jobs (job_id, start_stamp) VALUES (v_job_id, sysdate);
     EXCEPTION
         WHEN dup_val_on_index THEN NULL; -- don't worry if it already exists
@@ -4533,7 +4533,7 @@ show errors
 CREATE OR REPLACE FUNCTION cs_create_job(v_job_id integer) RETURNS void AS $$
 DECLARE
     a_running_job_count integer;
-BEGIN
+BEgin
     LOCK TABLE cs_jobs IN EXCLUSIVE MODE;
 
     SELECT count(*) INTO a_running_job_count FROM cs_jobs WHERE end_stamp IS NULL;
@@ -4545,7 +4545,7 @@ BEGIN
     DELETE FROM cs_active_job;
     INSERT INTO cs_active_job(job_id) VALUES (v_job_id);
 
-    BEGIN
+    BEgin
         INSERT INTO cs_jobs (job_id, start_stamp) VALUES (v_job_id, now());
     EXCEPTION
         WHEN unique_violation THEN <co id="co.plpgsql-porting-exception"/>
@@ -4599,11 +4599,11 @@ $$ LANGUAGE plpgsql;
     <para>
      In <application>PL/pgSQL</application>, when an exception is caught by an
      <literal>EXCEPTION</literal> clause, all database changes since the block's
-     <literal>BEGIN</literal> are automatically rolled back.  That is, the behavior
+     <literal>BEgin</literal> are automatically rolled back.  That is, the behavior
      is equivalent to what you'd get in Oracle with:
 
 <programlisting>
-BEGIN
+BEgin
     SAVEPOINT s1;
     ... code here ...
 EXCEPTION
@@ -4689,7 +4689,7 @@ $$ LANGUAGE plpgsql STRICT IMMUTABLE;
 CREATE FUNCTION instr(varchar, varchar) RETURNS integer AS $$
 DECLARE
     pos integer;
-BEGIN
+BEgin
     pos:= instr($1, $2, 1);
     RETURN pos;
 END;
@@ -4704,7 +4704,7 @@ DECLARE
     beg integer;
     length integer;
     ss_length integer;
-BEGIN
+BEgin
     IF beg_index &gt; 0 THEN
         temp_str := substring(string FROM beg_index);
         pos := position(string_to_search IN temp_str);
@@ -4747,7 +4747,7 @@ DECLARE
     i integer;
     length integer;
     ss_length integer;
-BEGIN
+BEgin
     IF beg_index &gt; 0 THEN
         beg := beg_index;
         temp_str := substring(string FROM beg_index);

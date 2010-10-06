@@ -1631,7 +1631,7 @@ PGresult *PQexec(PGconn *conn, const char *command);
     It is allowed to include multiple SQL commands (separated by semicolons)
     in the command string.  Multiple queries sent in a single
     <function>PQexec</function> call are processed in a single transaction, unless
-    there are explicit <command>BEGIN</command>/<command>COMMIT</command>
+    there are explicit <command>BEgin</command>/<command>COMMIT</command>
     commands included in the query string to divide it into multiple
     transactions.  Note however that the returned
     <structname>PGresult</structname> structure describes only the result
@@ -7190,10 +7190,10 @@ main(int argc, char **argv)
      */
 
     /* Start a transaction block */
-    res = PQexec(conn, "BEGIN");
+    res = PQexec(conn, "BEgin");
     if (PQresultStatus(res) != PGRES_COMMAND_OK)
     {
-        fprintf(stderr, "BEGIN command failed: %s", PQerrorMessage(conn));
+        fprintf(stderr, "BEgin command failed: %s", PQerrorMessage(conn));
         PQclear(res);
         exit_nicely(conn);
     }

@@ -686,7 +686,7 @@ length when using a multiple-byte character set (Yoshiyuki Asaba)</para>
 because it only padded to the specified number of bytes without
 considering how many characters were stored.</para></listitem>
 <listitem><para>Fix missing rows in queries like <literal>UPDATE a=... WHERE
-a...</literal> with GiST index on column <literal>a</literal></para></listitem>
+a...</literal> with gist index on column <literal>a</literal></para></listitem>
 <listitem><para>Improve checking for partially-written WAL
 pages</para></listitem>
 <listitem><para>Improve robustness of signal handling when SSL is
@@ -744,7 +744,7 @@ the variable is of pass-by-reference type</para></listitem>
     As the database superuser, do:
 
 <programlisting>
-BEGIN;
+BEgin;
 UPDATE pg_proc SET proargtypes[3] = 'internal'::regtype
 WHERE pronamespace = 11 AND pronargs = 5
      AND proargtypes[2] = 'cstring'::regtype;
@@ -1959,7 +1959,7 @@ operations on bytea columns (Joe)</para></listitem>
    <title>Contrib</title>
 <itemizedlist>
 <listitem><para>Allow inet arrays in /contrib/array (Neil)</para></listitem>
-<listitem><para>GiST fixes (Teodor Sigaev, Neil)</para></listitem>
+<listitem><para>gist fixes (Teodor Sigaev, Neil)</para></listitem>
 <listitem><para>Upgrade /contrib/mysql</para></listitem>
 <listitem><para>Add /contrib/dbsize which shows table sizes without vacuum (Peter)</para></listitem>
 <listitem><para>Add /contrib/intagg, integer aggregator routines (mlw)</para></listitem>
@@ -2627,7 +2627,7 @@ since <productname>PostgreSQL</productname> 7.1.
 <listitem><para>ALTER TABLE RENAME update foreign-key trigger arguments correctly (Brent Verner)</para></listitem>
 <listitem><para>DROP AGGREGATE and COMMENT ON AGGREGATE now accept an aggtype (Tom)</para></listitem>
 <listitem><para>Add automatic return type data casting for SQL functions (Tom)</para></listitem>
-<listitem><para>Allow GiST indexes to handle NULLs and multikey indexes (Oleg Bartunov, Teodor Sigaev, Tom)</para></listitem>
+<listitem><para>Allow gist indexes to handle NULLs and multikey indexes (Oleg Bartunov, Teodor Sigaev, Tom)</para></listitem>
 <listitem><para>Enable partial indexes (Martijn van Oosterhout)</para></listitem>
 </itemizedlist>
   </sect3>
@@ -3256,7 +3256,7 @@ Types
 -----
 Fix INET/CIDR type ordering and add new functions (Tom)
 Make OID behave as an unsigned type (Tom)
-Allow BIGINT as synonym for INT8 (Peter E)
+Allow BIginT as synonym for INT8 (Peter E)
 New int2 and int8 comparison operators (Tom)
 New BIT and BIT VARYING types (Adriaan Joubert, Tom, Peter E)
 CHAR() no longer faster than VARCHAR() because of TOAST (Tom)
@@ -5588,8 +5588,8 @@ Rename pg_attribute.attnvals to attdispersion(Bruce)
 Add "create_trigger", "drop_trigger" manual pages(Thomas)
 Add constraints regression test(Vadim &amp; Thomas)
 Add comments syntax regression test(Thomas)
-Add PGINDENT and support program(Bruce)
-Massive commit to run PGINDENT on all *.c and *.h files(Bruce)
+Add PginDENT and support program(Bruce)
+Massive commit to run PginDENT on all *.c and *.h files(Bruce)
 Files moved to /src/tools directory(Bruce)
 SPI and Trigger programming guides (Vadim &amp; D'Arcy)
 </programlisting>

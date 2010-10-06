@@ -884,7 +884,7 @@ CREATE TABLE circles (
    </para>
 
    <para>
-        Vedi anche <link linkend="SQL-CREATETABLE-EXCLUDE"><command>CREATE
+        Vedi anche <link linkend="sql-createtable-EXCLUDE"><command>CREATE
     TABLE ... CONSTRAINT ... EXCLUDE</command></link> per maggiori dettagli.
    </para>
 
@@ -2574,7 +2574,7 @@ CREATE INDEX measurement_y2008m01_logdate ON measurement_y2008m01 (logdate);
 <programlisting>
 CREATE OR REPLACE FUNCTION measurement_insert_trigger()
 RETURNS TRIGGER AS $$
-BEGIN
+BEgin
     INSERT INTO measurement_y2008m01 VALUES (NEW.*);
     RETURN NULL;
 END;
@@ -2604,7 +2604,7 @@ CREATE TRIGGER insert_measurement_trigger
 <programlisting>
 CREATE OR REPLACE FUNCTION measurement_insert_trigger()
 RETURNS TRIGGER AS $$
-BEGIN
+BEgin
     IF ( NEW.logdate &gt;= DATE '2006-02-01' AND
          NEW.logdate &lt; DATE '2006-03-01' ) THEN
         INSERT INTO measurement_y2006m02 VALUES (NEW.*);

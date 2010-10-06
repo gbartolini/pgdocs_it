@@ -236,13 +236,13 @@ test=> select '6.25 .. 6.50'::seg as "pH";
   <title>Usage</title>
 
   <para>
-   The <filename>seg</filename> module includes a GiST index operator class for
+   The <filename>seg</filename> module includes a gist index operator class for
    <type>seg</type> values.
-   The operators supported by the GiST operator class are shown in <xref linkend="seg-gist-operators"/>.
+   The operators supported by the gist operator class are shown in <xref linkend="seg-gist-operators"/>.
   </para>
 
   <table id="seg-gist-operators">
-   <title>Seg GiST operators</title>
+   <title>Seg gist operators</title>
    <tgroup cols="2">
     <thead>
      <row>
@@ -386,7 +386,7 @@ postgres=> select '10(+-)1'::seg as seg;
   <para>
    My thanks are primarily to Prof. Joe Hellerstein
    (<ulink url="http://db.cs.berkeley.edu/jmh/"></ulink>) for elucidating the
-   gist of the GiST (<ulink url="http://gist.cs.berkeley.edu/"></ulink>). I am
+   gist of the gist (<ulink url="http://gist.cs.berkeley.edu/"></ulink>). I am
    also grateful to all Postgres developers, present and past, for enabling
    myself to create my own world and live undisturbed in it. And I would like
    to acknowledge my gratitude to Argonne Lab and to the U.S. Department of

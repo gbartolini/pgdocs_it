@@ -799,7 +799,7 @@ SELECT * FROM x, y, a, b, c WHERE something AND somethingelse;
    <para>
     When using multiple <command>INSERT</command>s, turn off autocommit and just do
     one commit at the end.  (In plain
-    SQL, this means issuing <command>BEGIN</command> at the start and
+    SQL, this means issuing <command>BEgin</command> at the start and
     <command>COMMIT</command> at the end.  Some client libraries might
     do this behind your back, in which case you need to make sure the
     library does it when you want it done.)  If you allow each

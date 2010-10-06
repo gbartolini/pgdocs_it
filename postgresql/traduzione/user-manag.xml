@@ -61,7 +61,7 @@ CREATE ROLE <replaceable>name</replaceable>;
    <replaceable>name</replaceable> follows the rules for SQL
    identifiers: either unadorned without special characters, or
    double-quoted.  (In practice, you will usually want to add additional
-   options, such as <literal>LOGIN</literal>, to the command.  More details appear
+   options, such as <literal>LOgin</literal>, to the command.  More details appear
    below.)  To remove an existing role, use the analogous
    <xref linkend="sql-droprole"/> command:
 <synopsis>
@@ -150,17 +150,17 @@ SELECT rolname FROM pg_roles;
       <term>login privilege<indexterm><primary>login privilege</primary></indexterm></term>
       <listitem>
        <para>
-        Only roles that have the <literal>LOGIN</literal> attribute can be used
+        Only roles that have the <literal>LOgin</literal> attribute can be used
         as the initial role name for a database connection.  A role with
-        the <literal>LOGIN</literal> attribute can be considered the same
+        the <literal>LOgin</literal> attribute can be considered the same
         as a <quote>database user</quote>.  To create a role with login privilege,
         use either:
 <programlisting>
-CREATE ROLE <replaceable>name</replaceable> LOGIN;
+CREATE ROLE <replaceable>name</replaceable> LOgin;
 CREATE USER <replaceable>name</replaceable>;
 </programlisting>
         (<command>CREATE USER</command> is equivalent to <command>CREATE ROLE</command>
-        except that <command>CREATE USER</command> assumes <literal>LOGIN</literal> by
+        except that <command>CREATE USER</command> assumes <literal>LOgin</literal> by
         default, while <command>CREATE ROLE</command> does not.)
        </para>
       </listitem>
@@ -260,7 +260,7 @@ ALTER ROLE myname SET statement_timeout = '5min';
    be the default. To remove a role-specific default setting, use
    <literal>ALTER ROLE <replaceable>rolename</replaceable> RESET <replaceable>varname</replaceable></literal>.
    Note that role-specific defaults attached to roles without
-   <literal>LOGIN</literal> privilege are fairly useless, since they will never
+   <literal>LOgin</literal> privilege are fairly useless, since they will never
    be invoked.
   </para>
  </sect1>
@@ -361,7 +361,7 @@ REVOKE ALL ON accounts FROM PUBLIC;
 <synopsis>
 CREATE ROLE <replaceable>name</replaceable>;
 </synopsis>
-   Typically a role being used as a group would not have the <literal>LOGIN</literal>
+   Typically a role being used as a group would not have the <literal>LOgin</literal>
    attribute, though you can set it if you wish.
   </para>
 
@@ -393,7 +393,7 @@ REVOKE <replaceable>group_role</replaceable> FROM <replaceable>role1</replaceabl
    <literal>INHERIT</literal> attributes.  As an example, suppose we have
    done:
 <programlisting>
-CREATE ROLE joe LOGIN INHERIT;
+CREATE ROLE joe LOgin INHERIT;
 CREATE ROLE admin NOINHERIT;
 CREATE ROLE wheel NOINHERIT;
 GRANT admin TO joe;
@@ -450,7 +450,7 @@ RESET ROLE;
   </note>
 
   <para>
-   The role attributes <literal>LOGIN</literal>, <literal>SUPERUSER</literal>,
+   The role attributes <literal>LOgin</literal>, <literal>SUPERUSER</literal>,
    <literal>CREATEDB</literal>, and <literal>CREATEROLE</literal> can be thought of as
    special privileges, but they are never inherited as ordinary privileges
    on database objects are.  You must actually <command>SET ROLE</command> to a

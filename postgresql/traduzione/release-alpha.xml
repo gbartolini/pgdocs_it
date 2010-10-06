@@ -329,7 +329,7 @@
        <listitem>
         <para>
          <emphasis>Generic implementation of red-black binary tree.
-         For now, only GIN uses it during index creation.  Using
+         For now, only gin uses it during index creation.  Using
          self-balanced tree greatly speeds up index creation in corner
          cases with preordered data.</emphasis>
         </para>

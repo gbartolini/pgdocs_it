@@ -419,13 +419,13 @@ b
   <title>Indexes</title>
 
   <para>
-   <type>hstore</type> has GiST and GIN index support for the <literal>@&gt;</literal>,
+   <type>hstore</type> has gist and gin index support for the <literal>@&gt;</literal>,
    <literal>?</literal>, <literal>?&amp;</literal> and <literal>?|</literal> operators. For example:
   </para>
 <programlisting>
 CREATE INDEX hidx ON testhstore USING GIST (h);
 
-CREATE INDEX hidx ON testhstore USING GIN (h);
+CREATE INDEX hidx ON testhstore USING gin (h);
 </programlisting>
 
   <para>

@@ -228,7 +228,7 @@
 
     <listitem>
      <para>
-      Fix unnecessary <quote>GIN indexes do not support whole-index scans</quote>
+      Fix unnecessary <quote>gin indexes do not support whole-index scans</quote>
       errors for unsatisfiable queries using <filename>contrib/intarray</filename>
       operators (Tom)
      </para>
@@ -395,13 +395,13 @@
 
     <listitem>
      <para>
-      Fix bug in WAL redo cleanup method for GIN indexes (Heikki)
+      Fix bug in WAL redo cleanup method for gin indexes (Heikki)
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Fix incorrect comparison of scan key in GIN index search (Teodor)
+      Fix incorrect comparison of scan key in gin index search (Teodor)
      </para>
     </listitem>
 
@@ -963,21 +963,21 @@ WITH w AS (SELECT * FROM foo) SELECT * FROM w, bar ... FOR UPDATE
 
     <listitem>
      <para>
-      Fix incorrect logic for GiST index page splits, when the split depends
+      Fix incorrect logic for gist index page splits, when the split depends
       on a non-first column of the index (Paul Ramsey)
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Fix wrong search results for a multi-column GIN index with
+      Fix wrong search results for a multi-column gin index with
       <literal>fastupdate</literal> enabled (Teodor)
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Fix bugs in WAL entry creation for GIN indexes (Tom)
+      Fix bugs in WAL entry creation for gin indexes (Tom)
      </para>
 
      <para>
@@ -3165,7 +3165,7 @@ WITH w AS (SELECT * FROM foo) SELECT * FROM w, bar ... FOR UPDATE
 
       <listitem>
        <para>
-        Implement fast update option for GIN indexes (Teodor, Oleg)
+        Implement fast update option for gin indexes (Teodor, Oleg)
        </para>
 
        <para>
@@ -3192,7 +3192,7 @@ WITH w AS (SELECT * FROM foo) SELECT * FROM w, bar ... FOR UPDATE
       <listitem>
        <para>
         Remove the requirement to use <literal>@@@</literal> when doing
-        <acronym>GIN</acronym> weighted lookups on full text indexes (Tom, Teodor)
+        <acronym>gin</acronym> weighted lookups on full text indexes (Tom, Teodor)
        </para>
 
        <para>
@@ -3217,7 +3217,7 @@ WITH w AS (SELECT * FROM foo) SELECT * FROM w, bar ... FOR UPDATE
 
       <listitem>
        <para>
-        Support multi-column <acronym>GIN</acronym> indexes (Teodor Sigaev)
+        Support multi-column <acronym>gin</acronym> indexes (Teodor Sigaev)
        </para>
       </listitem>
 
@@ -3910,7 +3910,7 @@ WITH w AS (SELECT * FROM foo) SELECT * FROM w, bar ... FOR UPDATE
        </para>
 
        <para>
-        Formerly, if there were a <literal>BEGIN</literal> block more closely nested
+        Formerly, if there were a <literal>BEgin</literal> block more closely nested
         than any loop, it would exit that block instead.  The new behavior
         matches Oracle(TM) and is also what was previously stated by our own
         documentation.
@@ -4745,14 +4745,14 @@ WITH w AS (SELECT * FROM foo) SELECT * FROM w, bar ... FOR UPDATE
       </para>
 
       <para>
-       The API for GIN and GiST opclass <function>consistent</function> functions
+       The API for gin and gist opclass <function>consistent</function> functions
        has been extended as well.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       Add support for partial-match searches in <acronym>GIN</acronym> indexes
+       Add support for partial-match searches in <acronym>gin</acronym> indexes
        (Teodor Sigaev, Oleg Bartunov)
       </para>
      </listitem>
@@ -4835,7 +4835,7 @@ WITH w AS (SELECT * FROM foo) SELECT * FROM w, bar ... FOR UPDATE
 
      <listitem>
       <para>
-       Add <filename>contrib/btree_gin</filename> to allow GIN indexes to
+       Add <filename>contrib/btree_gin</filename> to allow gin indexes to
        handle more datatypes (Oleg, Teodor)
       </para>
      </listitem>

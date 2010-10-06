@@ -798,7 +798,7 @@ trigger_file = '/path/to/trigger_file'
      so that only trusted users can read the WAL stream, because it is
      easy to extract privileged information from it.  Standby servers must
      authenticate to the primary as a superuser account.
-     So a role with the <literal>SUPERUSER</literal> and <literal>LOGIN</literal>
+     So a role with the <literal>SUPERUSER</literal> and <literal>LOgin</literal>
      privileges needs to be created on the primary.
     </para>
     <para>
@@ -1195,7 +1195,7 @@ if (!triggered)
         <itemizedlist>
          <listitem>
           <para>
-           <command>BEGIN</command>, <command>END</command>, <command>ABORT</command>, <command>START TRANSACTION</command>
+           <command>BEgin</command>, <command>END</command>, <command>ABORT</command>, <command>START TRANSACTION</command>
           </para>
          </listitem>
          <listitem>
@@ -1284,7 +1284,7 @@ if (!triggered)
         <itemizedlist>
          <listitem>
           <para>
-            <command>BEGIN READ WRITE</command>,
+            <command>BEgin READ WRITE</command>,
             <command>START TRANSACTION READ WRITE</command>
           </para>
          </listitem>

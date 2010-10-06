@@ -76,7 +76,7 @@ postgres: <replaceable>user</replaceable> <replaceable>database</replaceable> <r
   The user, database, and (client) host items remain the same for
   the life of the client connection, but the activity indicator changes.
   The activity can be <literal>idle</literal> (i.e., waiting for a client command),
-  <literal>idle in transaction</literal> (waiting for client inside a <command>BEGIN</command> block),
+  <literal>idle in transaction</literal> (waiting for client inside a <command>BEgin</command> block),
   or a command type name such as <literal>SELECT</literal>.  Also,
   <literal>waiting</literal> is appended if the server process is presently waiting
   on a lock held by another session.  In the above example we can infer

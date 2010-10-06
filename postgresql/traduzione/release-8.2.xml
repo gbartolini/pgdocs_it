@@ -583,7 +583,7 @@
 
     <listitem>
      <para>
-      Fix incorrect logic for GiST index page splits, when the split depends
+      Fix incorrect logic for gist index page splits, when the split depends
       on a non-first column of the index (Paul Ramsey)
      </para>
     </listitem>
@@ -873,14 +873,14 @@
 
     <listitem>
      <para>
-      Fix poor choice of page split point in GiST R-tree operator classes
+      Fix poor choice of page split point in gist R-tree operator classes
       (Teodor)
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Avoid performance degradation in bulk inserts into GIN indexes
+      Avoid performance degradation in bulk inserts into gin indexes
       when the input values are (nearly) in sorted order (Tom)
      </para>
     </listitem>
@@ -1314,7 +1314,7 @@
     A dump/restore is not required for those running 8.2.X.
     However, if you are upgrading from a version earlier than 8.2.7,
     see the release notes for 8.2.7.  Also, if you were running a previous
-    8.2.X release, it is recommended to <command>REINDEX</command> all GiST
+    8.2.X release, it is recommended to <command>REINDEX</command> all gist
     indexes after the upgrade.
    </para>
 
@@ -1327,7 +1327,7 @@
 
     <listitem>
      <para>
-      Fix GiST index corruption due to marking the wrong index entry
+      Fix gist index corruption due to marking the wrong index entry
       <quote>dead</quote> after a deletion (Teodor)
      </para>
 
@@ -1542,7 +1542,7 @@
 
     <listitem>
      <para>
-      Fix possible duplicate output of tuples during a GiST index scan (Teodor)
+      Fix possible duplicate output of tuples during a gist index scan (Teodor)
      </para>
     </listitem>
 
@@ -1844,7 +1844,7 @@
 
     <listitem>
      <para>
-      Fix GIN bug that could result in a <literal>too many LWLocks
+      Fix gin bug that could result in a <literal>too many LWLocks
       taken</literal> failure (Teodor)
      </para>
     </listitem>
@@ -1927,7 +1927,7 @@
 
     <listitem>
      <para>
-      Fix broken GiST comparison function for <filename>contrib/tsearch2</filename>'s
+      Fix broken gist comparison function for <filename>contrib/tsearch2</filename>'s
       <type>tsquery</type> type (Teodor)
      </para>
     </listitem>
@@ -2327,13 +2327,13 @@
 
     <listitem>
      <para>
-      Fix bugs in WAL replay for GIN indexes (Teodor)
+      Fix bugs in WAL replay for gin indexes (Teodor)
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Fix GIN index build to work properly when
+      Fix gin index build to work properly when
       <varname>maintenance_work_mem</varname> is 4GB or more (Tom)
      </para>
     </listitem>
@@ -2603,7 +2603,7 @@
 
     <listitem>
      <para>
-      Fixes for <acronym>GIN</acronym> indexes used by <filename>/contrib/tsearch2</filename> (Teodor)
+      Fixes for <acronym>gin</acronym> indexes used by <filename>/contrib/tsearch2</filename> (Teodor)
      </para>
     </listitem>
 
@@ -2698,7 +2698,7 @@
 
     <listitem>
      <para>
-      Do not let <filename>/contrib/intarray</filename> try to make its GIN opclass
+      Do not let <filename>/contrib/intarray</filename> try to make its gin opclass
       the default (this caused problems at dump/restore) (Tom)
      </para>
     </listitem>
@@ -3390,7 +3390,7 @@
 
      <listitem>
       <para>
-       Make <link linkend="SQL-SET-CONSTRAINTS"><command>SET
+       Make <link linkend="sql-set-constraints"><command>SET
        CONSTRAINT</command></link> affect only one constraint (Kris Jurka)
       </para>
 
@@ -3695,8 +3695,8 @@
      <listitem>
       <para>
        Add <literal>FILLFACTOR</literal> to <link
-       linkend="SQL-CREATETABLE">table</link> and <link
-       linkend="SQL-CREATEINDEX">index</link> creation (ITAGAKI
+       linkend="sql-createtable">table</link> and <link
+       linkend="sql-createindex">index</link> creation (ITAGAKI
        Takahiro)
       </para>
 
@@ -3804,13 +3804,13 @@
      <listitem>
       <para>
        Avoid extra scan of tables without indexes during <link
-       linkend="SQL-VACUUM"><command>VACUUM</command></link> (Greg Stark)
+       linkend="sql-vacuum"><command>VACUUM</command></link> (Greg Stark)
       </para>
      </listitem>
 
      <listitem>
       <para>
-       Improve multicolumn <link linkend="GiST"><acronym>GiST</acronym></link>
+       Improve multicolumn <link linkend="gist"><acronym>gist</acronym></link>
        indexing (Oleg, Teodor)
       </para>
      </listitem>
@@ -3940,7 +3940,7 @@
 
      <listitem>
       <para>
-       <link linkend="GiST"><acronym>GiST</acronym></link> indexes are
+       <link linkend="gist"><acronym>gist</acronym></link> indexes are
        now clusterable (Teodor)
       </para>
      </listitem>
@@ -4147,9 +4147,9 @@
 
      <listitem>
       <para>
-       Add <link linkend="SQL-INSERT"><command>INSERT</command></link>/<link
-       linkend="SQL-UPDATE"><command>UPDATE</command></link>/<link
-       linkend="SQL-DELETE"><command>DELETE</command></link>
+       Add <link linkend="sql-insert"><command>INSERT</command></link>/<link
+       linkend="sql-update"><command>UPDATE</command></link>/<link
+       linkend="sql-delete"><command>DELETE</command></link>
        <literal>RETURNING</literal> (Jonah Harris, Tom)
       </para>
 
@@ -4178,8 +4178,8 @@
 
      <listitem>
       <para>
-       Allow <link linkend="SQL-UPDATE"><command>UPDATE</command></link>
-       and <link linkend="SQL-DELETE"><command>DELETE</command></link>
+       Allow <link linkend="sql-update"><command>UPDATE</command></link>
+       and <link linkend="sql-delete"><command>DELETE</command></link>
        to use an alias for the target table (Atsushi Ogawa)
       </para>
 
@@ -4191,7 +4191,7 @@
 
      <listitem>
       <para>
-       Allow <link linkend="SQL-UPDATE"><command>UPDATE</command></link>
+       Allow <link linkend="sql-update"><command>UPDATE</command></link>
        to set multiple columns with a list of values (Susanne
        Ebrecht)
       </para>
@@ -4218,7 +4218,7 @@
 
      <listitem>
       <para>
-       Add <link linkend="SQL-TRUNCATE"><literal>CASCADE</literal></link>
+       Add <link linkend="sql-truncate"><literal>CASCADE</literal></link>
        option to <command>TRUNCATE</command> (Joachim Wieland)
       </para>
 
@@ -4232,7 +4232,7 @@
      <listitem>
       <para>
        Support <literal>FOR UPDATE</literal> and <literal>FOR SHARE</literal>
-       in the same <link linkend="SQL-INSERT"><literal>SELECT</literal></link>
+       in the same <link linkend="sql-insert"><literal>SELECT</literal></link>
        command (Tom)
       </para>
      </listitem>
@@ -4324,8 +4324,8 @@
      <listitem>
       <para>
        Support portal parameters in <link
-       linkend="SQL-EXPLAIN"><command>EXPLAIN</command></link> and <link
-       linkend="SQL-EXECUTE"><command>EXECUTE</command></link> (Tom)
+       linkend="sql-explain"><command>EXPLAIN</command></link> and <link
+       linkend="sql-execute"><command>EXECUTE</command></link> (Tom)
       </para>
 
       <para>
@@ -4337,7 +4337,7 @@
      <listitem>
       <para>
        If <acronym>SQL</acronym>-level <link
-       linkend="SQL-PREPARE"><command>PREPARE</command></link> parameters
+       linkend="sql-prepare"><command>PREPARE</command></link> parameters
        are unspecified, infer their types from the content of the
        query (Neil)
       </para>
@@ -4365,7 +4365,7 @@
      <listitem>
       <para>
        Add <literal>TABLESPACE</literal> clause to <link
-       linkend="SQL-CREATETABLEAS"><command>CREATE TABLE AS</command></link>
+       linkend="sql-createtableAS"><command>CREATE TABLE AS</command></link>
        (Neil)
       </para>
 
@@ -4377,7 +4377,7 @@
      <listitem>
       <para>
        Add <literal>ON COMMIT</literal> clause to <link
-       linkend="SQL-CREATETABLEAS"><command>CREATE TABLE AS</command></link>
+       linkend="sql-createtableAS"><command>CREATE TABLE AS</command></link>
        (Neil)
       </para>
 
@@ -4391,7 +4391,7 @@
      <listitem>
       <para>
        Add <literal>INCLUDING CONSTRAINTS</literal> to <link
-       linkend="SQL-CREATETABLE"><command>CREATE TABLE LIKE</command></link>
+       linkend="sql-createtable"><command>CREATE TABLE LIKE</command></link>
        (Greg Stark)
       </para>
 
@@ -4404,7 +4404,7 @@
      <listitem>
       <para>
        Allow the creation of placeholder (shell) <link
-       linkend="SQL-CREATETYPE">types</link> (Martijn van Oosterhout)
+       linkend="sql-createtype">types</link> (Martijn van Oosterhout)
       </para>
 
       <para>
@@ -4419,7 +4419,7 @@
 
      <listitem>
       <para>
-       <link linkend="SQL-CREATEAGGREGATE">Aggregate functions</link>
+       <link linkend="sql-createaggregate">Aggregate functions</link>
        now support multiple input parameters (Sergey Koposov, Tom)
       </para>
      </listitem>
@@ -4427,7 +4427,7 @@
      <listitem>
       <para>
        Add new aggregate creation <link
-       linkend="SQL-CREATEAGGREGATE">syntax</link> (Tom)
+       linkend="sql-createaggregate">syntax</link> (Tom)
       </para>
 
       <para>
@@ -4442,7 +4442,7 @@
      <listitem>
       <para>
        Add <link
-       linkend="SQL-ALTERROLE"><command>ALTER ROLE PASSWORD NULL</command></link>
+       linkend="sql-alterrole"><command>ALTER ROLE PASSWORD NULL</command></link>
        to remove a previously set role password (Peter)
       </para>
      </listitem>
@@ -4461,14 +4461,14 @@
 
      <listitem>
       <para>
-       Add <link linkend="SQL-DROP-OWNED"><literal>DROP OWNED</literal></link>
+       Add <link linkend="sql-drop-owned"><literal>DROP OWNED</literal></link>
        to drop all objects owned by a role (Alvaro)
       </para>
      </listitem>
 
      <listitem>
       <para>
-       Add <link linkend="SQL-REASSIGN-OWNED"><literal>REASSIGN
+       Add <link linkend="sql-reassign-owned"><literal>REASSIGN
        OWNED</literal></link> to reassign ownership of all objects owned
        by a role (Alvaro)
       </para>
@@ -4481,7 +4481,7 @@
 
      <listitem>
       <para>
-       Add <link linkend="SQL-GRANT"><command>GRANT ON SEQUENCE</command></link>
+       Add <link linkend="sql-grant"><command>GRANT ON SEQUENCE</command></link>
        syntax (Bruce)
       </para>
 
@@ -4494,7 +4494,7 @@
 
      <listitem>
       <para>
-       Add <link linkend="SQL-GRANT"><literal>USAGE</literal></link>
+       Add <link linkend="sql-grant"><literal>USAGE</literal></link>
        permission for sequences that allows only <function>currval()</function>
        and <function>nextval()</function>, not <function>setval()</function>
        (Bruce)
@@ -4511,7 +4511,7 @@
 
      <listitem>
       <para>
-       Add <link linkend="SQL-ALTERTABLE"><literal>ALTER TABLE
+       Add <link linkend="sql-altertable"><literal>ALTER TABLE
        [ NO ] INHERIT</literal></link> (Greg Stark)
       </para>
 
@@ -4524,7 +4524,7 @@
 
      <listitem>
       <para>
-       Allow <link linkend="SQL-COMMENT">comments</link> on global
+       Allow <link linkend="sql-comment">comments</link> on global
        objects to be stored globally (Kris Jurka)
       </para>
 
@@ -4553,7 +4553,7 @@
       </para>
 
       <para>
-       The new syntax is <link linkend="SQL-CREATEINDEX"><command>CREATE
+       The new syntax is <link linkend="sql-createindex"><command>CREATE
        INDEX CONCURRENTLY</command></link>.  The default behavior is
        still to block table modification while a index is being
        created.
@@ -4574,7 +4574,7 @@
 
      <listitem>
       <para>
-       Allow <link linkend="SQL-COPY"><command>COPY</command></link> to
+       Allow <link linkend="sql-copy"><command>COPY</command></link> to
        dump a <command>SELECT</command> query (Zoltan Boszormenyi, Karel
        Zak)
       </para>
@@ -4587,7 +4587,7 @@
 
      <listitem>
       <para>
-       Make the <link linkend="SQL-COPY"><command>COPY</command></link>
+       Make the <link linkend="sql-copy"><command>COPY</command></link>
        command return a command tag that includes the number of
        rows copied (Volkan YAZICI)
       </para>
@@ -4595,7 +4595,7 @@
 
      <listitem>
       <para>
-       Allow <link linkend="SQL-VACUUM"><command>VACUUM</command></link>
+       Allow <link linkend="sql-vacuum"><command>VACUUM</command></link>
        to expire rows without being affected by other concurrent
        <command>VACUUM</command> operations (Hannu Krossing, Alvaro, Tom)
       </para>
@@ -4603,7 +4603,7 @@
 
      <listitem>
       <para>
-       Make <link linkend="APP-INITDB"><application>initdb</application></link>
+       Make <link linkend="app-initdb"><application>initdb</application></link>
        detect the operating system locale and set the default
        <varname>DateStyle</varname> accordingly (Peter)
       </para>
@@ -4768,7 +4768,7 @@
 
       <para>
        These operators can be indexed for many data types using
-       <acronym>GiST</acronym> or <acronym>GIN</acronym> indexes.
+       <acronym>gist</acronym> or <acronym>gin</acronym> indexes.
       </para>
      </listitem>
 
@@ -4826,7 +4826,7 @@
 
      <listitem>
       <para>
-       Allow <link linkend="SQL-CREATEDOMAIN">domains</link> to be
+       Allow <link linkend="sql-createdomain">domains</link> to be
        based on other domains (Tom)
       </para>
      </listitem>
@@ -4857,7 +4857,7 @@
        The fix is to dump a <type>SERIAL</type> column by explicitly
        specifying its <literal>DEFAULT</literal> and sequence elements,
        and reconstructing the <type>SERIAL</type> column on reload
-       using a new <link linkend="SQL-ALTERSEQUENCE"><command>ALTER
+       using a new <link linkend="sql-altersequence"><command>ALTER
        SEQUENCE OWNED BY</command></link> command.  This also allows
        dropping a <type>SERIAL</type> column specification.
       </para>
@@ -5025,7 +5025,7 @@
    </sect3>
 
    <sect3>
-    <title><link linkend="APP-PSQL"><application>psql</application></link> Changes</title>
+    <title><link linkend="app-psql"><application>psql</application></link> Changes</title>
     <itemizedlist>
 
      <listitem>
@@ -5133,7 +5133,7 @@
    </sect3>
 
    <sect3>
-    <title><link linkend="APP-PGDUMP"><application>pg_dump</application></link> Changes</title>
+    <title><link linkend="app-pgdump"><application>pg_dump</application></link> Changes</title>
     <itemizedlist>
 
      <listitem>
@@ -5156,7 +5156,7 @@
 
      <listitem>
       <para>
-       Add <link linkend="APP-PGRESTORE"><application>pg_restore</application></link>
+       Add <link linkend="app-pgrestore"><application>pg_restore</application></link>
        <literal>--no-data-for-failed-tables</literal> option to suppress
        loading data if table creation failed (i.e., the table already
        exists) (Martin Pitt)
@@ -5165,7 +5165,7 @@
 
      <listitem>
       <para>
-       Add <link linkend="APP-PGRESTORE"><application>pg_restore</application></link>
+       Add <link linkend="app-pgrestore"><application>pg_restore</application></link>
        option to run the entire session in a single transaction
        (Simon)
       </para>
@@ -5192,7 +5192,7 @@
 
       <para>
        This allows passwords to be sent pre-encrypted for commands
-       like <link linkend="SQL-ALTERROLE"><command>ALTER ROLE ...
+       like <link linkend="sql-alterrole"><command>ALTER ROLE ...
        PASSWORD</command></link>.
       </para>
      </listitem>
@@ -5254,14 +5254,14 @@
 
      <listitem>
       <para>
-       Allow <link linkend="SQL-SHOW"><command>SHOW</command></link> to
+       Allow <link linkend="sql-show"><command>SHOW</command></link> to
        put its result into a variable (Joachim Wieland)
       </para>
      </listitem>
 
      <listitem>
       <para>
-       Add <link linkend="SQL-COPY"><command>COPY TO STDOUT</command></link>
+       Add <link linkend="sql-copy"><command>COPY TO STDOUT</command></link>
        (Joachim Wieland)
       </para>
      </listitem>
@@ -5296,7 +5296,7 @@
      <listitem>
       <para>
        Add <acronym>MSVC</acronym> support for utility commands and <link
-       linkend="APP-PGDUMP"><application>pg_dump</application></link> (Hiroshi
+       linkend="app-pgdump"><application>pg_dump</application></link> (Hiroshi
        Saito)
       </para>
      </listitem>
@@ -5342,7 +5342,7 @@
 
      <listitem>
       <para>
-       Add <link linkend="GIN"><acronym>GIN</acronym></link> (Generalized
+       Add <link linkend="gin"><acronym>gin</acronym></link> (Generalized
        Inverted iNdex) index access method (Teodor, Oleg)
       </para>
      </listitem>
@@ -5354,7 +5354,7 @@
 
       <para>
        Rtree has been re-implemented using <link
-       linkend="GiST"><acronym>GiST</acronym></link>. Among other
+       linkend="gist"><acronym>gist</acronym></link>. Among other
        differences, this means that rtree indexes now have support
        for crash recovery via write-ahead logging (WAL).
       </para>
@@ -5590,7 +5590,7 @@
        </listitem>
        <listitem>
         <para>
-         <acronym>GIN</acronym> support
+         <acronym>gin</acronym> support
         </para>
        </listitem>
 

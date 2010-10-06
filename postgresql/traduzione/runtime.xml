@@ -1351,7 +1351,7 @@ echo -17 > /proc/self/oom_adj
     </varlistentry>
 
     <varlistentry>
-     <term><systemitem>SIGINT</systemitem><indexterm><primary>SIGINT</primary></indexterm></term>
+     <term><systemitem>SIginT</systemitem><indexterm><primary>SIginT</primary></indexterm></term>
      <listitem>
       <para>
        This is the <firstterm>Fast Shutdown</firstterm> mode.

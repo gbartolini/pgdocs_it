@@ -9,7 +9,7 @@
  </indexterm>
 
  <para>
-  <filename>btree_gist</filename> provides sample GiST operator classes that
+  <filename>btree_gist</filename> provides sample gist operator classes that
   implement B-tree equivalent behavior for the data types
   <type>int2</type>, <type>int4</type>, <type>int8</type>, <type>float4</type>,
   <type>float8</type>, <type>numeric</type>, <type>timestamp with time zone</type>,
@@ -24,15 +24,15 @@
   In general, these operator classes will not outperform the equivalent
   standard B-tree index methods, and they lack one major feature of the
   standard B-tree code: the ability to enforce uniqueness.  However,
-  they are useful for GiST testing and as a base for developing other
-  GiST operator classes.
+  they are useful for gist testing and as a base for developing other
+  gist operator classes.
  </para>
 
  <para>
   In addition to the typical btree search operators, btree_gist also
   provides search operators for <literal>&lt;&gt;</literal> (<quote>not
   equals</quote>). This may be useful in combination with an
-  <link linkend="SQL-CREATETABLE-EXCLUDE">exclusion constraint</link>,
+  <link linkend="sql-createtable-EXCLUDE">exclusion constraint</link>,
   as described below.
  </para>
 
@@ -52,7 +52,7 @@ SELECT * FROM test WHERE a &lt; 10;
 </programlisting>
 
   <para>
-   Use an <link linkend="SQL-CREATETABLE-EXCLUDE">exclusion
+   Use an <link linkend="sql-createtable-EXCLUDE">exclusion
    constraint</link> to enforce the rule that a cage at a zoo
    can contain only one kind of animal:
   </para>

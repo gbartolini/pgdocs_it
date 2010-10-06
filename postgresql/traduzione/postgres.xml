@@ -29,7 +29,7 @@
  <title>Documentazione di PostgreSQL &version;</title>
 
  <bookinfo>
-  <corpauthor>Il grubbo di sviluppo di PostgreSQL</corpauthor>
+  <corpauthor>Il team di sviluppo di PostgreSQL</corpauthor>
   <productname>PostgreSQL</productname>
   <productnumber>&version;</productnumber>
   &legal;

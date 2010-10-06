@@ -36,17 +36,16 @@ appropriate.
    </para>
 
    <para>
-    If your site administrator has not set things up in the default
-    way, you might have some more work to do.  For example, if the
-    database server machine is a remote machine, you will need to set
-    the <envar>PGHOST</envar> environment variable to the name of the
-    database server machine.  The environment variable
-    <envar>PGPORT</envar> might also have to be set.  The bottom line is
-    this: if you try to start an application program and it complains
-    that it cannot connect to the database, you should consult your
-    site administrator or, if that is you, the documentation to make
-    sure that your environment is properly set up.  If you did not
-    understand the preceding paragraph then read the next section.
+Se l'amministratore del proprio sito non ha impostato le cose nel modo predefinito,
+si potrebbe aver bisogno di fare del lavoro in più. Per esempio, se la 
+macchina del server database è remota, si dovrà impostare la variabile d'ambiente
+<envar>PGHOST</envar> al nome della macchina su cui gira il server database.
+Potrebbe essere necessario impostare anche la variabile d'ambiente <envar>PGPORT</envar>. 
+Un ultima cosa: se si prova ad avviare un'applicazione ed essa si lamenta
+che non possa connettersi al database, si dovrebbe consultare l'amministratore del sito o,
+se lo siete voi stessi, la documentazione per essere sicuri che il proprio ambiente sia
+impostato in modo appropriato. Se non si è capito il paragrafo precedente 
+allora leggere la prossima sezione.
    </para>
   </sect1>
 

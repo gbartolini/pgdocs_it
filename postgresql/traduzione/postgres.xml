@@ -83,25 +83,24 @@ del database per prestazioni ottimali.
    </para>
 
    <para>
-    The information in this part is arranged so that a novice user can
-    follow it start to end to gain a full understanding of the topics
-    without having to refer forward too many times.  The chapters are
-    intended to be self-contained, so that advanced users can read the
-    chapters individually as they choose.  The information in this
-    part is presented in a narrative fashion in topical units.
-    Readers looking for a complete description of a particular command
-    should see <xref linkend="reference"/>.
+Le informazioni in questa parte sono disposte in modo che un utente principiante possa
+seguirle dall'inizio alla fine per avere una completa comprensione degli argomenti
+senza dovere cercare in avanti troppe volte. I capitoli sono
+intesi per essere indipendenti, così utenti avanzati possono leggerli individualmente
+a loro scelta. Le informazioni in questa parte sono presentate in forma narrativa
+per unità di argomento. 
+I lettori che cercano le descrizione completa di un particolare comando 
+dovrebbero vedere <xref linkend="reference"/>.
    </para>
 
    <para>
-    Readers of this part should know how to connect to a
-    <productname>PostgreSQL</productname> database and issue
-    <acronym>SQL</acronym> commands.  Readers that are unfamiliar with
-    these issues are encouraged to read <xref linkend="tutorial"/>
-    first.  <acronym>SQL</acronym> commands are typically entered
-    using the <productname>PostgreSQL</productname> interactive terminal
-    <application>psql</application>, but other programs that have
-    similar functionality can be used as well.
+I lettori di questa parte dovrebbero sapere come connettersi a un database
+<productname>PostgreSQL</productname> e come eseguire comandi
+<acronym>SQL</acronym>. I lettori che non sono familiari con
+questi aspetti sono incoraggiati a leggere prima il <xref linkend="tutorial"/>.
+I comandi <acronym>SQL</acronym> sono immessi tipicamente usando
+il terminale interattivo <application>psql</application>, ma altri programmi che hanno
+funzionalità simili possono essere comunque usati.
    </para>
   </partintro>
 
@@ -120,37 +119,37 @@ del database per prestazioni ottimali.
  </part>
 
  <part id="admin">
-  <title>Server Administration</title>
+  <title>Amministrazione del server</title>
 
   <partintro>
    <para>
-    This part covers topics that are of interest to a
-    <productname>PostgreSQL</productname> database administrator.  This includes
-    installation of the software, set up and configuration of the
-    server, management of users and databases, and maintenance tasks.
-    Anyone who runs a <productname>PostgreSQL</productname> server, even for
-    personal use, but especially in production, should be familiar
-    with the topics covered in this part.
+Questa parte tratta argomenti che sono di interesse per un amministratore di 
+database <productname>PostgreSQL</productname>. Questi includono
+l'installazione del software, l'allestimento e la configurazione del 
+derver, la gestione degli utenti e dei database e operazioni di manutenzione.
+Chiunque esegua un server <productname>PostgreSQL</productname>, sia per uso personale,
+ma specialmente in produzione, dovrebbe avere familiarità con 
+gli argomenti trattati in questa parte.
    </para>
 
    <para>
-    The information in this part is arranged approximately in the
-    order in which a new user should read it.  But the chapters are
-    self-contained and can be read individually as desired.  The
-    information in this part is presented in a narrative fashion in
-    topical units.  Readers looking for a complete description of a
-    particular command should see <xref linkend="reference"/>.
+Le informazioni in questa parte sono disposte approssimatamente nell'ordine
+nel quale un nuovo utente dovrebbe leggerle. Ma i capitoli sono 
+indipendenti e possono essere letti individualmente se desiderato. Le informazioni
+in questa parte sono presentate in forma narrativa per unità di argomento.
+I lettori che cercano le descrizione completa di un particolare comando 
+dovrebbero vedere <xref linkend="reference"/>.
    </para>
 
    <para>
-    The first few chapters are written so they can be understood
-    without prerequisite knowledge, so new users who need to set
-    up their own server can begin their exploration with this part.
-    The rest of this part is about tuning and management; that material
-    assumes that the reader is familiar with the general use of
-    the <productname>PostgreSQL</productname> database system.  Readers are
-    encouraged to look at <xref linkend="tutorial"/> and <xref
-    linkend="sql"/> for additional information.
+I primi capitoli sono scritti in modo che possano essere capiti 
+senza prerequisiti di conoscienza, così i nuovi utenti che necessitano di mettere su
+il proprio server possano cominciare la loror esplorazione da questa parte.
+Il resto di questa parte tratta la messa a punto e la gestione; Quel materiale
+dà per scontato che il lettore abbia familiarità con l'uso generale del 
+sistema di database <productname>PostgreSQL</productname>. I lettori sono incoraggiati
+a guardare <xref linkend="tutorial"/> e <xref
+linkend="sql"/> per informazioni aggiuntive.
    </para>
   </partintro>
 
@@ -178,15 +177,15 @@ del database per prestazioni ottimali.
 
   <partintro>
    <para>
-    This part describes the client programming interfaces distributed
-    with <productname>PostgreSQL</productname>.  Each of these chapters can be
-    read independently.  Note that there are many other programming
-    interfaces for client programs that are distributed separately and
-    contain their own documentation (<xref linkend="external-projects"/>
-    lists some of the more popular ones).  Readers of this part should be
-    familiar with using <acronym>SQL</acronym> commands to manipulate
-    and query the database (see <xref linkend="sql"/>) and of course
-    with the programming language that the interface uses.
+Questa parte descrive le interfaccie di programmazione client distribuite con 
+<productname>PostgreSQL</productname>. Ognuno fi questi capitoli puà essere letto 
+indipendentemente. Notare che ci sono molte altre interfaccie di programmazione
+per programmi client che sono distribuite separatamente e contengono
+la loro propria documentazione (<xref linkend="external-projects"/>
+ne elenca alcune tra le più popolari). I lettori di questa parte dovrebbero 
+avere familiarità con l'utilizzo di comandi <acronym>SQL</acronym> per manipolare
+e interrogare il database (vedere <xref linkend="sql"/>) e ovviamente 
+con il linguaggio di programmazione usato dall'interfaccia.
    </para>
   </partintro>
 
@@ -198,21 +197,21 @@ del database per prestazioni ottimali.
  </part>
 
  <part id="server-programming">
-  <title>Server Programming</title>
+  <title>Programmazione del server</title>
 
   <partintro>
    <para>
-    This part is about extending the server functionality with
-    user-defined functions, data types, triggers, etc.  These are
-    advanced topics which should probably be approached only after all
-    the other user documentation about <productname>PostgreSQL</productname> has
-    been understood.  Later chapters in this part describe the server-side
-    programming languages available in the
-    <productname>PostgreSQL</productname> distribution as well as
-    general issues concerning server-side programming languages.  It
-    is essential to read at least the earlier sections of <xref
-    linkend="extend"/> (covering functions) before diving into the
-    material about server-side programming languages.
+Questa parte tratta l'estensione delle dunzionalità del server con
+funzioni definite dall'utente, tipi di dato, trigger, ecc. Questi sono
+argomenti avanzati che dovrebbero, probabilmente, essere affrontati solo dopo 
+che tutta l'altra documentazione su <productname>PostgreSQL</productname>
+è stata capita. Gli ultimi capitoli in questa parte descrivono i linguaggi 
+di programmazione lato server disponibili in 
+<productname>PostgreSQL</productname> così come questioni generali
+sui linguaggi di programmazione lato server. È essenziale
+leggere almeno le prime sezioni di <xref
+linkend="extend"/> (che trattano le funzioni) prima di addentrarsi nel 
+materiale sui lunguaggi di programmazione lato server.
    </para>
   </partintro>
 
@@ -233,12 +232,12 @@ del database per prestazioni ottimali.
  &reference;
 
  <part id="internals">
-  <title>Internals</title>
+  <title>Internal</title>
 
   <partintro>
    <para>
-    This part contains assorted information that might be of use to
-    <productname>PostgreSQL</productname> developers.
+Questa parte contiene informazioni assortite che potrebbero essere utili
+agli sviluppatori di <productname>PostgreSQL</productname>.
    </para>
   </partintro>
 
@@ -259,7 +258,7 @@ del database per prestazioni ottimali.
  </part>
 
  <part id="appendixes">
-  <title>Appendixes</title>
+  <title>Appendici</title>
 
   &errcodes;
   &datetime;

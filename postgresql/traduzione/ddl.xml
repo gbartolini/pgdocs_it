@@ -111,7 +111,7 @@ CREATE TABLE products (
 );
 </programlisting>
    (Il tipo <type>numeric</type> può contenere componenti frazionarie,
-    tipico di somme in valuta, ad esempio.)
+    tipico di somme in valuta, ad esempio).
   </para>
 
   <tip>
@@ -144,9 +144,8 @@ DROP TABLE products;
     Il tentativo di rimozione di una tabella non esistente è considerato un errore.
     Ciò nonostante, nei file di script SQL è molto comune
     eliminare in modo incondizionato ogni tabella prima di crearla, ignorando qualsiasi messaggio di errore.
-    In questo modo, lo script è in grado di funzionare a prescindere dall'esistenza della tabella.
-    (È possibile utilizzare la variante <literal>DROP TABLE IF EXISTS</literal>
-    per evitare i messaggi di errore, anche se non contemplata dallo standard SQL.)
+    In questo modo, lo script è in grado di funzionare a prescindere dall'esistenza della tabella (è possibile utilizzare la variante <literal>DROP TABLE IF EXISTS</literal>
+    per evitare i messaggi di errore, anche se non contemplata dallo standard SQL).
   </para>
 
   <para>
@@ -310,7 +309,7 @@ CREATE TABLE products (
         Così, per specificare un vincolo con nome, usare la parola chiave
         <literal>CONSTRAINT</literal> seguita da un identificatore e
         dalla definizione del vincolo (qualora non venga specificato un nome in modo esplicito,
-        il sistema ne sceglierà uno.)
+        il sistema ne sceglierà uno).
    </para>
 
    <para>
@@ -453,9 +452,9 @@ CREATE TABLE products (
         debba essere nulla, che sarebbe sicuramente inutile. Invece, questo 
         seleziona semplicemente il comportamento di default della colonna sia null.
         Il vincolo <literal>NULL</literal> non è presente nello standard SQL 
-        e non dovrebbe essere usato in applicazioni portabili. (È stato
+        e non dovrebbe essere usato in applicazioni portabili (è stato
         aggiunto a <productname>PostgreSQL</productname> per essere 
-        compatibile con alcuni altri sistemi di database.) Ad alcuni utenti, comunque,
+        compatibile con alcuni altri sistemi di database). Ad alcuni utenti, comunque,
         piace perchè rende facile cambiare il vincolo in uno script.
         Per esempio, potresti partire con:
 <programlisting>
@@ -610,10 +609,10 @@ CREATE TABLE example (
 
    <para>
         Una chiave primaria indica che una colonna o gruppo di colonne può essere
-        usata come identificatore unico per le righe nella tabella. (Questa è una
-        diretta conseguenza della definizione di chiave primaria. Notare che 
-        un vincolo unique non fornisce, da sola, un identificatore unico,
-        perchè non esclude i valori null.) Questo è utile sia per
+        usata come identificatore unico per le righe nella tabella. Questa è una
+        diretta conseguenza della definizione di chiave primaria (notare che 
+        un vincolo unique non fornisce, da solo, un identificatore unico,
+        perchè non esclude i valori null). Questo è utile sia per
         scopi di socumentazione, sia per applicazioni client. Per esempio,
         un'applicazione GUI che permette la modifica dei valori di una riga probabilmente ha bisogno
         di sapere la chiave primaria di una tabella per essere capace di identificare le righe

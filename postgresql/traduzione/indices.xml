@@ -101,8 +101,8 @@ Una volta creato l'indice, nessun intervento ulteriore è richiesto: Il
    In ambienti di produzione questo è spesso inaccettabile. 
    È possibile consentire alle scritture di verificarsi in parallelo con la creazione
    dell'indice, ma bisogna considerare diversi avvertimenti &mdash;
-   per ulteriori informazioni consultare <xref linkend="SQL-CREATEINDEX-CONCURRENTLY"
-   endterm="SQL-CREATEINDEX-CONCURRENTLY-title" />.
+   per ulteriori informazioni consultare <xref linkend="sql-createindex-CONCURRENTLY"
+   endterm="sql-createindex-CONCURRENTLY-title" />.
   </para>
 
   <para>
@@ -120,7 +120,7 @@ Una volta creato l'indice, nessun intervento ulteriore è richiesto: Il
   <para>
    
     <productname>PostgreSQL</productname> fornisce diversi tipi di indici:
-   B-tree, Hash, GiST and GIN. Ogni tipo di indice utilizza differenti
+   B-tree, Hash, gist and gin. Ogni tipo di indice utilizza differenti
    algoritmi che si adattano ai diversi tipi di query. Per impostazione
    predefinita, il comando <command>CREATE INDEX</command> crea un
    indice B-tree, che è adatto alle situazioni più comuni.
@@ -210,19 +210,19 @@ CREATE INDEX <replaceable>name</replaceable> ON <replaceable>table</replaceable>
   <para>
    <indexterm>
     <primary>indice</primary>
-    <secondary>GiST</secondary>
+    <secondary>gist</secondary>
    </indexterm>
    <indexterm>
-    <primary>GiST</primary>
+    <primary>gist</primary>
     <see>indice</see>
    </indexterm>
 
-   Gli indici GiST non sono un singolo tipo di indice, ma piuttosto una infrastruttura
+   Gli indici gist non sono un singolo tipo di indice, ma piuttosto una infrastruttura
    nella quale diverse strategie di indicizzazione possono essere implementate.
-   Di conseguenza, i particolari operatori con i quali l'indice GiST può
+   Di conseguenza, i particolari operatori con i quali l'indice gist può
    essere usato variano secondo la strategia di indicizzazione (la
    <firstterm>classe operatore</firstterm>). Come esempio, la distribuzione standard di
-   <productname>PostgreSQL</productname> include la classe operatore GiST
+   <productname>PostgreSQL</productname> include la classe operatore gist
    per diversi tipi di dati geometrici bidimensionali, essa supporta le query
    indicizzate che utilizzano questi operatori:
    
@@ -244,27 +244,27 @@ CREATE INDEX <replaceable>name</replaceable> ON <replaceable>table</replaceable>
    
     (Consultare <xref linkend="functions-geometry" /> per il significato di
    questi operatori).
-   Diverse altre classi di operatori GiST
+   Diverse altre classi di operatori gist
    sono disponibili nel gruppo <literal>contrib</literal> o come progetti
-   separati. Per ulteriori informazioni consultare il <xref linkend="GiST" />.
+   separati. Per ulteriori informazioni consultare il <xref linkend="gist" />.
   </para>
   <para>
    <indexterm>
     <primary>indice</primary>
-    <secondary>GIN</secondary>
+    <secondary>gin</secondary>
    </indexterm>
    <indexterm>
-    <primary>GIN</primary>
+    <primary>gin</primary>
     <see>indice</see>
    </indexterm>
 
-   Gli indici GIN sono indici invertiti che possono gestire valori che contengono
-   più di una chiave, per esempio gli array. Come per GiST, GIN può supportare
+   Gli indici gin sono indici invertiti che possono gestire valori che contengono
+   più di una chiave, per esempio gli array. Come per gist, gin può supportare
    molte differenti strategie di indicizzazione definite dall'utente, ed i particolari
-   operatori con i quali un indice GIN può essere usato, variano in dipendenza
+   operatori con i quali un indice gin può essere usato, variano in dipendenza
    della strategia di indicizzazione.
    Come esempio, la distribuzione standard di
-   <productname>PostgreSQL</productname> include classi di operatore GIN
+   <productname>PostgreSQL</productname> include classi di operatore gin
    per array mono-dimensionali, le quali supportano query indicizzate
    che utilizzano questi operatori: 
    
@@ -278,9 +278,9 @@ CREATE INDEX <replaceable>name</replaceable> ON <replaceable>table</replaceable>
    
     (Consultare <xref linkend="functions-array" /> per trovare il significato di
    questi operatori).
-   Diverse altre classi di operatori GIN
+   Diverse altre classi di operatori gin
    sono disponibili nel gruppo <literal>contrib</literal> o come progetti
-   separati. Per ulteriori informazioni consultare il <xref linkend="GIN" />.
+   separati. Per ulteriori informazioni consultare il <xref linkend="gin" />.
   </para>
  </sect1>
 
@@ -318,7 +318,7 @@ CREATE INDEX test2_mm_idx ON test2 (major, minor);
 
   <para>
    
-    Attualmente, solo gli indici di tipo B-tree e GiST supportano gli indici multicolonna.
+    Attualmente, solo gli indici di tipo B-tree e gist supportano gli indici multicolonna.
    Possono essere specificate fino a 32 colonne. (Questo limite può essere
    modificato quando si configura <productname>PostgreSQL</productname>; Consultare
    il file <filename>pg_config_manual.h</filename>.)
@@ -348,18 +348,18 @@ CREATE INDEX test2_mm_idx ON test2 (major, minor);
   </para>
 
   <para>
-    Un indice GiST multicolonna può essere usato con query che
+    Un indice gist multicolonna può essere usato con query che
    coinvolgono qualunque sottoinsieme delle colonne dell'indice. Condizioni su colonne
    supplementari restringono le voci restituite dall'indice, ma la condizione sulla
    prima colonna è quella più importante per determinare quanta parte
-   dell'indice deve essere scandita. Un indice GiST sarà relativamente
+   dell'indice deve essere scandita. Un indice gist sarà relativamente
    inefficace se la sua prima colonna ha solo alcuni valori distinti, anche se
    ci sono molti valori distinti nelle colonne supplementari.
   </para>
 
   <para>
-        Un indice GIN multicolonna può essere usato con  query che 
-        coinvolgono qualsiasi sottoinsieme di colonne di indice. A differenza dei B-Tree o dei GiST,
+        Un indice gin multicolonna può essere usato con  query che 
+        coinvolgono qualsiasi sottoinsieme di colonne di indice. A differenza dei B-Tree o dei gist,
         l'efficienza dell'indice di ricerca è la stessa qualunque colonna/e indice  
         venga usata dalla query.
   </para>

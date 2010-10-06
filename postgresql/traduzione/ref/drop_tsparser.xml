@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DROPTSPARSER">
+<refentry id="sql-droptsparser">
  <refmeta>
   <refentrytitle>DROP TEXT SEARCH PARSER</refentrytitle>
   <manvolnum>7</manvolnum>

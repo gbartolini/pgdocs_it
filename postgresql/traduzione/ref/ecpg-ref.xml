@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="APP-ECPG">
+<refentry id="app-ecpg">
  <refmeta>
   <refentrytitle><application>ecpg</application></refentrytitle>
   <manvolnum>1</manvolnum>
@@ -29,7 +29,7 @@ PostgreSQL documentation
  </refsynopsisdiv>
 
 
- <refsect1 id="APP-ECPG-description">
+ <refsect1 id="app-ecpg-description">
   <title>Description</title>
 
   <para>

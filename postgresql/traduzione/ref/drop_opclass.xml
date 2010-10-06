@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DROPOPCLASS">
+<refentry id="sql-dropopclass">
  <refmeta>
   <refentrytitle>DROP OPERATOR CLASS</refentrytitle>
   <manvolnum>7</manvolnum>

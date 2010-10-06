@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-COMMENT">
+<refentry id="sql-comment">
  <refmeta>
   <refentrytitle>COMMENT</refentrytitle>
   <manvolnum>7</manvolnum>

@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-CREATEDOMAIN">
+<refentry id="sql-createdomain">
  <refmeta>
   <refentrytitle>CREATE DOMAIN</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -194,7 +194,7 @@ CREATE TABLE us_snail_addy (
   </para>
  </refsect1>
 
- <refsect1 id="SQL-CREATEDOMAIN-compatibility">
+ <refsect1 id="sql-createdomain-compatibility">
   <title>Compatibility</title>
 
   <para>
@@ -203,7 +203,7 @@ CREATE TABLE us_snail_addy (
   </para>
  </refsect1>
 
- <refsect1 id="SQL-CREATEDOMAIN-see-also">
+ <refsect1 id="sql-createdomain-see-also">
   <title>See Also</title>
 
   <simplelist type="inline">

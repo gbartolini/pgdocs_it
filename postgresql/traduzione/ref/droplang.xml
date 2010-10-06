@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="APP-DROPLANG">
+<refentry id="app-droplang">
  <refmeta>
   <refentrytitle><application>droplang</application></refentrytitle>
   <manvolnum>1</manvolnum>
@@ -34,7 +34,7 @@ PostgreSQL documentation
   </cmdsynopsis>
  </refsynopsisdiv>
  
- <refsect1 id="R1-APP-DROPLANG-1">
+ <refsect1 id="R1-app-droplang-1">
   <title>
    Description
   </title>

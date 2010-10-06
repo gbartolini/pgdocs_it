@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+"./dtd/4.3/docbookx.dtd" [
+
+<!ENTITY nbsp "Â ">
+<!ENTITY eacute "Ã©">
+<!ENTITY egrave "Ã¨">
+<!ENTITY agrave "Ã ">
+<!ENTITY uuml "Ã¼">
+<!ENTITY ouml "Ã¶">
+<!ENTITY laquo "Â« ">
+<!ENTITY raquo " Â»">
+<!ENTITY copy "(c)">
+<!ENTITY mdash " -- ">
+<!ENTITY oelig "Å">
+<!ENTITY pi "pi">
+
+<!ENTITY % version SYSTEM "version.xml">
+%version;
+
+
+]>
+
+<book id="postgres" lang="it" xml:lang="it">
+    <title>Titolo del libro</title>
+    
+    <bookinfo>
+        <corpauthor>Autore/i</corpauthor>
+        <productname>Nome del Prodotto</productname>
+        <productnumber>Versione del prodotto</productnumber>
+    </bookinfo>
+    
+    <part id="parte1">
+        <title>Prima parte</title>
+        <partintro>
+            <para>
+                partintro, paragrafo di prova.
+                bla bla  bla  bla  bla  bla  bla  bla  bla  bla  bla 
+                bla bla  bla  bla  bla  bla  bla  bla  bla  bla  bla  
+                bla bla  bla  bla  bla  bla  bla  bla  bla  bla  bla  
+                bla bla  bla  bla  bla  bla  bla  bla  bla  bla  bla  
+                bla bla  bla  bla  bla  bla  bla  bla  bla  bla  bla.  
+            </para>
+        </partintro>
+    </part>
+    <part id="parte2">
+        <title>Seconda parte</title>
+        <partintro>
+            <para>
+                partintro, paragrafo di prova.
+                bla bla  bla  bla  bla  bla  bla  bla  bla  bla  bla 
+                bla bla  bla  bla  bla  bla  bla  bla  bla  bla  bla  
+                bla bla  bla  bla  bla  bla  bla  bla  bla  bla  bla  
+                bla bla  bla  bla  bla  bla  bla  bla  bla  bla  bla  
+                bla bla  bla  bla  bla  bla  bla  bla  bla  bla  bla.  
+            </para>
+            <para>
+                partintro, altro paragrafo.
+                bla bla  bla  bla  bla  bla  bla  bla  bla  bla  bla 
+                bla bla  bla  bla  bla  bla  bla  bla  bla  bla  bla  
+                bla bla  bla  bla  bla  bla  bla  bla  bla  bla  bla  
+                bla bla  bla  bla  bla  bla  bla  bla  bla  bla  bla  
+                bla bla  bla  bla  bla  bla  bla  bla  bla  bla  bla.  
+            </para>
+        </partintro>
+    </part>
+    <note>
+        <para>
+            Questa è una nota.
+        </para>
+    </note>
+    <important>
+        <para>
+            Questa è una nota importante.
+        </para>
+    </important>
+    <caution>
+        <para>
+            Questa è una nota di cautela.
+        </para>
+    </caution>
+    <warning>
+        <para>
+            Questa è una nota di pericolo.
+        </para>
+    </warning>
+    <tip>
+        <para>
+            Questa è una nota di consiglio.
+        </para>
+    </tip>
+
+    <programlisting>
+        Questo è codice di programma
+    </programlisting>
+    <userinput>
+        Questo è input dell'utente
+    </userinput>
+    <screen>
+        Questo è testo a video
+    </screen>
+    <synopsis>
+        Questo è synopsis
+    </synopsis>
+    <table>
+        <title>Tabella</title>
+        <tgroup cols="2">
+            <thead>
+                <row>
+                    <entry>Colonna 1</entry>
+                    <entry>Colonna 2</entry>
+                </row>
+            </thead>
+            <tbody>
+                <row>
+                    <entry>Valore 1</entry>
+                    <entry>Valore 2</entry>
+                </row>
+                <row>
+                    <entry>Valore 3</entry>
+                    <entry>Valore 4</entry>
+                </row>
+            </tbody>    
+        </tgroup>
+    </table>
+    <informaltable>
+        <tgroup cols="2">
+            <thead>
+                <row>
+                    <entry>Tabella Informale</entry>
+                    <entry>Colonna 2</entry>
+                </row>
+            </thead>
+            <tbody>
+                <row>
+                    <entry>Valore 1</entry>
+                    <entry>Valore 2</entry>
+                </row>
+            </tbody>    
+        </tgroup>
+    </informaltable>
+    <itemizedlist>
+        <listitem>
+            <para>Questa è una lista di elementi</para>
+        </listitem>
+        <listitem>
+            <para>Secondo elemento</para>
+        </listitem>
+        <listitem>
+            <para>Terzo elemento</para>
+        </listitem>
+    </itemizedlist>
+    <para>Questo è un acronimo: <acronym>GNU</acronym></para>
+    <para>
+        <emphasis>Testo emphasis</emphasis>,
+        <literal>Testo literal</literal>,
+        <firstterm>Testo firstterm</firstterm>
+    </para>
+</book>

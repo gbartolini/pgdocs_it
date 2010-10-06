@@ -3,7 +3,7 @@
 $PostgreSQL$
 -->
 
-<refentry id="SQL-LOAD">
+<refentry id="sql-load">
  <refmeta>
   <refentrytitle>LOAD</refentrytitle>
   <manvolnum>7</manvolnum>

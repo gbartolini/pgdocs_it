@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-TRUNCATE">
+<refentry id="sql-truncate">
  <refmeta>
   <refentrytitle>TRUNCATE</refentrytitle>
   <manvolnum>7</manvolnum>

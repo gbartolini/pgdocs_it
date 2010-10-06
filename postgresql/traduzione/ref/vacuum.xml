@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-VACUUM">
+<refentry id="sql-vacuum">
  <refmeta>
   <refentrytitle>VACUUM</refentrytitle>
   <manvolnum>7</manvolnum>

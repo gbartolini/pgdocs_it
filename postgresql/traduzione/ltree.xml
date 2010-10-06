@@ -496,7 +496,7 @@ Europe &amp; Russia*@ &amp; !Transportation
    </listitem>
    <listitem>
     <para>
-     GiST index over <type>ltree</type>:
+     gist index over <type>ltree</type>:
      <literal>&lt;</literal>, <literal>&lt;=</literal>, <literal>=</literal>,
      <literal>&gt;=</literal>, <literal>&gt;</literal>,
      <literal>@&gt;</literal>, <literal>&lt;@</literal>,
@@ -511,7 +511,7 @@ CREATE INDEX path_gist_idx ON test USING GIST (path);
    </listitem>
    <listitem>
     <para>
-     GiST index over <type>ltree[]</type>:
+     gist index over <type>ltree[]</type>:
      <literal>ltree[] &lt;@ ltree</literal>, <literal>ltree @&gt; ltree[]</literal>,
      <literal>@</literal>, <literal>~</literal>, <literal>?</literal>
     </para>

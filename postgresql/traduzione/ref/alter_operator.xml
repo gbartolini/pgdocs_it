@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-ALTEROPERATOR">
+<refentry id="sql-alteroperator">
  <refmeta>
   <refentrytitle>ALTER OPERATOR</refentrytitle>
   <manvolnum>7</manvolnum>

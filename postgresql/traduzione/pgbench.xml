@@ -417,7 +417,7 @@ pgbench <optional> <replaceable>options</replaceable> </optional> <replaceable>d
   </para>
 
   <orderedlist>
-   <listitem><para><literal>BEGIN;</literal></para></listitem>
+   <listitem><para><literal>BEgin;</literal></para></listitem>
    <listitem><para><literal>UPDATE pgbench_accounts SET abalance = abalance + :delta WHERE aid = :aid;</literal></para></listitem>
    <listitem><para><literal>SELECT abalance FROM pgbench_accounts WHERE aid = :aid;</literal></para></listitem>
    <listitem><para><literal>UPDATE pgbench_tellers SET tbalance = tbalance + :delta WHERE tid = :tid;</literal></para></listitem>
@@ -605,7 +605,7 @@ pgbench <optional> <replaceable>options</replaceable> </optional> <replaceable>d
 \setrandom bid 1 :nbranches
 \setrandom tid 1 :ntellers
 \setrandom delta -5000 5000
-BEGIN;
+BEgin;
 UPDATE pgbench_accounts SET abalance = abalance + :delta WHERE aid = :aid;
 SELECT abalance FROM pgbench_accounts WHERE aid = :aid;
 UPDATE pgbench_tellers SET tbalance = tbalance + :delta WHERE tid = :tid;
@@ -698,7 +698,7 @@ statement latencies in milliseconds:
         0.001073        \setrandom bid 1 :nbranches
         0.001005        \setrandom tid 1 :ntellers
         0.001078        \setrandom delta -5000 5000
-        0.326152        BEGIN;
+        0.326152        BEgin;
         0.603376        UPDATE pgbench_accounts SET abalance = abalance + :delta WHERE aid = :aid;
         0.454643        SELECT abalance FROM pgbench_accounts WHERE aid = :aid;
         5.528491        UPDATE pgbench_tellers SET tbalance = tbalance + :delta WHERE tid = :tid;

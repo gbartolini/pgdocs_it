@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $PostgreSQL$ -->
-<refentry id="SQL-SET-TRANSACTION">
+<refentry id="sql-set-transaction">
  <refmeta>
   <refentrytitle>SET TRANSACTION</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -138,7 +138,7 @@ SET SESSION CHARACTERISTICS AS TRANSACTION <replaceable class="parameter">transa
   </para>
  </refsect1>
 
- <refsect1 id="R1-SQL-SET-TRANSACTION-3">
+ <refsect1 id="R1-sql-set-transaction-3">
   <title>Compatibility</title>
 
   <para>

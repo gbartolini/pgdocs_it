@@ -97,13 +97,13 @@
   <title>Usage</title>
 
   <para>
-   The <filename>cube</filename> module includes a GiST index operator class for
+   The <filename>cube</filename> module includes a gist index operator class for
    <type>cube</type> values.
-   The operators supported by the GiST operator class are shown in <xref linkend="cube-gist-operators"/>.
+   The operators supported by the gist operator class are shown in <xref linkend="cube-gist-operators"/>.
   </para>
 
   <table id="cube-gist-operators">
-   <title>Cube GiST operators</title>
+   <title>Cube gist operators</title>
    <tgroup cols="2">
     <thead>
      <row>
@@ -391,7 +391,7 @@ t
   <para>
    My thanks are primarily to Prof. Joe Hellerstein
    (<ulink url="http://db.cs.berkeley.edu/jmh/"></ulink>) for elucidating the
-   gist of the GiST (<ulink url="http://gist.cs.berkeley.edu/"></ulink>), and
+   gist of the gist (<ulink url="http://gist.cs.berkeley.edu/"></ulink>), and
    to his former student, Andy Dong (<ulink
    url="http://best.me.berkeley.edu/~adong/"></ulink>), for his example
    written for Illustra,

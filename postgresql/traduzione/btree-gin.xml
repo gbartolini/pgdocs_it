@@ -9,7 +9,7 @@
  </indexterm>
 
  <para>
-  <filename>btree_gin</filename> provides sample GIN operator classes that
+  <filename>btree_gin</filename> provides sample gin operator classes that
   implement B-tree equivalent behavior for the data types
   <type>int2</type>, <type>int4</type>, <type>int8</type>, <type>float4</type>,
   <type>float8</type>, <type>timestamp with time zone</type>,
@@ -24,10 +24,10 @@
   In general, these operator classes will not outperform the equivalent
   standard B-tree index methods, and they lack one major feature of the
   standard B-tree code: the ability to enforce uniqueness.  However,
-  they are useful for GIN testing and as a base for developing other
-  GIN operator classes.  Also, for queries that test both a GIN-indexable
+  they are useful for gin testing and as a base for developing other
+  gin operator classes.  Also, for queries that test both a gin-indexable
   column and a B-tree-indexable column, it might be more efficient to create
-  a multicolumn GIN index that uses one of these operator classes than to create
+  a multicolumn gin index that uses one of these operator classes than to create
   two separate indexes that would have to be combined via bitmap ANDing.
  </para>
 

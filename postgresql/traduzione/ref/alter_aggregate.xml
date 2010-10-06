@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-ALTERAGGREGATE">
+<refentry id="sql-alteraggregate">
  <refmeta>
   <refentrytitle>ALTER AGGREGATE</refentrytitle>
   <manvolnum>7</manvolnum>

@@ -605,7 +605,7 @@
 
     <listitem>
      <para>
-      Fix poor choice of page split point in GiST R-tree operator classes
+      Fix poor choice of page split point in gist R-tree operator classes
       (Teodor)
      </para>
     </listitem>
@@ -2493,7 +2493,7 @@ comparison</para></listitem>
 <listitem><para>Make <function>array_in</function> and <function>array_recv</function> more
 paranoid about validating their OID parameter</para></listitem>
 <listitem><para>Fix missing rows in queries like <literal>UPDATE a=... WHERE
-a...</literal> with GiST index on column <literal>a</literal></para></listitem>
+a...</literal> with gist index on column <literal>a</literal></para></listitem>
 <listitem><para>Improve robustness of datetime parsing</para></listitem>
 <listitem><para>Improve checking for partially-written WAL
 pages</para></listitem>
@@ -3268,7 +3268,7 @@ typedefs (Michael)</para></listitem>
 
     <listitem>
      <para>
-      The API for user-defined GiST indexes has been changed. The
+      The API for user-defined gist indexes has been changed. The
       Union and PickSplit methods are now passed a pointer to a
       special <structname>GistEntryVector</structname> structure,
       rather than a <type>bytea</type>.
@@ -3772,7 +3772,7 @@ typedefs (Michael)</para></listitem>
 
      <listitem>
       <para>
-       Allow <command>BEGIN WORK</command> to specify transaction
+       Allow <command>BEgin WORK</command> to specify transaction
        isolation levels like <command>START TRANSACTION</command> does
        (Bruce)
       </para>
@@ -4147,7 +4147,7 @@ typedefs (Michael)</para></listitem>
        This reduces the potential for deadlocks against other backends
        that want exclusive locks on tables.  To get the benefit of this
        change, do not execute database-wide <command>ANALYZE</command>
-       inside a transaction block (<command>BEGIN</command> block); it
+       inside a transaction block (<command>BEgin</command> block); it
        must be able to commit and start a new transaction for each
        table.
       </para>

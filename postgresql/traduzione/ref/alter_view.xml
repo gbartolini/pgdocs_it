@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-ALTERVIEW">
+<refentry id="sql-alterview">
  <refmeta>
   <refentrytitle>ALTER VIEW</refentrytitle>
   <manvolnum>7</manvolnum>

@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DROPTYPE">
+<refentry id="sql-droptype">
  <refmeta>
   <refentrytitle>DROP TYPE</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -80,7 +80,7 @@ DROP TYPE [ IF EXISTS ] <replaceable class="PARAMETER">name</replaceable> [, ...
   </variablelist>
  </refsect1>
   
- <refsect1 id="SQL-DROPTYPE-examples">
+ <refsect1 id="sql-droptype-examples">
   <title>Examples</title>
 
   <para>
@@ -91,7 +91,7 @@ DROP TYPE box;
   </para>
  </refsect1>
 
- <refsect1 id="SQL-DROPTYPE-compatibility">
+ <refsect1 id="sql-droptype-compatibility">
   <title>Compatibility</title>
 
   <para>
@@ -104,7 +104,7 @@ DROP TYPE box;
   </para>
  </refsect1>
 
- <refsect1 id="SQL-DROPTYPE-see-also">
+ <refsect1 id="sql-droptype-see-also">
   <title>See Also</title>
 
   <simplelist type="inline">

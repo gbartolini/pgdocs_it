@@ -147,7 +147,7 @@ env PGOPTIONS='-c geqo=off' psql
 
    <para>
     Some parameters can be changed in individual <acronym>SQL</acronym>
-    sessions with the <xref linkend="SQL-SET"/>
+    sessions with the <xref linkend="sql-set"/>
     command, for example:
 <screen>
 SET ENABLE_SEQSCAN TO OFF;
@@ -162,7 +162,7 @@ SET ENABLE_SEQSCAN TO OFF;
    </para>
 
    <para>
-    The <xref linkend="SQL-SHOW"/>
+    The <xref linkend="sql-show"/>
     command allows inspection of the current values of all parameters.
    </para>
 
@@ -4941,7 +4941,7 @@ dynamic_library_path = 'C:\tools\postgresql;H:\my_project\lib;$libdir'
       </indexterm>
       <listitem>
        <para>
-        Soft upper limit of the size of the set returned by GIN index scans. For more
+        Soft upper limit of the size of the set returned by gin index scans. For more
         information see <xref linkend="gin-tips"/>.
        </para>
       </listitem>

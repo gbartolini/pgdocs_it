@@ -233,11 +233,11 @@ UPDATE branches SET balance = balance + 100.00
    <para>
     In <productname>PostgreSQL</productname>, una transazione è impostata
     racchiudendo i comandi SQL della transazione tra i comandi
-    <command>BEGIN</command> e <command>COMMIT</command>. Per cui la nostra transazione
+    <command>BEgin</command> e <command>COMMIT</command>. Per cui la nostra transazione
     bancaria assumerà questa forma:
 
 <programlisting>
-BEGIN;
+BEgin;
 UPDATE accounts SET balance = balance - 100.00
     WHERE name = 'Alice';
 -- etc etc
@@ -256,17 +256,17 @@ COMMIT;
    <para>
     <productname>PostgreSQL</productname> attualmente tratta ogni istruzione SQL come
     se fosse eseguita dentro una transazione. Se non date un comando
-    <command>BEGIN</command>,
+    <command>BEgin</command>,
     ogni istruzione individuale verrà racchiusa tra un implicito
-    <command>BEGIN</command> e (se riuscita) un <command>COMMIT</command>.  Un gruppo di
-    istruzioni racchiuse tra <command>BEGIN</command> e <command>COMMIT</command>
+    <command>BEgin</command> e (se riuscita) un <command>COMMIT</command>.  Un gruppo di
+    istruzioni racchiuse tra <command>BEgin</command> e <command>COMMIT</command>
     viene talvolta chiamato <firstterm>blocco di transazione</firstterm>.
     
    </para>
 
    <note>
     <para>
-     Alcune librerie client impartiscono i comandi <command>BEGIN</command> e <command>COMMIT</command>
+     Alcune librerie client impartiscono i comandi <command>BEgin</command> e <command>COMMIT</command>
      automaticamente, per cui si ottiene l'effetto blocco di transazione senza
      averlo richiesto. Controllare la documentazione per l'interfaccia che state
      utilizzando.
@@ -309,7 +309,7 @@ COMMIT;
     come questo:
 
 <programlisting>
-BEGIN;
+BEgin;
 UPDATE accounts SET balance = balance - 100.00
     WHERE name = 'Alice';
 SAVEPOINT my_savepoint;

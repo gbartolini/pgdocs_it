@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-ALTERTSTEMPLATE">
+<refentry id="sql-altertstemplate">
  <refmeta>
   <refentrytitle>ALTER TEXT SEARCH TEMPLATE</refentrytitle>
   <manvolnum>7</manvolnum>

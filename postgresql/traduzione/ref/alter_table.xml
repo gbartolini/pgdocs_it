@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-ALTERTABLE">
+<refentry id="sql-altertable">
  <refmeta>
   <refentrytitle>ALTER TABLE</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -288,7 +288,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
     <listitem>
      <para>
       This form selects the default index for future
-      <xref linkend="SQL-CLUSTER"/>
+      <xref linkend="sql-cluster"/>
       operations.  It does not actually re-cluster the table.
      </para>
     </listitem>
@@ -299,7 +299,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
     <listitem>
      <para>
       This form removes the most recently used
-      <xref linkend="SQL-CLUSTER"/>
+      <xref linkend="sql-cluster"/>
       index specification from the table.  This affects
       future cluster operations that don't specify an index.
      </para>
@@ -346,7 +346,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
       for details on the available parameters.  Note that the table contents
       will not be modified immediately by this command; depending on the
       parameter you might need to rewrite the table to get the desired effects.
-      That can be done with <xref linkend="SQL-CLUSTER"/>
+      That can be done with <xref linkend="sql-cluster"/>
       or one of the forms of <command>ALTER
       TABLE</command> that forces a table rewrite.
      </para>
@@ -430,7 +430,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
       Indexes on the table, if any, are not moved; but they can be moved
       separately with additional <literal>SET TABLESPACE</literal> commands.
       See also
-      <xref linkend="SQL-CREATETABLESPACE"/>.
+      <xref linkend="sql-createtablespace"/>.
      </para>
     </listitem>
    </varlistentry>

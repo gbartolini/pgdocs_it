@@ -638,7 +638,7 @@
 
     <listitem>
      <para>
-      Fix poor choice of page split point in GiST R-tree operator classes
+      Fix poor choice of page split point in gist R-tree operator classes
       (Teodor)
      </para>
     </listitem>
@@ -955,7 +955,7 @@
     A dump/restore is not required for those running 8.1.X.
     However, if you are upgrading from a version earlier than 8.1.2,
     see the release notes for 8.1.2.  Also, if you were running a previous
-    8.1.X release, it is recommended to <command>REINDEX</command> all GiST
+    8.1.X release, it is recommended to <command>REINDEX</command> all gist
     indexes after the upgrade.
    </para>
 
@@ -968,7 +968,7 @@
 
     <listitem>
      <para>
-      Fix GiST index corruption due to marking the wrong index entry
+      Fix gist index corruption due to marking the wrong index entry
       <quote>dead</quote> after a deletion (Teodor)
      </para>
 
@@ -1130,7 +1130,7 @@
 
     <listitem>
      <para>
-      Fix possible duplicate output of tuples during a GiST index scan (Teodor)
+      Fix possible duplicate output of tuples during a gist index scan (Teodor)
      </para>
     </listitem>
 
@@ -2557,8 +2557,8 @@ for domains</para></listitem>
 users and groups reasonably (only possible when dumping from a pre-8.1 server)
 (Tom)</para>
 <para>The user and group will be merged into a single role with
-<literal>LOGIN</literal> permission.  Formerly the merged role wouldn't have
-<literal>LOGIN</literal> permission, making it unusable as a user.
+<literal>LOgin</literal> permission.  Formerly the merged role wouldn't have
+<literal>LOgin</literal> permission, making it unusable as a user.
 </para></listitem>
 
 <listitem><para>Fix <application>pg_restore</application> <literal>-n</literal> to work as
@@ -3426,7 +3426,7 @@ psql -t -f fixseq.sql db1 | psql -e db1
 
      <listitem>
       <para>
-       Improve GiST and R-tree index performance (Neil)
+       Improve gist and R-tree index performance (Neil)
       </para>
      </listitem>
 
@@ -3491,7 +3491,7 @@ psql -t -f fixseq.sql db1 | psql -e db1
 
      <listitem>
       <para>
-       Allow concurrent GiST index access (Teodor, Oleg)
+       Allow concurrent gist index access (Teodor, Oleg)
       </para>
      </listitem>
 
@@ -3641,10 +3641,10 @@ psql -t -f fixseq.sql db1 | psql -e db1
 
      <listitem>
       <para>
-       Add WAL logging for GiST indexes (Teodor, Oleg)
+       Add WAL logging for gist indexes (Teodor, Oleg)
       </para>
       <para>
-       GiST indexes are now safe for crash and point-in-time recovery.
+       gist indexes are now safe for crash and point-in-time recovery.
       </para>
      </listitem>
 
@@ -4869,23 +4869,23 @@ SELECT CURRENT_TIMESTAMP AT TIME ZONE 'Europe/London';
 
       <para>
        In previous releases, <filename>gist.h</filename> contained both the
-       public GiST API (intended for use by authors of GiST index
+       public gist API (intended for use by authors of gist index
        implementations) as well as some private declarations used by
-       the implementation of GiST itself. The latter have been moved
-       to a separate file, <filename>gist_private.h</filename>. Most GiST
+       the implementation of gist itself. The latter have been moved
+       to a separate file, <filename>gist_private.h</filename>. Most gist
        index implementations should be unaffected.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       Overhaul GiST memory management (Neil)
+       Overhaul gist memory management (Neil)
       </para>
 
       <para>
-       GiST methods are now always invoked in a short-lived memory
+       gist methods are now always invoked in a short-lived memory
        context. Therefore, memory allocated via <function>palloc()</function>
-       will be reclaimed automatically, so GiST index implementations
+       will be reclaimed automatically, so gist index implementations
        do not need to manually release allocated memory via
        <function>pfree()</function>.
       </para>

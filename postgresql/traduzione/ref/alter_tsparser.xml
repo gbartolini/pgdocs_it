@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-ALTERTSPARSER">
+<refentry id="sql-altertsparser">
  <refmeta>
   <refentrytitle>ALTER TEXT SEARCH PARSER</refentrytitle>
   <manvolnum>7</manvolnum>

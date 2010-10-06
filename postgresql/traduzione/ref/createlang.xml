@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="APP-CREATELANG">
+<refentry id="app-createlang">
  <refmeta>
   <refentrytitle><application>createlang</application></refentrytitle>
   <manvolnum>1</manvolnum>

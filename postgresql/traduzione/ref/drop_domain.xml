@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DROPDOMAIN">
+<refentry id="sql-dropdomain">
  <refmeta>
   <refentrytitle>DROP DOMAIN</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -80,7 +80,7 @@ DROP DOMAIN [ IF EXISTS ] <replaceable class="PARAMETER">name</replaceable> [, .
   </variablelist>
  </refsect1>
 
- <refsect1 id="SQL-DROPDOMAIN-examples">
+ <refsect1 id="sql-dropdomain-examples">
   <title>Examples</title>
 
   <para>
@@ -92,7 +92,7 @@ DROP DOMAIN box;
   </para>
  </refsect1>
 
- <refsect1 id="SQL-DROPDOMAIN-compatibility">
+ <refsect1 id="sql-dropdomain-compatibility">
   <title>Compatibility</title>
   
   <para>
@@ -102,7 +102,7 @@ DROP DOMAIN box;
   </para>
  </refsect1>
 
- <refsect1 id="SQL-DROPDOMAIN-see-also">
+ <refsect1 id="sql-dropdomain-see-also">
   <title>See Also</title>
 
   <simplelist type="inline">

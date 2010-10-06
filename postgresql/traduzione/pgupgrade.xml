@@ -474,7 +474,7 @@ psql --username postgres --file script.sql postgres
    <itemizedlist>
     <listitem>
      <para>
-      an index is of type hash or GIN
+      an index is of type hash or gin
      </para>
     </listitem>
     <listitem>

@@ -163,10 +163,10 @@
    </table>
 
   <para>
-   GiST indexes are more flexible: they do not have a fixed set of
+   gist indexes are more flexible: they do not have a fixed set of
    strategies at all.  Instead, the <quote>consistency</quote> support routine
-   of each particular GiST operator class interprets the strategy numbers
-   however it likes.  As an example, several of the built-in GiST index
+   of each particular gist operator class interprets the strategy numbers
+   however it likes.  As an example, several of the built-in gist index
    operator classes index two-dimensional geometric objects, providing
    the <quote>R-tree</quote> strategies shown in
    <xref linkend="xindex-rtree-strat-table"/>.  Four of these are true
@@ -176,7 +176,7 @@
   </para>
 
    <table tocentry="1" id="xindex-rtree-strat-table">
-    <title>GiST Two-Dimensional <quote>R-tree</quote> Strategies</title>
+    <title>gist Two-Dimensional <quote>R-tree</quote> Strategies</title>
     <tgroup cols="2">
      <thead>
       <row>
@@ -238,7 +238,7 @@
    </table>
 
   <para>
-   GIN indexes are similar to GiST indexes in flexibility: they don't have a
+   gin indexes are similar to gist indexes in flexibility: they don't have a
    fixed set of strategies. Instead the support routines of each operator
    class interpret the strategy numbers according to the operator class's
    definition. As an example, the strategy numbers used by the built-in
@@ -247,7 +247,7 @@
   </para>
 
    <table tocentry="1" id="xindex-gin-array-strat-table">
-    <title>GIN Array Strategies</title>
+    <title>gin Array Strategies</title>
     <tgroup cols="2">
      <thead>
       <row>
@@ -359,12 +359,12 @@
    </table>
 
   <para>
-   GiST indexes require seven support functions,
+   gist indexes require seven support functions,
    shown in <xref linkend="xindex-gist-support-table"/>.
   </para>
 
    <table tocentry="1" id="xindex-gist-support-table">
-    <title>GiST Support Functions</title>
+    <title>gist Support Functions</title>
     <tgroup cols="2">
      <thead>
       <row>
@@ -411,12 +411,12 @@
    </table>
 
   <para>
-   GIN indexes require four support functions,
+   gin indexes require four support functions,
    shown in <xref linkend="xindex-gin-support-table"/>.
   </para>
 
    <table tocentry="1" id="xindex-gin-support-table">
-    <title>GIN Support Functions</title>
+    <title>gin Support Functions</title>
     <tgroup cols="3">
      <thead>
       <row>
@@ -455,7 +455,7 @@
        <entry>
         (optional method) compare partial key from
         query and key from index, and return an integer less than zero, zero,
-        or greater than zero, indicating whether GIN should ignore this index
+        or greater than zero, indicating whether gin should ignore this index
         entry, treat the entry as a match, or stop the index scan
        </entry>
        <entry>5</entry>
@@ -471,7 +471,7 @@
    and types of the arguments to each support function are likewise
    dependent on the index method.  For B-tree and hash the support functions
    take the same input data types as do the operators included in the operator
-   class, but this is not the case for most GIN and GiST support functions.
+   class, but this is not the case for most gin and gist support functions.
   </para>
  </sect2>
 
@@ -842,7 +842,7 @@ ALTER OPERATOR FAMILY integer_ops USING btree ADD
   </para>
 
   <para>
-   GIN and GiST indexes do not have any explicit notion of cross-data-type
+   gin and gist indexes do not have any explicit notion of cross-data-type
    operations.  The set of operators supported is just whatever the primary
    support functions for a given operator class can handle.
   </para>
@@ -940,7 +940,7 @@ SELECT * FROM table WHERE integer_column &lt; 4;
 </programlisting>
    can be satisfied exactly by a B-tree index on the integer column.
    But there are cases where an index is useful as an inexact guide to
-   the matching rows.  For example, if a GiST index stores only bounding boxes
+   the matching rows.  For example, if a gist index stores only bounding boxes
    for geometric objects, then it cannot exactly satisfy a <literal>WHERE</literal> 
    condition that tests overlap between nonrectangular objects such as
    polygons.  Yet we could use the index to find objects whose bounding
@@ -955,7 +955,7 @@ SELECT * FROM table WHERE integer_column &lt; 4;
    the index is guaranteed to return all the required rows, plus perhaps
    some additional rows, which can be eliminated by performing the original
    operator invocation.  The index methods that support lossy searches
-   (currently, GiST and GIN) allow the support functions of individual
+   (currently, gist and gin) allow the support functions of individual
    operator classes to set the recheck flag, and so this is essentially an
    operator-class feature.
   </para>
@@ -975,15 +975,15 @@ CREATE OPERATOR CLASS polygon_ops
         STORAGE box;
 </programlisting>
 
-   At present, only the GiST and GIN index methods support a
+   At present, only the gist and gin index methods support a
    <literal>STORAGE</literal> type that's different from the column data type.
-   The GiST <function>compress</function> and <function>decompress</function> support
+   The gist <function>compress</function> and <function>decompress</function> support
    routines must deal with data-type conversion when <literal>STORAGE</literal>
-   is used.  In GIN, the <literal>STORAGE</literal> type identifies the type of
+   is used.  In gin, the <literal>STORAGE</literal> type identifies the type of
    the <quote>key</quote> values, which normally is different from the type
    of the indexed column &mdash; for example, an operator class for
    integer-array columns might have keys that are just integers.  The
-   GIN <function>extractValue</function> and <function>extractQuery</function> support
+   gin <function>extractValue</function> and <function>extractQuery</function> support
    routines are responsible for extracting keys from indexed values.
   </para>
  </sect2>

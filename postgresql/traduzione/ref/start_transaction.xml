@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-START-TRANSACTION">
+<refentry id="sql-start-transaction">
  <refmeta>
   <refentrytitle>START TRANSACTION</refentrytitle>
   <manvolnum>7</manvolnum>

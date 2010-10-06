@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DROPRULE">
+<refentry id="sql-droprule">
  <refmeta>
   <refentrytitle>DROP RULE</refentrytitle>
   <manvolnum>7</manvolnum>

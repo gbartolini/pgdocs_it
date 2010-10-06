@@ -485,7 +485,7 @@
 
     <listitem>
      <para>
-      Fix poor choice of page split point in GiST R-tree operator classes
+      Fix poor choice of page split point in gist R-tree operator classes
       (Teodor)
      </para>
     </listitem>
@@ -1888,7 +1888,7 @@ cases</para></listitem>
 <listitem><para>Make <function>array_in</function> and <function>array_recv</function> more
 paranoid about validating their OID parameter</para></listitem>
 <listitem><para>Fix missing rows in queries like <literal>UPDATE a=... WHERE
-a...</literal> with GiST index on column <literal>a</literal></para></listitem>
+a...</literal> with gist index on column <literal>a</literal></para></listitem>
 <listitem><para>Improve robustness of datetime parsing</para></listitem>
 <listitem><para>Improve checking for partially-written WAL
 pages</para></listitem>
@@ -1964,7 +1964,7 @@ code</para></listitem>
     As the database superuser, do:
 
 <programlisting>
-BEGIN;
+BEgin;
 UPDATE pg_proc SET proargtypes[3] = 'internal'::regtype
 WHERE pronamespace = 11 AND pronargs = 5
      AND proargtypes[2] = 'cstring'::regtype;
@@ -1976,7 +1976,7 @@ COMMIT;
     Next, if you have installed <filename>contrib/tsearch2</filename>, do:
 
 <programlisting>
-BEGIN;
+BEgin;
 UPDATE pg_proc SET proargtypes[0] = 'internal'::regtype
 WHERE oid IN (
    'dex_init(text)'::regprocedure,
@@ -2215,7 +2215,7 @@ tables</quote> bug</para>
 This could arise in cases such as CLUSTER after ALTER TABLE DROP COLUMN.
 </para></listitem>
 <listitem><para>Prevent <literal>pg_ctl restart</literal> from adding <literal>-D</literal> multiple times</para></listitem>
-<listitem><para>Fix problem with NULL values in GiST indexes</para></listitem>
+<listitem><para>Fix problem with NULL values in gist indexes</para></listitem>
 <listitem><para><literal>::</literal> is no longer interpreted as a variable in an
 ECPG prepare statement</para></listitem>
 </itemizedlist>

@@ -166,7 +166,7 @@
 
     <listitem>
      <para>
-      Fix unnecessary <quote>GIN indexes do not support whole-index scans</quote>
+      Fix unnecessary <quote>gin indexes do not support whole-index scans</quote>
       errors for unsatisfiable queries using <filename>contrib/intarray</filename>
       operators (Tom)
      </para>
@@ -692,7 +692,7 @@
 
     <listitem>
      <para>
-      Fix incorrect logic for GiST index page splits, when the split depends
+      Fix incorrect logic for gist index page splits, when the split depends
       on a non-first column of the index (Paul Ramsey)
      </para>
     </listitem>
@@ -1077,7 +1077,7 @@
 
     <listitem>
      <para>
-      Fix poor choice of page split point in GiST R-tree operator classes
+      Fix poor choice of page split point in gist R-tree operator classes
       (Teodor)
      </para>
     </listitem>
@@ -1092,7 +1092,7 @@
 
     <listitem>
      <para>
-      Avoid performance degradation in bulk inserts into GIN indexes
+      Avoid performance degradation in bulk inserts into gin indexes
       when the input values are (nearly) in sorted order (Tom)
      </para>
     </listitem>
@@ -1448,12 +1448,12 @@
 
     <listitem>
      <para>
-      Fix whole-index GiST scans to work correctly (Teodor)
+      Fix whole-index gist scans to work correctly (Teodor)
      </para>
 
      <para>
       This error could cause rows to be lost if a table is clustered
-      on a GiST index.
+      on a gist index.
      </para>
     </listitem>
 
@@ -1592,11 +1592,11 @@
 
     <listitem>
      <para>
-      Prevent synchronous scan during GIN index build (Tom)
+      Prevent synchronous scan during gin index build (Tom)
      </para>
 
      <para>
-      Because GIN is optimized for inserting tuples in increasing TID order,
+      Because gin is optimized for inserting tuples in increasing TID order,
       choosing to use a synchronous scan could slow the build by a factor of
       three or more.
      </para>
@@ -1719,7 +1719,7 @@
     A dump/restore is not required for those running 8.3.X.
     However, if you are upgrading from a version earlier than 8.3.1,
     see the release notes for 8.3.1.  Also, if you were running a previous
-    8.3.X release, it is recommended to <command>REINDEX</command> all GiST
+    8.3.X release, it is recommended to <command>REINDEX</command> all gist
     indexes after the upgrade.
    </para>
 
@@ -1732,7 +1732,7 @@
 
     <listitem>
      <para>
-      Fix GiST index corruption due to marking the wrong index entry
+      Fix gist index corruption due to marking the wrong index entry
       <quote>dead</quote> after a deletion (Teodor)
      </para>
 
@@ -1800,7 +1800,7 @@
     <listitem>
      <para>
       Fix Assert failure during rescan of an <literal>IS NULL</literal>
-      search of a GiST index (Teodor)
+      search of a gist index (Teodor)
      </para>
     </listitem>
 
@@ -2064,7 +2064,7 @@
 
     <listitem>
      <para>
-      Fix possible duplicate output of tuples during a GiST index scan (Teodor)
+      Fix possible duplicate output of tuples during a gist index scan (Teodor)
      </para>
     </listitem>
 
@@ -2482,14 +2482,14 @@
 
     <listitem>
      <para>
-      Fix GIN bug that could result in a <literal>too many LWLocks
+      Fix gin bug that could result in a <literal>too many LWLocks
       taken</literal> failure (Teodor)
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Fix broken GiST comparison function for <type>tsquery</type> (Teodor)
+      Fix broken gist comparison function for <type>tsquery</type> (Teodor)
      </para>
     </listitem>
 
@@ -3375,7 +3375,7 @@ current_date &lt; 2017-11-17
       </para>
 
       <para>
-       For example, <literal>"BEGIN; DROP DATABASE; COMMIT"</literal> will now be
+       For example, <literal>"BEgin; DROP DATABASE; COMMIT"</literal> will now be
        rejected even if submitted as a single query message.
       </para>
      </listitem>
@@ -4979,7 +4979,7 @@ current_date &lt; 2017-11-17
    </sect3>
 
    <sect3>
-    <title><link linkend="APP-PSQL"><application>psql</application></link></title>
+    <title><link linkend="app-psql"><application>psql</application></link></title>
     <itemizedlist>
 
      <listitem>
@@ -5068,7 +5068,7 @@ current_date &lt; 2017-11-17
    </sect3>
 
    <sect3>
-    <title><link linkend="APP-PGDUMP"><application>pg_dump</application></link></title>
+    <title><link linkend="app-pgdump"><application>pg_dump</application></link></title>
     <itemizedlist>
 
      <listitem>
@@ -5444,7 +5444,7 @@ current_date &lt; 2017-11-17
 
      <listitem>
       <para>
-       Update GIN <function>extractQuery()</function> API to allow signalling
+       Update gin <function>extractQuery()</function> API to allow signalling
        that nothing can satisfy the query (Teodor)
       </para>
      </listitem>
@@ -5610,13 +5610,13 @@ current_date &lt; 2017-11-17
 
      <listitem>
       <para>
-       Add GIN support for <filename>contrib/hstore</filename> (Teodor)
+       Add gin support for <filename>contrib/hstore</filename> (Teodor)
       </para>
      </listitem>
 
      <listitem>
       <para>
-       Add GIN support for <filename>contrib/pg_trgm</filename> (Guillaume Smet, Teodor)
+       Add gin support for <filename>contrib/pg_trgm</filename> (Guillaume Smet, Teodor)
       </para>
      </listitem>
 

@@ -127,7 +127,7 @@
   <title>Index Support</title>
 
   <para>
-   The <filename>pg_trgm</filename> module provides GiST and GIN index
+   The <filename>pg_trgm</filename> module provides gist and gin index
    operator classes that allow you to create an index over a text column for
    the purpose of very fast similarity searches.  These index types support
    the <literal>%</literal> similarity operator (and no other operators, so you may
@@ -163,10 +163,10 @@ SELECT t, similarity(t, '<replaceable>word</replaceable>') AS sml
   </para>
 
   <para>
-   The choice between GiST and GIN indexing depends on the relative
-   performance characteristics of GiST and GIN, which are discussed elsewhere.
-   As a rule of thumb, a GIN index is faster to search than a GiST index, but
-   slower to build or update; so GIN is better suited for static data and GiST
+   The choice between gist and gin indexing depends on the relative
+   performance characteristics of gist and gin, which are discussed elsewhere.
+   As a rule of thumb, a gin index is faster to search than a gist index, but
+   slower to build or update; so gin is better suited for static data and gist
    for often-updated data.
   </para>
  </sect2>
@@ -224,7 +224,7 @@ CREATE INDEX words_idx ON words USING gin(word gin_trgm_ops);
   <title>References</title>
 
   <para>
-   GiST Development Site
+   gist Development Site
    <ulink url="http://www.sai.msu.su/~megera/postgres/gist/"></ulink>
   </para>
   <para>

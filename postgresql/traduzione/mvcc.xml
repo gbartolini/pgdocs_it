@@ -290,7 +290,7 @@
     like:
 
 <screen>
-BEGIN;
+BEgin;
 UPDATE accounts SET balance = balance + 100.00 WHERE acctnum = 12345;
 UPDATE accounts SET balance = balance - 100.00 WHERE acctnum = 7534;
 COMMIT;
@@ -313,7 +313,7 @@ COMMIT;
     <literal>10</literal>:
 
 <screen>
-BEGIN;
+BEgin;
 UPDATE website SET hits = hits + 1;
 -- run from another session:  DELETE FROM website WHERE hits = 10;
 COMMIT;
@@ -1203,7 +1203,7 @@ SELECT pg_advisory_lock(q.id) FROM
     <variablelist>
      <varlistentry>
       <term>
-       B-tree and <acronym>GiST</acronym> indexes
+       B-tree and <acronym>gist</acronym> indexes
       </term>
       <listitem>
        <para>
@@ -1232,15 +1232,15 @@ SELECT pg_advisory_lock(q.id) FROM
 
      <varlistentry>
       <term>
-       <acronym>GIN</acronym> indexes
+       <acronym>gin</acronym> indexes
       </term>
       <listitem>
        <para>
         Short-term share/exclusive page-level locks are used for
         read/write access. Locks are released immediately after each
         index row is fetched or inserted. But note that insertion of a
-        GIN-indexed value usually produces several index key insertions
-        per row, so GIN might do substantial work for a single value's
+        gin-indexed value usually produces several index key insertions
+        per row, so gin might do substantial work for a single value's
         insertion.
        </para>
       </listitem>
@@ -1253,7 +1253,7 @@ SELECT pg_advisory_lock(q.id) FROM
     applications; since they also have more features than hash
     indexes, they are the recommended index type for concurrent
     applications that need to index scalar data. When dealing with
-    non-scalar data, B-trees are not useful, and GiST or GIN indexes should
+    non-scalar data, B-trees are not useful, and gist or gin indexes should
     be used instead.
    </para>
   </sect1>

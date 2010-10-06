@@ -218,7 +218,7 @@
    built-in operators work for any array type.  An important difference is
    that <filename>intarray</filename>'s operators do not consider an empty array to be
    contained in anything else.  This is consistent with the behavior of
-   GIN-indexed queries, but not with the usual mathematical definition of
+   gin-indexed queries, but not with the usual mathematical definition of
    containment.
   </para>
 
@@ -245,7 +245,7 @@
   </para>
 
   <para>
-   Two GiST index operator classes are provided:
+   Two gist index operator classes are provided:
    <literal>gist__int_ops</literal> (used by default) is suitable for
    small- to medium-size data sets, while
    <literal>gist__intbig_ops</literal> uses a larger signature and is more
@@ -256,15 +256,15 @@
   </para>
 
   <para>
-   There is also a non-default GIN operator class
+   There is also a non-default gin operator class
    <literal>gin__int_ops</literal> supporting the same operators.
   </para>
 
   <para>
-   The choice between GiST and GIN indexing depends on the relative
-   performance characteristics of GiST and GIN, which are discussed elsewhere.
-   As a rule of thumb, a GIN index is faster to search than a GiST index, but
-   slower to build or update; so GIN is better suited for static data and GiST
+   The choice between gist and gin indexing depends on the relative
+   performance characteristics of gist and gin, which are discussed elsewhere.
+   As a rule of thumb, a gin index is faster to search than a gist index, but
+   slower to build or update; so gin is better suited for static data and gist
    for often-updated data.
   </para>
  </sect2>

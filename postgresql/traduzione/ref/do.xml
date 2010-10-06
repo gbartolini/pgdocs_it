@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DO">
+<refentry id="sql-do">
  <refmeta>
   <refentrytitle>DO</refentrytitle>
   <manvolnum>7</manvolnum>

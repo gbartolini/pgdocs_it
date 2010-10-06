@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-SET-ROLE">
+<refentry id="sql-set-role">
  <refmeta>
   <refentrytitle>SET ROLE</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -49,7 +49,7 @@ RESET ROLE
 
   <para>
    The <literal>SESSION</literal> and <literal>LOCAL</literal> modifiers act the same
-   as for the regular <xref linkend="SQL-SET"/>
+   as for the regular <xref linkend="sql-set"/>
    command.
   </para>
 

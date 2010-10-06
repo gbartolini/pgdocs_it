@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-ROLLBACK">
+<refentry id="sql-rollback">
  <refmeta>
   <refentrytitle>ROLLBACK</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -55,7 +55,7 @@ ROLLBACK [ WORK | TRANSACTION ]
   <title>Notes</title>
 
   <para>
-   Use <xref linkend="SQL-COMMIT"/> to
+   Use <xref linkend="sql-commit"/> to
    successfully terminate a transaction.
   </para>
 

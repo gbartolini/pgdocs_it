@@ -5,7 +5,7 @@ PostgreSQL documentation
 -->
 
 
-<refentry id="SQL-COPY">
+<refentry id="sql-copy">
  <refmeta>
   <refentrytitle>COPY</refentrytitle>
   <manvolnum>7</manvolnum>

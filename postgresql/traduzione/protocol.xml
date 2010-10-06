@@ -794,7 +794,7 @@
     At completion of each series of extended-query messages, the frontend
     should issue a Sync message.  This parameterless message causes the
     backend to close the current transaction if it's not inside a
-    <command>BEGIN</command>/<command>COMMIT</command> transaction block (<quote>close</quote>
+    <command>BEgin</command>/<command>COMMIT</command> transaction block (<quote>close</quote>
     meaning to commit if no error, or roll back if error).  Then a
     ReadyForQuery response is issued.  The purpose of Sync is to provide
     a resynchronization point for error recovery.  When an error is detected
@@ -808,7 +808,7 @@
 
    <note>
     <para>
-     Sync does not cause a transaction block opened with <command>BEGIN</command>
+     Sync does not cause a transaction block opened with <command>BEgin</command>
      to be closed.  It is possible to detect this situation since the
      ReadyForQuery message includes transaction status information.
     </para>
@@ -1225,7 +1225,7 @@
     frontend disconnects while a non-<command>SELECT</command> query
     is being processed, the backend will probably finish the query
     before noticing the disconnection.  If the query is outside any
-    transaction block (<command>BEGIN</command> ... <command>COMMIT</command>
+    transaction block (<command>BEgin</command> ... <command>COMMIT</command>
     sequence) then its results might be committed before the
     disconnection is recognized.
    </para>

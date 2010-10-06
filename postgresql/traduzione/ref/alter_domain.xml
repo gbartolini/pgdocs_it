@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-ALTERDOMAIN">
+<refentry id="sql-alterdomain">
  <refmeta>
   <refentrytitle>ALTER DOMAIN</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -75,7 +75,7 @@ ALTER DOMAIN <replaceable class="PARAMETER">name</replaceable>
     <listitem>
      <para>
       This form adds a new constraint to a domain using the same syntax as
-      <xref linkend="SQL-CREATEDOMAIN"/>.
+      <xref linkend="sql-createdomain"/>.
       This will only succeed if all columns using the domain satisfy the
       new constraint.
      </para>
@@ -246,7 +246,7 @@ ALTER DOMAIN zipcode SET SCHEMA customers;
   </para>
  </refsect1>
 
- <refsect1 id="SQL-ALTERDOMAIN-compatibility">
+ <refsect1 id="sql-alterdomain-compatibility">
   <title>Compatibility</title>
     
   <para>
@@ -257,7 +257,7 @@ ALTER DOMAIN zipcode SET SCHEMA customers;
   </para>
  </refsect1>
 
- <refsect1 id="SQL-ALTERDOMAIN-see-also">
+ <refsect1 id="sql-alterdomain-see-also">
   <title>See Also</title>
 
   <simplelist type="inline">

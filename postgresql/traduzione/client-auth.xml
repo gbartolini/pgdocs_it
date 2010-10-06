@@ -24,7 +24,7 @@
    <productname>PostgreSQL</productname> actually does privilege
    management in terms of <quote>roles</quote>.  In this chapter, we
    consistently use <firstterm>database user</firstterm> to mean <quote>role with the
-   <literal>LOGIN</literal> privilege</quote>.
+   <literal>LOgin</literal> privilege</quote>.
   </para>
  </note>
 

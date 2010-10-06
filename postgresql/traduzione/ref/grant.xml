@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-GRANT">
+<refentry id="sql-grant">
  <refmeta>
   <refentrytitle>GRANT</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -393,7 +393,7 @@ GRANT <replaceable class="PARAMETER">role_name</replaceable> [, ...] TO <replace
  </refsect1>
 
 
- <refsect1 id="SQL-GRANT-notes">
+ <refsect1 id="sql-grant-notes">
   <title>Notes</title>
 
    <para>

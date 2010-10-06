@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-CREATEOPFAMILY">
+<refentry id="sql-createopfamily">
  <refmeta>
   <refentrytitle>CREATE OPERATOR FAMILY</refentrytitle>
   <manvolnum>7</manvolnum>

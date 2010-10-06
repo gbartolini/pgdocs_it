@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="APP-CLUSTERDB">
+<refentry id="app-clusterdb">
  <refmeta>
   <refentrytitle><application>clusterdb</application></refentrytitle>
   <manvolnum>1</manvolnum>
@@ -49,7 +49,7 @@ PostgreSQL documentation
 
   <para>
    <application>clusterdb</application> is a wrapper around the SQL
-   command <xref linkend="SQL-CLUSTER"/>.
+   command <xref linkend="sql-cluster"/>.
    There is no effective difference between clustering databases via
    this utility and via other methods for accessing the server.
   </para>
@@ -264,8 +264,8 @@ PostgreSQL documentation
   <title>Diagnostics</title>
 
   <para>
-   In case of difficulty, see <xref linkend="SQL-CLUSTER"/>
-   and <xref linkend="APP-PSQL"/> for
+   In case of difficulty, see <xref linkend="sql-cluster"/>
+   and <xref linkend="app-psql"/> for
    discussions of potential problems and error messages.
    The database server must be running at the
    targeted host.  Also, any default connection settings and environment

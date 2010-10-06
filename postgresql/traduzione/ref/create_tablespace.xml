@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-CREATETABLESPACE">
+<refentry id="sql-createtablespace">
  <refmeta>
   <refentrytitle>CREATE TABLESPACE</refentrytitle>
   <manvolnum>7</manvolnum>

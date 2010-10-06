@@ -2,365 +2,375 @@
 <!-- $PostgreSQL$ -->
 
 <sect1 id="bug-reporting">
- <title>Bug Reporting Guidelines</title>
+ <title>Linee guida per la segnalazione di bug</title>
 
  <para>
-  When you find a bug in <productname>PostgreSQL</productname> we want to
-  hear about it. Your bug reports play an important part in making
-  <productname>PostgreSQL</productname> more reliable because even the utmost
-  care cannot guarantee that every part of
-  <productname>PostgreSQL</productname> 
-  will work on every platform under every circumstance.
+Quando vengono trovati bug in <productname>PostgreSQL</productname> vogliamo
+saperlo. Le segnalazioni di bug giocano un ruolo importante nel rendere
+<productname>PostgreSQL</productname> più attendibile, 
+perchè anche la massima attenzione
+non può garantire che ogni parte di 
+<productname>PostgreSQL</productname>
+funzionerà su ogni piattaforma in ogni circostanza.
  </para>
 
  <para>
-  The following suggestions are intended to assist you in forming bug reports
-  that can be handled in an effective fashion. No one is required to follow
-  them but doing so tends to be to everyone's advantage.
+I seguenti suggerimenti sono intesi ad assistere nella creazione 
+di segnalazioni di bug
+che possando essere gestite con efficacia. Non è richiesto seguirli
+ma farlo costituirà un vantaggio per tutti.
  </para>
 
  <para>
-  We cannot promise to fix every bug right away. If the bug is obvious, critical,
-  or affects a lot of users, chances are good that someone will look into it. It
-  could also happen that we tell you to update to a newer version to see if the
-  bug happens there. Or we might decide that the bug
-  cannot be fixed before some major rewrite we might be planning is done. Or
-  perhaps it is simply too hard and there are more important things on the agenda.
-  If you need help immediately, consider obtaining a commercial support contract.
+Non possiamo promettre di risolvere subito ogni bug. Se il bug è evidente, critico,
+o coinvolge molti utenti, ci sono buone possibilità che qualcuno se ne occupi.
+Potrebbe anche capitare che venga consigliato di aggiornare ad una 
+versione più recente per vedere se il bug si ripresenta.
+O potremmo decidere che il bug
+non possa essere risolto prima che venga completata riscrittura importante. O
+forse è semplicemente troppo difficile e ci sono cose più importanti in agenda.
+Se si ha bisogno di aiuto istantaneo, considerare un contratto di supporto
+commerciale.
  </para>
 
  <sect2>
-  <title>Identifying Bugs</title>
+  <title>Identificare i bug</title>
 
   <para>
-   Before you report a bug, please read and re-read the
-   documentation to verify that you can really do whatever it is you are
-   trying. If it is not clear from the documentation whether you can do
-   something or not, please report that too; it is a bug in the documentation.
-   If it turns out that a program does something different from what the
-   documentation says, that is a bug. That might include, but is not limited to,
-   the following circumstances:
+Prima di segnalare un bug, preghiamo di leggere e ri-leggere la
+documentazione per verificare se sia possibile veramente fare quello che stai
+provando. Se dalla documentazione non è chiaro se si possa fare
+qualcosa o no, preghiamo di segnare anche questo; È un bug della documentazione.
+Se si dimostra che un programma fa qualcosa di differente da quello che dice 
+la documentazione, quello è un bug.
+Questo potrebbe includere, ma non essere limitato a,
+le seguenti circostanze:
 
    <itemizedlist>
     <listitem>
      <para>
-      A program terminates with a fatal signal or an operating system
-      error message that would point to a problem in the program. (A
-      counterexample might be a <quote>disk full</quote> message,
-      since you have to fix that yourself.)
+Un programma termina con un segnale fatale o un messaggio di errore del
+sistema operativo che indica un problema nel programma. (Un 
+esempio opposto potrebbe essere un messaggio di  <quote>disco pieno</quote>,
+dato devi risolvere il problema da solo.)
      </para>
     </listitem>
 
     <listitem>
      <para>
-      A program produces the wrong output for any given input.
+Un programma produce l'output sbagliato per ogni input fornito.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      A program refuses to accept valid input (as defined in the documentation).
+Un programma si rifiuta di accettare input validi 
+(come definiti nella documentazione).
      </para>
     </listitem>
 
     <listitem>
      <para>
-      A program accepts invalid input without a notice or error message.
-      But keep in mind that your idea of invalid input might be our idea of
-      an extension or compatibility with traditional practice.
+Un programma accetta input non validi senza notifica o messaggio di errore.
+Tenere a mente che l'idea che si ha di input non valido potrebbe essere
+per noi un'idea per un'estensione o per compatibilità con la pratica tradizionale.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      <productname>PostgreSQL</productname> fails to compile, build, or
-      install according to the instructions on supported platforms.
+<productname>PostgreSQL</productname> non riesce a compilare, fare il build,
+o installarsi, secondo le istruzioni per le piattaforme supportate.
      </para>
     </listitem>
    </itemizedlist>
 
-   Here <quote>program</quote> refers to any executable, not only the backend server.
+<quote>Programma</quote> si riferisce ad ogni eseguibile, non solo
+al server backend.    
   </para>
 
   <para>
-   Being slow or resource-hogging is not necessarily a bug. Read the
-   documentation or ask on one of the mailing lists for help in tuning your
-   applications. Failing to comply to the <acronym>SQL</acronym> standard is
-   not necessarily a bug either, unless compliance for the
-   specific feature is explicitly claimed.
+L'essere lento o l'accaparrare risorse non è necessariamente un bug. 
+Leggere la documentazione o chiedere su una delle mailing list per la 
+messa a punto delle applicazioni. 
+Nemmeno fallire nel soddisfare lo standard <acronym>SQL</acronym>
+è necessariamente un bug, a meno che la conformità per la specifica caratteristica
+sia esplicitamente richiesta.
   </para>
 
   <para>
-   Before you continue, check on the TODO list and in the FAQ to see if your bug is
-   already known. If you cannot decode the information on the TODO list, report your
-   problem. The least we can do is make the TODO list clearer.
+Prima di continuare, controllare sull'elenco TODO nelle FAQ per vedere se il bug è
+già noto. Se non si riesce a decifrare le informazioni dell'elenco TODO, riportare 
+il problema. Il minimo che possiamo fare è rendere l'elenco TODO più chiaro.
   </para>
  </sect2>
 
  <sect2>
-  <title>What to report</title>
+  <title>Cosa segnalare</title>
 
   <para>
-   The most important thing to remember about bug reporting is to state all
-   the facts and only facts. Do not speculate what you think went wrong, what
-   <quote>it seemed to do</quote>, or which part of the program has a fault.
-   If you are not familiar with the implementation you would probably guess
-   wrong and not help us a bit. And even if you are, educated explanations are
-   a great supplement to but no substitute for facts. If we are going to fix
-   the bug we still have to see it happen for ourselves first.
-   Reporting the bare facts
-   is relatively straightforward (you can probably copy and paste them from the
-   screen) but all too often important details are left out because someone
-   thought it does not matter or the report would be understood
-   anyway.
+La cosa più importante da ricordare sulla segnalazione di bug è di esporre tutti
+i fatti e solo i fatti. Non supporre quello che si pensa sia andato male, cosa
+<quote>è sembrato essere successo</quote>, 
+o quale parte del programma ne abbia colpa.
+Se non si ha familiarità con l'implementazione probabilmente supporrai sbagliato
+e non ci aiuterai. Ed anche se si ha, spegazioni educate sono un ottimo 
+supplemento ma non sostituiscono i fatti. Se boddiamo risolvere il bug 
+dovremmo comunque vederlo accadere, prima. 
+Segnalare i fatti è relativamente semplice (probabilmente si potrà copiarli e
+incollarli dallo schermo) ma molto spesso vengono tralasciati importanti dettagli 
+perchè si pensa non siano importanti o che la segnalazione sia comunque
+comprensibile.
   </para>
 
   <para>
-   The following items should be contained in every bug report:
+I seguenti punti dovrebbero essere contenuti in ogni segnalazione di bug:
 
    <itemizedlist>
     <listitem>
      <para>
-      The exact sequence of steps <emphasis>from program
-      start-up</emphasis> necessary to reproduce the problem. This
-      should be self-contained; it is not enough to send in a bare
-      <command>SELECT</command> statement without the preceding
-      <command>CREATE TABLE</command> and <command>INSERT</command>
-      statements, if the output should depend on the data in the
-      tables. We do not have the time to reverse-engineer your
-      database schema, and if we are supposed to make up our own data
-      we would probably miss the problem.
+L'esatta sequenza di passi <emphasis>dall'avvio del programma</emphasis>
+necessaria a generare il problema. Questo dovrebbe essere
+autonomo; non è sufficiente fornire una sola istruzione 
+<command>SELECT</command> senza la <command>CREATE TABLE</command> precedente
+e le istruzioni <command>INSERT</command>, se l'output
+dovrebbe dipendere dai dati nelle tabelle.
+Non abbiamo il tempo per eseguire del "reverse-engineering" sullo schema del 
+database, e se dobbiamo utilizzare i nostri dati probabilmente
+perderemo il problema.
      </para>
 
      <para>
-      The best format for a test case for SQL-related problems is a
-      file that can be run through the <application>psql</application>
-      frontend that shows the problem. (Be sure to not have anything
-      in your <filename>~/.psqlrc</filename> start-up file.)  An easy
-      way to create this file is to use <application>pg_dump</application>
-      to dump out the table declarations and data needed to set the
-      scene, then add the problem query.  You are encouraged to
-      minimize the size of your example, but this is not absolutely
-      necessary.  If the bug is reproducible, we will find it either
-      way.
+Il miglior formato per un test su problemi relativi all'SQL è un 
+file che può essere eseguito attraverso 
+il frontend <application>psql</application>. (Assicurarsi di non avere niente
+nel file si avvio <filename>~/.psqlrc</filename>.) Un modo
+semplice per creare questo file è usare <application>pg_dump</application>
+per eseguire un dump delle dichiarazioni delle tabelle e dei dati
+necessari a impostare la scena, quindi aggiungere la query che dà problemi.
+Si incoraggia a minimizzare la dimensione del proprio esempio,       
+ma questo non è assolutamente necessario. Se il bug è riproducibile, 
+lo troveremo in ogni caso.
      </para>
 
      <para>
-      If your application uses some other client interface, such as <application>PHP</application>, then
-      please try to isolate the offending queries. We will probably not set up a
-      web server to reproduce your problem. In any case remember to provide
-      the exact input files; do not guess that the problem happens for
-      <quote>large files</quote> or <quote>midsize databases</quote>, etc. since this
-      information is too inexact to be of use.
+Se la propria applicazione usa qualche altra interfaccia client, 
+tipo <application>PHP</application>, allora preghiamo di provare a isolare 
+le query colpevoli. Probabilmente non metteremo su un server web per 
+riprodurre il vostro problema. In ogni caso, ricordarsi di fornire
+i file di input esatti; Non presumere che il problema succeda con
+<quote>file grandi</quote> o <quote>database di medie dimensioni</quote>, 
+ecc. dato che queste informazioni sono 
+troppo inesatte per essere d'aiuto.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      The output you got. Please do not say that it <quote>didn't work</quote> or
-      <quote>crashed</quote>. If there is an error message,
-      show it, even if you do not understand it. If the program terminates with
-      an operating system error, say which. If nothing at all happens, say so.
-      Even if the result of your test case is a program crash or otherwise obvious
-      it might not happen on our platform. The easiest thing is to copy the output
-      from the terminal, if possible.
+L'output ottenuto. Per favore, non dire che <quote>non ha funzionato</quote> o
+<quote>si è bloccato</quote>. Se c'è un messaggio di errore, 
+mostrarlo, anche se non lo si capisce. Se il programma termina con un errore
+del sistema operativo, dire quale. Se non succede niente, dirlo.
+Anche se il risultato del tuo test è un crash del programma, potrebbe non succedere
+sulla nostra piattaforma. La cosa più semplice da fare è copiare l'output
+dal terminale, se possibile.
      </para>
      <note>
       <para>
-       If you are reporting an error message, please obtain the most verbose
-       form of the message.  In <application>psql</application>, say <literal>\set
-       VERBOSITY verbose</literal> beforehand.  If you are extracting the message
-       from the server log, set the run-time parameter
-       <xref linkend="guc-log-error-verbosity"/> to <literal>verbose</literal> so that all
-       details are logged.
+Se si sta segnalando un messaggio di errore, per favore fornire la forma più
+prolissa del messaggio. In <application>psql</application>, dare un'occhiata 
+prima di tutto a <literal>\set  VERBOSITY verbose</literal>. 
+Se si sta estraendo il messaggio dal log del server, impostare il parametro  
+<xref linkend="guc-log-error-verbosity"/> a <literal>verbose</literal> così
+che tutti i dettagli siano riportati nel log.
       </para>
      </note>
      <note>
       <para>
-       In case of fatal errors, the error message reported by the client might
-       not contain all the information available. Please also look at the
-       log output of the database server. If you do not keep your server's log
-       output, this would be a good time to start doing so.
+In caso di errori fatali, il messaggio di error riportato dal client 
+potrebbe non contenere tutte le informazioni disponibili. Per favore, controllare
+anche l'output del log del server database. Se non si tiene traccia dell'output 
+del log del server, questo potrebbe essere un buon momento per iniziare a farlo.
       </para>
      </note>
     </listitem>
 
     <listitem>
      <para>
-      The output you expected is very important to state. If you just write
-      <quote>This command gives me that output.</quote> or <quote>This is not
-      what I expected.</quote>, we might run it ourselves, scan the output, and
-      think it looks OK and is exactly what we expected. We should not have to
-      spend the time to decode the exact semantics behind your commands.
-      Especially refrain from merely saying that <quote>This is not what SQL says/Oracle
-      does.</quote> Digging out the correct behavior from <acronym>SQL</acronym>
-      is not a fun undertaking, nor do we all know how all the other relational
-      databases out there behave. (If your problem is a program crash, you can
-      obviously omit this item.)
+È molto importante specificare l'output che ci si aspettava. Se si scrive solo  
+<quote>Questo comando dà questo output.</quote> o <quote>Questo non è
+cosa mi aspettavo.</quote>,  potremmo lanciarlo, osservare l'output, e 
+pensare che sia giusto ed esattamente quello che ci aspettavamo. Non dovremmo 
+spendere del tempo cercando di decifrare l'esatta semantica dei tuoi comandi.
+Trattenersi specialmente dal dire semplicemente che <quote>Questo non è 
+quello che dice l'SQL/l'Oracle fa.</quote>
+Scavare per avere il corretto comportamento dall'<acronym>SQL</acronym>
+non è un compito divertente, e non sappiamo nemmeno come tutti gli altri
+database si comportano. (Se il problema è un crash del programma, si può ovviamente
+omettere questo elemento.)
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Any command line options and other start-up options, including
-      any relevant environment variables or configuration files that
-      you changed from the default. Again, please provide exact
-      information. If you are using a prepackaged distribution that
-      starts the database server at boot time, you should try to find
-      out how that is done.
+Qualsiasi opzione a linea di comando ed altre opzioni di avvio, inclusa
+ogni variabile d'ambiente rilevante o file di configurazione che
+sono stati cambiati rispetto ai predefiniti. Inoltre, si prega di fornire
+informazioni esatte. Se si sta usando una distribuzioni pacchettizata che 
+avvia il server database all'avvio, si dovrebbe provare a capire in che
+modo viene fatto.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Anything you did at all differently from the installation
-      instructions.
+Qualsiasi cosa sia stata fatta diversamente dalle istruzioni di installazione.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      The <productname>PostgreSQL</productname> version. You can run the command
-      <literal>SELECT version();</literal> to
-      find out the version of the server you are connected to.  Most executable
-      programs also support a <option>--version</option> option; at least
-      <literal>postgres --version</literal> and <literal>psql --version</literal>
-      should work.
-      If the function or the options do not exist then your version is
-      more than old enough to warrant an upgrade.
-      If you run a prepackaged version, such as RPMs, say so, including any
-      subversion the package might have. If you are talking about a CVS
-      snapshot, mention that, including its date and time.
+La versione di <productname>PostgreSQL</productname>. È possibile 
+eseguire il comando <literal>SELECT version();</literal> per
+scoprire la versione del server alla quale si è connessi. La maggior parte
+dei programmi eseguibili supportano anche un'opzione <option>--version</option>;
+almeno <literal>postgres --version</literal> e <literal>psql --version</literal>
+dovrebbero funzionare.
+Se la funzione o le opzioni non esistono allora la versione è abbastanza
+vecchia da meritare un aggiornamento.
+Se si sta utilizzando una versione pacchettizzata, tipo RPM, includere ogni
+sottoversione che il pacchetto potrebbe avere. Se ci si riferisce a uno 
+snapshot CVS, menzionarlo, includendo la sua data e orario.
      </para>
 
      <para>
-      If your version is older than &version; we will almost certainly
-      tell you to upgrade. There are many bug fixes and improvements
-      in each new release, so it is quite possible that a bug you have
-      encountered in an older release of <productname>PostgreSQL</productname>
-      has already been fixed. We can only provide limited support for
-      sites using older releases of <productname>PostgreSQL</productname>; if you
-      require more than we can provide, consider acquiring a
-      commercial support contract.
-     </para>
-     <para>
+Se la versione è più vecchia di &version; quasi certamente diremo di
+aggiornarla. Vengono risolti molti bug e ci sono miglioramenti in
+ogni nuova versione, così è possibile che un bug riscontrato in una 
+versione più vecchia sia già stato risolto. 
+Possiamo fornire sono un supporto limitato 
+per siti che usano vecchie versioni di <productname>PostgreSQL</productname>;
+Se si ha bisogno di più di quello che possiamo fornire, considerare l'acquisto
+un contratto di supporto commerciale. 
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Platform information. This includes the kernel name and version,
-      C library, processor, memory information, and so on. In most
-      cases it is sufficient to report the vendor and version, but do
-      not assume everyone knows what exactly <quote>Debian</quote>
-      contains or that everyone runs on i386s. If you have
-      installation problems then information about the toolchain on
-      your machine (compiler, <application>make</application>, and so
-      on) is also necessary.
+Informazioni sulla piattaforma. Queste includono il nome e la versione del kernel,
+della libreria C, processore, informazioni sulla memoria, e così via. 
+Nella maggior parte dei casi, è sufficente segnalare distributore e versione, ma non
+dare per scontato che chiunque sappia esattamente cosa 
+contiene <quote>Debian</quote>
+e che chiunque usi un i386. Se si hanno problemi di installazione, 
+allora saranno necessarie anche informazioni sulla toolchain della macchina (compilatore, <application>make</application> e così via) 
      </para>
     </listitem>
    </itemizedlist>
 
-   Do not be afraid if your bug report becomes rather lengthy. That is a fact of life.
-   It is better to report everything the first time than us having to squeeze the
-   facts out of you. On the other hand, if your input files are huge, it is
-   fair to ask first whether somebody is interested in looking into it.  Here is
-   an <ulink url="http://www.chiark.greenend.org.uk/~sgtatham/bugs.html">article</ulink>
-   that outlines some more tips on reporting bugs.
+Non aver paura se la segnalazione di bug diventa lunga. È normale.
+È meglio segnalare ogni cosa subito che costringerci a tirar fuori i fatti per voi.
+D'altra parte, se i file in input sono enormi, è saggio chiedere prima
+se qualcuno è interessato a guardarci. Ecco un 
+<ulink url="http://www.chiark.greenend.org.uk/~sgtatham/bugs.html">articolo</ulink>
+che evidenzia ulteriori consigli per la segnalazione di bug.
   </para>
 
   <para>
-   Do not spend all your time to figure out which changes in the input make
-   the problem go away. This will probably not help solving it. If it turns
-   out that the bug cannot be fixed right away, you will still have time to
-   find and share your work-around. Also, once again, do not waste your time
-   guessing why the bug exists. We will find that out soon enough.
+Non spendere tutto il tempo a capire quali cambiamenti in input fanno sparire il 
+problema. Probabilmente questo non aiuterà a risolverlo. Se viene dimostrato
+che il bug non può essere risolto subito, si avrà comunque il tempo per trovare e 
+condividere il proprio "work-around". Inoltre, non perdere tempo
+tentando di capire perchè esiste il bug. Noi lo scopriremo abbastanza velocemente.
   </para>
 
   <para>
-   When writing a bug report, please avoid confusing terminology.
-   The software package in total is called <quote>PostgreSQL</quote>,
-   sometimes <quote>Postgres</quote> for short. If you
-   are specifically talking about the backend server, mention that, do not
-   just say <quote>PostgreSQL crashes</quote>.  A crash of a single
-   backend server process is quite different from crash of the parent
-   <quote>postgres</quote> process; please don't say <quote>the server
-   crashed</quote> when you mean a single backend process went down, nor vice versa.
-   Also, client programs such as the interactive frontend <quote><application>psql</application></quote>
-   are completely separate from the backend.  Please try to be specific
-   about whether the problem is on the client or server side.
+Quando si scrive una segnalazione di bug, preghiamo di evitare terminologia confusa.
+Il pacchetto software completo si chiama <quote>PostgreSQL</quote>,
+a volte in breve <quote>Postgres</quote>. Se si sta parlando
+specificatamente del server backend, menzionarlo, non dire
+semplicemente <quote>PostgreSQL si blocca</quote>. Un crash di un singolo
+processo del server backend è abbastanza diverso dal crash del processo
+padre <quote>postgres</quote>; Per favore, non dire <quote>il server si è
+bloccato</quote> quando si intende che un singolo processo di backend è caduto, 
+e nemmeno viceversa.
+Inoltre, i programmi client, tipo il frontend interattivo 
+<quote><application>psql</application></quote>,
+sono completamente separati dal backend. Preghiamo di provare ad essere specifici
+sul fatto che il problema sia sul lato client o server.
   </para>
  </sect2>
 
  <sect2>
-  <title>Where to report bugs</title>
+  <title>Dove segnalare i bug</title>
+
 
   <para>
-   In general, send bug reports to the bug report mailing list at
-   <email>pgsql-bugs@postgresql.org</email>.
-   You are requested to use a descriptive subject for your email
-   message, perhaps parts of the error message.
+In generale, mandare segnalazioni di bug alla mailing list 
+<email>pgsql-bugs@postgresql.org</email>.
+È richiesto usare un oggetto descrittivo per il messaggio email,
+per esempio parte del messaggio di errore.
   </para>
 
   <para> 
-   Another method is to fill in the bug report web-form available
-   at the project's
-   <ulink url="http://www.postgresql.org/">web site</ulink>.
-   Entering a bug report this way causes it to be mailed to the
-   <email>pgsql-bugs@postgresql.org</email> mailing list.
+Un altro metodo è quello di riempire il modulo online disponibile
+sul <ulink url="http://www.postgresql.org/">sito web</ulink> del progetto 
+FAre una segnalazione di bug in questo modo fa sì che venga mandata per email alla 
+mailing list <email>pgsql-bugs@postgresql.org</email>.
   </para>
 
   <para>
-   If your bug report has security implications and you'd prefer that it
-   not become immediately visible in public archives, don't send it to
-   <literal>pgsql-bugs</literal>.  Security issues can be
-   reported privately to <email>security@postgresql.org</email>.
+Se la segnalazione di bug ha implicazioni di sicurezza e si preferisce che 
+non diventi visibile immediatamente negli archivi pubblici, non mandarla a
+<literal>pgsql-bugs</literal>. Questioni di sicurezza possono essere riportate
+privatamente a <email>security@postgresql.org</email>.
   </para>
 
   <para> 
-   Do not send bug reports to any of the user mailing lists, such as
-   <email>pgsql-sql@postgresql.org</email> or
-   <email>pgsql-general@postgresql.org</email>.
-   These mailing lists are for answering
-   user questions, and their subscribers normally do not wish to receive
-   bug reports. More importantly, they are unlikely to fix them.
+Non mandare segnalazioni di bug a tutti gli utenti delle mailing list, tipo
+<email>pgsql-sql@postgresql.org</email> o
+<email>pgsql-general@postgresql.org</email>.
+Queste mailing list servono a rispondere alle domande degli utenti,
+e i loro iscritti normalmente non desiderano ricevere 
+segnalazioni di bug. In più, 
+molto probabilmente non saranno capaci di risolverli.
   </para>
 
   <para>
-   Also, please do <emphasis>not</emphasis> send reports to
-   the developers' mailing list <email>pgsql-hackers@postgresql.org</email>.
-   This list is for discussing the
-   development of <productname>PostgreSQL</productname>, and it would be nice
-   if we could keep the bug reports separate. We might choose to take up a
-   discussion about your bug report on <literal>pgsql-hackers</literal>,
-   if the problem needs more review.
+Inoltre, preghiamo di <emphasis>non</emphasis> mandare segnalazioni alla
+mailing list degli sviluppatori <email>pgsql-hackers@postgresql.org</email>.
+Questa lista è per discutere lo sviluppo di <productname>PostgreSQL</productname>,
+e sarebbe utile mantenere separate le segnalazioni di bug.
+Potremmo scegliere di avere una discussione su una segnalazione 
+di bug su <literal>pgsql-hackers</literal>,
+se il problema necessita più analisi.
   </para>
 
   <para>
-   If you have a problem with the documentation, the best place to report it
-   is the documentation mailing list <email>pgsql-docs@postgresql.org</email>.
-   Please be specific about what part of the documentation you are unhappy
+Si si ha un problema con la documentazione, il miglior posto dove segnalarlo è 
+la mailing list sulla documentazione <email>pgsql-docs@postgresql.org</email>.
+Preghiamo di essere specifici su quale parte della documentazione crea problemi.
    with.
   </para>
 
   <para>
-   If your bug is a portability problem on a non-supported platform,
-   send mail to <email>pgsql-hackers@postgresql.org</email>,
-   so we (and you) can work on
-   porting <productname>PostgreSQL</productname> to your platform.
+Se il bug è un problema di portabilità su una piattaforma non standard,
+manda la segnalazione a <email>pgsql-hackers@postgresql.org</email>,
+così noi (e tu) possiamo lavorare sul porting di
+<productname>PostgreSQL</productname> sulla tua piattaforma.
   </para>
 
   <note>
    <para>
-    Due to the unfortunate amount of spam going around, all of the above
-    email addresses are closed mailing lists. That is, you need to be
-    subscribed to a list to be allowed to post on it.  (You need not be
-    subscribed to use the bug-report web form, however.)
-    If you would like to send mail but do not want to receive list traffic,
-    you can subscribe and set your subscription option to <literal>nomail</literal>.
-    For more information send mail to
-    <email>majordomo@postgresql.org</email>
-    with the single word <literal>help</literal> in the body of the message.
+Dato lo spiacevole ammontare di spam in giro, tutte le mailing list 
+citate sopra sono mailing list chiuse. Così. è necessario iscriversi a una lista
+per poterci scrivere. (Comunque, non devi essere iscritto se si usa il form online
+per la segnalazione di bug).
+Se si desidera mandare una email ma non si vuole ricevere il traffico della lista,
+ci si può iscrivere ed impostare la propria opzione di iscrizione si <literal>nomail</literal>.
+Per maggiori informazioni mandare una email a 
+<email>majordomo@postgresql.org</email>
+con la sola parola  <literal>help</literal> nel corpo del messaggio.
    </para>
   </note>
  </sect2>

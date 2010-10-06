@@ -118,7 +118,7 @@
      modification queries (<command>INSERT</command>,
      <command>UPDATE</command>, and <command>DELETE</command>), as well as
      other SQL commands. (The only exception is that you cannot put
-     <command>BEGIN</command>, <command>COMMIT</command>, <command>ROLLBACK</command>, or
+     <command>BEgin</command>, <command>COMMIT</command>, <command>ROLLBACK</command>, or
      <command>SAVEPOINT</command> commands into a <acronym>SQL</acronym> function.)
      However, the final command
      must be a <command>SELECT</command> or have a <literal>RETURNING</literal>

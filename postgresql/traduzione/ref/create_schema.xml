@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-CREATESCHEMA">
+<refentry id="sql-createschema">
  <refmeta>
   <refentrytitle>CREATE SCHEMA</refentrytitle>
   <manvolnum>7</manvolnum>

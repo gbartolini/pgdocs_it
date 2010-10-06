@@ -109,54 +109,52 @@
    
     Il codice di <productname>Postgres95</productname> divenne completamente ANSI C
    e ridotto in dimensione del 25%. Molte modifiche interne ne migliorarono le prestazioni
-   e la manutenzione. La versione 1.0.x di <productname>Postgres95</productname> confrontata
+   e la manutenzione. La versione 1.0.x di <productname>Postgres95</productname>, confrontata
    tramite il Wisconsin Benchmark alla versione 4.2 di <productname>POSTGRES</productname>,
-   risultava più veloce del 30-50%. Oltre alla eliminazione dei bug, questi erano
-   i maggiori miglioramenti:
+   risultava più veloce del 30-50%. Oltre alla eliminazione dei bug, questi furono
+   i pricipali miglioramenti:
 
 
    <itemizedlist>
     <listitem>
      <para>
       
-        Il linguaggio di interrogazione PostQUEL è stato sostituito con
-      <acronym>SQL</acronym> (implementato nel server). Le subqueries non sono
-      state supportate fino all'avvento di <productname>PostgreSQL</productname>
-      (vedi sotto), ma sono state imitate in <productname>Postgres95</productname>
+        Il linguaggio di interrogazione PostQUEL fu sostituito con
+      <acronym>SQL</acronym> (implementato nel server). Le subqueries non
+      erano supportate fino all'avvento di <productname>PostgreSQL</productname>
+      (vedi sotto), ma erano "imitate" in <productname>Postgres95</productname>
       con funzioni <acronym>SQL</acronym> definite dall'utente. Le funzioni
-      aggregate sono state re-implementate. Fu anche aggiunto il supporto
-      per la clausula query <literal>GROUP BY</literal>.
+      aggregate furono ri-implementate. Fu anche aggiunto il supporto
+      per la clausula <literal>GROUP BY</literal>.
      </para>
     </listitem>
 
     <listitem>
      <para>
       
-        Un nuovo programma (<application>psql</application>) è
-      stato fornito per le query SQL interattive, che utilizzano la
-      <acronym>GNU</acronym> <application>Readline</application>.
-      Esso sostituisce il vecchio programma <application>monitor</application>.
+        Un nuovo programma (<application>psql</application>), 
+        venne fornito per le query SQL interattive, che utilizzavano la
+        <acronym>GNU</acronym> <application>Readline</application>.
+        psql sostituisce il vecchio programma <application>monitor</application>.
      </para>
     </listitem>
 
     <listitem>
      <para>
       
-    Una nuova libreria front-end, <filename>libpgtcl</filename>,
-      supporta i client basati su <acronym>Tcl</acronym>. Una semplice
-      shell, <command>pgtclsh</command>, fornisce nuovi comandi Tcl per
-      interfacciare i programmi <application>Tcl</application> con il server
-      <productname>Postgres95</productname>.
+        Una nuova libreria front-end, <filename>libpgtcl</filename>,
+        supporta i client basati su <acronym>Tcl</acronym>. Una semplice
+        shell, <command>pgtclsh</command>, fornisce nuovi comandi Tcl per
+        interfacciare i programmi <application>Tcl</application> con il server
+        <productname>Postgres95</productname>.
      </para>
     </listitem>
 
     <listitem>
-<note>
-    <para>
-        Nota per il revisore: non ho capito 
-    </para>
-</note>
      <para>
+<warning>
+    <para>Per il revisore: da tradurre!</para>
+</warning>
       The large-object interface was overhauled. The inversion large
       objects were the only mechanism for storing large objects.  (The
       inversion file system was removed.)

@@ -13542,7 +13542,7 @@ ha successo e <literal>false</literal> altrimenti.
 
    <para>
 <function>pg_cancel_backend</function> e <function>pg_terminate_backend</function>
-mandano segnali (<systemitem>SIGINT</systemitem> o <systemitem>SIGTERM</systemitem>
+mandano segnali (<systemitem>SIginT</systemitem> o <systemitem>SIGTERM</systemitem>
 rispettivamente) sui processi di backend identificati dall'ID di processo.
 L'ID di processo di un backend attivo può essere trovato con
 la colonna <structfield>procpid</structfield> della vista
@@ -14437,7 +14437,7 @@ FOR EACH ROW EXECUTE PROCEDURE suppress_redundant_updates_trigger();
     </para>
     <para>
        For more information about creating triggers, see
-        <xref linkend="SQL-CREATETRIGGER"/>.
+        <xref linkend="sql-createtrigger"/>.
     </para>
   </sect1>
 </chapter>

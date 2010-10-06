@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-ALTERTRIGGER">
+<refentry id="sql-altertrigger">
  <refmeta>
   <refentrytitle>ALTER TRIGGER</refentrytitle>
   <manvolnum>7</manvolnum>
@@ -79,7 +79,7 @@ ALTER TRIGGER <replaceable class="PARAMETER">name</replaceable> ON <replaceable 
 
    <para>
     The ability to temporarily enable or disable a trigger is provided by
-    <xref linkend="SQL-ALTERTABLE"/>, not by
+    <xref linkend="sql-altertable"/>, not by
     <command>ALTER TRIGGER</command>, because <command>ALTER TRIGGER</command> has no
     convenient way to express the option of enabling or disabling all of
     a table's triggers at once.

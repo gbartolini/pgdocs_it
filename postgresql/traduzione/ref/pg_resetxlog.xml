@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="APP-PGRESETXLOG">
+<refentry id="app-pgresetxlog">
  <refmeta>
   <refentrytitle><application>pg_resetxlog</application></refentrytitle>
   <manvolnum>1</manvolnum>
@@ -31,7 +31,7 @@ PostgreSQL documentation
   </cmdsynopsis>
  </refsynopsisdiv>
 
- <refsect1 id="R1-APP-PGRESETXLOG-1">
+ <refsect1 id="R1-app-pgresetxlog-1">
   <title>Description</title>
   <para>
    <command>pg_resetxlog</command> clears the write-ahead log (WAL) and

@@ -4,81 +4,79 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:exsl="http://exslt.org/common" xmlns:cf="http://docbook.sourceforge.net/xmlns/chunkfast/1.0" xmlns:ng="http://docbook.org/docbook-ng" xmlns:db="http://docbook.org/ns/docbook" xmlns="http://www.w3.org/1999/xhtml" version="1.0" exclude-result-prefixes="exsl cf ng db">
 
 <xsl:template name="chunk-element-content">
-  <xsl:param name="prev"/>
-  <xsl:param name="next"/>
-  <xsl:param name="nav.context"/>
-  <xsl:param name="content">
-    <xsl:apply-imports/>
-  </xsl:param>
+    <xsl:param name="prev"/>
+    <xsl:param name="next"/>
+    <xsl:param name="nav.context"/>
+    <xsl:param name="content">
+        <xsl:apply-imports/>
+    </xsl:param>
 
-  <xsl:call-template name="user.preroot"/>
+    <xsl:call-template name="user.preroot"/>
 
-  <html>
+<html>
     <xsl:call-template name="html.head">
-      <xsl:with-param name="prev" select="$prev"/>
-      <xsl:with-param name="next" select="$next"/>
+        <xsl:with-param name="prev" select="$prev"/>
+        <xsl:with-param name="next" select="$next"/>
     </xsl:call-template>
 
     <body>
-      <xsl:call-template name="body.attributes"/>
-<div id="top">
-  <div id="pgHeader">
-    <span id="pgHeaderLogoLeft">
-      <a href="/" title="PostgreSQL"><img src="http://docs.postgresql.fr/theme/img/hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a>
-    </span>
-    <span id="pgHeaderLogoRight">
-      <a href="/" title="La base de données la plus sophistiquée au monde."><img src="http://docs.postgresql.fr/theme/img/hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a>
-    </span>
-  </div>
-</div>
-<div class="pgTopNav">
-  <div class="pgTopNavLeft"> 
-    <img src="http://docs.postgresql.fr/theme/img/nav_lft.png" width="7" height="23" alt="" />
-  </div>
-  <div class="pgTopNavRight">
-    <img src="http://docs.postgresql.fr/theme/img/nav_rgt.png" width="7" height="23" alt="" />
-  </div>
-  <ul class="pgTopNavList">
-   <li> <a href="http://www.postgresql.fr/" title="Accueil">Accueil</a> </li>
-   <li> <a href="http://blog.postgresql.fr/" title="Lire les actualités">Actualités</a> </li>
-   <li> <a href="http://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a> </li>
-   <li> <a href="http://forums.postgresql.fr/" title="Pour poser des questions">Forums</a> </li>
-   <li> <a href="http://asso.postgresql.fr/" title="La vie de l'association">Association</a> </li>
-   <li> <a href="http://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a> </li>
-   <li> <a href="http://planete.postgresql.fr" title="La planète francophone sur PostgreSQL">Planète</a> </li>
-   <li> <a href="http://support.postgresql.fr" title="Support sur PostgreSQL">Support</a> </li>
-  </ul>
-</div>
-<div id="pgContent">
-  <div id="pgSideWrap">
-    <div id="pgSideNav">
-      <form method="post" action="http://docs.postgresql.fr/search.php">
-        <div>
-          <h2><label for="q">Rechercher</label></h2>
-          <input type='hidden' id='v' name='v' value='900' />
-          <input id="q" name="q" type="text" size="10" maxlength="255" onfocus="if( this.value=='Rechercher' ) this.value='';" value="Rechercher" accesskey="r" /><input id="submit" name="submit" type="submit" value="Rechercher" />
+        <xsl:call-template name="body.attributes"/>
+
+        <div id="header">
+            <div id="header_sx">
+                <a href="http://www.postgresql.org" title="PostgreSQL"><img src="http://www.postgresql.org/layout/images/docs/hdr_logo.png" width="206" height="80" alt="PostgreSQL" /></a>
+            </div>
+            <div id="header_dx">
+                <a href="http://www.itpug.org" title="ITPUG Italian PostgreSQL Users"><img src="images/logo.png" /></a>
+            </div>
+            <br style="clear:both;" />
         </div>
-      </form>
+
+
+
+    
+    <div id="content">
+        <xsl:call-template name="upper.navigation">
+            <xsl:with-param name="prev" select="$prev"/>
+            <xsl:with-param name="next" select="$next"/>
+            <xsl:with-param name="nav.context" select="$nav.context"/>
+        </xsl:call-template>
+
+        <xsl:copy-of select="$content"/>
+      
+        <xsl:call-template name="lower.navigation">
+            <xsl:with-param name="prev" select="$prev"/>
+            <xsl:with-param name="next" select="$next"/>
+            <xsl:with-param name="nav.context" select="$nav.context"/>
+        </xsl:call-template>
     </div>
-  </div>
-
-  <div id="pgContentWrap">
-    <div id="pgContentNav">
 
 
-      <xsl:call-template name="footer.navigation">
-        <xsl:with-param name="prev" select="$prev"/>
-        <xsl:with-param name="next" select="$next"/>
-        <xsl:with-param name="nav.context" select="$nav.context"/>
-      </xsl:call-template>
 
-      <xsl:copy-of select="$content"/>
+   
+    <div id="footer">
+        <p style="float:left;">
+            Copyright © 1996 - 2010 PostgreSQL Global Development Group<br />
+            Copyright © 2010 Italian PostgreSQL Users Group<br />
+            <a href="http://www.itpug.org/privacy/index.it.html">Privacy</a> | <a href="http://www.itpug.org/thanks/index.it.html">Ringraziamenti</a>
+        </p>
+        <p style="float:right;">
+            Powered by<br /> 
+            <a href="http://www.2ndquadrant.it">
+            <img src="images/2ndQuadrant-logo.png" 
+                alt="2ndQuadrant" 
+                width="256" 
+                height="52" />
+            </a>
+        </p>
+        <br style="clear:both;" />
     </div>
-  </div>
-</div>
-    </body>
-  </html>
-  <xsl:value-of select="$chunk.append"/>
+
+
+</body>
+</html>
+
+<xsl:value-of select="$chunk.append"/>
 </xsl:template>
 
 </xsl:stylesheet>

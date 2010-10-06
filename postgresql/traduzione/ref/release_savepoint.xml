@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-RELEASE-SAVEPOINT">
+<refentry id="sql-release-savepoint">
  <refmeta>
   <refentrytitle>RELEASE SAVEPOINT</refentrytitle>
   <manvolnum>7</manvolnum>

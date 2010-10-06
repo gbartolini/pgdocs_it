@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-ALTEROPCLASS">
+<refentry id="sql-alteropclass">
  <refmeta>
   <refentrytitle>ALTER OPERATOR CLASS</refentrytitle>
   <manvolnum>7</manvolnum>

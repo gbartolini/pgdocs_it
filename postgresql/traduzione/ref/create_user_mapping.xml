@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-CREATEUSERMAPPING">
+<refentry id="sql-createusermapping">
  <refmeta>
   <refentrytitle>CREATE USER MAPPING</refentrytitle>
   <manvolnum>7</manvolnum>

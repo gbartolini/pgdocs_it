@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-CREATETABLEAS">
+<refentry id="sql-createtableas">
  <refmeta>
   <refentrytitle>CREATE TABLE AS</refentrytitle>
   <manvolnum>7</manvolnum>

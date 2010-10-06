@@ -4,7 +4,7 @@ $PostgreSQL$
 PostgreSQL documentation
 -->
 
-<refentry id="SQL-DROPSEQUENCE">
+<refentry id="sql-dropsequence">
  <refmeta>
   <refentrytitle>DROP SEQUENCE</refentrytitle>
   <manvolnum>7</manvolnum>

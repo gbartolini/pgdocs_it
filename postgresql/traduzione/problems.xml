@@ -302,74 +302,75 @@ sul fatto che il problema sia sul lato client o server.
  </sect2>
 
  <sect2>
-  <title>Where to report bugs</title>
+  <title>Dove segnalare i bug</title>
+
 
   <para>
-   In general, send bug reports to the bug report mailing list at
-   <email>pgsql-bugs@postgresql.org</email>.
-   You are requested to use a descriptive subject for your email
-   message, perhaps parts of the error message.
+In generale, mandare segnalazioni di bug alla mailing list 
+<email>pgsql-bugs@postgresql.org</email>.
+È richiesto usare un oggetto descrittivo per il messaggio email,
+per esempio parte del messaggio di errore.
   </para>
 
   <para> 
-   Another method is to fill in the bug report web-form available
-   at the project's
-   <ulink url="http://www.postgresql.org/">web site</ulink>.
-   Entering a bug report this way causes it to be mailed to the
-   <email>pgsql-bugs@postgresql.org</email> mailing list.
+Un altro metodo è quello di riempire il modulo online disponibile
+sul <ulink url="http://www.postgresql.org/">sito web</ulink> del progetto 
+FAre una segnalazione di bug in questo modo fa sì che venga mandata per email alla 
+mailing list <email>pgsql-bugs@postgresql.org</email>.
   </para>
 
   <para>
-   If your bug report has security implications and you'd prefer that it
-   not become immediately visible in public archives, don't send it to
-   <literal>pgsql-bugs</literal>.  Security issues can be
-   reported privately to <email>security@postgresql.org</email>.
+Se la segnalazione di bug ha implicazioni di sicurezza e si preferisce che 
+non diventi visibile immediatamente negli archivi pubblici, non mandarla a
+<literal>pgsql-bugs</literal>. Questioni di sicurezza possono essere riportate
+privatamente a <email>security@postgresql.org</email>.
   </para>
 
   <para> 
-   Do not send bug reports to any of the user mailing lists, such as
-   <email>pgsql-sql@postgresql.org</email> or
-   <email>pgsql-general@postgresql.org</email>.
-   These mailing lists are for answering
-   user questions, and their subscribers normally do not wish to receive
-   bug reports. More importantly, they are unlikely to fix them.
+Non mandare segnalazioni di bug a tutti gli utenti delle mailing list, tipo
+<email>pgsql-sql@postgresql.org</email> o
+<email>pgsql-general@postgresql.org</email>.
+Queste mailing list servono a rispondere alle domande degli utenti,
+e i loro iscritti normalmente non desiderano ricevere 
+segnalazioni di bug. In più, 
+molto probabilmente non saranno capaci di risolverli.
   </para>
 
   <para>
-   Also, please do <emphasis>not</emphasis> send reports to
-   the developers' mailing list <email>pgsql-hackers@postgresql.org</email>.
-   This list is for discussing the
-   development of <productname>PostgreSQL</productname>, and it would be nice
-   if we could keep the bug reports separate. We might choose to take up a
-   discussion about your bug report on <literal>pgsql-hackers</literal>,
-   if the problem needs more review.
+Inoltre, preghiamo di <emphasis>non</emphasis> mandare segnalazioni alla
+mailing list degli sviluppatori <email>pgsql-hackers@postgresql.org</email>.
+Questa lista è per discutere lo sviluppo di <productname>PostgreSQL</productname>,
+e sarebbe utile mantenere separate le segnalazioni di bug.
+Potremmo scegliere di avere una discussione su una segnalazione 
+di bug su <literal>pgsql-hackers</literal>,
+se il problema necessita più analisi.
   </para>
 
   <para>
-   If you have a problem with the documentation, the best place to report it
-   is the documentation mailing list <email>pgsql-docs@postgresql.org</email>.
-   Please be specific about what part of the documentation you are unhappy
+Si si ha un problema con la documentazione, il miglior posto dove segnalarlo è 
+la mailing list sulla documentazione <email>pgsql-docs@postgresql.org</email>.
+Preghiamo di essere specifici su quale parte della documentazione crea problemi.
    with.
   </para>
 
   <para>
-   If your bug is a portability problem on a non-supported platform,
-   send mail to <email>pgsql-hackers@postgresql.org</email>,
-   so we (and you) can work on
-   porting <productname>PostgreSQL</productname> to your platform.
+Se il bug è un problema di portabilità su una piattaforma non standard,
+manda la segnalazione a <email>pgsql-hackers@postgresql.org</email>,
+così noi (e tu) possiamo lavorare sul porting di
+<productname>PostgreSQL</productname> sulla tua piattaforma.
   </para>
 
   <note>
    <para>
-    Due to the unfortunate amount of spam going around, all of the above
-    email addresses are closed mailing lists. That is, you need to be
-    subscribed to a list to be allowed to post on it.  (You need not be
-    subscribed to use the bug-report web form, however.)
-    If you would like to send mail but do not want to receive list traffic,
-    you can subscribe and set your subscription option to <literal>nomail</literal>.
-    For more information send mail to
-    <email>majordomo@postgresql.org</email>
-    with the single word <literal>help</literal> in the body of the message.
+Dato lo spiacevole ammontare di spam in giro, tutte le mailing list 
+citate sopra sono mailing list chiuse. Così. è necessario iscriversi a una lista
+per poterci scrivere. (Comunque, non devi essere iscritto se si usa il form online
+per la segnalazione di bug).
+Se si desidera mandare una email ma non si vuole ricevere il traffico della lista,
+ci si può iscrivere ed impostare la propria opzione di iscrizione si <literal>nomail</literal>.
+Per maggiori informazioni mandare una email a 
+<email>majordomo@postgresql.org</email>
+con la sola parola  <literal>help</literal> nel corpo del messaggio.
    </para>
   </note>
  </sect2>

@@ -65,8 +65,8 @@
             <a href="http://www.2ndquadrant.it">
             <img src="images/2ndQuadrant-logo.png" 
                 alt="2ndQuadrant" 
-                width="441" 
-                height="90" />
+                width="256" 
+                height="52" />
             </a>
         </p>
         <br style="clear:both;" />

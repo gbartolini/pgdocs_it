@@ -117,7 +117,7 @@ menzionato qui solo per completezza.)
 
 
   <sect1 id="tutorial-createdb">
-   <title>Creating a Database</title>
+   <title>Creare un database</title>
 
    <indexterm zone="tutorial-createdb">
     <primary>database</primary>
@@ -129,44 +129,44 @@ menzionato qui solo per completezza.)
    </indexterm>
 
    <para>
-    The first test to see whether you can access the database server
-    is to try to create a database.  A running
-    <productname>PostgreSQL</productname> server can manage many
-    databases.  Typically, a separate database is used for each
-    project or for each user.
+La prima prova per vedere se si ha accesso al server database
+è provare a creare un database. Un server <productname>PostgreSQL</productname>  
+in esecuzione può gestire molti database.
+Tipicamente, viene usato un database separato per ogni progetto o per 
+ogni utente.
    </para>
 
    <para>
-    Possibly, your site administrator has already created a database
-    for your use.  He should have told you what the name of your
-    database is.  In that case you can omit this step and skip ahead
-    to the next section.
+Possibilmente, l'amministratore del vostro sito ha già creato un database
+per il vostro uso. Dovrebbe aver comunicato il nome del vostro database.
+In quel caso si può evitare questo passo e saltare alla prossima sezione.
    </para>
 
    <para>
     To create a new database, in this example named
-    <literal>mydb</literal>, you use the following command:
+Per creare un nuovo database, in questo esempio chiamato
+    <literal>mydb</literal>, usare il seguente comando:
 <screen>
 <prompt>$</prompt> <userinput>createdb mydb</userinput>
 </screen>
-    If this produces no response then this step was successful and you can skip over the
-    remainder of this section.
+Se questo non produce risposta allora questo passo ha avuto successo e si può saltare 
+il resto di questa sezione.
    </para>
 
    <para>
-    If you see a message similar to:
+Se si ottiene un messaggio simile a:
 <screen>
 createdb: command not found
 </screen>
-    then <productname>PostgreSQL</productname> was not installed properly.  Either it was not
-    installed at all or your shell's search path was not set to include it.
-    Try calling the command with an absolute path instead:
+allora <productname>PostgreSQL</productname> non è stato installato bene. O non è stato
+installato per niente o il percorso di ricerca della shell 
+non è stato impostato per includerlo.
+Provare a lanciare il comando con un percorso assoluto: 
 <screen>
 <prompt>$</prompt> <userinput>/usr/local/pgsql/bin/createdb mydb</userinput>
 </screen>
-    The path at your site might be different.  Contact your site
-    administrator or check the installation instructions to
-    correct the situation.
+Il percorso potrebbe essere diverso. Contattare l'amministratore del proprio sito 
+o controllare le istruzioni di installazione per correggere la situazione.
    </para>
 
    <para>

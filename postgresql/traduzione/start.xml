@@ -51,36 +51,34 @@ allora leggere la prossima sezione.
 
 
   <sect1 id="tutorial-arch">
-   <title>Architectural Fundamentals</title>
+   <title>Fondamenti sull'architettura</title>
+
 
    <para>
-    Before we proceed, you should understand the basic
-    <productname>PostgreSQL</productname> system architecture.
-    Understanding how the parts of
-    <productname>PostgreSQL</productname> interact will make this
-    chapter somewhat clearer.
+Prima di procedere, si dovrebbe comprendere l'architettura di base del sistema
+<productname>PostgreSQL</productname>.
+Capire come interagiscono le parti di <productname>PostgreSQL</productname> 
+renderà questo capitolo un po' più chiaro.
    </para>
 
    <para>
-    In database jargon, <productname>PostgreSQL</productname> uses a
-    client/server model.  A <productname>PostgreSQL</productname>
-    session consists of the following cooperating processes
-    (programs):
+Nel gergo dei database,  <productname>PostgreSQL</productname> usa un modello
+client/server. Una sessione  <productname>PostgreSQL</productname>
+consiste dei seguenti processi cooperanti (programmi):
 
     <itemizedlist>
      <listitem>
       <para>
-       A server process, which manages the database files, accepts
-       connections to the database from client applications, and
-       performs database actions on behalf of the clients.  The
-       database server program is called
-       <filename>postgres</filename>.
+Un processo server, che gestisce i file del database, accetta 
+connessioni al database da applicazioni client, ed esegue azioni 
+per mezzo dei client. Il programma server è chiamato <filename>postgres</filename>.
        <indexterm><primary>postgres</primary></indexterm>
       </para>
      </listitem>
 
      <listitem>
       <para>
+      <warning><para>TODO</para></warning>
        The user's client (frontend) application that wants to perform
        database operations.  Client applications can be very diverse
        in nature:  a client could be a text-oriented tool, a graphical
@@ -96,25 +94,24 @@ allora leggere la prossima sezione.
    </para>
 
    <para>
-    As is typical of client/server applications, the client and the
-    server can be on different hosts.  In that case they communicate
-    over a TCP/IP network connection.  You should keep this in mind,
-    because the files that can be accessed on a client machine might
-    not be accessible (or might only be accessible using a different
-    file name) on the database server machine.
+Come tipico delle applicazioni client/server, il client e il server 
+possono essere su host diversi. In quel caso comunicano attraverso
+una connessione di rete TCP/IP. Si dovrebbe tenere a mente questo,
+dato che i file a cui si ha accesso sulla macchina client potrebbero
+non essere accessibili 
+sulla macchina server (o potrebbero essere accessibili solo usando un nome diverso).
    </para>
 
    <para>
-    The <productname>PostgreSQL</productname> server can handle
-    multiple concurrent connections from clients.  To achieve this it
-    starts (<quote>forks</quote>) a new process for each connection.
-    From that point on, the client and the new server process
-    communicate without intervention by the original
-    <filename>postgres</filename> process.  Thus, the
-    master server process is always running, waiting for
-    client connections, whereas client and associated server processes
-    come and go.  (All of this is of course invisible to the user.  We
-    only mention it here for completeness.)
+Il server <productname>PostgreSQL</productname> può gestire 
+connessioni multiple concorrenti dai client. Per realizzare ciò 
+il server avvia (<quote>forka</quote>) un nuovo processo per ogni connessione.
+Da quel punto in poi, il client e il nuovo processo server comunicano
+senza intervento del processo <filename>postgres</filename> originale.
+Così, il processo server "master" è sempre in esecuzione, aspettando 
+connessioni dai client, mentre i processi client e server associato  
+vanno avanti. (Tutto questo è, ovviamente, invisibile all'utente. È stato
+menzionato qui solo per completezza.)
    </para>
   </sect1>
 

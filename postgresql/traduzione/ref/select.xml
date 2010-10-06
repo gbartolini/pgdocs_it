@@ -248,7 +248,7 @@ TABLE { [ ONLY ] <replaceable class="parameter">table_name</replaceable> [ * ] |
    </para>
   </refsect2>
 
-  <refsect2 id="SQL-FROM">
+  <refsect2 id="sql-from">
    <title id="sql-from-title"><literal>FROM</literal> Clause</title>
 
    <para>
@@ -475,7 +475,7 @@ TABLE { [ ONLY ] <replaceable class="parameter">table_name</replaceable> [ * ] |
    </para>
   </refsect2>
 
-  <refsect2 id="SQL-WHERE">
+  <refsect2 id="sql-where">
    <title id="sql-where-title"><literal>WHERE</literal> Clause</title>
 
    <para>
@@ -492,7 +492,7 @@ WHERE <replaceable class="parameter">condition</replaceable>
    </para>
   </refsect2>
 
-  <refsect2 id="SQL-GROUPBY">
+  <refsect2 id="sql-groupby">
    <title id="sql-groupby-title"><literal>GROUP BY</literal> Clause</title>
 
    <para>

@@ -14437,7 +14437,7 @@ FOR EACH ROW EXECUTE PROCEDURE suppress_redundant_updates_trigger();
     </para>
     <para>
        For more information about creating triggers, see
-        <xref linkend="SQL-CREATETRIGGER"/>.
+        <xref linkend="sql-createtrigger"/>.
     </para>
   </sect1>
 </chapter>

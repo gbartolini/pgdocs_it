@@ -2,39 +2,37 @@
 <!-- $PostgreSQL$ -->
 
  <chapter id="tutorial-start">
-  <title>Getting Started</title>
+  <title>Cominciare</title>
 
   <sect1 id="tutorial-install">
-   <title>Installation</title>
+   <title>Installazione</title>
 
    <para>
-    Before you can use <productname>PostgreSQL</productname> you need
-    to install it, of course.  It is possible that
-    <productname>PostgreSQL</productname> is already installed at your
-    site, either because it was included in your operating system
-    distribution or because the system administrator already installed
-    it.  If that is the case, you should obtain information from the
-    operating system documentation or your system administrator about
-    how to access <productname>PostgreSQL</productname>.
+Prima di usare bisogna installarlo, ovviamente.
+È possibile che <productname>PostgreSQL</productname> sia già installato, 
+sia perchè è già incluso nella distribuzione del proprio sistema operativo,
+sia che l'amministratore di sistema lo abbia già installato.
+Se ci so trova nel secondo caso, si dovrebbero ottenere inromazioni 
+dalla documentzione del sistema operativo o dall'amministratore di distema 
+su come avere accesso a <productname>PostgreSQL</productname>.
    </para>
 
    <para>
-    If you are not sure whether <productname>PostgreSQL</productname>
-    is already available or whether you can use it for your
-    experimentation then you can install it yourself.  Doing so is not
-    hard and it can be a good exercise.
-    <productname>PostgreSQL</productname> can be installed by any
-    unprivileged user; no superuser (<systemitem>root</systemitem>)
-    access is required.
+Se non si è sicuri che <productname>PostgreSQL</productname>
+sia già disponibile o che lo possiate utilizzare per sperimentazioni
+allora è possibile installarlo. Non è difficile farlo
+e può essere un buon esercizio.
+<productname>PostgreSQL</productname> può essere installato da un utente 
+non provolegiato; Non è richiesto l'accesso superutente (<systemitem>root</systemitem>).
    </para>
 
    <para>
-    If you are installing <productname>PostgreSQL</productname>
-    yourself, then refer to <xref linkend="installation"/>
-    for instructions on installation, and return to
-    this guide when the installation is complete.  Be sure to follow
-    closely the section about setting up the appropriate environment
-    variables.
+Se si sta installando <productname>PostgreSQL</productname>
+da soli, allora riferirsi a <xref linkend="installation"/>
+per istruzioni sull'installazione, e tornare a questa guida quando 
+l'installazione è completata. 
+Assicurarsi di seguire alla lettera la sezione sull'impostazione delle variabili d'ambiente 
+appropriate.
    </para>
 
    <para>
@@ -270,7 +268,7 @@ createdb: database creation failed: ERROR:  permission denied to create database
 
    <para>
     More about <command>createdb</command> and <command>dropdb</command> can
-    be found in <xref linkend="APP-CREATEDB"/> and <xref linkend="APP-DROPDB"/>
+    be found in <xref linkend="app-createdb"/> and <xref linkend="app-dropdb"/>
     respectively.
    </para>
   </sect1>

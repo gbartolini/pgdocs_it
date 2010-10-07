@@ -319,14 +319,14 @@ con uno degli altri due approcci.
  </sect1>
 
  <sect1 id="backup-file">
-  <title>File System Level Backup</title>
+  <title>Backup a livello di file system</title>
 
   <para>
-   An alternative backup strategy is to directly copy the files that
-   <productname>PostgreSQL</productname> uses to store the data in the database;
-   <xref linkend="creating-cluster"/> explains where these files
-   are located.  You can use whatever method you prefer
-   for doing file system backups; for example:
+Una strategia alternativa per il backup è copiare direttamente i file usati da 
+<productname>PostgreSQL</productname> per immagazzinare i dati nel database;
+<xref linkend="creating-cluster"/> spiega dove sono collocati questi file.
+È possibile usare qualsiasi metodo si preferisce 
+per fare backup di file system; per esempio:
 
 <programlisting>
 tar -cf backup.tar /usr/local/pgsql/data
@@ -334,99 +334,97 @@ tar -cf backup.tar /usr/local/pgsql/data
   </para>
 
   <para>
-   There are two restrictions, however, which make this method
-   impractical, or at least inferior to the <application>pg_dump</application>
-   method:
+Ci sono due restrizioni, comunque, che rendono questo metodo impraticabile,
+o almeno inferiore al metodo <application>pg_dump</application>:
 
    <orderedlist>
     <listitem>
      <para>
-      The database server <emphasis>must</emphasis> be shut down in order to
-      get a usable backup. Half-way measures such as disallowing all
-      connections will <emphasis>not</emphasis> work
-      (in part because <command>tar</command> and similar tools do not take
-      an atomic snapshot of the state of the file system,
-      but also because of internal buffering within the server).
-      Information about stopping the server can be found in
-      <xref linkend="server-shutdown"/>.  Needless to say, you
-      also need to shut down the server before restoring the data.
+Il server database <emphasis>deve</emphasis> essere spento per ottenere un backup usabile.
+Mezze misure, tipo non permettere altre connessioni, non funzioneranno
+(in parte perchè <command>tar</command> e strumenti simili non prendono 
+un'istantanea atomica dello stato del file system,
+ma anche perchè ci sono operazioni di buffering all'interno del server).
+Informazioni sull'arresto del server possono essere trovate in
+<xref linkend="server-shutdown"/>. Inutile dire che è necessario 
+arrestare il server anche prima del ripristino dei dati.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      If you have dug into the details of the file system layout of the
-      database, you might be tempted to try to back up or restore only certain
-      individual tables or databases from their respective files or
-      directories. This will <emphasis>not</emphasis> work because the
-      information contained in these files is not usable without
-      the commit log files,
-      <filename>pg_clog/*</filename>, which contain the commit status of
-      all transactions. A table file is only usable with this
-      information. Of course it is also impossible to restore only a
-      table and the associated <filename>pg_clog</filename> data
-      because that would render all other tables in the database
-      cluster useless.  So file system backups only work for complete
-      backup and restoration of an entire database cluster.
+Se ci si è addentrati nei dettagli dei come sul file system è organizzato il database, 
+si potrebbe esser tentati di provare a fare il backup o il ripristino solo alcune
+tabelle o database dai loro rispettivi file o directory.
+Questo <emphasis>non</emphasis> funzionerà perchè le informazioni contenute
+in questi file non sono usabili senza i file di log delle commit,
+<filename>pg_clog/*</filename>, che contiene lo stato delle commit di tutte le transazioni.
+Un file di una tabella è usabile solo con queste informazioni.
+Ovviamente è impossibile anche ripristinare solo una tabella 
+e l'associatio <filename>pg_clog</filename>  perchè questo renderà 
+tutte le altre tabelle nel cluster inutili.
+Per questo, i backup a livello di file system funzioneranno solo per 
+l'intero cluster.
      </para>
     </listitem>
    </orderedlist>
   </para>
 
   <para>
-   An alternative file-system backup approach is to make a
-   <quote>consistent snapshot</quote> of the data directory, if the
-   file system supports that functionality (and you are willing to
-   trust that it is implemented correctly).  The typical procedure is
-   to make a <quote>frozen snapshot</quote> of the volume containing the
-   database, then copy the whole data directory (not just parts, see
-   above) from the snapshot to a backup device, then release the frozen
-   snapshot.  This will work even while the database server is running.
-   However, a backup created in this way saves
-   the database files in a state as if the database server was not
-   properly shut down; therefore, when you start the database server
-   on the backed-up data, it will think the previous server instance
-   crashed and will replay the WAL log.  This is not a problem; just
-   be aware of it (and be sure to include the WAL files in your backup).
+Un approccio alternativo per un backup a livello di file system è di 
+fare una <quote>consistent snapshot</quote> della directory dei dati, se
+il file system supporta quella funzionalità (e ti fidi che sia implementata 
+correttamente). La procedura tipica è di fare una <quote>frozen snapshot</quote> 
+del volume che contiene il database, quindi copiare l'intera directory dei dati 
+(non solo parti, vedere sopra) dalla snapshot a un dispositivo di backup, quindi rilasciare
+la <quote>frozen snapshot</quote>. Questo funzionerà anche mentrw il database è in esecuzione.
+Comunque, un backup creato in questo modo salva i file del database
+in uno stato come se il server database non fosse stato terminato nel modo giusto;
+quindi, quando si avvia il server database
+sui dati sottoposti a backup, esso penserà che la precedente istanza del server 
+abbia subito un crash e repeterà il log WAL. Questo non è un problema;
+esserne semplicemente consapevoli (e assicurarsi di includere i file WAL nel proprio backup).
   </para>
 
   <para>
-   If your database is spread across multiple file systems, there might not
-   be any way to obtain exactly-simultaneous frozen snapshots of all
-   the volumes.  For example, if your data files and WAL log are on different
-   disks, or if tablespaces are on different file systems, it might
-   not be possible to use snapshot backup because the snapshots
-   <emphasis>must</emphasis> be simultaneous.
-   Read your file system documentation very carefully before trusting
-   the consistent-snapshot technique in such situations.
+Se il database è distibuito su più filesystem, non ci potrebbe essere modo di
+ottenere frozen snapshot esattamente simultanee di tutti i volumi.
+Per esempio, se i dati e i log WAL sono su dischi diversi,
+o se i tablespace sono su differenti file system, potrebbe non essere possibile 
+usare il meodo di backup basato sulle snapshot dato che queste <emphasis>devono</emphasis> 
+essere
+simultanee.
+Leggere la documentazione del file system molto attentamente prima di usare
+la tecnica delle snapshot consistenti.
   </para>
 
   <para>
-   If simultaneous snapshots are not possible, one option is to shut down
-   the database server long enough to establish all the frozen snapshots.
-   Another option is perform a continuous archiving base backup (<xref
-   linkend="backup-base-backup"/>) because such backups are immune to file
-   system changes during the backup.  This requires enabling continuous
-   archiving just during the backup process; restore is done using
-   continuous archive recovery (<xref linkend="backup-pitr-recovery"/>).
+Se snapshot simultanee non sono possibili, un'opzione è di spengere il server database
+abbastanza a lungo da determinare tutte le frozen snapshot. 
+Un'altra opzione è quella di eseguire backup basati sull'archiviazione continua (<xref
+linkend="backup-base-backup"/>) perchè questi backup sono immuni ai cambiamenti
+del file system durante il backup. Questo richiede l'autorizzazione all'archiviazione
+continua solo durante il processo di backup; il ripristino viene fatto
+usando <xref linkend="backup-pitr-recovery"/>.
   </para>
 
   <para>
-   Another option is to use <application>rsync</application> to perform a file
-   system backup.  This is done by first running <application>rsync</application>
-   while the database server is running, then shutting down the database
-   server just long enough to do a second <application>rsync</application>.  The
-   second <application>rsync</application> will be much quicker than the first,
-   because it has relatively little data to transfer, and the end result
-   will be consistent because the server was down.  This method
-   allows a file system backup to be performed with minimal downtime.
+Un'altra opzione è di usare <application>rsync</application> per compiere un backup
+di file system. Questo è fatto lanciando prima <application>rsync</application>
+mentre il serve è in esecuzione, quindi terminando il server database
+abbastanza a lungo per fare una seconda <application>rsync</application>. Questa
+sarà molto più veloce della prima, 
+dato che ha relativamente pochi dati da trasferire, e il risultato finale
+sarà consistente perchè il server è spento. Questo metodo
+permette a un backup a livello di file system di essere eseguito con un tempo
+minimo in cui il server non gira.
   </para>
 
   <para>
-   Note that a file system backup will typically be larger
-   than an SQL dump. (<application>pg_dump</application> does not need to dump
-   the contents of indexes for example, just the commands to recreate
-   them.)  However, taking a file system backup might be faster.
+Notare che un backup a livello di file system sarà tipicamente più grande
+di un dumpo SQL. (<application>pg_dump</application> non ha bisogno di fare il dump
+del contenuto degli indici, solo dei comandi per ricrearli). 
+Comunque, eseguire un backup di file system potrebbe essere più veloce.
   </para>
  </sect1>
 

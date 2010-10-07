@@ -4365,7 +4365,7 @@
      <listitem>
       <para>
        Add <literal>TABLESPACE</literal> clause to <link
-       linkend="sql-createtableAS"><command>CREATE TABLE AS</command></link>
+       linkend="sql-createtableas"><command>CREATE TABLE AS</command></link>
        (Neil)
       </para>
 
@@ -4377,7 +4377,7 @@
      <listitem>
       <para>
        Add <literal>ON COMMIT</literal> clause to <link
-       linkend="sql-createtableAS"><command>CREATE TABLE AS</command></link>
+       linkend="sql-createtableas"><command>CREATE TABLE AS</command></link>
        (Neil)
       </para>
 

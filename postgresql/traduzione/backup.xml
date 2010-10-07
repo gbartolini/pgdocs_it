@@ -119,52 +119,49 @@ per ripristinare un dump è
 <synopsis>
 psql <replaceable class="parameter">dbname</replaceable> &lt; <replaceable class="parameter">infile</replaceable>
 </synopsis>
-    where <replaceable class="parameter">infile</replaceable> is the
-    file output by the <application>pg_dump</application> command. The database <replaceable
-    class="parameter">dbname</replaceable> will not be created by this
-    command, so you must create it yourself from <literal>template0</literal>
-    before executing <application>psql</application> (e.g., with
-    <literal>createdb -T template0 <replaceable
-    class="parameter">dbname</replaceable></literal>).  <application>psql</application>
-    supports options similar to <application>pg_dump</application> for specifying
-    the database server to connect to and the user name to use. See
-    the <xref linkend="app-psql"/> reference page for more information.
+dove <replaceable class="parameter">infile</replaceable> è il file creato dal comando
+<application>pg_dump</application>. 
+Il database <replaceable class="parameter">dbname</replaceable>
+non sarà creato da questo comando, per questo si dovrà crearlo da <literal>template0</literal> 
+prima di eseguire <application>psql</application> (per es., con
+<literal>createdb -T template0 <replaceable class="parameter">dbname</replaceable></literal>).
+<application>psql</application> supporta opzioni simili a <application>pg_dump</application>
+per specificare il server database al quale connettersi e il nome utente da usare.
+Se veda la pagina di referenza  <xref linkend="app-psql"/> per maggiori informazioni.
    </para>
 
    <para>
-    Before restoring an SQL dump, all the users who own objects or were
-    granted permissions on objects in the dumped database must already
-    exist. If they do not, the restore will fail to recreate the
-    objects with the original ownership and/or permissions.
-    (Sometimes this is what you want, but usually it is not.)
+Prima di ripristinare un dump SQL, tutti gli utenti che possiedono oggetti o 
+a cui sono stati concessi permessi su oggetti nel database sottoposto a dump devono già
+esistere. Altrimenti, il ripristino fallirà nel ricreare gli oggetti 
+con l'originale proprietà e/o permessi.
+(A volte questo è quello che si vuole, ma di solito no).
    </para>
 
    <para>
-    By default, the <application>psql</application> script will continue to
-    execute after an SQL error is encountered. You might wish to run
-    <application>psql</application> with
-    the <literal>ON_ERROR_STOP</literal> variable set to alter that
-    behavior and have <application>psql</application> exit with an
-    exit status of 3 if an SQL error occurs:
+In maniera predefinita, lo script <application>psql</application> continuerà a
+viaggiare dopo che viene riscontrato un errore SQL. Si potrebbe voler lanciare
+<application>psql</application> con la variabile <literal>ON_ERROR_STOP</literal>
+impostata per modificare quel comportamento e far si che <application>psql</application>
+esca con uno stato d'uscita 3 se si presenta un errore SQL:
 <programlisting>
 psql --set ON_ERROR_STOP=on dbname &lt; infile
 </programlisting>
-    Either way, you will only have a partially restored database.
-    Alternatively, you can specify that the whole dump should be
-    restored as a single transaction, so the restore is either fully
-    completed or fully rolled back. This mode can be specified by
-    passing the <option>-1</option> or <option>--single-transaction</option>
-    command-line options to <application>psql</application>. When using this
-    mode, be aware that even a minor error can rollback a
-    restore that has already run for many hours. However, that might
-    still be preferable to manually cleaning up a complex database
-    after a partially restored dump.
+D'altro canto, si avrà un database ripristinato solo parzialmente.
+Alternativamente, è possibile specificare che l'intero dump dovrebbe essere
+ripristinato come una singola transazione, così il ripristino sarà o completamente 
+compeltato o completamente revertito. Questo modo può essere specificato passando 
+l'opzione a riga di comando <option>-1</option> o <option>--single-transaction</option>
+a <application>psql</application>. Quando si usa questo modo,
+fare attenzione che anche un piccolo errore può portare al rollback di un ripristino
+che stava girando da molte ore. Comunque, sarebbe preferibile pulire a mano
+un database complesso dopo un dump parzialmente rispristinato.
    </para>
 
    <para>
-    The ability of <application>pg_dump</application> and <application>psql</application> to
-    write to or read from pipes makes it possible to dump a database
-    directly from one server to another, for example:
+L'abilità di <application>pg_dump</application> e <application>psql</application> di
+di scrivere e leggere dalle pipe rende possibile fare il dump di un database
+direttamente da un server ad un altro, per esempio:
 <programlisting>
 pg_dump -h <replaceable>host1</replaceable> <replaceable>dbname</replaceable> | psql -h <replaceable>host2</replaceable> <replaceable>dbname</replaceable>
 </programlisting>
@@ -172,40 +169,40 @@ pg_dump -h <replaceable>host1</replaceable> <replaceable>dbname</replaceable> | 
 
    <important>
     <para>
-     The dumps produced by <application>pg_dump</application> are relative to
-     <literal>template0</literal>. This means that any languages, procedures,
-     etc. added via <literal>template1</literal> will also be dumped by
-     <application>pg_dump</application>. As a result, when restoring, if you are
-     using a customized <literal>template1</literal>, you must create the
-     empty database from <literal>template0</literal>, as in the example
-     above.
+I dump prodotti da <application>pg_dump</application> sono relativi a
+<literal>template0</literal>. Questo significa nel dump finirà anche ogni linguaggio, 
+procedura,
+ecc. aggiunta attraverso <literal>template1</literal>. Come risultato,
+quando si esegue un ripristino, se si sta utilizzando un <literal>template1</literal>
+modificato, si deve creare un database vuoto da <literal>template0</literal>,
+come nell'esempio sopra.
     </para>
    </important>
 
    <para>
-    After restoring a backup, it is wise to run <xref
-    linkend="sql-analyze"/> on each
-    database so the query optimizer has useful statistics;
-    see <xref linkend="vacuum-for-statistics"/>
-    and <xref linkend="autovacuum"/> for more information.
-    For more advice on how to load large amounts of data
-    into <productname>PostgreSQL</productname> efficiently, refer to <xref
-    linkend="populate"/>.
+Dopo il ripristino di un backup, è saggio lanciare <xref
+linkend="sql-analyze"/> su ogni database, così l'ottimizzatore di query
+avrà statistiche utili;
+si veda <xref linkend="vacuum-for-statistics"/> e
+<xref linkend="autovacuum"/> per maggiori informazioni.
+Per ulteriori consigli su come caricare grandi quantità di dati 
+in <productname>PostgreSQL</productname> efficentemente, si rimanda al
+<xref linkend="populate"/>.
    </para>
   </sect2>
 
   <sect2 id="backup-dump-all">
-   <title>Using <application>pg_dumpall</application></title>
+   <title>Usare <application>pg_dumpall</application></title>
 
    <para>
-    <application>pg_dump</application> dumps only a single database at a time,
-    and it does not dump information about roles or tablespaces
-    (because those are cluster-wide rather than per-database).
-    To support convenient dumping of the entire contents of a database
-    cluster, the <xref linkend="app-pg-dumpall"/> program is provided.
-    <application>pg_dumpall</application> backs up each database in a given
-    cluster, and also preserves cluster-wide data such as role and
-    tablespace definitions. The basic usage of this command is:
+<application>pg_dump</application> esegue il dump di un solo database alla volta,
+e non esegue il dump delle informazioni sui ruoli o sui tablespace
+(dato che queste sono a livello di cluster piuttosto che a livello di database).
+Per avere un dump comodo dell'intero contenuto di un cluster database, è
+disponibile il programma <xref linkend="app-pg-dumpall"/>.
+<application>pg_dumpall</application> esegue il backup di ogni database in un dato cluster,
+e conserva anche i dati a livello di cluster che sono ruoli e definizioni
+tablespace. L'utilizzo di base di questo comando è:
 <synopsis>
 pg_dumpall &gt; <replaceable>outfile</replaceable>
 </synopsis>

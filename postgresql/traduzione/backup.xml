@@ -429,14 +429,14 @@ Comunque, eseguire un backup di file system potrebbe essere più veloce.
  </sect1>
 
  <sect1 id="continuous-archiving">
-  <title>Continuous Archiving and Point-In-Time Recovery (PITR)</title>
+  <title>Archiviazione continua e Ripristino Point-In-Time (PITR)</title>
 
   <indexterm zone="backup">
-   <primary>continuous archiving</primary>
+   <primary>archiviazione continua</primary>
   </indexterm>
 
   <indexterm zone="backup">
-   <primary>point-in-time recovery</primary>
+   <primary>ripristino point-in-time</primary>
   </indexterm>
 
   <indexterm zone="backup">
@@ -444,55 +444,56 @@ Comunque, eseguire un backup di file system potrebbe essere più veloce.
   </indexterm>
 
   <para>
-   At all times, <productname>PostgreSQL</productname> maintains a
-   <firstterm>write ahead log</firstterm> (WAL) in the <filename>pg_xlog/</filename>
-   subdirectory of the cluster's data directory. The log records
-   every change made to the database's data files.  This log exists
-   primarily for crash-safety purposes: if the system crashes, the
-   database can be restored to consistency by <quote>replaying</quote> the
-   log entries made since the last checkpoint.  However, the existence
-   of the log makes it possible to use a third strategy for backing up
-   databases: we can combine a file-system-level backup with backup of
-   the WAL files.  If recovery is needed, we restore the file system backup and
-   then replay from the backed-up WAL files to bring the system to a
-   current state.  This approach is more complex to administer than
-   either of the previous approaches, but it has some significant
-   benefits:
+In ogni momento, <productname>PostgreSQL</productname> tiene un
+<firstterm>write ahead log</firstterm> (WAL) 
+nella sottodirectory <filename>pg_xlog/</filename>
+della directory dei dati del cluster. Il log registra
+ogni cambiamento fatto ai file dei dati del database. Questo log esiste 
+principalmente per motivi di sicurezza rispetto ai crash: se il sistema si blocca,
+il database può essere ripristinato alla consistenza facendo un 
+<quote>replay</quote> delle voci di log
+dall'ultimo punto di controllo (checkpoint). Comunque, l'esistenza
+del log rende possibile una terza strategia per effetuare il backup dei 
+database: è possibile combinare un backup a livello di file system con un backup dei 
+file WAL. Se è necessario un recupero, ripristinare il backup e successivamente
+fare un replay di ogni voce dai file WAL del backup per portare il sistema allo stato
+corrente. Questo approccio è più complesso da amministrare rispetto i precedenti
+approcci, ma ha alcuni vantaggi significanti:
   <itemizedlist>
    <listitem>
     <para>
-     We do not need a perfectly consistent file system backup as the starting point.
-     Any internal inconsistency in the backup will be corrected by log
-     replay (this is not significantly different from what happens during
-     crash recovery).  So we do not need a file system snapshot capability,
-     just <application>tar</application> or a similar archiving tool.
+Non si avrà bisogno di un backup a livello di file system perfettamente consistente 
+come punto di partenza. Ogni inconsistenza interna nel backup verrà corretta dal replay
+del log (questo non è significativamente diverso da cosa accade durante un 
+recupero da un crash). Così non si avrà bisogno di capacità di snapshot del file system,
+basterà <application>tar</application> o uno strumento di archiviazione simile.
     </para>
    </listitem>
    <listitem>
     <para>
-     Since we can combine an indefinitely long sequence of WAL files
-     for replay, continuous backup can be achieved simply by continuing to archive
-     the WAL files.  This is particularly valuable for large databases, where
-     it might not be convenient to take a full backup frequently.
+Dato che è possibile combinare sequenze di file WAL indefinitamente lunghe per il replay,
+un backup continuo può essere realizzato semplicemente continuando ad archiviare 
+i file WAL. Questo è particolarmente vantaggioso per grandi database, dove 
+potrebbe non essere conveniente eseguire un backup completo frequentemente.
     </para>
    </listitem>
    <listitem>
     <para>
-     It is not necessary to replay the WAL entries all the
-     way to the end.  We could stop the replay at any point and have a
-     consistent snapshot of the database as it was at that time.  Thus,
-     this technique supports <firstterm>point-in-time recovery</firstterm>: it is
-     possible to restore the database to its state at any time since your base
-     backup was taken.
+Non è necessario fare il replay delle voci WAL sempre fino alla fine.
+È possibile fermare il replay in qualsiasi momento e avere una snapshot
+consistente del database com'era in quel momento. Così,
+questa tecnica supporta <firstterm>recuperi point-in-time</firstterm>: è 
+possibile ripristinare il database al suo stato in ogni momento da quando è
+stato effettuato il backup di base.
     </para>
    </listitem>
    <listitem>
     <para>
-     If we continuously feed the series of WAL files to another
-     machine that has been loaded with the same base backup file, we
-     have a <firstterm>warm standby</firstterm> system: at any point we can bring up
-     the second machine and it will have a nearly-current copy of the
-     database.
+Se si alimenta continuamente un'altra macchina, che è stata caricata con lo stesso 
+file  backup di base, 
+con la serie di file WAL, si ottiene un sistema di <firstterm>warm standby</firstterm>:
+in ogni istante è possibile tirare su la seconda macchina e avremo una copia del database
+corrente.
     </para>
    </listitem>
   </itemizedlist>
@@ -500,67 +501,66 @@ Comunque, eseguire un backup di file system potrebbe essere più veloce.
 
   <note>
    <para>
-    <application>pg_dump</application> and
-    <application>pg_dumpall</application> do not produce file-system-level
-    backups and cannot be used as part of a continuous-archiving solution.
-    Such dumps are <emphasis>logical</emphasis> and do not contain enough
-    information to be used by WAL replay.
+<application>pg_dump</application> e <application>pg_dumpall</application>
+non producono backup a livello di file system e non possono essere usati come parte
+si una soluzione di archiviazione continua.
+Quei dump sono <emphasis>logici</emphasis> e non contengono abbastanza 
+informazioni da essere usati come replay WAL.
    </para>
   </note>
 
   <para>
-   As with the plain file-system-backup technique, this method can only
-   support restoration of an entire database cluster, not a subset.
-   Also, it requires a lot of archival storage: the base backup might be bulky,
-   and a busy system will generate many megabytes of WAL traffic that
-   have to be archived.  Still, it is the preferred backup technique in
-   many situations where high reliability is needed.
+Come con la tecnica del backup semplice a livello di file system, questo metodo  
+supporta il ripristino di un intero cluster, non di un sottoinsieme.
+Inoltre, richiede molto spazio per l'archiviazione: 
+il backup di base potrebbe essere voluminoso,
+e un sistema impegnato genererà molti megabute di traffico WAL che devono essere
+archiviati. Inoltre, è la tecnica di backup preferita in
+molte situazioni dove è necessaria alta affidabilità.
   </para>
 
   <para>
-   To recover successfully using continuous archiving (also called
-   <quote>online backup</quote> by many database vendors), you need a continuous
-   sequence of archived WAL files that extends back at least as far as the
-   start time of your backup.  So to get started, you should set up and test
-   your procedure for archiving WAL files <emphasis>before</emphasis> you take your
-   first base backup.  Accordingly, we first discuss the mechanics of
-   archiving WAL files.
+Per recuperare con successo usando l'archiviazione continua (chiamata anche
+<quote>backup online</quote> da molti commercianti di database), si ha bisogno di 
+continue sequenze di file WAL archiviati che si estendono all'indietro almeno 
+al momento di inizio del backup. Così, per iniziare, si dovrebbe impostare e testare 
+la procedura per l'archiviazione dei file WAL <emphasis>prima</emphasis> di effettuare 
+il backup di base. Di conseguenza, verranno discussi prima i meccanismi di 
+archiviazione dei file WAL.
   </para>
 
   <sect2 id="backup-archiving-wal">
-   <title>Setting up WAL archiving</title>
+   <title>Impostare l'archiviazione WAL</title>
 
    <para>
-    In an abstract sense, a running <productname>PostgreSQL</productname> system
-    produces an indefinitely long sequence of WAL records.  The system
-    physically divides this sequence into WAL <firstterm>segment
-    files</firstterm>, which are normally 16MB apiece (although the segment size
-    can be altered when building <productname>PostgreSQL</productname>).  The segment
-    files are given numeric names that reflect their position in the
-    abstract WAL sequence.  When not using WAL archiving, the system
-    normally creates just a few segment files and then
-    <quote>recycles</quote> them by renaming no-longer-needed segment files
-    to higher segment numbers.  It's assumed that segment files whose
-    contents precede the checkpoint-before-last are no longer of
-    interest and can be recycled.
+Parlando in senso astratto, un sistema <productname>PostgreSQL</productname> in esecuzione
+produce una sequenza di record WAL indefinitamente lunga. Il sistema fisicamente
+divide questa sequenza in <firstterm>file di segmento</firstterm> WAL,
+che normalmente sono di 16MB (anche se la dimensione del segmento
+può essere modificata durante la compilazione di <productname>PostgreSQL</productname>).
+Ai file di segmento vengono dati nomi numerici che rispecchiano la loro posizione
+nella sequenza WAL astratta. Quando non si usa l'archiviazione WAL, il sistema normalmente
+crea solo pochi file segmento e successivamente li 
+<quote>ricicla</quote> rinominando i file segmento non più necessari 
+in numeri di segmento più alti. Si assume che i file segmento il cui contenuto 
+precede il checkpoint precedente all'ultimo non siano di interesse e possano
+essere riciclati.
    </para>
 
    <para>
-    When archiving WAL data, we need to capture the contents of each segment
-    file once it is filled, and save that data somewhere before the segment
-    file is recycled for reuse.  Depending on the application and the
-    available hardware, there could be many different ways of <quote>saving
-    the data somewhere</quote>: we could copy the segment files to an NFS-mounted
-    directory on another machine, write them onto a tape drive (ensuring that
-    you have a way of identifying the original name of each file), or batch
-    them together and burn them onto CDs, or something else entirely.  To
-    provide the database administrator with flexibility,
-    <productname>PostgreSQL</productname> tries not to make any assumptions about how
-    the archiving will be done.  Instead, <productname>PostgreSQL</productname> lets
-    the administrator specify a shell command to be executed to copy a
-    completed segment file to wherever it needs to go.  The command could be
-    as simple as a <literal>cp</literal>, or it could invoke a complex shell
-    script &mdash; it's all up to you.
+Quando si archiviano dati WAL, si deve catturare il contenuto di ogni file segmento
+una volta che è pieno, e salvare quei dati da qualche parte prima che il file segmento
+sia riciclato. A seconda dell'applicazione e dell'hardware disponibile,
+ci possono essere molti modi diversi di <quote>salvare i dati da qualche parte</quote>:
+è possibile copiare i file segmento in una directory montata con NFS in un'altra macchina, 
+scriverli su un drive a nastro (assicurandosi che ci sia un modo per indentificare il nome 
+originale di ogni file), o raggrupparli e scriverli su CD, o qualcos'altro, 
+Per dare all'amministratore di database flessibità, <productname>PostgreSQL</productname>
+non tenta di prevede come l'archiviazione verrà fatta. 
+Al contrario, <productname>PostgreSQL</productname> lascia che l'amministratore 
+specifichi un comando shell da essere eseguito per copiare un file segmento completo
+verso ovunque debba andare. Il comando può essere semplice come un <literal>cp</literal>,
+o può invocare uno script shell complesso - è a vostra discrezione.
    </para>
 
    <para>

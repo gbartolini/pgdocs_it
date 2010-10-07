@@ -2,8 +2,7 @@
 <!-- $PostgreSQL$ -->
 
 <chapter id="backup">
- <title>Backup and Restore</title>
- <title>Backup e restore</title>
+ <title>Backup e ripristino</title>
 
  <indexterm zone="backup"><primary>backup</primary></indexterm>
 

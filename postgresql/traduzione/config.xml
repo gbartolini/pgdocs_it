@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $PostgreSQL$ -->
 
-<chapter Id="runtime-config">
+<chapter id="runtime-config">
   <title>Server Configuration</title>
 
   <indexterm>

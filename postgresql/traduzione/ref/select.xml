@@ -198,7 +198,7 @@ TABLE { [ ONLY ] <replaceable class="parameter">table_name</replaceable> [ * ] |
  <refsect1>
   <title>Parameters</title>
 
-  <refsect2 id="SQL-WITH">
+  <refsect2 id="sql-with">
    <title id="sql-with-title"><literal>WITH</literal> Clause</title>
 
    <para>
@@ -530,7 +530,7 @@ GROUP BY <replaceable class="parameter">expression</replaceable> [, ...]
    </para>
   </refsect2>
 
-  <refsect2 id="SQL-HAVING">
+  <refsect2 id="sql-having">
    <title id="sql-having-title"><literal>HAVING</literal> Clause</title>
 
    <para>
@@ -566,7 +566,7 @@ HAVING <replaceable class="parameter">condition</replaceable>
    </para>
   </refsect2>
 
-  <refsect2 id="SQL-WINDOW">
+  <refsect2 id="sql-window">
    <title id="sql-window-title"><literal>WINDOW</literal> Clause</title>
 
    <para>
@@ -756,7 +756,7 @@ UNBOUNDED FOLLOWING
    </para>
   </refsect2>
 
-  <refsect2 id="SQL-UNION">
+  <refsect2 id="sql-uninion">
    <title id="sql-union-title"><literal>UNION</literal> Clause</title>
 
    <para>
@@ -807,7 +807,7 @@ UNBOUNDED FOLLOWING
    </para>
   </refsect2>
 
-  <refsect2 id="SQL-INTERSECT">
+  <refsect2 id="sql-intersect">
    <title id="sql-intersect-title"><literal>INTERSECT</literal> Clause</title>
 
    <para>
@@ -853,7 +853,7 @@ UNBOUNDED FOLLOWING
    </para>
   </refsect2>
 
-  <refsect2 id="SQL-EXCEPT">
+  <refsect2 id="sql-except">
    <title id="sql-except-title"><literal>EXCEPT</literal> Clause</title>
 
    <para>
@@ -895,7 +895,7 @@ UNBOUNDED FOLLOWING
    </para>
   </refsect2>
 
-  <refsect2 id="SQL-ORDERBY">
+  <refsect2 id="sql-orderby">
    <title id="sql-orderby-title"><literal>ORDER BY</literal> Clause</title>
 
    <para>
@@ -1027,7 +1027,7 @@ SELECT DISTINCT ON (location) location, time, report
    </para>
   </refsect2>
 
-  <refsect2 id="SQL-LIMIT">
+  <refsect2 id="sql-limit">
    <title id="sql-limit-title"><literal>LIMIT</literal> Clause</title>
 
    <para>
@@ -1105,7 +1105,7 @@ FETCH { FIRST | NEXT } [ <replaceable class="parameter">count</replaceable> ] { 
    </para>
   </refsect2>
 
-  <refsect2 id="SQL-FOR-UPDATE-SHARE">
+  <refsect2 id="sql-for-update-share">
    <title id="sql-for-update-share-title"><literal>FOR UPDATE</literal>/<literal>FOR SHARE</literal> Clause</title>
 
    <para>
@@ -1278,7 +1278,7 @@ SELECT * FROM (SELECT * FROM mytable FOR UPDATE) ss ORDER BY column1;
   </caution>
   </refsect2>
 
-  <refsect2 id="SQL-TABLE">
+  <refsect2 id="sql-table">
    <title><literal>TABLE</literal> Command</title>
 
    <para>

@@ -3,113 +3,119 @@
 
 <chapter id="backup">
  <title>Backup and Restore</title>
+ <title>Backup e restore</title>
 
  <indexterm zone="backup"><primary>backup</primary></indexterm>
 
  <para>
-  As with everything that contains valuable data, <productname>PostgreSQL</productname>
-  databases should be backed up regularly. While the procedure is
-  essentially simple, it is important to have a clear understanding of
-  the underlying techniques and assumptions.
+Come ogni cosa che contiene dati preziosi, 
+si dovrebbero fare regolarmente dei backup dei database 
+<productname>PostgreSQL</productname>. 
+Mentre la procedura è essenzialmente semplice, è importante avere una comprensione
+chiara delle tecniche di fondo e delle assunzioni.
  </para>
 
  <para>
-  There are three fundamentally different approaches to backing up
-  <productname>PostgreSQL</productname> data:
+Fondamentalmente ci sono tre differenti approcci per fare il back up di  
+dati <productname>PostgreSQL</productname>:
   <itemizedlist>
    <listitem><para><acronym>SQL</acronym> dump</para></listitem>
-   <listitem><para>File system level backup</para></listitem>
-   <listitem><para>Continuous archiving</para></listitem>
+   <listitem><para>Backup a livello di file sustem</para></listitem>
+   <listitem><para>Archiviazione continua</para></listitem>
   </itemizedlist>
-  Each has its own strengths and weaknesses; each is discussed in turn
-  in the following sections.
+Ognuno ha i propri punti di forza e le proprie debolezze; ognuno è discusso a turno
+nelle sezioni seguenti.
  </para>
 
  <sect1 id="backup-dump">
   <title><acronym>SQL</acronym> Dump</title>
 
   <para>
-   The idea behind this dump method is to generate a text file with SQL
-   commands that, when fed back to the server, will recreate the
-   database in the same state as it was at the time of the dump.
-   <productname>PostgreSQL</productname> provides the utility program
-   <xref linkend="app-pgdump"/> for this purpose. The basic usage of this
-   command is:
+L'idea che sta dietro a questo metodo di dump è di generare un file di testo con
+comandi SQL che, quando ritrasmesso al server, ricreerà il database
+nello stesso stato in cui si trovava al momento del dump.
+<productname>PostgreSQL</productname> fornisce il programma d'utilità
+<xref linkend="app-pgdump"/> per questo scopo. L'utilizzo di base di questo
+comando:
 <synopsis>
 pg_dump <replaceable class="parameter">dbname</replaceable> &gt; <replaceable class="parameter">outfile</replaceable>
 </synopsis>
-   As you see, <application>pg_dump</application> writes its result to the
-   standard output. We will see below how this can be useful.
+Come si può notare, <application>pg_dump</application> scrive il risultato nello
+standard output. Si vedrà sotto in che modo questo può essere utile.
   </para>
 
   <para>
-   <application>pg_dump</application> is a regular <productname>PostgreSQL</productname>
-   client application (albeit a particularly clever one). This means
-   that you can perform this backup procedure from any remote host that has
-   access to the database. But remember that <application>pg_dump</application>
-   does not operate with special permissions. In particular, it must
-   have read access to all tables that you want to back up, so in
-   practice you almost always have to run it as a database superuser.
+<application>pg_dump</application> è una normale applicazione client per 
+<productname>PostgreSQL</productname>  (sebbene sia particolarmente intelligente).
+Questo significa che è possibile eseguire questa procedura di backup da ogni
+host remoto che ha accesso al database. Ricordare comunque che 
+<application>pg_dump</application> non funziona con permessi speciali.
+In particolare, deve avere accesso in lettura a tutte le tabelle di cui si vuole
+fare il back up, in pratica si dovrà lanciarlo quasi sempre come superutente del database.
   </para>
 
   <para>
    To specify which database server <application>pg_dump</application> should
+Per specificare quale server database dovrebbere essere contattato da 
+<application>pg_dump</application>, usare l'opzione a linea di comando
    contact, use the command line options <option>-h
+<option>-h <replaceable>host</replaceable></option> e 
    <replaceable>host</replaceable></option> and <option>-p <replaceable>port</replaceable></option>. The
-   default host is the local host or whatever your
-   <envar>PGHOST</envar> environment variable specifies. Similarly,
-   the default port is indicated by the <envar>PGPORT</envar>
-   environment variable or, failing that, by the compiled-in default.
-   (Conveniently, the server will normally have the same compiled-in
-   default.)
+<option>-p <replaceable>port</replaceable></option>. L'host predefinito
+è l'host locale o quello specificato dalla variabile di sistema <envar>PGHOST</envar>.
+Similarmente, la porta predefinita è indicata dalla variabile di sistema <envar>PGPORT</envar>
+o, fallendo quella, la predefinita alla compilazione.
+(Convenientemente, il server normalmente avrà lo stesso valora predefinito alla  
+compilazione).
   </para>
 
   <para>
-   Like any other <productname>PostgreSQL</productname> client application,
-   <application>pg_dump</application> will by default connect with the database
-   user name that is equal to the current operating system user name. To override
-   this, either specify the <option>-U</option> option or set the
-   environment variable <envar>PGUSER</envar>. Remember that
-   <application>pg_dump</application> connections are subject to the normal
-   client authentication mechanisms (which are described in <xref
-   linkend="client-authentication"/>).
+Come ogni altra applicazione client <productname>PostgreSQL</productname>,
+<application>pg_dump</application> si connetterà in maniera predefinita al database  
+con lo stesso nome dell'utente corrente del sistema operativo. Per cambiare questo 
+comportamento, specificare l'opzione <option>-U</option> o impostare 
+la variabile d'ambiente <envar>PGUSER</envar>. Ricordare che le connessioni
+<application>pg_dump</application> sono sottoposte ai normali meccanismi 
+di autenticazione dei client (che sono descritti nel <xref
+linkend="client-authentication"/>).
   </para>
 
   <para>
-   An important advantage of <application>pg_dump</application> over the other backup
-   methods described later is that <application>pg_dump</application>'s output can
-   generally be re-loaded into newer versions of <productname>PostgreSQL</productname>,
-   whereas file-level backups and continuous archiving are both extremely
-   server-version-specific.  <application>pg_dump</application> is also the only method
-   that will work when transferring a database to a different machine
-   architecture, such as going from a 32-bit to a 64-bit server.
+Un vantaggio importante di <application>pg_dump</application> rispetto agli altri
+metodi di backup descritti successivamente è che l'output di 
+<application>pg_dump</application> può essere generalmente importato in versioni successive
+di <productname>PostgreSQL</productname>,
+mentre backup a livello di file system e l'archiviazione continua sono entrambi
+estremamente scpecifici alla versione del server. <application>pg_dump</application> è
+anche l'unico metodo che funzionerà quando si dovrà trasferire un 
+database su una macchina con architettura differente, come il passaggio 
+da un server a 32 bit ad uno a 64 bit.
   </para>
 
   <para>
-   Dumps created by <application>pg_dump</application> are internally consistent,
-   meaning, the dump represents a snapshot of the database at the time
-   <application>pg_dump</application> began running. <application>pg_dump</application> does not
-   block other operations on the database while it is working.
-   (Exceptions are those operations that need to operate with an
-   exclusive lock, such as most forms of <command>ALTER TABLE</command>.)
+I dump creati da <application>pg_dump</application> sono internamente consistenti,
+cioè, il dump rappresenta un'istantanea del database al momento che 
+<application>pg_dump</application> è stato lanciato. <application>pg_dump</application>
+non blocca altre operazioni sul database mentre sta lavorando.
+(Ad eccezione di operazioni che hanno bisogno di operare con un lock esclusivo,
+come la maggior parte delle forme di <command>ALTER TABLE</command>).
   </para>
 
   <important>
    <para>
-    If your database schema relies on OIDs (for instance, as foreign
-    keys) you must instruct <application>pg_dump</application> to dump the OIDs
-    as well. To do this, use the <option>-o</option> command-line
-    option.
+Se lo schema del database si basa sgli OID (per esempio, come chiavi esterne)
+si deve istruire <application>pg_dump</application> ad eseguire il dump anche degli OID
+Per farlo, usare l'opzione a linea di comando <option>-o</option>.
    </para>
   </important>
 
   <sect2 id="backup-dump-restore">
-   <title>Restoring the dump</title>
+   <title>Ripristinare il dump</title>
 
    <para>
-    The text files created by <application>pg_dump</application> are intended to
-    be read in by the <application>psql</application> program. The
-    general command form to restore a dump is
+I file di testo creati da <application>pg_dump</application> sono fatti per 
+essere letti dal programma <application>psql</application>. Il comando generale
+per ripristinare un dump è
 <synopsis>
 psql <replaceable class="parameter">dbname</replaceable> &lt; <replaceable class="parameter">infile</replaceable>
 </synopsis>

@@ -628,7 +628,7 @@ qualcosa simile a:
 <programlisting>
 archive_command = 'test ! -f /mnt/server/archivedir/%f &amp;&amp; cp %p /mnt/server/archivedir/%f'
 </programlisting>
-    funziona correttamente sulla maggior parte delle varianti Unix.
+funziona correttamente sulla maggior parte delle varianti Unix.
    </para>
 
    <para>

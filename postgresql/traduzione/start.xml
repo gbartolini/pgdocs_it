@@ -285,37 +285,35 @@ di inserire, editare ed eseguire comandi <acronym>SQL</acronym>.
 
      <listitem>
       <para>
-       Using an existing graphical frontend tool like
-       <application>pgAdmin</application> or an office suite with
-       <acronym>ODBC</acronym> or <acronym>JDBC</acronym> support to create and manipulate a
-       database.  These possibilities are not covered in this
-       tutorial.
+Usando un frontend grafico come 
+<application>pgAdmin</application> o una suite per l'ufficio con
+supporto <acronym>ODBC</acronym> o <acronym>JDBC</acronym> per creare e manipolare il
+database. Queste possibilità non sono trattate in questo tutorial.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       Writing a custom application, using one of the several
-       available language bindings.  These possibilities are discussed
-       further in <xref linkend="client-interfaces"/>.
+Scrivendo un'applicazione personalizzata, usando uno dei linguaggi
+disponibili. Queste possibilità sono discusse più affrofonditamente 
+in <xref linkend="client-interfaces"/>.
       </para>
      </listitem>
     </itemizedlist>
 
-    You probably want to start up <command>psql</command> to try
-    the examples in this tutorial.  It can be activated for the
-    <literal>mydb</literal> database by typing the command:
+Probabilmente si vorrà lanciare <command>psql</command> per provare
+gli esempi di questo tutorial. <command>psql</command> può essere 
+attivato per il database <literal>mydb</literal> con il comando:
 <screen>
 <prompt>$</prompt> <userinput>psql mydb</userinput>
 </screen>
-    If you do not supply the database name then it will default to your
-    user account name.  You already discovered this scheme in the
-    previous section using <command>createdb</command>.
+Se non si vuole fornire il nome del database, verrà preso come predefinito  
+il proprio nome utente. Si è già scoperto questo schema di funzionamento 
+nella sezione precedente usando il comando <command>createdb</command>.
    </para>
 
    <para>
-    In <command>psql</command>, you will be greeted with the following
-    message:
+In <command>psql</command>, si verrà accolti con il seguente messaggio:
 <screen>
 psql (&version;)
 Type "help" for help.
@@ -323,30 +321,29 @@ Type "help" for help.
 mydb=&gt;
 </screen>
     <indexterm><primary>superuser</primary></indexterm>
-    The last line could also be:
+L'ultima linea potrebbe essere anche:
 <screen>
 mydb=#
 </screen>
-    That would mean you are a database superuser, which is most likely
-    the case if you installed <productname>PostgreSQL</productname>
-    yourself.  Being a superuser means that you are not subject to
-    access controls.  For the purposes of this tutorial that is not
-    important.
+Questo significa che si è un superutente del database, che probabilmente 
+è il caso in cui si sia installato <productname>PostgreSQL</productname>
+da soli. L'essere un superutente significa che non si è sottoposti a controlli 
+d'accesso. Per gli scopi di questo tutorial
+non è comunque importante.
    </para>
 
    <para>
-    If you encounter problems starting <command>psql</command>
-    then go back to the previous section.  The diagnostics of
-    <command>createdb</command> and <command>psql</command> are
-    similar, and if the former worked the latter should work as well.
+Se si incontrano problemi lanciando <command>psql</command>
+allora tornare indietro alla sezione precedente. I messaggi di errore 
+di <command>createdb</command> e <command>psql</command> sono 
+simili, e se il primo ha funzionato, dovrebbe funzionare anche il secondo.
    </para>
 
    <para>
-    The last line printed out by <command>psql</command> is the
-    prompt, and it indicates that <command>psql</command> is listening
-    to you and that you can type <acronym>SQL</acronym> queries into a
-    work space maintained by <command>psql</command>.  Try out these
-    commands:
+L'ultima linea stampata dal comando  <command>psql</command> è il 
+prompt, e indica che <command>psql</command> sta ascoltando 
+query <acronym>SQL</acronym> che si possono scrivere in uno spazio di lavoro 
+mantenuto da <command>psql</command>.  Provare questi comandi:
     <indexterm><primary>version</primary></indexterm>
 <screen>
 <prompt>mydb=&gt;</prompt> <userinput>SELECT version();</userinput>
@@ -370,32 +367,32 @@ mydb=#
    </para>
 
    <para>
-    The <command>psql</command> program has a number of internal
-    commands that are not SQL commands.  They begin with the backslash
-    character, <quote><literal>\</literal></quote>.
-    For example,
-    you can get help on the syntax of various
-    <productname>PostgreSQL</productname> <acronym>SQL</acronym>
-    commands by typing:
+Il programma <command>psql</command> ha un certo numero di comandi interni
+che non sono comandi SQL. Essi cominciano con la barra inversa,
+<quote><literal>\</literal></quote>.
+Per esempio,
+si può avere aiuto per la sintassi di vari comandi
+<acronym>SQL</acronym> di <productname>PostgreSQL</productname>
+digitando:
 <screen>
 <prompt>mydb=&gt;</prompt> <userinput>\h</userinput>
 </screen>
    </para>
 
    <para>
-    To get out of <command>psql</command>, type:
+Per uscire da <command>psql</command>, digitare:
 <screen>
 <prompt>mydb=&gt;</prompt> <userinput>\q</userinput>
 </screen>
-    and <command>psql</command> will quit and return you to your
-    command shell. (For more internal commands, type
-    <literal>\?</literal> at the <command>psql</command> prompt.)  The
-    full capabilities of <command>psql</command> are documented in
-    <xref linkend="app-psql"/>.  If <productname>PostgreSQL</productname> is
-    installed correctly you can also type <literal>man psql</literal>
-    at the operating system shell prompt to see the documentation.  In
-    this tutorial we will not use these features explicitly, but you
-    can use them yourself when it is helpful.
+e <command>psql</command> terminerà, mostrando nuovamente la shell.
+(Per ulteriori comandi interni, digitare
+<literal>\?</literal> al prompt di <command>psql</command>). Le 
+capacità complete di <command>psql</command> sono documentate in
+<xref linkend="app-psql"/>. Se <productname>PostgreSQL</productname> è
+installato correttamente, è possibile anche digitare <literal>man psql</literal>
+nella shell del sistema operativo per vedere la documentazione. In 
+questo tutorial non useremo queste caratteristiche esplicitamente, ma è possibile
+usarle quando lo si ritiene di aiuto.
    </para>
 
   </sect1>

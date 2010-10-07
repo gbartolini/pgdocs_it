@@ -564,72 +564,71 @@ o può invocare uno script shell complesso - è a vostra discrezione.
    </para>
 
    <para>
-    To enable WAL archiving, set the <xref linkend="guc-wal-level"/>
-
-    configuration parameter to <literal>archive</literal> (or <literal>hot_standby</literal>),
-    <xref linkend="guc-archive-mode"/> to <literal>on</literal>,
-    and specify the shell command to use in the <xref
-    linkend="guc-archive-command"/> configuration parameter.  In practice
-    these settings will always be placed in the
-    <filename>postgresql.conf</filename> file.
-    In <varname>archive_command</varname>,
-    <literal>%p</literal> is replaced by the path name of the file to
-    archive, while <literal>%f</literal> is replaced by only the file name.
-    (The path name is relative to the current working directory,
-    i.e., the cluster's data directory.)
-    Use <literal>%%</literal> if you need to embed an actual <literal>%</literal>
-    character in the command.  The simplest useful command is something
-    like:
+Per abilitare l'archiviazione WAL, impostare il parametro di configurazione 
+<xref linkend="guc-wal-level"/> a <literal>archive</literal> 
+(o <literal>hot_standby</literal>),
+<xref linkend="guc-archive-mode"/> a <literal>on</literal>,
+e specificare il comando shell da usare nel parametro di configurazione
+linkend="guc-archive-command"/>. In pratica
+queste impostazioni saranno sempre posizionate nel file 
+<filename>postgresql.conf</filename>.
+In <varname>archive_command</varname>,
+<literal>%p</literal> è sostituito dal percorso del file da archiviare, 
+mentre <literal>%f</literal> è sostituito dal nome del file.
+(Il percorso è relativo alla directory di lavoro corrente, 
+per esempio, la directory dati del cluster).
+Usare <literal>%%</literal> se si ha necessità di includere il carattere 
+<literal>%</literal> nel comando. Il comando più semplice è qualcosa simile a:
 <programlisting>
 archive_command = 'cp -i %p /mnt/server/archivedir/%f &lt;/dev/null'
 </programlisting>
-    which will copy archivable WAL segments to the directory
-    <filename>/mnt/server/archivedir</filename>.  (This is an example, not a
-    recommendation, and might not work on all platforms.)  After the
-    <literal>%p</literal> and <literal>%f</literal> parameters have been replaced,
-    the actual command executed might look like this:
+che copierà i segmenti WAL archiviabili nella directory
+<filename>/mnt/server/archivedir</filename>. (Questo è un esempio, non una raccomandazione,
+e potrebbe non funzionare su tutte le piattaforme). Dopo che i parametri 
+<literal>%p</literal> e <literal>%f</literal> sono stati sostituiti,
+il comando potrebbe somigliare a questo:
 <programlisting>
 cp -i pg_xlog/00000001000000A900000065 /mnt/server/archivedir/00000001000000A900000065 &lt;/dev/null
 </programlisting>
-    A similar command will be generated for each new file to be archived.
+Un comando simile sarà generato per ogni nuovo file che deve essere archiviato.
    </para>
 
    <para>
-    The archive command will be executed under the ownership of the same
-    user that the <productname>PostgreSQL</productname> server is running as.  Since
-    the series of WAL files being archived contains effectively everything
-    in your database, you will want to be sure that the archived data is
-    protected from prying eyes; for example, archive into a directory that
-    does not have group or world read access.
+Il comando archive sarà eseguito sotto la stessa proprietà dello stesso utente
+col quale il server <productname>PostgreSQL</productname> è in esecuzione. Dato che
+le serie di file WAL archiviate contengono effettivamente ogni cosa
+del database, si vorrà essere sicuri che i dati archiviati siano protetti da
+occhi indiscreti; per esempio, archiviarli in una directory che 
+non ha accesso in lettura per il gruppo o per il mondo.
    </para>
 
    <para>
-    It is important that the archive command return zero exit status if and
-    only if it succeeds.  Upon getting a zero result,
-    <productname>PostgreSQL</productname> will assume that the file has been
-    successfully archived, and will remove or recycle it.  However, a nonzero
-    status tells <productname>PostgreSQL</productname> that the file was not archived;
-    it will try again periodically until it succeeds.
+È importante che il comando di archiviazione restituisca zero come stato di uscita se
+e solo se ha successo. Se ottiene come risultato zero,
+<productname>PostgreSQL</productname> assumerà che il file è stato archiviato con successo,
+e lo rimuoverà o lo riciclerà. Comunque, uno stato non zero
+dice a  <productname>PostgreSQL</productname> che il file non è stato archiviato;
+e periodicamente verrà fatto un tentativo finchè non avrà successo.
    </para>
 
    <para>
-    The archive command should generally be designed to refuse to overwrite
-    any pre-existing archive file.  This is an important safety feature to
-    preserve the integrity of your archive in case of administrator error
-    (such as sending the output of two different servers to the same archive
-    directory).
-    It is advisable to test your proposed archive command to ensure that it
-    indeed does not overwrite an existing file, <emphasis>and that it returns
-    nonzero status in this case</emphasis>.  On many Unix platforms, <command>cp
-    -i</command> causes copy to prompt before overwriting a file, and
-    <literal>&lt; /dev/null</literal> causes the prompt (and overwriting) to
-    fail.  If your platform does not support this behavior, you should
-    add a command to test for the existence of the archive file.  For
-    example, something like:
+Il comando di archiviazione dovrebbe generalmente essere pensato per rifiutare di 
+sovrascrivere i file di archivio pre-esistenti. 
+Questa è una caratteristica importante per la sicurezza, per preservare l'integrità 
+dell'archivio in caso di errori dell'amministratore (tipo l'invio dell'output di due
+differenti server alla stessa directory d'archivio).
+È consigliabile testare il comando d'archiviazione per assicurare che effettivamente
+non sovrascriva file esistenti, <emphasis>e che in quel caso restituisca 
+stato non zero</emphasis>. Su molte piattaforme Unix, <command>cp
+-i</command> fa si che la copia chieda prima di sovrascrivere un file, e 
+<literal>&lt; /dev/null</literal> causa il fallimento in caso di sovrascrittura.
+Se la piattaforma usata non supporta questo comportamento, si dovrebbe aggiungere
+un comando per testare l'esistenza del file archivio. Per esempio, 
+qualcosa simile a:
 <programlisting>
 archive_command = 'test ! -f /mnt/server/archivedir/%f &amp;&amp; cp %p /mnt/server/archivedir/%f'
 </programlisting>
-    works correctly on most Unix variants.
+    funziona correttamente sulla maggior parte delle varianti Unix.
    </para>
 
    <para>

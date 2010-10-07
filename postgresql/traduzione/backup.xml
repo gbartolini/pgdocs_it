@@ -206,56 +206,56 @@ tablespace. L'utilizzo di base di questo comando è:
 <synopsis>
 pg_dumpall &gt; <replaceable>outfile</replaceable>
 </synopsis>
-    The resulting dump can be restored with <application>psql</application>:
+Il dump risultante può essere ripristinato con <application>psql</application>:
 <synopsis>
 psql -f <replaceable class="parameter">infile</replaceable> postgres
 </synopsis>
-    (Actually, you can specify any existing database name to start from,
-    but if you are loading into an empty cluster then <literal>postgres</literal>
-    should usually be used.)  It is always necessary to have
-    database superuser access when restoring a <application>pg_dumpall</application>
-    dump, as that is required to restore the role and tablespace information.
-    If you use tablespaces, make sure that the tablespace paths in the
-    dump are appropriate for the new installation.
+(Attualmente, è possibile specificare ogni nome di database esistente da cui partire,
+ma se si sta caricando in un cluster vuoto allora di solito dovrebbe essere usato
+<literal>postgres</literal>). È sempre necessario avere accesso
+al database come superutente quando si ripristina un dump fatto con 
+<application>pg_dumpall</application>, dato che è richiesto di ripristino di informazioni
+sui ruoli e sui tablespace, assicurarsi che i percorsi dei tablespace nel dump
+siano appropriati per la nuova installazione.
    </para>
 
    <para>
-    <application>pg_dumpall</application> works by emitting commands to re-create
-    roles, tablespaces, and empty databases, then invoking
-    <application>pg_dump</application> for each database.  This means that while
-    each database will be internally consistent, the snapshots of
-    different databases might not be exactly in-sync.
+<application>pg_dumpall</application> funziona emettendo comandi per ricreare 
+ruoli, tablespace, e database vuoti, quindi invocando
+<application>pg_dump</application> per ogni database. Questo significa che mentre
+ogni database sarà internamente consistente, l'istantanea dei 
+diversi database potrebbe non essere esattamente identica.
    </para>
   </sect2>
 
   <sect2 id="backup-dump-large">
-   <title>Handling large databases</title>
+   <title>Gestire grandi database</title>
 
    <para>
-    Some operating systems have maximum file size limits that cause
-    problems when creating large <application>pg_dump</application> output files.
-    Fortunately, <application>pg_dump</application> can write to the standard
-    output, so you can use standard Unix tools to work around this
-    potential problem.  There are several possible methods:
+Qualche sistema operativo ha limiti per la dimensione massima dei file che causa problemi
+quando si creano file <application>pg_dump</application> grandi.
+Fortunatamente, <application>pg_dump</application> può scrivere sullo standard output, 
+così è possibile usare gli strumenti Unix standard per superare questo potenziale problema. 
+Ci sono diversi metodi possibili:
    </para>
 
    <formalpara>
-    <title>Use compressed dumps.</title>
+    <title>Usare dump compressi.</title>
     <para>
-     You can use your favorite compression program, for example
-     <application>gzip</application>:
+È possibile usare il programma di compressione preferito, per esempio
+<application>gzip</application>:
 
 <programlisting>
 pg_dump <replaceable class="parameter">dbname</replaceable> | gzip &gt; <replaceable class="parameter">filename</replaceable>.gz
 </programlisting>
 
-     Reload with:
+     Ricaricare con:
 
 <programlisting>
 gunzip -c <replaceable class="parameter">filename</replaceable>.gz | psql <replaceable class="parameter">dbname</replaceable>
 </programlisting>
 
-     or:
+     o:
 
 <programlisting>
 cat <replaceable class="parameter">filename</replaceable>.gz | gunzip | psql <replaceable class="parameter">dbname</replaceable>
@@ -264,18 +264,18 @@ cat <replaceable class="parameter">filename</replaceable>.gz | gunzip | psql <re
    </formalpara>
 
    <formalpara>
-    <title>Use <command>split</command>.</title>
+    <title>Usare <command>split</command>.</title>
     <para>
-     The <command>split</command> command
-     allows you to split the output into smaller files that are
-     acceptable in size to the underlying file system. For example, to
-     make chunks of 1 megabyte:
+Il comando <command>split</command>
+permette di dividere l'output il file più piccoli che sono
+accettabili in dimensione per il file system. Per esempio, 
+per fare pezzi da 1 megabyte:
 
 <programlisting>
 pg_dump <replaceable class="parameter">dbname</replaceable> | split -b 1m - <replaceable class="parameter">filename</replaceable>
 </programlisting>
 
-     Reload with:
+     Ricaricare con:
 
 <programlisting>
 cat <replaceable class="parameter">filename</replaceable>* | psql <replaceable class="parameter">dbname</replaceable>
@@ -284,34 +284,35 @@ cat <replaceable class="parameter">filename</replaceable>* | psql <replaceable c
    </formalpara>
 
    <formalpara>
-    <title>Use <application>pg_dump</application>'s custom dump format.</title>
+    <title>Usare il formato di dump 
+    personalizzato di <application>pg_dump</application></title>
     <para>
-     If <productname>PostgreSQL</productname> was built on a system with the
-     <application>zlib</application> compression library installed, the custom dump
-     format will compress data as it writes it to the output file. This will
-     produce dump file sizes similar to using <command>gzip</command>, but it
-     has the added advantage that tables can be restored selectively. The
-     following command dumps a database using the custom dump format:
+Se <productname>PostgreSQL</productname> è stato compilato su un sistema con la libreria
+di compressione <application>zlib</application> installata, il formato di 
+compressione personalizzato comprimerà i dati mentre li scrive nel file di output. 
+Questo produrrà dimensioni dei file di dump simili all'utilizzo di <command>gzip</command>,
+ma avrà il vantaggio aggiuntivo che le tabelle possono essere ripristinate selettivamente. 
+Il seguente comando fa il dump di un database usando il formato di dump personalizzato:
 
 <programlisting>
 pg_dump -Fc <replaceable class="parameter">dbname</replaceable> &gt; <replaceable class="parameter">filename</replaceable>
 </programlisting>
 
-     A custom-format dump is not a script for <application>psql</application>, but
-     instead must be restored with <application>pg_restore</application>, for example:
+Un file di dump generato in questo modo non è uno script per <application>psql</application>, 
+ma deve essere ripristinato con <application>pg_restore</application>, per esempio:
 
 <programlisting>
 pg_restore -d <replaceable class="parameter">dbname</replaceable> <replaceable class="parameter">filename</replaceable>
 </programlisting>
 
-     See the <xref linkend="app-pgdump"/> and <xref
-     linkend="app-pgrestore"/> reference pages for details.
+Si veda le pagine di referenza <xref linkend="app-pgdump"/> e <xref
+linkend="app-pgrestore"/> per dettagli.
     </para>
    </formalpara>
 
    <para>
-    For very large databases, you might need to combine <command>split</command>
-    with one of the other two approaches.
+Per database molto grandi, si potrebbe aver necessità di combinare <command>split</command>
+con uno degli altri due approcci.
    </para>
 
   </sect2>

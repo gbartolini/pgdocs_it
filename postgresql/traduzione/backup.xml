@@ -631,161 +631,158 @@ funziona correttamente sulla maggior parte delle varianti Unix.
    </para>
 
    <para>
-    While designing your archiving setup, consider what will happen if
-    the archive command fails repeatedly because some aspect requires
-    operator intervention or the archive runs out of space. For example, this
-    could occur if you write to tape without an autochanger; when the tape
-    fills, nothing further can be archived until the tape is swapped.
-    You should ensure that any error condition or request to a human operator
-    is reported appropriately so that the situation can be
-    resolved reasonably quickly. The <filename>pg_xlog/</filename> directory will
-    continue to fill with WAL segment files until the situation is resolved.
-    (If the file system containing <filename>pg_xlog/</filename> fills up,
-    <productname>PostgreSQL</productname> will do a PANIC shutdown.  No committed
-    transactions will be lost, but the database will remain offline until
-    you free some space.)
+Quando si progetta il setup di archiviazione, considerare cosa accadrà se
+il comando di archiviazione fallisce ripetutamente, se per esempio qualche
+aspetto richiede l'intervento dell'opertore o l'archivio eccede lo spazio disponibile.
+Per esempio, questo puù accadere se si scrive su nastro senza un sostitutore automatico;
+quando il nastro è pieno, non è possibile archiviare niente finchè il nastro 
+non viene sostituito.
+Ci si dovrebbe assicurare che ogni condizione d'errore o richiesta di intervento umano
+venga riportato appropriamente in modo che la situazione possa essere
+risolta ragionevolmente velocemente. La directory <filename>pg_xlog/</filename>
+continuerà a riempirsi con file segmento WAL finchè la situazione non è risolta.
+(Se il file system contenente <filename>pg_xlog/</filename> è pieno,
+<productname>PostgreSQL</productname> produrrà un arresto PANIC. Le transazioni che non
+hanno eseguito il commit saranno perse, ma il database rimarrà offline finchè
+non si libera un po' di spazio).
    </para>
 
    <para>
-    The speed of the archiving command is unimportant as long as it can keep up
-    with the average rate at which your server generates WAL data.  Normal
-    operation continues even if the archiving process falls a little behind.
-    If archiving falls significantly behind, this will increase the amount of
-    data that would be lost in the event of a disaster. It will also mean that
-    the <filename>pg_xlog/</filename> directory will contain large numbers of
-    not-yet-archived segment files, which could eventually exceed available
-    disk space. You are advised to monitor the archiving process to ensure that
-    it is working as you intend.
+La velocità del comando di archiviazione non è impotante dato che può tenere il passo
+con la velocità media con la quale il server genera dati WAL. Le normali 
+operazioni continuano anche se il processo di archiviazione resta un po' indietro.
+Se l'archiviazione rimane molto indietro, questo incrementerà l'ammontare dei 
+dati che possono essere persi in caso di disastro. Questo significherà anche che
+la directory <filename>pg_xlog/</filename> conterrà grandi quantità di file segmento
+non ancora archiviati, che eventualmente possono eccedere lo spazio su disco disponibile.
+È consigliabile controllare il processo di archiviazione per essere sicuri che 
+funzioni come si vuole. 
    </para>
 
    <para>
-    In writing your archive command, you should assume that the file names to
-    be archived can be up to 64 characters long and can contain any
-    combination of ASCII letters, digits, and dots.  It is not necessary to
-    preserve the original relative path (<literal>%p</literal>) but it is necessary to
-    preserve the file name (<literal>%f</literal>).
+Nello scrivere il comando di archivio, si dovrebbe assumere che i nomi dei file da
+archiviare possano essere lunghi più di 64 caratteri e possano contenere qualsiasi 
+combinazione di lettere ASCII, cifre, e punti. Non è necessario preservare 
+il percorso relativo originale (<literal>%p</literal>) ma è necessario 
+preservare il nome del file (<literal>%f</literal>).
    </para>
 
    <para>
-    Note that although WAL archiving will allow you to restore any
-    modifications made to the data in your <productname>PostgreSQL</productname> database,
-    it will not restore changes made to configuration files (that is,
-    <filename>postgresql.conf</filename>, <filename>pg_hba.conf</filename> and
-    <filename>pg_ident.conf</filename>), since those are edited manually rather
-    than through SQL operations.
-    You might wish to keep the configuration files in a location that will
-    be backed up by your regular file system backup procedures.  See
-    <xref linkend="runtime-config-file-locations"/> for how to relocate the
-    configuration files.
+Notare che sebbene l'archiviazione WAL permetterà il ripristino di qualsiasi
+modifica fatta ai dati del database <productname>PostgreSQL</productname>,
+essa non ripristinerà i cambiamenti fatti ai file di configurazione (tipo,
+<filename>postgresql.conf</filename>, <filename>pg_hba.conf</filename> e
+<filename>pg_ident.conf</filename>), dato che questi file sono modificati manualmente 
+piuttosto che attraverso operazioni SQL.
+Si potrebbe desiderare mantere i file di configurazione in una posizione che sarà
+sottoposta a backup dalle normali procedure di backup a livello di file system. Si veda 
+<xref linkend="runtime-config-file-locations"/> per capire come trasferire 
+i file di configurazione.
    </para>
 
    <para>
-    The archive command is only invoked on completed WAL segments.  Hence,
-    if your server generates only little WAL traffic (or has slack periods
-    where it does so), there could be a long delay between the completion
-    of a transaction and its safe recording in archive storage.  To put
-    a limit on how old unarchived data can be, you can set
-    <xref linkend="guc-archive-timeout"/> to force the server to switch
-    to a new WAL segment file at least that often.  Note that archived
-    files that are archived early due to a forced switch are still the same
-    length as completely full files.  It is therefore unwise to set a very
-    short <varname>archive_timeout</varname> &mdash; it will bloat your archive
-    storage.  <varname>archive_timeout</varname> settings of a minute or so are
-    usually reasonable.
+Il comando di archiviazione viene invocato solo su segmenti WAL  completati. Da ora,
+se il server genera solo poco traffico WAL (oppure ha periodi morti 
+in cui accade), ci potrebbe essere molto ritardo tra il completamento 
+di una transazione e la sua registrazione sicura nello spazio di archiviazione. Per mettere
+un limite a come possanno essere i vecchi dati non archiviati, è possibile impostare
+<xref linkend="guc-archive-timeout"/> per forzare il server a passare
+a un nuovo file segmento WAL come minimo ogni tot. Notare che i file archiviati 
+che sono archiviati prima a causa dell'opzione vista sopra sono sempre della stessa
+lunghezza di file completamente pieni. Non è comunque saggio impostare un 
+<varname>archive_timeout</varname> molto piccolo  &mdash; gonfierà lo spazio di archiviazione.
+Impostare <varname>archive_timeout</varname> a circa un minuto di solito è ragionevole.
    </para>
 
    <para>
-    Also, you can force a segment switch manually with
-    <function>pg_switch_xlog</function> if you want to ensure that a
-    just-finished transaction is archived as soon as possible.  Other utility
-    functions related to WAL management are listed in <xref
-    linkend="functions-admin-backup-table"/>.
+Inoltre, è possibile forzare un cambiamento di segmento manualmente con
+<function>pg_switch_xlog</function> se si vuole assicurare che una transazione
+appena terminata venga archiviata il più presto possibile. Altre funzioni utili
+relative alla gestione del WAL sono elencate nella <xref
+linkend="functions-admin-backup-table"/>.
    </para>
 
    <para>
-    When <varname>wal_level</varname> is <literal>minimal</literal> some SQL commands
-    are optimized to avoid WAL logging, as described in <xref
-    linkend="populate-pitr"/>.  If archiving or streaming replication were
-    turned on during execution of one of these statements, WAL would not
-    contain enough information for archive recovery.  (Crash recovery is
-    unaffected.)  For this reason, <varname>wal_level</varname> can only be changed at
-    server start.  However, <varname>archive_command</varname> can be changed with a
-    configuration file reload.  If you wish to temporarily stop archiving,
-    one way to do it is to set <varname>archive_command</varname> to the empty
-    string (<literal>''</literal>).
-    This will cause WAL files to accumulate in <filename>pg_xlog/</filename> until a
-    working <varname>archive_command</varname> is re-established.
+Quando <varname>wal_level</varname> è <literal>minimal</literal> alcuni comandi SQL
+sono ottimizzati per evitare il log di WAL, come descritto in <xref
+linkend="populate-pitr"/>. Se l'archiviazione o la replicazione streaming sono state
+attivate durante l'esecuzione di una di queste istruzioni, WAL non conterrebbe
+abbastanza informazioni per il recupero dell'archivio. (Il recupero dal crash non viene 
+toccato). Per questa ragione, <varname>wal_level</varname> può essere cambiato solo
+all'avvio del server. Comunque, <varname>archive_command</varname> può essere cambiato con
+un ricaricamento del file di configurazione. Se si desidera fermare temporaneamente 
+l'archiviazione, un modo di farlo è impostando <varname>archive_command</varname>
+a una stringa vuota  (<literal>''</literal>).
+Questo farà si che i file WAL si accumolino in <filename>pg_xlog/</filename> fino a che
+non viene stabilito un <varname>archive_command</varname> funzionante. 
    </para>
   </sect2>
 
   <sect2 id="backup-base-backup">
-   <title>Making a Base Backup</title>
+   <title>Realizzare un backup di base</title>
 
    <para>
-    The procedure for making a base backup is relatively simple:
+La procedura per realizzare un backup di base è relativamente semplice:
   <orderedlist>
    <listitem>
     <para>
-     Ensure that WAL archiving is enabled and working.
+Assicurare che l'archiviazione WAL sia abilitata e funzionante.
     </para>
    </listitem>
    <listitem>
     <para>
-     Connect to the database as a superuser and issue the command:
+Connettersi al database come superurtente e immettere il comando:
 <programlisting>
 SELECT pg_start_backup('label');
 </programlisting>
-     where <literal>label</literal> is any string you want to use to uniquely
-     identify this backup operation.  (One good practice is to use the
-     full path where you intend to put the backup dump file.)
-     <function>pg_start_backup</function> creates a <firstterm>backup label</firstterm> file,
-     called <filename>backup_label</filename>, in the cluster directory with
-     information about your backup, including the start time and label
-     string.
+dove <literal>label</literal> è qualsiasi stringa si voglia usare per indentificare
+in modo univoco l'operazione di backup. (Una buona pratica è usare il percorso completo 
+nel quale si intende mettere il file dump di backup).
+<function>pg_start_backup</function> crea un file <firstterm>etichetta di backup</firstterm>,
+chiamato <filename>backup_label</filename>, nella directory cluster, con 
+informazioni sul backup, incluso l'orario di inizio e la stringa etichetta.
     </para>
 
     <para>
-     It does not matter which database within the cluster you connect to to
-     issue this command.  You can ignore the result returned by the function;
-     but if it reports an error, deal with that before proceeding.
+Non importa a quale database all'interno del cluster ci si connette per lanciare 
+questo comando. È possibile ignorare il risultato restituito dalla funzione;
+ma se viene riportato un errore, crercare di ricolverlo prima di procedere.
     </para>
 
     <para>
-     By default, <function>pg_start_backup</function> can take a long time to finish.
-     This is because it performs a checkpoint, and the I/O
-     required for the checkpoint will be spread out over a significant
-     period of time, by default half your inter-checkpoint interval
-     (see the configuration parameter
-     <xref linkend="guc-checkpoint-completion-target"/>).  This is
-     usually what you want, because it minimizes the impact on query
-     processing.  If you want to start the backup as soon as
-     possible, use:
+In maniera predefinita, <function>pg_start_backup</function> può metterci molto tempo
+per finire. 
+Questo perchè esegue un checkpoint, e l'I/O richiesto per il checkpoint
+sarà spalmato in un periodo di tempo significativo, automaticamente metà dell'intervallo
+tra i checkpoint (si veda il parametro di configurazione 
+<xref linkend="guc-checkpoint-completion-target"/>). Questo di solito è quello che vuoi,
+dato che minimizza l'impatto sull'elaborazione della query.
+Se si vuole avviare il backup appena possibile,
+usare:
 <programlisting>
 SELECT pg_start_backup('label', true);
 </programlisting>
-     This forces the checkpoint to be done as quickly as possible.
+Questo fa sì che il checkpoint sia fatto il più velocemente possibile.
     </para>
    </listitem>
    <listitem>
     <para>
-     Perform the backup, using any convenient file-system-backup tool
-     such as <application>tar</application> or <application>cpio</application> (not
-     <application>pg_dump</application> or
-     <application>pg_dumpall</application>).  It is neither
-     necessary nor desirable to stop normal operation of the database
-     while you do this.
+Esegue il backup, usando qualsiasi strumento utile per il backup a livello di
+file system, come <application>tar</application> o <application>cpio</application> (non
+<application>pg_dump</application> o <application>pg_dumpall</application>).
+Non è necessario nè auspicabile fermare le normali operazioni sul database 
+mentre lo si fà.
     </para>
    </listitem>
    <listitem>
     <para>
-     Again connect to the database as a superuser, and issue the command:
+Connettersi nuovamente al database come superutente, e lanciare il seguente comando:
 <programlisting>
 SELECT pg_stop_backup();
 </programlisting>
-     This terminates the backup mode and performs an automatic switch to
-     the next WAL segment.  The reason for the switch is to arrange for
-     the last WAL segment file written during the backup interval to be
-     ready to archive.
+Questo termina la modalità backup e compie un cambiamento automatico al prossimo
+segmento WAL. La ragione per il cambiamento è di prendere accordi che l'ultimo 
+segmento WAL scritto durante l'intervallo di backup sia pronto per l'archiviazione.
     </para>
    </listitem>
    <listitem>

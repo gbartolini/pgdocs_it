@@ -1084,23 +1084,29 @@ che aiutino l'identificazione con accuratezza di quale transazione usare.
 
    <note>
      <para>
-      The stop point must be after the ending time of the base backup, i.e.,
-      the end time of <function>pg_stop_backup</function>.  You cannot use a base backup
-      to recover to a time when that backup was in progress.  (To
-      recover to such a time, you must go back to your previous base backup
-      and roll forward from there.)
+Il punto di arresto deve essere successivo al momento finale del backup di base, per es.,
+il momento finale di <function>pg_stop_backup</function>. Non è possibile usare un backup base
+per recuperare un momento in cui il backup era in corso. (Per recuperare
+a un momento del genere, si deve tornare indietro al precedente backup di base e 
+andare in avanti da quello).
+
      </para>
    </note>
 
    <para>
-    If recovery finds corrupted WAL data, recovery will
-    halt at that point and the server will not start. In such a case the
-    recovery process could be re-run from the beginning, specifying a
-    <quote>recovery target</quote> before the point of corruption so that recovery
-    can complete normally.
-    If recovery fails for an external reason, such as a system crash or
-    if the WAL archive has become inaccessible, then the recovery can simply
-    be restarted and it will restart almost from where it failed.
+Se il recupero trova dati WAL corrotti, si arresterà a quel momento
+e il server non partirà. In quei casi il processo di recupero
+può essere lanciato di nuovo dall'inizio, specificando un 
+<quote>recovery target</quote>  precedente il punto di corruzione, così che il recupero possa
+completarsi normalmente.
+Se il recupero fallisce per una ragione esterna, tipo un crash del sistema o
+se gli archivi WAL sono diventati inaccessibili, allora il recupero può semplicemente 
+essere riavviato e ripartirà circa da dove è fallito.
+<warning>
+    <para>
+        TODO
+    </para>
+</warning>
     Recovery restart works much like checkpointing in normal operation:
     the server periodically forces all its state to disk, and then updates
     the <filename>pg_control</filename> file to indicate that the already-processed
@@ -1110,109 +1116,108 @@ che aiutino l'identificazione con accuratezza di quale transazione usare.
   </sect2>
 
   <sect2 id="backup-timelines">
-   <title>Timelines</title>
+   <title>Timeline</title>
 
   <indexterm zone="backup">
-   <primary>timelines</primary>
+   <primary>timeline</primary>
   </indexterm>
 
    <para>
-    The ability to restore the database to a previous point in time creates
-    some complexities that are akin to science-fiction stories about time
-    travel and parallel universes.  For example, in the original history of the database,
-    suppose you dropped a critical table at 5:15PM on Tuesday evening, but
-    didn't realize your mistake until Wednesday noon.
-    Unfazed, you get out your backup, restore to the point-in-time 5:14PM
-    Tuesday evening, and are up and running.  In <emphasis>this</emphasis> history of
-    the database universe, you never dropped the table.  But suppose
-    you later realize this wasn't such a great idea, and would like
-    to return to sometime Wednesday morning in the original history.
-    You won't be able
-    to if, while your database was up-and-running, it overwrote some of the
-    WAL segment files that led up to the time you now wish you
-    could get back to.  Thus, to avoid this, you need to distinguish the series of
-    WAL records generated after you've done a point-in-time recovery from
-    those that were generated in the original database history.
+La capacità di ripristinare il database a un istante passato crea 
+delle complessità che sono affini a storie di fantascienza sui viaggi temporali 
+e universi paralleli.
+Per esempio, nello storico originale del database,
+supporre di aver eliminato una tabella critica alle  17:15 di martedì sera, ma 
+non non essersi accorti dell'errore fino al mezzogiorno di giovedì. 
+Prendere il backup, ripristinare all'istante 17:14 di martedì sera, e ecco qua.
+In <emphasis>questo</emphasis> storico del database, non si è mai cancellata la tabella.
+Ma supporre che più tardi si sia realizzato che questa non è stata proprio una grande idea,
+e che si voglia tornare a qualche istante di giovedì mattina nello storico originale.
+Non potremmo farlo se, 
+mentre il database era in esecuzione, ha sovrascritto alcuni dei file segmento WAL
+che precedevano l'istante al quale si desidera tornare ora.
+Così, per evitare ciò, è necessario distinguere le serie di 
+record WAL generata dopo che è stato fatto un recupero a un istante nel tempo da 
+quelle state generate nello storico originale del database.
    </para>
 
    <para>
-    To deal with this problem, <productname>PostgreSQL</productname> has a notion
-    of <firstterm>timelines</firstterm>.  Whenever an archive recovery completes,
-    a new timeline is created to identify the series of WAL records
-    generated after that recovery.  The timeline
-    ID number is part of WAL segment file names so a new timeline does
-    not overwrite the WAL data generated by previous timelines.  It is
-    in fact possible to archive many different timelines.  While that might
-    seem like a useless feature, it's often a lifesaver.  Consider the
-    situation where you aren't quite sure what point-in-time to recover to,
-    and so have to do several point-in-time recoveries by trial and error
-    until you find the best place to branch off from the old history.  Without
-    timelines this process would soon generate an unmanageable mess.  With
-    timelines, you can recover to <emphasis>any</emphasis> prior state, including
-    states in timeline branches that you abandoned earlier.
+Per gestire questo problema, <productname>PostgreSQL</productname> ha la nozione di 
+<firstterm>timelines</firstterm>.   Ogni volta che un recupero è completo,
+una nuova timeline viene creata per identificare la serie di record WAL
+generati dopo quel recupero. L'ID della timeline
+è parte dei nome dei file segmento WAL, così una che nuova timeline non   
+sovrascriva i dati WAL generati da timeline precedenti. Infatti è possibile
+archiviare molte timeline differenti. Mentre questa potrebbe sembrare una caratteristica
+inutile, spesso salva la vita. Considerare la 
+situazione in cui non si è abbastanza sicuri a quale istante recuperare,
+e così dover fare diversi recuperi per tentativi finchè non si trova il migliore. 
+Senza le timeline questa operazione genererà presto confusione. Con le timeline,
+è possibile recuperare da <emphasis>qualsiasi</emphasis> stato precedente, inclusi
+stati in ramificazioni di timeline abbandonate precedentemente.
    </para>
 
    <para>
-    Every time a new timeline is created, <productname>PostgreSQL</productname> creates
-    a <quote>timeline history</quote> file that shows which timeline it branched
-    off from and when.  These history files are necessary to allow the system
-    to pick the right WAL segment files when recovering from an archive that
-    contains multiple timelines.  Therefore, they are archived into the WAL
-    archive area just like WAL segment files.  The history files are just
-    small text files, so it's cheap and appropriate to keep them around
-    indefinitely (unlike the segment files which are large).  You can, if
-    you like, add comments to a history file to record your own notes about
-    how and why this particular timeline was created.  Such comments will be
-    especially valuable when you have a thicket of different timelines as
-    a result of experimentation.
+Ogni volta che una nuova timeline viene creata, <productname>PostgreSQL</productname> crea
+uno file <quote>timeline history</quote> che mostra da quale timeline è stata generata 
+e quando. Questi file storico sono necessari per permettere al sistema
+di pescare i giusti file segmento WAL quando si recupera da un archivio che contiene  
+molteplici timeline. Quindi, sono archiviati all'interno dell'area di archivio WAL 
+semplicemente cole file segmento WAL. I file storico sono semplicemente
+piccoli file di testo, così è economico e giusto tenerne traccia 
+indefinitamente (a differenza dei file segmento che sono grandi). È possibile, 
+se si vuole, aggiungere commenti a un file storico per registrare le proprie note 
+sul come e perchè quella particolare timeline è stata creata. Questi commenti saranno  
+utili specialmente quando si ha un folto gruppo di timeline come risultato di 
+sperimentazioni.
    </para>
 
    <para>
-    The default behavior of recovery is to recover along the same timeline
-    that was current when the base backup was taken.  If you wish to recover
-    into some child timeline (that is, you want to return to some state that
-    was itself generated after a recovery attempt), you need to specify the
-    target timeline ID in <filename>recovery.conf</filename>.  You cannot recover into
-    timelines that branched off earlier than the base backup.
+Il comportamento predefinito è do recuperare lungo la stella timeline 
+che era la corrente quando il backup di base è stato fatto. Se si desidera recuperare
+all'interno di timeline figlie (cioè, si vuole restituire qualche stato che
+è stato generato dopo un tentativo di recupero), bisogna specificare l'ID della timeline 
+"bersaglio" in <filename>recovery.conf</filename>. Non è possibile recuperare all'interno di timeline
+che ramificate precedentemente rispetto al backup di base.
    </para>
   </sect2>
 
   <sect2 id="backup-tips">
-   <title>Tips and Examples</title>
+   <title>Suggerimenti e esempi</title>
 
    <para>
-    Some tips for configuring continuous archiving are given here.
+Proponiamo qui alcuni suggerimenti per configurare l'archiviazione continua. 
    </para>
 
     <sect3 id="backup-standalone">
-     <title>Standalone hot backups</title>
+     <title>Hot backup a sè stanti</title>
 
      <para>
-      It is possible to use <productname>PostgreSQL</productname>'s backup facilities to
-      produce standalone hot backups. These are backups that cannot be used
-      for point-in-time recovery, yet are typically much faster to backup and
-      restore than <application>pg_dump</application> dumps.  (They are also much larger
-      than <application>pg_dump</application> dumps, so in some cases the speed advantage
-      might be negated.)
+È possibile usare le funzionalità di backup <productname>PostgreSQL</productname> per produrre  
+hot backup a sè stanti. Questi sono backup che non possono essere usati  
+per recuperi di istanti nel tempo, sono tipicamente molto più veloci a svolgere backup e ripristino
+rispetto ai dump fatti con <application>pg_dump</application>. (Sono anche molto più grandi
+dei dump <application>pg_dump</application>, per questo in alcuni casi il vantaggio di velocità 
+potrebbe essere vanificato).
      </para>
 
      <para>
-      To prepare for standalone hot backups, set <varname>wal_level</varname> to
-      <literal>archive</literal> (or <literal>hot_standby</literal>), <varname>archive_mode</varname> to
-      <literal>on</literal>, and set up an <varname>archive_command</varname> that performs
-      archiving only when a <emphasis>switch file</emphasis> exists.  For example:
+Per prepararsi a hot backup a sè stanti, impostare <varname>wal_level</varname> a
+<literal>archive</literal> (o <literal>hot_standby</literal>), <varname>archive_mode</varname> a
+<literal>on</literal>, e impostare un <varname>archive_command</varname> che esegue 
+l'archiviazione solo quando un <emphasis>file seitch</emphasis> esiste. Per esempio:
 <programlisting>
 archive_command = 'test ! -f /var/lib/pgsql/backup_in_progress || cp -i %p /var/lib/pgsql/archive/%f &lt; /dev/null'
 </programlisting>
-      This command will perform archiving when
-      <filename>/var/lib/pgsql/backup_in_progress</filename> exists, and otherwise
-      silently return zero exit status (allowing <productname>PostgreSQL</productname>
-      to recycle the unwanted WAL file).
+Questo comando compierà l'archiviazione quando 
+<filename>/var/lib/pgsql/backup_in_progress</filename> esiste, altrimenti
+silenziosamente restituirà lo stato di uscita zero (permettendo a <productname>PostgreSQL</productname>
+di riciclare i file WAL non voluti).
      </para>
 
      <para>
-      With this preparation, a backup can be taken using a script like the
-      following:
+Con questa preparazione, un backup può essere effettuato usando uno script simile 
+al seguente:
 <programlisting>
 touch /var/lib/pgsql/backup_in_progress
 psql -c "select pg_start_backup('hot_backup');"
@@ -1221,26 +1226,26 @@ psql -c "select pg_stop_backup();"
 rm /var/lib/pgsql/backup_in_progress
 tar -rf /var/lib/pgsql/backup.tar /var/lib/pgsql/archive/
 </programlisting>
-      The switch file <filename>/var/lib/pgsql/backup_in_progress</filename> is
-      created first, enabling archiving of completed WAL files to occur.
-      After the backup the switch file is removed. Archived WAL files are
-      then added to the backup so that both base backup and all required
-      WAL files are part of the same <application>tar</application> file.
-      Please remember to add error handling to your backup scripts.
+Il file switch <filename>/var/lib/pgsql/backup_in_progress</filename> viene 
+creato prima, abilitando l'archiviazione di file WAL completi. 
+Dopo che il backup è terminato il file switch viene rimosso. I file WAL archiviati sono
+quindi aggiunti al backup così che sia il backup di base che tutti i file WAL richiesti
+siano parte della stesso file <application>tar</application>.
+Per favore, ricordare di aggiungere la gestione degli errori agli script di backup.
      </para>
 
      <para>
-      If archive storage size is a concern, use <application>pg_compresslog</application>,
-      <ulink url="http://pglesslog.projects.postgresql.org"></ulink>, to
-      remove unnecessary <xref linkend="guc-full-page-writes"/> and trailing
-      space from the WAL files.  You can then use
-      <application>gzip</application> to further compress the output of
-      <application>pg_compresslog</application>:
+Se la dimensione dell'archivio è proccupante, usare <application>pg_compresslog</application>,
+<ulink url="http://pglesslog.projects.postgresql.org"></ulink>, per 
+rimuovere <xref linkend="guc-full-page-writes"/> non necessarie e spazio in coda
+dai file WAL. Si può poi usare 
+<application>gzip</application> per comprimere ulteriormente l'output di
+<application>pg_compresslog</application>:
 <programlisting>
 archive_command = 'pg_compresslog %p - | gzip &gt; /var/lib/pgsql/archive/%f'
 </programlisting>
-      You will then need to use <application>gunzip</application> and
-      <application>pg_decompresslog</application> during recovery:
+Si avrà poi la necessità di usare <application>gunzip</application> e
+<application>pg_decompresslog</application> durante il recupero:
 <programlisting>
 restore_command = 'gunzip &lt; /mnt/server/archivedir/%f | pg_decompresslog - %p'
 </programlisting>
@@ -1251,20 +1256,20 @@ restore_command = 'gunzip &lt; /mnt/server/archivedir/%f | pg_decompresslog - %p
      <title><varname>archive_command</varname> scripts</title>
 
      <para>
-      Many people choose to use scripts to define their
-      <varname>archive_command</varname>, so that their
-      <filename>postgresql.conf</filename> entry looks very simple:
+Molte persone scelgono di usare script per definire i loro 
+<varname>archive_command</varname>, così che le loro voci
+<filename>postgresql.conf</filename> appariranno molto semplici:
 <programlisting>
 archive_command = 'local_backup_script.sh'
 </programlisting>
-      Using a separate script file is advisable any time you want to use
-      more than a single command in the archiving process.
-      This allows all complexity to be managed within the script, which
-      can be written in a popular scripting language such as
-      <application>bash</application> or <application>perl</application>.
-      Any messages written to <literal>stderr</literal> from the script will appear
-      in the database server log, allowing complex configurations to be
-      diagnosed easily if they fail.
+Usare uno script separato è consigliabile ogni volta che si vuole usare 
+più di un singolo comando nel processo di archiviazione.
+Questo permette la gestione di tutta la complessità all'interno dello script, che
+può essere scritto in linguaggi di scripting popolari tipo
+<application>bash</application> o <application>perl</application>.
+Qualsiasi messaggio scritto su <literal>stderr</literal> dallo script apparirà
+nel log del server database, permettendo che configurazioni complesse siano
+diagnosticate facilmente se falliscono.
      </para>
 
      <para>

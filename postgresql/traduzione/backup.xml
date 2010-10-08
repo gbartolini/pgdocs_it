@@ -787,129 +787,130 @@ segmento WAL scritto durante l'intervallo di backup sia pronto per l'archiviazio
    </listitem>
    <listitem>
     <para>
-     Once the WAL segment files active during the backup are archived, you are
-     done.  The file identified by <function>pg_stop_backup</function>'s result is
-     the last segment that is required to form a complete set of backup files.
-     If <varname>archive_mode</varname> is enabled,
-     <function>pg_stop_backup</function> does not return until the last segment has
-     been archived.
-     Archiving of these files happens automatically since you have
-     already configured <varname>archive_command</varname>. In most cases this
-     happens quickly, but you are advised to monitor your archive
-     system to ensure there are no delays.
-     If the archive process has fallen behind
-     because of failures of the archive command, it will keep retrying
-     until the archive succeeds and the backup is complete.
-     If you wish to place a time limit on the execution of
-     <function>pg_stop_backup</function>, set an appropriate
-     <varname>statement_timeout</varname> value.
+Una volta che i segmenti WAL attivi durante il backup sono archiviati, si è finito.
+Il file identificato dal risultato di <function>pg_stop_backup</function> è l'ultimo
+segmento richiesto per formare un insieme completo di file di backup.
+Se <varname>archive_mode</varname> è attivo,
+<function>pg_stop_backup</function> non restituisce niente finchè l'ultimo segmento
+è stato archiviato. 
+L'archiviazione di questi file avviene automaticamente dato che si è
+già configurato l'<varname>archive_command</varname>. In molti casi questo avviene 
+velocemente, ma si consiglia di controllare il sistema di archiviazione 
+per assicurarsi che non ci siano ritardi.
+Se il processo di archiviazione è rimasto indietro 
+causa fallimenti del comando d'archiviazione, continuerà a provare
+finchè l'archiviazione non avrà successo e il backup è completo.
+Se si desidera impostare un limite di tempo all'esecuzione di 
+<function>pg_stop_backup</function>, specificare un valore appropriato per
+<varname>statement_timeout</varname>.
     </para>
    </listitem>
   </orderedlist>
    </para>
 
    <para>
-    Some file system backup tools emit warnings or errors
-    if the files they are trying to copy change while the copy proceeds.
-    When taking a base backup of an active database, this situation is normal
-    and not an error.  However, you need to ensure that you can distinguish
-    complaints of this sort from real errors.  For example, some versions
-    of <application>rsync</application> return a separate exit code for
-    <quote>vanished source files</quote>, and you can write a driver script to
-    accept this exit code as a non-error case.  Also, some versions of
-    GNU <application>tar</application> return an error code indistinguishable from
-    a fatal error if a file was truncated while <application>tar</application> was
-    copying it.  Fortunately, GNU <application>tar</application> versions 1.16 and
-    later exit with <literal>1</literal> if a file was changed during the backup,
-    and <literal>2</literal> for other errors.
+Alcuni strumenti di backup a livello di file system producono warning o errori
+se i file che stanno tentando di copiare cambiano mentre la copia procede.
+Quando si prende un backup base di un database attivo, questa situazione è normale
+e non un errore. Comunque, è necessario assicurarsi di poter distinguere
+queste situazioni da errori reali. Per esempio, alcune versioni di 
+<application>rsync</application> restituiscono un codice di errore separato per 
+<quote>file sorgente spariti</quote>, ed è possibile scrivere uno script che
+accetti questo codice d'uscita non come un erroe. Inoltre, alcune versioni di 
+GNU <application>tar</application> restituiscono un codice di errore indistinguibile
+da un errore fatale se un file viene troncato mentre <application>tar</application>
+lo sta copiando. Fortunatamente, le versioni di GNU <application>tar</application> 
+dalla 1.6 e successive terminano con <literal>1</literal>  se un file è cambiato durante 
+il backup e <literal>2</literal> per gli altri errori.
    </para>
 
    <para>
-    It is not necessary to be concerned about the amount of time elapsed
-    between <function>pg_start_backup</function> and the start of the actual backup,
-    nor between the end of the backup and <function>pg_stop_backup</function>; a
-    few minutes' delay won't hurt anything.  (However, if you normally run the
-    server with <varname>full_page_writes</varname> disabled, you might notice a drop
-    in performance between <function>pg_start_backup</function> and
-    <function>pg_stop_backup</function>, since <varname>full_page_writes</varname> is
-    effectively forced on during backup mode.)  You must ensure that these
-    steps are carried out in sequence, without any possible
-    overlap, or you will invalidate the backup.
+Non è necessario preoccuparsi dell'ammontare di tempo passato tra
+<function>pg_start_backup</function> e l'inizio del backup attuale,
+e nemmeno tra la fine del backup e <function>pg_stop_backup</function>; pochi minuti 
+di ritardo non saranno dannosi. (Comunque, se normalmente si esegue il server con 
+<varname>full_page_writes</varname> disaiblitata, si potrebbe notare un calo
+delle prestazioni tra <function>pg_start_backup</function> e
+<function>pg_stop_backup</function>, dato che <varname>full_page_writes</varname> è
+effettivamente forzata a "on" durante la modilità backup). È necessario assicurare che  
+questi passi siano svolti in sequenza, senza qualsiasi possibile 
+sovrapposizione, o il backup sarà invalidato.
    </para>
 
    <para>
-    Be certain that your backup dump includes all of the files under
-    the database cluster directory (e.g., <filename>/usr/local/pgsql/data</filename>).
-    If you are using tablespaces that do not reside underneath this directory,
-    be careful to include them as well (and be sure that your backup dump
-    archives symbolic links as links, otherwise the restore will corrupt
-    your tablespaces).
+Assicurarsi che il dump di backup includa tutti i file sotto 
+la directory cluster (per es. <filename>/usr/local/pgsql/data</filename>).
+Se si stanno usando tablespace che non stanno in questa directory,
+fare attenzione ad includerli (e assicurarsi che il dump di backup archivi 
+link simbolici come link, altrimenti il ripristino rovinerà i tablespace).
    </para>
 
    <para>
-    You can, however, omit from the backup dump the files within the
-    cluster's <filename>pg_xlog/</filename> subdirectory.  This
-    slight adjustment is worthwhile because it reduces the risk
-    of mistakes when restoring.  This is easy to arrange if
-    <filename>pg_xlog/</filename> is a symbolic link pointing to someplace outside
-    the cluster directory, which is a common setup anyway for performance
-    reasons.
+È possibile, comunque, omettere dal dump di backup i file dentro la sottodirectory
+<filename>pg_xlog/</filename> del cluster. Questo piccolo aggiustamento 
+è utile in quanto riduce il rischio di errori durante il ripristino.
+Questo è facile da realizzare se <filename>pg_xlog/</filename> è un link simbolico 
+che punta fuori dalla directory cluster, che comunque è una pratica comune
+per questioni di prestazione.
    </para>
 
    <para>
-    To make use of the backup, you will need to keep all the WAL
-    segment files generated during and after the file system backup.
-    To aid you in doing this, the <function>pg_stop_backup</function> function
-    creates a <firstterm>backup history file</firstterm> that is immediately
-    stored into the WAL archive area. This file is named after the first
-    WAL segment file that you need for the file system backup.
-    For example, if the starting WAL file is
-    <literal>0000000100001234000055CD</literal> the backup history file will be
-    named something like
-    <literal>0000000100001234000055CD.007C9330.backup</literal>. (The second
-    part of the file name stands for an exact position within the WAL
-    file, and can ordinarily be ignored.) Once you have safely archived
-    the file system backup and the WAL segment files used during the
-    backup (as specified in the backup history file), all archived WAL
-    segments with names numerically less are no longer needed to recover
-    the file system backup and can be deleted. However, you should
-    consider keeping several backup sets to be absolutely certain that
-    you can recover your data.
+Per fare uso del backup, si dovrà tenere tutti i file segmento WAL generati 
+durante e dopo il backup a livello di file system.
+Per aiutarti a farlo, la funzione <function>pg_stop_backup</function> crea
+un <firstterm>file storico di backup</firstterm> che viene immediatamente 
+immagazzinato nell'aria di archivio WAL. Questo file è nominato dopo il primo
+file segmento WAL di cui si ha bisogno per il backup.
+Per esempio, se il file WAL di partenza è
+<literal>0000000100001234000055CD</literal> il file storico di backup sarà chiamato 
+<literal>0000000100001234000055CD.007C9330.backup</literal>. (La seconda parte 
+del nome del file sta per l'esatta posizione all'interno del file WAL,
+e puà essere tranquillamente ignorata). Una volta che i file segmento WAL 
+e quelli di backup usati durante il backup
+sono stati archiviati in modo sicuro (come specificato nel file storico di backup),
+tutti i segmenti WAL archiviati con nomi numericamente minori non sono più necessari
+per recuperare il backup a livello di file system e possono essere eliminati.
+Comunque, si dovrebbe considerare il mantenimento di diversi insiemi di backup 
+per essere assolutamente certi che 
+si possano recuperare i dati.
    </para>
 
    <para>
-    The backup history file is just a small text file. It contains the
-    label string you gave to <function>pg_start_backup</function>, as well as
-    the starting and ending times and WAL segments of the backup.
-    If you used the label to identify the associated dump file,
-    then the archived history file is enough to tell you which dump file to
-    restore.
+Il file storico di backup è solo un piccolo file di testo. Esso contiene
+l'etichetta fornita a  <function>pg_start_backup</function>, così come 
+gli orari di inizio e fine e i segmenti WAL del backup.
+Se si è usata l'etichetta per identificare il file dump associato, 
+allora il file storico archiviato è sufficiente a dirti quale file dump ripristinare.
    </para>
 
    <para>
-    Since you have to keep around all the archived WAL files back to your
-    last base backup, the interval between base backups should usually be
-    chosen based on how much storage you want to expend on archived WAL
-    files.  You should also consider how long you are prepared to spend
-    recovering, if recovery should be necessary &mdash; the system will have to
-    replay all those WAL segments, and that could take awhile if it has
-    been a long time since the last base backup.
+Dato che si sono tenuti tutti i file WAL archiviati dall'ultimo backup,
+l'intervallo tra i backup di base dovrebbe essere, di solito, 
+scelto basandosi su quanto spazio di immagazzinamento di vuole dedicare 
+ai file WAL archiviati. Si dovrebbe considerare anche il tempo che si preparati a spendere
+per il recupero, se il recupero è necessario - il sistema dovrà fare il replay di tutti quei 
+segmenti WAL, e questo potrebbe prendere un po' di tempo se è passato molto tempo 
+dall'ultimo backup di base.
    </para>
 
    <para>
-    It's also worth noting that the <function>pg_start_backup</function> function
-    makes a file named <filename>backup_label</filename> in the database cluster
-    directory, which is removed by <function>pg_stop_backup</function>.
-    This file will of course be archived as a part of your backup dump file.
-    The backup label file includes the label string you gave to
-    <function>pg_start_backup</function>, as well as the time at which
-    <function>pg_start_backup</function> was run, and the name of the starting WAL
-    file.  In case of confusion it is
-    therefore possible to look inside a backup dump file and determine
-    exactly which backup session the dump file came from.
+È importante anche notare che la funzione <function>pg_start_backup</function>
+crea un file chiamato <filename>backup_label</filename> nella directory di cluster,
+che viene rimosso da <function>pg_stop_backup</function>.
+Questo file sarà certamente archiviato come parte del file dump di backup.
+Il file etichetta di backup include la stringa fornita a
+<function>pg_start_backup</function>, così come l'orario dell'avvio di 
+<function>pg_start_backup</function>, e il nome del file di partenza del WAL.
+In caso di confuzione è inoltre possibile guardare nel file dump di backup 
+e determinare esattamente da quale sessione di backup arriva il file dump
    </para>
 
    <para>
+<warning>
+    <para>
+        TODO
+    </para>
+</warning>
     It is also possible to make a backup dump while the server is
     stopped.  In this case, you obviously cannot use
     <function>pg_start_backup</function> or <function>pg_stop_backup</function>, and
@@ -920,53 +921,53 @@ segmento WAL scritto durante l'intervallo di backup sia pronto per l'archiviazio
   </sect2>
 
   <sect2 id="backup-pitr-recovery">
-   <title>Recovering using a Continuous Archive Backup</title>
+   <title>Ripristino usando un backup ad archiviazione continua</title>
 
    <para>
-    Okay, the worst has happened and you need to recover from your backup.
-    Here is the procedure:
+Ok, il peggio è successo e si ha bisogno di recuperare dati da un backup.
+Ecco la procedura:
   <orderedlist>
    <listitem>
     <para>
-     Stop the server, if it's running.
+Fermare il server, se è in esecuzione.
     </para>
    </listitem>
    <listitem>
     <para>
-     If you have the space to do so,
-     copy the whole cluster data directory and any tablespaces to a temporary
-     location in case you need them later. Note that this precaution will
-     require that you have enough free space on your system to hold two
-     copies of your existing database. If you do not have enough space,
-     you should at least save the contents of the cluster's <filename>pg_xlog</filename>
-     subdirectory, as it might contain logs which
-     were not archived before the system went down.
+Se si ha lo spazio per farlo,
+copiare l'intera directory di cluster ed ogni tablespace in un luogo temporaneo
+nel caso in cui se ne abbia bisogno più tardi. Notare che questa precauzione 
+richiederà che si abbia abbastanza spazio libero sul sistema da contenere
+due copie dei database esistenti. Se non si ha sufficiente spazio su disco,
+si dovrebbe almeno salvare il contenuto della sottodirectory 
+del cluster <filename>pg_xlog</filename>, dato che potrebbe contenere log che non
+sono stati archiviati prima che il sistema sia caduto.
     </para>
    </listitem>
    <listitem>
     <para>
-     Remove all existing files and subdirectories under the cluster data
-     directory and under the root directories of any tablespaces you are using.
+Rimuovere tutti i file e le sottodirectory esistenti nella directory di cluster
+e sotto le directory radice dei tablespace che si stanno usando.
     </para>
    </listitem>
    <listitem>
     <para>
-     Restore the database files from your file system backup.  Be sure that they
-     are restored with the right ownership (the database system user, not
-     <literal>root</literal>!) and with the right permissions.  If you are using
-     tablespaces,
-     you should verify that the symbolic links in <filename>pg_tblspc/</filename>
-     were correctly restored.
+Ripristinare i file del database dal proprio backup di file system. Assicurarsi che
+siano ripristinati con la giusta proprietà (l'utente del sistema database, non 
+<literal>root</literal>!) e con i giusti permessi. Se si stanno  usando 
+tablespace, 
+si dovrebbe verificare che i link simbolici in <filename>pg_tblspc/</filename>
+siano stati ripristinati correttamente.
     </para>
    </listitem>
    <listitem>
     <para>
-     Remove any files present in <filename>pg_xlog/</filename>; these came from the
-     file system backup and are therefore probably obsolete rather than current.
-     If you didn't archive <filename>pg_xlog/</filename> at all, then recreate
-     it with proper permissions,
-     being careful to ensure that you re-establish it as a symbolic link
-     if you had it set up that way before.
+Rimuovere qualsiasi file presente in <filename>pg_xlog/</filename>; questi arrivano
+dal backup a livello di file system e quindi probabilmente  sono obsoleti.
+Se non si è archiviato <filename>pg_xlog/</filename> per niente, allora crearlo 
+con i giusti permessi, 
+facendo attenzione a impostarlo come link simbolico 
+se lo era precedentemente.
     </para>
    </listitem>
    <listitem>

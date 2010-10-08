@@ -972,69 +972,72 @@ se lo era precedentemente.
    </listitem>
    <listitem>
     <para>
-     If you have unarchived WAL segment files that you saved in step 2,
-     copy them into <filename>pg_xlog/</filename>.  (It is best to copy them,
-     not move them, so you still have the unmodified files if a
-     problem occurs and you have to start over.)
+Se si hanno file segmento WAL non archiviati salvati dal passo 2,
+copiarli in <filename>pg_xlog/</filename>. (È meglio copiarli, 
+non spostarli, così da avere comunque i file non modificati se succedesse qualche problema
+e di dovesse cominciare tutto daccapo).
     </para>
    </listitem>
    <listitem>
     <para>
-     Create a recovery command file <filename>recovery.conf</filename> in the cluster
-     data directory (see <xref linkend="recovery-config"/>). You might
-     also want to temporarily modify <filename>pg_hba.conf</filename> to prevent
-     ordinary users from connecting until you are sure the recovery was successful.
+Creare un file di recupero <filename>recovery.conf</filename> nella directory  
+di cluster (si veda <xref linkend="recovery-config"/>). Si potrebbe anche
+voler modificare temporaneamente <filename>pg_hba.conf</filename> per impedire
+a utenti comuni di connettersi finchè non si è sicuri che il recupero abbia avuto successo.
     </para>
    </listitem>
    <listitem>
     <para>
-     Start the server.  The server will go into recovery mode and
-     proceed to read through the archived WAL files it needs.  Should the
-     recovery be terminated because of an external error, the server can
-     simply be restarted and it will continue recovery.  Upon completion
-     of the recovery process, the server will rename
-     <filename>recovery.conf</filename> to <filename>recovery.done</filename> (to prevent
-     accidentally re-entering recovery mode later) and then
-     commence normal database operations.
+Avviare il server. Il server entrerà in modalità recovery e 
+leggerà attraverso i file WAL di cui ha bisogno. Se il recupero dovesse terminare
+causa errori esterni, il server può essere riavviato semplicemente  
+ed esso continuerà il recupero. Fino al completamento del processo di recupero, 
+il server rinominerà <filename>recovery.conf</filename> in <filename>recovery.done</filename> 
+(per prevenire l'accidentale rientro in modalità recovery) e quindi 
+inizierà le normali operazioni del database.
     </para>
    </listitem>
    <listitem>
     <para>
-     Inspect the contents of the database to ensure you have recovered to
-     the desired state.  If not, return to step 1.  If all is well,
-     allow your users to connect by restoring <filename>pg_hba.conf</filename> to normal.
+Ispezionare il contenuto del database per assicurarsi di essere tornati allo stato desiderato. 
+Se non è cos', ritornare al passo 1. Se tutto è a posto,
+permettere agli utenti di connettersi ripristinando <filename>pg_hba.conf</filename> alla normalità.
     </para>
    </listitem>
   </orderedlist>
    </para>
 
    <para>
-    The key part of all this is to set up a recovery configuration file that
-    describes how you want to recover and how far the recovery should
-    run.  You can use <filename>recovery.conf.sample</filename> (normally
-    located in the installation's <filename>share/</filename> directory) as a
-    prototype.  The one thing that you absolutely must specify in
-    <filename>recovery.conf</filename> is the <varname>restore_command</varname>,
-    which tells <productname>PostgreSQL</productname> how to retrieve archived
-    WAL file segments.  Like the <varname>archive_command</varname>, this is
-    a shell command string.  It can contain <literal>%f</literal>, which is
-    replaced by the name of the desired log file, and <literal>%p</literal>,
-    which is replaced by the path name to copy the log file to.
-    (The path name is relative to the current working directory,
-    i.e., the cluster's data directory.)
-    Write <literal>%%</literal> if you need to embed an actual <literal>%</literal>
-    character in the command.  The simplest useful command is
-    something like:
+La parte chiave di tutto questo è l'impostazione di un file di configurazione di recupero 
+che descriva come si vuole recuperare e quanto lontano dovrebbe arrivare il recupero.
+È possibile usare <filename>recovery.conf.sample</filename> (normalmente 
+si trova nella directory <filename>share/</filename> del percorso di installazione) come 
+prototipo.  La sola cosa che si deve assolutamente specificare in 
+<filename>recovery.conf</filename> è la <varname>restore_command</varname>,
+che dice a <productname>PostgreSQL</productname> come recuperare i segmenti WAL archiviati.
+Come l'<varname>archive_command</varname>, questa è una stringa di comando shell.
+Può contenere  <literal>%f</literal>, che verrà
+sostituito dal nome del file di log desiderato, e <literal>%p</literal>,
+che verrà sostituito dal percorso in cui copiare il file di log. 
+(Il percorso è relativo alla directory di lavoro corrente, 
+per es., la directory data del cluster).
+Scrivere <literal>%%</literal> se si ha bisogno di includere un carattere <literal>%</literal>
+nel comando. Il comando più semplice sarà qualcosa simile a:
 <programlisting>
 restore_command = 'cp /mnt/server/archivedir/%f %p'
 </programlisting>
-    which will copy previously archived WAL segments from the directory
-    <filename>/mnt/server/archivedir</filename>.  Of course, you can use something
-    much more complicated, perhaps even a shell script that requests the
-    operator to mount an appropriate tape.
+che copierà i segmenti WAL archiviati precedentemente dalla directory 
+<filename>/mnt/server/archivedir</filename>. Certamente, è possibile usare qualcosa di
+molto più complicato, come uno script shell che richiede che l'operatore
+monti un nastro appropriato.
    </para>
 
    <para>
+<warning>
+    <para>
+        TODO
+    </para>
+</warning>
     It is important that the command return nonzero exit status on failure.
     The command <emphasis>will</emphasis> be called requesting files that are not present
     in the archive; it must return nonzero when so asked.  This is not an
@@ -1046,35 +1049,37 @@ restore_command = 'cp /mnt/server/archivedir/%f %p'
    </para>
 
    <para>
-    WAL segments that cannot be found in the archive will be sought in
-    <filename>pg_xlog/</filename>; this allows use of recent un-archived segments.
-    However, segments that are available from the archive will be used in
-    preference to files in <filename>pg_xlog/</filename>.  The system will not
-    overwrite the existing contents of <filename>pg_xlog/</filename> when retrieving
-    archived files.
+I segmenti WAL che non possono essere trovati nell'archivio saranno cercati dentro 
+<filename>pg_xlog/</filename>; questo permette l'utilizzo di segmenti non archiviati.
+Comunque, saranno usati i segmenti che sono disponibili dall'archivio preferibilmente ai
+file in <filename>pg_xlog/</filename>. Il sistema non sovrascriverà i contenuti esistenti di 
+<filename>pg_xlog/</filename> quando recupera i file archiviati.
    </para>
 
    <para>
     Normally, recovery will proceed through all available WAL segments,
+Normalmente, il recupero procederà attraverso tutti i segmenti WAL disponibili,
     thereby restoring the database to the current point in time (or as
-    close as possible given the available WAL segments).  Therefore, a normal
-    recovery will end with a <quote>file not found</quote> message, the exact text
-    of the error message depending upon your choice of
-    <varname>restore_command</varname>.  You may also see an error message
-    at the start of recovery for a file named something like
-    <filename>00000001.history</filename>.  This is also normal and does not
-    indicate a problem in simple recovery situations; see
-    <xref linkend="backup-timelines"/> for discussion.
+(o più 
+vicino possibile ai segmenti WAL disponibli).  Inoltre, un recupero normale  
+finirà finirà con un messaggio <quote>file not found</quote>, il testo esatto 
+del messaggio di errore dipende dalla scelta di
+<varname>restore_command</varname>. Si potrebbe vedere anche un messaggio di errore
+all'avvio di un recupero per un file chiamato in maniera simile a 
+<filename>00000001.history</filename>. Anche questo è normale e non indica un 
+problema in situazioni di recupero semplici; si veda 
+<xref linkend="backup-timelines"/> per discussioni a riguardo.
    </para>
 
    <para>
-    If you want to recover to some previous point in time (say, right before
-    the junior DBA dropped your main transaction table), just specify the
-    required stopping point in <filename>recovery.conf</filename>.  You can specify
-    the stop point, known as the <quote>recovery target</quote>, either by
-    date/time or by completion of a specific transaction ID.  As of this
-    writing only the date/time option is very usable, since there are no tools
-    to help you identify with any accuracy which transaction ID to use.
+Se si vuole tornare a qualche istante nel tempo (tipo, appena prima 
+che il DBA junior ha cancellato la tabella di transazione principale), basta specificare
+il punto di arresto richiesto in <filename>recovery.conf</filename>. Si può specificare
+il punto d'arresto, noto come <quote>recovery target</quote>, sia 
+attraverso data/orario sia per completamento di uno specifico ID di transazione. Al momento
+della scrittura di questo libro, solo l'opzione data/orario è molto usabile, 
+dato che non ci sono strumenti
+che aiutino l'identificazione con accuratezza di quale transazione usare.
    </para>
 
    <note>

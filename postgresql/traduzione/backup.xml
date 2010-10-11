@@ -1387,16 +1387,19 @@ tanto quanto tanto quanto fattibile.
   <para>
 Questa sezione discute come migrare i dati di un database da una versione di 
 <productname>PostgreSQL</productname> a una nuova.
-   The software installation procedure <foreignphrase>per se</foreignphrase> is not the
-La procedura di installazione di per se non è oggetto di questa sezione  
-   subject of this section; those details are in <xref linkend="installation"/>.
+La procedura di installazione di per se non è oggetto di questa sezione; si vedano dettagli  
+in <xref linkend="installation"/>.
   </para>
 
   <para>
    <productname>PostgreSQL</productname> major versions are represented by the
+Le principali versioni di <productname>PostgreSQL</productname> sono rappresentate dai
    first two digit groups of the version number, e.g., 8.4.
+gruppi di prime due cifre del numero di versione, per es., 8.4. 
    <productname>PostgreSQL</productname> minor versions are represented by the
+Versioni minori di <productname>PostgreSQL</productname> sono rappresentate dal terzo gruppo
    third group of version digits, e.g., 8.4.2 is the second minor
+
    release of 8.4.  Minor releases never change the internal storage
    format and are always compatible with earlier and later minor
    releases of the same major version number, e.g., 8.4.2 is compatible

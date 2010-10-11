@@ -1273,27 +1273,27 @@ diagnosticate facilmente se falliscono.
      </para>
 
      <para>
-      Examples of requirements that might be solved within a script include:
+Esempi di esigenze che potrebbero essere risolti all'interno di uno script includono:
       <itemizedlist>
        <listitem>
         <para>
-         Copying data to secure off-site data storage
+Copiare dati verso luoghi di immagazzinamento sicuro non in loco
         </para>
        </listitem>
        <listitem>
         <para>
-         Batching WAL files so that they are transferred every three hours,
-         rather than one at a time
+Raggruppare file WAL così che siano trasferiti ogni tre ore, 
+invece che uno alla volta
         </para>
        </listitem>
        <listitem>
         <para>
-         Interfacing with other backup and recovery software
+Interfacciarsi con altri software di backup e ripristino
         </para>
        </listitem>
        <listitem>
         <para>
-         Interfacing with monitoring software to report errors
+Interfacciarsi con software di monitoraggio per segnalare errori
         </para>
        </listitem>
       </itemizedlist>
@@ -1302,93 +1302,93 @@ diagnosticate facilmente se falliscono.
   </sect2>
 
   <sect2 id="continuous-archiving-caveats">
-   <title>Caveats</title>
+   <title>Avvertimenti</title>
 
    <para>
-    At this writing, there are several limitations of the continuous archiving
-    technique.  These will probably be fixed in future releases:
+Al momento di questa scrittua, ci sono diverse limitazioni alla tecnica di archiviazione
+continua. Queste probabilmente saranno risolte in versioni future:
 
   <itemizedlist>
    <listitem>
     <para>
-     Operations on hash indexes are not presently WAL-logged, so
-     replay will not update these indexes.  This will mean that any new inserts
-     will be ignored by the index, updated rows will apparently disappear and
-     deleted rows will still retain pointers. In other words, if you modify a
-     table with a hash index on it then you will get incorrect query results
-     on a standby server.  When recovery completes it is recommended that you
-     manually <xref linkend="sql-reindex"/>
-     each such index after completing a recovery operation.
+Operazioni su indici hash attualmente non sono sottoposte a log WAL, per questo motivo il
+replay non aggiornerà questi indici. Questo significherà che ogni nuovo inserimento 
+sarà ignorato dall'indice, le righe aggiornate apparentemente scompariranno e
+le righe cancellate manterranno comunque puntatori. In altre parole, se si modifica una
+tabella che ha un indice hash allora si otterranno risultati di query incorretti
+su un server standby. Quando il ripristino è completato si raccomanda di 
+<xref linkend="sql-reindex"/> manualmente ogni indice dopo il completamento 
+di un'operazione di ripristino.
     </para>
    </listitem>
 
    <listitem>
     <para>
-     If a <xref linkend="sql-createdatabase"/>
-     command is executed while a base backup is being taken, and then
-     the template database that the <command>CREATE DATABASE</command> copied
-     is modified while the base backup is still in progress, it is
-     possible that recovery will cause those modifications to be
-     propagated into the created database as well.  This is of course
-     undesirable.  To avoid this risk, it is best not to modify any
-     template databases while taking a base backup.
+Se un comando <xref linkend="sql-createdatabase"/>
+viene eseguito mentre sta avendo luogo un backup di base, e quindi 
+il database template copiato da <command>CREATE DATABASE</command> viene modificato
+mentre il backup di base è in esecuzione, è possibile
+che il ripristino faccia si che queste modifiche siano propagate
+anche all'interno del database creato. Questo comportamento ovviamente è indesiderabile.
+Per evitare questo rischio, è meglio non modificare nessun database template
+mentre un backup di base è in esecuzione.
     </para>
    </listitem>
 
    <listitem>
     <para>
-     <xref linkend="sql-createtablespace"/>
-     commands are WAL-logged with the literal absolute path, and will
-     therefore be replayed as tablespace creations with the same
-     absolute path.  This might be undesirable if the log is being
-     replayed on a different machine.  It can be dangerous even if the
-     log is being replayed on the same machine, but into a new data
-     directory: the replay will still overwrite the contents of the
-     original tablespace.  To avoid potential gotchas of this sort,
-     the best practice is to take a new base backup after creating or
-     dropping tablespaces.
+I comandi <xref linkend="sql-createtablespace"/>
+sono sottoposti a log WAL con il percorso assoluto, e saranno inoltre
+sottoposti a replay come creazioni di tablespace con lo stesso percorso 
+assoluto. Questo potrebbe essere indesiderabile se il log è stato sottoposto a 
+replay su una macchina diversa. Può essere pericoloso anche se 
+il log viene sottoposto a replay sulla stessa macchina, ma all'interno di una 
+nuova directory dati: il replay sovrascriverà comunque il contenuto del tablespace
+originale. Per evitare potenziali incomprensioni, 
+la buona pratica è di realizzare un nuovo backup di base dopo aver creato o 
+eliminato dei tablespace.
     </para>
    </listitem>
   </itemizedlist>
    </para>
 
    <para>
-    It should also be noted that the default <acronym>WAL</acronym>
-    format is fairly bulky since it includes many disk page snapshots.
-    These page snapshots are designed to support crash recovery, since
-    we might need to fix partially-written disk pages.  Depending on
-    your system hardware and software, the risk of partial writes might
-    be small enough to ignore, in which case you can significantly
-    reduce the total volume of archived logs by turning off page
-    snapshots using the <xref linkend="guc-full-page-writes"/>
-    parameter.  (Read the notes and warnings in <xref linkend="wal"/>
-    before you do so.)  Turning off page snapshots does not prevent
-    use of the logs for PITR operations.  An area for future
-    development is to compress archived WAL data by removing
-    unnecessary page copies even when <varname>full_page_writes</varname> is
-    on.  In the meantime, administrators might wish to reduce the number
-    of page snapshots included in WAL by increasing the checkpoint
-    interval parameters as much as feasible.
+Si dovrebbe notare inoltre che il formato <acronym>WAL</acronym>
+predefinito è abbastanza enorme dato che include molte snapshot di pagina del disco.
+Queste snapshot di pagina sono progettate per sostenere il ripristino dai crash, dato che
+si potrebbe aver bisogno di mettere a posto pagine disco scritte parzialmente. 
+In dipendenza del proprio hardware e software di sistema, il rischio di scritture parziali
+potrebbe essere abbastanza piccolo da ignorare, nel qual caso è possibile 
+ridurre significativamente il volume totale dei log archiviati disabilitando 
+le snapshot di pagina usando il parametro <xref linkend="guc-full-page-writes"/>.
+(Leggere le note e i warning in <xref linkend="wal"/> prima di farlo).
+Disabilitare le snapshot non previene l'uso dei log per operazioni PITR. 
+Un area per sviluppo futuro è di comprimere dati WAL archiviati rimuovendo
+copie di pagine non necessarie anche quando <varname>full_page_writes</varname> è
+attivo. Nel frattempo, gli amministratori potrebbero desiderare ridurre il numero
+di snapshot di pagina incluse nel WAL incrementando i parametri d'intervallo di checkpoint 
+tanto quanto tanto quanto fattibile.
    </para>
   </sect2>
  </sect1>
 
  <sect1 id="migration">
-  <title>Migration Between Releases</title>
+  <title>Migrazioni fra versioni</title>
 
   <indexterm zone="migration">
-   <primary>upgrading</primary>
+   <primary>aggiornamento</primary>
   </indexterm>
 
   <indexterm zone="migration">
-   <primary>version</primary>
-   <secondary>compatibility</secondary>
+   <primary>versione</primary>
+   <secondary>compatibilità</secondary>
   </indexterm>
 
   <para>
-   This section discusses how to migrate your database data from one
-   <productname>PostgreSQL</productname> release to a newer one.
+Questa sezione discute come migrare i dati di un database da una versione di 
+<productname>PostgreSQL</productname> a una nuova.
    The software installation procedure <foreignphrase>per se</foreignphrase> is not the
+La procedura di installazione di per se non è oggetto di questa sezione  
    subject of this section; those details are in <xref linkend="installation"/>.
   </para>
 

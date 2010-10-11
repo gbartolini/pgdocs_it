@@ -1392,39 +1392,34 @@ in <xref linkend="installation"/>.
   </para>
 
   <para>
-   <productname>PostgreSQL</productname> major versions are represented by the
 Le principali versioni di <productname>PostgreSQL</productname> sono rappresentate dai
-   first two digit groups of the version number, e.g., 8.4.
 gruppi di prime due cifre del numero di versione, per es., 8.4. 
-   <productname>PostgreSQL</productname> minor versions are represented by the
 Versioni minori di <productname>PostgreSQL</productname> sono rappresentate dal terzo gruppo
-   third group of version digits, e.g., 8.4.2 is the second minor
-
-   release of 8.4.  Minor releases never change the internal storage
-   format and are always compatible with earlier and later minor
-   releases of the same major version number, e.g., 8.4.2 is compatible
-   with 8.4, 8.4.1 and 8.4.6.  To update between compatible versions,
-   you simply replace the executables while the server is down and
-   restart the server.  The data directory remains unchanged &mdash;
-   minor upgrades are that simple.
+di cifre di versione, per es.  8.4.2 è il sendo rilascio minore 
+della 8.4. Rilasci minori non cambiano mai il formato di immagazzinamento interno
+e sono sempre compatibili con versioni minori successive e precedenti della stessa versione
+principale, per es. 8.4.2 è compatibile con 8.4, 8.4.1 e 8.4.6. Per aggiornare 
+a versioni compatibili, basta semplicemente sostituire gli eseguibili mentre il server
+è fermo e riavviare il server. La directory dei dati rimane immutata -
+aggiornamenti minori sono così semplici.
   </para>
 
   <para>
-   For <emphasis>major</emphasis> releases of <productname>PostgreSQL</productname>, the
-   internal data storage format is subject to change, thus complicating
-   upgrades.  The traditional method for moving data to a new major version
-   is to dump and reload the database.  Other, less-well-tested possibilities
-   are available, as discussed below.
+Per rilasci <emphasis>principali</emphasis> di <productname>PostgreSQL</productname>, 
+il formato interno per l'immagazzinamento dei dati è soggetto a cambiamenti, così come
+gli aggiornamenti. Il metodo tradizionale per spostare dati verso una nuova versione 
+principale è di fare un dump e ricaricare il database. Altrimenti, sono disponibili 
+altre possibilità testate meno bene, come discusso sotto.
   </para>
 
   <para>
-   New major versions also typically introduce some user-visible
-   incompatibilities, so application programming changes may be required.
-   Cautious users will want to test their client applications on the new
-   version before switching over fully; therefore, it's often a good idea to
-   set up concurrent installations of old and new versions.  When
-   testing a <productname>PostgreSQL</productname> major upgrade, consider the
-   following categories of possible changes:
+Nuove versioni principali tipicamente introducono incompatibilità visibili all'utente,
+così da richiedere cambiamenti all'applicazione.
+Utenti cauti vorranno testare le loro applicazioni client sulla nuova versione
+prima di migrare totalmente; per questo, spesso è una buona idea mettere su
+installazioni concorrenti di versioni vecchie e nuove. Quando si testa un aggiornamento 
+principale di <productname>PostgreSQL</productname>, considerare le seguenti categorie
+di possibili cambiamenti:
   </para>
 
   <variablelist>
@@ -1433,8 +1428,8 @@ Versioni minori di <productname>PostgreSQL</productname> sono rappresentate dal 
     <term>Administration</term>
     <listitem>
      <para>
-      The capabilities available for administrators to monitor and control
-      the server often change and improve in each major release.
+Le funzionalità disponibili agli amministratori per monitorare e controllare 
+il server spesso cambiano e migliorano in ogni release principale. 
      </para>
     </listitem>
    </varlistentry>
@@ -1443,38 +1438,39 @@ Versioni minori di <productname>PostgreSQL</productname> sono rappresentate dal 
     <term>SQL</term>
     <listitem>
      <para>
-      Typically this includes new SQL command capabilities and not changes
-      in behavior, unless specifically mentioned in the release notes.
+Tipicamente questo include nuove capacità di comandi SQL e non cambiano
+nel comportamento, a meno che sia specificamente menzionato nelle note di rilascio.
      </para>
     </listitem>
    </varlistentry>
 
    <varlistentry>
-    <term>Library API</term>
+    <term>API di libreria</term>
     <listitem>
      <para>
-      Typically libraries like <application>libpq</application> only add new
-      functionality, again unless mentioned in the release notes.
+Tipicamente librerie come <application>libpq</application> aggiungono solo nuove 
+funzionalità, di nuovo a meno che non siano menzionate nelle note di rilascio.
      </para>
     </listitem>
    </varlistentry>
 
    <varlistentry>
-    <term>System Catalogs</term>
+    <term>Cataloghi di sistema</term>
     <listitem>
      <para>
-      System catalog changes usually only affect database management tools.
+I cambiamenti di catalogo di sistema solitamente hanno effetti solo sugli strumenti di 
+gestione del database.
      </para>
     </listitem>
    </varlistentry>
 
    <varlistentry>
-    <term>Server C-language API</term>
+    <term>API C lato server</term>
     <listitem>
      <para>
-      This involves changes in the backend function API, which is written
-      in the C programming language.  Such changes affect code that
-      references backend functions deep inside the server.
+Questo coinvolge cambiamenti nell'API del backend, che è scritto nel linguaggio
+di programmazione C. Questi cambiamenti riguardano codice che 
+referenziano funzioni di backend profondamente dentro al server.
      </para>
     </listitem>
    </varlistentry>
@@ -1482,48 +1478,47 @@ Versioni minori di <productname>PostgreSQL</productname> sono rappresentate dal 
   </variablelist>
 
   <sect2 id="migration-methods-pgdump">
-   <title>Migrating data via <application>pg_dump</application></title>
+   <title>Migrazione dei dati via <application>pg_dump</application></title>
 
   <para>
-   To dump data from one major version of <productname>PostgreSQL</productname> and
-   reload it in another, you must use <application>pg_dump</application>; file system
-   level backup methods will not work. (There are checks in place that prevent
-   you from using a data directory with an incompatible version of
-   <productname>PostgreSQL</productname>, so no great harm can be done by
-   trying to start the wrong server version on a data directory.)
+Per fare il dump di dati da una versione principale di <productname>PostgreSQL</productname>
+e caricarla in un'altra, si deve usare <application>pg_dump</application>; metodi di backup
+a livello di file system non funzioneranno. (Ci sono controlli in loco che prevengono
+l'usi di una directory dati con una versione di <productname>PostgreSQL</productname>
+incompatibile, così non possono essere fatti grossi danni provando ad avviare 
+la versione sbagliata del server su una directory dati).
   </para>
 
   <para>
-   It is recommended that you use the <application>pg_dump</application> and
-   <application>pg_dumpall</application> programs from the newer version of
-   <productname>PostgreSQL</productname>, to take advantage of enhancements
-   that might have been made in these programs.  Current releases of the
-   dump programs can read data from any server version back to 7.0.
+Si raccomanda di usare i programmi <application>pg_dump</application> e 
+<application>pg_dumpall</application> dalle nuove versioni di 
+<productname>PostgreSQL</productname>, per sfruttare i miglioramenti che potrebbero 
+essere stati fatti in questi programmi. Le versioni correnti dei programmi di dump 
+possono leggere dati da qualsiasi versione del server indietro fino alla 7.0.
   </para>
 
   <para>
-   The least downtime can be achieved by installing the new server in
-   a different directory and running both the old and the new servers
-   in parallel, on different ports. Then you can use something like:
+L'ultimo momento di guasto può essere ottenuto installando il nuovo server in una
+directory diversa e avviando sia il vecchio server che il nuovo 
+in parallelo, su porte differenti. Quindi è possibile usare qualcosa simile a:
 
 <programlisting>
 pg_dumpall -p 5432 | psql -d postgres -p 6543
 </programlisting>
 
-   to transfer your data.  Or you can use an intermediate file if you wish.
-   Then you can shut down the old server and start the new server using
-   the port the old one was running on. You should make sure that the
-   old database is not updated after you begin to run
-   <application>pg_dumpall</application>, otherwise you will lose those updates. See
-   <xref linkend="client-authentication"/> for information on how to prohibit
-   access.
+per trasferire i dati. O si può usare un file intermedio se si desidera.
+Quindi si può spengere il vecchio server e avviare il nuovo usando
+la porta su cui stava viaggiando il vecchio. Si dovrebbe far sì che il vecchio database
+non sia aggiornato dopo che si è lanciato <application>pg_dumpall</application>,
+altrimenti si perderanno quegli aggiornamenti. Si veda <xref linkend="client-authentication"/>
+per informazioni su come proibire l'accesso.
   </para>
 
   <para>
-   If you cannot or do not want to run two servers in parallel, you can
-   do the backup step before installing the new version, bring down
-   the old server, move the old version out of the way, install the new
-   version, start the new server, and restore the data. For example:
+Se non si può o non si vuole eseguire due server in parallelo, si può
+fare il backup prima di installare la nuova versione, mandare giù il vecchio server, 
+togliere di mezzo la vecchia versione, installare la nuova versione, 
+avviare il nuovo server, e rispristinare i dati. Per esempio:
 
 <programlisting>
 pg_dumpall &gt; backup
@@ -1537,53 +1532,52 @@ postgres -D /usr/local/pgsql/data
 psql -f backup postgres
 </programlisting>
 
-   See <xref linkend="runtime"/> about ways to start and stop the
-   server and other details. The installation instructions will advise
-   you of strategic places to perform these steps.
+Si veda <xref linkend="runtime"/> sui modi di avviare e fermare il server e altri dettagli.
+Le istruzioni di installazione ti consiglieranno posti strategici per effettuare 
+questi passi.
   </para>
 
   <note>
    <para>
-    When you <quote>move the old installation out of the way</quote>
-    it might no longer be perfectly usable. Some of the executable programs
-    contain absolute paths to various installed programs and data files.
-    This is usually not a big problem, but if you plan on using two
-    installations in parallel for a while you should assign them
-    different installation directories at build time.  (This problem
-    is rectified in <productname>PostgreSQL</productname> version 8.0 and later, so long
-    as you move all subdirectories containing installed files together;
-    for example if <filename>/usr/local/postgres/bin/</filename> goes to
-    <filename>/usr/local/postgres.old/bin/</filename>, then
-    <filename>/usr/local/postgres/share/</filename> must go to
-    <filename>/usr/local/postgres.old/share/</filename>.  In pre-8.0 releases
-    moving an installation like this will not work.)
+Quando si <quote>toglie di mezzo il vecchio database</quote>
+potrebbe non essere più perfettamente usabile. Alcuni dei programmi eseguibili 
+contengono percorsi assoluti a vari programmi e file di dati.
+Questo usualmente non è un grande problema, ma se si pianifica di usare due 
+installazioni in parallelo per un po' si dovrebbe assegnarle 
+differenti directory d'installazione al tempo della compilazione. (Questo problema
+viene rettificato in <productname>PostgreSQL</productname> versione 8.0 e successive, finchè
+si muovono tutte le sottodirectory contenenti file installati insieme;
+per esempio se  <filename>/usr/local/postgres/bin/</filename> va in 
+<filename>/usr/local/postgres.old/bin/</filename>, allora 
+<filename>/usr/local/postgres/share/</filename> deve andare in 
+<filename>/usr/local/postgres.old/share/</filename>. In versioni precedenti la 8.0
+muovere un'installazione in questo modo non funzionerà).
    </para>
   </note>
   </sect2>
 
   <sect2 id="migration-methods-other">
-   <title>Other data migration methods</title>
+   <title>Altri metodi per la migrazione di dati</title>
 
   <para>
-   The <filename>contrib</filename> program
-   <link linkend="pgupgrade"><application>pg_upgrade</application></link>
-   allows an installation to be migrated in-place from one major
-   <productname>PostgreSQL</productname> version to the next.  Keep in mind that this
-   method does not provide any scope for running old and new versions
-   concurrently.  Also, <application>pg_upgrade</application> is much less
-   battle-tested than <application>pg_dump</application>, so having an
-   up-to-date backup is strongly recommended in case something goes wrong.
+Il programma <filename>contrib</filename>
+<link linkend="pgupgrade"><application>pg_upgrade</application></link>
+permette che un'installazione sia migrata in loco da una versione principale di
+<productname>PostgreSQL</productname> alla prossima. Tenere a mente che questo
+metono non fornisce nessuna opportunità di eseguire vecchie e nuove versioni
+concorrentemente. Inoltre, <application>pg_upgrade</application> è molto meno 
+testato di <application>pg_dump</application>, così avere un backup aggiornato è fortemente
+raccomandato in caso che qualcosa vada storto.
   </para>
 
   <para>
-   It is also possible to use certain replication methods, such as
-   <productname>Slony</productname>, to create a standby server with the updated version of
-   <productname>PostgreSQL</productname>.  The standby can be on the same computer or
-   a different computer.  Once it has synced up with the master server
-   (running the older version of <productname>PostgreSQL</productname>), you can
-   switch masters and make the standby the master and shut down the older
-   database instance.  Such a switch-over results in only several seconds
-   of downtime for an upgrade.
+È possibile anche usare metodi di replicazione sicuri, tipo 
+<productname>Slony</productname>, per creare un server di standby con la versione aggiornata
+di <productname>PostgreSQL</productname>. Lo standby può essere sullo stesso computer o 
+su un computer differente. Una volta che è sincronizzato con il server master
+(che esegue la versione vecchia di <productname>PostgreSQL</productname>), è possibile
+cambiare il master e rendere lo standy il master e spengere l'istanza database più vecchia.
+Questo cambiamento provoca solo pochi secondi di arresto per un aggiornamento.
   </para>
 
   </sect2>

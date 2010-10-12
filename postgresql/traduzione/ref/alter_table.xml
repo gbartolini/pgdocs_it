@@ -79,7 +79,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
     <listitem>
      <para>
       This form adds a new column to the table, using the same syntax as
-      <xref linkend="SQL-CREATETABLE"/>.
+      <xref linkend="sql-createtable"/>.
      </para>
     </listitem>
    </varlistentry>
@@ -225,7 +225,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
     <listitem>
      <para>
       This form adds a new constraint to a table using the same syntax as
-      <xref linkend="SQL-CREATETABLE"/>.
+      <xref linkend="sql-createtable"/>.
      </para>
     </listitem>
    </varlistentry>
@@ -341,8 +341,8 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
     <listitem>
      <para>
       This form changes one or more storage parameters for the table.  See
-      <xref linkend="SQL-CREATETABLE-storage-parameters"
-      endterm="SQL-CREATETABLE-storage-parameters-title"/>
+      <xref linkend="sql-createtable-storage-parameters"
+      endterm="sql-createtable-storage-parameters-title"/>
       for details on the available parameters.  Note that the table contents
       will not be modified immediately by this command; depending on the
       parameter you might need to rewrite the table to get the desired effects.

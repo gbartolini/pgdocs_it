@@ -75,7 +75,7 @@ webhtml: $(src)
 		-stringparam chunk.quietly $(CHUNK_QUIET) \
 		-stringparam use.id.as.filename "yes" \
 		-stringparam base.dir $(BASEDIR)/$(WEB_OUTPUT)/ \
-		../stylesheets/pg-chunked-web.xsl postgres.xml
+		../stylesheets/pg-chunked-web.xsl postgres.xml 
 
 	[ -d $(BASEDIR)/$(WEB_OUTPUT)/stylesheets ] || mkdir $(BASEDIR)/$(WEB_OUTPUT)/stylesheets
 	cp ../stylesheets/*.css $(BASEDIR)/$(WEB_OUTPUT)/stylesheets

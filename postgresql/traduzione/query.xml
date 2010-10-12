@@ -94,7 +94,7 @@ in nessun modo un ordine per le righe all'interno di una tabella
    <para>
     <indexterm><primary>cluster database</primary></indexterm>
     <indexterm><primary>cluster</primary><secondary>di database</secondary>
-    <see>cluster database</see></indexterm>
+    <see>cluster di database</see></indexterm>
 
 Le tabelle sono raggruppate in database, e una raccolta di database
 gestiti da una singola istanza server di <productname>PostgreSQL</productname>

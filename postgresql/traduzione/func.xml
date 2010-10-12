@@ -7255,7 +7255,7 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
     I tipi geometrici <type>point</type>, <type>box</type>,
     <type>lseg</type>, <type>line</type>, <type>path</type>,
     <type>polygon</type> e <type>circle</type> hanno un notevole insieme di
-    funzioni e operatori nativi di supporto, mostrati nella <xref
+    funzioni e operatori nativi di supporto, mostrati nella tabella <xref
     linkend="functions-geometry-op-table" />, nella <xref
     linkend="functions-geometry-func-table" /> e nella <xref
     linkend="functions-geometry-conv-table" />.
@@ -8266,7 +8266,7 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
 
   <para>
    
-    Le funzioni nella
+    Le funzioni nella tabella 
    <xref linkend="textsearch-functions-debug-table" />
    sono elencate separatamente perchè non sono normalmente utilizzate nelle comuni
    operazioni di ricerca testo. Esse sono utili per lo sviluppo e la messa a punto di
@@ -9268,7 +9268,7 @@ table2-mapping
    sequenze) sono speciali tabelle a riga singola create con <xref
    linkend="sql-createsequence" endterm="sql-createsequence-title" />.
    Un oggetto di sequenza è normalmente usato per generare identificatori unique
-   per le righe di una tabella. Le funzioni di sequenza, elencate nella <xref
+   per le righe di una tabella. Le funzioni di sequenza, elencate nella tabella <xref
    linkend="functions-sequence-table" />, forniscono metodi semplici, sicuri e
    multiutente per ottenere successivi valori di sequenza dagli oggetti di
    sequenza.
@@ -10108,7 +10108,7 @@ SELECT NULLIF(value, '(none)') ...
    
     Le <firstterm>funzioni aggregate</firstterm> calcolano un singolo 
    risultato da un insieme di valori di input. Le funzioni aggregate incorporate
-   sono elencate nella
+   sono elencate nella tabella
    <xref linkend="functions-aggregate-table" /> e nella
    <xref linkend="functions-aggregate-statistics-table" />. 
    Speciali considerazioni sulla sintassi delle le funzioni
@@ -11119,7 +11119,7 @@ EXISTS (<replaceable>subquery</replaceable>)
 
   <para>
    La sottoquery può fare riferimento alle variabili della query circostante,
-   che fungeranno da costanti durante qualsiasi valutazione della subquery.
+   che fungeranno da costanti durante qualsiasi valutazione della sottoquery.
   </para>
 
   <para>
@@ -11190,7 +11190,7 @@ dei valori null.
   <para>
    La parte sinistra di questa forma di <token>IN</token> è un costruttore di riga,
    come descritto in <xref linkend="sql-syntax-row-constructors" />.
-   La parte destra è una subquery tra parentesi,
+   La parte destra è una sottoquery tra parentesi,
    che deve restituire esattamente tante colonne per quante ce ne sono
    nella riga contenuta nell'espressione della parte sinistra. L'espressione della parte sinistra viene
    valutata e confrontata con ogni riga risultante dalla sottoquery.
@@ -11222,9 +11222,9 @@ dei valori null.
    
     La parte destra è una sottoquery tra parentesi,
    che restituisce esattamente una colonna. L'espressione della parte sinistra
-   viene valutata e confrontata ad ogni riga del risultato della subquery.
+   viene valutata e confrontata ad ogni riga del risultato della sottoquery.
    Il risultato di <token>NOT IN</token> è <quote>true</quote> se solo righe non uguali
-   sono trovate nella subquery (compreso il caso speciale in cui la subquery non restituisce nessuna riga).
+   sono trovate nella sottoquery (compreso il caso speciale in cui la sottoquery non restituisce nessuna riga).
    Il risultato è <quote>false</quote> se viene trovata qualche riga uguale.
   </para>
 
@@ -11249,13 +11249,13 @@ dei valori null.
 
   <para>
     La parte sinistra di questa forma di <token>NOT IN</token> è un costruttore di riga,
-   come descritto dentro <xref linkend="sql-syntax-row-constructors" />.
+   come descritto in <xref linkend="sql-syntax-row-constructors" />.
    La parte destra è una sottoquery tra parenthesi
    che deve restituire esattamente tante colonne per quante ce ne sono
    nella riga contenuta nell'espressione della parte sinistra. L'espressione nella parte sinistra viene
-   valutata e confrontata row-wise con ogni riga risultante dalla subquery.
+   valutata e confrontata row-wise con ogni riga risultante dalla sottoquery.
    Il risultato di <token>NOT IN</token> è <quote>true</quote> se solo righe non uguali vengono trovate
-   nella subquery (compreso il caso speciale in cui la subquery non restituisce nessuna riga).
+   nella sottoquery (compreso il caso speciale in cui la sottoquery non restituisce nessuna riga).
    Il risultato è <quote>false</quote> se viene trovata qualche riga uguale.
   </para>
 
@@ -11288,7 +11288,7 @@ dei valori null.
    booleano.
    Il risultato di <token>ANY</token> è <quote>true</quote> se è ottenuto un risultato vero.
    Il risultato è <quote>false</quote> se non è stato trovato un risultato vero (compreso il
-   caso speciale in cui la subquery non restituisca nessuna riga).
+   caso speciale in cui la sottoquery non restituisca nessuna riga).
   </para>
 
   <para>
@@ -11317,7 +11317,7 @@ dei valori null.
   <para>
    
     La parte sinistra di questa forma di <token>ANY</token> è un costruttore di riga,
-   come descritto dentro <xref linkend="sql-syntax-row-constructors" />.
+   come descritto in <xref linkend="sql-syntax-row-constructors" />.
    La parte destra è una sottoquery tra parentesi
    che deve restituire esattamente tante colonne per quante ce ne sono
    nella riga contenuta nell'espressione della parte sinistra. 
@@ -11328,7 +11328,7 @@ dei valori null.
    restituisce true per qualsiasi riga della sottoquery.
    Il risultato è <quote>false</quote> se il confronto restituisce false per ogni
    riga della sottoquery 
-    (compreso il caso speciale in cui la subquery non restituisce nessuna
+    (compreso il caso speciale in cui la sottoquery non restituisce nessuna
    riga).
    IL risultato è NULL se il confronto non restituisce true per ogni riga,
    e restituisce NULL per almeno una riga.
@@ -11355,7 +11355,7 @@ dei valori null.
    l'<replaceable>operatore</replaceable> fornito, che dovrà rendere un risultato
    booleano.
    Il risultato di <token>ALL</token> è <quote>true</quote> se tutte le righe rendono true
-   (compreso il caso speciale in cui la subquery non restituisca nessuna riga).
+   (compreso il caso speciale in cui la sottoquery non restituisca nessuna riga).
    Il risultato è <quote>false</quote> se viene trovato qualche risultato false.
    Il risultato è NULL se il confronto non restituisce false per ogni riga,
    e restituisce NULL per almeno una riga.
@@ -11404,7 +11404,7 @@ dei valori null.
 
    <indexterm zone="functions-subquery">
     <primary>comparison</primary>
-    <secondary>subquery result row</secondary>
+    <secondary>sottoquery result row</secondary>
    </indexterm>
 
 <synopsis>
@@ -11475,7 +11475,7 @@ dei valori null.
     Questa sezione descrive diversi costrutti specializzati per fare
    confronti multipli tra gruppi di valori. Queste forme sono
    riferite sintatticamente alle forme di sottoquery della sezione precedente,
-   ma non coinvolgono le subquery.
+   ma non coinvolgono le sottoquery.
    Le forme che coinvolgono subespressioni array sono
    estensioni di <productname>PostgreSQL</productname>; le restanti sono
    conformi-<acronym>SQL</acronym>.

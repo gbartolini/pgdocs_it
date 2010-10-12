@@ -572,28 +572,27 @@ i valori vuoti (null) sono sostituiti per le colonne della tabella di destra.
    </para>
 
    <formalpara>
-    <title>Exercise:</title>
+    <title>Esercizio:</title>
 
     <para>
-     There are also right outer joins and full outer joins.  Try to
-     find out what those do.
+Ci sono anche right outer join  e full outer join. Provare a scoprire
+cosa fanno.
     </para>
    </formalpara>
 
    <para>
     <indexterm><primary>join</primary><secondary>self</secondary></indexterm>
-    <indexterm><primary>alias</primary><secondary>for table name in query</secondary></indexterm>
+    <indexterm><primary>alias</primary>
+    <secondary>per il nome della tabella nelle qyery</secondary></indexterm>
 
-    We can also join a table against itself.  This is called a
-    <firstterm>self join</firstterm>.  As an example, suppose we wish
-    to find all the weather records that are in the temperature range
-    of other weather records.  So we need to compare the
-    <structfield>temp_lo</structfield> and <structfield>temp_hi</structfield> columns of
-    each <structname>weather</structname> row to the
-    <structfield>temp_lo</structfield> and
-    <structfield>temp_hi</structfield> columns of all other
-    <structname>weather</structname> rows.  We can do this with the
-    following query:
+È possibile inoltre eseguire il join di una tabella con sè stessa. Questa viene chiamata 
+<firstterm>self join</firstterm>. Come esempio, supporre di voler
+trovare tutti i record di tempo metereologico nell'intervallo di temperatura
+di altri record di tempo metereologico. Si dovranno confrontare 
+le colonne <structfield>temp_lo</structfield> e <structfield>temp_hi</structfield> di
+ogni riga di  <structname>weather</structname> alle colonne 
+<structfield>temp_lo</structfield> e <structfield>temp_hi</structfield> di tutte le altre righe
+di <structname>weather</structname>. È possibile farlo con la seguente query:
 
 <programlisting>
 SELECT W1.city, W1.temp_lo AS low, W1.temp_hi AS high,
@@ -609,47 +608,47 @@ SELECT W1.city, W1.temp_lo AS low, W1.temp_hi AS high,
 (2 rows)
 </programlisting>
 
-    Here we have relabeled the weather table as <literal>W1</literal> and
-    <literal>W2</literal> to be able to distinguish the left and right side
-    of the join.  You can also use these kinds of aliases in other
-    queries to save some typing, e.g.:
+Qui abbiamo rinominato la tabella weather come in <literal>W1</literal> e
+<literal>W2</literal> per essere capaci di distinguere il lato sonistro e destro
+della join. È anche possibile usare questi tipi di alias in altre query per rispiarmiare
+qualche carattere, per es.:
 <programlisting>
 SELECT *
     FROM weather w, cities c
     WHERE w.city = c.name;
 </programlisting>
-    You will encounter this style of abbreviating quite frequently.
+Si incontrerà questo tipo di abbreviazione abbastanza frequentemente.
    </para>
   </sect1>
 
 
   <sect1 id="tutorial-agg">
-   <title>Aggregate Functions</title>
+   <title>Funzioni aggregate</title>
 
    <indexterm zone="tutorial-agg">
-    <primary>aggregate function</primary>
+    <primary>funzione aggregata</primary>
    </indexterm>
 
    <para>
-    <indexterm><primary>average</primary></indexterm>
-    <indexterm><primary>count</primary></indexterm>
-    <indexterm><primary>max</primary></indexterm>
-    <indexterm><primary>min</primary></indexterm>
-    <indexterm><primary>sum</primary></indexterm>
+    <indexterm><primary>media</primary></indexterm>
+    <indexterm><primary>conteggio</primary></indexterm>
+    <indexterm><primary>massimo</primary></indexterm>
+    <indexterm><primary>minimo</primary></indexterm>
+    <indexterm><primary>somma</primary></indexterm>
 
-    Like  most  other relational database products,
-    <productname>PostgreSQL</productname> supports
-    <firstterm>aggregate functions</firstterm>.
-    An aggregate function computes a single result from multiple input rows.
-    For example, there are aggregates to compute the
-    <function>count</function>, <function>sum</function>,
-    <function>avg</function> (average), <function>max</function> (maximum) and
-    <function>min</function> (minimum) over a set of rows.
+Come molti altri database relazionali,
+<productname>PostgreSQL</productname> supporta
+<firstterm>funzioni aggregate</firstterm>.
+Una funzione aggregata calcola un singolo risultato da molteplici righe di input.
+Per esempio, ci sono aggregate per calcolare il
+<function>count</function> (conteggio), <function>sum</function> (somma),
+<function>avg</function> (media), <function>max</function> (massimo) and
+<function>min</function> (minimo) di un insieme di righe.
    </para>
 
    <para>
-    As an example, we can find the highest low-temperature reading anywhere
-    with:
+Come esempio, è possibile trovare la temperatura-minima più alta letta ovunque
+con:
 
 <programlisting>
 SELECT max(temp_lo) FROM weather;
@@ -664,24 +663,23 @@ SELECT max(temp_lo) FROM weather;
    </para>
 
    <para>
-    <indexterm><primary>subquery</primary></indexterm>
+    <indexterm><primary>sottoquery</primary></indexterm>
 
-    If we wanted to know what city (or cities) that reading occurred in,
-    we might try:
+Se si volesse conoscere a quale città (o più città) appartiene l'occorrrenza trovata, 
+si potrebbe provare con:
 
 <programlisting>
 SELECT city FROM weather WHERE temp_lo = max(temp_lo);     <lineannotation>WRONG</lineannotation>
 </programlisting>
 
-    but this will not work since the aggregate
-    <function>max</function> cannot be used in the
-    <literal>WHERE</literal> clause.  (This restriction exists because
-    the <literal>WHERE</literal> clause determines which rows will be
-    included in the aggregate calculation; so obviously it has to be evaluated
-    before aggregate functions are computed.)
-    However, as is often the case
-    the query can be restated to accomplish the desired result, here
-    by using a <firstterm>subquery</firstterm>:
+ma questo non funzionerà dato che l'aggregata 
+<function>max</function> non può essere usata nella clausola <literal>WHERE</literal>.
+(Questa restrizione esiste dato che la clausola <literal>WHERE</literal> determina
+quali righe saranno incluse nel calcolo dell'aggregata; così, ovviamente, deve essere
+analizzata prima che la funzione aggregata sia calcolata).
+Comunque, dato che è frequente il caso in cui 
+la query è ripetuta per ottenere il risultato desiderato, si usa una 
+<firstterm>sottoquery</firstterm>:
 
 <programlisting>
 SELECT city FROM weather
@@ -695,18 +693,18 @@ SELECT city FROM weather
 (1 row)
 </screen>
 
-    This is OK because the subquery is an independent computation
-    that computes its own aggregate separately from what is happening
-    in the outer query.
+Questa funzionerà dato che la sottoquery è un calcolo indipendente 
+che esegue la propria funzione aggregata separatamente da quello che succede 
+nella query esterna.
    </para>
 
    <para>
     <indexterm><primary>GROUP BY</primary></indexterm>
     <indexterm><primary>HAVING</primary></indexterm>
 
-    Aggregates are also very useful in combination with <literal>GROUP
-    BY</literal> clauses.  For example, we can get the maximum low
-    temperature observed in each city with:
+Le aggregate sono anche utili in combinazione con le clausole <literal>GROUP
+BY</literal>. Per esempio, è possibile ottenere la temperatura-minima massima
+registrata in ogni città con:
 
 <programlisting>
 SELECT city, max(temp_lo)
@@ -722,10 +720,9 @@ SELECT city, max(temp_lo)
 (2 rows)
 </screen>
 
-    which gives us one output row per city.  Each aggregate result is
-    computed over the table rows matching that city.
-    We can filter these grouped
-    rows using <literal>HAVING</literal>:
+che restituisce una riga in output per città. Ogni risultato dell'aggregata è
+calcolato sulle righe della tabella che corrispondono a quella città.
+È possibile filtrare queste righe raggrupate usando <literal>HAVING</literal>:
 
 <programlisting>
 SELECT city, max(temp_lo)
@@ -741,10 +738,9 @@ SELECT city, max(temp_lo)
 (1 row)
 </screen>
 
-    which gives us the same results for only the cities that have all
-    <structfield>temp_lo</structfield> values below 40.  Finally, if we only care about
-    cities whose
-    names begin with <quote><literal>S</literal></quote>, we might do:
+che restituisce gli stessi risultati solamente per città che hanno tutti i valori di 
+<structfield>temp_lo</structfield> sotto 40. Infine, se ci interessano solo le città
+il cui nome comincia con <quote><literal>S</literal></quote>, potremmo fare:
 
 <programlisting>
 SELECT city, max(temp_lo)
@@ -756,55 +752,53 @@ SELECT city, max(temp_lo)
    <calloutlist>
     <callout arearefs="co.tutorial-agg-like">
      <para>
-      The <literal>LIKE</literal> operator does pattern matching and
-      is explained in <xref linkend="functions-matching"/>.
+L'operatore <literal>LIKE</literal> confronta secondo un modello ed 
+è spiegato in <xref linkend="functions-matching"/>.
      </para>
     </callout>
    </calloutlist>
    </para>
 
    <para>
-    It is important to understand the interaction between aggregates and
-    <acronym>SQL</acronym>'s <literal>WHERE</literal> and <literal>HAVING</literal> clauses.
-    The fundamental difference between <literal>WHERE</literal> and
-    <literal>HAVING</literal> is this: <literal>WHERE</literal> selects
-    input rows before groups and aggregates are computed (thus, it controls
-    which rows go into the aggregate computation), whereas
-    <literal>HAVING</literal> selects group rows after groups and
-    aggregates are computed.  Thus, the
-    <literal>WHERE</literal> clause must not contain aggregate functions;
-    it makes no sense to try to use an aggregate to determine which rows
-    will be inputs to the aggregates.  On the other hand, the
-    <literal>HAVING</literal> clause always contains aggregate functions.
-    (Strictly speaking, you are allowed to write a <literal>HAVING</literal>
-    clause that doesn't use aggregates, but it's seldom useful. The same
-    condition could be used more efficiently at the <literal>WHERE</literal>
-    stage.)
+È importante capire l'interazione tra le aggregate e le clausole di <acronym>SQL</acronym>
+<literal>WHERE</literal> e <literal>HAVING</literal>.
+La fifferenza fondamentale tra <literal>WHERE</literal>  e <literal>HAVING</literal>
+è questa: <literal>WHERE</literal> seleziona righe di input prima 
+che le aggregate e i raggrumenti vengano svolti (così, controlla quali righe 
+finiscono nel calcolo dell'aggregata), mentre 
+<literal>HAVING</literal> seleziona gruppi di righe dopo che i gruppi e le aggregate sono
+calcolate. Così, la clausola <literal>WHERE</literal> non deve contenere funzioni aggregate;
+non ha senso provare ad usare un'aggregata per determinare quali righe saranno input
+delle aggregate. D'altro canto, la clausola 
+<literal>HAVING</literal> contiene sempre funzioni aggregate.
+(In senso stretto, è permesso scrivere una clausola <literal>HAVING</literal>
+che non usa le aggregate, ma raramente è utile. La stessa condizione
+può essere usata più efficentemente nella <literal>WHERE</literal>).
    </para>
 
    <para>
-    In the previous example, we can apply the city name restriction in
-    <literal>WHERE</literal>, since it needs no aggregate.  This is
-    more efficient than adding the restriction to <literal>HAVING</literal>,
-    because we avoid doing the grouping and aggregate calculations
-    for all rows that fail the <literal>WHERE</literal> check.
+Nell'esempio precedente, è possibile applicare la restrizione del nome della città 
+nella <literal>WHERE</literal>, dato che non necessita di aggregate. Questo è più
+efficiente che aggiungere la restrizione alla <literal>HAVING</literal>,
+perchè si eviterà di fare il raggrupamento e i calcoli aggrgeati
+per tutte le righe che falliscono il controllo <literal>WHERE</literal>.
    </para>
   </sect1>
 
 
   <sect1 id="tutorial-update">
-   <title>Updates</title>
+   <title>Aggiornamenti</title>
 
    <indexterm zone="tutorial-update">
     <primary>UPDATE</primary>
    </indexterm>
 
    <para>
-    You can update existing rows using the
-    <command>UPDATE</command> command.
-    Suppose you discover the temperature readings are
-    all off by 2 degrees after November 28.  You can correct the
-    data as follows:
+È possibile aggiornare righe esistenti usando il comando
+<command>UPDATE</command>.
+Suppore di scoprire che le letture della temperatura siano 
+scese tutte di 2 gradi dopo il 28 Novembre. È possibile correggere i dati 
+nel modo seguente:
 
 <programlisting>
 UPDATE weather
@@ -814,7 +808,7 @@ UPDATE weather
    </para>
 
    <para>
-    Look at the new state of the data:
+Osservare il nuovo stato dei dati:
 <programlisting>
 SELECT * FROM weather;
 
@@ -829,22 +823,22 @@ SELECT * FROM weather;
   </sect1>
 
   <sect1 id="tutorial-delete">
-   <title>Deletions</title>
+   <title>Cancellazioni</title>
 
    <indexterm zone="tutorial-delete">
     <primary>DELETE</primary>
    </indexterm>
 
    <para>
-    Rows can be removed from a table using the <command>DELETE</command>
-    command.
-    Suppose you are no longer interested in the weather of Hayward.
-    Then you can do the following to delete those rows from the table:
+Le righe possono essere rimosse da una tabella usando il comando 
+<command>DELETE</command>.
+Supporre di non essere più interessati al tempo metereologico di Hayward.
+È possibile cancellare quelle righe dalla tabela con:
 <programlisting>
 DELETE FROM weather WHERE city = 'Hayward';
 </programlisting>
 
-    All weather records belonging to Hayward are removed.
+Tutti i record relativi a Hayward vengono rimossi.
 
 <programlisting>
 SELECT * FROM weather;
@@ -860,15 +854,14 @@ SELECT * FROM weather;
    </para>
 
    <para>
-    One should be wary of statements of the form
+Si dovrebbe essere cauri con istruzioni della forma
 <synopsis>
 DELETE FROM <replaceable>tablename</replaceable>;
 </synopsis>
 
-    Without a qualification, <command>DELETE</command> will
-    remove  <emphasis>all</emphasis>  rows from the given table, leaving it
-    empty.  The system will not request confirmation before
-    doing this!
+Senza qualificazione, <command>DELETE</command> rimuoverà 
+<emphasis>tutte</emphasis> le righe dalla tabella specificata, lasciandola vuota. 
+Il sistema non chiederà nessuna conferma prima di farlo!
    </para>
   </sect1>
 

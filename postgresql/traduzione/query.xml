@@ -445,12 +445,12 @@ di tutte le righe della tabella <structname>cities</structname>,
 e selezionare le coppie di righe in cui questi valori corrispondono.
     <note>
      <para>
-      This  is only a conceptual model.  The join is usually performed
-      in a more efficient manner than actually comparing each possible
-      pair of rows, but this is invisible to the user.
+Questo è solo un modello concettuale. La join viene di solito eseguita
+in maniera più efficiente che confrontando ogni possibile coppia di righe,
+ma questo è invisibile all'utente.
      </para>
     </note>
-    This would be accomplished by the following query:
+Questo sarebbe portato a termine con la query seguente:
 
 <programlisting>
 SELECT *
@@ -469,27 +469,24 @@ SELECT *
    </para>
 
    <para>
-    Observe two things about the result set:
+Osservare due cose riguardanti il risultato:
     <itemizedlist>
      <listitem>
       <para>
-       There is no result row for the city of Hayward.  This is
-       because there is no matching entry in the
-       <structname>cities</structname> table for Hayward, so the join
-       ignores the unmatched rows in the <structname>weather</structname> table.  We will see
-       shortly how this can be fixed.
+Non c'è nessuna riga risultante per la cittò di Hayward. Questo perchè
+non c'è una voce corrispondente nella tabella <structname>cities</structname>
+per Hayward, così la join ignora le righe non corrispondenti nella tabella 
+<structname>weather</structname>. A breve mostreremo come risolvere questo.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       There are two columns containing the city name.  This is
-       correct because the lists of columns from the
-       <structname>weather</structname> and
-       <structname>cities</structname> tables are concatenated.  In
-       practice this is undesirable, though, so you will probably want
-       to list the output columns explicitly rather than using
-       <literal>*</literal>:
+Ci sono due colonne contenenti il nome della città. Questo è giusto 
+dato che gli elenchi delle colonne delle tabelle <structname>weather</structname>
+e <structname>cities</structname> sono concatenati. In pratica
+questo è indesiderabile, così probabilmente si vorranno elencare 
+esplicitamente le colonne di output piuttosto che usare <literal>*</literal>:
 <programlisting>
 SELECT city, temp_lo, temp_hi, prcp, date, location
     FROM weather, cities
@@ -501,20 +498,20 @@ SELECT city, temp_lo, temp_hi, prcp, date, location
    </para>
 
    <formalpara>
-    <title>Exercise:</title>
+    <title>Esercizio:</title>
 
     <para>
-     Attempt to determine the semantics of this query when the
-     <literal>WHERE</literal> clause is omitted.
+Tentare di determinare la semantica di questa query quando la clausola 
+<literal>WHERE</literal> è omessa.
     </para>
    </formalpara>
 
    <para>
-    Since the columns all had different names, the parser
-    automatically found which table they belong to.  If there
-    were duplicate column names in the two tables you'd need to
-    <firstterm>qualify</firstterm> the column names to show which one you
-    meant, as in:
+Dato che le colonne hanno tutte nomi diversi, il parser 
+trova automaticamente la tabella a cui si riferiscono. Se ci fossero stati
+nomi di colonna duplicati nelle due tabelle di sarebbero dovuti
+<firstterm>qualificare</firstterm> i nomi di colonna per mostrare quale si intendeva,
+quindi:
 
 <programlisting>
 SELECT weather.city, weather.temp_lo, weather.temp_hi,
@@ -523,36 +520,35 @@ SELECT weather.city, weather.temp_lo, weather.temp_hi,
     WHERE cities.name = weather.city;
 </programlisting>
 
-    It is widely considered good style to qualify all column names
-    in a join query, so that the query won't fail if a duplicate
-    column name is later added to one of the tables.
+È considerato buona pratica qualificare tutti i nomi di colonna 
+in una qyery join, così la query non fallirà se successivamente saranno aggiunti
+a una tabella nomi di colonna duplicati. 
    </para>
 
    <para>
-    Join queries of the kind seen thus far can also be written in this
-    alternative form:
+Le query join del tipo viste fino ad ora possono essere scritte anche 
+nella forma alternativa:
 
 <programlisting>
 SELECT *
     FROM weather INNER JOIN cities ON (weather.city = cities.name);
 </programlisting>
 
-    This syntax is not as commonly used as the one above, but we show
-    it here to help you understand the following topics.
+Questa sintassi non è usati così frequentemente come quella sopra, ma viene presentata qui
+per aiutare a capire i concetti seguenti.
    </para>
 
    <para>
     <indexterm><primary>join</primary><secondary>outer</secondary></indexterm>
 
-    Now we will figure out how we can get the Hayward records back in.
-    What we want the query to do is to scan the
-    <structname>weather</structname> table and for each row to find the
-    matching <structname>cities</structname> row(s).  If no matching row is
-    found we want some <quote>empty values</quote> to be substituted
-    for the <structname>cities</structname> table's columns.  This kind
-    of query is called an <firstterm>outer join</firstterm>.  (The
-    joins we have seen so far are inner joins.)  The command looks
-    like this:
+Now we will figure out how we can get the Hayward records back in. 
+Quello che vogliamo far fare alla query è di scanzionare la tabella 
+<structname>weather</structname> e trovare per ogni riga la corrispondente 
+riga/e della tabella <structname>cities</structname>. Se nessuna riga corrispondente 
+viene trovata, si vuole che qualche tipo di <quote>valore vuoto</quote> venga sostituito
+per la colonna della tabella <structname>cities</structname>. Questo tipo
+di query viene chiamato <firstterm>outer join</firstterm>. (Le join che abbiamo considerato
+fino ad ora sono inner join). Il comando sarà:
 
 <programlisting>
 SELECT *
@@ -566,13 +562,13 @@ SELECT *
 (3 rows)
 </programlisting>
 
-    This query is called a <firstterm>left outer
-    join</firstterm> because the table mentioned on the left of the
-    join operator will have each of its rows in the output at least
-    once, whereas the table on the right will only have those rows
-    output that match some row of the left table.  When outputting a
-    left-table row for which there is no right-table match, empty (null)
-    values are substituted for the right-table columns.
+Questa query è chiamata <firstterm>left outer join</firstterm>
+dato che la tabella indicata sulla sinistra dell'operatore join
+avrà  ognuna delle sue righe in output almeno una volta,
+mentre la tabella sulla destra avrà solo quelle righe
+di output che corrispondono alla tabella di sinistra. Quando si manda in output 
+la riga di una tabella a sinistra per la quale non c'è una corrispondenza nella tabella a destra,
+i valori vuoti (null) sono sostituiti per le colonne della tabella di destra.
    </para>
 
    <formalpara>

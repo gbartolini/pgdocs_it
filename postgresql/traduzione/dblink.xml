@@ -14,7 +14,7 @@
   session.
  </para>
 
- <refentry id="CONTRIB-DBLINK-CONNECT">
+ <refentry id="contrib-dblink-connect">
   <refmeta>
    <refentrytitle>dblink_connect</refentrytitle>
    <manvolnum>3</manvolnum>
@@ -180,7 +180,7 @@ DROP FOREIGN DATA WRAPPER postgresql;
   </refsect1>
  </refentry>
 
- <refentry id="CONTRIB-DBLINK-CONNECT-U">
+ <refentry id="contrib-dblink-connect-U">
   <refmeta>
    <refentrytitle>dblink_connect_u</refentrytitle>
    <manvolnum>3</manvolnum>

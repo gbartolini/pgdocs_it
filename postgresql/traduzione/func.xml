@@ -4789,10 +4789,10 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
 
    <para>
 Se viene specificato un confronto inverso parzialmente sensibile al newline,
-    questo influenza <literal>^</literal> e <literal>$</literal>
-    come con il confronto sensibile al newline, ma non il <literal>.</literal>
-    e le espressioni tra parentesi quadre.
-    Questo non è molto utile, ma è fornito per simmetria..
+questo influenza <literal>^</literal> e <literal>$</literal>
+come con il confronto sensibile al newline, ma non il <literal>.</literal>
+e le espressioni tra parentesi quadre.
+Questo non è molto utile, ma è fornito per simmetria.
    </para>
    </sect3>
 
@@ -5004,18 +5004,17 @@ Se viene specificato un confronto inverso parzialmente sensibile al newline,
     </table>
 
    <para>
-        In una stringa di modello di output per la funzione <function>to_char</function>, ci sono certi
-        schemi che sono riconosciuti e sostituiti con dati appropriatamente formattati
-        in base al valore fornito. Ogni testo che non è un modello viene
-        semplicemente copiato letteralmente. Similmente, in una stringa di modello di input (per le
-        altre funzioni), gli schemi di modelli identificano i valori da essere forniti
-        dalla stringa di input dei dati.
-    
+In una stringa di modello di output per la funzione <function>to_char</function>, 
+ci sono certi schemi che sono riconosciuti e sostituiti con dati appropriatamente formattati
+in base al valore fornito. Ogni testo che non è un modello viene
+semplicemente copiato letteralmente. Similmente, in una stringa di modello di input (per le
+altre funzioni), gli schemi di modelli identificano i valori da essere forniti
+dalla stringa di input dei dati.    
    </para>
 
   <para>
-   La <xref linkend="functions-formatting-datetime-table" /> mostra i
-   modelli di maschere disponibili per formattare valori di data e orario.
+La <xref linkend="functions-formatting-datetime-table" /> mostra i
+modelli di maschere disponibili per formattare valori di data e orario.
   </para>
 
 
@@ -5465,7 +5464,7 @@ Se viene specificato un confronto inverso parzialmente sensibile al newline,
    </para>
 
   <para>
-    La <xref linkend="functions-formatting-numeric-table"/> mostra i
+    La tabella <xref linkend="functions-formatting-numeric-table"/> mostra i
     modelli della maschere disponibili per formattare valori numerici.
   </para>
 

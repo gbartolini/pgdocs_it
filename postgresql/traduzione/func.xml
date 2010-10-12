@@ -3056,16 +3056,16 @@ cast(-44 as bit(12))           <lineannotation>111111010100</lineannotation>
      previsto, l'espressione <function>NOT LIKE</function> restituisce
      false se <function>LIKE</function> restituisce true, e viceversa.
      Una espressione equivalente è
-     <literal>NOT (<replaceable>stringa</replaceable> LIKE
-      <replaceable>modello</replaceable>)</literal>).
+     <literal>NOT (<replaceable>string</replaceable> LIKE
+      <replaceable>pattern</replaceable>)</literal>).
     </para>
 
     <para>
-     Se il <replaceable>modello</replaceable> non contiene simboli di
+     Se il <replaceable>pattern</replaceable> non contiene simboli di
      percentuale o underscore, allora il modello rappresenta solo la stringa
      stessa; in questo caso <function>LIKE</function> si comporta in modo simile
      all'operatore uguale. Un sottolineato (<literal>_</literal>) in un
-     <replaceable>modello</replaceable> sta per (corrisponde a) ogni singolo
+     <replaceable>pattern</replaceable> sta per (corrisponde a) ogni singolo
      carattere; un simbolo di precentuale (<literal>%</literal>) corrosponde ad ogni sequenza
      di zero o più caratteri.
     </para>
@@ -3089,7 +3089,7 @@ cast(-44 as bit(12))           <lineannotation>111111010100</lineannotation>
    <para>
     Per confrontare un simbolo letterale underscore o di percentuale
     senza confrontare altri caratteri, il rispettivo carattere nel
-    <replaceable>modello</replaceable> deve essere
+    <replaceable>pattern</replaceable> deve essere
     preceduto dal carattere di escape. Il carattere di escape predefinito
     è la barra inversa ma se ne può selezionare un altro
     utilizzando la clausula <literal>ESCAPE</literal>. Per confrontare lo
@@ -3266,9 +3266,9 @@ cast(-44 as bit(12))           <lineannotation>111111010100</lineannotation>
 
    <para>
     La funzione <function>substring</function> con tre parametri,
-    <function>substring(<replaceable>stringa</replaceable> from
-    <replaceable>modello</replaceable> for
-    <replaceable>carattere-escape</replaceable>)</function>, fornisce
+    <function>substring(<replaceable>string</replaceable> from
+    <replaceable>pattern</replaceable> for
+    <replaceable>escape-character</replaceable>)</function>, fornisce
     l'estrazione di una sottostringa che confronta un modello di espressione
     regolare SQL. Come con <literal>SIMILAR TO</literal>, il modello
     specificato dovrà confrontare la stringa dati intera, altrimenti la
@@ -3408,8 +3408,8 @@ substring('foobar' from '#"o_b#"%' for '#')    <lineannotation>NULL</lineannotat
     <para>
      
     La funzione <function>substring</function> con due parametri,
-     <function>substring(<replaceable>stringa</replaceable> from
-     <replaceable>modello</replaceable>)</function>, fornisce l'estrazione di una
+     <function>substring(<replaceable>string</replaceable> from
+     <replaceable>pattern</replaceable>)</function>, fornisce l'estrazione di una
      sottostringa
      che corrisponde ad un modello di espressione regolare POSIX. Essa restituisce null se
      non c'è abbinamento, altrimenti restituisce la porzione del testo che corrisponde al
@@ -3434,14 +3434,14 @@ substring('foobar' from 'o(.)b')   <lineannotation>o</lineannotation>
     La funzione <function>regexp_replace</function> fornisce sostituzioni di nuovo
      testo per sottostringhe che combaciano con modelli di espressioni regolari POSIX.
      Essa ha la sintassi
-     <function>regexp_replace</function>(<replaceable>sorgente</replaceable>,
-     <replaceable>modello</replaceable>, <replaceable>sostituzione</replaceable>
+     <function>regexp_replace</function>(<replaceable>source</replaceable>,
+     <replaceable>pattern</replaceable>, <replaceable>substitution</replaceable>
      <optional>, <replaceable>flags</replaceable> </optional>).
-     La stringa <replaceable>sorgente</replaceable> viene restituita non modificata se
-     non c'è abbinamento con il <replaceable>modello</replaceable>. Se c'è una
-     corrispondenza, la stringa <replaceable>sorgente</replaceable> viene restituita con la
-     stringa <replaceable>sostituzione</replaceable> che rimpiazza la sottostringa
-     corrispondente. La stringa <replaceable>sostituzione</replaceable> può contenere
+     La stringa <replaceable>source</replaceable> viene restituita non modificata se
+     non c'è abbinamento con il <replaceable>pattern</replaceable>. Se c'è una
+     corrispondenza, la stringa <replaceable>source</replaceable> viene restituita con la
+     stringa <replaceable>substitution</replaceable> che rimpiazza la sottostringa
+     corrispondente. La stringa <replaceable>substitution</replaceable> può contenere
      <literal>\</literal><replaceable>n</replaceable>, dove <replaceable>n</replaceable> è un valore da
      <literal>1</literal> a <literal>9</literal>, per indicare che la sottostringa sorgente che
      corrisponde alla <replaceable>n</replaceable>-esima sottoespressione parentesizzata deve essere
@@ -3533,10 +3533,10 @@ SELECT col1, (SELECT regexp_matches(col2, '(bar)(beque)')) FROM tab;
     <para>
      La funzione <function>regexp_split_to_table</function> divide una stringa utilizzando un
      modello di espressione regolare POSIX come delimitatore. Essa ha la sintassi
-     <function>regexp_split_to_table</function>(<replaceable>stringa</replaceable>, <replaceable>modello</replaceable>
+     <function>regexp_split_to_table</function>(<replaceable>string</replaceable>, <replaceable>pattern</replaceable>
      <optional>, <replaceable>flag</replaceable> </optional>).
-     Se non c'è abbinamento con il <replaceable>modello</replaceable>, la funzione restituisce la
-     <replaceable>stringa</replaceable>. Se c'è almeno un abbinamento, per ogni abbinamento essa
+     Se non c'è abbinamento con il <replaceable>pattern</replaceable>, la funzione restituisce la
+     <replaceable>string</replaceable>. Se c'è almeno un abbinamento, per ogni abbinamento essa
      restituisce il testo dalla fine del precedente abbinamento (o dall'inizio della stringa)
      all'inizio dell'attuale abbinamento. Quando non ci sono più corrispondenze, essa
      restituisce il testo dalla fine dell'ultimo abbinamento alla fine della stringa.
@@ -3551,7 +3551,7 @@ SELECT col1, (SELECT regexp_matches(col2, '(bar)(beque)')) FROM tab;
     La funzione <function>regexp_split_to_array</function> si comporta come
      <function>regexp_split_to_table</function>, eccetto che <function>regexp_split_to_array</function>
      restituisce i suoi risultati come un'array di <type>testo</type>. Essa usa la sintassi
-     <function>regexp_split_to_array</function>(<replaceable>stringa</replaceable>, <replaceable>modello</replaceable>
+     <function>regexp_split_to_array</function>(<replaceable>string</replaceable>, <replaceable>pattern</replaceable>
      <optional>, <replaceable>flag</replaceable> </optional>).
      I parametri sono gli stessi di <function>regexp_split_to_table</function>.
     </para>
@@ -6772,7 +6772,7 @@ SELECT EXTRACT(YEAR FROM TIMESTAMP '2001-02-16 20:38:40');
 date_part('<replaceable>field</replaceable>', <replaceable>source</replaceable>)
 </synopsis>
     
-    Notare che qui il parametro <replaceable>campo</replaceable> dovrà
+    Notare che qui il parametro <replaceable>field</replaceable> dovrà
     necessariamente essere un valore stringa, non un nome. I nomi di campo
     validi per <function>date_part</function> sono gli stessi utilizzati per
     <function>extract</function>.

@@ -14,7 +14,7 @@
     <para>
 <productname>PostgreSQL</productname> fornisce un gran numero di
 funzioni e operatori per i tipi dati incorporati. Gli utenti possono anche
-definire le proprie funzioni e operatori, come descritto nella
+definire le proprie funzioni e operatori, come descritto in
 <xref linkend="server-programming" />. I comandi <application>psql</application>
 <command>\df</command> e <command>\do</command> possono essere usati per
 visualizzare, rispettivamente, l'elenco di tutte le funzioni e di tutti gli
@@ -175,7 +175,7 @@ Sono disponibili gli usuali operatori logici:
     </indexterm>
 
     <para>
-        Sono disponibili gli usuali operatori di confronto, visualizzati nella <xref
+        Sono disponibili gli usuali operatori di confronto, visualizzati nella tabella <xref
         linkend="functions-comparison-table" />.
     </para>
 
@@ -598,7 +598,7 @@ speciale <token>BETWEEN</token>:
     gli altri sono utilizzabili per tutti i tipi dati numerici. Gli operatori per
     singoli bit sono anche utilizzabili per i tipi stringa di <type>bit</type>
     e <type>bit varying</type>, come
-    mostrato nella <xref linkend="functions-bit-string-op-table" />.
+    mostrato nella tabella <xref linkend="functions-bit-string-op-table" />.
    </para>
 
   <para>
@@ -1037,7 +1037,7 @@ speciale <token>BETWEEN</token>:
      <type>text</type>. Quelle coercizioni sono state rimosse perchè hanno causato
      frequentemente comportamenti inaspettati. Tuttavia, l'operatore di concatenamento
      della stringa (<literal>||</literal>) accetta ancora input non-stringa, a condizione che
-     almeno un input sia di tipo stringa, come mostrato nella <xref
+     almeno un input sia di tipo stringa, come mostrato nella tabella <xref
      linkend="functions-string-sql" />. Per altri casi, inserire una esplicita
      coercizione a testo se si necessita duplicare il comportamento precedente.
     </para>
@@ -1246,9 +1246,9 @@ speciale <token>BETWEEN</token>:
 
 
    <para>
-    Ulteriori funzioni di manipolazione stringhe sono disponibili ed elencate nella
+    Ulteriori funzioni di manipolazione stringhe sono disponibili ed elencate nella tabella
     <xref linkend="functions-string-other" />. Alcune di esse sono usate internamente per implementare
-    le funzioni stringa standard-<acronym>SQL</acronym> elencate nella <xref linkend="functions-string-sql" />.
+    le funzioni stringa standard-<acronym>SQL</acronym> elencate nella tabella <xref linkend="functions-string-sql" />.
    </para>
 
 
@@ -2886,7 +2886,7 @@ speciale <token>BETWEEN</token>:
     manipolare stringhe di bit, che sono valori di tipo
     <type>bit</type> e <type>bit varying</type>. Oltre ai normali
     operatori di confronto, si possono usare gli operatori
-    mostrati nella <xref linkend="functions-bit-string-op-table" />.
+    mostrati nella tabella <xref linkend="functions-bit-string-op-table" />.
     Gli operandi stringhe di bit di <literal>&amp;</literal>, <literal>|</literal>,
     e <literal>#</literal> devono avere lunghezza uguale. Quando vengono spostati
     bit, la lunghezza originale della stringa viene salvaguardata, come mostrato
@@ -3049,23 +3049,23 @@ cast(-44 as bit(12))           <lineannotation>111111010100</lineannotation>
     
 
     <para>
-     Ogni <replaceable>modello</replaceable> definisce un insieme di stringhe.
+     Ogni <replaceable>pattern</replaceable> definisce un insieme di stringhe.
      L'espressione <function>LIKE</function> restituisce true se
      <replaceable>string</replaceable> è contenuta nell'insieme di
-     stringhe rappresentate dal <replaceable>modello</replaceable>. (Come
+     stringhe rappresentate dal <replaceable>pattern</replaceable>. (Come
      previsto, l'espressione <function>NOT LIKE</function> restituisce
      false se <function>LIKE</function> restituisce true, e viceversa.
      Una espressione equivalente è
-     <literal>NOT (<replaceable>stringa</replaceable> LIKE
-      <replaceable>modello</replaceable>)</literal>).
+     <literal>NOT (<replaceable>string</replaceable> LIKE
+      <replaceable>pattern</replaceable>)</literal>).
     </para>
 
     <para>
-     Se il <replaceable>modello</replaceable> non contiene simboli di
+     Se il <replaceable>pattern</replaceable> non contiene simboli di
      percentuale o underscore, allora il modello rappresenta solo la stringa
      stessa; in questo caso <function>LIKE</function> si comporta in modo simile
      all'operatore uguale. Un sottolineato (<literal>_</literal>) in un
-     <replaceable>modello</replaceable> sta per (corrisponde a) ogni singolo
+     <replaceable>pattern</replaceable> sta per (corrisponde a) ogni singolo
      carattere; un simbolo di precentuale (<literal>%</literal>) corrosponde ad ogni sequenza
      di zero o più caratteri.
     </para>
@@ -3089,7 +3089,7 @@ cast(-44 as bit(12))           <lineannotation>111111010100</lineannotation>
    <para>
     Per confrontare un simbolo letterale underscore o di percentuale
     senza confrontare altri caratteri, il rispettivo carattere nel
-    <replaceable>modello</replaceable> deve essere
+    <replaceable>pattern</replaceable> deve essere
     preceduto dal carattere di escape. Il carattere di escape predefinito
     è la barra inversa ma se ne può selezionare un altro
     utilizzando la clausula <literal>ESCAPE</literal>. Per confrontare lo
@@ -3266,9 +3266,9 @@ cast(-44 as bit(12))           <lineannotation>111111010100</lineannotation>
 
    <para>
     La funzione <function>substring</function> con tre parametri,
-    <function>substring(<replaceable>stringa</replaceable> from
-    <replaceable>modello</replaceable> for
-    <replaceable>carattere-escape</replaceable>)</function>, fornisce
+    <function>substring(<replaceable>string</replaceable> from
+    <replaceable>pattern</replaceable> for
+    <replaceable>escape-character</replaceable>)</function>, fornisce
     l'estrazione di una sottostringa che confronta un modello di espressione
     regolare SQL. Come con <literal>SIMILAR TO</literal>, il modello
     specificato dovrà confrontare la stringa dati intera, altrimenti la
@@ -3408,8 +3408,8 @@ substring('foobar' from '#"o_b#"%' for '#')    <lineannotation>NULL</lineannotat
     <para>
      
     La funzione <function>substring</function> con due parametri,
-     <function>substring(<replaceable>stringa</replaceable> from
-     <replaceable>modello</replaceable>)</function>, fornisce l'estrazione di una
+     <function>substring(<replaceable>string</replaceable> from
+     <replaceable>pattern</replaceable>)</function>, fornisce l'estrazione di una
      sottostringa
      che corrisponde ad un modello di espressione regolare POSIX. Essa restituisce null se
      non c'è abbinamento, altrimenti restituisce la porzione del testo che corrisponde al
@@ -3434,14 +3434,14 @@ substring('foobar' from 'o(.)b')   <lineannotation>o</lineannotation>
     La funzione <function>regexp_replace</function> fornisce sostituzioni di nuovo
      testo per sottostringhe che combaciano con modelli di espressioni regolari POSIX.
      Essa ha la sintassi
-     <function>regexp_replace</function>(<replaceable>sorgente</replaceable>,
-     <replaceable>modello</replaceable>, <replaceable>sostituzione</replaceable>
+     <function>regexp_replace</function>(<replaceable>source</replaceable>,
+     <replaceable>pattern</replaceable>, <replaceable>substitution</replaceable>
      <optional>, <replaceable>flags</replaceable> </optional>).
-     La stringa <replaceable>sorgente</replaceable> viene restituita non modificata se
-     non c'è abbinamento con il <replaceable>modello</replaceable>. Se c'è una
-     corrispondenza, la stringa <replaceable>sorgente</replaceable> viene restituita con la
-     stringa <replaceable>sostituzione</replaceable> che rimpiazza la sottostringa
-     corrispondente. La stringa <replaceable>sostituzione</replaceable> può contenere
+     La stringa <replaceable>source</replaceable> viene restituita non modificata se
+     non c'è abbinamento con il <replaceable>pattern</replaceable>. Se c'è una
+     corrispondenza, la stringa <replaceable>source</replaceable> viene restituita con la
+     stringa <replaceable>substitution</replaceable> che rimpiazza la sottostringa
+     corrispondente. La stringa <replaceable>substitution</replaceable> può contenere
      <literal>\</literal><replaceable>n</replaceable>, dove <replaceable>n</replaceable> è un valore da
      <literal>1</literal> a <literal>9</literal>, per indicare che la sottostringa sorgente che
      corrisponde alla <replaceable>n</replaceable>-esima sottoespressione parentesizzata deve essere
@@ -3456,7 +3456,7 @@ substring('foobar' from 'o(.)b')   <lineannotation>o</lineannotation>
      della funzione. Il flag <literal>i</literal> specifica un confronto non sensibile alle
      maiuscole, mentre il flag <literal>g</literal> specifica la sostituzione di ogni sottostringa
      abbinata e non solo della prima. Altri flag supportati sono
-     descritti nella <xref linkend="posix-embedded-options-table" />.
+     descritti nella tabella <xref linkend="posix-embedded-options-table" />.
     </para>
 
    <para>
@@ -3475,10 +3475,10 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
         La funzione <function>regexp_matches</function> ritorna un array di testo di
         tutte le sottostringhe catturate che risultano corrispondere a un modello
         di espressione regolare POSIX. Essa ha la sintassi
-        <function>regexp_matches</function>(<replaceable>stringa</replaceable>, <replaceable>modello</replaceable>
+        <function>regexp_matches</function>(<replaceable>string</replaceable>, <replaceable>pattern</replaceable>
         <optional>, <replaceable>flag</replaceable> </optional>).
         La funzione può restituire nessuna riga, una riga, o molte righe (vedere
-        la flag <literal>g</literal> sotto). Se il <replaceable>modello</replaceable>
+        la flag <literal>g</literal> sotto). Se il <replaceable>pattern</replaceable>
         non corrisponde, la funzione non restituisce nessuna riga. Se il modello
         contiene sottoespressioni non parentesizzate, allora ogni riga
         ritornata è un array di testo di un solo elemento contenente la sottostringa
@@ -3533,16 +3533,16 @@ SELECT col1, (SELECT regexp_matches(col2, '(bar)(beque)')) FROM tab;
     <para>
      La funzione <function>regexp_split_to_table</function> divide una stringa utilizzando un
      modello di espressione regolare POSIX come delimitatore. Essa ha la sintassi
-     <function>regexp_split_to_table</function>(<replaceable>stringa</replaceable>, <replaceable>modello</replaceable>
+     <function>regexp_split_to_table</function>(<replaceable>string</replaceable>, <replaceable>pattern</replaceable>
      <optional>, <replaceable>flag</replaceable> </optional>).
-     Se non c'è abbinamento con il <replaceable>modello</replaceable>, la funzione restituisce la
-     <replaceable>stringa</replaceable>. Se c'è almeno un abbinamento, per ogni abbinamento essa
+     Se non c'è abbinamento con il <replaceable>pattern</replaceable>, la funzione restituisce la
+     <replaceable>string</replaceable>. Se c'è almeno un abbinamento, per ogni abbinamento essa
      restituisce il testo dalla fine del precedente abbinamento (o dall'inizio della stringa)
      all'inizio dell'attuale abbinamento. Quando non ci sono più corrispondenze, essa
      restituisce il testo dalla fine dell'ultimo abbinamento alla fine della stringa.
      Il parametro <replaceable>flag</replaceable> è un opzionale stringa di testo contenente
      zero o più flag a singola-lettera che modifica il comportamento della funzione.
-     <function>regexp_split_to_table</function> supporta i flag descritti nella
+     <function>regexp_split_to_table</function> supporta i flag descritti nella tabella
      <xref linkend="posix-embedded-options-table" />.
     </para>
 
@@ -3551,7 +3551,7 @@ SELECT col1, (SELECT regexp_matches(col2, '(bar)(beque)')) FROM tab;
     La funzione <function>regexp_split_to_array</function> si comporta come
      <function>regexp_split_to_table</function>, eccetto che <function>regexp_split_to_array</function>
      restituisce i suoi risultati come un'array di <type>testo</type>. Essa usa la sintassi
-     <function>regexp_split_to_array</function>(<replaceable>stringa</replaceable>, <replaceable>modello</replaceable>
+     <function>regexp_split_to_array</function>(<replaceable>string</replaceable>, <replaceable>pattern</replaceable>
      <optional>, <replaceable>flag</replaceable> </optional>).
      I parametri sono gli stessi di <function>regexp_split_to_table</function>.
     </para>
@@ -3678,8 +3678,8 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
     Senza un quantificatore, esso corrisponde ad un occorrenza dell'atomo.
     Con un quantificatore, esso può corrispondere ad un certo numero
     di occorrenze dell'atomo. Un <firstterm>atomo</firstterm> può
-    essere una delle possibilità mostrate nella <xref linkend="posix-atoms-table" />.
-    I possibili quantificatori ed il loro significato sono mostrati nella
+    essere una delle possibilità mostrate nella tabella <xref linkend="posix-atoms-table" />.
+    I possibili quantificatori ed il loro significato sono mostrati nella tabella
     <xref linkend="posix-quantifiers-table" />.
    </para>
 
@@ -3689,7 +3689,7 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
     ma combacia solo quando
     vengono incontrate specifiche condizioni. Un vincolo può essere usato quando può
     essere usato un atomo, ad eccezione che esso non sia seguito da un quantificatore.
-    Un semplice vincolo è mostrato nella
+    Un semplice vincolo è mostrato nella tabella
     <xref linkend="posix-constraints-table" />;
     Alcuni altri vincoli sono descritti in seguito.
    </para>
@@ -3728,7 +3728,8 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
        </row>
 
        <row>
-       <entry> <literal>[</literal><replaceable>carat</replaceable><literal>]</literal> </entry>
+       <entry> <literal>[</literal><replaceable>carat</replaceable><literal>]</literal> 
+       </entry>
        <entry> una <firstterm>espressione tra parentesi quadre</firstterm>,
        confronta ognuno dei <replaceable>carat</replaceable> (consultare
        <xref linkend="posix-bracket-expressions" /> per ulteriori dettagli) </entry>
@@ -3756,7 +3757,7 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
        <entry> quando seguita da un carattere che non sia una cifra,
        confronta il carattere a sinistra della parentesi <literal>{</literal>;
        quando seguita da una cifra, essa è l'inizio di un 
-       <replaceable>limite</replaceable> (vedere sotto) </entry>
+       <replaceable>limit</replaceable> (vedere sotto) </entry>
        </row>
 
        <row>
@@ -4091,28 +4092,28 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
    <para>
     Gli <firstterm>escape per immissione caratteri</firstterm> esistono per rendere più facile specificare
     caratteri non-stampabili ed altri fastidiosi caratteri nelle RE. Essi sono mostrati
-    nella <xref linkend="posix-character-entry-escapes-table" />.
+    nella tabella <xref linkend="posix-character-entry-escapes-table" />.
     
    </para>
 
    <para>
     Gli <firstterm>escape per scorciatoie di classe</firstterm> forniscono scorciatoie per certi
     classi di caratteri normalmente utilizzate. Esse sono
-    mostrate nella <xref linkend="posix-class-shorthand-escapes-table" />.
+    mostrate nella tabella <xref linkend="posix-class-shorthand-escapes-table" />.
    </para>
 
    <para>
     Un <firstterm>escape di vincolo</firstterm> è un vincolo,
     abbinante una stringa vuota se le specifiche condizioni sono soddisfatte,
     scritto come un escape. Essi sono
-    mostrati nella <xref linkend="posix-constraint-escapes-table" />.
+    mostrati nella tabella <xref linkend="posix-constraint-escapes-table" />.
    </para>
 
    <para>
     Un <firstterm>riferimento all'indietro</firstterm> (<literal>\</literal><replaceable>n</replaceable>) abbina la
     stessa stringa abbinata dalla precedente sottoespressione specificata
     dal numero <replaceable>n</replaceable>
-    (consultare la <xref linkend="posix-constraint-backref-table" />). Per esempio,
+    (consultare la tabella <xref linkend="posix-constraint-backref-table" />). Per esempio,
     <literal>([bc])\1</literal> abbina <literal>bb</literal> o <literal>cc</literal>
     ma non <literal>bc</literal> o <literal>cb</literal>.
     La sottoespressione deve interamente precedere il riferimento all'indietro nelle RE.
@@ -4458,7 +4459,7 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
     in particolare, possono sovrascrivere il comportamento della sensibilità alle maiuscole implicito di
     un operatore regex, o il parametro <replaceable>flag</replaceable> di una funzione regex.
     Le lettere per le opzionai disponibili sono
-    mostrate nella <xref linkend="posix-embedded-options-table" />.
+    mostrate nella tabella <xref linkend="posix-embedded-options-table" />.
     Notare che queste stesse opzioni sono usate nei parametri <replaceable>flag</replaceable>
     delle funzioni regex.
    </para>
@@ -4788,10 +4789,10 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
 
    <para>
 Se viene specificato un confronto inverso parzialmente sensibile al newline,
-    questo influenza <literal>^</literal> e <literal>$</literal>
-    come con il confronto sensibile al newline, ma non il <literal>.</literal>
-    e le espressioni tra parentesi quadre.
-    Questo non è molto utile, ma è fornito per simmetria..
+questo influenza <literal>^</literal> e <literal>$</literal>
+come con il confronto sensibile al newline, ma non il <literal>.</literal>
+e le espressioni tra parentesi quadre.
+Questo non è molto utile, ma è fornito per simmetria.
    </para>
    </sect3>
 
@@ -5003,18 +5004,17 @@ Se viene specificato un confronto inverso parzialmente sensibile al newline,
     </table>
 
    <para>
-        In una stringa di modello di output per la funzione <function>to_char</function>, ci sono certi
-        schemi che sono riconosciuti e sostituiti con dati appropriatamente formattati
-        in base al valore fornito. Ogni testo che non è un modello viene
-        semplicemente copiato letteralmente. Similmente, in una stringa di modello di input (per le
-        altre funzioni), gli schemi di modelli identificano i valori da essere forniti
-        dalla stringa di input dei dati.
-    
+In una stringa di modello di output per la funzione <function>to_char</function>, 
+ci sono certi schemi che sono riconosciuti e sostituiti con dati appropriatamente formattati
+in base al valore fornito. Ogni testo che non è un modello viene
+semplicemente copiato letteralmente. Similmente, in una stringa di modello di input (per le
+altre funzioni), gli schemi di modelli identificano i valori da essere forniti
+dalla stringa di input dei dati.    
    </para>
 
   <para>
-   La <xref linkend="functions-formatting-datetime-table" /> mostra i
-   modelli di maschere disponibili per formattare valori di data e orario.
+La <xref linkend="functions-formatting-datetime-table" /> mostra i
+modelli di maschere disponibili per formattare valori di data e orario.
   </para>
 
 
@@ -5464,7 +5464,7 @@ Se viene specificato un confronto inverso parzialmente sensibile al newline,
    </para>
 
   <para>
-    La <xref linkend="functions-formatting-numeric-table"/> mostra i
+    La tabella <xref linkend="functions-formatting-numeric-table"/> mostra i
     modelli della maschere disponibili per formattare valori numerici.
   </para>
 
@@ -6772,7 +6772,7 @@ SELECT EXTRACT(YEAR FROM TIMESTAMP '2001-02-16 20:38:40');
 date_part('<replaceable>field</replaceable>', <replaceable>source</replaceable>)
 </synopsis>
     
-    Notare che qui il parametro <replaceable>campo</replaceable> dovrà
+    Notare che qui il parametro <replaceable>field</replaceable> dovrà
     necessariamente essere un valore stringa, non un nome. I nomi di campo
     validi per <function>date_part</function> sono gli stessi utilizzati per
     <function>extract</function>.
@@ -6881,7 +6881,7 @@ SELECT date_trunc('year', TIMESTAMP '2001-02-16 20:38:40');
       <tbody>
        <row>
         <entry>
-         <literal><type>timestamp without time zone</type> AT TIME ZONE <replaceable>fuso</replaceable></literal>
+         <literal><type>timestamp without time zone</type> AT TIME ZONE <replaceable>timezone</replaceable></literal>
         </entry>
         <entry><type>timestamp with time zone</type></entry>
         <entry>Tratta il time stamp <emphasis>senza fuso orario</emphasis> fornito come localizzato nel fuso orario specificato</entry>
@@ -6889,7 +6889,7 @@ SELECT date_trunc('year', TIMESTAMP '2001-02-16 20:38:40');
 
        <row>
         <entry>
-         <literal><type>timestamp with time zone</type> AT TIME ZONE <replaceable>fuso</replaceable></literal>
+         <literal><type>timestamp with time zone</type> AT TIME ZONE <replaceable>timezone</replaceable></literal>
         </entry>
         <entry><type>timestamp without time zone</type></entry>
         <entry>Converte il time stamp <emphasis>con fuso orario</emphasis> fornito al nuovo fuso orario</entry>
@@ -6897,7 +6897,7 @@ SELECT date_trunc('year', TIMESTAMP '2001-02-16 20:38:40');
 
        <row>
         <entry>
-         <literal><type>time with time zone</type> AT TIME ZONE <replaceable>fuso</replaceable></literal>
+         <literal><type>time with time zone</type> AT TIME ZONE <replaceable>timezone</replaceable></literal>
         </entry>
         <entry><type>time with time zone</type></entry>
         <entry>Converte il time <emphasis>con fuso orario</emphasis> fornito al nuovo fuso orario</entry>
@@ -6981,7 +6981,6 @@ LOCALTIMESTAMP(<replaceable>precision</replaceable>)
      <function>CURRENT_TIMESTAMP</function>,
      <function>LOCALTIME</function>, e
      <function>LOCALTIMESTAMP</function>
-     can optionally take
      Possono opzionalmente essere forniti di un parametro precisione,
      che causa l'arrotondamento del risultato a quelle cifre
      decimali del campo dei secondi. Senza un parametro di precisione,
@@ -7021,14 +7020,14 @@ SELECT LOCALTIMESTAMP;
 
    <note>
     <para>
-     Altri sistemi di database potrebbero avanzare questo valore più
+     Altri sistemi di database potrebbero incrementare questo valore più
      frequentemente.
     </para>
    </note>
 
    <para>
     <productname>PostgreSQL</productname> fornisce anche funzioni che
-    restituiscono il tempo di inizio dell'istruzione corrente, come pure il tempo
+    restituiscono il tempo di inizio dell'istruzione corrente, come pure l'orario
     corrente effettivo al momento in cui viene chiamata la funzione. L'elenco completo
     delle funzioni non standard-SQL relative al tempo è:
 <synopsis>
@@ -7054,7 +7053,8 @@ now()
     differire durante i successivi comandi.
     
     
-    La funzione <function>clock_timestamp()</function> restituisce l'orario corrente effettivo, e
+    La funzione <function>clock_timestamp()</function> restituisce 
+    l'orario corrente effettivo, e
     quindi il suo valore cambia anche all'interno di un solo comando SQL.
     <function>timeofday()</function> è una storica funzione
     <productname>PostgreSQL</productname>. Come
@@ -7067,7 +7067,7 @@ now()
 
    <para>
     
-        Tutti i tipi di dato "data/orario" accettano anche lo speciale valore letterale
+        Tutti i tipi di dato "date/time" accettano anche lo speciale valore letterale
         <literal>now</literal> per specificare la data e l'orario corrente (anch'esso,
         interpretato come tempo di inizio della transazione). Per cui,
         le seguenti tre istruzioni restituiscono tutte lo stesso risultato:
@@ -7125,14 +7125,10 @@ SELECT pg_sleep(1.5);
    </para>
 
    <note>
-        <para>
-            Nota per il revisore: Intervallo di dormienza è urend
-        </para>
-    </note>
-   <note>
      <para>
       
-        La risoluzione effettiva dell'intervallo di dormienza è specifico alla piattaforma; Un valore
+        La risoluzione effettiva dell'intervallo di sleep è specifico alla piattaforma; 
+        un valore
       comune è 0.01 secondi.  Il ritardo di dormienza sarà lungo almeno come specificato.
       Potrebbe essere più lungo, in dipendenza di fattori come il carico del server.
      </para>
@@ -7159,7 +7155,7 @@ SELECT pg_sleep(1.5);
     Per i tipi enum (descritti in <xref linkend="datatype-enum" />),
    ci sono diverse funzioni che consentono una programmazione più pulita
    senza utilizzo di hard-coding per particolari valori di un tipo enum.
-   Queste sono elencate nella <xref linkend="functions-enum-table" />. Gli esempi
+   Queste sono elencate nella tabella <xref linkend="functions-enum-table" />. Gli esempi
    accettano un tipo enum creato come:
 
 <programlisting>
@@ -7255,7 +7251,7 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
     I tipi geometrici <type>point</type>, <type>box</type>,
     <type>lseg</type>, <type>line</type>, <type>path</type>,
     <type>polygon</type> e <type>circle</type> hanno un notevole insieme di
-    funzioni e operatori nativi di supporto, mostrati nella <xref
+    funzioni e operatori nativi di supporto, mostrati nella tabella <xref
     linkend="functions-geometry-op-table" />, nella <xref
     linkend="functions-geometry-func-table" /> e nella <xref
     linkend="functions-geometry-conv-table" />.
@@ -8266,7 +8262,7 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
 
   <para>
    
-    Le funzioni nella
+    Le funzioni nella tabella 
    <xref linkend="textsearch-functions-debug-table" />
    sono elencate separatamente perchè non sono normalmente utilizzate nelle comuni
    operazioni di ricerca testo. Esse sono utili per lo sviluppo e la messa a punto di
@@ -9268,7 +9264,7 @@ table2-mapping
    sequenze) sono speciali tabelle a riga singola create con <xref
    linkend="sql-createsequence" endterm="sql-createsequence-title" />.
    Un oggetto di sequenza è normalmente usato per generare identificatori unique
-   per le righe di una tabella. Le funzioni di sequenza, elencate nella <xref
+   per le righe di una tabella. Le funzioni di sequenza, elencate nella tabella <xref
    linkend="functions-sequence-table" />, forniscono metodi semplici, sicuri e
    multiutente per ottenere successivi valori di sequenza dagli oggetti di
    sequenza.
@@ -10108,7 +10104,7 @@ SELECT NULLIF(value, '(none)') ...
    
     Le <firstterm>funzioni aggregate</firstterm> calcolano un singolo 
    risultato da un insieme di valori di input. Le funzioni aggregate incorporate
-   sono elencate nella
+   sono elencate nella tabella
    <xref linkend="functions-aggregate-table" /> e nella
    <xref linkend="functions-aggregate-statistics-table" />. 
    Speciali considerazioni sulla sintassi delle le funzioni
@@ -11119,7 +11115,7 @@ EXISTS (<replaceable>subquery</replaceable>)
 
   <para>
    La sottoquery può fare riferimento alle variabili della query circostante,
-   che fungeranno da costanti durante qualsiasi valutazione della subquery.
+   che fungeranno da costanti durante qualsiasi valutazione della sottoquery.
   </para>
 
   <para>
@@ -11190,7 +11186,7 @@ dei valori null.
   <para>
    La parte sinistra di questa forma di <token>IN</token> è un costruttore di riga,
    come descritto in <xref linkend="sql-syntax-row-constructors" />.
-   La parte destra è una subquery tra parentesi,
+   La parte destra è una sottoquery tra parentesi,
    che deve restituire esattamente tante colonne per quante ce ne sono
    nella riga contenuta nell'espressione della parte sinistra. L'espressione della parte sinistra viene
    valutata e confrontata con ogni riga risultante dalla sottoquery.
@@ -11222,9 +11218,9 @@ dei valori null.
    
     La parte destra è una sottoquery tra parentesi,
    che restituisce esattamente una colonna. L'espressione della parte sinistra
-   viene valutata e confrontata ad ogni riga del risultato della subquery.
+   viene valutata e confrontata ad ogni riga del risultato della sottoquery.
    Il risultato di <token>NOT IN</token> è <quote>true</quote> se solo righe non uguali
-   sono trovate nella subquery (compreso il caso speciale in cui la subquery non restituisce nessuna riga).
+   sono trovate nella sottoquery (compreso il caso speciale in cui la sottoquery non restituisce nessuna riga).
    Il risultato è <quote>false</quote> se viene trovata qualche riga uguale.
   </para>
 
@@ -11249,13 +11245,13 @@ dei valori null.
 
   <para>
     La parte sinistra di questa forma di <token>NOT IN</token> è un costruttore di riga,
-   come descritto dentro <xref linkend="sql-syntax-row-constructors" />.
+   come descritto in <xref linkend="sql-syntax-row-constructors" />.
    La parte destra è una sottoquery tra parenthesi
    che deve restituire esattamente tante colonne per quante ce ne sono
    nella riga contenuta nell'espressione della parte sinistra. L'espressione nella parte sinistra viene
-   valutata e confrontata row-wise con ogni riga risultante dalla subquery.
+   valutata e confrontata row-wise con ogni riga risultante dalla sottoquery.
    Il risultato di <token>NOT IN</token> è <quote>true</quote> se solo righe non uguali vengono trovate
-   nella subquery (compreso il caso speciale in cui la subquery non restituisce nessuna riga).
+   nella sottoquery (compreso il caso speciale in cui la sottoquery non restituisce nessuna riga).
    Il risultato è <quote>false</quote> se viene trovata qualche riga uguale.
   </para>
 
@@ -11288,7 +11284,7 @@ dei valori null.
    booleano.
    Il risultato di <token>ANY</token> è <quote>true</quote> se è ottenuto un risultato vero.
    Il risultato è <quote>false</quote> se non è stato trovato un risultato vero (compreso il
-   caso speciale in cui la subquery non restituisca nessuna riga).
+   caso speciale in cui la sottoquery non restituisca nessuna riga).
   </para>
 
   <para>
@@ -11317,7 +11313,7 @@ dei valori null.
   <para>
    
     La parte sinistra di questa forma di <token>ANY</token> è un costruttore di riga,
-   come descritto dentro <xref linkend="sql-syntax-row-constructors" />.
+   come descritto in <xref linkend="sql-syntax-row-constructors" />.
    La parte destra è una sottoquery tra parentesi
    che deve restituire esattamente tante colonne per quante ce ne sono
    nella riga contenuta nell'espressione della parte sinistra. 
@@ -11328,7 +11324,7 @@ dei valori null.
    restituisce true per qualsiasi riga della sottoquery.
    Il risultato è <quote>false</quote> se il confronto restituisce false per ogni
    riga della sottoquery 
-    (compreso il caso speciale in cui la subquery non restituisce nessuna
+    (compreso il caso speciale in cui la sottoquery non restituisce nessuna
    riga).
    IL risultato è NULL se il confronto non restituisce true per ogni riga,
    e restituisce NULL per almeno una riga.
@@ -11355,7 +11351,7 @@ dei valori null.
    l'<replaceable>operatore</replaceable> fornito, che dovrà rendere un risultato
    booleano.
    Il risultato di <token>ALL</token> è <quote>true</quote> se tutte le righe rendono true
-   (compreso il caso speciale in cui la subquery non restituisca nessuna riga).
+   (compreso il caso speciale in cui la sottoquery non restituisca nessuna riga).
    Il risultato è <quote>false</quote> se viene trovato qualche risultato false.
    Il risultato è NULL se il confronto non restituisce false per ogni riga,
    e restituisce NULL per almeno una riga.
@@ -11404,7 +11400,7 @@ dei valori null.
 
    <indexterm zone="functions-subquery">
     <primary>comparison</primary>
-    <secondary>subquery result row</secondary>
+    <secondary>sottoquery result row</secondary>
    </indexterm>
 
 <synopsis>
@@ -11475,7 +11471,7 @@ dei valori null.
     Questa sezione descrive diversi costrutti specializzati per fare
    confronti multipli tra gruppi di valori. Queste forme sono
    riferite sintatticamente alle forme di sottoquery della sezione precedente,
-   ma non coinvolgono le subquery.
+   ma non coinvolgono le sottoquery.
    Le forme che coinvolgono subespressioni array sono
    estensioni di <productname>PostgreSQL</productname>; le restanti sono
    conformi-<acronym>SQL</acronym>.
@@ -13994,14 +13990,9 @@ OID o nome specificato
 valore di dato.
    </para>
 
-<note>
-    <para>
-        Nota per il revisore: toast tabel ?
-    </para>
-</note>
    <para>
 <function>pg_total_relation_size</function> acceta l'OID o il nome di 
-una tabella o di una toast table, e restituisce lo spazio su disco totale usato per
+una tabella o di una tabella toast, e restituisce lo spazio su disco totale usato per
 quella tabella, includendo tutti gli indici associati. Questa funzione è 
 equivalente a <function>pg_table_size</function>
 <literal>+</literal> <function>pg_indexes_size</function>.

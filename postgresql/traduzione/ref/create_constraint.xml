@@ -105,7 +105,7 @@ CREATE CONSTRAINT TRIGGER <replaceable class="parameter">name</replaceable>
     <listitem>
      <para>
       The default timing of the trigger.
-      See the <xref linkend="SQL-CREATETABLE"/>
+      See the <xref linkend="sql-createtable"/>
       documentation for details of these constraint options.
      </para>
     </listitem>

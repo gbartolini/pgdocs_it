@@ -138,7 +138,7 @@ TABLE { [ ONLY ] <replaceable class="parameter">table_name</replaceable> [ * ] |
       operator returns the rows that are in the first result set but
       not in the second.  In all three cases, duplicate rows are
       eliminated unless <literal>ALL</literal> is specified. (See
-      <xref linkend="sql-union" endterm="sql-union-title"/>, <xref
+      <xref linkend="sql-union-title" endterm="sql-union-title"/>, <xref
       linkend="sql-intersect" endterm="sql-intersect-title"/>, and
       <xref linkend="sql-except" endterm="sql-except-title"/> below.)
      </para>

@@ -883,7 +883,7 @@ CREATE TABLE circles (
    </para>
 
    <para>
-        Vedi anche <link linkend="sql-createtable-EXCLUDE"><command>CREATE
+        Vedi anche <link linkend="sql-createtable-exclude"><command>CREATE
     TABLE ... CONSTRAINT ... EXCLUDE</command></link> per maggiori dettagli.
    </para>
 

@@ -82,7 +82,7 @@ CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE [ IF NOT EXISTS ] <repl
 
  </refsynopsisdiv>
 
- <refsect1 id="SQL-CREATETABLE-description">
+ <refsect1 id="sql-createtable-description">
   <title>Description</title>
 
   <para>
@@ -477,7 +477,7 @@ CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE [ IF NOT EXISTS ] <repl
     </listitem>
    </varlistentry>
 
-   <varlistentry id="SQL-CREATETABLE-EXCLUDE">
+   <varlistentry id="sql-createtable-exclude">
     <term><literal>EXCLUDE [ USING <replaceable class="parameter">index_method</replaceable> ] ( <replaceable class="parameter">exclude_element</replaceable> WITH <replaceable class="parameter">operator</replaceable> [, ... ] ) <replaceable class="parameter">index_parameters</replaceable> [ WHERE ( <replaceable class="parameter">predicate</replaceable> ) ]</literal></term>
     <listitem>
      <para>
@@ -804,8 +804,8 @@ CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE [ IF NOT EXISTS ] <repl
 
   </variablelist>
 
-  <refsect2 id="SQL-CREATETABLE-storage-parameters">
-   <title id="SQL-CREATETABLE-storage-parameters-title">Storage Parameters</title>
+  <refsect2 id="sql-createtable-storage-parameters">
+   <title id="sql-createtable-storage-parameters-title">Storage Parameters</title>
 
  <indexterm zone="sql-createtable-storage-parameters">
   <primary>storage parameters</primary>
@@ -970,7 +970,7 @@ CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE [ IF NOT EXISTS ] <repl
   </refsect2>
  </refsect1>
 
- <refsect1 id="SQL-CREATETABLE-notes">
+ <refsect1 id="sql-createtable-notes">
   <title>Notes</title>
 
     <para>
@@ -1017,7 +1017,7 @@ CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE [ IF NOT EXISTS ] <repl
  </refsect1>
 
 
- <refsect1 id="SQL-CREATETABLE-examples">
+ <refsect1 id="sql-createtable-examples">
   <title>Examples</title>
 
   <para>
@@ -1235,8 +1235,8 @@ CREATE TABLE employees OF employee_type (
   </para>
  </refsect1>
 
- <refsect1 id="SQL-CREATETABLE-compatibility">
-  <title id="SQL-CREATETABLE-compatibility-title">Compatibility</title>
+ <refsect1 id="sql-createtable-compatibility">
+  <title id="sql-createtable-compatibility-title">Compatibility</title>
 
   <para>
    The <command>CREATE TABLE</command> command conforms to the

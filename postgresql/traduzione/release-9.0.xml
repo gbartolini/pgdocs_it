@@ -564,7 +564,7 @@
       <para>
        Allow per-tablespace values to be set for sequential and random page
        cost estimates (<varname>seq_page_cost</varname>/<varname>random_page_cost</varname>)
-       via <link linkend="sql-altertableSPACE"><command>ALTER TABLESPACE
+       via <link linkend="sql-altertablespace"><command>ALTER TABLESPACE
        ... SET/RESET</command></link> (Robert Haas)
       </para>
      </listitem>
@@ -1217,7 +1217,7 @@
       <para>
        Exclusion constraints generalize uniqueness constraints by allowing
        arbitrary comparison operators, not just equality.  They are created
-       with the <link linkend="sql-createtable-EXCLUDE"><command>CREATE
+       with the <link linkend="sql-createtable-exclude"><command>CREATE
        TABLE CONSTRAINT ... EXCLUDE</command></link> clause.
        The most common use of exclusion constraints is to specify that column
        entries must not overlap, rather than simply not be equal.  This is

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $PostgreSQL$ -->
 
-<chapter Id="typeconv">
+<chapter id="typeconv">
 <title>Type Conversion</title>
 
 <indexterm zone="typeconv">

@@ -14,7 +14,7 @@
     <para>
 <productname>PostgreSQL</productname> fornisce un gran numero di
 funzioni e operatori per i tipi dati incorporati. Gli utenti possono anche
-definire le proprie funzioni e operatori, come descritto nella
+definire le proprie funzioni e operatori, come descritto in
 <xref linkend="server-programming" />. I comandi <application>psql</application>
 <command>\df</command> e <command>\do</command> possono essere usati per
 visualizzare, rispettivamente, l'elenco di tutte le funzioni e di tutti gli
@@ -175,7 +175,7 @@ Sono disponibili gli usuali operatori logici:
     </indexterm>
 
     <para>
-        Sono disponibili gli usuali operatori di confronto, visualizzati nella <xref
+        Sono disponibili gli usuali operatori di confronto, visualizzati nella tabella <xref
         linkend="functions-comparison-table" />.
     </para>
 
@@ -598,7 +598,7 @@ speciale <token>BETWEEN</token>:
     gli altri sono utilizzabili per tutti i tipi dati numerici. Gli operatori per
     singoli bit sono anche utilizzabili per i tipi stringa di <type>bit</type>
     e <type>bit varying</type>, come
-    mostrato nella <xref linkend="functions-bit-string-op-table" />.
+    mostrato nella tabella <xref linkend="functions-bit-string-op-table" />.
    </para>
 
   <para>
@@ -1037,7 +1037,7 @@ speciale <token>BETWEEN</token>:
      <type>text</type>. Quelle coercizioni sono state rimosse perchè hanno causato
      frequentemente comportamenti inaspettati. Tuttavia, l'operatore di concatenamento
      della stringa (<literal>||</literal>) accetta ancora input non-stringa, a condizione che
-     almeno un input sia di tipo stringa, come mostrato nella <xref
+     almeno un input sia di tipo stringa, come mostrato nella tabella <xref
      linkend="functions-string-sql" />. Per altri casi, inserire una esplicita
      coercizione a testo se si necessita duplicare il comportamento precedente.
     </para>
@@ -1246,9 +1246,9 @@ speciale <token>BETWEEN</token>:
 
 
    <para>
-    Ulteriori funzioni di manipolazione stringhe sono disponibili ed elencate nella
+    Ulteriori funzioni di manipolazione stringhe sono disponibili ed elencate nella tabella
     <xref linkend="functions-string-other" />. Alcune di esse sono usate internamente per implementare
-    le funzioni stringa standard-<acronym>SQL</acronym> elencate nella <xref linkend="functions-string-sql" />.
+    le funzioni stringa standard-<acronym>SQL</acronym> elencate nella tabella <xref linkend="functions-string-sql" />.
    </para>
 
 
@@ -2886,7 +2886,7 @@ speciale <token>BETWEEN</token>:
     manipolare stringhe di bit, che sono valori di tipo
     <type>bit</type> e <type>bit varying</type>. Oltre ai normali
     operatori di confronto, si possono usare gli operatori
-    mostrati nella <xref linkend="functions-bit-string-op-table" />.
+    mostrati nella tabella <xref linkend="functions-bit-string-op-table" />.
     Gli operandi stringhe di bit di <literal>&amp;</literal>, <literal>|</literal>,
     e <literal>#</literal> devono avere lunghezza uguale. Quando vengono spostati
     bit, la lunghezza originale della stringa viene salvaguardata, come mostrato
@@ -3456,7 +3456,7 @@ substring('foobar' from 'o(.)b')   <lineannotation>o</lineannotation>
      della funzione. Il flag <literal>i</literal> specifica un confronto non sensibile alle
      maiuscole, mentre il flag <literal>g</literal> specifica la sostituzione di ogni sottostringa
      abbinata e non solo della prima. Altri flag supportati sono
-     descritti nella <xref linkend="posix-embedded-options-table" />.
+     descritti nella tabella <xref linkend="posix-embedded-options-table" />.
     </para>
 
    <para>
@@ -3542,7 +3542,7 @@ SELECT col1, (SELECT regexp_matches(col2, '(bar)(beque)')) FROM tab;
      restituisce il testo dalla fine dell'ultimo abbinamento alla fine della stringa.
      Il parametro <replaceable>flag</replaceable> è un opzionale stringa di testo contenente
      zero o più flag a singola-lettera che modifica il comportamento della funzione.
-     <function>regexp_split_to_table</function> supporta i flag descritti nella
+     <function>regexp_split_to_table</function> supporta i flag descritti nella tabella
      <xref linkend="posix-embedded-options-table" />.
     </para>
 
@@ -3678,8 +3678,8 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
     Senza un quantificatore, esso corrisponde ad un occorrenza dell'atomo.
     Con un quantificatore, esso può corrispondere ad un certo numero
     di occorrenze dell'atomo. Un <firstterm>atomo</firstterm> può
-    essere una delle possibilità mostrate nella <xref linkend="posix-atoms-table" />.
-    I possibili quantificatori ed il loro significato sono mostrati nella
+    essere una delle possibilità mostrate nella tabella <xref linkend="posix-atoms-table" />.
+    I possibili quantificatori ed il loro significato sono mostrati nella tabella
     <xref linkend="posix-quantifiers-table" />.
    </para>
 
@@ -3689,7 +3689,7 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
     ma combacia solo quando
     vengono incontrate specifiche condizioni. Un vincolo può essere usato quando può
     essere usato un atomo, ad eccezione che esso non sia seguito da un quantificatore.
-    Un semplice vincolo è mostrato nella
+    Un semplice vincolo è mostrato nella tabella
     <xref linkend="posix-constraints-table" />;
     Alcuni altri vincoli sono descritti in seguito.
    </para>
@@ -4091,28 +4091,28 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
    <para>
     Gli <firstterm>escape per immissione caratteri</firstterm> esistono per rendere più facile specificare
     caratteri non-stampabili ed altri fastidiosi caratteri nelle RE. Essi sono mostrati
-    nella <xref linkend="posix-character-entry-escapes-table" />.
+    nella tabella <xref linkend="posix-character-entry-escapes-table" />.
     
    </para>
 
    <para>
     Gli <firstterm>escape per scorciatoie di classe</firstterm> forniscono scorciatoie per certi
     classi di caratteri normalmente utilizzate. Esse sono
-    mostrate nella <xref linkend="posix-class-shorthand-escapes-table" />.
+    mostrate nella tabella <xref linkend="posix-class-shorthand-escapes-table" />.
    </para>
 
    <para>
     Un <firstterm>escape di vincolo</firstterm> è un vincolo,
     abbinante una stringa vuota se le specifiche condizioni sono soddisfatte,
     scritto come un escape. Essi sono
-    mostrati nella <xref linkend="posix-constraint-escapes-table" />.
+    mostrati nella tabella <xref linkend="posix-constraint-escapes-table" />.
    </para>
 
    <para>
     Un <firstterm>riferimento all'indietro</firstterm> (<literal>\</literal><replaceable>n</replaceable>) abbina la
     stessa stringa abbinata dalla precedente sottoespressione specificata
     dal numero <replaceable>n</replaceable>
-    (consultare la <xref linkend="posix-constraint-backref-table" />). Per esempio,
+    (consultare la tabella <xref linkend="posix-constraint-backref-table" />). Per esempio,
     <literal>([bc])\1</literal> abbina <literal>bb</literal> o <literal>cc</literal>
     ma non <literal>bc</literal> o <literal>cb</literal>.
     La sottoespressione deve interamente precedere il riferimento all'indietro nelle RE.
@@ -4458,7 +4458,7 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
     in particolare, possono sovrascrivere il comportamento della sensibilità alle maiuscole implicito di
     un operatore regex, o il parametro <replaceable>flag</replaceable> di una funzione regex.
     Le lettere per le opzionai disponibili sono
-    mostrate nella <xref linkend="posix-embedded-options-table" />.
+    mostrate nella tabella <xref linkend="posix-embedded-options-table" />.
     Notare che queste stesse opzioni sono usate nei parametri <replaceable>flag</replaceable>
     delle funzioni regex.
    </para>
@@ -7159,7 +7159,7 @@ SELECT pg_sleep(1.5);
     Per i tipi enum (descritti in <xref linkend="datatype-enum" />),
    ci sono diverse funzioni che consentono una programmazione più pulita
    senza utilizzo di hard-coding per particolari valori di un tipo enum.
-   Queste sono elencate nella <xref linkend="functions-enum-table" />. Gli esempi
+   Queste sono elencate nella tabella <xref linkend="functions-enum-table" />. Gli esempi
    accettano un tipo enum creato come:
 
 <programlisting>

@@ -3049,10 +3049,10 @@ cast(-44 as bit(12))           <lineannotation>111111010100</lineannotation>
     
 
     <para>
-     Ogni <replaceable>modello</replaceable> definisce un insieme di stringhe.
+     Ogni <replaceable>pattern</replaceable> definisce un insieme di stringhe.
      L'espressione <function>LIKE</function> restituisce true se
      <replaceable>string</replaceable> è contenuta nell'insieme di
-     stringhe rappresentate dal <replaceable>modello</replaceable>. (Come
+     stringhe rappresentate dal <replaceable>pattern</replaceable>. (Come
      previsto, l'espressione <function>NOT LIKE</function> restituisce
      false se <function>LIKE</function> restituisce true, e viceversa.
      Una espressione equivalente è
@@ -3475,10 +3475,10 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
         La funzione <function>regexp_matches</function> ritorna un array di testo di
         tutte le sottostringhe catturate che risultano corrispondere a un modello
         di espressione regolare POSIX. Essa ha la sintassi
-        <function>regexp_matches</function>(<replaceable>stringa</replaceable>, <replaceable>modello</replaceable>
+        <function>regexp_matches</function>(<replaceable>string</replaceable>, <replaceable>pattern</replaceable>
         <optional>, <replaceable>flag</replaceable> </optional>).
         La funzione può restituire nessuna riga, una riga, o molte righe (vedere
-        la flag <literal>g</literal> sotto). Se il <replaceable>modello</replaceable>
+        la flag <literal>g</literal> sotto). Se il <replaceable>pattern</replaceable>
         non corrisponde, la funzione non restituisce nessuna riga. Se il modello
         contiene sottoespressioni non parentesizzate, allora ogni riga
         ritornata è un array di testo di un solo elemento contenente la sottostringa
@@ -3728,7 +3728,8 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
        </row>
 
        <row>
-       <entry> <literal>[</literal><replaceable>carat</replaceable><literal>]</literal> </entry>
+       <entry> <literal>[</literal><replaceable>carat</replaceable><literal>]</literal> 
+       </entry>
        <entry> una <firstterm>espressione tra parentesi quadre</firstterm>,
        confronta ognuno dei <replaceable>carat</replaceable> (consultare
        <xref linkend="posix-bracket-expressions" /> per ulteriori dettagli) </entry>
@@ -3756,7 +3757,7 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
        <entry> quando seguita da un carattere che non sia una cifra,
        confronta il carattere a sinistra della parentesi <literal>{</literal>;
        quando seguita da una cifra, essa è l'inizio di un 
-       <replaceable>limite</replaceable> (vedere sotto) </entry>
+       <replaceable>limit</replaceable> (vedere sotto) </entry>
        </row>
 
        <row>
@@ -6881,7 +6882,7 @@ SELECT date_trunc('year', TIMESTAMP '2001-02-16 20:38:40');
       <tbody>
        <row>
         <entry>
-         <literal><type>timestamp without time zone</type> AT TIME ZONE <replaceable>fuso</replaceable></literal>
+         <literal><type>timestamp without time zone</type> AT TIME ZONE <replaceable>timezone</replaceable></literal>
         </entry>
         <entry><type>timestamp with time zone</type></entry>
         <entry>Tratta il time stamp <emphasis>senza fuso orario</emphasis> fornito come localizzato nel fuso orario specificato</entry>
@@ -6889,7 +6890,7 @@ SELECT date_trunc('year', TIMESTAMP '2001-02-16 20:38:40');
 
        <row>
         <entry>
-         <literal><type>timestamp with time zone</type> AT TIME ZONE <replaceable>fuso</replaceable></literal>
+         <literal><type>timestamp with time zone</type> AT TIME ZONE <replaceable>timezone</replaceable></literal>
         </entry>
         <entry><type>timestamp without time zone</type></entry>
         <entry>Converte il time stamp <emphasis>con fuso orario</emphasis> fornito al nuovo fuso orario</entry>
@@ -6897,7 +6898,7 @@ SELECT date_trunc('year', TIMESTAMP '2001-02-16 20:38:40');
 
        <row>
         <entry>
-         <literal><type>time with time zone</type> AT TIME ZONE <replaceable>fuso</replaceable></literal>
+         <literal><type>time with time zone</type> AT TIME ZONE <replaceable>timezone</replaceable></literal>
         </entry>
         <entry><type>time with time zone</type></entry>
         <entry>Converte il time <emphasis>con fuso orario</emphasis> fornito al nuovo fuso orario</entry>
@@ -6981,7 +6982,6 @@ LOCALTIMESTAMP(<replaceable>precision</replaceable>)
      <function>CURRENT_TIMESTAMP</function>,
      <function>LOCALTIME</function>, e
      <function>LOCALTIMESTAMP</function>
-     can optionally take
      Possono opzionalmente essere forniti di un parametro precisione,
      che causa l'arrotondamento del risultato a quelle cifre
      decimali del campo dei secondi. Senza un parametro di precisione,
@@ -7021,14 +7021,14 @@ SELECT LOCALTIMESTAMP;
 
    <note>
     <para>
-     Altri sistemi di database potrebbero avanzare questo valore più
+     Altri sistemi di database potrebbero incrementare questo valore più
      frequentemente.
     </para>
    </note>
 
    <para>
     <productname>PostgreSQL</productname> fornisce anche funzioni che
-    restituiscono il tempo di inizio dell'istruzione corrente, come pure il tempo
+    restituiscono il tempo di inizio dell'istruzione corrente, come pure l'orario
     corrente effettivo al momento in cui viene chiamata la funzione. L'elenco completo
     delle funzioni non standard-SQL relative al tempo è:
 <synopsis>
@@ -7054,7 +7054,8 @@ now()
     differire durante i successivi comandi.
     
     
-    La funzione <function>clock_timestamp()</function> restituisce l'orario corrente effettivo, e
+    La funzione <function>clock_timestamp()</function> restituisce 
+    l'orario corrente effettivo, e
     quindi il suo valore cambia anche all'interno di un solo comando SQL.
     <function>timeofday()</function> è una storica funzione
     <productname>PostgreSQL</productname>. Come
@@ -7067,7 +7068,7 @@ now()
 
    <para>
     
-        Tutti i tipi di dato "data/orario" accettano anche lo speciale valore letterale
+        Tutti i tipi di dato "date/time" accettano anche lo speciale valore letterale
         <literal>now</literal> per specificare la data e l'orario corrente (anch'esso,
         interpretato come tempo di inizio della transazione). Per cui,
         le seguenti tre istruzioni restituiscono tutte lo stesso risultato:
@@ -7125,14 +7126,10 @@ SELECT pg_sleep(1.5);
    </para>
 
    <note>
-        <para>
-            Nota per il revisore: Intervallo di dormienza è urend
-        </para>
-    </note>
-   <note>
      <para>
       
-        La risoluzione effettiva dell'intervallo di dormienza è specifico alla piattaforma; Un valore
+        La risoluzione effettiva dell'intervallo di sleep è specifico alla piattaforma; 
+        un valore
       comune è 0.01 secondi.  Il ritardo di dormienza sarà lungo almeno come specificato.
       Potrebbe essere più lungo, in dipendenza di fattori come il carico del server.
      </para>
@@ -13994,14 +13991,9 @@ OID o nome specificato
 valore di dato.
    </para>
 
-<note>
-    <para>
-        Nota per il revisore: toast tabel ?
-    </para>
-</note>
    <para>
 <function>pg_total_relation_size</function> acceta l'OID o il nome di 
-una tabella o di una toast table, e restituisce lo spazio su disco totale usato per
+una tabella o di una tabella toast, e restituisce lo spazio su disco totale usato per
 quella tabella, includendo tutti gli indici associati. Questa funzione è 
 equivalente a <function>pg_table_size</function>
 <literal>+</literal> <function>pg_indexes_size</function>.

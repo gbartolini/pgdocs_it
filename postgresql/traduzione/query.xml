@@ -2,43 +2,42 @@
 <!-- $PostgreSQL$ -->
 
  <chapter id="tutorial-sql">
-  <title>The <acronym>SQL</acronym> Language</title>
+  <title>Il linguaggio <acronym>SQL</acronym></title>
 
   <sect1 id="tutorial-sql-intro">
-   <title>Introduction</title>
+   <title>Introduzione</title>
 
    <para>
-    This chapter provides an overview of how to use
-    <acronym>SQL</acronym> to perform simple operations.  This
-    tutorial is only intended to give you an introduction and is in no
-    way a complete tutorial on <acronym>SQL</acronym>.  Numerous books
-    have been written on <acronym>SQL</acronym>, including <xref
-    linkend="MELT93"/> and <xref linkend="DATE97"/>.
-    You should be aware that some <productname>PostgreSQL</productname>
-    language features are extensions to the standard.
+Questo capitolo fornisce una panoramica su come usare
+<acronym>SQL</acronym> per realizzare semplici operazioni. Questo 
+tutorial intende fornire solo un'introduzione e in nessun modo è da considerarsi 
+un tutorial completo su <acronym>SQL</acronym>. Numerosi libri
+sono stati scritti su <acronym>SQL</acronym>, tra questi <xref
+linkend="MELT93"/> e <xref linkend="DATE97"/>.
+Si dede essere consapevoli che alcune caratteristiche di <productname>PostgreSQL</productname>
+sono estensioni dello standard.
    </para>
 
    <para>
-    In the examples that follow, we assume that you have created a
-    database named <literal>mydb</literal>, as described in the previous
-    chapter, and have been able to start <application>psql</application>.
+Negli esempi che seguono, si presuppone che si sia creato un database 
+chiamato <literal>mydb</literal>, come descritto nel precedente capitolo,
+e si sia capaci di avviare <application>psql</application>.
    </para>
 
    <para>
-    Examples in this manual can also be found in the
-    <productname>PostgreSQL</productname> source distribution
-    in the directory <filename>src/tutorial/</filename>.  (Binary
-    distributions of <productname>PostgreSQL</productname> might not
-    compile these files.)  To use those
-    files, first change to that directory and run <application>make</application>:
+Esempi possono essere trovati anche nella distribuzione del sorgente di 
+<productname>PostgreSQL</productname> nella directory <filename>src/tutorial/</filename>.
+(Le distribuzioni binare di <productname>PostgreSQL</productname> potrebbero non compilare
+questi file). Per usare quei file, 
+entrare in quella directory e lanciare <application>make</application>:
 
 <screen>
 <prompt>$</prompt> <userinput>cd <replaceable>....</replaceable>/src/tutorial</userinput>
 <prompt>$</prompt> <userinput>make</userinput>
 </screen>
 
-    This creates the scripts and compiles the C files containing user-defined
-    functions and types.  Then, to start the tutorial, do the following:
+Questo crea gli script e compila i file C contenenti funzioni e tipo definiti dall'utente.
+Quindi, per avviare il tutorial, fare:
 
 <screen>
 <prompt>$</prompt> <userinput>cd <replaceable>....</replaceable>/tutorial</userinput>
@@ -50,71 +49,70 @@
 <prompt>mydb=&gt;</prompt> <userinput>\i basics.sql</userinput>
 </screen>
 
-    The <literal>\i</literal> command reads in commands from the
-    specified file. <command>psql</command>'s <literal>-s</literal> option puts you in
-    single step mode which pauses before sending each statement to the
-    server.  The commands used in this section are in the file
-    <filename>basics.sql</filename>.
+Il comando <literal>\i</literal> legge i comandi dal file specificato.
+L'opzione di <command>psql</command> <literal>-s</literal> attiva la modalità "single step" 
+che metterà in pausa prima di lanciare ogni istruzione. I comandi usati in questa sezione  
+si trovano nel file 
+<filename>basics.sql</filename>.
    </para>
   </sect1>
 
 
   <sect1 id="tutorial-concepts">
-   <title>Concepts</title>
+   <title>Concetti</title>
 
    <para>
-    <indexterm><primary>relational database</primary></indexterm>
-    <indexterm><primary>hierarchical database</primary></indexterm>
-    <indexterm><primary>object-oriented database</primary></indexterm>
-    <indexterm><primary>relation</primary></indexterm>
-    <indexterm><primary>table</primary></indexterm>
+    <indexterm><primary>database relazionale</primary></indexterm>
+    <indexterm><primary>database gerarchico</primary></indexterm>
+    <indexterm><primary>database orientato agli oggetti</primary></indexterm>
+    <indexterm><primary>relazione</primary></indexterm>
+    <indexterm><primary>tabella</primary></indexterm>
 
-    <productname>PostgreSQL</productname> is a <firstterm>relational
-    database management system</firstterm> (<acronym>RDBMS</acronym>).
-    That means it is a system for managing data stored in
-    <firstterm>relations</firstterm>.  Relation is essentially a
-    mathematical term for <firstterm>table</firstterm>.  The notion of
-    storing data in tables is so commonplace today that it might
-    seem inherently obvious, but there are a number of other ways of
-    organizing databases.  Files and directories on Unix-like
-    operating systems form an example of a hierarchical database.  A
-    more modern development is the object-oriented database.
+<productname>PostgreSQL</productname> è un <firstterm>sistema di gestione di database
+relazionali</firstterm> (<acronym>RDBMS</acronym>).
+Questo significa che è un sistema per la gestione di dati immagazzinati in
+<firstterm>relazioni</firstterm>. La relazione essenzialmente è un termine 
+matematico per definire una <firstterm>tabella</firstterm>. La nozione di
+immagazzinare dati in tabelle è talmente comune oggi che potrebbe
+sembrare ovvia, ma ci sono numerosi altri modi di organizzare un database.
+File e directory su sistemi operativi della famiglia Unix sono un esempio di database gerarchico.
+Uno sviluppo più moderno è il database orientato agli oggetti. 
    </para>
 
    <para>
-    <indexterm><primary>row</primary></indexterm>
-    <indexterm><primary>column</primary></indexterm>
+    <indexterm><primary>riga</primary></indexterm>
+    <indexterm><primary>colonna</primary></indexterm>
 
-    Each table is a named collection of <firstterm>rows</firstterm>.
-    Each row of a given table has the same set of named
-    <firstterm>columns</firstterm>,
-    and each column is of a specific data type.  Whereas columns have
-    a fixed order in each row, it is important to remember that SQL
-    does not guarantee the order of the rows within the table in any
-    way (although they can be explicitly sorted for display).
+Ogni tabella è una collezione nominata di <firstterm>righe</firstterm>.
+Ogni riga di una data tabella ha lo stesso insieme di <firstterm>colonne</firstterm> nominate
+ed ogni colonna ha uno specifico tipo di dato. Mentre le colonne hanno
+un ordine fissato in ogni riga, è importante ricordare che SQL non garantisce 
+in nessun modo un ordine per le righe all'interno di una tabella 
+(anche se possono essere ordinate esplicitamente per la visualizzazione).
    </para>
 
    <para>
-    <indexterm><primary>database cluster</primary></indexterm>
-    <indexterm><primary>cluster</primary><secondary>of databases</secondary><see>database cluster</see></indexterm>
+    <indexterm><primary>cluster database</primary></indexterm>
+    <indexterm><primary>cluster</primary><secondary>di database</secondary>
+    <see>cluster database</see></indexterm>
 
-    Tables are grouped into databases, and a collection of databases
-    managed by a single <productname>PostgreSQL</productname> server
-    instance constitutes a database <firstterm>cluster</firstterm>.
+Le tabelle sono raggruppate in database, e una raccolta di database
+gestiti da una singola istanza server di <productname>PostgreSQL</productname>
+costituisce un <firstterm>cluster</firstterm> di database.
    </para>
   </sect1>
 
 
   <sect1 id="tutorial-table">
-   <title>Creating a New Table</title>
+   <title>Creare una nuova tabella</title>
 
    <indexterm zone="tutorial-table">
     <primary>CREATE TABLE</primary>
    </indexterm>
 
    <para>
-    You  can  create  a  new  table by specifying the table
-    name, along with all column names and their types:
+È possibile creare una nuova tabella specificandone il nome, 
+insieme a tutti i nomi di colonna e i loro tipi:
 
 <programlisting>
 CREATE TABLE weather (
@@ -126,58 +124,56 @@ CREATE TABLE weather (
 );
 </programlisting>
 
-    You can enter this into <command>psql</command> with the line
-    breaks.  <command>psql</command> will recognize that the command
-    is not terminated until the semicolon.
+È possibile inserire questo all'interno di <command>psql</command> con le
+interruzioni di linea. <command>psql</command> considererà il comando non terminato
+fino a che non incontra un punto e virgola.
    </para>
 
    <para>
-    White space (i.e., spaces, tabs, and newlines) can be used freely
-    in SQL commands.  That means you can type the command aligned
-    differently than above, or even all on one line.  Two dashes
-    (<quote><literal>--</literal></quote>) introduce comments.
-    Whatever follows them is ignored up to the end of the line.  SQL
-    is case insensitive about key words and identifiers, except
-    when identifiers are double-quoted to preserve the case (not done
-    above).
+Gli spazi bianchi (per es., spazi, tabulature e accapo) possono essere usati liberamente
+nei comandi SQL. Questo significa che si può digitare il comando allineato 
+diversamente rispetto a sopra, oppure anche in un'unica linea. I due trattini
+(<quote><literal>--</literal></quote>) introducono commenti.
+Ogni cosa che li segue viene ignorata fino alla fine della linea. L'SQL
+è insensibile alle maiuscole per quanto riguarda parole chiave e identificatori, eccetto
+quando gli identificatori sono racchiusi tra doppi apici per preservare il "case" (sopra non
+è stato fatto).
    </para>
 
    <para>
-    <type>varchar(80)</type> specifies a data type that can store
-    arbitrary character strings up to 80 characters in length.
-    <type>int</type> is the normal integer type.  <type>real</type> is
-    a type for storing single precision floating-point numbers.
-    <type>date</type> should be self-explanatory.  (Yes, the column of
-    type <type>date</type> is also named <structfield>date</structfield>.
-    This might be convenient or confusing &mdash; you choose.)
+<type>varchar(80)</type> specifica un tipo di dato che può contenere
+stringhe arbitrarie fino a 80 caratteri in lunghezza.
+<type>int</type> è il normale tipo intero. <type>real</type> è 
+un tipo per rappresentare numeri a virgola mobile a singola precisione.
+<type>date</type> dovrebbe essere auto esplicativo. (Si, la colonna di tipo
+<type>date</type> è chiamata <structfield>date</structfield>.
+Questo potrebbe essere utile o potrebbe confondere - a voi la scelta).
    </para>
 
    <para>
-    <productname>PostgreSQL</productname> supports the standard
-    <acronym>SQL</acronym> types <type>int</type>,
-    <type>smallint</type>, <type>real</type>, <type>double
-    precision</type>, <type>char(<replaceable>N</replaceable>)</type>,
-    <type>varchar(<replaceable>N</replaceable>)</type>, <type>date</type>,
-    <type>time</type>, <type>timestamp</type>, and
-    <type>interval</type>, as well as other types of general utility
-    and a rich set of geometric types.
-    <productname>PostgreSQL</productname> can be customized with an
-    arbitrary number of user-defined data types.  Consequently, type
-    names are not key words in the syntax, except where required to
-    support special cases in the <acronym>SQL</acronym> standard.
+<productname>PostgreSQL</productname> supporta i tipi standard
+<acronym>SQL</acronym> <type>int</type>, <type>smallint</type>, <type>real</type>, <type>double
+precision</type>, <type>char(<replaceable>N</replaceable>)</type>,
+<type>varchar(<replaceable>N</replaceable>)</type>, <type>date</type>,
+<type>time</type>, <type>timestamp</type> e <type>interval</type>,
+così come altri tipi di utilità generale e un insieme completo di tipi geometrici.
+<productname>PostgreSQL</productname> può essere personalizzato con un numero arbitrario
+di tipi di dato definiti dall'utente. Di conseguenza, i nomi dei tipi
+non sono parole chiave nella sintassi, eccetto dove richiesto di sostenere
+casi speciali nello standard <acronym>SQL</acronym>.
    </para>
 
    <para>
-    The second example will store cities and their associated
-    geographical location:
+Il secondo esempio memorizza città e la loro posizione geografica 
+associata:
 <programlisting>
 CREATE TABLE cities (
     name            varchar(80),
     location        point
 );
 </programlisting>
-    The <type>point</type> type is an example of a
-    <productname>PostgreSQL</productname>-specific data type.
+Il tipo <type>point</type> è un esempio di un tipo di dato specifico di 
+<productname>PostgreSQL</productname>.
    </para>
 
    <para>
@@ -185,9 +181,9 @@ CREATE TABLE cities (
      <primary>DROP TABLE</primary>
     </indexterm>
 
-    Finally, it should be mentioned that if you don't need a table any
-    longer or want to recreate it differently you can remove it using
-    the following command:
+Infine, dobbiamo ricordare che se non si ha più bisogno di una tabella 
+o si vuole crearla di nuovo in maniera diversa è possibile rimuoverla 
+usando il seguente comando:
 <synopsis>
 DROP TABLE <replaceable>tablename</replaceable>;
 </synopsis>
@@ -196,58 +192,56 @@ DROP TABLE <replaceable>tablename</replaceable>;
 
 
   <sect1 id="tutorial-populate">
-   <title>Populating a Table With Rows</title>
+   <title>Popolare una tabella con righe</title>
 
    <indexterm zone="tutorial-populate">
     <primary>INSERT</primary>
    </indexterm>
 
    <para>
-    The <command>INSERT</command> statement is used to populate a table  with
-    rows:
+L'istruzione <command>INSERT</command> viene usata per popolare una tabella con
+righe:
 
 <programlisting>
 INSERT INTO weather VALUES ('San Francisco', 46, 50, 0.25, '1994-11-27');
 </programlisting>
 
-    Note that all data types use rather obvious input formats.
-    Constants that are not simple numeric values usually must be
-    surrounded by single quotes (<literal>'</literal>), as in the example.
-    The
-    <type>date</type> type is actually quite flexible in what it
-    accepts, but for this tutorial we will stick to the unambiguous
-    format shown here.
+Notare che tutti i tipi di dato usano formati di input abbastanza ovvi.
+Costanti che non sono semplici valori numerici di solito devono essere circondate 
+da apici singoli (<literal>'</literal>), come nell'esempio.
+Il tipo <type>date</type> attualmente è abbastanza flessibile in ciò che accetta, 
+ma per questo tutorial useremo un formato non ambiguo come mostrato qui.
    </para>
 
    <para>
-    The <type>point</type> type requires a coordinate pair as input,
-    as shown here:
+Il tipo <type>point</type> richiede una coppia di coordinate come input,
+come mostrato qui:
 <programlisting>
 INSERT INTO cities VALUES ('San Francisco', '(-194.0, 53.0)');
 </programlisting>
    </para>
 
    <para>
-    The syntax used so far requires you to remember the order of the
-    columns.  An alternative syntax allows you to list the columns
-    explicitly:
+La sintassi usata richiede di ricordare l'ordine delle colonne. 
+Una sintassi alternativa permette di elencare le colonne
+esplicitamente:
 <programlisting>
 INSERT INTO weather (city, temp_lo, temp_hi, prcp, date)
     VALUES ('San Francisco', 43, 57, 0.0, '1994-11-29');
 </programlisting>
-    You can list the columns in a different order if you wish or
-    even omit some columns, e.g., if the precipitation is unknown:
+È possibile elencare le colonne in un ordine diverso se si desidera o
+si omettono alcune colonne, per es., se la precipitazione è sconosciuta:
 <programlisting>
 INSERT INTO weather (date, city, temp_hi, temp_lo)
     VALUES ('1994-11-29', 'Hayward', 54, 37);
 </programlisting>
-    Many developers consider explicitly listing the columns better
-    style than relying on the order implicitly.
+Molti sviluppatori considerano uno stile migliore elencare esplicitamente 
+le colonne rispetto a fidarsi dell'ordine implicitamente.
    </para>
 
    <para>
-    Please enter all the commands shown above so you have some data to
-    work with in the following sections.
+Preghiamo di inserire tutti i comandi visti sopra così da avere alcuni dati con cui 
+lavorare nelle sezioni seguenti.
    </para>
 
    <para>
@@ -255,57 +249,56 @@ INSERT INTO weather (date, city, temp_hi, temp_lo)
      <primary>COPY</primary>
     </indexterm>
 
-    You could also have used <command>COPY</command> to load large
-    amounts of data from flat-text files.  This is usually faster
-    because the <command>COPY</command> command is optimized for this
-    application while allowing less flexibility than
-    <command>INSERT</command>.  An example would be:
+Si potrebbe anche usare <command>COPY</command> per caricare grandi quantità di 
+dati dafile di testo semplici. Questo di solito è più veloce
+dato che il comando <command>COPY</command> è ottimizzato per questa applicazione
+ma allo stesso tempo permette meno flessibilità di 
+<command>INSERT</command>.  Un esempio potrebbe essere:
 
 <programlisting>
 COPY weather FROM '/home/user/weather.txt';
 </programlisting>
 
-    where the file name for the source file must be available to the
-    backend server machine, not the client, since the backend server
-    reads the file directly.  You can read more about the
-    <command>COPY</command> command in <xref linkend="sql-copy"/>.
+dove il nome del file del file sorgente deve essere disponibile per la
+macchina backend, non per il client, dato che il server backend legge il 
+file direttamente. Si può leggere di più sul comando 
+<command>COPY</command> in <xref linkend="sql-copy"/>.
    </para>
   </sect1>
 
 
   <sect1 id="tutorial-select">
-   <title>Querying a Table</title>
+   <title>Interrogare una tabella</title>
 
    <para>
     <indexterm><primary>query</primary></indexterm>
     <indexterm><primary>SELECT</primary></indexterm>
 
-    To retrieve data from a table, the table is
-    <firstterm>queried</firstterm>.  An <acronym>SQL</acronym>
-    <command>SELECT</command> statement is used to do this.  The
-    statement is divided into a select list (the part that lists the
-    columns to be returned), a table list (the part that lists the
-    tables from which to retrieve the data), and an optional
-    qualification (the part that specifies any restrictions).  For
-    example, to retrieve all the rows of table
-    <structname>weather</structname>, type:
+Per ricavare dati da una tabella, la tabella
+viene <firstterm>interrogata</firstterm>. Un'istruzione <command>SELECT</command> 
+di <acronym>SQL</acronym> serve allo scopo. L'istruzione è divisa in un elenco select 
+(la parte che elenca le colonne che devono essere restituite), un elenco di tabelle 
+(la parte che elenca le tabelle da cui ricavare i dati), e un qualificatore
+opzionale  (la parte che specifica eventuali restrizioni). Per esempio,
+per ottenere tutte le righe della tabella 
+<structname>weather</structname>, digitare:
 <programlisting>
 SELECT * FROM weather;
 </programlisting>
-    Here <literal>*</literal> is a shorthand for <quote>all columns</quote>.
+Qui <literal>*</literal> è una scorciatoia per <quote>tutte le colonne<quote>.
      <footnote>
       <para>
-       While <literal>SELECT *</literal> is useful for off-the-cuff
-       queries, it is widely considered bad style in production code,
-       since adding a column to the table would change the results.
+Mentre  <literal>SELECT *</literal> è utile per query "a braccio",
+è considerato cattivo stile in codice per la produzione,  
+dato che l'aggiunta di una colonnna alla tabella cambierebbe i risultati.
       </para>
      </footnote>
-    So the same result would be had with:
+Così lo stesso risultato si avrà con:
 <programlisting>
 SELECT city, temp_lo, temp_hi, prcp, date FROM weather;
 </programlisting>
 
-    The output should be:
+L'output sarà:
 
 <screen>
      city      | temp_lo | temp_hi | prcp |    date
@@ -318,12 +311,12 @@ SELECT city, temp_lo, temp_hi, prcp, date FROM weather;
    </para>
 
    <para>
-    You can write expressions, not just simple column references, in the
-    select list.  For example, you can do:
+Si possono scrivere espressioni, non solo semplici riferimenti a colonne, 
+nell'elenco select. Per esempio, è possibile fare:
 <programlisting>
 SELECT city, (temp_hi+temp_lo)/2 AS temp_avg, date FROM weather;
 </programlisting>
-    This should give:
+Questo darà:
 <screen>
      city      | temp_avg |    date
 ---------------+----------+------------
@@ -332,19 +325,18 @@ SELECT city, (temp_hi+temp_lo)/2 AS temp_avg, date FROM weather;
  Hayward       |       45 | 1994-11-29
 (3 rows)
 </screen>
-    Notice how the <literal>AS</literal> clause is used to relabel the
-    output column.  (The <literal>AS</literal> clause is optional.)
+Notare come la clausola <literal>AS</literal> è usata per rinominare la colonna di 
+output. (La clausola <literal>AS</literal> è opzionale).
    </para>
 
    <para>
-    A query can be <quote>qualified</quote> by adding a <literal>WHERE</literal>
-    clause that specifies which rows are wanted.  The <literal>WHERE</literal>
-    clause contains a Boolean (truth value) expression, and only rows for
-    which the Boolean expression is true are returned.  The usual
-    Boolean operators (<literal>AND</literal>,
-    <literal>OR</literal>, and <literal>NOT</literal>) are allowed in
-    the qualification.  For example, the following
-    retrieves the weather of San Francisco on rainy days:
+Una query può essere <quote>qualificata</quote> aggiungendo una clausola <literal>WHERE</literal>
+che specifica quali righe si vogliono. La clausola <literal>WHERE</literal>
+contiene un'espressione booleana (valore di verità), e solo le righe che soddisfano l'espressione
+sono restituite. Gli operatori booleani comuni (<literal>AND</literal>,
+<literal>OR</literal>, e <literal>NOT</literal>) sono permessi nella qualificazione.
+Per esempio, l'istruzione seguente ricava il tempo metereologico 
+di San Francisco nei giorni di pioggia:
 
 <programlisting>
 SELECT * FROM weather
@@ -362,8 +354,8 @@ SELECT * FROM weather
    <para>
     <indexterm><primary>ORDER BY</primary></indexterm>
 
-    You can request that the results of a query
-    be returned in sorted order:
+È possibile richiedere che il risultato di una query 
+sia restituito in maniera ordinata:
 
 <programlisting>
 SELECT * FROM weather
@@ -378,9 +370,9 @@ SELECT * FROM weather
  San Francisco |      46 |      50 | 0.25 | 1994-11-27
 </screen>
 
-    In this example, the sort order isn't fully specified, and so you
-    might get the San Francisco rows in either order.  But you'd always
-    get the results shown above if you do:
+In questo esempio, l'ordinamento non è specificato completamente, e così 
+si potrebbe ottenere le righe riguardanti San Francisco in qualsiasi ordine. 
+Si otterrano i risultati come mostrato sopra se si esegue:
 
 <programlisting>
 SELECT * FROM weather
@@ -392,8 +384,8 @@ SELECT * FROM weather
     <indexterm><primary>DISTINCT</primary></indexterm>
     <indexterm><primary>duplicate</primary></indexterm>
 
-    You can request that duplicate rows be removed from the result of
-    a query:
+È possibile richiedere che righe duplicate siano rimosse dal risultato 
+di una query:
 
 <programlisting>
 SELECT DISTINCT city
@@ -408,18 +400,17 @@ SELECT DISTINCT city
 (2 rows)
 </screen>
 
-    Here again, the result row ordering might vary.
-    You can ensure consistent results by using <literal>DISTINCT</literal> and
-    <literal>ORDER BY</literal> together:
+Qui, ancora una volta, l'ordinamento delle righe del risultato potrebbe variare.
+È possibile assicurare risultati consistenti usando  <literal>DISTINCT</literal> e
+<literal>ORDER BY</literal> insieme:
      <footnote>
       <para>
-       In some database systems, including older versions of
-       <productname>PostgreSQL</productname>, the implementation of
-       <literal>DISTINCT</literal> automatically orders the rows and
-       so <literal>ORDER BY</literal> is unnecessary.  But this is not
-       required by the SQL standard, and current
-       <productname>PostgreSQL</productname> does not guarantee that
-       <literal>DISTINCT</literal> causes the rows to be ordered.
+In alcuni sistemi di database, compreso vecchie versioni di 
+<productname>PostgreSQL</productname>, l'implementazione di 
+<literal>DISTINCT</literal> automaticamente ordina le righe e quindi 
+<literal>ORDER BY</literal> non è necessario. Ma questo non è richiesto dallo 
+standard SQL, e <productname>PostgreSQL</productname> correntemente non garantisce 
+che <literal>DISTINCT</literal> comporti l'ordinamento delle righe. 
       </para>
      </footnote>
 
@@ -433,24 +424,24 @@ SELECT DISTINCT city
 
 
   <sect1 id="tutorial-join">
-   <title>Joins Between Tables</title>
+   <title>Join tra tabelle</title>
 
    <indexterm zone="tutorial-join">
     <primary>join</primary>
    </indexterm>
 
    <para>
-    Thus far, our queries have only accessed one table at a time.
-    Queries can access multiple tables at once, or access the same
-    table in such a way that multiple rows of the table are being
-    processed at the same time.  A query that accesses multiple rows
-    of the same or different tables at one time is called a
-    <firstterm>join</firstterm> query.  As an example, say you wish to
-    list all the weather records together with the location of the
-    associated city.  To do that, we need to compare the <structfield>city</structfield>
-    column of each row of the <structname>weather</structname> table with the
-    <structfield>name</structfield> column of all rows in the <structname>cities</structname>
-    table, and select the pairs of rows where these values match.
+Fino ad ora, le query presentate accedono ad una tabella per volta.
+Le query possono accedere a molteplici tabelle in una volta, o accedere alla stessa
+tabella in modo che molteplici righe siano processate
+nello stesso momento. Una query che accede a molteplici righe della stessa tabella 
+o di tabelle diverse nello stesso momento viene chiamata una query <firstterm>join</firstterm>.
+Come esempio, mettiamo che si desideri elencare tutti i record di tempo metereologico 
+insieme alla posizione della città associata. Per farlo, è possibile confrontare 
+la colonna <structfield>city</structfield> di ogni riga della 
+tabella <structname>weather</structname> con la colonna <structfield>name</structfield>
+di tutte le righe della tabella <structname>cities</structname>,
+e selezionare le coppie di righe in cui questi valori corrispondono.
     <note>
      <para>
       This  is only a conceptual model.  The join is usually performed

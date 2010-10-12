@@ -285,7 +285,8 @@ per ottenere tutte le righe della tabella
 <programlisting>
 SELECT * FROM weather;
 </programlisting>
-Qui <literal>*</literal> è una scorciatoia per <quote>tutte le colonne<quote>.
+Qui <literal>*</literal> è una scorciatoia per <quote>tutte le colonne</quote>.
+
      <footnote>
       <para>
 Mentre  <literal>SELECT *</literal> è utile per query "a braccio",

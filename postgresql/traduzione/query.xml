@@ -117,9 +117,9 @@ insieme a tutti i nomi di colonna e i loro tipi:
 <programlisting>
 CREATE TABLE weather (
     city            varchar(80),
-    temp_lo         int,           -- low temperature
-    temp_hi         int,           -- high temperature
-    prcp            real,          -- precipitation
+    temp_lo         int,           -- temperatura minima
+    temp_hi         int,           -- temperatura massima
+    prcp            real,          -- precipitazione
     date            date
 );
 </programlisting>
@@ -854,7 +854,7 @@ SELECT * FROM weather;
    </para>
 
    <para>
-Si dovrebbe essere cauri con istruzioni della forma
+Si dovrebbe essere cauti con istruzioni della forma
 <synopsis>
 DELETE FROM <replaceable>tablename</replaceable>;
 </synopsis>

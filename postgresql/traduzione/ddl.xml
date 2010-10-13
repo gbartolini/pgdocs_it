@@ -423,13 +423,13 @@ CREATE TABLE products (
    </para>
 
    <para>
-        Un vincolo non-null è sempre scritto come un vincolo di colonna. Un    
+        Un vincolo not-null è sempre scritto come un vincolo di colonna. Un    
         vincolo not-null funziona come un vincolo check della forma
         <literal>CHECK (<replaceable>column_name</replaceable>
         IS NOT NULL)</literal>, ma in 
         <productname>PostgreSQL</productname> creare esplicitamente un 
         vincolo not-null è più efficiente. Il rovescio della medaglia è che non è possibile
-        dare esplicitamente nomi ai vincoli not-null creati in questo modo.
+        dare un nome in modo esplicito ai vincoli not-null creati in questo modo.
    </para>
 
    <para>
@@ -442,21 +442,21 @@ CREATE TABLE products (
     price numeric NOT NULL CHECK (price &gt; 0)
 );
 </programlisting>
-        L'ordine non conta. Esso non determina necessariamente in quale ordine
-        i vincoli sono controllati.
+        L'ordine non fa testo e non determina necessariamente in quale ordine
+        i vincoli vengano controllati.
    </para>
 
    <para>
-        Il vincolo <literal>NOT NULL</literal> ha un inverso: il 
+        Il vincolo <literal>NOT NULL</literal> ha un suo inverso: il 
         vincolo <literal>NULL</literal>. Questo non significa che la colonna
-        debba essere nulla, che sarebbe sicuramente inutile. Invece, questo 
-        seleziona semplicemente il comportamento di default della colonna sia null.
+        debba essere nulla (cosa alquanto inutile), quanto che il valore
+        di default della colonna sia null.
         Il vincolo <literal>NULL</literal> non è presente nello standard SQL 
         e non dovrebbe essere usato in applicazioni portabili (è stato
         aggiunto a <productname>PostgreSQL</productname> per essere 
-        compatibile con alcuni altri sistemi di database). Ad alcuni utenti, comunque,
-        piace perchè rende facile cambiare il vincolo in uno script.
-        Per esempio, potresti partire con:
+        compatibile con alcuni altri sistemi di database).
+	Alcuni utenti lo preferiscono in quanto rende facile cambiare
+	il vincolo in uno script. Ad esempio, potrebbe essere pratico iniziare con:
 <programlisting>
 CREATE TABLE products (
     product_no integer NULL,
@@ -469,7 +469,7 @@ CREATE TABLE products (
 
    <tip>
     <para>
-        In molti progetti di database la maggioranza delle colonne dovrebbe essere segnata come
+        In molti progetti di database la maggioranza delle colonne dovrebbe essere definita come
         not null.
     </para>
    </tip>

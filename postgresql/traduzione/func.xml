@@ -3431,7 +3431,7 @@ substring('foobar' from 'o(.)b')   <lineannotation>o</lineannotation>
    </para>
 
     <para>
-    La funzione <function>regexp_replace</function> fornisce sostituzioni di nuovo
+    La funzione <function>regexp_replace</function> fornisce sostituzioni di 
      testo per sottostringhe che combaciano con modelli di espressioni regolari POSIX.
      Essa ha la sintassi
      <function>regexp_replace</function>(<replaceable>source</replaceable>,

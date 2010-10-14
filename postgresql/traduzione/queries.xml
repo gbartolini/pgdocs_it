@@ -2,7 +2,7 @@
 <!-- $PostgreSQL$ -->
 
 <chapter id="queries">
- <title>Queries</title>
+ <title>Query</title>
 
  <indexterm zone="queries">
   <primary>query</primary>
@@ -13,67 +13,62 @@
  </indexterm>
 
  <para>
-  The previous chapters explained how to create tables, how to fill
-  them with data, and how to manipulate that data.  Now we finally
-  discuss how to retrieve the data from the database.
+Nei capitoli precedenti è stato spiegato come create tabelle, come 
+riempirle di dati, e come manipolare i dati. Adesso finalmente verrà discusso
+come recuperare i dati dal database.
  </para>
 
 
  <sect1 id="queries-overview">
-  <title>Overview</title>
+  <title>Panoramica</title>
 
   <para>
-   The process of retrieving or the command to retrieve data from a
-   database is called a <firstterm>query</firstterm>.  In SQL the
-   <xref linkend="sql-select"/> command is
-   used to specify queries.  The general syntax of the
-   <command>SELECT</command> command is
+Il processo di recupero o il comando per ottenere dati da un database
+è chiamato <firstterm>query</firstterm>.  In SQL, per realizzare una query,
+si usa il comando <xref linkend="sql-select"/>. La sintassi generale
+del comando <command>SELECT</command> è
 <synopsis>
 <optional>WITH <replaceable>with_queries</replaceable></optional> SELECT <replaceable>select_list</replaceable> FROM <replaceable>table_expression</replaceable> <optional><replaceable>sort_specification</replaceable></optional>
 </synopsis>
-   The following sections describe the details of the select list, the
-   table expression, and the sort specification.  <literal>WITH</literal>
-   queries are treated last since they are an advanced feature.
+Le sezioni seguenti descrivono i dettagli riguardo all'elenco di selezione, all'espressione di tabella 
+e alla specifica di tipo. Le query <literal>WITH</literal> sono trattate per ultime
+dato che sono una caratteristica avanzata.
   </para>
 
   <para>
-   A simple kind of query has the form:
+Un tipo semplice di query ha la forma:
 <programlisting>
 SELECT * FROM table1;
 </programlisting>
-  Assuming that there is a table called <literal>table1</literal>,
-  this command would retrieve all rows and all columns from
-  <literal>table1</literal>.  (The method of retrieval depends on the
-  client application.  For example, the
-  <application>psql</application> program will display an ASCII-art
-  table on the screen, while client libraries will offer functions to
-  extract individual values from the query result.)  The select list
-  specification <literal>*</literal> means all columns that the table
-  expression happens to provide.  A select list can also select a
-  subset of the available columns or make calculations using the
-  columns.  For example, if
-  <literal>table1</literal> has columns named <literal>a</literal>,
-  <literal>b</literal>, and <literal>c</literal> (and perhaps others) you can make
-  the following query:
+Assumendo che ci sia una tabella chiamata <literal>table1</literal>,
+questo comando restituisce tutte le righe e tutte le colonne da 
+<literal>table1</literal>. (Il metodo di reperimento dipende dall'applicazione client.
+Per esempio, il programma <application>psql</application> mostrerà sullo schermo una tabella
+in ASCII-art, mentre librerie client offriranno funzioni per 
+estrarre valori individuali dal risultato della query). <literal>*</literal>  
+come elenco di selezione significa "tutte le colonne che soddisfano l'elenco di selezione". 
+Un elenco di selezione può anche selezionare un sottoinsieme delle colonne disponibili
+o fare calcoli usando le colonne. Per esempio, se
+<literal>table1</literal> ha colonne chiamate <literal>a</literal>,
+<literal>b</literal> e <literal>c</literal> (e magari altre) è possibile eseguire
+la query seguente:
 <programlisting>
 SELECT a, b + c FROM table1;
 </programlisting>
-  (assuming that <literal>b</literal> and <literal>c</literal> are of a numerical
-  data type).
-  See <xref linkend="queries-select-lists"/> for more details.
+(assumendo che <literal>b</literal> e <literal>c</literal> siano tipi di dato numerici).
+Si veda <xref linkend="queries-select-lists"/> per maggiori dettagli.
  </para>
 
  <para>
-  <literal>FROM table1</literal> is a simple kind of
-  table expression: it reads just one table.  In general, table
-  expressions can be complex constructs of base tables, joins, and
-  subqueries.  But you can also omit the table expression entirely and
-  use the <command>SELECT</command> command as a calculator:
+<literal>FROM table1</literal> è un tipo semplice di espressione di tabella:
+legge semplicemenete una tabella. In generale, le espressioni di tabella possono essere
+costrutti complessi di tabelle, join e sottoquery. Ma è possibile anche omettere interamente l'espressione
+di tabella e usare il comando <command>SELECT</command> come una calcolatrice:
 <programlisting>
 SELECT 3 * 4;
 </programlisting>
-  This is more useful if the expressions in the select list return
-  varying results.  For example, you could call a function this way:
+Questo è maggiormente utile se le espressioni nell'elenco di selezione restituiscono 
+risultati mutevoli.
 <programlisting>
 SELECT random();
 </programlisting>
@@ -82,50 +77,48 @@ SELECT random();
 
 
  <sect1 id="queries-table-expressions">
-  <title>Table Expressions</title>
+  <title>Expressioni di tabella</title>
 
   <indexterm zone="queries-table-expressions">
-   <primary>table expression</primary>
+   <primary>espressione di tabella</primary>
   </indexterm>
 
   <para>
-   A <firstterm>table expression</firstterm> computes a table.  The
-   table expression contains a <literal>FROM</literal> clause that is
-   optionally followed by <literal>WHERE</literal>, <literal>GROUP BY</literal>, and
-   <literal>HAVING</literal> clauses.  Trivial table expressions simply refer
-   to a table on disk, a so-called base table, but more complex
-   expressions can be used to modify or combine base tables in various
-   ways.
+Un'<firstterm>espressione di tabella</firstterm> calcola  una tabella. L'espressione
+di tabella contiene una clausola <literal>FROM</literal> che opzionalmente è seguita dalle clausole
+da <literal>WHERE</literal>,  <literal>GROUP BY</literal> e
+<literal>HAVING</literal>.  Espressioni di tabella insignificanti si riferiscono semplicemente
+a una tabella su disco, chiamata tabella base, ma espressioni più complesse
+possono essere usate per modificare o combinare tabelle base in diversi modi.
   </para>
 
   <para>
-   The optional <literal>WHERE</literal>, <literal>GROUP BY</literal>, and
-   <literal>HAVING</literal> clauses in the table expression specify a
-   pipeline of successive transformations performed on the table
-   derived in the <literal>FROM</literal> clause.  All these transformations
-   produce a virtual table that provides the rows that are passed to
-   the select list to compute the output rows of the query.
+Le clausole opzionali <literal>WHERE</literal>, <literal>GROUP BY</literal> e
+<literal>HAVING</literal> nell'espressione di tabella specificano una pipeline di 
+successive trasformazioni eseguite sulla tabella
+derivata nella clausola <literal>FROM</literal> Tutte queste trasformazioni
+producono una tabella virtuale che fornisce le righe passate all'elenco di selezione
+per ricavare le righe di output della dquery.
   </para>
 
   <sect2 id="queries-from">
-   <title>The <literal>FROM</literal> Clause</title>
+   <title>La clausola <literal>FROM</literal></title>
 
    <para>
     The <xref linkend="sql-from" endterm="sql-from-title"/> derives a
-    table from one or more other tables given in a comma-separated
-    table reference list.
+La <xref linkend="sql-from" endterm="sql-from-title"/> ricava una tabella da uno o più riferimenti di tabella
+fornite in un elenco separato da virgole.
 <synopsis>
 FROM <replaceable>table_reference</replaceable> <optional>, <replaceable>table_reference</replaceable> <optional>, ...</optional></optional>
 </synopsis>
 
-    A table reference can be a table name (possibly schema-qualified),
-    or a derived table such as a subquery, a table join, or complex
-    combinations of these.  If more than one table reference is listed
-    in the <literal>FROM</literal> clause they are cross-joined (see below)
-    to form the intermediate virtual table that can then be subject to
-    transformations by the <literal>WHERE</literal>, <literal>GROUP BY</literal>,
-    and <literal>HAVING</literal> clauses and is finally the result of the
-    overall table expression.
+Un riferimento di tabella può essere il nome di una tabella (possibilimente qualificato dallo schema),
+o una tabella derivata come una sottoquery, una join di tabella, o combinazioni complesse di queste.
+Se viene elencato più di un riferimento di tabella nella clausola 
+<literal>FROM</literal> vengono sottoposti a "cross-join" (si veda sotto)
+per formare la tabella virtuale intermedia che può essere soggetto di 
+trasformazioni da parte di clausole <literal>WHERE</literal>, <literal>GROUP BY</literal>,
+e <literal>HAVING</literal> e sarà finalmente il risultato dell'espressione di tabella globale.
    </para>
 
    <indexterm>
@@ -133,29 +126,29 @@ FROM <replaceable>table_reference</replaceable> <optional>, <replaceable>table_r
    </indexterm>
 
    <para>
-    When a table reference names a table that is the parent of a
-    table inheritance hierarchy, the table reference produces rows of
-    not only that table but all of its descendant tables, unless the
-    key word <literal>ONLY</literal> precedes the table name.  However, the
-    reference produces only the columns that appear in the named table
-    &mdash; any columns added in subtables are ignored.
+Quando un riferimento di tabella nomina una tabella genitore di una 
+gerarchia di ereditarietà, il riferimento di tabella produce righe 
+non solo di quella tabella, ma anche di tutte le tabelle discendenti, a meno che la 
+parola chiave <literal>ONLY</literal> preceda il nome della tabella. Comunque, 
+il riferimento produce solo colonne che appaiono nella tabella nominata -
+ogni colonna aggiunta nelle sotto-tabelle  viene ignorata.
    </para>
 
    <sect3 id="queries-join">
-    <title>Joined Tables</title>
+    <title>Tabelle Join</title>
 
     <indexterm zone="queries-join">
      <primary>join</primary>
     </indexterm>
 
     <para>
-     A joined table is a table derived from two other (real or
-     derived) tables according to the rules of the particular join
-     type.  Inner, outer, and cross-joins are available.
+Una tabella join è una tabella derivata da altre due tabelle (reali o derivate)
+seguendo le regole del particolare tipi di join. Sono disponibili inner join, outer join e 
+cross join.
     </para>
 
     <variablelist>
-     <title>Join Types</title>
+     <title>Tipi di join</title>
 
      <varlistentry>
       <term>Cross join</term>
@@ -175,29 +168,28 @@ FROM <replaceable>table_reference</replaceable> <optional>, <replaceable>table_r
 </synopsis>
 
        <para>
-        For every possible combination of rows from
-        <replaceable>T1</replaceable> and
-        <replaceable>T2</replaceable> (i.e., a Cartesian product),
-        the joined table will contain a
-        row consisting of all columns in <replaceable>T1</replaceable>
-        followed by all columns in <replaceable>T2</replaceable>.  If
-        the tables have N and M rows respectively, the joined
-        table will have N * M rows.
+Per ogni possibile combinazione di righe provenienti da
+<replaceable>T1</replaceable> e 
+<replaceable>T2</replaceable> (per es., un prodotto cartesiano),
+la tabella risultante conterrà una riga 
+comprendente tutte le colonne di <replaceable>T1</replaceable>
+seguite da tutte le colonne di <replaceable>T2</replaceable>. Se 
+le tabelle hanno rispettivamente N e M righe, la tabella risultante  
+avrà N * M righe.
        </para>
 
        <para>
-        <literal>FROM <replaceable>T1</replaceable> CROSS JOIN
-        <replaceable>T2</replaceable></literal> is equivalent to
-        <literal>FROM <replaceable>T1</replaceable>,
-        <replaceable>T2</replaceable></literal>.  It is also equivalent to
-        <literal>FROM <replaceable>T1</replaceable> INNER JOIN
-        <replaceable>T2</replaceable> ON TRUE</literal> (see below).
+<literal>FROM <replaceable>T1</replaceable> CROSS JOIN
+<replaceable>T2</replaceable></literal> è equivalente a 
+<literal>FROM <replaceable>T1</replaceable>, <replaceable>T2</replaceable></literal>.
+È anche equivalente a <literal>FROM <replaceable>T1</replaceable> INNER JOIN
+<replaceable>T2</replaceable> ON TRUE</literal> (si veda sotto).
        </para>
       </listitem>
      </varlistentry>
 
      <varlistentry>
-      <term>Qualified joins</term>
+      <term>Join qualificate</term>
 
       <indexterm>
        <primary>join</primary>
@@ -216,43 +208,40 @@ FROM <replaceable>table_reference</replaceable> <optional>, <replaceable>table_r
 </synopsis>
 
        <para>
-        The words <literal>INNER</literal> and
-        <literal>OUTER</literal> are optional in all forms.
-        <literal>INNER</literal> is the default;
-        <literal>LEFT</literal>, <literal>RIGHT</literal>, and
-        <literal>FULL</literal> imply an outer join.
+Le parole <literal>INNER</literal> e
+<literal>OUTER</literal> sono opzionali in tutte le forme.
+<literal>INNER</literal> è il predefinito;
+<literal>LEFT</literal>, <literal>RIGHT</literal>, e
+<literal>FULL</literal> implicano una outer join.
        </para>
 
        <para>
-        The <firstterm>join condition</firstterm> is specified in the
-        <literal>ON</literal> or <literal>USING</literal> clause, or implicitly by
-        the word <literal>NATURAL</literal>.  The join condition determines
-        which rows from the two source tables are considered to
-        <quote>match</quote>, as explained in detail below.
+La <firstterm>condizione di join</firstterm> viene specificata nella clausola <literal>ON</literal>
+o <literal>USING</literal>, o implicitamente dalla parola <literal>NATURAL</literal>.
+La condizione di join determina quali righe delle due tabelle sorgente sono considerate
+<quote>corrispondere</quote>, come spiegato in dettaglio sotto.
        </para>
 
        <para>
-        The <literal>ON</literal> clause is the most general kind of join
-        condition: it takes a Boolean value expression of the same
-        kind as is used in a <literal>WHERE</literal> clause.  A pair of rows
-        from <replaceable>T1</replaceable> and <replaceable>T2</replaceable> match if the
-        <literal>ON</literal> expression evaluates to true for them.
+La clausola <literal>ON</literal> è il tipo più generale di condizione join:
+essa prende un espressione di valore booleano dello stesso tipo usato  
+in una clausola <literal>WHERE</literal>. una coppia di righe
+di <replaceable>T1</replaceable> e <replaceable>T2</replaceable> corrisponde se 
+l'espressione <literal>ON</literal> risulta true per loro.
        </para>
 
        <para>
-        <literal>USING</literal> is a shorthand notation: it takes a
-        comma-separated list of column names, which the joined tables
-        must have in common, and forms a join condition specifying
-        equality of each of these pairs of columns.  Furthermore, the
-        output of <literal>JOIN USING</literal> has one column for each of
-        the equated pairs of input columns, followed by the
-        remaining columns from each table.  Thus, <literal>USING (a, b,
-        c)</literal> is equivalent to <literal>ON (t1.a = t2.a AND
-        t1.b = t2.b AND t1.c = t2.c)</literal> with the exception that
-        if <literal>ON</literal> is used there will be two columns
-        <literal>a</literal>, <literal>b</literal>, and <literal>c</literal> in the result,
-        whereas with <literal>USING</literal> there will be only one of each
-        (and they will appear first if <command>SELECT *</command> is used).
+<literal>USING</literal> è una notazione abbreviata: accetta elenchi di nomi di colonna 
+separati da virgole, che le tabelle sottoposte a join devono avere in comune, 
+e forma una condizione di join specificando
+l'uguaglianza di ognuna di queste coppie di colonne. Inoltre, l'output 
+di <literal>JOIN USING</literal> ha una colonna per ognuna delle coppie 
+delle colonne di input messe in relazione. Così, <literal>USING (a, b, c)</literal> 
+è equivalente a <literal>ON (t1.a = t2.a AND t1.b = t2.b AND t1.c = t2.c)</literal>
+ad eccezione del fatto che se viene usato <literal>ON</literal> ci saranno due colonne
+<literal>a</literal>, <literal>b</literal>, e <literal>c</literal> nel risultato,
+mentre con <literal>USING</literal> ce ne sarà solo una per ognuna 
+(e appariranno per prime se viene usato <command>SELECT *</command>).
        </para>
 
        <para>

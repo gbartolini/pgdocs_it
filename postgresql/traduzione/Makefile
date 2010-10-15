@@ -9,7 +9,7 @@ VER := $(shell grep -v major version.xml | sed -e 's/<!ENTITY version "\(.*\)">/
 
 $(shell test -z "$VERSION" && echo "Non riesco a determinare la versione di PostgreSQL dal file version.xml" && exit -1)
 
-include ../Makefile.config
+include ../Makefile.config.in
 
 HTM_OUTPUT := pgsql-$(VER)-it
 WEB_OUTPUT := web-$(VER)-it

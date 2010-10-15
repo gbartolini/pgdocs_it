@@ -12,8 +12,8 @@ $(shell test -z "$VERSION" && echo "Non riesco a determinare la versione di Post
 include ../Makefile.config
 
 HTM_OUTPUT := pgsql-$(VER)-it
-WEB_OUTPUT := web-$(VER)-it
-WEBTEST_OUTPUT := web-$(VER)-it-TEST
+WEB_OUTPUT := web-it
+WEBTEST_OUTPUT := web-it-TEST
 TGZ_OUTPUT := pg$(MAJORVER).tar.gz
 ZIP_OUTPUT := pg$(MAJORVER).zip
 PDF_OUTPUT := pg$(MAJORVER).pdf

@@ -593,49 +593,47 @@ coinvolge raggruppamenti o aggregazioni.
 FROM (VALUES ('anne', 'smith'), ('bob', 'jones'), ('joe', 'blow'))
      AS names(first, last)
 </programlisting>
-     Again, a table alias is required.  Assigning alias names to the columns
-Di nuovo, è richiesto un alias di tabella. 
-     of the <command>VALUES</command> list is optional, but is good practice.
-     For more information see <xref linkend="queries-values"/>.
+Di nuovo, è richiesto un alias di tabella. Assegnare alias alle colonne  
+dell'elenco <command>VALUES</command> è opzionale, ma comunque una buona pratica.
+Per maggiori informazioni si veda <xref linkend="queries-values"/>.
     </para>
    </sect3>
 
    <sect3 id="queries-tablefunctions">
-    <title>Table Functions</title>
+    <title>Funzioni di tabella</title>
 
-    <indexterm zone="queries-tablefunctions"><primary>table function</primary></indexterm>
+    <indexterm zone="queries-tablefunctions"><primary>funzione di tabella</primary></indexterm>
 
     <indexterm zone="queries-tablefunctions">
-     <primary>function</primary>
-     <secondary>in the FROM clause</secondary>
+     <primary>funzione</primary>
+     <secondary>nella clausola FROM</secondary>
     </indexterm>
 
     <para>
-     Table functions are functions that produce a set of rows, made up
-     of either base data types (scalar types) or composite data types
-     (table rows).  They are used like a table, view, or subquery in
-     the <literal>FROM</literal> clause of a query. Columns returned by table
-     functions can be included in <literal>SELECT</literal>,
-     <literal>JOIN</literal>, or <literal>WHERE</literal> clauses in the same manner
-     as a table, view, or subquery column.
+Funzioni di tabella sono funzioni che producono un insieme di righe, fatte sia da
+tipi di dato di base (tipi scalari) che da tipi di dato composti 
+(righe di tabella). Sono usate come tabella, vista, o sottoquery nella clausola
+<literal>FROM</literal> di una query. Le colonne restituite dalle funzioni tabella
+possono essere incluse nelle <literal>SELECT</literal>, 
+<literal>JOIN</literal> o nelle clausole <literal>WHERE</literal> allo stesso modo di una tabella,
+una vista, o una colonna di sottoquery.
     </para>
 
     <para>
-     If a table function returns a base data type, the single result
-     column name matches the function name. If the function returns a
-     composite type, the result columns get the same names as the
-     individual attributes of the type.
+Se una funzione di tabella restituisce un tipo di dato di base, il nome della
+singola colonna risultante corrisponde al nome della funzione. Se la funzione restituisce un 
+tipo composto, le colonne risultanti avranno gli stessi nomi degli attributi del tipo.
     </para>
 
     <para>
-     A table function can be aliased in the <literal>FROM</literal> clause,
-     but it also can be left unaliased. If a function is used in the
-     <literal>FROM</literal> clause with no alias, the function name is used
-     as the resulting table name.
+Una funzione di tabella può essere sottoposta ad alias nella clausola <literal>FROM</literal>,
+ma può anche essere lasciata senza alias. Se una funzione viene usata nella clausola 
+<literal>FROM</literal> senza alias, il nome della funzione viene usato 
+come nome della tabella risultante.
     </para>
 
     <para>
-     Some examples:
+Alcuni esempi:
 <programlisting>
 CREATE TABLE foo (fooid int, foosubid int, fooname text);
 
@@ -659,13 +657,13 @@ SELECT * FROM vw_getfoo;
     </para>
 
     <para>
-     In some cases it is useful to define table functions that can
-     return different column sets depending on how they are invoked.
-     To support this, the table function can be declared as returning
-     the pseudotype <type>record</type>.  When such a function is used in
-     a query, the expected row structure must be specified in the
-     query itself, so that the system can know how to parse and plan
-     the query.  Consider this example:
+In alcuni casi è utile definire funzioni di tabella che possono 
+restituire insiemi di colonne diversi dipendentemente da come sono invocate.
+Per realizzare questo, la funzione di tabella può essere dichiarata che ritorni 
+lo pseudotipo <type>record</type>. Quando una funzione di questo tipo viene usata
+in una query, la struttura di riga aspettata dev'essere specificata nella query stessa,
+così che il sistema possa sapere come eseguire il parsing e il plan della query. 
+Considerare l'esempio:
 <programlisting>
 SELECT *
     FROM dblink('dbname=mydb', 'SELECT proname, prosrc FROM pg_proc')

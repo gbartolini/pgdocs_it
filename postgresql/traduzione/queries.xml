@@ -252,11 +252,11 @@ mentre con <literal>USING</literal> ce ne sarà solo una per ognuna
         <indexterm>
          <primary>natural join</primary>
         </indexterm>
-        Finally, <literal>NATURAL</literal> is a shorthand form of
-        <literal>USING</literal>: it forms a <literal>USING</literal> list
-        consisting of all column names that appear in both
-        input tables.  As with <literal>USING</literal>, these columns appear
-        only once in the output table.
+Infine, <literal>NATURAL</literal> &egrave; una forma abbreviata di
+<literal>USING</literal>: essa forma una lista <literal>USING</literal> consistente
+esattamente di quei nomi di colonna che compaiono in entrambe le
+tabelle di ingresso. Come con <literal>USING</literal>, queste colonne
+compaiono soltanto una volta nella tabella di output.
        </para>
 
        <para>

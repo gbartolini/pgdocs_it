@@ -573,7 +573,7 @@ al di fuori dell'alias <literal>c</literal>.
     <para>
 Le subquery che specificano una tabella derivata devono essere racchiuse tra
 parentesi e <emphasis>devono</emphasis> essere assegnate ad un nome
-alias di tabella. (Vedere <xref linkend="queries-table-aliases">). Per
+alias di tabella. (Vedere <xref linkend="queries-table-aliases" />). Per
 esempio:
 <programlisting>
 FROM (SELECT * FROM table1) AS alias_name

@@ -581,10 +581,6 @@ FROM (SELECT * FROM table1) AS alias_name
     </para>
 
     <para>
-     This example is equivalent to <literal>FROM table1 AS
-     alias_name</literal>.  More interesting cases, which cannot be
-     reduced to a plain join, arise when the subquery involves
-     grouping or aggregation.
 Questo esempio &egrave; equivalente a <literal>FROM tabella1 AS
 nome_alias</literal>. Casi pi&ugrave; interessanti, che non si
 riducono ad una semplice join, si presentano quando la subquery

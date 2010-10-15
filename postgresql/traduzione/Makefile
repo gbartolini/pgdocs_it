@@ -127,6 +127,7 @@ $(PDF_OUTPUT): $(src)
 	xsltproc --nonet --output $(BASEDIR)/pg-pdf.fo ../stylesheets/pg-pdf.xsl \
 		$(BASEDIR)/pg-pdf.xml
 	sed -i -e "s/inherit/all/" $(BASEDIR)/pg-pdf.fo
+	sed -i -e "s/xml.apache.org/xmlgraphics.apache.org/g" $(BASEDIR)/pg-pdf.fo
 	fop $(BASEDIR)/pg-pdf.fo $(BASEDIR)/$(HTM_OUTPUT)/$(PDF_OUTPUT)
 	rm $(BASEDIR)/pg-pdf.xml $(BASEDIR)/pg-pdf.fo
 

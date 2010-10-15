@@ -127,24 +127,9 @@ $(PDF_OUTPUT): $(src)
 	xsltproc --nonet --output $(BASEDIR)/pg-pdf.fo ../stylesheets/pg-pdf.xsl \
 		$(BASEDIR)/pg-pdf.xml
 	sed -i -e "s/inherit/all/" $(BASEDIR)/pg-pdf.fo
-	fop.sh $(BASEDIR)/pg-pdf.fo $(BASEDIR)/$(HTM_OUTPUT)/$(PDF_OUTPUT)
-	rm $(BASEDIR)/pg-pdf.xml $(BASEDIR)/pg-pdf.fo
-
-pdftest: $(PDF_OUTPUT)
-$(PDF_OUTPUT): $(src)
-	[ -d $(BASEDIR)/$(HTM_OUTPUT) ] || mkdir -p $(BASEDIR)/$(HTM_OUTPUT)
-	xsltproc --xinclude --nonet --stringparam profile.condition pdf \
-        -stringparam  profile.attribute  "standalone" -stringparam  profile.value  "no" \
-		--output $(BASEDIR)/pg-pdf.xml ../stylesheets/pg-profile.xsl test.xml
-	xsltproc --nonet \
-        --output $(BASEDIR)/pg-pdf.fo \
-        --stringparam fop1.extensions 1 \
-        ../stylesheets/pg-pdf.xsl \
-		$(BASEDIR)/pg-pdf.xml
-	sed -i -e "s/inherit/all/" $(BASEDIR)/pg-pdf.fo
 	fop $(BASEDIR)/pg-pdf.fo $(BASEDIR)/$(HTM_OUTPUT)/$(PDF_OUTPUT)
 	rm $(BASEDIR)/pg-pdf.xml $(BASEDIR)/pg-pdf.fo
-    
+
 
 quickpdf: $(QUICKPDF_OUTPUT)
 $(QUICKPDF_OUTPUT): $(src)

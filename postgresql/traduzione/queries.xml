@@ -594,6 +594,7 @@ FROM (VALUES ('anne', 'smith'), ('bob', 'jones'), ('joe', 'blow'))
      AS names(first, last)
 </programlisting>
      Again, a table alias is required.  Assigning alias names to the columns
+Di nuovo, è richiesto un alias di tabella. 
      of the <command>VALUES</command> list is optional, but is good practice.
      For more information see <xref linkend="queries-values"/>.
     </para>

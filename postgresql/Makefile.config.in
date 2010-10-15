@@ -1,4 +1,4 @@
 # Modifica questo file e rinominalo Makefile.config
 
-BASEDIR := $(HOME)/pgsql-$(VERSION)-it
-XSLROOTDIR=/opt/local/share/xsl/docbook-xsl
+BASEDIR := $(PWD)
+XSLROOTDIR=/usr/share/xml/docbook/stylesheet/docbook-xsl/

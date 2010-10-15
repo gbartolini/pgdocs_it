@@ -260,7 +260,7 @@ compaiono soltanto una volta nella tabella di output.
        </para>
 
        <para>
-        The possible types of qualified join are:
+I tipi possibili di join qualificate sono:
 
        <variablelist>
         <varlistentry>
@@ -268,8 +268,8 @@ compaiono soltanto una volta nella tabella di output.
 
          <listitem>
           <para>
-           For each row R1 of T1, the joined table has a row for each
-           row in T2 that satisfies the join condition with R1.
+Per ogni riga R1 di T1, la tabella sottoposta a join ha una riga per ogni
+riga di T2 che soddisfa la condizione di join con R1.
           </para>
          </listitem>
         </varlistentry>
@@ -288,11 +288,11 @@ compaiono soltanto una volta nella tabella di output.
 
          <listitem>
           <para>
-           First, an inner join is performed.  Then, for each row in
-           T1 that does not satisfy the join condition with any row in
-           T2, a joined row is added with null values in columns of
-           T2.  Thus, the joined table always has at least
-           one row for each row in T1.
+Prima viene eseguita una inner join. Quindi, per ogni riga in T1 che non soddisfa
+la condizione di join con qualsiasi riga in T2,
+una riga sottoposta a join viene aggiunta con valori null nelle colonne di T2.
+Così, la tabella risultante avrà almeno una riga
+per ogni riga in T1.
           </para>
          </listitem>
         </varlistentry>
@@ -311,11 +311,11 @@ compaiono soltanto una volta nella tabella di output.
 
          <listitem>
           <para>
-           First, an inner join is performed.  Then, for each row in
-           T2 that does not satisfy the join condition with any row in
-           T1, a joined row is added with null values in columns of
-           T1.  This is the converse of a left join: the result table
-           will always have a row for each row in T2.
+Prima viene eseguita una inner join. Quindi, per ogni riga in 
+T2 che non soddisfa  la condizione di join con una qualsiasi riga in T1,
+una riga sottoposta a join viene aggiunta con valori null nelle colonne di T1.
+Questo è il contrario di una left join: la tabella risultante avrà sempre una 
+riga per ogni riga di T2.
           </para>
          </listitem>
         </varlistentry>
@@ -325,12 +325,12 @@ compaiono soltanto una volta nella tabella di output.
 
          <listitem>
           <para>
-           First, an inner join is performed.  Then, for each row in
-           T1 that does not satisfy the join condition with any row in
-           T2, a joined row is added with null values in columns of
-           T2.  Also, for each row of T2 that does not satisfy the
-           join condition with any row in T1, a joined row with null
-           values in the columns of T1 is added.
+Prima viene eseguita una inner join. Quindi, per ogni riga in 
+T1 che non soddisfa la condizione di join con una qualsiasi riga in 
+T2, una riga sottoposta a join viene aggiunta con valori null nelle colonne di 
+T2. Inoltre, per ogni riga di T2 che non soddisfa la condizione 
+join con un qualsiasi riga in T1, viene aggiunta una riga join con valori null
+nelle colonne di T1.
           </para>
          </listitem>
         </varlistentry>
@@ -341,16 +341,15 @@ compaiono soltanto una volta nella tabella di output.
     </variablelist>
 
     <para>
-     Joins of all types can be chained together or nested: either or
-     both <replaceable>T1</replaceable> and
-     <replaceable>T2</replaceable> can be joined tables.  Parentheses
-     can be used around <literal>JOIN</literal> clauses to control the join
-     order.  In the absence of parentheses, <literal>JOIN</literal> clauses
-     nest left-to-right.
+Join di tutti i tipi possono essere concatenate o annidate: <replaceable>T1</replaceable>
+e/o <replaceable>T2</replaceable> possono essere tabelle sottoposte a join. 
+Possono essere usate parentesi attorno alle clausole <literal>JOIN</literal>
+per controllare l'ordine della join. In assenza di parentesi, clausole <literal>JOIN</literal>
+vanno da sinistra a destra.
     </para>
 
     <para>
-     To put this together, assume we have tables <literal>t1</literal>:
+Per mettere insieme tutto questo, assumiamo di avere le tabelle <literal>t1</literal>:
 <programlisting>
  num | name
 -----+------
@@ -358,7 +357,7 @@ compaiono soltanto una volta nella tabella di output.
    2 | b
    3 | c
 </programlisting>
-     and <literal>t2</literal>:
+     e <literal>t2</literal>:
 <programlisting>
  num | value
 -----+-------
@@ -366,7 +365,7 @@ compaiono soltanto una volta nella tabella di output.
    3 | yyy
    5 | zzz
 </programlisting>
-     then we get the following results for the various joins:
+per i diversi tipi di join, otterremo i seguenti risultati:
 <screen>
 <prompt>=&gt;</prompt> <userinput>SELECT * FROM t1 CROSS JOIN t2;</userinput>
  num | name | num | value
@@ -439,10 +438,9 @@ compaiono soltanto una volta nella tabella di output.
     </para>
 
     <para>
-     The join condition specified with <literal>ON</literal> can also contain
-     conditions that do not relate directly to the join.  This can
-     prove useful for some queries but needs to be thought out
-     carefully.  For example:
+La condizione di join specificata con <literal>ON</literal> può contenere anche
+condizioni che non si riferiscono direttamente alla join. Questo può tornare utile
+per alcune query ma deve essere progettato con attenzione. Per esempio:
 <screen>
 <prompt>=&gt;</prompt> <userinput>SELECT * FROM t1 LEFT JOIN t2 ON t1.num = t2.num AND t2.value = 'xxx';</userinput>
  num | name | num | value
@@ -452,8 +450,8 @@ compaiono soltanto una volta nella tabella di output.
    3 | c    |     |
 (3 rows)
 </screen>
-     Notice that placing the restriction in the <literal>WHERE</literal> clause
-     produces a different result:
+Si noti che posizionare la restrizione nella clausola <literal>WHERE</literal>
+produce un risultato diverso:
 <screen>
 <prompt>=&gt;</prompt> <userinput>SELECT * FROM t1 LEFT JOIN t2 ON t1.num = t2.num WHERE t2.value = 'xxx';</userinput>
  num | name | num | value
@@ -461,80 +459,77 @@ compaiono soltanto una volta nella tabella di output.
    1 | a    |   1 | xxx
 (1 row)
 </screen>
-     This is because a restriction placed in the <literal>ON</literal>
-     clause is processed <emphasis>before</emphasis> the join, while 
-     a restriction placed in the <literal>WHERE</literal> clause is processed
-     <emphasis>after</emphasis> the join.
+Questo perchè una restrizione posizionata nella clausola <literal>ON</literal>
+viene processata <emphasis>prima</emphasis> della join, mentre una restrizione 
+posta nella clausola <literal>WHERE</literal> viene processata 
+<emphasis>dopo</emphasis> la join.
     </para>
    </sect3>
 
    <sect3 id="queries-table-aliases">
-    <title>Table and Column Aliases</title>
+    <title>Alias di tabella e colonna</title>
 
     <indexterm zone="queries-table-aliases">
      <primary>alias</primary>
-     <secondary>in the FROM clause</secondary>
+     <secondary>nella clausola FROM</secondary>
     </indexterm>
 
     <indexterm>
-     <primary>label</primary>
+     <primary>etichetta</primary>
      <see>alias</see>
     </indexterm>
 
     <para>
-     A temporary name can be given to tables and complex table
-     references to be used for references to the derived table in
-     the rest of the query.  This is called a <firstterm>table
-     alias</firstterm>.
+Un nome temporaneo può essere dato a tabelle e riferimenti complessi di tabella
+per essere usato come riferimento nel resto della query.
+Questo prende il nome di <firstterm>alias di tabella</firstterm>
     </para>
 
     <para>
-     To create a table alias, write
+Per creare un alias di tabella, scrivere
 <synopsis>
 FROM <replaceable>table_reference</replaceable> AS <replaceable>alias</replaceable>
 </synopsis>
-     or
+o
 <synopsis>
 FROM <replaceable>table_reference</replaceable> <replaceable>alias</replaceable>
 </synopsis>
-     The <literal>AS</literal> key word is optional noise.
-     <replaceable>alias</replaceable> can be any identifier.
+La parola chiave <literal>AS</literal> è superflua. 
+<replaceable>alias</replaceable> può essere qualsiasi identificatore.
     </para>
 
     <para>
-     A typical application of table aliases is to assign short
-     identifiers to long table names to keep the join clauses
-     readable.  For example:
+Una tipica applicazione degli alias di tabella è quando si vuole assegnare 
+identificatori a nomi di tabella lunghi per mantere leggibili le clausole join.
+Per esempio:
 <programlisting>
 SELECT * FROM some_very_long_table_name s JOIN another_fairly_long_name a ON s.id = a.num;
 </programlisting>
     </para>
 
     <para>
-     The alias becomes the new name of the table reference so far as the
-     current query is concerned &mdash; it is not allowed to refer to the
-     table by the original name elsewhere in the query.  Thus, this is not
-     valid:
+L'alias diventa il nuovo nome del riferimento alla tabella per quanto concerne la query corrente -
+non è permesso fare riferimento alla tabella col nome originale altrove nella query.
+Per questo, questo non è valido:
 <programlisting>
-SELECT * FROM my_table AS m WHERE my_table.a &gt; 5;    -- wrong
+SELECT * FROM my_table AS m WHERE my_table.a &gt; 5;    -- sbagliato
 </programlisting>
     </para>
 
     <para>
-     Table aliases are mainly for notational convenience, but it is
-     necessary to use them when joining a table to itself, e.g.:
+Gli alias di tabella sono principalmente comodità di notazione, ma è necessario usarle
+quando si effettua il join di una tabella con sè stessa, per es.:
 <programlisting>
 SELECT * FROM people AS mother JOIN people AS child ON mother.id = child.mother_id;
 </programlisting>
-     Additionally, an alias is required if the table reference is a
-     subquery (see <xref linkend="queries-subqueries"/>).
+In più, è richiesto un alias se il riferimento alla tabella è una sottoquery
+(si veda <xref linkend="queries-subqueries"/>).
     </para>
 
     <para>
-     Parentheses are used to resolve ambiguities.  In the following example,
-     the first statement assigns the alias <literal>b</literal> to the second
-     instance of <literal>my_table</literal>, but the second statement assigns the
-     alias to the result of the join:
+Per risolvere le ambiguità vengono usate le parentesi. Nell'esempio seguente,
+la prima istruzione assegna l'alias <literal>b</literal> alla seconda istanza di 
+<literal>my_table</literal>, ma la seconda istruzione assegna l'alias al risultato della join:
 <programlisting>
 SELECT * FROM my_table AS a CROSS JOIN my_table AS b ...
 SELECT * FROM (my_table AS a CROSS JOIN my_table) AS b ...
@@ -542,44 +537,44 @@ SELECT * FROM (my_table AS a CROSS JOIN my_table) AS b ...
     </para>
 
     <para>
-     Another form of table aliasing gives temporary names to the columns of
-     the table, as well as the table itself:
+Un altra forma di alias per le tabelle fornisce un nome temporaneo alle colonne della
+tabella, nello stesso modo fatto per le tabelle:
 <synopsis>
 FROM <replaceable>table_reference</replaceable> <optional>AS</optional> <replaceable>alias</replaceable> ( <replaceable>column1</replaceable> <optional>, <replaceable>column2</replaceable> <optional>, ...</optional></optional> )
 </synopsis>
-     If fewer column aliases are specified than the actual table has
-     columns, the remaining columns are not renamed.  This syntax is
-     especially useful for self-joins or subqueries.
+Se sono specificati alias per un numero di colonne inferiori rispetto a quelle
+contenute nella tabella, le restanti colonne non verranno rinominate. Questa
+sintassi è utilizzata specialmente per self-join o sottoquery.
     </para>
 
     <para>
-     When an alias is applied to the output of a <literal>JOIN</literal>
-     clause, the alias hides the original
-     name(s) within the <literal>JOIN</literal>.  For example:
+Quando un alias è applicato all'output di una clausula <literal>JOIN</literal>,
+utilizzando una di queste forme, l'alias nasconde i nomi originali
+dentro la <literal>JOIN</literal>. Per esempio:
 <programlisting>
 SELECT a.* FROM my_table AS a JOIN your_table AS b ON ...
 </programlisting>
-     is valid SQL, but:
+è SQL valido, ma:
 <programlisting>
 SELECT a.* FROM (my_table AS a JOIN your_table AS b ON ...) AS c
 </programlisting>
-     is not valid; the table alias <literal>a</literal> is not visible
-     outside the alias <literal>c</literal>.
+non è valido; l'alias di tabella <literal>a</literal> non è visibile
+al di fuori dell'alias <literal>c</literal>.
     </para>
    </sect3>
 
    <sect3 id="queries-subqueries">
-    <title>Subqueries</title>
+    <title>Sottoquery</title>
 
     <indexterm zone="queries-subqueries">
-     <primary>subquery</primary>
+     <primary>sottoquery</primary>
     </indexterm>
 
     <para>
-     Subqueries specifying a derived table must be enclosed in
-     parentheses and <emphasis>must</emphasis> be assigned a table
-     alias name.  (See <xref linkend="queries-table-aliases"/>.)  For
-     example:
+Le subquery che specificano una tabella derivata devono essere racchiuse tra
+parentesi e <emphasis>devono</emphasis> essere assegnate ad un nome
+alias di tabella. (Vedere <xref linkend="queries-table-aliases">). Per
+esempio:
 <programlisting>
 FROM (SELECT * FROM table1) AS alias_name
 </programlisting>
@@ -590,6 +585,10 @@ FROM (SELECT * FROM table1) AS alias_name
      alias_name</literal>.  More interesting cases, which cannot be
      reduced to a plain join, arise when the subquery involves
      grouping or aggregation.
+Questo esempio &egrave; equivalente a <literal>FROM tabella1 AS
+nome_alias</literal>. Casi pi&ugrave; interessanti, che non si
+riducono ad una semplice join, si presentano quando la subquery
+coinvolge raggruppamenti o aggregazioni.
     </para>
 
     <para>

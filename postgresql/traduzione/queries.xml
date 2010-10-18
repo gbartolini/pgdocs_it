@@ -1096,39 +1096,40 @@ SELECT a AS value, b + c AS sum FROM ...
    </para>
 
    <para>
-    If no output column name is specified using <literal>AS</literal>,
-    the system assigns a default column name.  For simple column references,
-    this is the name of the referenced column.  For function
-    calls, this is the name of the function.  For complex expressions,
-    the system will generate a generic name.
+Se non viene specificato un nome di colonna di output usando <literal>AS</literal>,
+il sistema assegna unome di colonna predefinito. Per riferimenti di solonna semplici, 
+questo sarà il nome della colonna a cui si fà riferimento. Per chiamate di funzione, 
+sarà il nome della funzione. Per espressioni complesse, 
+il sistema genererà un nome generico.
    </para>
 
    <para>
-    The <literal>AS</literal> keyword is optional, but only if the new column
-    name does not match any
-    <productname>PostgreSQL</productname> keyword (see <xref
-    linkend="sql-keywords-appendix"/>).  To avoid an accidental match to
-    a keyword, you can double-quote the column name.  For example,
-    <literal>VALUE</literal> is a keyword, so this does not work:
+La parola chiave <literal>AS</literal> è opzionale, ma solo se il nome della nuova colonna
+non corrisponde a nessuna parola chiave di
+<productname>PostgreSQL</productname> (si veda <xref
+linkend="sql-keywords-appendix"/>). Per evitare una corrispondenza accidentale 
+con una parola chiave, è possibile mettere il nome della colonna tra doppi apici. Per esempio,
+<literal>VALUE</literal> è una parola chiave, quindi questo non funzionerà:
+
 <programlisting>
 SELECT a value, b + c AS sum FROM ...
 </programlisting>
-    but this does:
+ma questo si:
 <programlisting>
 SELECT a "value", b + c AS sum FROM ...
 </programlisting>
-    For protection against possible
-    future keyword additions, it is recommended that you always either
-    write <literal>AS</literal> or double-quote the output column name.
+Per protezione rispetto a possibili future aggiunte di parole chiave,  
+si raccomanda di scrivere sempre o <literal>AS</literal> o 
+mettere tra doppi apici il nome della colonna.
    </para>
 
    <note>
     <para>
-     The naming of output columns here is different from that done in
-     the <literal>FROM</literal> clause (see <xref
-     linkend="queries-table-aliases"/>).  It is possible 
-     to rename the same column twice, but the name assigned in
-     the select list is the one that will be passed on.
+La nomenclature delle colonne di output è diversa da quella della 
+clausola <literal>FROM</literal> (si veda <xref
+linkend="queries-table-aliases"/>). È possibile 
+rinominare la stessa colonna due volte, ma il nome assegnato nell'elenco di 
+selezione è quello che verrà passato.
     </para>
    </note>
   </sect2>
@@ -1141,60 +1142,59 @@ SELECT a "value", b + c AS sum FROM ...
    </indexterm>
 
    <indexterm zone="queries-distinct">
-    <primary>duplicates</primary>
+    <primary>duplicati</primary>
    </indexterm>
 
    <para>
-    After the select list has been processed, the result table can
-    optionally be subject to the elimination of duplicate rows.  The
-    <literal>DISTINCT</literal> key word is written directly after
-    <literal>SELECT</literal> to specify this:
+Dopo che l'elenco di selezione è stato elaborato, la tabella risultante puà
+essere opzionalmente soggetta a eliminazione di righe duplicate. Per specificare questo, la parola chiave 
+<literal>DISTINCT</literal> viene scritta direttamente dopo 
+<literal>SELECT</literal>:
 <synopsis>
 SELECT DISTINCT <replaceable>select_list</replaceable> ...
 </synopsis>
-    (Instead of <literal>DISTINCT</literal> the key word <literal>ALL</literal>
-    can be used to specify the default behavior of retaining all rows.)
+(Invece di <literal>DISTINCT</literal>, la parola chiave <literal>ALL</literal>
+può essere usata per specificare il comportamento predefinito di restituire tutte le righe).
    </para>
 
    <para>
-    <indexterm><primary>null value</primary><secondary sortas="DISTINCT">in
-    DISTINCT</secondary></indexterm>
-    Obviously, two rows are considered distinct if they differ in at
-    least one column value.  Null values are considered equal in this
-    comparison.
+<indexterm><primary>valore null</primary><secondary sortas="DISTINCT">in
+DISTINCT</secondary></indexterm>
+Ovviamente, due righe sono considerate distinte se differiscono in almeno
+un valore di colonna. Valori null sono considerati uguali in questo confronto.
    </para>
 
    <para>
-    Alternatively, an arbitrary expression can determine what rows are
-    to be considered distinct:
+Alternativamente, un'espressione arcbitraria può determinare quali righe devono essere consiferate
+distinte:
 <synopsis>
 SELECT DISTINCT ON (<replaceable>expression</replaceable> <optional>, <replaceable>expression</replaceable> ...</optional>) <replaceable>select_list</replaceable> ...
 </synopsis>
-    Here <replaceable>expression</replaceable> is an arbitrary value
-    expression that is evaluated for all rows.  A set of rows for
-    which all the expressions are equal are considered duplicates, and
-    only the first row of the set is kept in the output.  Note that
-    the <quote>first row</quote> of a set is unpredictable unless the
-    query is sorted on enough columns to guarantee a unique ordering
-    of the rows arriving at the <literal>DISTINCT</literal> filter.
-    (<literal>DISTINCT ON</literal> processing occurs after <literal>ORDER
-    BY</literal> sorting.)
+Qui <replaceable>expression</replaceable> è un valore arbitrario
+che viene valutato per tutte le righe. Un insieme di righe per
+il quale tutte le espressioni sono uguali sono considerate duplicate, e 
+solo la prima riga dell'insieme è mantenuta in output. Notare che
+la <quote>prima riga</quote> di un insieme è imprevedibile a meno che la query  non sia
+ordinata rispetto ad abbastanza colonne da garantire un ordinamento unico
+delle righe in arrivo al filtro <literal>DISTINCT</literal>.
+(L'elaborazione di <literal>DISTINCT ON</literal> avviene dopo l'ordinamento  <literal>ORDER
+BY</literal>).
    </para>
 
    <para>
-    The <literal>DISTINCT ON</literal> clause is not part of the SQL standard
-    and is sometimes considered bad style because of the potentially
-    indeterminate nature of its results.  With judicious use of
-    <literal>GROUP BY</literal> and subqueries in <literal>FROM</literal>, this
-    construct can be avoided, but it is often the most convenient
-    alternative.
+La clausola <literal>DISTINCT ON</literal> non fa parte dello standard SQL
+e qualche volta è considerata cattivo stile data la natura potenzialmente
+indeterminata dei suoi risultati. Con un uso giudizioso di 
+<literal>GROUP BY</literal> e sottoquery nella <literal>FROM</literal>, questo costrutto 
+può essere evitato, ma spesso è l'alternativa più
+conveniente.
    </para>
   </sect2>
  </sect1>
 
 
  <sect1 id="queries-union">
-  <title>Combining Queries</title>
+  <title>Query di combinazione</title>
 
   <indexterm zone="queries-union">
    <primary>UNION</primary>
@@ -1206,78 +1206,78 @@ SELECT DISTINCT ON (<replaceable>expression</replaceable> <optional>, <replaceab
    <primary>EXCEPT</primary>
   </indexterm>
   <indexterm zone="queries-union">
-   <primary>set union</primary>
+   <primary>insieme unione</primary>
   </indexterm>
   <indexterm zone="queries-union">
-   <primary>set intersection</primary>
+   <primary>insieme intersezione</primary>
   </indexterm>
   <indexterm zone="queries-union">
-   <primary>set difference</primary>
+   <primary>insieme differenza</primary>
   </indexterm>
   <indexterm zone="queries-union">
-   <primary>set operation</primary>
+   <primary>insieme operazione</primary>
   </indexterm>
 
   <para>
-   The results of two queries can be combined using the set operations
-   union, intersection, and difference.  The syntax is
+I risultati di due query possono essere combinati usando le operazioni sugli insiemi
+unione, intersezione, e differenza. La sintassi è
 <synopsis>
 <replaceable>query1</replaceable> UNION <optional>ALL</optional> <replaceable>query2</replaceable>
 <replaceable>query1</replaceable> INTERSECT <optional>ALL</optional> <replaceable>query2</replaceable>
 <replaceable>query1</replaceable> EXCEPT <optional>ALL</optional> <replaceable>query2</replaceable>
 </synopsis>
-   <replaceable>query1</replaceable> and
-   <replaceable>query2</replaceable> are queries that can use any of
-   the features discussed up to this point.  Set operations can also
-   be nested and chained, for example
+<replaceable>query1</replaceable> e
+<replaceable>query2</replaceable> sono query che possono usare qualsiasi 
+delle caratteristiche discusse fino a questo punto. Operazioni sugli insiemi possono
+anche essere annidate o concatenate, per esempio
 <synopsis>
 <replaceable>query1</replaceable> UNION <replaceable>query2</replaceable> UNION <replaceable>query3</replaceable>
 </synopsis>
-   which is executed as:
+che viene eseguito come:
 <synopsis>
 (<replaceable>query1</replaceable> UNION <replaceable>query2</replaceable>) UNION <replaceable>query3</replaceable>
 </synopsis>
   </para>
 
   <para>
-   <literal>UNION</literal> effectively appends the result of
-   <replaceable>query2</replaceable> to the result of
-   <replaceable>query1</replaceable> (although there is no guarantee
-   that this is the order in which the rows are actually returned).
-   Furthermore, it eliminates duplicate rows from its result, in the same
-   way as <literal>DISTINCT</literal>, unless <literal>UNION ALL</literal> is used.
+<literal>UNION</literal> effettivamente aggiunge il risultato di 
+<replaceable>query2</replaceable> al risultato di 
+<replaceable>query1</replaceable> (anche se non c'è garanzia 
+che questo sia l'ordine nel quale le righe sono effettivamente restituite).
+Inoltre, esso elimina righe duplicate dal suo risultato, nello stesso modo di
+<literal>DISTINCT</literal>, a meno che non sia usata <literal>UNION ALL</literal>.
   </para>
 
   <para>
-   <literal>INTERSECT</literal> returns all rows that are both in the result
-   of <replaceable>query1</replaceable> and in the result of
-   <replaceable>query2</replaceable>.  Duplicate rows are eliminated
-   unless <literal>INTERSECT ALL</literal> is used.
+<literal>INTERSECT</literal> restituisce tutte le righe che sono sia nel risultato 
+di <replaceable>query1</replaceable> che nel risultato di 
+<replaceable>query2</replaceable>. Le righe duplicate sono eliminate
+a meno che sia usata <literal>INTERSECT ALL</literal>. 
   </para>
 
   <para>
-   <literal>EXCEPT</literal> returns all rows that are in the result of
-   <replaceable>query1</replaceable> but not in the result of
-   <replaceable>query2</replaceable>.  (This is sometimes called the
-   <firstterm>difference</firstterm> between two queries.)  Again, duplicates
-   are eliminated unless <literal>EXCEPT ALL</literal> is used.
+<literal>EXCEPT</literal> restituisce tutte le righe che sono nel risultato di 
+<replaceable>query1</replaceable> ma non nel risultato di 
+<replaceable>query2</replaceable>. (A volte questa viene chiamata 
+<firstterm>differenza</firstterm> tra due query). Di nuovo, i duplicati vengono
+eliminati a meno che sia usata <literal>EXCEPT ALL</literal>.
   </para>
 
   <para>
-   In order to calculate the union, intersection, or difference of two
-   queries, the two queries must be <quote>union compatible</quote>,
-   which means that they return the same number of columns and
-   the corresponding columns have compatible data types, as
-   described in <xref linkend="typeconv-union-case"/>.
+Per calcolare l'union, l'intersezione o la differenza di due query,
+le due query devono essere <quote>compatibili alla union</quote>,
+che significa che restituiscono lo stesso numero di colonne e
+le colonne corrispondenti hanno tipi di dato compatibili, come 
+descritto in <xref linkend="typeconv-union-case"/>.
   </para>
  </sect1>
 
 
  <sect1 id="queries-order">
-  <title>Sorting Rows</title>
+  <title>Classificazione di righe</title>
 
   <indexterm zone="queries-order">
-   <primary>sorting</primary>
+   <primary>classificazione</primary>
   </indexterm>
 
   <indexterm zone="queries-order">
@@ -1285,46 +1285,45 @@ SELECT DISTINCT ON (<replaceable>expression</replaceable> <optional>, <replaceab
   </indexterm>
 
   <para>
-   After a query has produced an output table (after the select list
-   has been processed) it can optionally be sorted.  If sorting is not
-   chosen, the rows will be returned in an unspecified order.  The actual
-   order in that case will depend on the scan and join plan types and
-   the order on disk, but it must not be relied on.  A particular
-   output ordering can only be guaranteed if the sort step is explicitly
-   chosen.
+Dopo che una query ha prodotto una tabella di output (dopo che l'elenco di selezione
+è stato elaborato) può eventualmente essere classificata. Se la classificazione non viene
+scelta, le righe saranno restituite in ordine sparso. L'ordine attuale 
+in quel caso dipenderà dai tipi di plan di scansione e di join e 
+dall'ordine du disco, ma non bisogna contarci. Un particolare ordine 
+si output puà essere garantito solo se il passo di ordinamento viene scelto esplicitamente.
   </para>
 
   <para>
-   The <literal>ORDER BY</literal> clause specifies the sort order:
+La clausola <literal>ORDER BY</literal> specifica l'ordine di classificazione:
 <synopsis>
 SELECT <replaceable>select_list</replaceable>
     FROM <replaceable>table_expression</replaceable>
     ORDER BY <replaceable>sort_expression1</replaceable> <optional>ASC | DESC</optional> <optional>NULLS { FIRST | LAST }</optional>
              <optional>, <replaceable>sort_expression2</replaceable> <optional>ASC | DESC</optional> <optional>NULLS { FIRST | LAST }</optional> ...</optional>
 </synopsis>
-   The sort expression(s) can be any expression that would be valid in the
-   query's select list.  An example is:
+L'espressione/i di classificazione puà essere qualsiasi espressione che dovrebbe essere valida 
+nell'elenco di selezione della query. Un esempio è:
 <programlisting>
 SELECT a, b FROM table1 ORDER BY a + b, c;
 </programlisting>
-   When more than one expression is specified,
-   the later values are used to sort rows that are equal according to the
-   earlier values.  Each expression can be followed by an optional
-   <literal>ASC</literal> or <literal>DESC</literal> keyword to set the sort direction to
-   ascending or descending.  <literal>ASC</literal> order is the default.
-   Ascending order puts smaller values first, where
-   <quote>smaller</quote> is defined in terms of the
-   <literal>&lt;</literal> operator.  Similarly, descending order is
-   determined with the <literal>&gt;</literal> operator.
+Quando viene specificata più di un'espressione,
+i valori successivi sono usati per classificare righe che sono uguali in accordo ai
+valori precedenti. Ogni espressione può essere seguita da una parola chiave 
+<literal>ASC</literal> o <literal>DESC</literal> per impostare la direzione d'ordinamento come
+ascendente o discendente. L'ordinamento <literal>ASC</literal> è il predefinito.
+Ordinamento ascendente mette valori più piccoli prima, dove
+<quote>più piccoli</quote> sono definiti dall'operatore 
+<literal>&lt;</literal>. Similmente, ordinamento discendente è
+determinato con l'operatore <literal>&gt;</literal>.
     <footnote>
      <para>
-      Actually, <productname>PostgreSQL</productname> uses the <firstterm>default B-tree
-      operator class</firstterm> for the expression's data type to determine the sort
-      ordering for <literal>ASC</literal> and <literal>DESC</literal>.  Conventionally,
-      data types will be set up so that the <literal>&lt;</literal> and
-      <literal>&gt;</literal> operators correspond to this sort ordering,
-      but a user-defined data type's designer could choose to do something
-      different.
+Attualmente, <productname>PostgreSQL</productname> usa la <firstterm>classe operatore B-tree
+predefinita</firstterm> per i tipi di dato delle espressioni per determinare l'ordinamento 
+per <literal>ASC</literal> e <literal>DESC</literal>. Convenzionalmente, 
+i tipi di dato saranno impostati in modo che gli operatori <literal>&lt;</literal> e 
+<literal>&gt;</literal> corrispondano a questo ordinamento,
+ma per quanto riguarda un tipo di dato definito dall'utente si potrebbe scegliere
+di fare qualcosa di diverso.
      </para>
     </footnote>
   </para>

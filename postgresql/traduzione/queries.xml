@@ -1672,7 +1672,7 @@ SELECT * FROM search_graph;
 </programlisting>
 
 Questa query effettuerà un loop se le relazioni <structfield>link</structfield> contengono
-cicli. Siccome si richiede un output <quote>profondo</tuote>, cambiare semplicemente 
+cicli. Siccome si richiede un output <quote>profondo</quote>, cambiare semplicemente 
 <literal>UNION ALL</literal> in <literal>UNION</literal> non eliminerebbe i loop.
 È necessario invece riconoscere se si è raggiunta la stessa riga di nuovo
 mentre si seguiva un particolare percorso di link. Si hanno due colonne 

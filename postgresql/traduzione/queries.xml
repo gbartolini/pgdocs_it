@@ -670,76 +670,75 @@ SELECT *
       AS t1(proname name, prosrc text)
     WHERE proname LIKE 'bytea%';
 </programlisting>
-     The <literal>dblink</literal> function executes a remote query (see
-     <filename>contrib/dblink</filename>).  It is declared to return
-     <type>record</type> since it might be used for any kind of query.
-     The actual column set must be specified in the calling query so
-     that the parser knows, for example, what <literal>*</literal> should
-     expand to.
+La funzione <literal>dblink</literal> esegue una query remota (di veda
+<filename>contrib/dblink</filename>). È dichiarata per restiruire 
+<type>record</type> dato che potrebbe essere usata per qualsiasi tipo di query.
+L'insieme di colonne deve essere specificato nella query chiamante così che il 
+il parser sappia, per esempio, come <literal>*</literal> dovrebbe espandersi.
     </para>
    </sect3>
   </sect2>
 
   <sect2 id="queries-where">
-   <title>The <literal>WHERE</literal> Clause</title>
+   <title>La clausola <literal>WHERE</literal></title>
 
    <indexterm zone="queries-where">
     <primary>WHERE</primary>
    </indexterm>
 
    <para>
-    The syntax of the <xref linkend="sql-where"
-    endterm="sql-where-title"/> is
+La sintassi della <xref linkend="sql-where"
+endterm="sql-where-title"/> è
 <synopsis>
 WHERE <replaceable>search_condition</replaceable>
 </synopsis>
-    where <replaceable>search_condition</replaceable> is any value
-    expression (see <xref linkend="sql-expressions"/>) that
-    returns a value of type <type>boolean</type>.
+Dove <replaceable>search_condition</replaceable> è qualsiasi espressione di valore 
+(si veda <xref linkend="sql-expressions"/>) che restituisce 
+un valore di tipo <type>boolean</type>.
    </para>
 
    <para>
-    After the processing of the <literal>FROM</literal> clause is done, each
-    row of the derived virtual table is checked against the search
-    condition.  If the result of the condition is true, the row is
-    kept in the output table, otherwise (i.e., if the result is
-    false or null) it is discarded.  The search condition typically
-    references at least one column of the table generated in the
-    <literal>FROM</literal> clause; this is not required, but otherwise the
-    <literal>WHERE</literal> clause will be fairly useless.
+Dopo che è terminata l'elaborazione della clausola <literal>FROM</literal> , ogni
+riga della tabella virtuale derivata viene confrontata alla condizione di ricerca.
+Se il risultato della condizione è true, la riga viene 
+mantenuta nella tabella di output, altrimenti viene scartato (per es., se il risultato è
+false o null). La condizione di ricerca tipicamente si riferisce almeno ad una colonna
+della tabella generata nella clausola <literal>FROM</literal>;
+questo non è richiesto, ma altrimenti la clausola <literal>WHERE</literal>
+sarà abbastanza inutile.
    </para>
 
    <note>
     <para>
-     The join condition of an inner join can be written either in
-     the <literal>WHERE</literal> clause or in the <literal>JOIN</literal> clause.
-     For example, these table expressions are equivalent:
+La condizione di join di una inner join può essere scritta o nella clausola 
+<literal>WHERE</literal> o nella clausola <literal>JOIN</literal>.
+Per esempio, queste espressioni di tabella sono equivalenti:
 <programlisting>
 FROM a, b WHERE a.id = b.id AND b.val &gt; 5
 </programlisting>
-     and:
+e:
 <programlisting>
 FROM a INNER JOIN b ON (a.id = b.id) WHERE b.val &gt; 5
 </programlisting>
-     or perhaps even:
+o forse anche:
 <programlisting>
 FROM a NATURAL JOIN b WHERE b.val &gt; 5
 </programlisting>
-     Which one of these you use is mainly a matter of style.  The
-     <literal>JOIN</literal> syntax in the <literal>FROM</literal> clause is
-     probably not as portable to other SQL database management systems,
-     even though it is in the SQL standard.  For
-     outer joins there is no choice:  they must be done in
-     the <literal>FROM</literal> clause.  The <literal>ON</literal> or <literal>USING</literal>
-     clause of an outer join is <emphasis>not</emphasis> equivalent to a
-     <literal>WHERE</literal> condition, because it results in the addition
-     of rows (for unmatched input rows) as well as the removal of rows
-     in the final result.
+Quale si voglia usare di questi è principalmente una questione di stile. La
+sintassi <literal>JOIN</literal> nella clausola <literal>FROM</literal> probabilmente non è
+portabile verso altri sistemi di gestione di database SQL,
+anche se è nello standard SQL. Per outer join non c'è possibilità 
+di scelta: devono essere nella clausola <literal>FROM</literal>.
+Le clausole <literal>ON</literal> o <literal>USING</literal>
+di una outer join <emphasis>non</emphasis> è equivalente a una condizione 
+<literal>WHERE</literal>, perchè corrisponde all'aggiunta 
+di righe (per righe di input non corrispondenti) così come la rimozione di righe
+nel risultato finale.
     </para>
    </note>
 
    <para>
-    Here are some examples of <literal>WHERE</literal> clauses:
+Ecco alcuni esempi di clausole <literal>WHERE</literal>:
 <programlisting>
 SELECT ... FROM fdt WHERE c1 &gt; 5
 
@@ -753,38 +752,36 @@ SELECT ... FROM fdt WHERE c1 BETWEEN (SELECT c3 FROM t2 WHERE c2 = fdt.c1 + 10) 
 
 SELECT ... FROM fdt WHERE EXISTS (SELECT c1 FROM t2 WHERE c2 &gt; fdt.c1)
 </programlisting>
-    <literal>fdt</literal> is the table derived in the
-    <literal>FROM</literal> clause. Rows that do not meet the search
-    condition of the <literal>WHERE</literal> clause are eliminated from
-    <literal>fdt</literal>. Notice the use of scalar subqueries as
-    value expressions.  Just like any other query, the subqueries can
-    employ complex table expressions.  Notice also how
-    <literal>fdt</literal> is referenced in the subqueries.
-    Qualifying <literal>c1</literal> as <literal>fdt.c1</literal> is only necessary
-    if <literal>c1</literal> is also the name of a column in the derived
-    input table of the subquery.  But qualifying the column name adds
-    clarity even when it is not needed.  This example shows how the column
-    naming scope of an outer query extends into its inner queries.
+<literal>fdt</literal> è la tabella derivata nella clausola <literal>FROM</literal>.
+Le righe che non soddisfano la condizione di ricerca della clausola <literal>WHERE</literal>
+sono eliminate da <literal>fdt</literal>. Si noti l'uso di sottoquery scalari come
+valori di espressione. Esattamente come qualsiasi altra query, le sottoquery possono
+impiegare espressioni di tabella complesse. Notare inoltre come 
+<literal>fdt</literal> viene referenziato nelle sottoquery.
+Qualificare <literal>c1</literal> come <literal>fdt.c1</literal> è necessario solo
+se <literal>c1</literal> è anche il nome di una colonna nella tabella di input derivata 
+della sottoquery. In ogni caso, qualificare il nome della colonna aggiunge chiarezza
+anche quando non è necessario. Questo esempio mostra come lo scope di nomi di una query outer
+si estende nelle sue query inner.
    </para>
   </sect2>
 
 
   <sect2 id="queries-group">
-   <title>The <literal>GROUP BY</literal> and <literal>HAVING</literal> Clauses</title>
+   <title>Le clausole <literal>GROUP BY</literal> e <literal>HAVING</literal></title>
 
    <indexterm zone="queries-group">
     <primary>GROUP BY</primary>
    </indexterm>
 
    <indexterm zone="queries-group">
-    <primary>grouping</primary>
+    <primary>raggruppamento</primary>
    </indexterm>
 
    <para>
-    After passing the <literal>WHERE</literal> filter, the derived input
-    table might be subject to grouping, using the <literal>GROUP BY</literal>
-    clause, and elimination of group rows using the <literal>HAVING</literal>
-    clause.
+Dopo che si è passato il filtro <literal>WHERE</literal>, la tabella di input derivata
+potrebbe essere soggetta a raggruppamento, usando la clausola <literal>GROUP BY</literal>,
+ed eliminazione di righe usando la clausola <literal>HAVING</literal>.
    </para>
 
 <synopsis>
@@ -795,14 +792,14 @@ SELECT <replaceable>select_list</replaceable>
 </synopsis>
 
    <para>
-    The <xref linkend="sql-groupby" endterm="sql-groupby-title"/> is
-    used to group together those rows in a table that have the same
-    values in all the columns listed. The order in which the columns
-    are listed does not matter.  The effect is to combine each set
-    of rows having common values into one group row that
-    represents all rows in the group.  This is done to
-    eliminate redundancy in the output and/or compute aggregates that
-    apply to these groups.  For instance:
+La <xref linkend="sql-groupby" endterm="sql-groupby-title"/> è
+usata per raggruppare insieme quelle righe in una tabella che hanno gli stessi
+valori in tutte le colonne elencate. L'ordine con il quale le colonne
+sono elencate non è importante. L'effetto è quello di combinare ogni elenco di righe
+aventi valori in comune in una riga-gruppo che rappresenta 
+tutte le righe del gruppo. Questo viene fatoo per eliminare
+la ridondanza in output e/o eseguire calcoli aggregati su questi gruppi.
+Per esempio:
 <screen>
 <prompt>=&gt;</prompt> <userinput>SELECT * FROM test1;</userinput>
  x | y
@@ -824,17 +821,17 @@ SELECT <replaceable>select_list</replaceable>
    </para>
 
    <para>
-    In the second query, we could not have written <literal>SELECT *
-    FROM test1 GROUP BY x</literal>, because there is no single value
-    for the column <literal>y</literal> that could be associated with each
-    group.  The grouped-by columns can be referenced in the select list since
-    they have a single value in each group.
+Nella seconda query, potevamo non aver scritto <literal>SELECT *
+FROM test1 GROUP BY x</literal>, dato che non c'è un singolo valore
+per la colonna <literal>y</literal> che può essere associato con ogni 
+gruppo. La colonne raggruppate possono essere referenziate nell'elenco select dato che 
+hanno un singolo valore in ogni gruppo.
    </para>
 
    <para>
-    In general, if a table is grouped, columns that are not
-    listed in <literal>GROUP BY</literal> cannot be referenced except in aggregate
-    expressions.  An example with aggregate expressions is:
+In generale, se una tabella è raggruppata, colonne che non sono elencate
+in <literal>GROUP BY</literal> non possono essere referenziate eccetto in espressioni
+aggregate. Un esempio con un'espressione aggregata è:
 <screen>
 <prompt>=&gt;</prompt> <userinput>SELECT x, sum(y) FROM test1 GROUP BY x;</userinput>
  x | sum
@@ -844,58 +841,63 @@ SELECT <replaceable>select_list</replaceable>
  c |   2
 (3 rows)
 </screen>
-    Here <literal>sum</literal> is an aggregate function that
-    computes a single value over the entire group.  More information
-    about the available aggregate functions can be found in <xref
-    linkend="functions-aggregate"/>.
+Qui  <literal>sum</literal> è una funzione aggregata che 
+calcola un valore singolo dell'intero gruppo. Maggiori informazioni
+sulle funzioni disponibili possono essere trovate in <xref
+linkend="functions-aggregate"/>.
    </para>
 
    <tip>
     <para>
-     Grouping without aggregate expressions effectively calculates the
-     set of distinct values in a column.  This can also be achieved
-     using the <literal>DISTINCT</literal> clause (see <xref
-     linkend="queries-distinct"/>).
+Ragggruppare senza espressioni aggregate effettivamente calcola l'insieme
+dei valori distinti in una colonna. Questo può essere ottenuto anche
+usando la clausola <literal>DISTINCT</literal>(si veda <xref 
+linkend="queries-distinct"/>).
     </para>
    </tip>
 
    <para>
-    Here is another example:  it calculates the total sales for each
-    product (rather than the total sales of all products):
+Ecco un altro esempio: calcola le vendite totali per ogni
+prodotto (piuttosto che le vendite totali di tutti i prodotti):
 <programlisting>
 SELECT product_id, p.name, (sum(s.units) * p.price) AS sales
     FROM products p LEFT JOIN sales s USING (product_id)
     GROUP BY product_id, p.name, p.price;
 </programlisting>
-    In this example, the columns <literal>product_id</literal>,
-    <literal>p.name</literal>, and <literal>p.price</literal> must be
-    in the <literal>GROUP BY</literal> clause since they are referenced in
-    the query select list (but see below).  The column
-    <literal>s.units</literal> does not have to be in the <literal>GROUP
-    BY</literal> list since it is only used in an aggregate expression
-    (<literal>sum(...)</literal>), which represents the sales
-    of a product.  For each product, the query returns a summary row about
-    all sales of the product.
+In questo esempio, le colonne <literal>product_id</literal>,
+<literal>p.name</literal> e <literal>p.price</literal> devono essere 
+nella clausola <literal>GROUP BY</literal> dato che sono referenziate nell'elenco select 
+della query (ma si veda sotto). La colonna
+<literal>s.units</literal> non dev'essere nell'elenco <literal>GROUP
+BY</literal> dato che è usato solo in un'espressione aggregata
+(<literal>sum(...)</literal>), che rappresenta le vendite 
+di un prodotto. Per ogni prodotto, la query restituisce una riga di riassunto
+su tutte le vendite del prodotto.
    </para>
 
    <para>
-    If the products table is set up so that,
-    say, <literal>product_id</literal> is the primary key, then it
-    would be enough to group by <literal>product_id</literal> in the
-    above example, since name and price would
-    be <firstterm>functionally
-    dependent</firstterm><indexterm><primary>functional
-    dependency</primary></indexterm> on the product ID, and so there
-    would be no ambiguity about which name and price value to return
-    for each product ID group.
+Se la tabella dei prodotti è impostat per, 
+diciamo, avere <literal>product_id</literal> come chiave primaria, allora 
+dovrebbe essere sufficiente raggruppare per <literal>product_id</literal> nell'esempio
+sopra, dato che nome e prezzo dovrebbero essere 
+<firstterm>funzionalmente dipendenti</firstterm>.
+
+<indexterm>
+    <primary>functional dependent</primary>
+</firstterm>
+<indexterm>
+    <primary>functional dependency</primary>
+</indexterm> 
+sull'ID di prodotto, e così non ci dovrebbe essere ambiguità su  quale valore di nome 
+e prezzo restituire per ogni ID di gruppo di prodotti.
    </para>
 
    <para>
-    In strict SQL, <literal>GROUP BY</literal> can only group by columns of
-    the source table but <productname>PostgreSQL</productname> extends
-    this to also allow <literal>GROUP BY</literal> to group by columns in the
-    select list.  Grouping by value expressions instead of simple
-    column names is also allowed.
+In SQL stretto, <literal>GROUP BY</literal> può raggruppare solo colonne della tabella  
+sorgente ma <productname>PostgreSQL</productname> lo estende 
+per permettere alla <literal>GROUP BY</literal>  di raggruppare per  colonne nell'elenco
+select. È possibili anche raggruppare per espressioni di valori invece di semplici nomi
+di colonna. 
    </para>
 
    <indexterm>
@@ -903,21 +905,21 @@ SELECT product_id, p.name, (sum(s.units) * p.price) AS sales
    </indexterm>
 
    <para>
-    If a table has been grouped using <literal>GROUP BY</literal>,
-    but only certain groups are of interest, the
-    <literal>HAVING</literal> clause can be used, much like a
-    <literal>WHERE</literal> clause, to eliminate groups from the result.
-    The syntax is:
+Se una tabella è stata raggruppata usando <literal>GROUP BY</literal>,
+ma interessano solo certi gruppi, può essere usata la clausola <literal>HAVING</literal>,
+simile per la maggior parte alla  <literal>WHERE</literal>, per eliminare 
+gruppi dal risultato.
+La sintassi è:
 <synopsis>
 SELECT <replaceable>select_list</replaceable> FROM ... <optional>WHERE ...</optional> GROUP BY ... HAVING <replaceable>boolean_expression</replaceable>
 </synopsis>
-    Expressions in the <literal>HAVING</literal> clause can refer both to
-    grouped expressions and to ungrouped expressions (which necessarily
-    involve an aggregate function).
+Espressioni nella clausola  <literal>HAVING</literal> possono riferirsi sia a 
+espressioni raggruppate che a espressioni non raggruppate (che necessariamente
+coinvolgono una funzione aggregata).
    </para>
 
    <para>
-    Example:
+Esempio:
 <screen>
 <prompt>=&gt;</prompt> <userinput>SELECT x, sum(y) FROM test1 GROUP BY x HAVING sum(y) &gt; 3;</userinput>
  x | sum
@@ -936,7 +938,7 @@ SELECT <replaceable>select_list</replaceable> FROM ... <optional>WHERE ...</opti
    </para>
 
    <para>
-    Again, a more realistic example:
+Di nuovo, un esempio più realistico:
 <programlisting>
 SELECT product_id, p.name, (sum(s.units) * (p.price - p.cost)) AS profit
     FROM products p LEFT JOIN sales s USING (product_id)
@@ -944,134 +946,135 @@ SELECT product_id, p.name, (sum(s.units) * (p.price - p.cost)) AS profit
     GROUP BY product_id, p.name, p.price, p.cost
     HAVING sum(p.price * s.units) &gt; 5000;
 </programlisting>
-    In the example above, the <literal>WHERE</literal> clause is selecting
-    rows by a column that is not grouped (the expression is only true for
-    sales during the last four weeks), while the <literal>HAVING</literal>
-    clause restricts the output to groups with total gross sales over
-    5000.  Note that the aggregate expressions do not necessarily need
-    to be the same in all parts of the query.
+Nell'esempio sopra, la clausola <literal>WHERE</literal> seleziona righe 
+da una colonna che non è raggruppata (l'esprezzione è true solo per vendite
+durante le ultime quattro settimane), mentre la clausola <literal>HAVING</literal>
+restringe l'output per gruppi con vendite totali maggiori di 5000.
+Si noti che le espressioni aggregate non hanno necessariamente bisogno di 
+essere le stesse in tutte le parti della query.
    </para>
 
    <para>
-    If a query contains aggregate function calls, but no <literal>GROUP BY</literal>
-    clause, grouping still occurs: the result is a single group row (or
-    perhaps no rows at all, if the single row is then eliminated by
-    <literal>HAVING</literal>).
-    The same is true if it contains a <literal>HAVING</literal> clause, even
-    without any aggregate function calls or <literal>GROUP BY</literal> clause.
+Se una query contiene chiamate a funzioni aggregate, ma non clausole <literal>GROUP BY</literal>,
+il raggrumento avviene comunque: il risultato è una singola riga-gruppo (o 
+magari nessuna riga, se la riga singola è poi eliminata da 
+<literal>HAVING</literal>).
+Lo stesso è true se contiene una clausola <literal>HAVING</literal>, anche 
+senza nessuna chiamata a funzione aggregata o clausola <literal>GROUP BY</literal>.
    </para>
   </sect2>
 
   <sect2 id="queries-window">
-   <title>Window Function Processing</title>
+   <title>Elaborazione di funzioni window</title>
 
    <indexterm zone="queries-window">
-    <primary>window function</primary>
-    <secondary>order of execution</secondary>
+    <primary>funzione window</primary>
+    <secondary>ordine di esecuzione</secondary>
    </indexterm>
 
    <para>
-    If the query contains any window functions (see
-    <xref linkend="tutorial-window"/>,
-    <xref linkend="functions-window"/> and
-    <xref linkend="syntax-window-functions"/>), these functions are evaluated
-    after any grouping, aggregation, and <literal>HAVING</literal> filtering is
-    performed.  That is, if the query uses any aggregates, <literal>GROUP
-    BY</literal>, or <literal>HAVING</literal>, then the rows seen by the window functions
-    are the group rows instead of the original table rows from
-    <literal>FROM</literal>/<literal>WHERE</literal>.
+Se la query contiene funzioni window (si veda 
+<xref linkend="tutorial-window"/>,
+<xref linkend="functions-window"/> e
+<xref linkend="syntax-window-functions"/>), queste funzioni sono valutate 
+dopo che qualsiasi raggruppamento, aggregazione, e filtro <literal>HAVING</literal>
+venga svolto. Così, se la query usa qualsiasi aggregata, <literal>GROUP
+BY</literal>, o <literal>HAVING</literal>, allora le righe viste dalle funzioni window
+solo le righe-gruppo invece delle righe originali della tabella
+provenienti dalla <literal>FROM</literal>/<literal>WHERE</literal>.
    </para>
 
    <para>
-    When multiple window functions are used, all the window functions having
-    syntactically equivalent <literal>PARTITION BY</literal> and <literal>ORDER BY</literal>
-    clauses in their window definitions are guaranteed to be evaluated in a
-    single pass over the data. Therefore they will see the same sort ordering,
-    even if the <literal>ORDER BY</literal> does not uniquely determine an ordering.
-    However, no guarantees are made about the evaluation of functions having
-    different <literal>PARTITION BY</literal> or <literal>ORDER BY</literal> specifications.
-    (In such cases a sort step is typically required between the passes of
-    window function evaluations, and the sort is not guaranteed to preserve
-    ordering of rows that its <literal>ORDER BY</literal> sees as equivalent.)
+Quando sono usate molteplici funzioni window, tutte le funzioni window aventi 
+clausole <literal>PARTITION BY</literal> e <literal>ORDER BY</literal>
+sintatticamente equivalenti nelle loro definizioni di windowè garantito siano valutate in un singolo
+passo sui dati. Perciò vedranno lo stesso ordinamento,
+anche se la <literal>ORDER BY</literal> non determina unicamente un ordinamento. 
+Comunque, non sono assicurate garanzie sulla valutazione di funzioni aventi 
+diverse specificazioni di  <literal>PARTITION BY</literal> o <literal>ORDER BY</literal>.
+(In qualche caso un certo passo è tipicamente richiesto tra i passi di 
+valutazione di funzioni window, e non è garantita la preservazione
+di ordinamento di righe che il suo <literal>ORDER BY</literal> vede come equivalente).
    </para>
 
    <para>
-    Currently, window functions always require presorted data, and so the
-    query output will be ordered according to one or another of the window
-    functions' <literal>PARTITION BY</literal>/<literal>ORDER BY</literal> clauses.
-    It is not recommendable to rely on this, however.  Use an explicit
-    top-level <literal>ORDER BY</literal> clause if you want to be sure the
-    results are sorted in a particular way.
+Attualmente, le funzioni window richiedono sempre dati preordinati, e così 
+l'output della query sarà ordinato in accordo all'una o l'altra delle clausole
+<literal>PARTITION BY</literal>/<literal>ORDER BY</literal> delle funzioni 
+window.
+Non è raccomandabile contare su questo, in ogni caso. Usare una clausola 
+<literal>ORDER BY</literal> di livello superiore se si vuole essere sicuri che 
+i risultati siano ordinati in modo particolare.
    </para>
   </sect2>
  </sect1>
 
 
  <sect1 id="queries-select-lists">
-  <title>Select Lists</title>
+  <title>Elenchi di selezione</title>
 
   <indexterm>
    <primary>SELECT</primary>
-   <secondary>select list</secondary>
+   <secondary>elenco di selezione</secondary>
   </indexterm>
 
   <para>
-   As shown in the previous section,
-   the table expression in the <command>SELECT</command> command
-   constructs an intermediate virtual table by possibly combining
-   tables, views, eliminating rows, grouping, etc.  This table is
-   finally passed on to processing by the <firstterm>select list</firstterm>.  The select
-   list determines which <emphasis>columns</emphasis> of the
-   intermediate table are actually output.
+Come visto nella sezione precedente,
+l'espressione di tabella nel comando <command>SELECT</command>
+costruisce una tabella virtuale intermedia combinando possibilmente 
+tabelle, viste, eliminando righe, raggruppamenti, ecc. Questa tabella 
+viene infine passata all'elaborazione dall'<firstterm>elenco di selezione</firstterm>. L'elenco di 
+selezione determina quali <emphasis>colonne</emphasis> della tabella 
+intermedia sono mostrate in output.
   </para>
 
   <sect2 id="queries-select-list-items">
-   <title>Select-List Items</title>
+   <title>Elementi dell'elenco di selezion</title>
 
    <indexterm>
     <primary>*</primary>
    </indexterm>
 
    <para>
-    The simplest kind of select list is <literal>*</literal> which
-    emits all columns that the table expression produces.  Otherwise,
-    a select list is a comma-separated list of value expressions (as
-    defined in <xref linkend="sql-expressions"/>).  For instance, it
-    could be a list of column names:
+Il tipo più semplice di elenco di selezione è <literal>*</literal> che
+rappresenta tutte le colonne che l'espressione di tabella produce. Altrimenti,
+un elenco di selezione è un elenco separato da virgole di valori (come definito in
+<xref linkend="sql-expressions"/>).  Per esempio, potrebbe essere 
+un elenco di nomi di colonna:
 <programlisting>
 SELECT a, b, c FROM ...
 </programlisting>
-     The columns names <literal>a</literal>, <literal>b</literal>, and <literal>c</literal>
-     are either the actual names of the columns of tables referenced
-     in the <literal>FROM</literal> clause, or the aliases given to them as
-     explained in <xref linkend="queries-table-aliases"/>.  The name
-     space available in the select list is the same as in the
-     <literal>WHERE</literal> clause, unless grouping is used, in which case
-     it is the same as in the <literal>HAVING</literal> clause.
+I nomi di colonna <literal>a</literal>, <literal>b</literal>, e <literal>c</literal>
+sono o i nomi attuali delle colonne delle tabelle referenziate nella 
+clausola <literal>FROM</literal> o gli alias a loro forniti, come spiegato in 
+<xref linkend="queries-table-aliases"/>. Il namespace 
+disponibile nell'elenco di selezione è lo stesso che nella clausola 
+<literal>WHERE</literal>, a meno che sia usato il raggruppamento, nel qual caso
+è lo stesso che nella clausola <literal>HAVING</literal>.
    </para>
 
    <para>
-    If more than one table has a column of the same name, the table
-    name must also be given, as in:
+Se più di una tabella ha una colonna con lo stesso nome, 
+deve essere specificato anche il nome della tabella, quindi:
 <programlisting>
 SELECT tbl1.a, tbl2.a, tbl1.b FROM ...
 </programlisting>
-    When working with multiple tables, it can also be useful to ask for
-    all the columns of a particular table:
+Quando si lavora con molteplici tabelle, può anche essere utile usarlo per 
+tutte le colonne di una tabella: 
 <programlisting>
 SELECT tbl1.*, tbl2.a FROM ...
 </programlisting>
-    (See also <xref linkend="queries-where"/>.)
+(Si veda inoltre <xref linkend="queries-where"/>).
    </para>
 
    <para>
-    If an arbitrary value expression is used in the select list, it
-    conceptually adds a new virtual column to the returned table.  The
-    value expression is evaluated once for each result row, with
-    the row's values substituted for any column references.  But the
-    expressions in the select list do not have to reference any
-    columns in the table expression of the <literal>FROM</literal> clause;
-    they can be constant arithmetic expressions, for instance.
+Se un valore arbitrario vien usato nell'elenco di selezione, esso concettualmente
+aggiunge una nuova colonna virtuale alla tabella restituita. Il valore 
+è valutato una volta per ogni riga del risultato, con i valori della riga sostituiti
+per ogni riferimento di colonna. Le espressioni nell'elenco di selezione 
+non devono fare riferimento a qualsiasi colonna nell'espressione di tabella della clausola 
+<literal>FROM</literal>;
+questi possono essere espressioni di costanti aritmetiche, per esempio.
    </para>
   </sect2>
 

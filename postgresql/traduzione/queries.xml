@@ -884,7 +884,7 @@ sopra, dato che nome e prezzo dovrebbero essere
 
 <indexterm>
     <primary>functional dependent</primary>
-</firstterm>
+</indexterm>
 <indexterm>
     <primary>functional dependency</primary>
 </indexterm> 
@@ -1079,17 +1079,17 @@ questi possono essere espressioni di costanti aritmetiche, per esempio.
   </sect2>
 
   <sect2 id="queries-column-labels">
-   <title>Column Labels</title>
+   <title>Etichette di colonna</title>
 
    <indexterm zone="queries-column-labels">
     <primary>alias</primary>
-    <secondary>in the select list</secondary>
+    <secondary>nell'elenco di selezione</secondary>
    </indexterm>
 
    <para>
-    The entries in the select list can be assigned names for subsequent
-    processing, such as for use in an <literal>ORDER BY</literal> clause
-    or for display by the client application.  For example:
+Le voci dell'elenco di selezione possono essere assegnate per elaborazioni successive,
+come per l'uso  in una clausola <literal>ORDER BY</literal> o
+per essere  visualizzati dall'applicazione client. Per esempio:
 <programlisting>
 SELECT a AS value, b + c AS sum FROM ...
 </programlisting>

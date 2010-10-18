@@ -45,45 +45,45 @@
   <para>
    
     <productname>POSTGRES</productname> ha conosciuto da allora diversi
-   rilasci importanti. Il primo sistema <quote>demoware</quote> è 
-   diventato operativo nel 1987 ed è stato mostrato nel 1988 alla
+   rilasci importanti. Il primo sistema <quote>demoware</quote> divenne
+   operativo nel 1987 e venne mostrato nel 1988 alla
    conferenza <acronym>ACM-SIGMOD</acronym>. La Versione 1, descritta in
-   <xref linkend="STON90a" />, è stata rilasciata ad alcuni utenti esterni nel
-   giugno 1989. In risposta a una critica sulle prime regole di sistema
-   (<xref linkend="STON89" />), le regole di sistema furono ridisegnate (<xref
-   linkend="STON90b" />) e nel giugno 1990 è stata rilasciata la Versione 2 con
-   le nuove regole di sistema. La Versione 3 compare nel 1991 e inserisce il supporto
-   per storage manager multipli, migliora l'esecutore delle query, e
-   riscrive le regole di sistema. Per la maggior parte, i successivi rilasci
-   fino a <productname>Postgres95</productname> (vedere sotto) furoni incentrati sulla
+   <xref linkend="STON90a" />, fu rilasciata ad alcuni utenti esterni nel
+   giugno 1989. In risposta ad una critica sulle prime regole di sistema
+   (<xref linkend="STON89" />), le regole di sistema furono completamente ridisegnate (<xref
+   linkend="STON90b" />) e nel giugno 1990 venne rilasciata la Versione 2.
+   La Versione 3 comparve nel 1991 e vide l'inserimento del supporto
+   per storage manager multipli, il miglioramento dell'esecutore delle query e
+   la riscrittura delle regole di sistema. I successivi rilasci
+   fino a <productname>Postgres95</productname> (vedere sotto) furoni principalmente incentrati sulla
    portabilità e sull'affidabilità.
   </para>
 
   <para>
    
-    <productname>POSTGRES</productname> è stato utilizzato per implementare
-   diverse applicazioni di ricerca e produzione. Queste includono: un
+    <productname>POSTGRES</productname> venne utilizzato per implementare
+   diverse applicazioni di ricerca e di produzione, fra le quali: un
    sistema di analisi di dati finanziari, un pacchetto jet engine di monitoraggio
    delle prestazioni, un database di tracciamento asteroidi, un database di informazioni
-   mediche, e diversi sistemi di informazioni geografiche.
-   <productname>POSTGRES</productname> è stato inoltre utilizzato come
+   mediche e diversi sistemi di informazioni geografiche.
+   <productname>POSTGRES</productname> venne inoltre utilizzato come
    strumento educativo da parecchie università. Per concludere, Illustra
    Information Technologies (in seguito fusa in
    <ulink url="http://www.informix.com/"><productname>Informix</productname></ulink>,
    che è ora proprietà di <ulink
-   url="http://www.ibm.com/">IBM</ulink>) presero il codice e
-   lo commercializzarono. Verso la fine del 1992,
-   <productname>POSTGRES</productname> fù il principale gestore di dati
+   url="http://www.ibm.com/">IBM</ulink>) acquisì il codice e lo commercializzò.
+   Verso la fine del 1992,
+   <productname>POSTGRES</productname> divenne il principale gestore di dati
    per il progetto <ulink url="http://meteora.ucsd.edu/s2k/s2k_home.html">
    Sequoia 2000 sul calcolo scientifico</ulink>.
   </para>
 
   <para>
    
-    La dimensione della comunità degli utenti esterni è quasi raddoppiata durante il 1993.
-   &Egrave; diventato sempre più evidente che la manutenzione del prototipo del
-   codice ed il supporto stava impegnando la maggior parte del tempo che avrebbe dovuto
-   essere dedicato alle ricerche sul database. Con lo scopo di ridurre questo onere 
+    La dimensione della comunità degli utenti esterni raddoppiò durante il 1993.
+   Divenne sempre più evidente che la manutenzione del prototipo del
+   codice ed il supporto stavano impegnando la maggior parte del tempo, che invece avrebbe dovuto
+   essere dedicato alla ricerca nel campo dei database. Con lo scopo di ridurre questo onere 
    di supporto, il progetto Berkeley <productname>POSTGRES</productname> si concluse
    ufficialmente con la versione 4.2.
   </para>
@@ -100,9 +100,9 @@
    
     Nel 1994, Andrew Yu e Jolly Chen aggiunsero un interprete di linguaggio SQL
    a <productname>POSTGRES</productname>. Con un nuovo nome,
-   fù in seguito rilasciato nel web <productname>Postgres95</productname>
+   fu in seguito rilasciato nel web <productname>Postgres95</productname>
    per trovare una collocazione nel mondo come un discendente open-source
-   del codice originale Berkeley <productname>POSTGRES</productname>.
+   del codice originario Berkeley <productname>POSTGRES</productname>.
   </para>
 
   <para>
@@ -120,11 +120,11 @@
      <para>
       
         Il linguaggio di interrogazione PostQUEL fu sostituito con
-      <acronym>SQL</acronym> (implementato nel server). Le subqueries non
-      erano supportate fino all'avvento di <productname>PostgreSQL</productname>
-      (vedi sotto), ma erano "imitate" in <productname>Postgres95</productname>
+      <acronym>SQL</acronym> (implementato nel server). Le subquery, che non
+      sarebbero state supportate fino all'avvento di <productname>PostgreSQL</productname>
+      (vedi sotto), erano "imitate" in <productname>Postgres95</productname>
       con funzioni <acronym>SQL</acronym> definite dall'utente. Le funzioni
-      aggregate furono ri-implementate. Fu anche aggiunto il supporto
+      aggregate furono reimplementate. Fu anche aggiunto il supporto
       per la clausula <literal>GROUP BY</literal>.
      </para>
     </listitem>
@@ -135,7 +135,7 @@
         Un nuovo programma (<application>psql</application>), 
         venne fornito per le query SQL interattive, che utilizzavano la
         <acronym>GNU</acronym> <application>Readline</application>.
-        psql sostituisce il vecchio programma <application>monitor</application>.
+        psql andò a sostituire il vecchio programma <application>monitor</application>.
      </para>
     </listitem>
 
@@ -143,8 +143,8 @@
      <para>
       
         Una nuova libreria front-end, <filename>libpgtcl</filename>,
-        supporta i client basati su <acronym>Tcl</acronym>. Una semplice
-        shell, <command>pgtclsh</command>, fornisce nuovi comandi Tcl per
+        fu introdotta per il supporto ai client basati su <acronym>Tcl</acronym>. Una semplice
+        shell, <command>pgtclsh</command>, forniva nuovi comandi Tcl per
         interfacciare i programmi <application>Tcl</application> con il server
         <productname>Postgres95</productname>.
      </para>
@@ -152,18 +152,15 @@
 
     <listitem>
      <para>
-<warning>
-    <para>Per il revisore: da tradurre!</para>
-</warning>
-      The large-object interface was overhauled. The inversion large
-      objects were the only mechanism for storing large objects.  (The
-      inversion file system was removed.)
+	L'interfaccia per i large-object fu pesantemente revisionata. L'unico
+	meccanismo per la memorizzazione di oggetti di grandi dimensioni divenne
+	"Inversion large objects" (il file system "Inversion" fu rimosso).
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Il sistema di regole a livello-istanza è stato rimosso. Le regole
+      Il sistema di regole a livello-istanza venne rimosso. Le regole
       rimasero ancora disponibili come regole rewrite.
      </para>
     </listitem>
@@ -171,22 +168,17 @@
     <listitem>
      <para>
       Un breve tutorial di introduzione alle caratteristiche 
-      dell'<acronym>SQL</acronym> così come a quelle di <productname>Postgres95</productname>
-      era distribuito con il codice sorgente
+      del linguaggio <acronym>SQL</acronym> e di <productname>Postgres95</productname>
+      fu distribuito con il codice sorgente.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      <acronym>GNU</acronym> make (instead of <acronym>BSD</acronym>
-      make) was used for the build.  Also,
-      <productname>Postgres95</productname> could be compiled with an
-      unpatched <productname>GCC</productname> (data alignment of
-      doubles was fixed).
       Per la compilazione fu utilizzato <acronym>GNU</acronym> make
-      (invece di <acronym>BSD</acronym> make). Inoltre,
+      (al posto di <acronym>BSD</acronym> make). Inoltre,
       <productname>Postgres95</productname> poteva essere compilato
-      con un  <productname>GCC</productname> non patchato (fu
+      con un  <productname>GCC</productname> non modificato (venne
       risolto l'allineamento dei dati double).
      </para>
     </listitem>
@@ -198,40 +190,38 @@
   <title><productname>PostgreSQL</productname></title>
 
   <para>
-   
-    Nel 1996, divenne chiaro che il nome <quote>Postgres95</quote>
-   non era più adeguato al tempo. Venne scelto allora un nuovo nome,
+   Nel 1996, divenne chiaro che il nome <quote>Postgres95</quote>
+   non era più adeguato con i tempi. Venne scelto allora un nuovo nome,
    <productname>PostgreSQL</productname>, per evidenziare il rapporto
    tra il <productname>POSTGRES</productname> originale e la più
-   recente versione con capacità <acronym>SQL</acronym>. Nello
-   stesso tempo, è stato inserito il numero di versione iniziale 6.0,
-   utilizzando la sequenza di numerazione originalmente utilizzata dal
+   recente versione con capacità <acronym>SQL</acronym>. Contestualmente,
+   venne inserito il numero di versione iniziale 6.0,
+   utilizzando la sequenza di numerazione originariamente utilizzata dal
    progetto Berkeley <productname>POSTGRES</productname>.
   </para>
 
   <para>
-   
-    Molte persone continuano a riferirsi a 
+   Molte persone continuano a riferirsi a 
    <productname>PostgreSQL</productname> come <quote>Postgres</quote>
    (raramente in lettere maiuscole) per tradizione o perchè
-   è più facile da pronunciare. Questo utilizzo è largamente
-   accettato come nickname o alias.
+   più facile da pronunciare. Questo utilizzo è largamente
+   accettato come alternativa, nickname o alias.
   </para>
 
   <para>
    
     L'impegno maggiore durante lo sviluppo di
-   <productname>Postgres95</productname> era di identificare e
+   <productname>Postgres95</productname> fu quello di identificare e
    capire i problemi esistenti nel codice del server. Con
    <productname>PostgreSQL</productname>, l'impegno maggiore
-   fù spostato all'incremento delle caratteristiche e
-   delle capacità, anche se il lavoro proseguiva in
-   tutte le aree.
+   venne concentrato sull'incremento delle caratteristiche e
+   delle capacità (anche se il lavoro di fatto proseguiva in
+   tutte le aree).
   </para>
 
   <para>
-   Dettagli per tutto ciò che è accaduto da
-   allora riguardo a  <productname>PostgreSQL</productname> possono essere trovati
+   Dettagli su tutto ciò che è accaduto da
+   allora in merito a  <productname>PostgreSQL</productname> possono essere trovati
    dentro l'<xref linkend="release" />.
   </para>
  </sect2>

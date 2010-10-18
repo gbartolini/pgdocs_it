@@ -7,6 +7,7 @@
 <!ENTITY legal      SYSTEM "legal.xml">
 <!ENTITY notation   SYSTEM "notation.xml">
 <!ENTITY problems   SYSTEM "problems.xml">
+<!ENTITY gruppodilavoro   SYSTEM "gruppodilavoro.xml">
 
 <!-- tutorial -->
 <!ENTITY advanced   SYSTEM "advanced.xml">

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $PostgreSQL$ -->
+
+<sect1 id="gruppodilavoro">
+ <title>Il gruppo di lavoro per la traduzione in italiano</title>
+
+ <para>
+La traduzione in italiano del manuale di <productname>PostgreSQL</productname> è
+un'opera molto impegnativa che richiede sia un lavoro in fase iniziale per la traduzione
+del materiale esistente che un lavoro continuo di aggiornamento alle varie release
+di <productname>PostgreSQL</productname> che vengono prodotte nel tempo.
+ </para>
+
+ <para>
+L'<ulink url="http://www.itpug.org/">Associazione Culturale ITPUG - Italian PostgreSQL Users Group</ulink>, grazie al contributo
+dei propri volontari, e <ulink url="http://www.2ndquadrant.it/">2ndQuadrant Italia</ulink> hanno deciso nel settembre 2010 di portare
+avanti un progetto per la traduzione del manuale in italiano, al fine di favorire
+la promozione di <productname>PostgreSQL</productname> in Italia.
+ </para>
+
+ <para>
+La fase attuale del progetto è quella che prevede la traduzione della documentazione esistente per la versione di sviluppo di PostgreSQL.
+ </para>
+
+<para>
+	Il gruppo di lavoro è attualmente composto da:
+</para>
+
+   <itemizedlist>
+    <listitem>
+     <para>Ascani Carlo (traduttore)</para>
+    </listitem>
+
+    <listitem>
+     <para>Bartolini Gabriele (revisore)</para>
+    </listitem>
+
+    <listitem>
+     <para>Ciolli Gianni (revisore)</para>
+    </listitem>
+
+    <listitem>
+     <para>Coratella Marco (traduttore)</para>
+    </listitem>
+
+    <listitem>
+     <para>D'Arcangelo Cosimo (traduttore)</para>
+    </listitem>
+   </itemizedlist>
+
+<para>Il progetto è aperto a tutti ed è possibile partecipare inviando una e-mail a <ulink url="mailto:info@itpug.org">infor@itpug.org</ulink>.</para>
+
+</sect1>

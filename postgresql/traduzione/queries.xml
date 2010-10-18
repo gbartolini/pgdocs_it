@@ -1757,17 +1757,12 @@ WITH RECURSIVE t(n) AS (
 SELECT n FROM t LIMIT 100;
 </programlisting>
 
-   This works because <productname>PostgreSQL</productname>'s implementation
 Questo funziona perchè l'implementazione di <productname>PostgreSQL</productname>
-   evaluates only as many rows of a <literal>WITH</literal> query as are actually
 valuta solo tante righe di una query <literal>WITH</literal> quante sono effettivamente 
-   fetched by the parent query.  Using this trick in production is not
 prese dalla query superiore. Usare questo trucco in produzione non è 
-   recommended, because other systems might work differently.  Also, it
 raccomandato, dato che altri sistemi potrebbero funzionare diversamente. Inoltre, 
-   usually won't work if you make the outer query sort the recursive query's
-di solito non funzionerà se si 
-   results or join them to some other table.
+di solito non funzionerà se si vuole che la query esterna ordini i risultati della query ricorsiva 
+o si voglia effettuare una join con un'altra tabella.
   </para>
 
   <para>

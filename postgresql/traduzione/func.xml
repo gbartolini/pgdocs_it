@@ -1027,7 +1027,7 @@ speciale <token>BETWEEN</token>:
     
     <note>
         <para>
-            Nota per il revisore: coercizioni è urend....
+            Nota per il revisore: coercizioni* 
         </para>
     </note>
     <para>
@@ -3990,7 +3990,7 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
     <note>
         <para>
             Nota per il revisore: il paragrafo successivo mi dà problemi, specialmente 
-            il verbo collate, che in italiano è urend (collazionare). 
+            il verbo collate, che in italiano è collazionare. 
         </para>
     </note>
    <para>
@@ -10548,7 +10548,7 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>double precision</type>
       </entry>
-      <entry><note><para>Nota per il revisore: Whaaaaaaaat?</para></note>
+      <entry><note><para>Nota per il revisore: TODO</para></note>
         y-intercept of the least-squares-fit linear equation
         determined by the (<replaceable
         class="parameter">X</replaceable>, <replaceable
@@ -10582,7 +10582,7 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>double precision</type>
       </entry>
-      <entry><note><para>Nota per il revisore: Sei tu lo statista.... </para></note> 
+      <entry><note><para>Nota per il revisore: TODO </para></note> 
         slope of the least-squares-fit linear equation determined
       by the (<replaceable class="parameter">X</replaceable>,
       <replaceable class="parameter">Y</replaceable>) pairs</entry>
@@ -10837,7 +10837,7 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>bigint</type>
       </entry>
-      <entry><note><para>Nota per il revisore: non capisco</para></note> rank of the current row with gaps; same as <function>row_number</function> of its first peer</entry>
+      <entry><note><para>Nota per il revisore: TODO</para></note> rank of the current row with gaps; same as <function>row_number</function> of its first peer</entry>
      </row>
 
      <row>
@@ -12354,7 +12354,7 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry><note><para>Nota per il revisore: non ho capito</para></note> does user have privilege for foreign-data wrapper</entry>
+       <entry><note><para>Nota per il revisore: TODO</para></note> does user have privilege for foreign-data wrapper</entry>
       </row>
       <row>
        <entry><literal><function>has_foreign_data_wrapper_privilege</function>(<parameter>fdw</parameter>,

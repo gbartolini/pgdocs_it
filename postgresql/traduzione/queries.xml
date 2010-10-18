@@ -1671,12 +1671,12 @@ WITH RECURSIVE search_graph(id, link, data, depth) AS (
 SELECT * FROM search_graph;
 </programlisting>
 
-   This query will loop if the <structfield>link</structfield> relationships contain
-   cycles.  Because we require a <quote>depth</quote> output, just changing
-   <literal>UNION ALL</literal> to <literal>UNION</literal> would not eliminate the looping.
-   Instead we need to recognize whether we have reached the same row again
-   while following a particular path of links.  We add two columns
-   <structfield>path</structfield> and <structfield>cycle</structfield> to the loop-prone query:
+Questa query effettuerà un loop se le relazioni <structfield>link</structfield> contengono
+cicli. Siccome si richiede un output <quote>profondo</tuote>, cambiare semplicemente 
+<literal>UNION ALL</literal> in <literal>UNION</literal> non eliminerebbe i loop.
+È necessario invece riconoscere se si è raggiunta la stessa riga di nuovo
+mentre si seguiva un particolare percorso di link. Si hanno due colonne 
+<structfield>path</structfield> e <structfield>cycle</structfield> nella query possibilmente soggetta a llop:
 
 <programlisting>
 WITH RECURSIVE search_graph(id, link, data, depth, path, cycle) AS (
@@ -1694,14 +1694,14 @@ WITH RECURSIVE search_graph(id, link, data, depth, path, cycle) AS (
 SELECT * FROM search_graph;
 </programlisting>
 
-   Aside from preventing cycles, the array value is often useful in its own
-   right as representing the <quote>path</quote> taken to reach any particular row.
+Oltre a prevenire cicli, il valore array è spesso utile a rappresentare 
+il  <quote>percorso</quote> seguito per raggiungere ogni particolare riga.
   </para>
 
   <para>
-   In the general case where more than one field needs to be checked to
-   recognize a cycle, use an array of rows.  For example, if we needed to
-   compare fields <structfield>f1</structfield> and <structfield>f2</structfield>:
+Nel caso generale in cui più di un campo necessita di essere controllato per riconoscere
+un ciclo, usare un array di righe. Per esempio, se si ha bisgno di 
+confrontare i  campi <structfield>f1</structfield> e <structfield>f2</structfield>:
 
 <programlisting>
 WITH RECURSIVE search_graph(id, link, data, depth, path, cycle) AS (
@@ -1722,13 +1722,18 @@ SELECT * FROM search_graph;
 
   <tip>
    <para>
-    Omit the <literal>ROW()</literal> syntax in the common case where only one field
-    needs to be checked to recognize a cycle.  This allows a simple array
-    rather than a composite-type array to be used, gaining efficiency.
+Omettere <literal>ROW()</literal> nel caso in cui solo un campo 
+abbia bisogno di essere controllato per riconoscere un ciclo. Questo permette di poter usare
+un array semplice piuttosto che un array di tipo composto, aumentando l'efficienza.
    </para>
   </tip>
 
   <tip>
+    <note>
+        <para>
+            TODO
+        </para>
+    </note>
    <para>
     The recursive query evaluation algorithm produces its output in
     breadth-first search order.  You can display the results in depth-first
@@ -1738,10 +1743,10 @@ SELECT * FROM search_graph;
   </tip>
 
   <para>
-   A helpful trick for testing queries
-   when you are not certain if they might loop is to place a <literal>LIMIT</literal>
-   in the parent query.  For example, this query would loop forever without
-   the <literal>LIMIT</literal>:
+Un trucco che può aiutare a testare le query 
+quando non si è certi se potrebbero produrre loop è di posizionare una <literal>LIMIT</literal>
+nella query superiore. Per esempio, questa query produrrebbe un loop infinito senza
+la <literal>LIMIT</literal>:
 
 <programlisting>
 WITH RECURSIVE t(n) AS (
@@ -1753,28 +1758,32 @@ SELECT n FROM t LIMIT 100;
 </programlisting>
 
    This works because <productname>PostgreSQL</productname>'s implementation
+Questo funziona perchè l'implementazione di <productname>PostgreSQL</productname>
    evaluates only as many rows of a <literal>WITH</literal> query as are actually
+valuta solo tante righe di una query <literal>WITH</literal> quante sono effettivamente 
    fetched by the parent query.  Using this trick in production is not
+prese dalla query superiore. Usare questo trucco in produzione non è 
    recommended, because other systems might work differently.  Also, it
+raccomandato, dato che altri sistemi potrebbero funzionare diversamente. Inoltre, 
    usually won't work if you make the outer query sort the recursive query's
+di solito non funzionerà se si 
    results or join them to some other table.
   </para>
 
   <para>
-   A useful property of <literal>WITH</literal> queries is that they are evaluated
-   only once per execution of the parent query, even if they are referred to
-   more than once by the parent query or sibling <literal>WITH</literal> queries.
-   Thus, expensive calculations that are needed in multiple places can be
-   placed within a <literal>WITH</literal> query to avoid redundant work.  Another
-   possible application is to prevent unwanted multiple evaluations of
-   functions with side-effects.
-   However, the other side of this coin is that the optimizer is less able to
-   push restrictions from the parent query down into a <literal>WITH</literal> query
-   than an ordinary sub-query.  The <literal>WITH</literal> query will generally be
-   evaluated as stated, without suppression of rows that the parent query
-   might discard afterwards.  (But, as mentioned above, evaluation might stop
-   early if the reference(s) to the query demand only a limited number of
-   rows.)
+Una proprietà utile delle query <literal>WITH</literal> è che sono valutate
+solo una volta per esecuzione della query superiore, anche se sono riferite più
+di una volta dalla query superiore o da query <literal>WITH</literal> sorelle.
+Così, calcoli costosi che sono necessari in molteplici posti possono essere 
+posizionati all'interno di una query <literal>WITH</literal> per evitare lavoro ridondante. Un'altra applicazione possibile
+è di prevenire valutazioni multiple non volute di funzioni con effetti collaterali.
+Comunque, l'altra faccia della medaglia è che l'ottimizzatore è meno capace di 
+attuare restizioni dalla query superiore giù fino alla query <literal>WITH</literal>
+rispetto ad una ordinaria sottoquery. La query <literal>WITH</literal> sarà generalmente 
+valutata come fissa, senza sottoespressioni di righe che la query superiore potrebbe
+scartare dopo (ma, come menzionato sopra, la valutazione potrebbe fermarsi
+precedentemente se il riferimento/i alla query richiede solo un numero limitato di 
+righe).
   </para>
 
  </sect1>

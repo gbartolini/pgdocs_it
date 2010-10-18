@@ -69,14 +69,14 @@ Chiunque gestisca il proprio server dovrebbe leggere <xref linkend="admin"/>.
  </part>
 
  <part id="sql">
-  <title>The SQL Language</title>
+  <title>Il linguaggio SQL</title>
 
   <partintro>
    <para>
 Questa parte descrive l'utilizzo del linguaggio <acronym>SQL</acronym>
 in <productname>PostgreSQL</productname>. Cominceremo 
 spiegando come creare le strutture per contenere i dati, come popolare
-il databasem, e come interrogarlo. La parte centrale elenca i tipi di dato
+il database, e come interrogarlo. La parte centrale elenca i tipi di dato
 disponibili e le funzioni per usare i comandi <acronym>SQL</acronym>.
 Il resto tratta diversi aspetti che sono importanti per la messa a punto
 del database per prestazioni ottimali.

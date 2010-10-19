@@ -2,159 +2,155 @@
 <!-- $PostgreSQL$ -->
 
 <chapter id="sql-syntax">
- <title>SQL Syntax</title>
+ <title>Sintassi SQL</title>
 
  <indexterm zone="sql-syntax">
-  <primary>syntax</primary>
+  <primary>syntassi</primary>
   <secondary>SQL</secondary>
  </indexterm>
 
  <para>
-  This chapter describes the syntax of SQL.  It forms the foundation
-  for understanding the following chapters which will go into detail
-  about how SQL commands are applied to define and modify data.
+Questo capitolo descrive la sintassi di SQL. Costituisce le fondamenta
+per la comprensione dei capitoli seguenti che affronteranno in dettaglio
+come vengono applicati i comandi SQL per definire e modificare i dati.
  </para>
 
  <para>
-  We also advise users who are already familiar with SQL to read this
-  chapter carefully because it contains several rules and concepts that
-  are implemented inconsistently among SQL databases or that are
-  specific to <productname>PostgreSQL</productname>.
+Avvisiamo inoltre gli utenti che sono già familiari con SQL di leggere
+questo capitolo attentamente perchè contiene diverse regole e concetti che
+sono implementati incoerentemente tra i database SQL o che sono
+specifici di <productname>PostgreSQL</productname>.
  </para>
 
  <sect1 id="sql-syntax-lexical">
-  <title>Lexical Structure</title>
+  <title>Struttura lessicale</title>
 
   <indexterm>
    <primary>token</primary>
   </indexterm>
 
   <para>
-   SQL input consists of a sequence of
-   <firstterm>commands</firstterm>.  A command is composed of a
-   sequence of <firstterm>tokens</firstterm>, terminated by a
-   semicolon (<quote>;</quote>).  The end of the input stream also
-   terminates a command.  Which tokens are valid depends on the syntax
-   of the particular command.
+Un input SQL consiste in una sequenza di 
+<firstterm>comandi</firstterm>. Un comando è composto da una 
+sequenza di <firstterm>tokens</firstterm>, trminati da un punto e virgola
+(<quote>;</quote>). La fine dello stream di input termina pure il comando.
+Quali token siano validi dipende dalla sintassi
+del particolare comando.
   </para>
 
   <para>
-   A token can be a <firstterm>key word</firstterm>, an
-   <firstterm>identifier</firstterm>, a <firstterm>quoted
-   identifier</firstterm>, a <firstterm>literal</firstterm> (or
-   constant), or a special character symbol.  Tokens are normally
-   separated by whitespace (space, tab, newline), but need not be if
-   there is no ambiguity (which is generally only the case if a
-   special character is adjacent to some other token type).
+Un token può essere una <firstterm>parola chiave</firstterm>, un
+<firstterm>identificatore</firstterm>, un <firstterm>identificatore 
+citato</firstterm>, un <firstterm>letterale</firstterm> (o
+costante), o un simbolo speciale. I token normalmente sono
+separati da spazi bianchi (spazio, tab, nuova linea), ma non dev'esserci se 
+non c'è ambiguità (che è generalmente solo il caso in cui un carattere speciale
+è adiacente a qualche altro tipo di token).
   </para>
 
    <para>
-    For example, the following is (syntactically) valid SQL input:
+Per esempio, il seguente input e (sintatticamente) SQL valido:
 <programlisting>
 SELECT * FROM MY_TABLE;
 UPDATE MY_TABLE SET A = 5;
 INSERT INTO MY_TABLE VALUES (3, 'hi there');
 </programlisting>
-    This is a sequence of three commands, one per line (although this
-    is not required; more than one command can be on a line, and
-    commands can usefully be split across lines).
+Questa è una sequenza di tre comandi, uno per linea (anche se questo non è 
+richiesto; più di un comando può stare in una linea, e i comandi possono
+essere divisi su più linee).
    </para>
 
   <para>
-   Additionally, <firstterm>comments</firstterm> can occur in SQL
-   input.  They are not tokens, they are effectively equivalent to
-   whitespace.
+Inoltre, in un input SQL ci possono essere <firstterm>commenti</firstterm>. 
+Essi non sono token, sono effettivamente equivalenti a spazi bianchi.
   </para>
 
   <para>
-   The SQL syntax is not very consistent regarding what tokens
-   identify commands and which are operands or parameters.  The first
-   few tokens are generally the command name, so in the above example
-   we would usually speak of a <quote>SELECT</quote>, an
-   <quote>UPDATE</quote>, and an <quote>INSERT</quote> command.  But
-   for instance the <command>UPDATE</command> command always requires
-   a <token>SET</token> token to appear in a certain position, and
-   this particular variation of <command>INSERT</command> also
-   requires a <token>VALUES</token> in order to be complete.  The
-   precise syntax rules for each command are described in <xref linkend="reference"/>.
+La sintassi SQL non è molto coerente riguardo a cosa i token identificano come comandi 
+o operandi o parametri. I primi token sono generalmente il nome del comando, così, nell'esempio sopra
+parleremo di un comando <quote>SELECT</quote>, un <quote>UPDATE</quote> e
+un <quote>INSERT</quote>. Ma, per esempio, il comando <command>UPDATE</command> richiede
+sempre che un token <token>SET</token> appaia in una certa posizione, e 
+questa particolare variazione di <command>INSERT</command> 
+richiede <token>VALUES</token> per essere completo. La regole precise per la sintassi
+di ogni comando sono descritte in <xref linkend="reference"/>.
   </para>
 
   <sect2 id="sql-syntax-identifiers">
-   <title>Identifiers and Key Words</title>
+   <title>Identificatori e parole chiave</title>
 
    <indexterm zone="sql-syntax-identifiers">
-    <primary>identifier</primary>
-    <secondary>syntax of</secondary>
+    <primary>identificatore</primary>
+    <secondary>sintassi di</secondary>
    </indexterm>
 
    <indexterm zone="sql-syntax-identifiers">
-    <primary>name</primary>
-    <secondary>syntax of</secondary>
+    <primary>nome</primary>
+    <secondary>sintassi di</secondary>
    </indexterm>
 
    <indexterm zone="sql-syntax-identifiers">
-    <primary>key word</primary>
-    <secondary>syntax of</secondary>
+    <primary>aprola chiave</primary>
+    <secondary>sintassi di</secondary>
    </indexterm>
 
    <para>
-    Tokens such as <token>SELECT</token>, <token>UPDATE</token>, or
-    <token>VALUES</token> in the example above are examples of
-    <firstterm>key words</firstterm>, that is, words that have a fixed
-    meaning in the SQL language.  The tokens <token>MY_TABLE</token>
-    and <token>A</token> are examples of
-    <firstterm>identifiers</firstterm>.  They identify names of
-    tables, columns, or other database objects, depending on the
-    command they are used in.  Therefore they are sometimes simply
-    called <quote>names</quote>.  Key words and identifiers have the
-    same lexical structure, meaning that one cannot know whether a
-    token is an identifier or a key word without knowing the language.
-    A complete list of key words can be found in <xref
-    linkend="sql-keywords-appendix"/>.
+Token come <token>SELECT</token>, <token>UPDATE</token>, o
+<token>VALUES</token> nell'esempio sopra sono esempi di 
+<firstterm>parole chiave</firstterm>, cioè parole che hanno un significato preciso
+nel linguaggio SQL. I token <token>MY_TABLE</token>
+e <token>A</token> sono esempi di 
+<firstterm>identificatori</firstterm>. Essi identificano nomi di
+tabelle, colonne o altri oggetti del database, dipende dal comando in cui vengono 
+usati. Quindi, a volte sono chiamati semplicemente <quote>nomi</quote>.
+Le parole chiave e gli identificatori hanno la stessa struttura lessicale, 
+quindi non è possibile sapere se un token è un identificatore
+o una parola chiave senza conoscere il linguaggio.
+Un elenco completo di parole chiave si trova in <xref
+linkend="sql-keywords-appendix"/>.
    </para>
 
    <para>
-    SQL identifiers and key words must begin with a letter
-    (<literal>a</literal>-<literal>z</literal>, but also letters with
-    diacritical marks and non-Latin letters) or an underscore
-    (<literal>_</literal>).  Subsequent characters in an identifier or
-    key word can be letters, underscores, digits
-    (<literal>0</literal>-<literal>9</literal>), or dollar signs
-    (<literal>$</literal>).  Note that dollar signs are not allowed in identifiers
-    according to the letter of the SQL standard, so their use might render
-    applications less portable.
-    The SQL standard will not define a key word that contains
-    digits or starts or ends with an underscore, so identifiers of this
-    form are safe against possible conflict with future extensions of the
-    standard.
+Identificatori e parole chiave SQL devono cominciare con una 
+lettera (<literal>a</literal>-<literal>z</literal>, ma anche lettere con
+punti diacritici e lettere non Latine) o un underscore
+(<literal>_</literal>).  I caratteri successivi in un identificatore o
+parola chiave possono essere lettere, underscore, cifre
+(<literal>0</literal>-<literal>9</literal>) o segni dollaro
+(<literal>$</literal>). Notare che segni dollaro non sono permessi negli identificatori
+in accordo con lo standard SQL, per questo il loro uso potrebbe rendere le applicazioni 
+meno portabili. 
+Lo standard SQL non definirà parole chiave che contengano 
+cifre o comincino o finiscano con un underscore, cos' identificatori di questa forma sono sicuri
+rispetto a possibili conflitti con esenzioni future dello standard.
    </para>
 
    <para>
-    <indexterm><primary>identifier</primary><secondary>length</secondary></indexterm>
-    The system uses no more than <symbol>NAMEDATALEN</symbol>-1
-    bytes of an identifier; longer names can be written in
-    commands, but they will be truncated.  By default,
-    <symbol>NAMEDATALEN</symbol> is 64 so the maximum identifier
-    length is 63 bytes. If this limit is problematic, it can be raised by
-    changing the <symbol>NAMEDATALEN</symbol> constant in
-    <filename>src/include/pg_config_manual.h</filename>.
+<indexterm><primary>identifier</primary><secondary>length</secondary></indexterm>
+Il sistema non usa più di <symbol>NAMEDATALEN</symbol>-1
+byte di un identificatore; nomi più lunghi possono essere scritti in
+comandi, ma saranno troncati. In maniera predefinita, 
+<symbol>NAMEDATALEN</symbol> è 64 così la lunghezza massima per gli identificatori 
+è 63 byte. Se questo limite è problematico, può essere alzato cambiando la costante
+<symbol>NAMEDATALEN</symbol> in 
+<filename>src/include/pg_config_manual.h</filename>.
    </para>
 
    <para>
     <indexterm>
-     <primary>case sensitivity</primary>
-     <secondary>of SQL commands</secondary>
+     <primary>sensibilità al case</primary>
+     <secondary>di comandi SQL</secondary>
     </indexterm>
-    Key words and unquoted identifiers are case insensitive.  Therefore:
+Parole chiave e identificatori non quotati sono insensibili al case. Perciò:
 <programlisting>
 UPDATE MY_TABLE SET A = 5;
 </programlisting>
-    can equivalently be written as:
+può essere scritto, equivalentemente:
 <programlisting>
 uPDaTE my_TabLE SeT a = 5;
 </programlisting>
-    A convention often used is to write key words in upper
-    case and names in lower case, e.g.:
+Una convenzione usata spesso è di scrivere le parole chiave in maiuscolo
+e i nomi in minuscolo, per es.:
 <programlisting>
 UPDATE my_table SET a = 5;
 </programlisting>
@@ -162,37 +158,37 @@ UPDATE my_table SET a = 5;
 
    <para>
     <indexterm>
-     <primary>quotation marks</primary>
-     <secondary>and identifiers</secondary>
+     <primary>virgolette</primary>
+     <secondary>e identificatori</secondary>
     </indexterm>
-    There is a second kind of identifier:  the <firstterm>delimited
-    identifier</firstterm> or <firstterm>quoted
-    identifier</firstterm>.  It is formed by enclosing an arbitrary
-    sequence of characters in double-quotes
-    (<literal>"</literal>). <!-- " font-lock mania --> A delimited
-    identifier is always an identifier, never a key word.  So
-    <literal>"select"</literal> could be used to refer to a column or
-    table named <quote>select</quote>, whereas an unquoted
-    <literal>select</literal> would be taken as a key word and
-    would therefore provoke a parse error when used where a table or
-    column name is expected.  The example can be written with quoted
-    identifiers like this:
+C'è un altro tipo di identificatore: l'<firstterm>identificatore
+delimitati</firstterm> o <firstterm>identificatore quotato</firstterm>.
+Viene formato racchiudendo una sequenza di caratteri arbitraria in doppi apici
+(<literal>"</literal>).  Un identificatore delimitato 
+è sempre un identificatore, mai una parola chiave. Per questo 
+<literal>"select"</literal> può essere usato per fare riferimento a una colonna
+tabella chiamata <quote>select</quote>, mentre <literal>select</literal>
+non quotato sarebbe considerato una parola chiave e
+perchiò provocherebbe un errore quando usato dove ci si aspetta il nome di una tabella
+o una colonna. L'esempio può essere scritto con indentificatori
+quotati, in questo modo:
 <programlisting>
 UPDATE "my_table" SET "a" = 5;
 </programlisting>
    </para>
 
    <para>
-    Quoted identifiers can contain any character, except the character
-    with code zero.  (To include a double quote, write two double quotes.)
-    This allows constructing table or column names that would
-    otherwise not be possible, such as ones containing spaces or
-    ampersands.  The length limitation still applies.
+Identificatori quotati possono contenere qualsiasi carattere, ad eccezioni del carattere
+con codice zero. (Per includere un carattere di doppi apici, scrivere due doppi apici).
+Questo permette la creazione di nomi di tabelle o colonne che non sarebbero possibili altrimenti,
+tipo nomi contenenti spazi o e commerciali. Viene comunque applicata la limitazione della lunghezza.
    </para>
 
    <para>
-    <indexterm><primary>Unicode escape</primary><secondary>in
-    identifiers</secondary></indexterm> A variant of quoted
+    <note>Nota per il revisore: TODO</note>
+    <indexterm><primary>escape unicode escape</primary><secondary>in
+    identificatori</secondary></indexterm> 
+    A variant of quoted
     identifiers allows including escaped Unicode characters identified
     by their code points.  This variant starts
     with <literal>U&amp;</literal> (upper or lower case U followed by
@@ -217,121 +213,115 @@ U&amp;"\0441\043B\043E\043D"
    </para>
 
    <para>
-    If a different escape character than backslash is desired, it can
-    be specified using
-    the <literal>UESCAPE</literal><indexterm><primary>UESCAPE</primary></indexterm>
-    clause after the string, for example:
+Se si desidera usare un carattere di escape diverso dalla barra inversa, è possibile 
+specificarlo usando la clausola <literal>UESCAPE</literal><indexterm><primary>UESCAPE</primary></indexterm>
+dopo la stringa, per esempio:
 <programlisting>
 U&amp;"d!0061t!+000061" UESCAPE '!'
 </programlisting>
-    The escape character can be any single character other than a
-    hexadecimal digit, the plus sign, a single quote, a double quote,
-    or a whitespace character.  Note that the escape character is
-    written in single quotes, not double quotes.
+Il carattere di escape può essere un singolo carattere piuttosto che una cifra decimale, 
+il segno più, un singolo apice, doppi apici, 
+o un carattere di spazio. Notare che il carattere di escape è scritto in singoli apici,
+non doppi apici.
    </para>
 
    <para>
-    To include the escape character in the identifier literally, write
-    it twice.
+Per includere il carattere di escape letteralmente nell'identificatore, scriverlo
+due volte. 
    </para>
 
    <para>
-    The Unicode escape syntax works only when the server encoding is
-    <literal>UTF8</literal>.  When other server encodings are used, only code
-    points in the ASCII range (up to <literal>\007F</literal>) can be
-    specified.  Both the 4-digit and the 6-digit form can be used to
-    specify UTF-16 surrogate pairs to compose characters with code
-    points larger than U+FFFF, although the availability of the
-    6-digit form technically makes this unnecessary.  (When surrogate
-    pairs are used when the server encoding is <literal>UTF8</literal>, they
-    are first combined into a single code point that is then encoded
-    in UTF-8.)
+La sintassi di escape Unicode funziona solo quando la codifica del server è
+<literal>UTF8</literal>.  Quando sono usate altre codifiche per il server, possono
+essere specificati solo codici nell'intervallo ASCII (fino a <literal>\007F</literal>). 
+Sia la forma a 4 cifre che quella a 6 cifre può essere usata per 
+specificare coppie surrogate UTF-16 per comporre caratteri con codici
+più grandi di U+FFFF, anche se la disponibilità della forma a 6 cifre tecnicamente la 
+rende non necessaria. (Quando le coppie surrogate sono usate con server che usano codifica 
+<literal>UTF8</literal>, esse sono prima combinate in un singolo codice 
+che viene codificato in UTF-8).
    </para>
 
    <para>
-    Quoting an identifier also makes it case-sensitive, whereas
-    unquoted names are always folded to lower case.  For example, the
-    identifiers <literal>FOO</literal>, <literal>foo</literal>, and
-    <literal>"foo"</literal> are considered the same by
-    <productname>PostgreSQL</productname>, but
-    <literal>"Foo"</literal> and <literal>"FOO"</literal> are
-    different from these three and each other.  (The folding of
-    unquoted names to lower case in <productname>PostgreSQL</productname> is
-    incompatible with the SQL standard, which says that unquoted names
-    should be folded to upper case.  Thus, <literal>foo</literal>
-    should be equivalent to <literal>"FOO"</literal> not
-    <literal>"foo"</literal> according to the standard.  If you want
-    to write portable applications you are advised to always quote a
-    particular name or never quote it.)
+Quotare un identificatore lo rende anche sensibile al case, mentre
+nomi non quotati sono sempre resi in minuscolo. Per esempio, gli identificatori 
+<literal>FOO</literal>, <literal>foo</literal>, e
+<literal>"foo"</literal> sono considerati allo stesso modo da 
+<productname>PostgreSQL</productname>, ma <literal>"Foo"</literal> e <literal>"FOO"</literal>
+sono diversi da quei tre e anche tra di loro. (Il comportamento di <productname>PostgreSQL</productname> di rendere nomi non quotati in minuscolo
+non è compatibile con lo standard SQL, che dice che i nomi non quotati  
+dovrebbero essere resi in maiuscolo. Così, 
+<literal>foo</literal>
+dovrebbe essere equivalente a  <literal>"FOO"</literal>, non a
+<literal>"foo"</literal>,s econdo lo standard. Se si vuole scrivere applicazioni portabili
+si dovrebbe quotare sempre un particolare nome o non quotarlo mai.
    </para>
   </sect2>
 
 
   <sect2 id="sql-syntax-constants">
-   <title>Constants</title>
+   <title>Costanti</title>
 
    <indexterm zone="sql-syntax-constants">
-    <primary>constant</primary>
+    <primary>costanti</primary>
    </indexterm>
 
    <para>
-    There are three kinds of <firstterm>implicitly-typed
-    constants</firstterm> in <productname>PostgreSQL</productname>:
-    strings, bit strings, and numbers.
-    Constants can also be specified with explicit types, which can
-    enable more accurate representation and more efficient handling by
-    the system. These alternatives are discussed in the following
-    subsections.
+Ci sono tre tipi di <firstterm>costanti scritte implicitamente</firstterm>
+in <productname>PostgreSQL</productname>:
+stringhe, stringhe di bit e numeri.
+Le costanti possono essere specificate anche con tipi espliciti, che possono
+abilitare una rappresentazione più accurata e una gestione più efficiente 
+da parte del sistema. Queste alternative sono discusse nelle sottosezioni seguenti.
    </para>
 
    <sect3 id="sql-syntax-strings">
-    <title>String Constants</title>
+    <title>Costanti stringa</title>
 
     <indexterm zone="sql-syntax-strings">
-     <primary>character string</primary>
-     <secondary>constant</secondary>
+     <primary>stringa di caratteri</primary>
+     <secondary>constante</secondary>
     </indexterm>
 
     <para>
      <indexterm>
-      <primary>quotation marks</primary>
-      <secondary>escaping</secondary>
+      <primary>virgolette</primary>
+      <secondary>escape</secondary>
      </indexterm>
-     A string constant in SQL is an arbitrary sequence of characters
-     bounded by single quotes (<literal>'</literal>), for example
-     <literal>'This is a string'</literal>.  To include
-     a single-quote character within a string constant,
-     write two adjacent single quotes, e.g.,
-     <literal>'Dianne''s horse'</literal>.
-     Note that this is <emphasis>not</emphasis> the same as a double-quote
-     character (<literal>"</literal>). <!-- font-lock sanity: " -->
+Una costante stringa in SQL è una sequenza di caratteri arbitraria
+racchiusa in apici singoli (<literal>'</literal>), per esempio 
+<literal>'Questa è una stringa'</literal>.  Per includere
+un carattere di singolo apice all'interno di una costante stringa,
+scrivere due apici singoli adiacenti, per es.,
+<literal>'Dianne''s horse'</literal>.
+Notare che questo <emphasis>non</emphasis> è lo stesso di un carattere 
+doppio apice (<literal>"</literal>).
     </para>
 
     <para>
-     Two string constants that are only separated by whitespace
-     <emphasis>with at least one newline</emphasis> are concatenated
-     and effectively treated as if the string had been written as one
-     constant.  For example:
+Due costanti stringa che sono separate solamente da spazi bianchi 
+<emphasis>con al meno una nuova linea</emphasis> sono concatenate
+e trattate effettivamente come se la stringa sia stata scritta come una 
+costante. Per esempio:
 <programlisting>
 SELECT 'foo'
 'bar';
 </programlisting>
-     is equivalent to:
+è equivalente a:
 <programlisting>
 SELECT 'foobar';
 </programlisting>
-     but:
+     ma:
 <programlisting>
 SELECT 'foo'      'bar';
 </programlisting>
-     is not valid syntax.  (This slightly bizarre behavior is specified
-     by <acronym>SQL</acronym>; <productname>PostgreSQL</productname> is
-     following the standard.)
+Non è sintassi valida. (Questo comportamento un po' bizzarro è specificato 
+da <acronym>SQL</acronym>;  <productname>PostgreSQL</productname> segue lo standard).
     </para>
    </sect3>
 
    <sect3 id="sql-syntax-strings-escape">
-    <title>String Constants with C-Style Escapes</title>
+    <title>Costanti striga con escape in stile C</title>
 
      <indexterm zone="sql-syntax-strings-escape">
       <primary>escape string syntax</primary>
@@ -341,26 +331,26 @@ SELECT 'foo'      'bar';
      </indexterm>
 
     <para>
-     <productname>PostgreSQL</productname> also accepts <quote>escape</quote>
-     string constants, which are an extension to the SQL standard.
-     An escape string constant is specified by writing the letter
-     <literal>E</literal> (upper or lower case) just before the opening single
-     quote, e.g., <literal>E'foo'</literal>.  (When continuing an escape string
-     constant across lines, write <literal>E</literal> only before the first opening
-     quote.)
-     Within an escape string, a backslash character (<literal>\</literal>) begins a
-     C-like <firstterm>backslash escape</firstterm> sequence, in which the combination
-     of backslash and following character(s) represent a special byte
-     value, as shown in <xref linkend="sql-backslash-table"/>.
+<productname>PostgreSQL</productname> accetta anche costanti stringa di <quote>escape</quote>,
+che sono un'estensione dello standard SQL.
+Una costante stringa di escape viene specificata scrivendo la lettera 
+<literal>E</literal> /in maiuscolo o minuscolo) appena prima dell'apertura del singolo apice,
+per es., <literal>E'foo'</literal>. (Quando si continua una stringa di escape
+attraverso linee, scrivere <literal>E</literal> solo prima dell'apertura del primo 
+apice).
+All'interno di una stringa di escape, un carattere barra inversa (<literal>\</literal>) indica
+l'inizio di una sequenza <firstterm>backslash escape</firstterm> stile C, in cui la combinazione
+della barra inversa e il seguente carattere/i rappresenta un valore speciale, 
+come mostrato nella  <xref linkend="sql-backslash-table"/>.
     </para>
 
      <table id="sql-backslash-table">
-      <title>Backslash Escape Sequences</title>
+      <title>Sequenze di escape con barre inverse</title>
       <tgroup cols="2">
       <thead>
        <row>
-        <entry>Backslash Escape Sequence</entry>
-        <entry>Interpretation</entry>
+        <entry>Sequenza di escape con barra inversa</entry>
+        <entry>Interpretazione</entry>
        </row>
       </thead>
 
@@ -415,35 +405,33 @@ SELECT 'foo'      'bar';
      </table>
 
     <para>
-     Any other
-     character following a backslash is taken literally. Thus, to
-     include a backslash character, write two backslashes (<literal>\\</literal>).
-     Also, a single quote can be included in an escape string by writing
-     <literal>\'</literal>, in addition to the normal way of <literal>''</literal>.
+Qualsiasi altro
+carattere che segue una barra inversa viene preso letteralmente. Per questo,
+per includere un carattere di barra inversa, scrivere due barre inverse (<literal>\\</literal>).
+Inoltre, in una stringa di escape può esssere incluso un singolo apice scrivendo
+<literal>\'</literal>, in aggiunta al normale modo <literal>''</literal>.
     </para>
 
     <para>
-     It is your responsibility that the byte sequences you create,
-     especially when using the octal or hexadecimal escapes, compose
-     valid characters in the server character set encoding.  When the
-     server encoding is UTF-8, then the Unicode escapes or the
-     alternative Unicode escape syntax, explained
-     in <xref linkend="sql-syntax-strings-uescape"/>, should be used
-     instead.  (The alternative would be doing the UTF-8 encoding by
-     hand and writing out the bytes, which would be very cumbersome.)
+È propria responsabilità che le sequenze di byte create,
+specialmente quando si usano escape ottali o esadecimali, compongano
+caratteri validi nella codifica di caratteri del server. Quando la codifica del server è 
+UTF-8, allora dovrebbero essere usati escape Unicode o la sintassi di escape alternativa Unicode, spiegata in 
+<xref linkend="sql-syntax-strings-uescape"/>.
+(L'alternativa sarebbe usare codifica UTF-8 a mano e scrivere
+i byte, ,a sarebbe molto ingombrante).
     </para>
 
     <para>
-     The Unicode escape syntax works fully only when the server
-     encoding is <literal>UTF8</literal>.  When other server encodings are
-     used, only code points in the ASCII range (up
-     to <literal>\u007F</literal>) can be specified.  Both the 4-digit and
-     the 8-digit form can be used to specify UTF-16 surrogate pairs to
-     compose characters with code points larger than U+FFFF, although
-     the availability of the 8-digit form technically makes this
-     unnecessary.  (When surrogate pairs are used when the server
-     encoding is <literal>UTF8</literal>, they are first combined into a
-     single code point that is then encoded in UTF-8.)
+La sintassi escape Unicode funziona a pieno solo quando la codifica del server 
+è <literal>UTF8</literal>.  Quando sono usate altre codifiche del server,
+possono essere specificati solo codici nell'intervallo ASCII (fino
+a <literal>\u007F</literal>). Sia la forma a 4 cifre che quella a 8 cifre 
+possono essere usate per specificare coppie surrogate UTF-16 per comporre
+caratteri con codici maggiori di U+FFFF, anche se 
+la disponibilità della forma a 8 cifre tecnicamente lo rende non necessario.
+(Quando coppie surrogate sono usate con server codificati <literal>UTF8</literal>,
+vengono prima combinate in singoli codici che poi sono codificate in UTF-8).
     </para>
 
     <caution>

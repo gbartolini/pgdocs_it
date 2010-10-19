@@ -157,12 +157,12 @@ Sono disponibili gli usuali operatori logici:
     </para>
 
     <para>
-        Gli operatori <literal>AND</literal> e <literal>OR</literal> sono
-        commutativi, che significa che è possibile 
-        commutare gli operandi di destra e di sinistra
-        senza influenzare il risultato. Consultare <xref
-        linkend="syntax-express-eval" /> per ulteriori informazioni 
-        circa l'ordine di calcolo delle espressioni.
+Gli operatori <literal>AND</literal> e <literal>OR</literal> sono
+commutativi, ciò significa che è possibile 
+commutare gli operandi di destra e di sinistra
+senza influenzare il risultato. Consultare <xref
+linkend="syntax-express-eval" /> per ulteriori informazioni 
+circa l'ordine di calcolo delle espressioni.
     </para>
 </sect1>
 
@@ -220,16 +220,16 @@ Sono disponibili gli usuali operatori logici:
     <note>
         <para>
 L'operatore <literal>!=</literal> viene convertito in
-<literal>&lt;&gt;</literal> nello stadio di analisi. Non è
+<literal>&lt;&gt;</literal> durante l'analisi. Non è
 possibile implementare gli operatori <literal>!=</literal> e
 <literal>&lt;&gt;</literal> per fargli fare cose diverse.
         </para>
     </note>
 
     <para>
-Gli operatori di confronto sono disponibili per tutti i tipi di dato dove il loro
-utilizzo ha un senso. Tutti gli operatori di confronto sono operatori binari che
-restituiscono un valore di tipo <type>boolean</type>; Una espressione tipo
+Gli operatori di confronto sono disponibili per tutti i tipi di dato per i quali il loro
+utilizzo ha senso. Tutti gli operatori di confronto sono operatori binari che
+restituiscono un valore di tipo <type>boolean</type>; una espressione tipo
 <literal>1 &lt; 2 &lt; 3</literal> non è valida (in quanto non c'è 
 un operatore <literal>&lt;</literal> per confrontare un valore boolean con
 <literal>3</literal>).

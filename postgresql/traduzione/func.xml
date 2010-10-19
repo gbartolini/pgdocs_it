@@ -444,11 +444,11 @@ speciale <token>BETWEEN</token>:
 
    <para>
     
-    Gli operatori matematici sono forniti per molti tipi di dato su
-    <productname>PostgreSQL</productname>. Per i tipi fuori dalle
-    convenzioni matematiche comuni (p.e., i tipi data/orario),
-    nelle sezioni successive verrà descritto l'effettivo
-    comportamento.
+In <productname>PostgreSQL</productname> gli operatori matematici sono forniti per molti tipi di dato.
+Per i tipi fuori dalle
+convenzioni matematiche comuni (per es., i tipi data/orario),
+nelle sezioni successive verrà descritto l'effettivo
+comportamento.
    </para>
 
    <para>
@@ -4759,7 +4759,7 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
     Quando un carattere alfabetico che esiste sia nel formato maiuscolo che minuscolo compare come un
     carattere ordinario al di fuori di una parentesi quadra, esso viene effettivamente
     trasformato in una espressione tra parentesi quadre, contenente ambedue i formati,
-    p.e. <literal>x</literal> diventa <literal>[xX]</literal>.
+    per es. <literal>x</literal> diventa <literal>[xX]</literal>.
     Quando esso appare dentro una espressione tra parentesi quadre, tutti i formati complementari
     ad esso vengono aggiunti nella espressione tra parentesi quadre, per esempio
     <literal>[x]</literal> diventa <literal>[xX]</literal>
@@ -6908,8 +6908,8 @@ SELECT date_trunc('year', TIMESTAMP '2001-02-16 20:38:40');
 
    <para>
     In queste espressioni, la <replaceable>zona</replaceable> di fuso orario desiderato può essere
-    specificato indifferentemente come una stringa di testo (p.e., <literal>'PST'</literal>)
-    o come un intervallo (p.e., <literal>INTERVAL '-08:00'</literal>).
+    specificato indifferentemente come una stringa di testo (per es., <literal>'PST'</literal>)
+    o come un intervallo (per es., <literal>INTERVAL '-08:00'</literal>).
     Nel caso del testo, un nome di fuso orario può essere specificato in ognuno dei modi
     descritti dentro <xref linkend="datatype-timezones" />.
    </para>
@@ -6954,7 +6954,7 @@ SELECT TIMESTAMP WITH TIME ZONE '2001-02-16 20:38:40-05' AT TIME ZONE 'MST';
    <para>
     <productname>PostgreSQL</productname> fornisce un certo numero di funzioni
     che restituiscono valori relativi alla data e all'orario corrente. Tutte
-    queste funzioni standard-SQL restituiscono valori basati al momento di inizio
+    queste funzioni standard SQL restituiscono valori basati sul momento di inizio
     della transazione corrente:
 <synopsis>
 CURRENT_DATE
@@ -7009,27 +7009,27 @@ SELECT LOCALTIMESTAMP;
 
    <para>
     
-    Poichè queste funzioni restituiscono
-    il momento di inizio della transazione corrente, il loro valore non
-    cambia nel corso della transazione. Ciò viene considerato una caratteristica: 
-    l'intento è di consentire ad una singola transazione di avere una consistente
-    nozione del tempo <quote>corrente</quote>, in modo che modifiche
-    multiple all'interno della stessa transazione generano lo stesso
-    timestamp.
+Poichè queste funzioni restituiscono
+il momento di inizio della transazione corrente, il loro valore non
+cambia nel corso della transazione. Ciò viene considerato una caratteristica: 
+l'intento è di consentire ad una singola transazione di avere una consistente
+nozione del tempo <quote>corrente</quote>, in modo che modifiche
+multiple all'interno della stessa transazione generano lo stesso
+timestamp.
    </para>
 
    <note>
     <para>
-     Altri sistemi di database potrebbero incrementare questo valore più
-     frequentemente.
+Altri sistemi di database potrebbero incrementare questo valore più
+frequentemente.
     </para>
    </note>
 
    <para>
-    <productname>PostgreSQL</productname> fornisce anche funzioni che
-    restituiscono il tempo di inizio dell'istruzione corrente, come pure l'orario
-    corrente effettivo al momento in cui viene chiamata la funzione. L'elenco completo
-    delle funzioni non standard-SQL relative al tempo è:
+<productname>PostgreSQL</productname> fornisce anche funzioni che
+restituiscono il tempo di inizio dell'istruzione corrente, come pure l'orario
+corrente effettivo al momento in cui viene chiamata la funzione. L'elenco completo
+delle funzioni non standard-SQL relative al tempo è:
 <synopsis>
 transaction_timestamp()
 statement_timestamp()
@@ -7040,37 +7040,37 @@ now()
    </para>
 
    <para>
-    La funzione <function>now()</function> è tradizionale di <productname>PostgreSQL</productname>
-    ed è equivalente a <function>CURRENT_TIMESTAMP</function>.
-    La funzione <function>transaction_timestamp()</function> è anch'essa equivalente a
-    <function>CURRENT_TIMESTAMP</function>, ma viene chiamata per riflettere chiaramente
-    cosa restituisce.
-    La funzione <function>statement_timestamp()</function> restituisce il tempo di inizio dell'istruzione
-    corrente (più specificatamente, il tempo di ricezione dell'ultimo messaggio di
-    comando dal client).
-    Le funzioni <function>statement_timestamp()</function> e <function>transaction_timestamp()</function>
-    restituiscono lo stesso valore durante il primo comando di una transazione, ma possono
-    differire durante i successivi comandi.
+La funzione <function>now()</function> è tradizionale di <productname>PostgreSQL</productname>
+ed è equivalente a <function>CURRENT_TIMESTAMP</function>.
+La funzione <function>transaction_timestamp()</function> è anch'essa equivalente a
+<function>CURRENT_TIMESTAMP</function>, ma viene chiamata per specificare chiaramente
+cosa restituisce.
+La funzione <function>statement_timestamp()</function> restituisce il tempo di inizio dell'istruzione
+corrente (più specificatamente, il tempo di ricezione dell'ultimo messaggio di
+comando dal client).
+Le funzioni <function>statement_timestamp()</function> e <function>transaction_timestamp()</function>
+restituiscono lo stesso valore durante il primo comando di una transazione, ma possono
+differire durante i successivi comandi.
     
     
-    La funzione <function>clock_timestamp()</function> restituisce 
-    l'orario corrente effettivo, e
-    quindi il suo valore cambia anche all'interno di un solo comando SQL.
-    <function>timeofday()</function> è una storica funzione
-    <productname>PostgreSQL</productname>. Come
-    <function>clock_timestamp()</function>, essa restituisce l'orario corrente effettivo,
-    ma come una stringa di tipo <type>text</type> formattata invede di un valore <type>timestamp
-    with time zone</type>.
-        <function>now()</function> è una funzione tradizionale di <productname>PostgreSQL</productname> 
-        equivalente a <function>transaction_timestamp()</function>.
+La funzione <function>clock_timestamp()</function> restituisce 
+l'orario corrente effettivo, e
+quindi il suo valore cambia anche all'interno di un solo comando SQL.
+<function>timeofday()</function> è una storica funzione
+<productname>PostgreSQL</productname>. Come
+<function>clock_timestamp()</function>, essa restituisce l'orario corrente effettivo,
+ma come una stringa di tipo <type>text</type> formattata invece di un valore <type>timestamp
+with time zone</type>.
+<function>now()</function> è una funzione tradizionale di <productname>PostgreSQL</productname> 
+equivalente a <function>transaction_timestamp()</function>.
    </para>
 
    <para>
     
-        Tutti i tipi di dato "date/time" accettano anche lo speciale valore letterale
-        <literal>now</literal> per specificare la data e l'orario corrente (anch'esso,
-        interpretato come tempo di inizio della transazione). Per cui,
-        le seguenti tre istruzioni restituiscono tutte lo stesso risultato:
+Tutti i tipi di dato "date/time" accettano anche lo speciale valore letterale
+<literal>now</literal> per specificare la data e l'orario corrente (anch'esso,
+interpretato come tempo di inizio della transazione). Per cui,
+le seguenti tre istruzioni restituiscono tutte lo stesso risultato:
 <programlisting>
 SELECT CURRENT_TIMESTAMP;
 SELECT now();
@@ -7081,14 +7081,14 @@ SELECT TIMESTAMP 'now';  -- errato per utilizzo con DEFAULT
     <tip>
      <para>
       
-        Non bisogna utilizzare la terza forma quando si specifica una clausula <literal>DEFAULT</literal>
-      nella creazione di una tabella. Il sistema convertirà  <literal>now</literal>
-      in un <type>timestamp</type> appena la costante viene analizzata, per cui quando
-      si avrà bisogno del valore di default, verrà usato  
-      il momento di creazione della tabella! Le prime due forme
-      non verranno valutate fino a che non viene usato il valore di default,
-      perchè sono delle chiamate di funzione. Per cui forniranno il comportamento
-      desiderato, cioè acquisire come default il momento di inserimento della riga.
+Non bisogna utilizzare la terza forma quando si specifica una clausula <literal>DEFAULT</literal>
+nella creazione di una tabella. Il sistema convertirà  <literal>now</literal>
+in un <type>timestamp</type> appena la costante viene analizzata, per cui quando
+si avrà bisogno del valore di default, verrà usato  
+il momento di creazione della tabella! Le prime due forme
+non verranno valutate fino a che non viene usato il valore di default,
+perchè sono delle chiamate di funzione. Per cui forniranno il comportamento
+desiderato, cioè acquisire come default il momento di inserimento della riga.
      </para>
     </tip>
   </sect2>
@@ -7107,17 +7107,17 @@ SELECT TIMESTAMP 'now';  -- errato per utilizzo con DEFAULT
    </indexterm>
 
    <para>
-    Le seguenti funzioni sono disponibili per ritardare l'esecuzione del processo
-    server:
+Le seguenti funzioni sono disponibili per ritardare l'esecuzione del processo
+server:
 <synopsis>
 pg_sleep(<replaceable>seconds</replaceable>)
 </synopsis>
 
-    <function>pg_sleep</function> rende dormiente il processo della sessione corrente, fino a che
-    non viene raggiunto il numero di secondi contenuto nel parametro <replaceable>seconds</replaceable>.
-    Il parametro <replaceable>seconds</replaceable> è un valore di tipo
-    <type>double precision</type>, per cui possono essere specificati ritardi con frazioni di secondi.
-    Per esempio:
+<function>pg_sleep</function> rende dormiente il processo della sessione corrente, fino a che
+non viene raggiunto il numero di secondi contenuto nel parametro <replaceable>seconds</replaceable>.
+Il parametro <replaceable>seconds</replaceable> è un valore di tipo
+<type>double precision</type>, per cui possono essere specificati ritardi di frazioni di secondo.
+Per esempio:
 
 <programlisting>
 SELECT pg_sleep(1.5);
@@ -7126,20 +7126,19 @@ SELECT pg_sleep(1.5);
 
    <note>
      <para>
-      
-        La risoluzione effettiva dell'intervallo di sleep è specifico alla piattaforma; 
-        un valore
-      comune è 0.01 secondi.  Il ritardo di dormienza sarà lungo almeno come specificato.
-      Potrebbe essere più lungo, in dipendenza di fattori come il carico del server.
+La risoluzione effettiva dell'intervallo di sleep è specifico alla piattaforma; 
+un valore
+comune è 0.01 secondi.  Il ritardo di dormienza sarà lungo almeno come specificato.
+Potrebbe essere più lungo, in dipendenza di fattori come il carico del server.
      </para>
    </note>
 
    <warning>
      <para>
-      Assicurarsi che la propria sessione non abbia più lock del necessario
-      quando si chiama <function>pg_sleep</function>. Altrimenti altre sessioni
-      potrebbero dover attendere per quel processo dormiente, rallentando l'intero
-      sistema.
+Assicurarsi che la propria sessione non abbia più lock del necessario
+quando si chiama <function>pg_sleep</function>. Altrimenti altre sessioni
+potrebbero dover attendere per quel processo dormiente, rallentando l'intero
+sistema.
      </para>
    </warning>
   </sect2>
@@ -7152,11 +7151,11 @@ SELECT pg_sleep(1.5);
 
   <para>
    
-    Per i tipi enum (descritti in <xref linkend="datatype-enum" />),
-   ci sono diverse funzioni che consentono una programmazione più pulita
-   senza utilizzo di hard-coding per particolari valori di un tipo enum.
-   Queste sono elencate nella tabella <xref linkend="functions-enum-table" />. Gli esempi
-   accettano un tipo enum creato come:
+Per i tipi enum (descritti in <xref linkend="datatype-enum" />),
+ci sono diverse funzioni che consentono una programmazione più pulita
+senza utilizzo di hard-coding per particolari valori di un tipo enum.
+Queste sono elencate nella tabella <xref linkend="functions-enum-table" />. Gli esempi
+accettano un tipo enum creato come:
 
 <programlisting>
 CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple');
@@ -7222,17 +7221,17 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
 
 <note>
     <para>
-        Nota per il revisore: hardwired?
+Nota per il revisore: hardwired?
     </para>
 </note>
    <para>
 
-    Notare che tranne che per la forma con due argomenti di <function>enum_range</function>,
-    queste funzioni non tengono conto dello specifico valore che gli viene passato; ma si
-    curano solo del tipo dato dichiarato.  Può essere indifferentemente passato
-    null o un valore specifico del tipo, con lo stesso risultato. È più comune che
-    queste funzioni siano applicate ad una colonna di tabella o ad un argomento di funzione
-    piuttosto che ad un nome di tipo hardwired come suggerito dagli esempi.
+Notare che tranne che per la forma con due argomenti di <function>enum_range</function>,
+queste funzioni non tengono conto dello specifico valore che gli viene passato; si
+curano solo del tipo di dato dichiarato.  Può essere passato indifferentemente 
+null o un valore specifico del tipo, con lo stesso risultato. È più comune che
+queste funzioni siano applicate ad una colonna di tabella o ad un argomento di funzione
+piuttosto che ad un nome di tipo hardwired come suggerito dagli esempi.
    </para>
  </sect1>
 
@@ -7240,33 +7239,25 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
   <title>Funzioni e operatori geometrici</title>
 
    <para>
-    The geometric types <type>point</type>, <type>box</type>,
-    <type>lseg</type>, <type>line</type>, <type>path</type>,
-    <type>polygon</type>, and <type>circle</type> have a large set of
-    native support functions and operators, shown in <xref
-    linkend="functions-geometry-op-table"/>, <xref
-    linkend="functions-geometry-func-table"/>, and <xref
-    linkend="functions-geometry-conv-table"/>.
-    
-    I tipi geometrici <type>point</type>, <type>box</type>,
-    <type>lseg</type>, <type>line</type>, <type>path</type>,
-    <type>polygon</type> e <type>circle</type> hanno un notevole insieme di
-    funzioni e operatori nativi di supporto, mostrati nella tabella <xref
-    linkend="functions-geometry-op-table" />, nella <xref
-    linkend="functions-geometry-func-table" /> e nella <xref
-    linkend="functions-geometry-conv-table" />.
-   </para>
+I tipi geometrici <type>point</type>, <type>box</type>,
+<type>lseg</type>, <type>line</type>, <type>path</type>,
+<type>polygon</type> e <type>circle</type> hanno un notevole insieme di
+funzioni e operatori nativi di supporto, mostrati nella tabella <xref
+linkend="functions-geometry-op-table" />, nella <xref
+linkend="functions-geometry-func-table" /> e nella <xref
+linkend="functions-geometry-conv-table" />.
+    </para>
 
    <caution>
     <para>
      
-    Notare che l' operatore <quote>uguale a</quote>, <literal>~=</literal>, rappresenta
-     la normale nozione di uguaglianza per i tipi <type>point</type>,
-     <type>box</type>, <type>polygon</type>, e <type>circle</type>.
-     Alcuni di questi tipi hanno anche un operatore <literal>=</literal>, ma
-     <literal>=</literal> confronta
-     solo per <emphasis>aree</emphasis> uguali. Gli altri operatori di confronto scalari
-     (<literal>&lt;=</literal> e così via) similmente confrontano aree per questi tipi.
+Notare che l' operatore <quote>uguale a</quote>, <literal>~=</literal>, rappresenta
+la normale nozione di uguaglianza per i tipi <type>point</type>,
+<type>box</type>, <type>polygon</type>, e <type>circle</type>.
+Alcuni di questi tipi hanno anche un operatore <literal>=</literal>, ma
+<literal>=</literal> confronta
+solo per <emphasis>aree</emphasis> uguali. Similmente, gli altri operatori di confronto scalari
+(<literal>&lt;=</literal> e così via) confrontano aree per questi tipi.
     </para>
    </caution>
 
@@ -7443,10 +7434,10 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
    <note>
     <para>
      
-    Prima di <productname>PostgreSQL</productname> 8.2, gli operatori di
-     contenimento <literal>@&gt;</literal> e <literal>&lt;@</literal> erano rispettivamente
-     chiamati <literal>~</literal> e <literal>@</literal>. Questi nomi sono ancora
-     disponibili, ma sono deprecati e saranno sicuramente rimossi.
+Prima di <productname>PostgreSQL</productname> 8.2, gli operatori di
+contenimento <literal>@&gt;</literal> e <literal>&lt;@</literal> erano rispettivamente
+chiamati <literal>~</literal> e <literal>@</literal>. Questi nomi sono ancora
+disponibili, ma sono deprecati e saranno sicuramente rimossi.
     </para>
    </note>
 
@@ -7707,30 +7698,30 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
    </table>
 
     <para>
-     È possibile accedere alle due componenti numeriche di un <type>point</type>
-     come se fosse un array con indici 0 e 1. Per esempio, se
-     <literal>t.p</literal> è una colonna <type>point</type> allora
-     <literal>SELECT p[0] FROM t</literal> recupera la coordinata X e
-     <literal>UPDATE t SET p[1] = ...</literal> cambia la coordinata Y.
-     Nello stesso modo, un valore di tipo <type>box</type> o <type>lseg</type> può essere trattato
-     come un array di due valori <type>punto</type>.
+È possibile accedere alle due componenti numeriche di un <type>point</type>
+come se fosse un array con indici 0 e 1. Per esempio, se
+<literal>t.p</literal> è una colonna <type>point</type> allora
+<literal>SELECT p[0] FROM t</literal> recupera la coordinata X e
+<literal>UPDATE t SET p[1] = ...</literal> cambia la coordinata Y.
+Nello stesso modo, un valore di tipo <type>box</type> o <type>lseg</type> può essere trattato
+come un array di due valori <type>punto</type>.
     </para>
 
     <para>
      
-    La funzione <function>area</function> funziona per i tipi
-     <type>box</type>, <type>circle</type>, e <type>path</type>.
-     La funzione <function>area</function> nei tipi di dato <type>path</type> funziona solo 
-     se i punti nel
-     <type>path</type> sono non-intersecanti. Per esempio,
-     <type>path</type>
-     <literal>'((0,0),(0,1),(2,1),(2,2),(1,2),(1,0),(0,0))'::PATH</literal>
-     non funzionerà; Tuttavia, il seguente 
-     <type>path</type> visivamente identico
-     <literal>'((0,0),(0,1),(1,1),(1,2),(2,2),(2,1),(1,1),(1,0),(0,0))'::PATH</literal>
-     funziona. Se il concetto di tracciato intersecante o non-intersecante
-     è confuso, disegnare ambedue i <type>percorsi</type>
-     visti sopra, lato per lato su un pezzo di carta millimetrata.
+La funzione <function>area</function> funziona per i tipi
+<type>box</type>, <type>circle</type>, e <type>path</type>.
+La funzione <function>area</function> nei tipi di dato <type>path</type> funziona solo 
+se i punti nel
+<type>path</type> sono non-intersecanti. Per esempio,
+<type>path</type>
+<literal>'((0,0),(0,1),(2,1),(2,2),(1,2),(1,0),(0,0))'::PATH</literal>
+non funzionerà; Tuttavia, il seguente 
+<type>path</type> visivamente identico
+<literal>'((0,0),(0,1),(1,1),(1,2),(2,2),(2,1),(1,1),(1,0),(0,0))'::PATH</literal>
+funziona. Se il concetto di tracciato intersecante o non-intersecante
+è confuso, disegnare ambedue i <type>percorsi</type>
+visti sopra lato per lato su un pezzo di carta millimetrata.
     </para>
 
   </sect1>
@@ -7741,14 +7732,14 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
 
   <para>
    
-    La <xref linkend="cidr-inet-operators-table" /> mostra gli operatori
-   disponibili per i tipi <type>cidr</type> e <type>inet</type>.
-   Gli operatori <literal>&lt;&lt;</literal>,
-   <literal>&lt;&lt;=</literal>, <literal>&gt;&gt;</literal> e
-   <literal>&gt;&gt;=</literal> testano per l'inclusione nella subnet. Essi
-   considerano solo la parte rete dei due indirizzi, ignorando qualsiasi
-   parte host, e determinano se una parte della rete è identica all'altra
-   oppure è una subnet dell'altra.
+La tabella <xref linkend="cidr-inet-operators-table" /> mostra gli operatori
+disponibili per i tipi <type>cidr</type> e <type>inet</type>.
+Gli operatori <literal>&lt;&lt;</literal>,
+<literal>&lt;&lt;=</literal>, <literal>&gt;&gt;</literal> e
+<literal>&gt;&gt;=</literal> testano l'inclusione nella sottorete. Essi
+considerano solo la parte "rete" dei due indirizzi, ignorando qualsiasi
+parte "host", e determinano se una parte della rete è identica all'altra
+oppure è una sottorete dell'altra.
   </para>
 
     <table id="cidr-inet-operators-table">
@@ -7847,12 +7838,12 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
     </table>
 
   <para>
-   La <xref linkend="cidr-inet-functions-table" /> mostra le funzioni
-   disponibili per l'uso con i tipi <type>cidr</type> e
-   <type>inet</type>. Le funzioni <function>host</function>,
-   <function>text</function> e <function>abbrev</function>
-   sono principalmente intese per offrire un formato alternativo di
-   visualizzazione.
+La <xref linkend="cidr-inet-functions-table" /> mostra le funzioni
+disponibili per l'uso con i tipi <type>cidr</type> e
+<type>inet</type>. Le funzioni <function>host</function>,
+<function>text</function> e <function>abbrev</function>
+sono principalmente intese per offrire un formato alternativo di
+visualizzazione.
   </para>
 
     <table id="cidr-inet-functions-table">
@@ -7958,29 +7949,28 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
     </table>
 
   <para>
-   
-    Qualunque valore <type>cidr</type> può essere convertito implicitamente o esplicitamente
-   a <type>inet</type>; per cui, le funzioni mostrate sopra che operano sugli
-   <type>inet</type> lavorano anche con valori <type>cidr</type>. (Dove ci sono
-   funzioni separate per <type>inet</type> e <type>cidr</type>, è perchè
-   il comportamento dovrebbe essere differente per i due casi).
-   Inoltre, è consentito convertire un valore <type>inet</type> a <type>cidr</type>.
-   Quando ciò viene fatto, ogni bit alla destra della netmask viene tacitamente azzerato
-   per creare un valore <type>cidr</type> valido.
-   Inoltre,
-   si può convertire un valore testo a <type>inet</type> o <type>cidr</type>
-   utilizzando la normale sintassi di conversione: per esempio,
-   <literal>inet(<replaceable>espressione</replaceable>)</literal> o
-   <literal><replaceable>colname</replaceable>::cidr</literal>.
+Qualunque valore <type>cidr</type> può essere convertito implicitamente o esplicitamente
+a <type>inet</type>; per cui, le funzioni mostrate sopra che operano sugli
+<type>inet</type> lavorano anche con valori <type>cidr</type>. (Dove ci sono
+funzioni separate per <type>inet</type> e <type>cidr</type>, è perchè
+il comportamento dovrebbe essere differente per i due casi).
+Inoltre, è consentito convertire un valore <type>inet</type> a <type>cidr</type>.
+Quando ciò viene fatto, ogni bit alla destra della netmask viene tacitamente azzerato
+per creare un valore <type>cidr</type> valido.
+Inoltre,
+si può convertire un valore testo a <type>inet</type> o <type>cidr</type>
+utilizzando la normale sintassi di conversione: per esempio,
+<literal>inet(<replaceable>espressione</replaceable>)</literal> o
+<literal><replaceable>colname</replaceable>::cidr</literal>.
   </para>
 
   <para>
    
-    La <xref linkend="macaddr-functions-table" /> mostra le funzioni
-   disponibili per l'uso con i tipi <type>macaddr</type>. La funzione
-   <literal><function>trunc</function>(<type>macaddr</type>)</literal> restituisce un
-   indirizzo MAC con gli ultimi 3 byte impostati a zero. Questo può essere usato per
-   associare il restante prefisso con un costruttore.
+La <xref linkend="macaddr-functions-table" /> mostra le funzioni
+disponibili per l'uso con i tipi <type>macaddr</type>. La funzione
+<literal><function>trunc</function>(<type>macaddr</type>)</literal> restituisce un
+indirizzo MAC con gli ultimi 3 byte impostati a zero. Questo può essere usato per
+associare il restante prefisso con un costruttore.
   </para>
 
     <table id="macaddr-functions-table">
@@ -8008,9 +7998,9 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
     </table>
 
    <para>
-    Il tipo <type>macaddr</type> supporta anche gli operatori relazionali
-    standard (<literal>&gt;</literal>, <literal>&lt;=</literal>, ecc.) per
-    l'ordinamento lessicografico.
+Il tipo <type>macaddr</type> supporta anche gli operatori relazionali
+standard (<literal>&gt;</literal>, <literal>&lt;=</literal>, ecc.) per
+l'ordinamento lessicografico.
    </para>
 
   </sect1>
@@ -8030,14 +8020,13 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
    </indexterm>
 
   <para>
-   
-    La <xref linkend="textsearch-operators-table" />,
-   la <xref linkend="textsearch-functions-table" /> e
-   la <xref linkend="textsearch-functions-debug-table" />
-   riassumono le funzioni e gli operatori che sono forniti per
-   ricerche full-text. Consultare <xref linkend="textsearch" /> per una spiegazione
-   dettagliata della capacità di <productname>PostgreSQL</productname> per le ricerche
-   di testo.
+Le tabelle <xref linkend="textsearch-operators-table" />,
+<xref linkend="textsearch-functions-table" /> e
+<xref linkend="textsearch-functions-debug-table" />
+riassumono le funzioni e gli operatori che sono forniti per
+ricerche full-text. Consultare <xref linkend="textsearch" /> per una spiegazione
+dettagliata della capacità di <productname>PostgreSQL</productname> per le ricerche
+di testo.
   </para>
 
     <table id="textsearch-operators-table">
@@ -8107,18 +8096,18 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
 
     <note>
      <para>
-      Gli operatori di contenimento <type>tsquery</type> considerano solo i lessemi
-      elencati nelle due query, ignorando la combinazione degli operatori.
+Gli operatori di contenimento <type>tsquery</type> considerano solo i lessemi
+elencati nelle due query, ignorando la combinazione degli operatori.
      </para>
     </note>
 
     <para>
      
-    In aggiunta agli operatori mostrati nella tabella, per i tipi <type>tsvector</type>
-     e <type>tsquery</type>, sono definiti gli operatori di confronto ordinari B-tree
-     (<literal>=</literal>, <literal>&lt;</literal>, ecc). Questi non sono normalmente usati per
-     ricerche di testo ma consentono, per esempio, di costruire indici unici sulle
-     colonne di questo tipo.
+In aggiunta agli operatori mostrati nella tabella, per i tipi <type>tsvector</type>
+e <type>tsquery</type>, sono definiti gli operatori di confronto ordinari B-tree
+(<literal>=</literal>, <literal>&lt;</literal>, ecc). Questi non sono normalmente usati per
+ricerche di testo ma consentono, per esempio, di costruire indici unici sulle
+colonne di questo tipo.
     </para>
 
     <table id="textsearch-functions-table">
@@ -8253,20 +8242,20 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
   <note>
    <para>
     
-    Tutte le funzioni di ricerca testo che accettano un argomento opzionale
-    <type>regconfig</type> devono usare la configurazione specificata da
-    <xref linkend="guc-default-text-search-config" />
-    quando quell'argomento è omesso.
+Tutte le funzioni di ricerca testo che accettano un argomento opzionale
+<type>regconfig</type> devono usare la configurazione specificata da
+<xref linkend="guc-default-text-search-config" />
+quando quell'argomento è omesso.
    </para>
   </note>
 
   <para>
    
-    Le funzioni nella tabella 
-   <xref linkend="textsearch-functions-debug-table" />
-   sono elencate separatamente perchè non sono normalmente utilizzate nelle comuni
-   operazioni di ricerca testo. Esse sono utili per lo sviluppo e la messa a punto di
-   nuove configurazioni di ricerca testo.
+Le funzioni nella tabella 
+<xref linkend="textsearch-functions-debug-table" />
+sono elencate separatamente perchè non sono normalmente utilizzate nelle comuni
+operazioni di ricerca testo. Esse sono utili per lo sviluppo e la messa a punto di
+nuove configurazioni di ricerca testo.
   </para>
 
     <table id="textsearch-functions-debug-table">
@@ -8343,14 +8332,14 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
 
   <para>
    
-    Le funzioni e le espressioni descritte in questa
-   sezione agiscono sui valori  di tipo <type>xml</type>. Consultare <xref
-   linkend="datatype-xml" /> per informazioni circa il tipo <type>xml</type>.
-   Le espressioni <function>xmlparse</function>
-   e <function>xmlserialize</function> per conversioni a e da 
-   <type>xml</type> non sono ripetute quì. L'utilizzo per molte
-   di queste funzioni richiede che l'installazione sia stata compilata
-   con <command>configure --with-libxml</command>.
+Le funzioni e le espressioni descritte in questa
+sezione agiscono sui valori  di tipo <type>xml</type>. Consultare <xref
+linkend="datatype-xml" /> per informazioni circa il tipo <type>xml</type>.
+Le espressioni <function>xmlparse</function>
+e <function>xmlserialize</function> per conversioni a e da 
+<type>xml</type> non sono ripetute quì. L'utilizzo per molte
+di queste funzioni richiede che <productname>PostgreSQL</productname> sia stato compilato
+con <command>configure --with-libxml</command>.
   </para>
 
   <sect2>

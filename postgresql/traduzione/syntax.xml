@@ -365,11 +365,11 @@ come mostrato nella  <xref linkend="sql-backslash-table"/>.
        </row>
        <row>
         <entry><literal>\n</literal></entry>
-        <entry>newline</entry>
+        <entry>nuova linea</entry>
        </row>
        <row>
         <entry><literal>\r</literal></entry>
-        <entry>carriage return</entry>
+        <entry>ritorno carrello</entry>
        </row>
        <row>
         <entry><literal>\t</literal></entry>
@@ -382,7 +382,7 @@ come mostrato nella  <xref linkend="sql-backslash-table"/>.
          <literal>\<replaceable>ooo</replaceable></literal>
          (<replaceable>o</replaceable> = 0 - 7)
         </entry>
-        <entry>octal byte value</entry>
+        <entry>valore ottale di byte</entry>
        </row>
        <row>
         <entry>
@@ -390,7 +390,7 @@ come mostrato nella  <xref linkend="sql-backslash-table"/>.
          <literal>\x<replaceable>hh</replaceable></literal>
          (<replaceable>h</replaceable> = 0 - 9, A - F)
         </entry>
-        <entry>hexadecimal byte value</entry>
+        <entry>valore esadecimale di byte</entry>
        </row>
        <row>
         <entry>
@@ -398,7 +398,7 @@ come mostrato nella  <xref linkend="sql-backslash-table"/>.
          <literal>\U<replaceable>xxxxxxxx</replaceable></literal>
          (<replaceable>x</replaceable> = 0 - 9, A - F)
         </entry>
-        <entry>16 or 32-bit hexadecimal Unicode character value</entry>
+        <entry>valore esadecimale di carattere Unicode a 16 or 32-bit</entry>
        </row>
       </tbody>
       </tgroup>
@@ -436,77 +436,75 @@ vengono prima combinate in singoli codici che poi sono codificate in UTF-8).
 
     <caution>
     <para>
-     If the configuration parameter
-     <xref linkend="guc-standard-conforming-strings"/> is <literal>off</literal>,
-     then <productname>PostgreSQL</productname> recognizes backslash escapes
-     in both regular and escape string constants.  However, as of
-     <productname>PostgreSQL</productname> 9.1, the default is <literal>on</literal>, meaning
-     that backslash escapes are recognized only in escape string constants.
-     This behavior is more standards-compliant, but might break applications
-     which rely on the historical behavior, where backslash escapes
-     were always recognized.  As a workaround, you can set this parameter
-     to <literal>off</literal>, but it is better to migrate away from using backslash
-     escapes.  If you need to use a backslash escape to represent a special
-     character, write the string constant with an <literal>E</literal>.
+Se il parametro di configurazione 
+<xref linkend="guc-standard-conforming-strings"/> è <literal>off</literal>,
+allora <productname>PostgreSQL</productname> riconosce escape backslash 
+sia in costanti stringa normali che escape. Comunque, a partire da 
+<productname>PostgreSQL</productname> 9.1, in maniera predefinita sarà impostato <literal>on</literal>, ciò
+significa che escape backslash sono riconosciuti solo in costanti stringa di escape.
+Questo comportamento è più attinente allo standard, ma potrebbe rompere applicazioni
+che si basano sul comportamento storico, dove gli escape backslash erano sempre riconosciuti.
+Come workaround, è possibile impostare questo parametro 
+a <literal>off</literal>, ma è meglio abituarsi a non usare escape backslash.
+Se si ha bisogno di usare l'escape backslash per rappresentare un carattere speciale, 
+scrivere la costante stringa con una <literal>E</literal>.
     </para>
 
     <para>
-     In addition to <varname>standard_conforming_strings</varname>, the configuration
-     parameters <xref linkend="guc-escape-string-warning"/> and
-     <xref linkend="guc-backslash-quote"/> govern treatment of backslashes
-     in string constants.
+In aggiunta a <varname>standard_conforming_strings</varname>, i parametri di configurazione
+<xref linkend="guc-escape-string-warning"/> e 
+<xref linkend="guc-backslash-quote"/> governano il trattamento delle barre inverse
+nelle costanti stringa.
     </para>
     </caution>
 
     <para>
-     The character with the code zero cannot be in a string constant.
+Il carattere con il codice zero non può apparire in una costante stringa.
     </para>
    </sect3>
 
    <sect3 id="sql-syntax-strings-uescape">
-    <title>String Constants with Unicode Escapes</title>
+    <title>Costanti stringa con escape Unicode</title>
 
     <indexterm  zone="sql-syntax-strings-uescape">
-     <primary>Unicode escape</primary>
-     <secondary>in string constants</secondary>
+     <primary>escape Unicode</primary>
+     <secondary>in costanti stringa</secondary>
     </indexterm>
 
     <para>
-     <productname>PostgreSQL</productname> also supports another type
-     of escape syntax for strings that allows specifying arbitrary
-     Unicode characters by code point.  A Unicode escape string
-     constant starts with <literal>U&amp;</literal> (upper or lower case
-     letter U followed by ampersand) immediately before the opening
-     quote, without any spaces in between, for
-     example <literal>U&amp;'foo'</literal>.  (Note that this creates an
-     ambiguity with the operator <literal>&amp;</literal>.  Use spaces
-     around the operator to avoid this problem.)  Inside the quotes,
-     Unicode characters can be specified in escaped form by writing a
-     backslash followed by the four-digit hexadecimal code point
-     number or alternatively a backslash followed by a plus sign
-     followed by a six-digit hexadecimal code point number.  For
-     example, the string <literal>'data'</literal> could be written as
+<productname>PostgreSQL</productname> supporta anche un altro tipo di 
+sintassi di escape per stringhe che permette di specificare caratteri arbitrari Unicode
+attraverso il codice. Una stringa costante di escape Unicode 
+comincia con <literal>U&amp;</literal> (lettera U maiuscola o minuscola seguita 
+da e commerciale) immediatamente prima l'apice di apertura. senza spazi tra di loro,
+per esempio <literal>U&amp;'foo'</literal>. (Notare che questo crea un'ambiguità
+con l'operatore <literal>&amp;</literal>. Usare spazi intorno all'operatore per evitare 
+questo problema). All'interno degli apici, possono essere spèecificati
+caratteri Unicode in formato escape scrivendo una barra inversa seguita dal codice  a 
+4 cifre esadecimali o alternativamente una barra inversa seguita da un segno più
+seguito da un codice a sei cifre esadecimali. Per esempio,
+la stringa <literal>'data'</literal> potrebbe essere scritta come 
 <programlisting>
 U&amp;'d\0061t\+000061'
 </programlisting>
-     The following less trivial example writes the Russian
-     word <quote>slon</quote> (elephant) in Cyrillic letters:
+Questo esempio scrive la parola russa <quote>slon</quote> (elefante)
+in alfabeto cirillico.
 <programlisting>
 U&amp;'\0441\043B\043E\043D'
 </programlisting>
     </para>
 
     <para>
-     If a different escape character than backslash is desired, it can
-     be specified using
-     the <literal>UESCAPE</literal><indexterm><primary>UESCAPE</primary></indexterm>
-     clause after the string, for example:
+Se si desidera usare un carattere di escape diverso dalla barra barra inversa, 
+può essere specificato usando la clausola
+<literal>UESCAPE</literal><indexterm><primary>UESCAPE</primary></indexterm>
+dopo la stringa, per esempio:
 <programlisting>
 U&amp;'d!0061t!+000061' UESCAPE '!'
 </programlisting>
-     The escape character can be any single character other than a
-     hexadecimal digit, the plus sign, a single quote, a double quote,
-     or a whitespace character.
+Il carattere di escape può essere qualsiasi singolo carattere diverso da 
+una cifra esadecimale, il segno più, un apice singolo, un doppio apice, 
+o un carattere di spazio.
     </para>
 
     <para>

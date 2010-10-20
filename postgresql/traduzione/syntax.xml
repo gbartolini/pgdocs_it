@@ -1451,38 +1451,38 @@ nel secondo caso.
    </indexterm>
 
    <para>
-    There are three possible syntaxes for an operator invocation:
+Ci sono tre possibili sintassi per l'invocazione di un operatore:
     <simplelist>
      <member><replaceable>expression</replaceable> <replaceable>operator</replaceable> <replaceable>expression</replaceable> (binary infix operator)</member>
      <member><replaceable>operator</replaceable> <replaceable>expression</replaceable> (unary prefix operator)</member>
      <member><replaceable>expression</replaceable> <replaceable>operator</replaceable> (unary postfix operator)</member>
     </simplelist>
-    where the <replaceable>operator</replaceable> token follows the syntax
-    rules of <xref linkend="sql-syntax-operators"/>, or is one of the
-    key words <token>AND</token>, <token>OR</token>, and
-    <token>NOT</token>, or is a qualified operator name in the form:
+dove il token <replaceable>operator</replaceable> segue le regole sintattiche 
+di <xref linkend="sql-syntax-operators"/>, o è una delle parole chiave 
+<token>AND</token>, <token>OR</token> o <token>NOT</token>, 
+o è il nome di un operatore qualificato nella forma:
 <synopsis>
 <literal>OPERATOR(</literal><replaceable>schema</replaceable><literal>.</literal><replaceable>operatorname</replaceable><literal>)</literal>
 </synopsis>
-    Which particular operators exist and whether
-    they are unary or binary depends on what operators have been
-    defined by the system or the user.  <xref linkend="functions"/>
-    describes the built-in operators.
+Quali particolari operatori esistono e se
+sono unari o binari dipernde da quali operatori sono stati definiti 
+dal sistema o dall'utente. <xref linkend="functions"/>
+descrive gli operatori inclusi.
    </para>
   </sect2>
 
   <sect2>
-   <title>Function Calls</title>
+   <title>Chiamate di funzione</title>
 
    <indexterm>
-    <primary>function</primary>
-    <secondary>invocation</secondary>
+    <primary>funzione</primary>
+    <secondary>invocazione</secondary>
    </indexterm>
 
    <para>
-    The syntax for a function call is the name of a function
-    (possibly qualified with a schema name), followed by its argument list
-    enclosed in parentheses:
+La sintassi per una chiamata di funzione è il nome di una funzione
+(possibilmente qualificato con il nome di uno schema) seguito dal suo elenco di argomenti
+racchiuso tra parentesi:
 
 <synopsis>
 <replaceable>function_name</replaceable> (<optional><replaceable>expression</replaceable> <optional>, <replaceable>expression</replaceable> ... </optional></optional> )
@@ -1490,37 +1490,37 @@ nel secondo caso.
    </para>
 
    <para>
-    For example, the following computes the square root of 2:
+Per esempio, la seguenta calcola la radice quadrata di 2:
 <programlisting>
 sqrt(2)
 </programlisting>
    </para>
 
    <para>
-    The list of built-in functions is in <xref linkend="functions"/>.
-    Other functions can be added by the user.
+L'elenco delle funzioni incluse si trova in <xref linkend="functions"/>.
+Altre funzioni possono essere aggiunte dall'utente.
    </para>
 
    <para>
-    The arguments can optionally have names attached.
-    See <xref linkend="sql-syntax-calling-funcs"/> for details.
+Gli argomenti possono opzionalmente avere nomi attaccati.
+Si veda <xref linkend="sql-syntax-calling-funcs"/> per dettagli.
    </para>
   </sect2>
 
   <sect2 id="syntax-aggregates">
-   <title>Aggregate Expressions</title>
+   <title>Espressioni aggregate</title>
 
    <indexterm zone="syntax-aggregates">
-    <primary>aggregate function</primary>
-    <secondary>invocation</secondary>
+    <primary>funzione aggregata</primary>
+    <secondary>invocazione</secondary>
    </indexterm>
 
    <para>
-    An <firstterm>aggregate expression</firstterm> represents the
-    application of an aggregate function across the rows selected by a
-    query.  An aggregate function reduces multiple inputs to a single
-    output value, such as the sum or average of the inputs.  The
-    syntax of an aggregate expression is one of the following:
+Una <firstterm>espressione aggregata</firstterm> rappresenta l'applicazione
+di una funzione aggregata attraverso le righe selezionate da una query. 
+Una funzione aggregata riduce input multipli a un singolo 
+valore di output, come la somma o la media degli input. La 
+sintassi di un'espressione aggregata è una delle seguenti:
 
 <synopsis>
 <replaceable>aggregate_name</replaceable> (<replaceable>expression</replaceable> [ , ... ] [ <replaceable>order_by_clause</replaceable> ] )
@@ -1529,145 +1529,144 @@ sqrt(2)
 <replaceable>aggregate_name</replaceable> ( * )
 </synopsis>
 
-    where <replaceable>aggregate_name</replaceable> is a previously
-    defined aggregate (possibly qualified with a schema name),
-    <replaceable>expression</replaceable> is
-    any value expression that does not itself contain an aggregate
-    expression or a window function call, and
-    <replaceable>order_by_clause</replaceable> is a optional
-    <literal>ORDER BY</literal> clause as described below.
+dove <replaceable>aggregate_name</replaceable> è un'aggregata definita
+precedentemente (possibilmente qualificata con il nome di uno schema),
+<replaceable>expression</replaceable> è qualsiasi espressione di valore
+che di per sè non contiene un'espressione aggregata o una chiamata a funzione 
+finestra, e <replaceable>order_by_clause</replaceable> è una clausola 
+<literal>ORDER BY</literal> come descritto sotto.
    </para>
 
    <para>
-    The first form of aggregate expression invokes the aggregate
-    once for each input row.
-    The second form is the same as the first, since
-    <literal>ALL</literal> is the default.
-    The third form invokes the aggregate once for each distinct value
-    of the expression (or distinct set of values, for multiple expressions)
-    found in the input rows.
-    The last form invokes the aggregate once for each input row; since no
-    particular input value is specified, it is generally only useful
-    for the <function>count(*)</function> aggregate function.
+La prima forma di espressione aggregata invoca l'aggregata 
+una volta per ogni riga di input.
+La seconda forma è uguale alla prima, dato che 
+<literal>ALL</literal> è il predefinito.
+La terza forma invoca l'aggregata una volta per ogni valore distinto
+dell'espressione (o insieme distinto di valori, per molteplici espressioni)
+trovato nelle righe di input.
+L'ultima forma invoca l'aggregata una volta per ogni riga di input; dato che
+non è specificato nessun particolare valore di input, generalmente è utile
+solo per la funzione aggregata <function>count(*)</function>.
    </para>
 
    <para>
-    Most aggregate functions ignore null inputs, so that rows in which
-    one or more of the expression(s) yield null are discarded.  This
-    can be assumed to be true, unless otherwise specified, for all
-    built-in aggregates.
+La maggior parte delle funzioni aggregate ignorano input null, così quelle righe
+nelle quali una o più espressione/i restituisce null sono scartate. Possiamo assumere questo come vero,
+a meno che non sia diversamente specificato, per 
+tutte le aggregate incluse.
    </para>
 
    <para>
-    For example, <literal>count(*)</literal> yields the total number
-    of input rows; <literal>count(f1)</literal> yields the number of
-    input rows in which <literal>f1</literal> is non-null, since
-    <function>count</function> ignores nulls; and
-    <literal>count(distinct f1)</literal> yields the number of
-    distinct non-null values of <literal>f1</literal>.
+Per esempio, <literal>count(*)</literal> restituisce il numero totale
+di righe di input; <literal>count(f1)</literal> restituisce il numero di 
+righe di input nelle quali <literal>f1</literal> non è null, dato che 
+<function>count</function> ignora i valori null; e 
+<literal>count(distinct f1)</literal> restituisce il numero di
+valori non null distinti di  <literal>f1</literal>.
    </para>
 
    <para>
-    Ordinarily, the input rows are fed to the aggregate function in an
-    unspecified order.  In many cases this does not matter; for example,
-    <function>min</function> produces the same result no matter what order it
-    receives the inputs in.  However, some aggregate functions
-    (such as <function>array_agg</function> and <function>string_agg</function>) produce
-    results that depend on the ordering of the input rows.  When using
-    such an aggregate, the optional <replaceable>order_by_clause</replaceable> can be
-    used to specify the desired ordering.  The <replaceable>order_by_clause</replaceable>
-    has the same syntax as for a query-level <literal>ORDER BY</literal> clause, as
-    described in <xref linkend="queries-order"/>, except that its expressions
-    are always just expressions and cannot be output-column names or numbers.
-    For example:
+Di solito, le righe di input sono date in pasto alla funzione aggregata in ordine sparso.
+In molti casi questo non ha importanza; per esempio,
+<function>min</function> produce lo stesso risultato a prescindere dall'ordine
+in cui riceve gli input. Comunque, alcune funzioni aggregate
+(tipo <function>array_agg</function> e <function>string_agg</function>) producono
+risultati che dipendono dall'ordinamento delle righe di input. Quando si usa un'aggregata
+del genere, è possibile usare <replaceable>order_by_clause</replaceable> per specificare 
+l'ordinamento desiderato. <replaceable>order_by_clause</replaceable> ha 
+la stessa sintassi di una clausola <literal>ORDER BY</literal> a livello di query, come 
+descritto in  <xref linkend="queries-order"/>, ad eccezione che le sue espressioni 
+sono sempre soltanto espressioni e non possono essere nomi di colonne di output o numeri.
+Per esempio:
 <programlisting>
 SELECT array_agg(a ORDER BY b DESC) FROM table;
 </programlisting>
    </para>
 
    <para>
-    When dealing with multiple-argument aggregate functions, note that the
-    <literal>ORDER BY</literal> clause goes after all the aggregate arguments.
-    For example, write this:
+Quando si ha a che fare con funzioni aggregate che hanno molteplici argomenti, notare che
+la clausola <literal>ORDER BY</literal> va dopo tutti gli argomenti dell'aggregata.
+Per esempio, scrivere:
 <programlisting>
 SELECT string_agg(a, ',' ORDER BY a) FROM table;
 </programlisting>
-    not this:
+    non:
 <programlisting>
-SELECT string_agg(a ORDER BY a, ',') FROM table;  -- incorrect
+SELECT string_agg(a ORDER BY a, ',') FROM table;  -- non corretto
 </programlisting>
-    The latter is syntactically valid, but it represents a call of a
-    single-argument aggregate function with two <literal>ORDER BY</literal> keys
-    (the second one being rather useless since it's a constant).
+L'ultimo è sintatticamente valido, ma rappresenta una chiamata di una funzione
+aggregata con singolo argomento con due chiavi <literal>ORDER BY</literal>
+(la seconda è abbastanza inutile dato che è una costante).
    </para>
 
    <para>
-    If <literal>DISTINCT</literal> is specified in addition to an
-    <replaceable>order_by_clause</replaceable>, then all the <literal>ORDER BY</literal>
-    expressions must match regular arguments of the aggregate; that is,
-    you cannot sort on an expression that is not included in the
-    <literal>DISTINCT</literal> list.
+Se viene specificato <literal>DISTINCT</literal> in aggiunta a una 
+<replaceable>order_by_clause</replaceable>, allora tutte le espressioni <literal>ORDER BY</literal>
+devono corrispondere a argomenti dell'aggregata; cioè,
+non è possibile ordinare in base a un'espressione che non  è inclusa nell'elenco 
+<literal>DISTINCT</literal>.
    </para>
 
    <note>
     <para>
-     The ability to specify both <literal>DISTINCT</literal> and <literal>ORDER BY</literal>
-     in an aggregate function is a <productname>PostgreSQL</productname> extension.
+L'abilità di specificare sia <literal>DISTINCT</literal> che <literal>ORDER BY</literal>
+in una funzione aggregata è un'estensione di <productname>PostgreSQL</productname>
     </para>
    </note>
 
    <para>
-    The predefined aggregate functions are described in <xref
-    linkend="functions-aggregate"/>.  Other aggregate functions can be added
-    by the user.
+Le funzioni aggregate predefinite sono descritte in <xref
+linkend="functions-aggregate"/>. Altre funzioni aggregate possono essere aggiunte 
+dall'utente.
    </para>
 
    <para>
-    An aggregate expression can only appear in the result list or
-    <literal>HAVING</literal> clause of a <command>SELECT</command> command.
-    It is forbidden in other clauses, such as <literal>WHERE</literal>,
-    because those clauses are logically evaluated before the results
-    of aggregates are formed.
+Un'espressione aggregata può apparire solo nell'elenco  risultatante o nella clausola  
+<literal>HAVING</literal> di un comando <command>SELECT</command>.
+È proibito in altre clausole, tipo la <literal>WHERE</literal>,
+dato che queste clausole sono valutate logicamente prima che siano formati i risultati
+delle aggregate.
    </para>
 
    <para>
-    When an aggregate expression appears in a subquery (see
-    <xref linkend="sql-syntax-scalar-subqueries"/> and
-    <xref linkend="functions-subquery"/>), the aggregate is normally
-    evaluated over the rows of the subquery.  But an exception occurs
-    if the aggregate's arguments contain only outer-level variables:
-    the aggregate then belongs to the nearest such outer level, and is
-    evaluated over the rows of that query.  The aggregate expression
-    as a whole is then an outer reference for the subquery it appears in,
-    and acts as a constant over any one evaluation of that subquery.
-    The restriction about
-    appearing only in the result list or <literal>HAVING</literal> clause
-    applies with respect to the query level that the aggregate belongs to.
+Quando un'espressione aggregata appare in una sottoquery (si veda
+<xref linkend="sql-syntax-scalar-subqueries"/> e
+<xref linkend="functions-subquery"/>), l'aggregata è valutata normalmente
+sulle righe della sottoquery. Viene generata un'eccezione 
+se gli argomenti dell'aggregata contengono solo variabili di livello esterno:
+l'aggregata quindi appartiene al livello esterno più vicino, ed è 
+valutata sulle righe della query. L'espressione aggregata 
+in totale è quindi un riferimento esterno per la sottoquery nella quale appare,
+e agisce come una costante su ogni valutazione di quella sottoquery. 
+La restrizione di 
+apparire solo nell'elenco risultante o nella clausola <literal>HAVING</literal>
+viene applicata a livello della query alla aquale l'aggregata appartiene. 
    </para>
   </sect2>
 
   <sect2 id="syntax-window-functions">
-   <title>Window Function Calls</title>
+   <title>Chiamate a funzioni finestra</title>
 
    <indexterm zone="syntax-window-functions">
-    <primary>window function</primary>
-    <secondary>invocation</secondary>
+    <primary>funzione finestra</primary>
+    <secondary>invocazione</secondary>
    </indexterm>
 
    <indexterm zone="syntax-window-functions">
-    <primary>OVER clause</primary>
+    <primary>clausola OVER</primary>
    </indexterm>
 
    <para>
-    A <firstterm>window function call</firstterm> represents the application
-    of an aggregate-like function over some portion of the rows selected
-    by a query.  Unlike regular aggregate function calls, this is not tied
-    to grouping of the selected rows into a single output row &mdash; each
-    row remains separate in the query output.  However the window function
-    is able to scan all the rows that would be part of the current row's
-    group according to the grouping specification (<literal>PARTITION BY</literal>
-    list) of the window function call.
-    The syntax of a window function call is one of the following:
+Una <firstterm>chiamata di funzione finestra</firstterm> rappresenta l'applicazione
+di una funzione simil-aggregata su qualche porzione delle righe selezionate dalla query.
+A differenza delle chiamate alle normali funzioni aggregate, questo non è legato   
+al raggruppamento delle righe selezionate in una singola riga di output - ogni riga 
+rimane separata nell'output della query. Comunque la funzione finestra
+è capace di eseguire lo scan di tutte le righe che sarebbero parte  del gruppo della 
+riga corrente in accordo con la specifica di raggrupamento (elenco <literal>PARTITION BY</literal>)
+della chiamata a funzione finestra.
+La sintassi di una chiamata a funzione finestra è una delle seguenti:
 
 <synopsis>
 <replaceable>function_name</replaceable> (<optional><replaceable>expression</replaceable> <optional>, <replaceable>expression</replaceable> ... </optional></optional>) OVER ( <replaceable class="parameter">window_definition</replaceable> )
@@ -1675,22 +1674,22 @@ SELECT string_agg(a ORDER BY a, ',') FROM table;  -- incorrect
 <replaceable>function_name</replaceable> ( * ) OVER ( <replaceable class="parameter">window_definition</replaceable> )
 <replaceable>function_name</replaceable> ( * ) OVER <replaceable>window_name</replaceable>
 </synopsis>
-    where <replaceable class="parameter">window_definition</replaceable>
-    has the syntax
+dove <replaceable class="parameter">window_definition</replaceable>
+ha la sintassi
 <synopsis>
 [ <replaceable class="parameter">existing_window_name</replaceable> ]
 [ PARTITION BY <replaceable class="parameter">expression</replaceable> [, ...] ]
 [ ORDER BY <replaceable class="parameter">expression</replaceable> [ ASC | DESC | USING <replaceable class="parameter">operator</replaceable> ] [ NULLS { FIRST | LAST } ] [, ...] ]
 [ <replaceable class="parameter">frame_clause</replaceable> ]
 </synopsis>
-    and the optional <replaceable class="parameter">frame_clause</replaceable>
-    can be one of
+e l'opzionale <replaceable class="parameter">frame_clause</replaceable>
+può essere una tra
 <synopsis>
 [ RANGE | ROWS ] <replaceable>frame_start</replaceable>
 [ RANGE | ROWS ] BETWEEN <replaceable>frame_start</replaceable> AND <replaceable>frame_end</replaceable>
 </synopsis>
-    where <replaceable>frame_start</replaceable> and <replaceable>frame_end</replaceable> can be
-    one of
+dove <replaceable>frame_start</replaceable> e <replaceable>frame_end</replaceable> possono essere
+una tra
 <synopsis>
 UNBOUNDED PRECEDING
 <replaceable>value</replaceable> PRECEDING
@@ -1701,101 +1700,100 @@ UNBOUNDED FOLLOWING
    </para>
 
    <para>
-    Here, <replaceable>expression</replaceable> represents any value
-    expression that does not itself contain window function calls.
-    The <literal>PARTITION BY</literal> and <literal>ORDER BY</literal> lists have
-    essentially the same syntax and semantics as <literal>GROUP BY</literal>
-    and <literal>ORDER BY</literal> clauses of the whole query, except that their
-    expressions are always just expressions and cannot be output-column
-    names or numbers.
-    <replaceable>window_name</replaceable> is a reference to a named window
-    specification defined in the query's <literal>WINDOW</literal> clause.
-    Named window specifications are usually referenced with just
-    <literal>OVER</literal> <replaceable>window_name</replaceable>, but it is
-    also possible to write a window name inside the parentheses and then
-    optionally supply an ordering clause and/or frame clause (the referenced
-    window must lack these clauses, if they are supplied here).
-    This latter syntax follows the same rules as modifying an existing
-    window name within the <literal>WINDOW</literal> clause; see the
-    <xref linkend="sql-select"/> reference
-    page for details.
+Qui, <replaceable>expression</replaceable> rappresenta qualsiasi espressione di valore
+che di per sè non contiene chiamate a funzioni finestra. 
+Gli elenchi <literal>PARTITION BY</literal> e <literal>ORDER BY</literal> hanno
+essenzialmente la stessa sintassi e semantica delle clausole <literal>GROUP BY</literal>
+e <literal>ORDER BY</literal> dell'intera query, ad eccezione che le loro 
+espressioni sono sempre soltanto espressioni e non possono essere nomi di colonne di output 
+o numeri.    
+<replaceable>window_name</replaceable> è un riferimento a una specificazione di finestra 
+definita nella clausola <literal>WINDOW</literal> della query.
+Specificazioni di finestra nominate sono di solito riferite con 
+<literal>OVER</literal> <replaceable>window_name</replaceable>, ma è possibile anche
+scrivere il nome di una finestra tra parentesi e quindi opzionalmente fornire 
+una clausola di ordinamento e/o clausa di cornice (la finestra referenziata 
+non deve avere queste clausole, se esse sono fornite qui).
+Quest'ultima sintassi segue le stesse regole per la modifica di un nome di finestra esistente  
+all'interno della clausola <literal>WINDOW</literal>; si veda la pagina di riferimento 
+<xref linkend="sql-select"/> per dettagli.
    </para>
 
    <para>
-    The <replaceable class="parameter">frame_clause</replaceable> specifies
-    the set of rows constituting the <firstterm>window frame</firstterm>, for those
-    window functions that act on the frame instead of the whole partition.
-    If <replaceable>frame_end</replaceable> is omitted it defaults to <literal>CURRENT
-    ROW</literal>.  Restrictions are that
-    <replaceable>frame_start</replaceable> cannot be <literal>UNBOUNDED FOLLOWING</literal>,
-    <replaceable>frame_end</replaceable> cannot be <literal>UNBOUNDED PRECEDING</literal>,
-    and the <replaceable>frame_end</replaceable> choice cannot appear earlier in the
-    above list than the <replaceable>frame_start</replaceable> choice &mdash; for example
-    <literal>RANGE BETWEEN CURRENT ROW AND <replaceable>value</replaceable>
-    PRECEDING</literal> is not allowed.
-    The default framing option is <literal>RANGE UNBOUNDED PRECEDING</literal>,
-    which is the same as <literal>RANGE BETWEEN UNBOUNDED PRECEDING AND
-    CURRENT ROW</literal>; it sets the frame to be all rows from the partition start
-    up through the current row's last peer in the <literal>ORDER BY</literal>
-    ordering (which means all rows if there is no <literal>ORDER BY</literal>).
-    In general, <literal>UNBOUNDED PRECEDING</literal> means that the frame
-    starts with the first row of the partition, and similarly
-    <literal>UNBOUNDED FOLLOWING</literal> means that the frame ends with the last
-    row of the partition (regardless of <literal>RANGE</literal> or <literal>ROWS</literal>
-    mode).  In <literal>ROWS</literal> mode, <literal>CURRENT ROW</literal>
-    means that the frame starts or ends with the current row; but in
-    <literal>RANGE</literal> mode it means that the frame starts or ends with
-    the current row's first or last peer in the <literal>ORDER BY</literal> ordering.
-    The <replaceable>value</replaceable> <literal>PRECEDING</literal> and
-    <replaceable>value</replaceable> <literal>FOLLOWING</literal> cases are currently only
-    allowed in <literal>ROWS</literal> mode.  They indicate that the frame starts
-    or ends with the row that many rows before or after the current row.
-    <replaceable>value</replaceable> must be an integer expression not
-    containing any variables, aggregate functions, or window functions.
-    The value must not be null or negative; but it can be zero, which
-    selects the current row itself.
+La <replaceable class="parameter">frame_clause</replaceable> specifica 
+l'insieme di righe che costituiscono la <firstterm>cornice di finestra</firstterm>, per quelle
+funzioni finestra che agiscono sulla cornice invece che sull'intera finestra. 
+Se <replaceable>frame_end</replaceable> viene omesso viene preso come predefinito <literal>CURRENT
+ROW</literal>.  Restrizioni sono che
+<replaceable>frame_start</replaceable> non può essere <literal>UNBOUNDED FOLLOWING</literal>,
+<replaceable>frame_end</replaceable> non può essere <literal>UNBOUNDED PRECEDING</literal>,
+e la scelta <replaceable>frame_end</replaceable> non può apparire prima della scelta 
+<replaceable>frame_start</replaceable> nell'elenco sopra - per esempio
+<literal>RANGE BETWEEN CURRENT ROW AND <replaceable>value</replaceable>
+PRECEDING</literal> non è consentito.
+L'opzione predefinita per la definizione della cornice è <literal>RANGE UNBOUNDED PRECEDING</literal>,
+che è lo stesso di <literal>RANGE BETWEEN UNBOUNDED PRECEDING AND
+CURRENT ROW</literal>; essa imposta la cornice per essere composta da tutte le righe dall'inizio
+della partizione in su fino alla riga corrente nell'ordinamento <literal>ORDER BY</literal>
+(che significa tutte le righe se non c'è <literal>ORDER BY</literal>).
+In generale, <literal>UNBOUNDED PRECEDING</literal> significa che la cornice 
+comincia con la prima riga della partizione, e similmente 
+<literal>UNBOUNDED FOLLOWING</literal> significa che la cornice termina con l'ultima riga della partizione
+(a prescindere dalla modalità <literal>RANGE</literal> o <literal>ROWS</literal>).
+In modalità <literal>ROWS</literal>, <literal>CURRENT ROW</literal>
+significa che la cornice comincia o finisce con la riga corrente; ma in modalità
+<literal>RANGE</literal> significa che la cornice somincia o finisce con 
+il primo o ultimo pari della riga corrente nell'ordinamento <literal>ORDER BY</literal>.
+I casi <replaceable>value</replaceable> <literal>PRECEDING</literal> e
+<replaceable>value</replaceable> <literal>FOLLOWING</literal> sono attualmente permessi solo 
+in modalità <literal>ROWS</literal>. Essi indicano che la cornice comincia
+o finisce con la riga quelle tante righe prima o dopo la corrente.
+<replaceable>value</replaceable> dev'essere un'espressione intera non contenente
+variabili,  funzioni aggregate, o funzioni finestra.
+Il valore non deve essere null o negativo; ma può essere zero, che seleziona 
+la riga corrente.
    </para>
 
    <para>
-    The built-in window functions are described in <xref
-    linkend="functions-window-table"/>.  Other window functions can be added by
-    the user.  Also, any built-in or user-defined aggregate function can be
-    used as a window function.
+Le funzioni finestra incluse sono descritte nella <xref
+linkend="functions-window-table"/>. Altre funzioni finestra possono essere aggiunte dall'utente.
+In più, qualsiasi funzione aggregata inclusa o definita dall'utente può essere
+usata come funzione finestra.
    </para>
 
    <para>
-    The syntaxes using <literal>*</literal> are used for calling parameter-less
-    aggregate functions as window functions, for example
-    <literal>count(*) OVER (PARTITION BY x ORDER BY y)</literal>.
-    <literal>*</literal> is customarily not used for non-aggregate window functions.
-    Aggregate window functions, unlike normal aggregate functions, do not
-    allow <literal>DISTINCT</literal> or <literal>ORDER BY</literal> to be used within the
-    function argument list.
+Le sintassi che usano <literal>*</literal> sono usate per chiamare funzioni 
+aggregate senza parametri tipo funzioni finestra, per esempio
+<literal>count(*) OVER (PARTITION BY x ORDER BY y)</literal>.
+Di norma <literal>*</literal> non è usato per funzioni finestra non aggregate.
+Funzioni fiestra aggregate, a differenza di funzioni aggregate normali, non permettono
+l'utilizzo di <literal>DISTINCT</literal> o <literal>ORDER BY</literal> all'interno
+dell'elenco degli argomenti di funzione.
    </para>
 
    <para>
-    Window function calls are permitted only in the <literal>SELECT</literal>
-    list and the <literal>ORDER BY</literal> clause of the query.
+Chiamate a funzioni finestra sono permesse sono nell'elenco <literal>SELECT</literal>
+e nella clausola <literal>ORDER BY</literal> della query.
    </para>
 
    <para>
-    More information about window functions can be found in
-    <xref linkend="tutorial-window"/>,
-    <xref linkend="functions-window"/>,
-    <xref linkend="queries-window"/>.
+Maggiori informazioni sulle funzioni finestra possono essere trovate in
+<xref linkend="tutorial-window"/>,
+<xref linkend="functions-window"/>,
+<xref linkend="queries-window"/>.
    </para>
   </sect2>
 
   <sect2 id="sql-syntax-type-casts">
-   <title>Type Casts</title>
+   <title>Conversioni di tipo</title>
 
    <indexterm>
-    <primary>data type</primary>
-    <secondary>type cast</secondary>
+    <primary>tipo di dato</primary>
+    <secondary>conversione di tipo</secondary>
    </indexterm>
 
    <indexterm>
-    <primary>type cast</primary>
+    <primary>conversioni di tipo</primary>
    </indexterm>
 
    <indexterm>
@@ -1803,68 +1801,66 @@ UNBOUNDED FOLLOWING
    </indexterm>
 
    <para>
-    A type cast specifies a conversion from one data type to another.
-    <productname>PostgreSQL</productname> accepts two equivalent syntaxes
-    for type casts:
+Una conversione di tipo specifica una conversione da un tipo di dato ad un altro.
+<productname>PostgreSQL</productname> accetta due sintassi equivalenti 
+per conversioni di tipo:
 <synopsis>
 CAST ( <replaceable>expression</replaceable> AS <replaceable>type</replaceable> )
 <replaceable>expression</replaceable>::<replaceable>type</replaceable>
 </synopsis>
-    The <literal>CAST</literal> syntax conforms to SQL; the syntax with
-    <literal>::</literal> is historical <productname>PostgreSQL</productname>
-    usage.
+La sintassi <literal>CAST</literal> è conforma a SQL; la sintassi con
+<literal>::</literal> è storica di <productname>PostgreSQL</productname>.
    </para>
 
    <para>
-    When a cast is applied to a value expression of a known type, it
-    represents a run-time type conversion.  The cast will succeed only
-    if a suitable type conversion operation has been defined.  Notice that this
-    is subtly different from the use of casts with constants, as shown in
-    <xref linkend="sql-syntax-constants-generic"/>.  A cast applied to an
-    unadorned string literal represents the initial assignment of a type
-    to a literal constant value, and so it will succeed for any type
-    (if the contents of the string literal are acceptable input syntax for the
-    data type).
+Quando viene applicata una conversione a una espressione di valore di un tipo conosciuto,
+essa rappresenta una conversione di tipo dirante l'esecuzione. La conversione avrà successo solo
+se è stata definita un'operazione di conversione di tipo adatta. Considerare che 
+questo è leggermente diverso dall'uso di conversioni con costanti, come visto 
+in <xref linkend="sql-syntax-constants-generic"/>.  Una conversione applicata 
+a stringhe letterali spoglie rappresenta l'assegnamento iniziale di un tipo
+a un valore costante letterale, e così succederà per ogni tipo
+(se il contenuto della stringa letterale è sintassi di input accettabile per il tipo di dato).
    </para>
 
    <para>
-    An explicit type cast can usually be omitted if there is no ambiguity as
-    to the type that a value expression must produce (for example, when it is
-    assigned to a table column); the system will automatically apply a
-    type cast in such cases.  However, automatic casting is only done for
-    casts that are marked <quote>OK to apply implicitly</quote>
-    in the system catalogs.  Other casts must be invoked with
-    explicit casting syntax.  This restriction is intended to prevent
-    surprising conversions from being applied silently.
+Un'esplicita conversione di tipo può, di solito, essere omessa se non c'è ambiguità 
+sul tipo che un'espressione di valore deve produrre (per esempio, quando è 
+assegnata a una colonna di tabella); il sistema applicherà automaticamente una
+conversione di tipo in questi casi. Comunque, una conversione automatica viene fatta solo
+per conversioni che sono indicate come <quote>OK to apply implicitly</quote>
+nei cataloghi di sistema. Altre conversioni devono essere invocate con 
+sintassi di conversione esplicita. Questa restrizione è intesa per prevenire
+conversioni sorprendenti dall'essere applicate silenziosamente.
    </para>
 
    <para>
-    It is also possible to specify a type cast using a function-like
-    syntax:
+È anche possibile specificare una conversione di tipo usando una sintassi simile 
+a una funzione:
 <synopsis>
 <replaceable>typename</replaceable> ( <replaceable>expression</replaceable> )
 </synopsis>
-    However, this only works for types whose names are also valid as
-    function names.  For example, <literal>double precision</literal>
-    cannot be used this way, but the equivalent <literal>float8</literal>
-    can.  Also, the names <literal>interval</literal>, <literal>time</literal>, and
-    <literal>timestamp</literal> can only be used in this fashion if they are
-    double-quoted, because of syntactic conflicts.  Therefore, the use of
-    the function-like cast syntax leads to inconsistencies and should
-    probably be avoided.
+In ogni caso, questo funziona solo per tipi i chui nomi sono validi anche come 
+nomi di funzione. Per esempio, <literal>double precision</literal>
+non può essere usato in questo modo, ma l'equivalente <literal>float8</literal>
+può. Inoltre, i nomi <literal>interval</literal>, <literal>time</literal>, e
+<literal>timestamp</literal> possono essere usati solo in questo modo se sono
+espresse tra doppi apici, causa conflitti sintattici. Inoltre, l'uso di  
+sintassi di conversione stile-funzione porta inconsistenza e dovrebbe essere 
+evitato.
    </para>
 
    <note>
     <para>
-     The function-like syntax is in fact just a function call.  When
-     one of the two standard cast syntaxes is used to do a run-time
-     conversion, it will internally invoke a registered function to
-     perform the conversion.  By convention, these conversion functions
-     have the same name as their output type, and thus the <quote>function-like
-     syntax</quote> is nothing more than a direct invocation of the underlying
-     conversion function.  Obviously, this is not something that a portable
-     application should rely on.  For further details see
-     <xref linkend="sql-createcast"/>.
+La sintassi stile-funzione è di fatto semplicemente una chiamata di funzione. Quando
+una delle due sintassi di conversione standard viene usata per compiere una conversione durante l'esecuzione,
+sarà internamente invocata una funzione registrata per eseguire la 
+conversione. Per convenzione, queste funzioni di  conversione 
+hanno lo stesso nome del loro tipo di output, e così la <quote>sintassi stile-funzione</quote>
+non è altro che un'invocazione diretta della funzione di conversione sottostante.
+Ovviamente, un'applicazione portabile non dovrebbe usare questo comportamento.
+Per ulteriori dettagli si veda 
+<xref linkend="sql-createcast"/>.
     </para>
    </note>
   </sect2>

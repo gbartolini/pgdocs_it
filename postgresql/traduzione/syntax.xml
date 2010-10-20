@@ -474,12 +474,12 @@ Il carattere con il codice zero non può apparire in una costante stringa.
     <para>
 <productname>PostgreSQL</productname> supporta anche un altro tipo di 
 sintassi di escape per stringhe che permette di specificare caratteri arbitrari Unicode
-attraverso il codice. Una stringa costante di escape Unicode 
+attraverso un codice. Una stringa costante di escape Unicode 
 comincia con <literal>U&amp;</literal> (lettera U maiuscola o minuscola seguita 
 da e commerciale) immediatamente prima l'apice di apertura. senza spazi tra di loro,
 per esempio <literal>U&amp;'foo'</literal>. (Notare che questo crea un'ambiguità
 con l'operatore <literal>&amp;</literal>. Usare spazi intorno all'operatore per evitare 
-questo problema). All'interno degli apici, possono essere spèecificati
+questo problema). All'interno degli apici, possono essere specificati
 caratteri Unicode in formato escape scrivendo una barra inversa seguita dal codice  a 
 4 cifre esadecimali o alternativamente una barra inversa seguita da un segno più
 seguito da un codice a sei cifre esadecimali. Per esempio,
@@ -753,21 +753,16 @@ linkend="sql-syntax-type-casts"/> per dettagli.
     </para>
 
     <para>
-<note>
-    <para>
-        Nota per il revisore: TODO
-    </para>
-</note>
-     The <literal>::</literal>, <literal>CAST()</literal>, and 
-     function-call syntaxes can also be used to specify run-time type
-     conversions of arbitrary expressions, as discussed in <xref
-     linkend="sql-syntax-type-casts"/>.  To avoid syntactic ambiguity, the
-     <literal><replaceable>type</replaceable> '<replaceable>string</replaceable>'</literal>
-     syntax can only be used to specify the type of a simple literal constant.
-     Another restriction on the
-     <literal><replaceable>type</replaceable> '<replaceable>string</replaceable>'</literal>
-     syntax is that it does not work for array types; use <literal>::</literal>
-     or <literal>CAST()</literal> to specify the type of an array constant.
+Le sintassi <literal>::</literal>, <literal>CAST()</literal> e a chimata di funzione,
+possono essere usate anche per specificare conversioni di tipo di espressioni arbitrarie 
+durante l'esecuzione, come discusso in <xref
+linkend="sql-syntax-type-casts"/>. Per evitare ambiguità sintattica, la sintassi
+<literal><replaceable>type</replaceable> '<replaceable>string</replaceable>'</literal>
+può essere utilizzata solo per specificare il tipo di una semplice costante letterale.
+Un'altra restrizione sulla sintassi
+<literal><replaceable>type</replaceable> '<replaceable>string</replaceable>'</literal>
+è che non funziona per tipi array; usare <literal>::</literal>
+o <literal>CAST()</literal> per specificare il tipo di una costante array.
     </para>
 
     <para>

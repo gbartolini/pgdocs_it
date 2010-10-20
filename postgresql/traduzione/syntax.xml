@@ -508,73 +508,68 @@ o un carattere di spazio.
     </para>
 
     <para>
-     The Unicode escape syntax works only when the server encoding is
-     <literal>UTF8</literal>.  When other server encodings are used, only
-     code points in the ASCII range (up to <literal>\007F</literal>)
-     can be specified.  Both the 4-digit and the 6-digit form can be
-     used to specify UTF-16 surrogate pairs to compose characters with
-     code points larger than U+FFFF, although the availability of the
-     6-digit form technically makes this unnecessary.  (When surrogate
-     pairs are used when the server encoding is <literal>UTF8</literal>, they
-     are first combined into a single code point that is then encoded
-     in UTF-8.)
+La sintassi escape Unicode funziona solo quando la codifica del server è
+<literal>UTF8</literal>. Quando sono usate altre codifiche per il server, 
+possono essere specificati solo codici nell'intervallo ASCII (fino a <literal>\007F</literal>).
+Possono essere usate sia la forma a 4 cifre che quella a 6 cifre per specificare
+coppie surrogate UTF-16 per comporre caratteri con 
+codici maggiori di U+FFFF, anche se la disponibilità della forma a 6 cifre
+lo rende non necessario. (Quando coppie surrogate vengono usate con serve 
+che utilizzano codifica <literal>UTF8</literal>, sono prima di tutto 
+combinate in un singolo codice che poi viene codificato in UTF-8).
     </para>
 
     <para>
-     Also, the Unicode escape syntax for string constants only works
-     when the configuration
-     parameter <xref linkend="guc-standard-conforming-strings"/> is
-     turned on.  This is because otherwise this syntax could confuse
-     clients that parse the SQL statements to the point that it could
-     lead to SQL injections and similar security issues.  If the
-     parameter is set to off, this syntax will be rejected with an
-     error message.
+Comunque, la sintassi escape Unicode per costanti stringa funziona solo
+quando il parametro di configurazione <xref linkend="guc-standard-conforming-strings"/>
+è impostato ad on. Questo perchè altrimenti questa sintassi potrebbe condondere
+client che effettuano il parsing di istruzioni SQL al punto da provocare
+a injenction SQL e problemi di sicurezza simili. Se il parametro è 
+impostasto ad off, questa sintassi sarà rifiutata generando un messaggio di errore.
+
     </para>
 
     <para>
-     To include the escape character in the string literally, write it
-     twice.
+Per includere il carattere di escape letteralmente nella stringa, scriverlo due volte.
     </para>
    </sect3>
 
    <sect3 id="sql-syntax-dollar-quoting">
-    <title>Dollar-Quoted String Constants</title>
+    <title>Costanti stringa quitate da dollari</title>
 
      <indexterm>
-      <primary>dollar quoting</primary>
+      <primary>quotare con dollaro</primary>
      </indexterm>
 
     <para>
-     While the standard syntax for specifying string constants is usually
-     convenient, it can be difficult to understand when the desired string
-     contains many single quotes or backslashes, since each of those must
-     be doubled. To allow more readable queries in such situations,
-     <productname>PostgreSQL</productname> provides another way, called
-     <quote>dollar quoting</quote>, to write string constants.
-     A dollar-quoted string constant
-     consists of a dollar sign (<literal>$</literal>), an optional
-     <quote>tag</quote> of zero or more characters, another dollar
-     sign, an arbitrary sequence of characters that makes up the
-     string content, a dollar sign, the same tag that began this
-     dollar quote, and a dollar sign. For example, here are two
-     different ways to specify the string <quote>Dianne's horse</quote>
-     using dollar quoting:
+Mentre la sintassi standard per specificare costanti stringa di solito è conveniente,
+può essere difficile da capire quando la stringa desiderata
+contiene moli singoli apici o barre inverse, dato che ognuna di queste deve
+essere raddoppiata. Per permettere query più leggibili in quelle situazioni,
+<productname>PostgreSQL</productname>   fornisce un altro modo, chiamato 
+<quote>quotazione con dollari</quote>, per scrivere costanti stringa.
+Una costante stringa quotata con dollari consiste di 
+un segno dollaro (<literal>$</literal>), un <quote>tag</quote> di zero 
+o più caratteri, un altro segno dollaro, una sequenza di caratteri arbitraria
+che costituisce il contenuto della stringa, un segno dollaro, lo stesso tag che ha cominciato 
+la sequenza, e un sengo dollaro. Per esempio, ecco due 
+modi diversi di specificare la stringa <quote>Dianne's horse</quote>
+usando la quotazione con dollari:
 <programlisting>
 $$Dianne's horse$$
 $SomeTag$Dianne's horse$SomeTag$
 </programlisting>
-     Notice that inside the dollar-quoted string, single quotes can be
-     used without needing to be escaped.  Indeed, no characters inside
-     a dollar-quoted string are ever escaped: the string content is always
-     written literally.  Backslashes are not special, and neither are
-     dollar signs, unless they are part of a sequence matching the opening
-     tag.
+Si noti che all'interno della stringa quotata con dollari, i songoli apici possono essere
+usati senza il bisogno di essere sottoposti ad escape. Effettivamente, nessun carattere
+usato all'interno di una stringa quotata da dollari viene sottoposto ad escape: il contenuto della stringa è sempre
+scritto letteralmente. Le barre inverse non sono speciali, e non lo sono nemmeno 
+i segni dollaro, a meno che non siano parte di una sequenza corrispondente al tag d'apertura.
     </para>
 
     <para>
-     It is possible to nest dollar-quoted string constants by choosing
-     different tags at each nesting level.  This is most commonly used in
-     writing function definitions.  For example:
+È possibile annidare costanti stringa quotate con dollari scegliendo tag diversi 
+ad ogni livello di annidamento. Questo viene usato comunemente per scrivere 
+definizioni di funzione. Per esempio:
 <programlisting>
 $function$
 BEgin
@@ -582,100 +577,98 @@ BEgin
 END;
 $function$
 </programlisting>
-     Here, the sequence <literal>$q$[\t\r\n\v\\]$q$</literal> represents a
-     dollar-quoted literal string <literal>[\t\r\n\v\\]</literal>, which will
-     be recognized when the function body is executed by
-     <productname>PostgreSQL</productname>.  But since the sequence does not match
-     the outer dollar quoting delimiter <literal>$function$</literal>, it is
-     just some more characters within the constant so far as the outer
-     string is concerned.
+Qui, la sequenza <literal>$q$[\t\r\n\v\\]$q$</literal> rappresenta una 
+stringa quotata da dolarri <literal>[\t\r\n\v\\]</literal>, che 
+sarà riconosciuta quando il corpo della funzione viene eseguito 
+da <productname>PostgreSQL</productname>. Ma dal momento che la sequenza non corrisponde 
+al delimitatore esterno della quotazione dollaro <literal>$function$</literal>, 
+è solamente qualche carattere in più all'interno della costante per come la stringa 
+esterna è concepita.
     </para>
 
     <para>
-     The tag, if any, of a dollar-quoted string follows the same rules
-     as an unquoted identifier, except that it cannot contain a dollar sign.
-     Tags are case sensitive, so <literal>$tag$String content$tag$</literal>
-     is correct, but <literal>$TAG$String content$tag$</literal> is not.
+Il tag, se presente, di una stringa quotata da dollari, segue le stesse regole
+di un identificatore non quotato, eccetto che non può contenere un segno dollaro.
+I tage sono sensibili al case, così <literal>$tag$Contenuto della stringa$tag$</literal>
+è corretto, ma <literal>$TAG$Contenuto della stringa$tag$</literal> non lo è.
     </para>
 
     <para>
-     A dollar-quoted string that follows a keyword or identifier must
-     be separated from it by whitespace; otherwise the dollar quoting
-     delimiter would be taken as part of the preceding identifier.
+Una stringa quotata da dollari che seque una parola chiave o un identificatore dev'essere
+separata da essa da spazi bianchi; altrimenti il delimitatore di quotazione
+sarebbe preso come parte del precedente identificatore.
     </para>
 
     <para>
-     Dollar quoting is not part of the SQL standard, but it is often a more
-     convenient way to write complicated string literals than the
-     standard-compliant single quote syntax.  It is particularly useful when
-     representing string constants inside other constants, as is often needed
-     in procedural function definitions.  With single-quote syntax, each
-     backslash in the above example would have to be written as four
-     backslashes, which would be reduced to two backslashes in parsing the
-     original string constant, and then to one when the inner string constant
-     is re-parsed during function execution.
+La quotazione con dollari non fa parte dello standard SQL, ma spesso è un modo 
+più conveniente di scrivere letterali stringa complicati rispetto alla sintassi
+con singoli apici che aderisce allo standard. È particolarmente utile quando 
+si rappresentano costanti stringa all'interno di altre costanti, come spesso è necessario 
+in definizioni di funzioni procedurali. Con la sintassi a singolo apice, ogni barra inversa
+nell'esempio sopra dovrebbe essere scritta come quattro barre inverse,
+che sarebbero ridotte a due barre inverse nel parsing della costante stringa originale,
+e quindi ad una quando viene ri-eseguito il parsing della costante stringa interna 
+durante l'esecuzione della funzione.
     </para>
    </sect3>
 
    <sect3 id="sql-syntax-bit-strings">
-    <title>Bit-String Constants</title>
+    <title>Costanti stringa di bit</title>
 
     <indexterm zone="sql-syntax-bit-strings">
-     <primary>bit string</primary>
-     <secondary>constant</secondary>
+     <primary>stringa di bit</primary>
+     <secondary>costante</secondary>
     </indexterm>
 
     <para>
-     Bit-string constants look like regular string constants with a
-     <literal>B</literal> (upper or lower case) immediately before the
-     opening quote (no intervening whitespace), e.g.,
-     <literal>B'1001'</literal>.  The only characters allowed within
-     bit-string constants are <literal>0</literal> and
-     <literal>1</literal>.
+Le costanti stringa di bit somigliano a costanti stringa regolari con una 
+<literal>B</literal> (maiuscola o minuscola) immediatamente prima dell'apice di
+apertura (senza spazi), per es.,
+<literal>B'1001'</literal>.  I soli caratteri permessi all'interno di
+costanti a stringa di bit sono <literal>0</literal> e 
+<literal>1</literal>.
     </para>
 
     <para>
-     Alternatively, bit-string constants can be specified in hexadecimal
-     notation, using a leading <literal>X</literal> (upper or lower case),
-     e.g., <literal>X'1FF'</literal>.  This notation is equivalent to
-     a bit-string constant with four binary digits for each hexadecimal digit.
+Alternativamente, le costanti stringa di bit possono essere specificate in notazione
+esadecimale, usando una <literal>X</literal> in testa (maiuscola o minuscola),
+per es., <literal>X'1FF'</literal>.  Questa notazione è equivalente a
+una costante stringa di bit con quattro cifre binarie per ogni cifra esadecimale.
     </para>
 
     <para>
-     Both forms of bit-string constant can be continued
-     across lines in the same way as regular string constants.
-     Dollar quoting cannot be used in a bit-string constant.
+Tutt'e due le forme di costanti stringa di bit possono essere estese
+su più linee nello stesso modo di costanti stringa regolari.
+La quotazione con dollari non può essere usata in una costante stringa di bit.
     </para>
    </sect3>
 
    <sect3>
-    <title>Numeric Constants</title>
+    <title>Costanti numeriche</title>
 
     <indexterm>
-     <primary>number</primary>
-     <secondary>constant</secondary>
+     <primary>numerica</primary>
+     <secondary>costante</secondary>
     </indexterm>
 
     <para>
-     Numeric constants are accepted in these general forms:
+Le costanti numeriche sono accettate in queste forme:
 <synopsis>
 <replaceable>digits</replaceable>
 <replaceable>digits</replaceable>.<optional><replaceable>digits</replaceable></optional><optional>e<optional>+-</optional><replaceable>digits</replaceable></optional>
 <optional><replaceable>digits</replaceable></optional>.<replaceable>digits</replaceable><optional>e<optional>+-</optional><replaceable>digits</replaceable></optional>
 <replaceable>digits</replaceable>e<optional>+-</optional><replaceable>digits</replaceable>
 </synopsis>
-     where <replaceable>digits</replaceable> is one or more decimal
-     digits (0 through 9).  At least one digit must be before or after the
-     decimal point, if one is used.  At least one digit must follow the
-     exponent marker (<literal>e</literal>), if one is present.
-     There cannot be any spaces or other characters embedded in the
-     constant.  Note that any leading plus or minus sign is not actually
-     considered part of the constant; it is an operator applied to the
-     constant.
+dove <replaceable>digits</replaceable> è una o più cifre
+(da 0 a 9). Deve esserci almeno una cifra prima o dopo il punto decimale,
+se usato. Almeno una cifra deve seguire l'indicatore di esponente  (<literal>e</literal>), 
+se presente. Non ci puà essere nessuno spazio o altro carattere incluso nella 
+costante. Si noti che qualsiasi segno più o meno in testa non viene considerato 
+parte della costante; è un operatore applicato alla costante.
     </para>
 
     <para>
-     These are some examples of valid numeric constants:
+Questi sono esempi di costanti numeriche valide:
 <literallayout>
 42
 3.5
@@ -687,80 +680,85 @@ $function$
     </para>
 
     <para>
-     <indexterm><primary>integer</primary></indexterm>
-     <indexterm><primary>bigint</primary></indexterm>
-     <indexterm><primary>numeric</primary></indexterm>
-     A numeric constant that contains neither a decimal point nor an
-     exponent is initially presumed to be type <type>integer</type> if its
-     value fits in type <type>integer</type> (32 bits); otherwise it is
-     presumed to be type <type>bigint</type> if its
-     value fits in type <type>bigint</type> (64 bits); otherwise it is
-     taken to be type <type>numeric</type>.  Constants that contain decimal
-     points and/or exponents are always initially presumed to be type
-     <type>numeric</type>.
+<indexterm><primary>integer</primary></indexterm>
+<indexterm><primary>bigint</primary></indexterm>
+<indexterm><primary>numeric</primary></indexterm>
+Una costante numerica che non contiene nè un punto decimale e nemmeno un 
+esponente viene supposto sia del tipo <type>integer</type> se il suo valore
+rientra nel tipo <type>integer</type> (32 bit); altrimenti si presume 
+essere del tipo <type>bigint</type> se il suo valore rientra 
+nel tipo <type>bigint</type> (64 bit); altrimenti 
+viene cosiderata di tipo <type>numeric</type>. Le costanti che contengono punti decimali
+e/o esponenti sono sempre considerate essere del tipo 
+<type>numeric</type>.
     </para>
 
     <para>
-     The initially assigned data type of a numeric constant is just a
-     starting point for the type resolution algorithms.  In most cases
-     the constant will be automatically coerced to the most
-     appropriate type depending on context.  When necessary, you can
-     force a numeric value to be interpreted as a specific data type
-     by casting it.<indexterm><primary>type cast</primary></indexterm>
-     For example, you can force a numeric value to be treated as type
-     <type>real</type> (<type>float4</type>) by writing:
+Il tipo di dato assegnato inizialmente a una costante numerica è solo
+un punto di partenza per gli algoritmi di risoluzione del tipo. Nella maggior parte dei casi
+la costante sarà forzata automaticamente al tipo appropriato 
+in funzione del contesto. Quando necessario, è possibile forzare 
+che un valore numerico sia interpretato come un tipo di dato specifico
+convertendolo. <indexterm><primary>conversione di tipo</primary></indexterm>
+Per esempio, è possibile forzare che un valore numerico sia trattato come 
+<type>real</type> (<type>float4</type>) scrivendo:
 
 <programlisting>
-REAL '1.23'  -- string style
-1.23::REAL   -- PostgreSQL (historical) style
+REAL '1.23'  -- stile stringa
+1.23::REAL   -- stile PostgreSQL (storico)
 </programlisting>
 
-     These are actually just special cases of the general casting
-     notations discussed next.
+Questi effettivamente sono solo casi speciali delle notazioni di conversione 
+discusse successivamente.
     </para>
    </sect3>
 
    <sect3 id="sql-syntax-constants-generic">
-    <title>Constants of Other Types</title>
+    <title>Costanti di altri tipi</title>
 
     <indexterm>
-     <primary>data type</primary>
-     <secondary>constant</secondary>
+     <primary>tipo di dato</primary>
+     <secondary>costante</secondary>
     </indexterm>
 
     <para>
-     A constant of an <emphasis>arbitrary</emphasis> type can be
-     entered using any one of the following notations:
+Una costante di un tipo <emphasis>arbitrario</emphasis> può essere 
+specificata usando una delle seguenti notazioni:
 <synopsis>
 <replaceable>type</replaceable> '<replaceable>string</replaceable>'
 '<replaceable>string</replaceable>'::<replaceable>type</replaceable>
 CAST ( '<replaceable>string</replaceable>' AS <replaceable>type</replaceable> )
 </synopsis>
-     The string constant's text is passed to the input conversion
-     routine for the type called <replaceable>type</replaceable>. The
-     result is a constant of the indicated type.  The explicit type
-     cast can be omitted if there is no ambiguity as to the type the
-     constant must be (for example, when it is assigned directly to a
-     table column), in which case it is automatically coerced.
+Il testo della costante stringa viene passato alla routine di conversione
+per il tipo chiamato <replaceable>type</replaceable>. Il risultato
+è una costante del tipo indicato. La conversione esplicita di tipo
+può essere omessa se non c'è ambiguità sul tipo della costante (per esempio, 
+quando è assegnata direttamente a una colonna di tabella), nel qual caso 
+viene forzata automaticamente.
     </para>
 
     <para>
-     The string constant can be written using either regular SQL
-     notation or dollar-quoting.
+La costante stringa può essere scritta usando sia la normale notazione SQL
+sia la quotazione con dollari.
     </para>
 
     <para>
-     It is also possible to specify a type coercion using a function-like
-     syntax:
+È inoltre possibile specificare la forzatura a un tipo usando una sintassi simile
+ad una funzione:
 <synopsis>
 <replaceable>typename</replaceable> ( '<replaceable>string</replaceable>' )
 </synopsis>
-     but not all type names can be used in this way; see <xref
-     linkend="sql-syntax-type-casts"/> for details.
+ma non tutti i nomi di tipo possono essere usati in questo modo; si veda <xref
+linkend="sql-syntax-type-casts"/> per dettagli.
     </para>
 
     <para>
-     The <literal>::</literal>, <literal>CAST()</literal>, and
+<note>
+    <para>
+        Nota per il revisore: TODO
+    </para>
+</note>
+     The <literal>::</literal>, <literal>CAST()</literal>, and 
      function-call syntaxes can also be used to specify run-time type
      conversions of arbitrary expressions, as discussed in <xref
      linkend="sql-syntax-type-casts"/>.  To avoid syntactic ambiguity, the
@@ -773,145 +771,141 @@ CAST ( '<replaceable>string</replaceable>' AS <replaceable>type</replaceable> )
     </para>
 
     <para>
-     The <literal>CAST()</literal> syntax conforms to SQL.  The
-     <literal><replaceable>type</replaceable> '<replaceable>string</replaceable>'</literal>
-     syntax is a generalization of the standard: SQL specifies this syntax only
-     for a few data types, but <productname>PostgreSQL</productname> allows it
-     for all types.  The syntax with
-     <literal>::</literal> is historical <productname>PostgreSQL</productname>
-     usage, as is the function-call syntax.
+La sintassi <literal>CAST()</literal> è conforme a SQL. La sintassi
+<literal><replaceable>type</replaceable> '<replaceable>string</replaceable>'</literal>
+è una generalizzazione dello standard: SQL specifica questa sintassi solo
+per pochi tipi di dato, ma <productname>PostgreSQL</productname> la permette 
+per tutti i tipi. La sintassi con
+<literal>::</literal> è storica di <productname>PostgreSQL</productname>,
+come la sintassi a chiamata di funzione.
     </para>
    </sect3>
   </sect2>
 
   <sect2 id="sql-syntax-operators">
-   <title>Operators</title>
+   <title>Operatori</title>
 
    <indexterm zone="sql-syntax-operators">
-    <primary>operator</primary>
-    <secondary>syntax</secondary>
+    <primary>operatore</primary>
+    <secondary>syntassi</secondary>
    </indexterm>
 
    <para>
-    An operator name is a sequence of up to <symbol>NAMEDATALEN</symbol>-1
-    (63 by default) characters from the following list:
+Un nome di operatore è una sequenza di caratteri, fino a <symbol>NAMEDATALEN</symbol>-1
+(63 come predefinito), dal seguente elenco:
 <literallayout>
 + - * / &lt; &gt; = ~ ! @ # % ^ &amp; | ` ?
 </literallayout>
 
-    There are a few restrictions on operator names, however:
+ci sono comunque alcune restrizioni sui nomi di operatore:
     <itemizedlist>
      <listitem>
       <para>
-       <literal>--</literal> and <literal>/*</literal> cannot appear
-       anywhere in an operator name, since they will be taken as the
-       start of a comment.
+<literal>--</literal> e <literal>/*</literal> non possono apparire
+nel nome di un operatore, dato che saranno presi come inizio di un commento.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       A multiple-character operator name cannot end in <literal>+</literal> or <literal>-</literal>,
-       unless the name also contains at least one of these characters:
+Un nome di operatore comporto da molteplici caratteri non può terminare con <literal>+</literal> o <literal>-</literal>,
+a meno che il nome contenga anche almeno uno di questi caratteri:
 <literallayout>
 ~ ! @ # % ^ &amp; | ` ?
 </literallayout>
-       For example, <literal>@-</literal> is an allowed operator name,
-       but <literal>*-</literal> is not.  This restriction allows
-       <productname>PostgreSQL</productname> to parse SQL-compliant
-       queries without requiring spaces between tokens.
+Per esempio, <literal>@-</literal> è un nome di operatore permesso,
+ma <literal>*-</literal> no. Questa restrizione permette a 
+<productname>PostgreSQL</productname> di effettuare il aprsing di query 
+che rispettano lo standard SQL senza richiedere spazi tra i token.
       </para>
      </listitem>
     </itemizedlist>
    </para>
 
    <para>
-    When working with non-SQL-standard operator names, you will usually
-    need to separate adjacent operators with spaces to avoid ambiguity.
-    For example, if you have defined a left unary operator named <literal>@</literal>,
-    you cannot write <literal>X*@Y</literal>; you must write
-    <literal>X* @Y</literal> to ensure that
-    <productname>PostgreSQL</productname> reads it as two operator names
-    not one.
+Quando si lavora con nomi di operatori SQL non standard, si avrà di solito bisogno
+di separare operatori adiacenti con spazi per evitare ambiguità.
+Per esempio, se si è definito un operatore unario di sinistra chiamato <literal>@</literal>,
+non si puà scrivere <literal>X*@Y</literal>; si deve scrivere 
+<literal>X* @Y</literal> per essere sicuri che
+<productname>PostgreSQL</productname> lo legga come due nomi di operatore 
+e non uno.
    </para>
   </sect2>
 
   <sect2>
-   <title>Special Characters</title>
+   <title>Caratteri speciali</title>
 
   <para>
-   Some characters that are not alphanumeric have a special meaning
-   that is different from being an operator.  Details on the usage can
-   be found at the location where the respective syntax element is
-   described.  This section only exists to advise the existence and
-   summarize the purposes of these characters.
+Alcuni caratteri che non sono alfanumerici hanno un significato speciale
+che è diverso dall'essere un operatore. Dettagli sull'utilizzo possono essere 
+trovati nel luogo dove il rispettivo elemento di sintassi è descritto.
+Questa sezione esiste solo per notificarne l'esistenza e riassumere 
+gli scopi di questi caratteri.
 
    <itemizedlist>
     <listitem>
      <para>
-      A dollar sign (<literal>$</literal>) followed by digits is used
-      to represent a positional parameter in the body of a function
-      definition or a prepared statement.  In other contexts the
-      dollar sign can be part of an identifier or a dollar-quoted string
-      constant.
+Un segno dollatro  (<literal>$</literal>) seguito da cifre viene usato
+per rappresentare un parametro posizionale nel corpo di una definizione di funzione
+o di una funzione preparata. In altri contesti il segno dollaro
+può essere parte di un identificatore o di una costante stringa quotata con dollari.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Parentheses (<literal>()</literal>) have their usual meaning to
-      group expressions and enforce precedence.  In some cases
-      parentheses are required as part of the fixed syntax of a
-      particular SQL command.
+Le parentesi tonde (<literal>()</literal>) hanno il loro solito significato 
+di raggrupare espressioni ed esprimere le precedenze. In alcuno casi
+le parentesi sono richieste come parte della sintassi fissata di 
+un particolare comando SQL.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Brackets (<literal>[]</literal>) are used to select the elements
-      of an array.  See <xref linkend="arrays"/> for more information
-      on arrays.
+Le parentesi quadre (<literal>[]</literal>) vengono usate per selezionare elementi
+di un array. Si veda <xref linkend="arrays"/> per maggiori informazioni sugli array.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Commas (<literal>,</literal>) are used in some syntactical
-      constructs to separate the elements of a list.
+Le virgole (<literal>,</literal>) sono usate in alcuni costrutti 
+sintattici per separare gli elementi di un elenco.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      The semicolon (<literal>;</literal>) terminates an SQL command.
-      It cannot appear anywhere within a command, except within a
-      string constant or quoted identifier.
+Il punto e virgola (<literal>;</literal>) termina un comando SQL.
+Non può apparire all'interno di un comando, eccetto all'interno di una 
+costante stringa o indetificatore quotato.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      The colon (<literal>:</literal>) is used to select
-      <quote>slices</quote> from arrays. (See <xref
-      linkend="arrays"/>.)  In certain SQL dialects (such as Embedded
-      SQL), the colon is used to prefix variable names.
+I due punti (<literal>:</literal>) sono usati per selezionare
+<quote>fette</quote> di un array. (Si veda <xref
+linkend="arrays"/>). In certi dialetti SQL (tipo Embedded SQL), 
+i due punti sono usati come prefisso per i comi di variabili.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      The asterisk (<literal>*</literal>) is used in some contexts to denote
-      all the fields of a table row or composite value.  It also
-      has a special meaning when used as the argument of an
-      aggregate function, namely that the aggregate does not require
-      any explicit parameter.
+L'asterisco (<literal>*</literal>) viene usato in alcuni contesti per denotare
+tutti i campi della riga di una tabella o valori composti. Ha inoltre
+un significato speciale quando usato come argomento di una funzione aggregata,
+cioè che l'aggregata non richiede nessun parametro esplicito.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      The period (<literal>.</literal>) is used in numeric
-      constants, and to separate schema, table, and column names.
+Il punto (<literal>.</literal>) viene usato in costanti numeriche,
+e per separare nomi di schemi, tabelle e colonne.
      </para>
     </listitem>
    </itemizedlist>
@@ -920,50 +914,56 @@ CAST ( '<replaceable>string</replaceable>' AS <replaceable>type</replaceable> )
   </sect2>
 
   <sect2 id="sql-syntax-comments">
-   <title>Comments</title>
+   <title>Commenti</title>
 
    <indexterm zone="sql-syntax-comments">
-    <primary>comment</primary>
+    <primary>commento</primary>
     <secondary sortas="SQL">in SQL</secondary>
    </indexterm>
 
    <para>
     A comment is a sequence of characters beginning with
+Un commento è una sequenza di caratteri che cominciano con 
     double dashes and extending to the end of the line, e.g.:
+doppi trattini e si estende fino alla fine della linea, per es.:
 <programlisting>
 -- This is a standard SQL comment
 </programlisting>
    </para>
 
    <para>
-    Alternatively, C-style block comments can be used:
+In alternativa, possono essere usati commenti stile C:
 <programlisting>
 /* multiline comment
  * with nesting: /* nested block comment */
  */
 </programlisting>
-    where the comment begins with <literal>/*</literal> and extends to
-    the matching occurrence of <literal>*/</literal>. These block
-    comments nest, as specified in the SQL standard but unlike C, so that one can
-    comment out larger blocks of code that might contain existing block
-    comments.
+dove il commento inizia con <literal>/*</literal> e si estende fino all'occorrenza corrispondente
+<literal>*/</literal>. Questi blocchi di commenti possono essre annidati, come specificato nello standard SQL
+ma non dal C, così è possibile commentare blocchi di commenti più grandi di codice che potrebbe 
+contenere blocchi di commenti.
    </para>
 
    <para>
-    A comment is removed from the input stream before further syntax
-    analysis and is effectively replaced by whitespace.
+Un commento viene rimosso dallo stream di input prima di ulteriori analisi di sintassi 
+e viene effettivamente sostituito da spazi bianchi.
    </para>
   </sect2>
 
   <sect2 id="sql-precedence">
-   <title>Lexical Precedence</title>
+   <title>Precedenza lessicale</title>
 
    <indexterm zone="sql-precedence">
-    <primary>operator</primary>
-    <secondary>precedence</secondary>
+    <primary>operatore</primary>
+    <secondary>precedenza</secondary>
    </indexterm>
 
    <para>
+<note>
+    <para>
+        Nota per il revisore: TODO
+    </para>
+</note>
     <xref linkend="sql-precedence-table"/> shows the precedence and
     associativity of the operators in <productname>PostgreSQL</productname>.
     Most operators have the same precedence and are left-associative.
@@ -977,7 +977,7 @@ CAST ( '<replaceable>string</replaceable>' AS <replaceable>type</replaceable> )
 <programlisting>
 SELECT 5 ! - 6;
 </programlisting>
-   will be parsed as:
+sarà sottoposto a parsing come:
 <programlisting>
 SELECT 5 ! (- 6);
 </programlisting>
@@ -988,62 +988,62 @@ SELECT 5 ! (- 6);
 <programlisting>
 SELECT (5 !) - 6;
 </programlisting>
-    This is the price one pays for extensibility.
+Questo è il prezzo che si paga per l'estendibilità.
    </para>
 
    <table id="sql-precedence-table">
-    <title>Operator Precedence (decreasing)</title>
+    <title>Precedenza degli operatori (decrescente)</title>
 
     <tgroup cols="3">
      <thead>
       <row>
-       <entry>Operator/Element</entry>
-       <entry>Associativity</entry>
-       <entry>Description</entry>
+       <entry>Operatore/Elemento</entry>
+       <entry>Associatività</entry>
+       <entry>Descrizione</entry>
       </row>
      </thead>
 
      <tbody>
       <row>
        <entry><token>.</token></entry>
-       <entry>left</entry>
-       <entry>table/column name separator</entry>
+       <entry>sinistra</entry>
+       <entry>separatore di nomi di  tabella/colonna</entry>
       </row>
 
       <row>
        <entry><token>::</token></entry>
-       <entry>left</entry>
-       <entry><productname>PostgreSQL</productname>-style typecast</entry>
+       <entry>sinistra</entry>
+       <entry>cast di tipo in stile <productname>PostgreSQL</productname></entry>
       </row>
 
       <row>
        <entry><token>[</token> <token>]</token></entry>
-       <entry>left</entry>
-       <entry>array element selection</entry>
+       <entry>sinistra</entry>
+       <entry>selezione di elemento di un array</entry>
       </row>
 
       <row>
        <entry><token>-</token></entry>
-       <entry>right</entry>
-       <entry>unary minus</entry>
+       <entry>destra</entry>
+       <entry>meno unario</entry>
       </row>
 
       <row>
        <entry><token>^</token></entry>
-       <entry>left</entry>
-       <entry>exponentiation</entry>
+       <entry>sinistra</entry>
+       <entry>esponenziale</entry>
       </row>
 
       <row>
        <entry><token>*</token> <token>/</token> <token>%</token></entry>
-       <entry>left</entry>
-       <entry>multiplication, division, modulo</entry>
+       <entry>sinistra</entry>
+       <entry>moltiplicazione, divisione, modulo</entry>
       </row>
 
       <row>
        <entry><token>+</token> <token>-</token></entry>
-       <entry>left</entry>
-       <entry>addition, subtraction</entry>
+       <entry>sinistra</entry>
+       <entry>addizione, sottrazione</entry>
       </row>
 
       <row>
@@ -1055,268 +1055,267 @@ SELECT (5 !) - 6;
       <row>
        <entry><token>ISNULL</token></entry>
        <entry></entry>
-       <entry>test for null</entry>
+       <entry>test per null</entry>
       </row>
 
       <row>
        <entry><token>NOTNULL</token></entry>
        <entry></entry>
-       <entry>test for not null</entry>
+       <entry>test per non null</entry>
       </row>
 
       <row>
-       <entry>(any other)</entry>
-       <entry>left</entry>
-       <entry>all other native and user-defined operators</entry>
+       <entry>(qualsiasi altro)</entry>
+       <entry>sinistra</entry>
+       <entry>tutti gli altri operatori nativi e definiti dall'utente</entry>
       </row>
 
       <row>
        <entry><token>IN</token></entry>
        <entry></entry>
-       <entry>set membership</entry>
+       <entry>appartenenza all'insieme</entry>
       </row>
 
       <row>
        <entry><token>BETWEEN</token></entry>
        <entry></entry>
-       <entry>range containment</entry>
+       <entry>appartenenza all'intervallo</entry>
       </row>
 
       <row>
        <entry><token>OVERLAPS</token></entry>
        <entry></entry>
-       <entry>time interval overlap</entry>
+       <entry>sovrapposizione dell'intervallo di tempo</entry>
       </row>
 
       <row>
        <entry><token>LIKE</token> <token>ILIKE</token> <token>SIMILAR</token></entry>
        <entry></entry>
-       <entry>string pattern matching</entry>
+       <entry>corrispondenza di modelli di stringa</entry>
       </row>
 
       <row>
        <entry><token>&lt;</token> <token>&gt;</token></entry>
        <entry></entry>
-       <entry>less than, greater than</entry>
+       <entry>minore di, maggiori di</entry>
       </row>
 
       <row>
        <entry><token>=</token></entry>
-       <entry>right</entry>
-       <entry>equality, assignment</entry>
+       <entry>destra</entry>
+       <entry>uguaglianza, assegniazione</entry>
       </row>
 
       <row>
        <entry><token>NOT</token></entry>
-       <entry>right</entry>
-       <entry>logical negation</entry>
+       <entry>destra</entry>
+       <entry>negazione logica</entry>
       </row>
 
       <row>
        <entry><token>AND</token></entry>
-       <entry>left</entry>
-       <entry>logical conjunction</entry>
+       <entry>sinistra</entry>
+       <entry>congiunzione logica</entry>
       </row>
 
       <row>
        <entry><token>OR</token></entry>
-       <entry>left</entry>
-       <entry>logical disjunction</entry>
+       <entry>sinistra</entry>
+       <entry>disgiunzione logica</entry>
       </row>
      </tbody>
     </tgroup>
    </table>
 
    <para>
-    Note that the operator precedence rules also apply to user-defined
-    operators that have the same names as the built-in operators
-    mentioned above.  For example, if you define a
-    <quote>+</quote> operator for some custom data type it will have
-    the same precedence as the built-in <quote>+</quote> operator, no
-    matter what yours does.
+Natare che le regole di precedenza degli operatori si applicano anche a operatori 
+definiti dall'utente che hanno gli stessi nomi degli operatori inclusi 
+menzionati sopra. Per esempio, se si definisce un operatore
+<quote>+</quote> per qualche tipo di dato personalizzato, esso avrà la stessa precedenza
+dell'operatore incluso <quote>+</quote>,
+non importa cosa faccia.
    </para>
 
    <para>
-    When a schema-qualified operator name is used in the
-    <literal>OPERATOR</literal> syntax, as for example in:
+Quando un operatore qualificato da schema viene usato nella 
+sintassi <literal>OPERATOR</literal>, come per esempio in:
 <programlisting>
 SELECT 3 OPERATOR(pg_catalog.+) 4;
 </programlisting>
-    the <literal>OPERATOR</literal> construct is taken to have the default precedence
-    shown in <xref linkend="sql-precedence-table"/> for <quote>any other</quote> operator.  This is true no matter
-    which specific operator appears inside <literal>OPERATOR()</literal>.
+il costrutto <literal>OPERATOR</literal> è assunto avere la precedenza predefinita
+mostrata nella <xref linkend="sql-precedence-table"/> per l'operatore <quote>qualsiasi altro</quote>. Questo è vero
+qualunque sia l'operatore specificato all'interno di <literal>OPERATOR()</literal>.
    </para>
   </sect2>
  </sect1>
 
  <sect1 id="sql-expressions">
-  <title>Value Expressions</title>
+  <title>Espressioni di valore</title>
 
   <indexterm zone="sql-expressions">
-   <primary>expression</primary>
-   <secondary>syntax</secondary>
+   <primary>espressione</primary>
+   <secondary>sintassi</secondary>
   </indexterm>
 
   <indexterm zone="sql-expressions">
-   <primary>value expression</primary>
+   <primary>espressione di valore</primary>
   </indexterm>
 
   <indexterm>
-   <primary>scalar</primary>
-   <see>expression</see>
+   <primary>scalare</primary>
+   <see>espressione</see>
   </indexterm>
 
   <para>
-   Value expressions are used in a variety of contexts, such
-   as in the target list of the <command>SELECT</command> command, as
-   new column values in <command>INSERT</command> or
-   <command>UPDATE</command>, or in search conditions in a number of
-   commands.  The result of a value expression is sometimes called a
-   <firstterm>scalar</firstterm>, to distinguish it from the result of
-   a table expression (which is a table).  Value expressions are
-   therefore also called <firstterm>scalar expressions</firstterm> (or
-   even simply <firstterm>expressions</firstterm>).  The expression
-   syntax allows the calculation of values from primitive parts using
-   arithmetic, logical, set, and other operations.
+Le espressioni di valore sono usate in contesti vari, come 
+nell'elenco di destinazioni del comando <command>SELECT</command>,
+nuovi valori per colonne nell'<command>INSERT</command> o 
+<command>UPDATE</command>, o in condizioni di ricerca di diversi comandi.
+Il risultato di un'espressione di valore a volte è chiamato
+<firstterm>scalare</firstterm>, per distinguerlo dal risultato di
+un'espressione di tabella (che è una tabella). Le espressioni di valore sono 
+anche chiamate <firstterm>espressioni scalari</firstterm> (o 
+anche semplicemente <firstterm>espressioni</firstterm>). La sintassi 
+delle espressioni permette il calcolo di valori da parti primitive usando 
+operazioni aritmetiche, logiche, su insiemi, ed altre.
   </para>
 
   <para>
-   A value expression is one of the following:
+Un valore di espressione è uno dei seguenti:
 
    <itemizedlist>
     <listitem>
      <para>
-      A constant or literal value
+Un valore costante o letterale
      </para>
     </listitem>
 
     <listitem>
      <para>
-      A column reference
+Un riferimento di colonna
      </para>
     </listitem>
 
     <listitem>
      <para>
-      A positional parameter reference, in the body of a function definition
-      or prepared statement
+Un riferimento posizionale a un parametro, nel corpo di una definizione di funzione
+o istruzione preparata
      </para>
     </listitem>
 
     <listitem>
      <para>
-      A subscripted expression
+Un'espressione sottoscritta
      </para>
     </listitem>
 
     <listitem>
      <para>
-      A field selection expression
+Un'espressione di selezione di campo
      </para>
     </listitem>
 
     <listitem>
      <para>
-      An operator invocation
+Un'invocazione di operatore
      </para>
     </listitem>
 
     <listitem>
      <para>
-      A function call
+Una chiamata a funzione
      </para>
     </listitem>
 
     <listitem>
      <para>
-      An aggregate expression
+Un'espressione aggregata
      </para>
     </listitem>
 
     <listitem>
      <para>
-      A window function call
+Una chiamata a una funzione finestra
      </para>
     </listitem>
 
     <listitem>
      <para>
-      A type cast
+Una conversione di tipo
      </para>
     </listitem>
 
     <listitem>
      <para>
-      A scalar subquery
+Una sottoquery scalare
      </para>
     </listitem>
 
     <listitem>
      <para>
-      An array constructor
+Un costruttore di array
      </para>
     </listitem>
 
     <listitem>
      <para>
-      A row constructor
+Un costruttore di riga
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Another value expression in parentheses (used to group
-      subexpressions and override
-      precedence<indexterm><primary>parenthesis</primary></indexterm>)
+Un'altra espressione di valore in parentesi (usata per raggrupare
+sottoespressioni e sovrascrivere
+la precedenza delle <indexterm><primary>parentesi</primary></indexterm>)
      </para>
     </listitem>
    </itemizedlist>
   </para>
 
   <para>
-   In addition to this list, there are a number of constructs that can
-   be classified as an expression but do not follow any general syntax
-   rules.  These generally have the semantics of a function or
-   operator and are explained in the appropriate location in <xref
-   linkend="functions"/>.  An example is the <literal>IS NULL</literal>
-   clause.
+In aggiunta  a questo elenco, ci sono altri construttori che possono 
+essere classificati come un'espressione ma non seguono nessuna regola generale di sintassi.
+Queste generalmente hanno la semantica fi una funzione o 
+operatore e sono spiegate nella sezione apposita in <xref
+linkend="functions"/>. Un esempio è la clausola <literal>IS NULL</literal>.
   </para>
 
   <para>
-   We have already discussed constants in <xref
-   linkend="sql-syntax-constants"/>.  The following sections discuss
-   the remaining options.
+Le costanti sono già state discusse in <xref
+linkend="sql-syntax-constants"/>. Nelle sezioni seguenti vengono discusse
+le opzioni rimanenti.
   </para>
 
   <sect2>
-   <title>Column References</title>
+   <title>Riferimenti di colonna</title>
 
    <indexterm>
-    <primary>column reference</primary>
+    <primary>riferimento di colonna</primary>
    </indexterm>
 
    <para>
-    A column can be referenced in the form:
+Ci si può riferire a una colonna nella forma:
 <synopsis>
 <replaceable>correlation</replaceable>.<replaceable>columnname</replaceable>
 </synopsis>
    </para>
 
    <para>
-    <replaceable>correlation</replaceable> is the name of a
-    table (possibly qualified with a schema name), or an alias for a table
-    defined by means of a <literal>FROM</literal> clause.
-    The correlation name and separating dot can be omitted if the column name
-    is unique across all the tables being used in the current query.  (See also <xref linkend="queries"/>.)
+<replaceable>correlation</replaceable> è il nome di una tabella 
+(possibilimente qualificata con il nome di uno schema), o un alias per una tabella
+definita dai significati di una clausola <literal>FROM</literal>.
+Il nome della correlazione e il punto di separazione possono essere omessi se il nome della colonna
+è unico fra tutte le tabelle usate nella query corrente. (Si veda anche <xref linkend="queries"/>).
    </para>
   </sect2>
 
   <sect2>
-   <title>Positional Parameters</title>
+   <title>Parametri posizionali</title>
 
    <indexterm>
-    <primary>parameter</primary>
-    <secondary>syntax</secondary>
+    <primary>parametro</primary>
+    <secondary>syntassi</secondary>
    </indexterm>
 
    <indexterm>
@@ -1324,21 +1323,22 @@ SELECT 3 OPERATOR(pg_catalog.+) 4;
    </indexterm>
 
    <para>
-    A positional parameter reference is used to indicate a value
-    that is supplied externally to an SQL statement.  Parameters are
-    used in SQL function definitions and in prepared queries.  Some
-    client libraries also support specifying data values separately
-    from the SQL command string, in which case parameters are used to
-    refer to the out-of-line data values.
-    The form of a parameter reference is:
+Un riferimento a parametro posizionale viene usato per indicare un valore
+che è fornito esternamente a un'istruzione SQL. I parametri sono
+usati in definizioni di funzioni SQL e in query preparate. Alcune librerie  
+client supportano anche la specificazione di valori separatamente 
+dalla stringa di comando SQL, nel qual caso i parametri sono usati per 
+riferirsi a valori di dati fuori-della-linea.
+La forma di un riferimento a parametro è:
 <synopsis>
 $<replaceable>number</replaceable>
 </synopsis>
    </para>
 
    <para>
-    For example, consider the definition of a function,
-    <function>dept</function>, as:
+Per esempio, considerare la definizione di una funzione, 
+<function>dept</function>, come:
+
 
 <programlisting>
 CREATE FUNCTION dept(text) RETURNS dept
@@ -1346,35 +1346,40 @@ CREATE FUNCTION dept(text) RETURNS dept
     LANGUAGE SQL;
 </programlisting>
 
-    Here the <literal>$1</literal> references the value of the first
-    function argument whenever the function is invoked.
+Qui, <literal>$1</literal> si riferisce al valore del primo argomento di 
+funzione nel momento che la funzione viene invocata.
    </para>
   </sect2>
 
   <sect2>
-   <title>Subscripts</title>
+   <title>Sottoscript</title>
 
    <indexterm>
-    <primary>subscript</primary>
+    <primary>sottoscript</primary>
    </indexterm>
 
    <para>
-    If an expression yields a value of an array type, then a specific
-    element of the array value can be extracted by writing
+Se un'espressione restituisce un valore di tipo array, allora è possibile estrarre
+un elemento specifico dell'array scrivendo 
 <synopsis>
 <replaceable>expression</replaceable>[<replaceable>subscript</replaceable>]
 </synopsis>
-    or multiple adjacent elements (an <quote>array slice</quote>) can be extracted
-    by writing
+o possono essere estratti molteplici elementi adiacenti (una <quote>fetta di array</quote>) 
+scrivendo
 <synopsis>
 <replaceable>expression</replaceable>[<replaceable>lower_subscript</replaceable>:<replaceable>upper_subscript</replaceable>]
 </synopsis>
-    (Here, the brackets <literal>[ ]</literal> are meant to appear literally.)
-    Each <replaceable>subscript</replaceable> is itself an expression,
-    which must yield an integer value.
+(Qui, le parentesi quadre <literal>[ ]</literal> sono intese per apparire letteralmente).
+Ogni <replaceable>subscript</replaceable> è di per sè un'espressione, 
+che deve restituire un valore intero.
    </para>
 
    <para>
+<note>
+    <para>
+        Nota per il revisore: TODO
+    </para>
+</note>
     In general the array <replaceable>expression</replaceable> must be
     parenthesized, but the parentheses can be omitted when the expression
     to be subscripted is just a column reference or positional parameter.
@@ -1389,31 +1394,31 @@ $1[10:42]
 (arrayfunction(a,b))[42]
 </programlisting>
 
-    The parentheses in the last example are required.
-    See <xref linkend="arrays"/> for more about arrays.
+Le parentesi nell'ultimo esempio sono richieste.
+Si veda <xref linkend="arrays"/> per maggiori informazioni sugli array.
    </para>
   </sect2>
 
   <sect2>
-   <title>Field Selection</title>
+   <title>Selezione di campi</title>
 
    <indexterm>
-    <primary>field selection</primary>
+    <primary>selezione di campo</primary>
    </indexterm>
 
    <para>
-    If an expression yields a value of a composite type (row type), then a
-    specific field of the row can be extracted by writing
+Se un'espressione restituisce un valore di un tipo composto (tipo riga), allora un 
+campo specifico della riga può essere estratto scrivendo
 <synopsis>
 <replaceable>expression</replaceable>.<replaceable>fieldname</replaceable>
 </synopsis>
    </para>
 
    <para>
-    In general the row <replaceable>expression</replaceable> must be
-    parenthesized, but the parentheses can be omitted when the expression
-    to be selected from is just a table reference or positional parameter.
-    For example:
+In generale la riga <replaceable>expression</replaceable> deve essere
+messa tra parentesi, ma le parentesi possono essere omesse quando l'espressione
+da essere selezionata  è semplicemente un riferimento a una tabella o un parametro posizionale.
+Per esempio:
 
 <programlisting>
 mytable.mycolumn
@@ -1421,28 +1426,28 @@ $1.somecolumn
 (rowfunction(a,b)).col3
 </programlisting>
 
-    (Thus, a qualified column reference is actually just a special case
-    of the field selection syntax.)  An important special case is
-    extracting a field from a table column that is of a composite type:
+(Per questo, un riferimento qualificato a una colonna attualmente è solo un caso speciale
+della sintassi di selezione campo). Un caso speciale importante è 
+l'estrazione di un campo da una colonna di tabella che è di tipo composto:
 
 <programlisting>
 (compositecol).somefield
 (mytable.compositecol).somefield
 </programlisting>
 
-    The parentheses are required here to show that
-    <structfield>compositecol</structfield> is a column name not a table name,
-    or that <structname>mytable</structname> is a table name not a schema name
-    in the second case.
+Qui le parentesi sono necessarie per mostrare che 
+<structfield>compositecol</structfield> è un nome di colonna è non il nome di una tabella, 
+o che <structname>mytable</structname> è il nome di una tabella e non il nome di uno schema
+nel secondo caso.
    </para>
   </sect2>
 
   <sect2>
-   <title>Operator Invocations</title>
+   <title>Invocazioni di operatore</title>
 
    <indexterm>
-    <primary>operator</primary>
-    <secondary>invocation</secondary>
+    <primary>operatore</primary>
+    <secondary>invocazione</secondary>
    </indexterm>
 
    <para>

@@ -4488,7 +4488,7 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
 
        <row>
        <entry> <literal>m</literal> </entry>
-       <entry> storicamente sininimo per <literal>n</literal> </entry>
+       <entry> sinonimo storico per <literal>n</literal> </entry>
        </row>
 
        <row>
@@ -4527,7 +4527,7 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
 
        <row>
        <entry> <literal>x</literal> </entry>
-       <entry> sintassi espansa (vedere sotto) </entry>
+       <entry> sintassi espansa (si veda sotto) </entry>
        </row>
       </tbody>
      </tgroup>
@@ -4697,7 +4697,7 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
 <lineannotation>Result: </lineannotation><computeroutput>1</computeroutput>
 </screen>
     Nel primo caso, la RE è complessivamente avida perchè <literal>Y*</literal>
-    è avido. Esso può abbinare cominciando dalla <literal>Y</literal>, e abbina 
+    è avido. Esso può corrispondere cominciando dalla <literal>Y</literal>, e corrisponde 
     la stringa più lunga possibile partendo da lì, cioè, <literal>Y123</literal>.
     L'output è la parte tra parentesi di essa, o <literal>123</literal>.
     Nel secondo caso, la RE è complessivamente non-avida perchè <literal>Y*?</literal>
@@ -4909,7 +4909,7 @@ Questo non è molto utile, ma è fornito per simmetria.
    </para>
    <para>
     La funzione <function>to_timestamp</function> può anche prendere un singolo 
-    argomento a <type>doppia precisione</type> per convertire da Unix epoch 
+    argomento <type>double precision</type> per convertire da Unix epoch 
     (i secondi da 01/01/1970 00:00:00+00)  in 
     <type>timestamp with time zone</type>.
     (L'<type>Intero</type> Unix epoch viene implicitamente convertito a 
@@ -6687,7 +6687,7 @@ SELECT EXTRACT(SECOND FROM TIME '17:12:28.5');
       <term><literal>timezone_hour</literal></term>
       <listitem>
        <para>
-        La componente ora dello scostamento dal fuso orario
+        La componente oraria dello scostamento dal fuso orario
        </para>
       </listitem>
      </varlistentry>

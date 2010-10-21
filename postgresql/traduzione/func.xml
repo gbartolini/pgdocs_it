@@ -30,7 +30,7 @@ standard <acronym>SQL</acronym>. Qualcuna di queste funzionalità
 è presente in altri sistemi di gestione di database <acronym>SQL</acronym>,
 e in molti casi è compatibile e coerente
 tra le diverse implementazioni. Inoltre questo capitolo non è
-esaustivo; Funzioni aggiuntive vengono visualizzate nelle sezioni di pertinenza 
+esaustivo; funzioni aggiuntive vengono visualizzate nelle sezioni di pertinenza 
 del manuale.
     </para>
 
@@ -5281,7 +5281,7 @@ modelli di maschere disponibili per formattare valori di data e orario.
 
 
    <para>
-    Note d'uso per le formattazione di data/orario:
+    Note d'ustilizzo per la formattazione di data/orario:
 
     <itemizedlist>
      <listitem>
@@ -5525,7 +5525,7 @@ modelli di maschere disponibili per formattare valori di data e orario.
        </row>
        <row>
         <entry><literal>TH</literal> or <literal>th</literal></entry>
-        <entry>suffizzo per numero ordinale</entry>
+        <entry>suffisso per numero ordinale</entry>
        </row>
        <row>
         <entry><literal>V</literal></entry>
@@ -5565,23 +5565,23 @@ modelli di maschere disponibili per formattare valori di data e orario.
       <para>
        
         I <literal>9</literal> generano un valore con un numero di cifre identico
-       alla quantità di <literal>9</literal> inseriti. Se una cifra non è
-       disponibile, in output verrà prodotto uno spazio. 
+        alla quantità di <literal>9</literal> inseriti. Se una cifra non è
+        disponibile, in output verrà prodotto uno spazio. 
       </para>
      </listitem>
 
      <listitem>
       <para>
-       <literal>TH</literal> non converte valori inferiori a zero
-       e non converte numeri frazionali.
+        <literal>TH</literal> non converte valori inferiori a zero
+        e non converte numeri frazionali.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       <literal>PL</literal>, <literal>SG</literal> e
-       <literal>TH</literal> sono estensioni 
-       di <productname>PostgreSQL</productname>. 
+        <literal>PL</literal>, <literal>SG</literal> e
+        <literal>TH</literal> sono estensioni 
+        di <productname>PostgreSQL</productname>. 
       </para>
      </listitem>
 
@@ -6194,7 +6194,7 @@ modelli di maschere disponibili per formattare valori di data e orario.
         <entry><literal><function>justify_interval(<type>interval</type>)</function></literal></entry>
         <entry><type>interval</type></entry>
         <entry>Aggiusta l'intervallo usando <function>justify_days</function> e <function>justify_hours</function>, 
-            con aggiustamenti addizionali di segno</entry>
+        con aggiustamenti addizionali di segno</entry>
         <entry><literal>justify_interval(interval '1 mon -1 hour')</literal></entry>
         <entry><literal>29 days 23:00:00</literal></entry>
        </row>
@@ -6474,8 +6474,7 @@ SELECT EXTRACT(EPOCH FROM INTERVAL '5 days 3 hours');
 </screen>
 
        <para>
-            Questo è il modo per convertire un valore epoch in un time
-            stamp:
+            Questo è il modo per convertire un valore epoch in un timestamp:
        </para>
 <screen>
 SELECT TIMESTAMP WITH TIME ZONE 'epoch' + 982384720.12 * INTERVAL '1 second';
@@ -7070,7 +7069,7 @@ SELECT TIMESTAMP 'now';  -- errato per utilizzo con DEFAULT
       
 Non bisogna utilizzare la terza forma quando si specifica una clausula <literal>DEFAULT</literal>
 nella creazione di una tabella. Il sistema convertirà  <literal>now</literal>
-in un <type>timestamp</type> appena la costante viene analizzata, per cui quando
+in <type>timestamp</type> appena la costante viene analizzata, per cui quando
 si avrà bisogno del valore di default, verrà usato  
 il momento di creazione della tabella! Le prime due forme
 non verranno valutate fino a che non viene usato il valore di default,
@@ -7825,11 +7824,11 @@ oppure è una sottorete dell'altra.
     </table>
 
   <para>
-La <xref linkend="cidr-inet-functions-table" /> mostra le funzioni
+La tabella <xref linkend="cidr-inet-functions-table" /> mostra le funzioni
 disponibili per l'uso con i tipi <type>cidr</type> e
 <type>inet</type>. Le funzioni <function>host</function>,
 <function>text</function> e <function>abbrev</function>
-sono principalmente intese per offrire un formato alternativo di
+sono intese principalmente per offrire un formato alternativo di
 visualizzazione.
   </para>
 
@@ -8174,7 +8173,15 @@ colonne di questo tipo.
         <entry><literal>0.818</literal></entry>
        </row>
        <row>
-        <entry><literal><function>ts_rank_cd(<optional> <replaceable class="PARAMETER">weights</replaceable> <type>float4[]</type>, </optional> <replaceable class="PARAMETER">vector</replaceable> <type>tsvector</type>, <replaceable class="PARAMETER">query</replaceable> <type>tsquery</type> <optional>, <replaceable class="PARAMETER">normalization</replaceable> <type>integer</type> </optional>)</function></literal></entry>
+        <entry>
+            <literal>
+                <function>ts_rank_cd(<optional> <replaceable class="PARAMETER">weights</replaceable> <type>float4[]</type>, 
+                </optional> <replaceable class="PARAMETER">vector</replaceable> <type>tsvector</type>, 
+                <replaceable class="PARAMETER">query</replaceable> <type>tsquery</type> <optional>, 
+                <replaceable class="PARAMETER">normalization</replaceable> <type>integer</type> 
+                </optional>)</function>
+            </literal>
+        </entry>
         <entry><type>float4</type></entry>
         <entry>classifica il documento per la query usando la "cover density"</entry>
         <entry><literal>ts_rank_cd('{0.1, 0.2, 0.4, 1.0}', textsearch, query)</literal></entry>
@@ -8697,7 +8704,7 @@ SELECT xmlagg(x ORDER BY y DESC) FROM test;
     </para>
 
     <para>
-        Il seguente approccio non standard venita raccomandato nelle 
+        Il seguente approccio non standard veniva raccomandato nelle 
         versioni precedenti, e può ancora tornare utile in 
         specifici casi:
 
@@ -11512,7 +11519,7 @@ AND
   </para>
 
   <para>
-    Notare che se l'espressione nella parte sinistra rende null, o se non ci sono
+   Notare che se l'espressione nella parte sinistra rende null, o se non ci sono
    valori uguali nella parte destra e almeno una espressione nella parte destra rende
    null, il risultato del costrutto <token>NOT IN</token> sarà null, non vero
    come ci si potrebbe ingenuamente aspettare.
@@ -12875,12 +12882,14 @@ SELECT pg_type_is_visible('myschema.widget'::regtype);
       <row><entry>Nome</entry> <entry>Tipo di ritorno</entry> <entry>Descrizione</entry></row>
      </thead>
 
-     <tbody>
-      <row>
-       <entry><literal><function>format_type(<parameter>type_oid</parameter>, <parameter>typemod</parameter>)</function></literal></entry>
-       <entry><type>text</type></entry>
-       <entry>ottiene il nome SQL di un tipo di dato</entry>
-      </row>
+<tbody>
+    <row>
+        <entry>
+            <literal><function>format_type(<parameter>type_oid</parameter>, <parameter>typemod</parameter>)</function></literal>
+        </entry>
+        <entry><type>text</type></entry>
+        <entry>ottiene il nome SQL di un tipo di dato</entry>
+    </row>
       <row>
        <entry><literal><function>pg_get_keywords()</function></literal></entry>
        <entry><type>setof record</type></entry>
@@ -13198,7 +13207,7 @@ di sistema che lo contiene. Per esempio,
 recupererebbe il commento per la tabella con OID 123456.
 La forma a un parametro di <function>obj_description</function> richiede solo
 l'OID dell'oggetto. È deprecato dato che non c'è garanzia che 
-gli OID siano unici in cataloghi di sistema differenti; Perciò, potrebbe
+gli OID siano unici in cataloghi di sistema differenti; perciò, potrebbe
 essere restituito il commento  sbagliato.
    </para>
 
@@ -14010,7 +14019,7 @@ Mappa dello spazio libero (vedere <xref linkend="storage-fsm"/>) associata alla
 relazione. Specificare <literal>'vm'</literal> restituisce la dimensione della
 Mappa di visibilità (vedere <xref linkend="storage-vm"/>) associata con la
 relazione. Notare che questa funzione mostra la dimensione di solo un fork;
-Per la mamaggior parte degli scopi è più conveniente usare le funzioni a più alto livello
+per la mamaggior parte degli scopi è più conveniente usare le funzioni a più alto livello
 <function>pg_total_relation_size</function> o <function>pg_table_size</function>.
    </para>
 

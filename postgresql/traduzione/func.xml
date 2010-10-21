@@ -23,7 +23,7 @@ operatori attualmente disponibili.
 
     <para>
 Se ci si preoccupa della portabilità notare che la maggior
-parte delle funzioni e degli operatori descritti in questo capitolo, con
+parte delle funzioni e degli operatori descritti in questo capitolo, ad
 l'eccezione degli operatori aritmetici e di confronto più banali
 e di alcune funzioni segnalate esplicitamente, non sono specificate dallo
 standard <acronym>SQL</acronym>. Qualcuna di queste funzionalità
@@ -313,7 +313,7 @@ speciale <token>BETWEEN</token>:
     <literal><replaceable>espressione</replaceable> = NULL</literal>
     in quanto <literal>NULL</literal> non è <quote>uguale a</quote>
     <literal>NULL</literal>.  (Il valore null rappresenta un valore sconosciuto
-    e non si può sapere quando due valori sconosciuti sono uguali.) Questo
+    e non si può sapere quando due valori sconosciuti sono uguali). Questo
     comportamento è conforme allo standard SQL.
    </para>
 
@@ -788,19 +788,19 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>power</function>(<parameter>a</parameter> <type>dp</type>,
+       <entry><literal><function>power</function>(<parameter>to</parameter> <type>dp</type>,
         <parameter>b</parameter> <type>dp</type>)</literal></entry>
        <entry><type>dp</type></entry>
-       <entry><parameter>a</parameter> elevato alla potenza di <parameter>b</parameter></entry>
+       <entry><parameter>to</parameter> elevato alla potenza di <parameter>b</parameter></entry>
        <entry><literal>power(9.0, 3.0)</literal></entry>
        <entry><literal>729</literal></entry>
       </row>
 
       <row>
-       <entry><literal><function>power</function>(<parameter>a</parameter> <type>numeric</type>,
+       <entry><literal><function>power</function>(<parameter>to</parameter> <type>numeric</type>,
         <parameter>b</parameter> <type>numeric</type>)</literal></entry>
        <entry><type>numeric</type></entry>
-       <entry><parameter>a</parameter> elevato alla potenza di <parameter>b</parameter></entry>
+       <entry><parameter>to</parameter> elevato alla potenza di <parameter>b</parameter></entry>
        <entry><literal>power(9.0, 3.0)</literal></entry>
        <entry><literal>729</literal></entry>
       </row>
@@ -1089,8 +1089,8 @@ comportamento.
 
      <tbody>
       <row>
-       <entry><literal><parameter>stringa</parameter> <literal>||</literal>
-        <parameter>stringa</parameter></literal></entry>
+       <entry><literal><parameter>string</parameter> <literal>||</literal>
+        <parameter>string</parameter></literal></entry>
        <entry> <type>text</type> </entry>
        <entry>
         Concatenamento di stringhe
@@ -1105,11 +1105,11 @@ comportamento.
 
       <row>
        <entry>
-        <literal><parameter>stringa</parameter> <literal>||</literal>
+        <literal><parameter>string</parameter> <literal>||</literal>
         <parameter>non-stringa</parameter></literal>
         oppure
         <literal><parameter>non-stringa</parameter> <literal>||</literal>
-        <parameter>stringa</parameter></literal>
+        <parameter>string</parameter></literal>
        </entry>
        <entry> <type>text</type> </entry>
        <entry>
@@ -1120,7 +1120,7 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>bit_length</function>(<parameter>stringa</parameter>)</literal></entry>
+       <entry><literal><function>bit_length</function>(<parameter>string</parameter>)</literal></entry>
        <entry><type>int</type></entry>
        <entry>Numero di bit nella stringa</entry>
        <entry><literal>bit_length('jose')</literal></entry>
@@ -1128,7 +1128,7 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>char_length</function>(<parameter>stringa</parameter>)</literal> oppure <literal><function>character_length</function>(<parameter>stringa</parameter>)</literal></entry>
+       <entry><literal><function>char_length</function>(<parameter>string</parameter>)</literal> oppure <literal><function>character_length</function>(<parameter>string</parameter>)</literal></entry>
        <entry><type>int</type></entry>
        <entry>
         Numero di caratteri nella stringa
@@ -1147,7 +1147,7 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>lower</function>(<parameter>stringa</parameter>)</literal></entry>
+       <entry><literal><function>lower</function>(<parameter>string</parameter>)</literal></entry>
        <entry><type>text</type></entry>
        <entry>Converte stringa in caratteri minuscoli</entry>
        <entry><literal>lower('TOM')</literal></entry>
@@ -1155,7 +1155,7 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>octet_length</function>(<parameter>stringa</parameter>)</literal></entry>
+       <entry><literal><function>octet_length</function>(<parameter>string</parameter>)</literal></entry>
        <entry><type>int</type></entry>
        <entry>Numero di byte nella stringa</entry>
        <entry><literal>octet_length('jose')</literal></entry>
@@ -1174,7 +1174,7 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>position</function>(<parameter>sottostringa</parameter> in <parameter>stringa</parameter>)</literal></entry>
+       <entry><literal><function>position</function>(<parameter>substring</parameter> in <parameter>string</parameter>)</literal></entry>
        <entry><type>int</type></entry>
        <entry>Posizione della sottostringa specificata</entry>
        <entry><literal>position('om' in 'Thomas')</literal></entry>
@@ -1182,7 +1182,7 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>substring</function>(<parameter>stringa</parameter> <optional>from <type>int</type></optional> <optional>for <type>int</type></optional>)</literal></entry>
+       <entry><literal><function>substring</function>(<parameter>string</parameter> <optional>from <type>int</type></optional> <optional>for <type>int</type></optional>)</literal></entry>
        <entry><type>text</type></entry>
        <entry>
         Estrae sottostringa
@@ -1192,7 +1192,7 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>substring</function>(<parameter>stringa</parameter> from <replaceable>modello</replaceable>)</literal></entry>
+       <entry><literal><function>substring</function>(<parameter>string</parameter> from <replaceable>modello</replaceable>)</literal></entry>
        <entry><type>text</type></entry>
        <entry>
         Estrae la sottostringa che corrisponde all'espressione regolare POSIX. Consultare
@@ -1204,7 +1204,7 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>substring</function>(<parameter>stringa</parameter> from <replaceable>modello</replaceable> for <replaceable>escape</replaceable>)</literal></entry>
+       <entry><literal><function>substring</function>(<parameter>string</parameter> from <replaceable>modello</replaceable> for <replaceable>escape</replaceable>)</literal></entry>
        <entry><type>text</type></entry>
        <entry>
         Estrae la sottostringa che corrisponde all'espressione regolare <acronym>SQL</acronym>.
@@ -1219,20 +1219,20 @@ comportamento.
        <entry>
         <literal><function>trim</function>(<optional>leading | trailing | both</optional>
         <optional><parameter>carattere</parameter></optional> from
-        <parameter>stringa</parameter>)</literal>
+        <parameter>string</parameter>)</literal>
        </entry>
        <entry><type>text</type></entry>
        <entry>
         Rimuove la più lunga stringa contenente solo il
         <parameter>carattere</parameter> (uno spazio come impostazione predefinita) da
-        inizio/fine/ambedue i lati di <parameter>stringa</parameter>
+        inizio/fine/ambedue i lati di <parameter>string</parameter>
        </entry>
        <entry><literal>trim(both 'x' from 'xTomxx')</literal></entry>
        <entry><literal>Tom</literal></entry>
       </row>
 
       <row>
-       <entry><literal><function>upper</function>(<parameter>stringa</parameter>)</literal></entry>
+       <entry><literal><function>upper</function>(<parameter>string</parameter>)</literal></entry>
        <entry><type>text</type></entry>
        <entry>Converte stringa in caratteri maiuscoli</entry>
        <entry><literal>upper('tom')</literal></entry>
@@ -1362,7 +1362,7 @@ comportamento.
 
      <tbody>
       <row>
-       <entry><literal><function>ascii</function>(<parameter>stringa</parameter>)</literal></entry>
+       <entry><literal><function>ascii</function>(<parameter>string</parameter>)</literal></entry>
        <entry><type>int</type></entry>
        <entry>
         codice <acronym>ASCII</acronym> del primo carattere dell'argomento.
@@ -1375,13 +1375,13 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>btrim</function>(<parameter>stringa</parameter> <type>text</type>
+       <entry><literal><function>btrim</function>(<parameter>string</parameter> <type>text</type>
        <optional>, <parameter>caratteri</parameter> <type>text</type></optional>)</literal></entry>
        <entry><type>text</type></entry>
        <entry>
         Rimuove la stringa più lunga composta solo di caratteri contenuti 
         in <parameter>caratteri</parameter> (uno spazio per impostazione predefinita)
-        dall'inizio alla fine di <parameter>stringa</parameter>
+        dall'inizio alla fine di <parameter>string</parameter>
        </entry>
        <entry><literal>btrim('xyxtrimyyx', 'xy')</literal></entry>
        <entry><literal>trim</literal></entry>
@@ -1402,7 +1402,7 @@ comportamento.
 
       <row>
        <entry>
-        <literal><function>convert</function>(<parameter>stringa</parameter> <type>bytea</type>,
+        <literal><function>convert</function>(<parameter>string</parameter> <type>bytea</type>,
         <parameter>codifica_src</parameter> <type>name</type>,
         <parameter>codifica_dest</parameter> <type>name</type>)</literal>
        </entry>
@@ -1410,7 +1410,7 @@ comportamento.
        <entry>
         Converte la stringa alla <parameter>codifica_dest</parameter>. La
         codifica originale è specificata da
-        <parameter>codifica_src</parameter>. La <parameter>stringa</parameter>
+        <parameter>codifica_src</parameter>. La <parameter>string</parameter>
         deve essere valida in questa codifica. La conversione può
         essere definita da <command>CREATE CONVERSION</command>.  
         Ci sono anche alcune conversioni predefinite. consultare la <xref
@@ -1422,14 +1422,14 @@ comportamento.
 
       <row>
        <entry>
-        <literal><function>convert_from</function>(<parameter>stringa</parameter> <type>bytea</type>,
+        <literal><function>convert_from</function>(<parameter>string</parameter> <type>bytea</type>,
         <parameter>codifica_src</parameter> <type>name</type>)</literal>
        </entry>
        <entry><type>text</type></entry>
        <entry>
         Converte la stringa alla codifica del database. La codifica originale
         è specificata in <parameter>codifica_src</parameter>. La
-        <parameter>stringa</parameter> deve essere valida in questa codifica.
+        <parameter>string</parameter> deve essere valida in questa codifica.
        </entry>
        <entry><literal>convert_from('testo_in_utf8', 'UTF8')</literal></entry>
        <entry><literal>testo_in_utf8</literal> rappresentato nella corrente codifica del database</entry>
@@ -1437,7 +1437,7 @@ comportamento.
 
       <row>
        <entry>
-        <literal><function>convert_to</function>(<parameter>stringa</parameter> <type>text</type>,
+        <literal><function>convert_to</function>(<parameter>string</parameter> <type>text</type>,
         <parameter>codifica_dest</parameter> <type>name</type>)</literal>
        </entry>
        <entry><type>bytea</type></entry>
@@ -1450,12 +1450,12 @@ comportamento.
 
       <row>
        <entry>
-        <literal><function>decode</function>(<parameter>stringa</parameter> <type>text</type>,
+        <literal><function>decode</function>(<parameter>string</parameter> <type>text</type>,
         <parameter>tipo</parameter> <type>text</type>)</literal>
        </entry>
        <entry><type>bytea</type></entry>
        <entry>
-        Decodifica il dato binario di <parameter>stringa</parameter> codificato in
+        Decodifica il dato binario di <parameter>string</parameter> codificato in
         precedenza con <function>encode</function>. Il tipo di parametro è lo stesso come in <function>encode</function>.
        </entry>
        <entry><literal>decode('MTIzAAE=', 'base64')</literal></entry>
@@ -1464,7 +1464,7 @@ comportamento.
 
       <row>
        <entry>
-        <literal><function>encode</function>(<parameter>dato</parameter> <type>bytea</type>,
+        <literal><function>encode</function>(<parameter>fromto</parameter> <type>bytea</type>,
         <parameter>tipo</parameter> <type>text</type>)</literal>
        </entry>
        <entry><type>text</type></entry>
@@ -1479,34 +1479,34 @@ comportamento.
       </row>       
 
       <row>
-       <entry><literal><function>initcap</function>(<parameter>stringa</parameter>)</literal></entry>
+       <entry><literal><function>initcap</function>(<parameter>string</parameter>)</literal></entry>
        <entry><type>text</type></entry>
        <entry>
         Converte la prima lettera di ogni parola in maiuscolo e il
         resto in minuscolo. Le parole sono sequenze di caratteri
-        alfanumerici separati da un carattere non-alfabetico.
+        alfanumerici separate da un carattere non-alfabetico.
        </entry>
        <entry><literal>initcap('hi THOMAS')</literal></entry>
        <entry><literal>Hi Thomas</literal></entry>
       </row>
 
       <row>
-       <entry><literal><function>length</function>(<parameter>stringa</parameter>)</literal></entry>
+       <entry><literal><function>length</function>(<parameter>string</parameter>)</literal></entry>
        <entry><type>int</type></entry>
        <entry>
-        Numero di caratteri in <parameter>stringa</parameter>
+        Numero di caratteri in <parameter>string</parameter>
        </entry>
        <entry><literal>length('jose')</literal></entry>
        <entry><literal>4</literal></entry>
       </row>
 
       <row>
-       <entry><literal><function>length</function>(<parameter>stringa</parameter><type>bytea</type>,
+       <entry><literal><function>length</function>(<parameter>string</parameter><type>bytea</type>,
         <parameter>codifica</parameter> <type>nome</type> )</literal></entry>
        <entry><type>int</type></entry>
        <entry>
-        Numero di caratteri in <parameter>stringa</parameter> nella
-        <parameter>codifica</parameter> fornita. La <parameter>stringa</parameter>
+        Numero di caratteri in <parameter>string</parameter> nella
+        <parameter>codifica</parameter> fornita. La <parameter>string</parameter>
         deve essere valida in questa codifica.
        </entry>
        <entry><literal>length('jose', 'UTF8')</literal></entry>
@@ -1515,16 +1515,16 @@ comportamento.
 
       <row>
        <entry>
-        <literal><function>lpad</function>(<parameter>stringa</parameter> <type>text</type>,
+        <literal><function>lpad</function>(<parameter>string</parameter> <type>text</type>,
         <parameter>lunga</parameter> <type>int</type>
         <optional>, <parameter>riempimento</parameter> <type>text</type></optional>)</literal>
        </entry>
        <entry><type>text</type></entry>
        <entry>
-         Estende la <parameter>stringa</parameter> alla lunghezza di
+         Estende la <parameter>string</parameter> alla lunghezza di
         <parameter>lunga</parameter> anteponendo i caratteri di
         <parameter>riempimento</parameter> (uno spazio per impostazione predefinita).
-        Se la <parameter>stringa</parameter> è già più lunga di
+        Se la <parameter>string</parameter> è già più lunga di
         <parameter>lunga</parameter> allora essa viene troncata (sulla
         destra).
        </entry>
@@ -1533,24 +1533,24 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>ltrim</function>(<parameter>stringa</parameter> <type>text</type>
+       <entry><literal><function>ltrim</function>(<parameter>string</parameter> <type>text</type>
         <optional>, <parameter>caratteri</parameter> <type>text</type></optional>)</literal>
        </entry>
        <entry><type>text</type></entry>
        <entry>
         Rimuove la stringa più lunga contenente solo caratteri da
         <parameter>caratteri</parameter> (uno spazio per impostazione predefinita) dall'inizio di
-        <parameter>stringa</parameter>
+        <parameter>string</parameter>
        </entry>
        <entry><literal>ltrim('zzzytrim', 'xyz')</literal></entry>
        <entry><literal>trim</literal></entry>
       </row>
 
       <row>
-       <entry><literal><function>md5</function>(<parameter>stringa</parameter>)</literal></entry>
+       <entry><literal><function>md5</function>(<parameter>string</parameter>)</literal></entry>
        <entry><type>text</type></entry>
        <entry>
-        Calcole l'hash  MD5 di <parameter>stringa</parameter>,
+        Calcola l'hash  MD5 di <parameter>string</parameter>,
         restituendo il risultato in esadecimale
        </entry>
        <entry><literal>md5('abc')</literal></entry>
@@ -1561,28 +1561,28 @@ comportamento.
        <entry><literal><function>pg_client_encoding</function>()</literal></entry>
        <entry><type>name</type></entry>
        <entry>
-        Il corrente nome di codifica del client
+        Il nome corrente di codifica del client
        </entry>
        <entry><literal>pg_client_encoding()</literal></entry>
        <entry><literal>SQL_ASCII</literal></entry>
       </row>
 
       <row>
-       <entry><literal><function>quote_ident</function>(<parameter>stringa</parameter> <type>text</type>)</literal></entry>
+       <entry><literal><function>quote_ident</function>(<parameter>string</parameter> <type>text</type>)</literal></entry>
        <entry><type>text</type></entry>
        <entry>
         Restituisce la stringa fornita adeguatamente quotata per essere
         usata come un identificatore in una istruzione stringa <acronym>SQL</acronym>.
-        Gli apici sono aggiunti solo se necessari (cioè, se la stringa contiene
+        Gli apici sono aggiunti solo se necessario (cioè, se la stringa contiene
         caratteri non-identificatori o parole con caratteri minuscoli da trasformare in maiuscolo).
-        Apici incorporati vengonoo adeguatamente raddoppiati.
+        Apici incorporati vengono adeguatamente raddoppiati.
        </entry>
        <entry><literal>quote_ident('Foo bar')</literal></entry>
        <entry><literal>"Foo bar"</literal></entry>
       </row>
 
       <row>
-       <entry><literal><function>quote_literal</function>(<parameter>stringa</parameter> <type>text</type>)</literal></entry>
+       <entry><literal><function>quote_literal</function>(<parameter>string</parameter> <type>text</type>)</literal></entry>
        <entry><type>text</type></entry>
        <entry>
         Restituisce la stringa fornita adeguatamente quotata per essere usata come un
@@ -1609,18 +1609,18 @@ comportamento.
        <entry><type>text</type></entry>
        <entry>
         Forza il valore fornito a testo e quindi lo racchiude tra apici come un letterale.
-        Apici singoli e barre inverse incorporate vengono adeguatamente raddoppiati.
+        Apici singoli e barre inverse incorporate vengono adeguatamente raddoppiate.
        </entry>
        <entry><literal>quote_literal(42.5)</literal></entry>
        <entry><literal>'42.5'</literal></entry>
       </row>
 
       <row>
-       <entry><literal><function>regexp_matches</function>(<parameter>stringa</parameter> <type>text</type>, <parameter>modello</parameter> <type>text</type> [, <parameter>flag</parameter> <type>text</type>])</literal></entry>
+       <entry><literal><function>regexp_matches</function>(<parameter>string</parameter> <type>text</type>, <parameter>modello</parameter> <type>text</type> [, <parameter>flag</parameter> <type>text</type>])</literal></entry>
        <entry><type>setof text[]</type></entry>
        <entry>
-        Restituisce tutte le substringhe catturate risultanti dal confronto di una espressione regolare
-        POSIX con la <parameter>stringa</parameter>. Consultare
+        Restituisce tutte le sottotringhe catturate risultanti dal confronto di una espressione regolare
+        POSIX con la <parameter>string</parameter>. Consultare
         <xref linkend="functions-posix-regexp" /> per ulteriori informazioni.
        </entry>
        <entry><literal>regexp_matches('foobarbequebaz', '(bar)(beque)')</literal></entry>
@@ -1628,10 +1628,10 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>regexp_replace</function>(<parameter>stringa</parameter> <type>text</type>, <parameter>modello</parameter> <type>text</type>, <parameter>sostituzione</parameter> <type>text</type> [, <parameter>flag</parameter> <type>text</type>])</literal></entry>
+       <entry><literal><function>regexp_replace</function>(<parameter>string</parameter> <type>text</type>, <parameter>modello</parameter> <type>text</type>, <parameter>sostituzione</parameter> <type>text</type> [, <parameter>flag</parameter> <type>text</type>])</literal></entry>
        <entry><type>text</type></entry>
        <entry>
-        Rimpiazza sottostringa(e) confrontando una espressione regolare POSIX. Consultare
+        Rimpiazza sottostringa/e che corrispondono ad una espressione regolare POSIX. Consultare
         <xref linkend="functions-posix-regexp" /> per ulteriori informazioni.
        </entry>
        <entry><literal>regexp_replace('Thomas', '.[mN]a.', 'M')</literal></entry>
@@ -1639,10 +1639,10 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>regexp_split_to_array</function>(<parameter>stringa</parameter> <type>text</type>, <parameter>modello</parameter> <type>text</type> [, <parameter>flag</parameter> <type>text</type> ])</literal></entry>
+       <entry><literal><function>regexp_split_to_array</function>(<parameter>string</parameter> <type>text</type>, <parameter>modello</parameter> <type>text</type> [, <parameter>flag</parameter> <type>text</type> ])</literal></entry>
        <entry><type>text[]</type></entry>
        <entry>
-        Scinde <parameter>stringa</parameter> usando una espressione regolare POSIX come
+        Scinde <parameter>string</parameter> usando una espressione regolare POSIX come
         delimitatore. Consultare <xref linkend="functions-posix-regexp" /> per ulteriori
         informazioni.
        </entry>
@@ -1651,10 +1651,10 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>regexp_split_to_table</function>(<parameter>stringa</parameter> <type>text</type>, <parameter>modello</parameter> <type>text</type> [, <parameter>flag</parameter> <type>text</type>])</literal></entry>
+       <entry><literal><function>regexp_split_to_table</function>(<parameter>string</parameter> <type>text</type>, <parameter>modello</parameter> <type>text</type> [, <parameter>flag</parameter> <type>text</type>])</literal></entry>
        <entry><type>setof text</type></entry>
        <entry>
-        Scinde <parameter>stringa</parameter> usando una espressione regolare POSIX come
+        Scinde <parameter>string</parameter> usando una espressione regolare POSIX come
         delimitatore. Consultare <xref linkend="functions-posix-regexp" /> per ulteriori
         informazioni.
        </entry>
@@ -1663,21 +1663,21 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>repeat</function>(<parameter>stringa</parameter> <type>text</type>, <parameter>numero</parameter> <type>int</type>)</literal></entry>
+       <entry><literal><function>repeat</function>(<parameter>string</parameter> <type>text</type>, <parameter>numero</parameter> <type>int</type>)</literal></entry>
        <entry><type>text</type></entry>
-       <entry>Ripete <parameter>stringa</parameter> lo specificato
+       <entry>Ripete <parameter>string</parameter> lo specificato
        <parameter>numero</parameter> di volte</entry>
        <entry><literal>repeat('Pg', 4)</literal></entry>
        <entry><literal>PgPgPgPg</literal></entry>
       </row>
 
       <row>
-       <entry><literal><function>replace</function>(<parameter>stringa</parameter> <type>text</type>,
-       <parameter>da</parameter> <type>text</type>,
-       <parameter>a</parameter> <type>text</type>)</literal></entry>
+       <entry><literal><function>replace</function>(<parameter>string</parameter> <type>text</type>,
+       <parameter>from</parameter> <type>text</type>,
+       <parameter>to</parameter> <type>text</type>)</literal></entry>
        <entry><type>text</type></entry>
-       <entry>Sostituisce tutte le occorrenze in <parameter>stringa</parameter> della sottostringa
-        <parameter>da</parameter> con la sottostringa <parameter>a</parameter>
+       <entry>Sostituisce tutte le occorrenze in <parameter>string</parameter> della sottostringa
+        <parameter>from</parameter> con la sottostringa <parameter>to</parameter>
        </entry>
        <entry><literal>replace('abcdefabcdef', 'cd', 'XX')</literal></entry>
        <entry><literal>abXXefabXXef</literal></entry>
@@ -1685,16 +1685,16 @@ comportamento.
 
       <row>
        <entry>
-        <literal><function>rpad</function>(<parameter>stringa</parameter> <type>text</type>,
+        <literal><function>rpad</function>(<parameter>string</parameter> <type>text</type>,
         <parameter>lunga</parameter> <type>int</type>
         <optional>, <parameter>iempimento</parameter> <type>text</type></optional>)</literal>
        </entry>
        <entry><type>text</type></entry>
        <entry>
-        Estende la <parameter>stringa</parameter> alla lunghezza di
+        Estende la <parameter>string</parameter> alla lunghezza di
         <parameter>lunga</parameter> anteponendo i caratteri di
         <parameter>riempimento</parameter> (uno spazio per impostazione predefinita).
-        Se la <parameter>stringa</parameter> è già più lunga di
+        Se la <parameter>string</parameter> è già più lunga di
         <parameter>lunga</parameter> allora essa viene troncata.
        </entry>
        <entry><literal>rpad('hi', 5, 'xy')</literal></entry>
@@ -1702,25 +1702,25 @@ comportamento.
       </row>
 
       <row>
-      <entry><literal><function>rtrim</function>(<parameter>stringa</parameter> <type>text</type>
+      <entry><literal><function>rtrim</function>(<parameter>string</parameter> <type>text</type>
         <optional>, <parameter>caratteri</parameter> <type>text</type></optional>)</literal>
        </entry>
        <entry><type>text</type></entry>
        <entry>
         Rimuove la stringa più lunga contenente solo caratteri da
         <parameter>caratteri</parameter> (uno spazio per impostazione predefinita) dalla fine di
-        <parameter>stringa</parameter>
+        <parameter>string</parameter>
        </entry>
        <entry><literal>rtrim('trimxxxx', 'x')</literal></entry>
        <entry><literal>trim</literal></entry>
       </row>
 
       <row>
-       <entry><literal><function>split_part</function>(<parameter>stringa</parameter> <type>text</type>,
+       <entry><literal><function>split_part</function>(<parameter>string</parameter> <type>text</type>,
        <parameter>delimitatore</parameter> <type>text</type>,
        <parameter>campo</parameter> <type>int</type>)</literal></entry>
        <entry><type>text</type></entry>
-       <entry>Scinde <parameter>stringa</parameter> tramite <parameter>delimitatore</parameter>
+       <entry>Scinde <parameter>string</parameter> tramite <parameter>delimitatore</parameter>
         e restituisce il campo richiesto(partendo da 1)
        </entry>
        <entry><literal>split_part('abc~@~def~@~ghi', '~@~', 2)</literal></entry>
@@ -1728,12 +1728,12 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>strpos</function>(<parameter>stringa</parameter>, <parameter>sottostringa</parameter>)</literal></entry>
+       <entry><literal><function>strpos</function>(<parameter>string</parameter>, <parameter>substring</parameter>)</literal></entry>
        <entry><type>int</type></entry>
        <entry>
         Posizione della sottostringa specificata(come
-        <literal>position(<parameter>sottostringa</parameter> in
-        <parameter>stringa</parameter>)</literal>,ma, notare l'inversione
+        <literal>position(<parameter>substring</parameter> in
+        <parameter>string</parameter>)</literal>,ma, notare l'inversione
         nell'ordine degli argomenti)         
        </entry>
        <entry><literal>strpos('high', 'ig')</literal></entry>
@@ -1741,23 +1741,24 @@ comportamento.
       </row>
 
       <row> 
-       <entry><literal><function>substr</function>(<parameter>string</parameter>, <parameter>posiz</parameter> <optional>, <parameter>numcarat</parameter></optional>)</literal></entry>
+       <entry><literal><function>substr</function>(<parameter>string</parameter>, <parameter>posiz</parameter> <optional>, 
+            <parameter>numcarat</parameter></optional>)</literal></entry>
        <entry><type>text</type></entry>
        <entry>
         Estrae una sottostringa (come
-        <literal>substring(<parameter>stringa</parameter> from <parameter>posiz</parameter> for <parameter>numcarat</parameter>)</literal>)
+        <literal>substring(<parameter>string</parameter> from <parameter>posiz</parameter> for <parameter>numcarat</parameter>)</literal>)
        </entry> 
        <entry><literal>substr('alfabeto', 3, 2)</literal></entry>
        <entry><literal>fa</literal></entry>
       </row>
 
       <row>
-       <entry><literal><function>to_ascii</function>(<parameter>stringa</parameter> <type>text</type>
+       <entry><literal><function>to_ascii</function>(<parameter>string</parameter> <type>text</type>
         <optional>, <parameter>codifica</parameter> <type>text</type></optional>)</literal></entry>
        <entry><type>text</type></entry>
 
        <entry>
-       Converte <parameter>stringa</parameter> ad <acronym>ASCII</acronym> da un altra codifica
+       Converte <parameter>string</parameter> ad <acronym>ASCII</acronym> da un altra codifica
        (supporta solo conversione da codifiche <literal>LATIN1</literal>, <literal>LATIN2</literal>,
        <literal>LATIN9</literal> e <literal>WIN1250</literal>)
        </entry>
@@ -1779,16 +1780,16 @@ comportamento.
 
       <row>
        <entry>
-        <literal><function>translate</function>(<parameter>stringa</parameter> <type>text</type>,
-        <parameter>da</parameter> <type>text</type>,
-        <parameter>a</parameter> <type>text</type>)</literal>
+        <literal><function>translate</function>(<parameter>string</parameter> <type>text</type>,
+        <parameter>from</parameter> <type>text</type>,
+        <parameter>to</parameter> <type>text</type>)</literal>
        </entry>
        <entry><type>text</type></entry>
        <entry>
         Ogni carattere di <parameter>string</parameter> che eguaglia
-        un carattere dell'insieme <parameter>da</parameter> viene
+        un carattere dell'insieme <parameter>from</parameter> viene
         sostituito dal corrispondente carattere dell'insieme
-        <parameter>a</parameter>
+        <parameter>to</parameter>
        </entry>
        <entry><literal>translate('12345', '14', 'ax')</literal></entry>
        <entry><literal>a23x5</literal></entry>
@@ -1811,11 +1812,11 @@ comportamento.
        <entry>Nome conversione
         <footnote>
          <para>
-          I nomi delle conversioni seguono uno schema standard di costruzione del nome:
-          Il nome ufficiale della codifica sorgente con tutti i caratteri
-          non-alfanumerici sostituiti da caratteri underscore, seguito da
-          <literal>_to_</literal>, seguito dal nome della codifica di destinazione
-          elaborato nella medesima maniera. 
+            I nomi delle conversioni seguono uno schema standard di costruzione del nome:
+            Il nome ufficiale della codifica sorgente con tutti i caratteri
+            non-alfanumerici sostituiti da caratteri underscore, seguito da
+            <literal>_to_</literal>, seguito dal nome della codifica di destinazione
+            elaborato nella medesima maniera. 
             Perciò, questi nomi potrebbero deviare 
             dai nomi abituali di codifiche.
          </para>
@@ -1825,20 +1826,6 @@ comportamento.
        <entry>Codifica destinazione</entry>
       </row>
      </thead>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     <tbody>
@@ -2627,7 +2614,7 @@ comportamento.
     <xref linkend="functions-binarystring-sql" />.
     Alcune funzioni sono anche implementate utilizzando la
     normale sintassi di chiamata delle funzioni.
-    (Consultare <xref linkend="functions-binarystring-other" />.)
+    (Consultare <xref linkend="functions-binarystring-other" />).
    </para>
    
 
@@ -2646,8 +2633,8 @@ comportamento.
 
      <tbody>
       <row>
-       <entry><literal><parameter>stringa</parameter> <literal>||</literal>
-        <parameter>stringa</parameter></literal></entry>
+       <entry><literal><parameter>string</parameter> <literal>||</literal>
+        <parameter>string</parameter></literal></entry>
        <entry> <type>bytea</type> </entry>
        <entry>
         Concatena stringhe
@@ -2661,7 +2648,7 @@ comportamento.
       </row>
 
       <row>
-       <entry><function>get_bit</function>(<parameter>stringa</parameter>, <parameter>scostamento</parameter>)</entry>
+       <entry><function>get_bit</function>(<parameter>string</parameter>, <parameter>offset</parameter>)</entry>
        <entry><type>int</type></entry>
        <entry>
         Estrae bit da una stringa
@@ -2674,7 +2661,7 @@ comportamento.
       </row>
 
       <row>
-       <entry><function>get_byte</function>(<parameter>stringa</parameter>, <parameter>scostamento</parameter>)</entry>
+       <entry><function>get_byte</function>(<parameter>string</parameter>, <parameter>offset</parameter>)</entry>
        <entry><type>int</type></entry>
        <entry>
         Estrae un byte da una stringa
@@ -2687,7 +2674,7 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>octet_length</function>(<parameter>stringa</parameter>)</literal></entry>
+       <entry><literal><function>octet_length</function>(<parameter>string</parameter>)</literal></entry>
        <entry><type>int</type></entry>
        <entry>Numero di byte in una stringa binaria</entry>
        <entry><literal>octet_length(E'jo\\000se'::bytea)</literal></entry>
@@ -2695,7 +2682,7 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>position</function>(<parameter>sottostringa</parameter> in <parameter>stringa</parameter>)</literal></entry>
+       <entry><literal><function>position</function>(<parameter>substring</parameter> in <parameter>string</parameter>)</literal></entry>
        <entry><type>int</type></entry>
        <entry>Posizione di una sottostringa specificata</entry>
       <entry><literal>position(E'\\000om'::bytea in E'Th\\000omas'::bytea)</literal></entry>
@@ -2703,8 +2690,8 @@ comportamento.
       </row>
 
       <row>
-       <entry><function>set_bit</function>(<parameter>stringa</parameter>,
-       <parameter>scostamento</parameter>, <parameter>nuovovalore</parameter>)</entry>
+       <entry><function>set_bit</function>(<parameter>string</parameter>,
+       <parameter>offset</parameter>, <parameter>newvalue</parameter>)</entry>
        <entry><type>bytea</type></entry>
        <entry>
         Imposta un bit in una stringa
@@ -2717,8 +2704,8 @@ comportamento.
       </row>
 
       <row>
-       <entry><function>set_byte</function>(<parameter>stringa</parameter>,
-       <parameter>scostamento</parameter>, <parameter>nuovovalore</parameter>)</entry>
+       <entry><function>set_byte</function>(<parameter>string</parameter>,
+       <parameter>offset</parameter>, <parameter>nuovovalore</parameter>)</entry>
        <entry><type>bytea</type></entry>
        <entry>
         Imposta un byte in una stringa
@@ -2731,7 +2718,7 @@ comportamento.
       </row>
 
       <row>
-       <entry><literal><function>substring</function>(<parameter>stringa</parameter> <optional>from <type>int</type></optional> <optional>for <type>int</type></optional>)</literal></entry>
+       <entry><literal><function>substring</function>(<parameter>string</parameter> <optional>from <type>int</type></optional> <optional>for <type>int</type></optional>)</literal></entry>
        <entry><type>bytea</type></entry>
        <entry>
         Estrae una sottostringa
@@ -2747,13 +2734,13 @@ comportamento.
        <entry>
         <literal><function>trim</function>(<optional>both</optional>
         <parameter>byte</parameter> from
-        <parameter>stringa</parameter>)</literal>
+        <parameter>string</parameter>)</literal>
        </entry>
        <entry><type>bytea</type></entry>
        <entry>
         Rimuove la più lunga stringa contenente solo i byte in
         <parameter>byte</parameter> dall'inizio e dalla
-        fine di <parameter>stringa</parameter>
+        fine di <parameter>string</parameter>
        </entry>
        <entry><literal>trim(E'\\000'::bytea from E'\\000Tom\\000'::bytea)</literal></entry>
        <entry><literal>Tom</literal></entry>
@@ -2787,13 +2774,13 @@ comportamento.
 
      <tbody>
       <row>
-       <entry><literal><function>btrim</function>(<parameter>stringa</parameter>
+       <entry><literal><function>btrim</function>(<parameter>string</parameter>
         <type>bytea</type>, <parameter>byte</parameter> <type>bytea</type>)</literal></entry>
        <entry><type>bytea</type></entry>
        <entry>
         Rimuove la più lunga stringa consistente solo dei byte
         in <parameter>byte</parameter> dall'inizio e dalla fine di
-        <parameter>stringa</parameter>
+        <parameter>string</parameter>
       </entry>
       <entry><literal>btrim(E'\\000trim\\000'::bytea, E'\\000'::bytea)</literal></entry>
       <entry><literal>trim</literal></entry>
@@ -2801,12 +2788,12 @@ comportamento.
 
      <row>
       <entry>
-       <literal><function>decode</function>(<parameter>stringa</parameter> <type>text</type>,
+       <literal><function>decode</function>(<parameter>string</parameter> <type>text</type>,
               <parameter>tipo</parameter> <type>text</type>)</literal>
       </entry>
       <entry><type>bytea</type></entry>
       <entry>
-       Decodifica la stringa binaria contenuta in <parameter>stringa</parameter>, precedentemente codificata con
+       Decodifica la stringa binaria contenuta in <parameter>string</parameter>, precedentemente codificata con
        <function>encode</function>. Il parametro tipo è lo stesso utilizzato nel codificatore <function>encode</function>.
       </entry>
       <entry><literal>decode(E'123\\000456', 'escape')</literal></entry>
@@ -2815,7 +2802,7 @@ comportamento.
 
      <row>
       <entry>
-       <literal><function>encode</function>(<parameter>stringa</parameter> <type>bytea</type>,
+       <literal><function>encode</function>(<parameter>string</parameter> <type>bytea</type>,
               <parameter>tipo</parameter> <type>text</type>)</literal>
       </entry>
       <entry><type>text</type></entry>
@@ -2828,7 +2815,7 @@ comportamento.
      </row>
 
      <row>
-      <entry><literal><function>length</function>(<parameter>stringa</parameter>)</literal></entry>
+      <entry><literal><function>length</function>(<parameter>string</parameter>)</literal></entry>
       <entry><type>int</type></entry>
       <entry>
        Lunghezza della stringa binaria
@@ -2847,10 +2834,10 @@ comportamento.
      </row>
 
      <row>
-      <entry><literal><function>md5</function>(<parameter>stringa</parameter>)</literal></entry>
+      <entry><literal><function>md5</function>(<parameter>string</parameter>)</literal></entry>
       <entry><type>text</type></entry>
       <entry>
-       Calcola l'hash MD5 di <parameter>stringa</parameter>,
+       Calcola l'hash MD5 di <parameter>string</parameter>,
        restituendo il risulato in esadecimale
       </entry>
       <entry><literal>md5(E'Th\\000omas'::bytea)</literal></entry>
@@ -3112,16 +3099,16 @@ cast(-44 as bit(12))           <lineannotation>111111010100</lineannotation>
 
    <para>
     È anche possibile non scrivere nessun carattere di escape scrivendo
-    <literal>ESCAPE ''</literal>. Ciò disabilita effettivamente il
-    meccanismo di escape, che rende impossibile la disabilitazione del significato
+    <literal>ESCAPE ''</literal>. Ciò effettivamente disabilita il
+    meccanismo di escape, che rende impossibile disabilitare il significato
     speciale dei simboli di sottolineato e di percentuale nel modello.
    </para>
 
    <para>
     La parola chiave <token>ILIKE</token> può essere usata al posto di
     <token>LIKE</token> per rendere il confronto non sensibile alle maiuscole in conformità 
-    alla localizzazione attiva. Questo non è nello standard <acronym>SQL</acronym> ma è una
-    estensione di <productname>PostgreSQL</productname>.
+    con la localizzazione attiva. Questo non è nello standard <acronym>SQL</acronym> ma è 
+    un'estensione di <productname>PostgreSQL</productname>.
    </para>
 
    <para>
@@ -3159,7 +3146,7 @@ cast(-44 as bit(12))           <lineannotation>111111010100</lineannotation>
 
    <para>
     L'operatore <function>SIMILAR TO</function> restituisce true o false
-     a seconda che il suo modello corrisponda o meno alla stringa data. Esso è
+    a seconda che il suo modello corrisponda o meno alla stringa data. Esso è
     molto simile a <function>LIKE</function>, eccetto che esso interpreta
     il modello utilizzando la definizione di una espressione regolare
     standard SQL. Le espressioni regolari SQL sono un incrocio curioso tra
@@ -3169,7 +3156,7 @@ cast(-44 as bit(12))           <lineannotation>111111010100</lineannotation>
 
    <para>
     L'operatore <function>SIMILAR TO</function> come <function>LIKE</function>, 
-    ha successo soltanto se il suo modello uguaglia la stringa intera; Ciò 
+    ha successo soltanto se il suo modello uguaglia la stringa intera; ciò 
     è diverso dalla pratica delle comuni espressioni regolari, dove il
     modello può confrontare qualsiasi parte della stringa.
     Anche
@@ -4444,7 +4431,7 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
         il resto della RE è preso come una ARE. (Questo normalmente non ha effetto in
         <productname>PostgreSQL</productname>, dato che le RE sono assunte essere ARE;
         Ma ha effetto se è stato specificato ERE o BRE come parametro di
-        <replaceable>flag</replaceable> per una funzione regex.)
+        <replaceable>flag</replaceable> per una funzione regex).
         Se una RE comincia con <literal>***=</literal>,
         il resto della RE è assunto essere una stringa letterale,
         con tutti i caratteri considerati normali caratteri.
@@ -4926,7 +4913,7 @@ Questo non è molto utile, ma è fornito per simmetria.
     (i secondi da 01/01/1970 00:00:00+00)  in 
     <type>timestamp with time zone</type>.
     (L'<type>Intero</type> Unix epoch viene implicitamente convertito a 
-    <type>doppia precisione</type>.)
+    <type>doppia precisione</type>).
    </para>
 
     
@@ -5198,7 +5185,7 @@ modelli di maschere disponibili per formattare valori di data e orario.
        </row>
        <row>
         <entry><literal>CC</literal></entry>
-        <entry>secolo (2 cifre) (Il ventunesimo secolo comincia il 2001-01-01.)</entry>
+        <entry>secolo (2 cifre) (Il ventunesimo secolo comincia il 2001-01-01)</entry>
        </row>
        <row>
         <entry><literal>J</literal></entry>
@@ -6494,7 +6481,7 @@ SELECT EXTRACT(EPOCH FROM INTERVAL '5 days 3 hours');
 SELECT TIMESTAMP WITH TIME ZONE 'epoch' + 982384720.12 * INTERVAL '1 second';
 </screen>
        <para>
-            (La funzione <function>to_timestamp</function> incapsula tale conversione.)
+            (La funzione <function>to_timestamp</function> incapsula tale conversione).
        </para>
       </listitem>
      </varlistentry>
@@ -7324,7 +7311,7 @@ solo per <emphasis>aree</emphasis> uguali. Similmente, gli altri operatori di co
        </row>
        <row>
         <entry> <literal>&amp;&amp;</literal> </entry>
-        <entry>Si sovrappongono? (Un punto in comune lo rende true.)</entry>
+        <entry>Si sovrappongono? (Un punto in comune lo rende true)</entry>
         <entry><literal>box '((0,0),(1,1))' &amp;&amp; box '((0,0),(2,2))'</literal></entry>
        </row>
        <row>
@@ -8766,7 +8753,7 @@ SELECT xmlagg(x) FROM (SELECT * FROM test ORDER BY y DESC) AS tab;
     <para>
         La funzione <function>xmlexists</function> restituisce true se l'espressione
         XPath nel primo argomento restituisce qualche nodo, altrimenti false. 
-        (Se o l'uno o l'altro argomento è null, il risultato sarà null.)
+        (Se o l'uno o l'altro argomento è null, il risultato sarà null).
     </para>
 
     <para>
@@ -11040,7 +11027,7 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
         Ugualmente, l'opzione standard <literal>FROM FIRST</literal> o <literal>FROM LAST</literal>
         per <function>nth_value</function> non è implementata: solo il comportamento
         <literal>FROM FIRST</literal> è supportato. (Puoi ottenere il risultato
-        di <literal>FROM LAST</literal> invertendo l'ordine con <literal>ORDER BY</literal>.)
+        di <literal>FROM LAST</literal> invertendo l'ordine con <literal>ORDER BY</literal>).
    </para>
   </note>
 
@@ -11403,7 +11390,7 @@ dei valori null.
         Il lato destro è una sottoquery tra parentesi, che restituisce esattamente
         quante colonne quante espressioni ci sono nella riga sulla sinistra. Inoltre,
         la sottoquery non può ritornare più di una riga. (Se restituisce zero righe,
-        il risultato è considerato essere null.) Il lato sinistro è valutato 
+        il risultato è considerato essere null). Il lato sinistro è valutato 
         e confrontato in modo row-wise alla singola riga risultante dalla sottoquery.
   </para>
 
@@ -11561,7 +11548,7 @@ SOME (<replaceable>array expression</replaceable>)
    L'espressione a sinistra
    viene valutata e confrontata con ogni elemento dell'array utilizzando
    l'<replaceable>operatore</replaceable> fornito, che deve rendere un risultato
-   Booleano.
+   booleano.
    Il risultato di <token>ANY</token> è <quote>true</quote> 
     se viene ottenuto qualche risultato vero.
    Il risultato è <quote>false</quote> se non viene ottenuto 
@@ -11827,7 +11814,7 @@ SELECT * FROM generate_series(4,3);
 -----------------
 (0 rows)
 
--- questo esempip fa uso dell'operatore data-più-intero 
+-- questo esempio fa uso dell'operatore data-più-intero 
 SELECT current_date + s.a AS dates FROM generate_series(0,14,7) AS s(a);
    dates
 ------------
@@ -11854,7 +11841,7 @@ SELECT * FROM generate_series('2008-03-01 00:00'::timestamp,
   </para>
 
   <table id="functions-srf-subscripts">
-   <title>Subscript Generating Functions</title>
+   <title>Sottoscript che generano funzioni</title>
    <tgroup cols="3">
     <thead>
      <row>
@@ -11866,7 +11853,7 @@ SELECT * FROM generate_series('2008-03-01 00:00'::timestamp,
 
     <tbody>
      <row>
-      <entry><literal><function>generate_subscripts(<parameter>array anyarray</parameter>, 
+      <entry><literal><function>generate_subscripts(<parameter>torray anyarray</parameter>, 
         <parameter>dim int</parameter>)</function></literal></entry>
         <entry><type>setof int</type></entry>
       <entry>
@@ -11875,7 +11862,7 @@ SELECT * FROM generate_series('2008-03-01 00:00'::timestamp,
      </row>
 
      <row>
-      <entry><literal><function>generate_subscripts(<parameter>array anyarray</parameter>, 
+      <entry><literal><function>generate_subscripts(<parameter>torray anyarray</parameter>, 
         <parameter>dim int</parameter>, 
         <parameter>reverse boolean</parameter>)</function></literal></entry>
       <entry><type>setof int</type></entry>
@@ -11914,7 +11901,7 @@ SELECT generate_subscripts('{NULL,1,NULL,2}'::int[], 1) AS s;
 (4 rows)
 
 -- presenting an array, the subscript and the subscripted
--- value requires a subquery
+-- value requires a subquery 
 SELECT * FROM arrays;
          a          
 --------------------
@@ -11933,7 +11920,7 @@ FROM (SELECT generate_subscripts(a, 1) AS s, a FROM arrays) foo;
  {100,200,300} |         3 |   300
 (5 rows)
 
--- unnest a 2D array
+-- unnest a 2D array  
 CREATE OR REPLACE FUNCTION unnest2(anyarray)
 RETURNS SETOF anyelement AS $$
 select $1[i][j] 
@@ -12107,7 +12094,7 @@ postgres=# SELECT * FROM unnest2(ARRAY[[1,2],[3,4]]);
      e <function>user</function> hanno stati sintattici speciali 
      in <acronym>SQL</acronym>: devono essere chiamati senza parentesi in fondo.
      (In PostgreSQL, le parentesi possono essere usati opzionalmente con
-     <function>current_schema</function>, ma non con le altre.)
+     <function>current_schema</function>, ma non con le altre).
     </para>
    </note>
 
@@ -12256,7 +12243,7 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
         (Se la sessione corrente era in vita a quel tempo, questo è l'orario
         in cui la sessione stessa ha ri-letto i file di configurazione, così
         la lettura cambierà un poco in differenti sessioni. Altrimenti 
-        è l'orario in cui il processo postmaster ha ri-letto i file di configurazione.)
+        è l'orario in cui il processo postmaster ha ri-letto i file di configurazione).
    </para>
 
    <indexterm>
@@ -12323,7 +12310,7 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
       </row>
       <row>
        <entry><literal><function>has_database_privilege</function>(<parameter>user</parameter>,
-                                  <parameter>database</parameter>,
+                                  <parameter>fromtabase</parameter>,
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
@@ -12331,7 +12318,7 @@ SET search_path TO <replaceable>schema</replaceable> <optional>, <replaceable>sc
        <entry>verifica che l'utente abbia privilegio per il database</entry>
       </row>
       <row>
-       <entry><literal><function>has_database_privilege</function>(<parameter>database</parameter>,
+       <entry><literal><function>has_database_privilege</function>(<parameter>fromtabase</parameter>,
                                   <parameter>privilege</parameter>)</literal>
        </entry>
        <entry><type>boolean</type></entry>
@@ -13358,10 +13345,10 @@ include txid di sottotransazioni.
    </table>
 
    <para>
-    <type>txid_snapshot</type>'s textual representation is
-    <literal><replaceable>xmin</replaceable>:<replaceable>xmax</replaceable>:<replaceable>xip_list</replaceable></literal>.
-    Per esempio <literal>10:20:10,14,15</literal> significa
-    <literal>xmin=10, xmax=20, xip_list=10, 14, 15</literal>.
+La rappresentazione di <type>txid_snapshot</type> è
+<literal><replaceable>xmin</replaceable>:<replaceable>xmax</replaceable>:<replaceable>xip_list</replaceable></literal>.
+Per esempio <literal>10:20:10,14,15</literal> significa
+<literal>xmin=10, xmax=20, xip_list=10, 14, 15</literal>.
    </para>
   </sect1>
 
@@ -13596,7 +13583,9 @@ L'uso di queste tre funzioni è limitato ai superuser.
      <tbody>
       <row>
        <entry>
-        <literal><function>pg_start_backup(<parameter>label</parameter> <type>text</type> <optional>, <parameter>fast</parameter> <type>boolean</type> </optional>)</function></literal>
+        <literal>
+            <function>pg_start_backup(<parameter>label</parameter> <type>text</type> <optional>, <parameter>fast</parameter> <type>boolean</type> </optional>)</function>
+        </literal>
         </entry>
        <entry><type>text</type></entry>
        <entry>
@@ -13625,7 +13614,7 @@ L'uso di queste tre funzioni è limitato ai superuser.
         </entry>
        <entry><type>text</type></entry>
        <entry>
-            Rende la locazione di scritture del log di transazione corrente
+            Restituisce la posizione delle scritture del log della transazione corrente
         </entry>
       </row>
       <row>
@@ -13664,7 +13653,7 @@ L'uso di queste tre funzioni è limitato ai superuser.
    <para>
 <function>pg_start_backup</function> accetta un'etichetta arbitraria definita dall'utente
 per il backup. (Tipicamente questa sarebbe 
-il nome sotto il quale il file  dump di backup sarà immagazzinato.) La funzione
+il nome sotto il quale il file  dump di backup sarà immagazzinato). La funzione
 scrive un file etichetta di backup (<filename>backup_label</filename>) nella
 directory dati del cluster di database, esegue un checkpoint,
 e poi restituisce la locazione del log dell'inizio della transazione di backup come testo.
@@ -13990,7 +13979,7 @@ equivalente a <function>pg_table_size</function>
    <para>
 <function>pg_table_size</function> accetta l'OID o il nome di una tabella e 
 restituisce lo spazio su disco necessario per quella tabella, escluso gli indici.
-(incluso spazio TOAST, mappa dello spazio libero e mappa di visibilità.)
+(incluso spazio TOAST, mappa dello spazio libero e mappa di visibilità).
    </para>
 
    <para>
@@ -14384,7 +14373,7 @@ i lock consultivi. Per dettagli circa l'uso corretto di queste funzioni, vedere
       contrast to the normal behavior which always performs the update
       regardless of whether or not the data has changed. (This normal behavior
       makes updates run faster, since no checking is required, and is also
-      useful in certain cases.)
+      useful in certain cases).
     </para>
 
     <para>

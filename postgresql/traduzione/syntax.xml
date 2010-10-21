@@ -1861,30 +1861,29 @@ Per ulteriori dettagli si veda
   </sect2>
 
   <sect2 id="sql-syntax-scalar-subqueries">
-   <title>Scalar Subqueries</title>
+   <title>Sottoquery scalari</title>
 
    <indexterm>
-    <primary>subquery</primary>
+    <primary>sottoquery</primary>
    </indexterm>
 
    <para>
-    A scalar subquery is an ordinary
-    <command>SELECT</command> query in parentheses that returns exactly one
-    row with one column.  (See <xref linkend="queries"/> for information about writing queries.)
-    The <command>SELECT</command> query is executed
-    and the single returned value is used in the surrounding value expression.
-    It is an error to use a query that
-    returns more than one row or more than one column as a scalar subquery.
-    (But if, during a particular execution, the subquery returns no rows,
-    there is no error; the scalar result is taken to be null.)
-    The subquery can refer to variables from the surrounding query,
-    which will act as constants during any one evaluation of the subquery.
-    See also <xref linkend="functions-subquery"/> for other expressions involving subqueries.
+Una sottoquery scalare è una normale query <command>SELECT</command>
+tra parentesi che restituisce esattamente una riga con una colonna.
+(Si veda <xref linkend="queries"/> per informazioni sulla scrittura di query).
+La query <command>SELECT</command> viene eseguita
+e il singolo valore restituito viene usato nell'espressione di valore circostante.
+Usare una query che restituisce più di una riga o più di una colonna 
+come query scalare è un errore.
+(Se, durante un'esecuzione particolare, la sottoquery non restituisce righe, 
+non c'è errore; il risultato scalare viene considerato essere null).
+La sottoquery può riferirsi a variabili dalla query circostante,
+che agiranno come costanti durante la valutazione della sottoquery.
+Si veda anche <xref linkend="functions-subquery"/> per altre espressioni riguardanti le sottoquery.
    </para>
 
    <para>
-    For example, the following finds the largest city population in each
-    state:
+L'esempio seguente trova la popolazione cittadina maggiore in ogni stato:
 <programlisting>
 SELECT name, (SELECT max(pop) FROM cities WHERE cities.state = states.name)
     FROM states;
@@ -1893,11 +1892,11 @@ SELECT name, (SELECT max(pop) FROM cities WHERE cities.state = states.name)
   </sect2>
 
   <sect2 id="sql-syntax-array-constructors">
-   <title>Array Constructors</title>
+   <title>Costruttori di array</title>
 
    <indexterm>
     <primary>array</primary>
-    <secondary>constructor</secondary>
+    <secondary>costruttore</secondary>
    </indexterm>
 
    <indexterm>
@@ -1905,13 +1904,13 @@ SELECT name, (SELECT max(pop) FROM cities WHERE cities.state = states.name)
    </indexterm>
 
    <para>
-    An array constructor is an expression that builds an
-    array value using values for its member elements.  A simple array
-    constructor
-    consists of the key word <literal>ARRAY</literal>, a left square bracket
-    <literal>[</literal>, a list of expressions (separated by commas) for the
-    array element values, and finally a right square bracket <literal>]</literal>.
-    For example:
+Un costruttore di array è un'espressione che costruisce un 
+valore array usando valori per i suoi elementi membri. Un costruttore di array 
+semplice consiste della parola chiave <literal>ARRAY</literal>, una parentesi quadra
+sinistra 
+<literal>[</literal>, un elenco di espressioni (separate da virgole) per i valori
+degli elementi dell'array, ed infine una parentesi quadra destra <literal>]</literal>.
+Per esempio:
 <programlisting>
 SELECT ARRAY[1,2,3+4];
   array
@@ -1919,12 +1918,12 @@ SELECT ARRAY[1,2,3+4];
  {1,2,7}
 (1 row)
 </programlisting>
-    By default,
-    the array element type is the common type of the member expressions,
-    determined using the same rules as for <literal>UNION</literal> or
-    <literal>CASE</literal> constructs (see <xref linkend="typeconv-union-case"/>).
-    You can override this by explicitly casting the array constructor to the
-    desired type, for example:
+In maniera predefinita,
+il tipo degli elementi dell'array è il tipo delle espressioni membro,
+determinato usando le stesse regole dei costruttori <literal>UNION</literal> o
+<literal>CASE</literal> (si veda <xref linkend="typeconv-union-case"/>).
+Si può sovrascrivere questo convertendo esplicitamente il costruttore dell'array 
+al tipo desiderato, per esempio:
 <programlisting>
 SELECT ARRAY[1,2,22.7]::integer[];
   array
@@ -1932,16 +1931,16 @@ SELECT ARRAY[1,2,22.7]::integer[];
  {1,2,23}
 (1 row)
 </programlisting>
-    This has the same effect as casting each expression to the array
-    element type individually.
-    For more on casting, see <xref linkend="sql-syntax-type-casts"/>.
+Questo ha lo stesso effetto di convertire ogni espressione al tipo dell'elemento
+dell'array individualmente.
+Per maggiori informazioni sulla conversione, si veda <xref linkend="sql-syntax-type-casts"/>.
    </para>
 
    <para>
-    Multidimensional array values can be built by nesting array
-    constructors.
-    In the inner constructors, the key word <literal>ARRAY</literal> can
-    be omitted.  For example, these produce the same result:
+Valori di array multidimensionali possono essere costruiti annidando costruttori 
+di array.
+Nei costruttori interni, la parola chiave <literal>ARRAY</literal> può essere
+omessa. Questi esempi producono lo stesso risultato:
 
 <programlisting>
 SELECT ARRAY[ARRAY[1,2], ARRAY[3,4]];
@@ -1957,16 +1956,16 @@ SELECT ARRAY[[1,2],[3,4]];
 (1 row)
 </programlisting>
 
-    Since multidimensional arrays must be rectangular, inner constructors
-    at the same level must produce sub-arrays of identical dimensions.
-    Any cast applied to the outer <literal>ARRAY</literal> constructor propagates
-    automatically to all the inner constructors.
+Dato che array multidimensionali devono essere rettangolari, i costruttori interni
+allo stesso livello devono produrre sotto-array di dimensioni identiche.
+Qualsiasi conversione applicata al costruttore <literal>ARRAY</literal> esterno si propaga 
+automaticamente a tutti i costruttori interni.
   </para>
 
   <para>
-    Multidimensional array constructor elements can be anything yielding
-    an array of the proper kind, not only a sub-<literal>ARRAY</literal> construct.
-    For example:
+Elementi costruttore di array multidimansionali possono essere qualsiasi cosa 
+che restituisce un array di tipo corretto, non solo un costruttore di sotto-<literal>ARRAY</literal>.
+Per esempio:
 <programlisting>
 CREATE TABLE arr(f1 int[], f2 int[]);
 
@@ -1981,9 +1980,9 @@ SELECT ARRAY[f1, f2, '{{9,10},{11,12}}'::int[]] FROM arr;
   </para>
 
   <para>
-   You can construct an empty array, but since it's impossible to have an
-   array with no type, you must explicitly cast your empty array to the
-   desired type.  For example:
+È possibile costruire un array vuoto, ma dato che è impossibile avere un array 
+senza tipo, si deve convertire esplicitamente l'array vuoto al tipo desiderato.
+Per esempio:
 <programlisting>
 SELECT ARRAY[]::integer[];
  array
@@ -1994,10 +1993,10 @@ SELECT ARRAY[]::integer[];
   </para>
 
   <para>
-   It is also possible to construct an array from the results of a
-   subquery.  In this form, the array constructor is written with the
-   key word <literal>ARRAY</literal> followed by a parenthesized (not
-   bracketed) subquery. For example:
+È anche possibile costruire un array dai risultati di una sottoquery.
+In questa forma, il costruttore di array viene scritto con la parola chiave
+<literal>ARRAY</literal> seguita da una sottoquery (non tra parentesi).
+Per esempio:
 <programlisting>
 SELECT ARRAY(SELECT oid FROM pg_proc WHERE proname LIKE 'bytea%');
                           ?column?
@@ -2005,31 +2004,31 @@ SELECT ARRAY(SELECT oid FROM pg_proc WHERE proname LIKE 'bytea%');
  {2011,1954,1948,1952,1951,1244,1950,2005,1949,1953,2006,31}
 (1 row)
 </programlisting>
-   The subquery must return a single column. The resulting
-   one-dimensional array will have an element for each row in the
-   subquery result, with an element type matching that of the
-   subquery's output column.
+La sottoquery deve restituire una singola colonna. L'array monodimensionale risultante
+avrà un elemento per ogni riga nel risultato della sottoquery,
+con un tipo di elemento corrispondente a quello della colonna
+di output della sottoquery.
   </para>
 
   <para>
-   The subscripts of an array value built with <literal>ARRAY</literal>
-   always begin with one.  For more information about arrays, see
-   <xref linkend="arrays"/>.
+I sottoscript di un valore array costruiti con <literal>ARRAY</literal>
+cominciano sempre da uno. Per maggiori informationi sugli array, si veda 
+<xref linkend="arrays"/>.
   </para>
 
   </sect2>
 
   <sect2 id="sql-syntax-row-constructors">
-   <title>Row Constructors</title>
+   <title>Costruttori di riga</title>
 
    <indexterm>
-    <primary>composite type</primary>
-    <secondary>constructor</secondary>
+    <primary>tipo composto</primary>
+    <secondary>costruttore</secondary>
    </indexterm>
 
    <indexterm>
-    <primary>row type</primary>
-    <secondary>constructor</secondary>
+    <primary>tipo di riga</primary>
+    <secondary>costruttore</secondary>
    </indexterm>
 
    <indexterm>
@@ -2037,26 +2036,26 @@ SELECT ARRAY(SELECT oid FROM pg_proc WHERE proname LIKE 'bytea%');
    </indexterm>
 
    <para>
-    A row constructor is an expression that builds a row value (also
-    called a composite value) using values
-    for its member fields.  A row constructor consists of the key word
-    <literal>ROW</literal>, a left parenthesis, zero or more
-    expressions (separated by commas) for the row field values, and finally
-    a right parenthesis.  For example:
+Un costruttore di riga è un'espressione che costruisce un valore di riga (chiamato
+anche valore composto) usando valori
+per i suoi campi membro. Un costruttore di riga consiste della parola chiave
+<literal>ROW</literal>, una parentesi sinistra, zero o più
+espressioni (separate da virgole) per i valori dei campi della riga, e infine
+una parentesi destra. Per esempio:
 <programlisting>
 SELECT ROW(1,2.5,'this is a test');
 </programlisting>
-    The key word <literal>ROW</literal> is optional when there is more than one
-    expression in the list.
+La parola chiave <literal>ROW</literal> è opzionale quando c'è più di una espressione 
+nell'elenco.
    </para>
 
    <para>
-    A row constructor can include the syntax
-    <replaceable>rowvalue</replaceable><literal>.*</literal>,
-    which will be expanded to a list of the elements of the row value,
-    just as occurs when the <literal>.*</literal> syntax is used at the top level
-    of a <command>SELECT</command> list.  For example, if table <literal>t</literal> has
-    columns <literal>f1</literal> and <literal>f2</literal>, these are the same:
+Un costruttore di riga può includere la sintassi
+<replaceable>rowvalue</replaceable><literal>.*</literal>,
+che sarà espansa ad un elenco di elementi del tipo della riga,
+esattamente come occorre quando la sintassi <literal>.*</literal> viene usata al livello superiore 
+di un elenco <command>SELECT</command>. Per esempio, se la tabella <literal>t</literal> ha
+le colonne <literal>f1</literal> e <literal>f2</literal>, questi esempi sono gli stessi:
 <programlisting>
 SELECT ROW(t.*, 42) FROM t;
 SELECT ROW(t.f1, t.f2, 42) FROM t;
@@ -2065,22 +2064,22 @@ SELECT ROW(t.f1, t.f2, 42) FROM t;
 
    <note>
     <para>
-     Before <productname>PostgreSQL</productname> 8.2, the
-     <literal>.*</literal> syntax was not expanded, so that writing
-     <literal>ROW(t.*, 42)</literal> created a two-field row whose first field
-     was another row value.  The new behavior is usually more useful.
-     If you need the old behavior of nested row values, write the inner
-     row value without <literal>.*</literal>, for instance
-     <literal>ROW(t, 42)</literal>.
+Prima di <productname>PostgreSQL</productname> 8.2, la sintassi 
+<literal>.*</literal> non fu espansa, così scrivere 
+<literal>ROW(t.*, 42)</literal> crea una riga con due campi di cui il primo campo 
+era un altro valore di riga. Il nuovo comportamento di solito è più utile.
+Se si ha bisogno  del vecchio comportamento di valori di riga annidati, scrivere 
+il valore di riga interno senza <literal>.*</literal>, per esempio 
+<literal>ROW(t, 42)</literal>.
     </para>
    </note>
 
    <para>
-    By default, the value created by a <literal>ROW</literal> expression is of
-    an anonymous record type.  If necessary, it can be cast to a named
-    composite type &mdash; either the row type of a table, or a composite type
-    created with <command>CREATE TYPE AS</command>.  An explicit cast might be needed
-    to avoid ambiguity.  For example:
+In maniera predefinita, il valore creato da un'espressione <literal>ROW</literal>
+è di tipo record anonimo. Se necessario, può essere convertito a un tipo composto -
+sia il tipo di riga di una tabella, che un tipo composto creato con <command>CREATE TYPE AS</command>. 
+Una conversione esplicita potrebbe essere necessaria per evitare
+ambiguità. Per esempio:
 <programlisting>
 CREATE TABLE mytable(f1 int, f2 float, f3 text);
 
@@ -2116,123 +2115,125 @@ SELECT getf1(CAST(ROW(11,'this is a test',2.5) AS myrowtype));
   </para>
 
   <para>
-   Row constructors can be used to build composite values to be stored
-   in a composite-type table column, or to be passed to a function that
-   accepts a composite parameter.  Also,
-   it is possible to compare two row values or test a row with
-   <literal>IS NULL</literal> or <literal>IS NOT NULL</literal>, for example:
+Costruttori di riga possono essere usati per creare valori composti da essere
+immagazzinati in colonne di tabella con tipi composti, o per essere passati a funzioni che 
+accettano in parametro composto. Inoltre, 
+è possibile confrontare due valori di riga o testare una riga con
+<literal>IS NULL</literal> o <literal>IS NOT NULL</literal>, per esempio:
 <programlisting>
 SELECT ROW(1,2.5,'this is a test') = ROW(1, 3, 'not the same');
 
-SELECT ROW(table.*) IS NULL FROM table;  -- detect all-null rows
+SELECT ROW(table.*) IS NULL FROM table;  -- trova tutte le righe null
 </programlisting>
-   For more detail see <xref linkend="functions-comparisons"/>.
-   Row constructors can also be used in connection with subqueries,
-   as discussed in <xref linkend="functions-subquery"/>.
+Per maggiori dettagli si veda <xref linkend="functions-comparisons"/>.
+Costruttori di riga possono essere usati anche in connessione con sottoquery,
+come discusso in <xref linkend="functions-subquery"/>.
   </para>
 
   </sect2>
 
   <sect2 id="syntax-express-eval">
-   <title>Expression Evaluation Rules</title>
+   <title>Regole di valutazione di espressione</title>
 
    <indexterm>
-    <primary>expression</primary>
-    <secondary>order of evaluation</secondary>
+    <primary>espressione</primary>
+    <secondary>ordine di valutazione</secondary>
    </indexterm>
 
    <para>
-    The order of evaluation of subexpressions is not defined.  In
-    particular, the inputs of an operator or function are not necessarily
-    evaluated left-to-right or in any other fixed order.
+L'ordine per la valutazione di sottoespressioni non è definito. In particolare,
+gli input di un operatore o  funzione non sono necessariamente
+valutati da sinistra a destra o in qualsiasi altro ordine prefissato.
    </para>
 
    <para>
-    Furthermore, if the result of an expression can be determined by
-    evaluating only some parts of it, then other subexpressions
-    might not be evaluated at all.  For instance, if one wrote:
+Inoltre, se il risultato di un'espressione può essere determinato 
+valutandone solo alcune parti, allora altre sottoespressioni 
+potrebbero non essere valutate per niente. Per esempio, se si scrive:
 <programlisting>
 SELECT true OR somefunc();
 </programlisting>
-    then <literal>somefunc()</literal> would (probably) not be called
-    at all. The same would be the case if one wrote:
+allora  <literal>somefunc()</literal>  (probabilmente) non sarebbe chiamata 
+per niente. Allo stesso modo se si scrive:
 <programlisting>
 SELECT somefunc() OR true;
 </programlisting>
-    Note that this is not the same as the left-to-right
-    <quote>short-circuiting</quote> of Boolean operators that is found
-    in some programming languages.
+Notare che questo non è lo stesso dello <quote>short-circuiting</quote>
+da sinistra a destra di operatori booleani che sono presenti 
+in alcuni linguaggi di programmazione.
    </para>
 
    <para>
-    As a consequence, it is unwise to use functions with side effects
-    as part of complex expressions.  It is particularly dangerous to
-    rely on side effects or evaluation order in <literal>WHERE</literal> and <literal>HAVING</literal> clauses,
-    since those clauses are extensively reprocessed as part of
-    developing an execution plan.  Boolean
-    expressions (<literal>AND</literal>/<literal>OR</literal>/<literal>NOT</literal> combinations) in those clauses can be reorganized
-    in any manner allowed by the laws of Boolean algebra.
+Di conseguenza, non è saggio usare funzioni con effetti collaterali
+come parte di espressioni complesse. È particolarmente pericoloso
+fare conto sugli effetti collaterlai o sull'ordine di valutazione nelle clausole <literal>WHERE</literal>
+e <literal>HAVING</literal>, dato che queste clausole vengono ri-processate estensivamente
+come parte dello sviluppo di un query plan. Espressioni booleane 
+(combinazioni di <literal>AND</literal>/<literal>OR</literal>/<literal>NOT</literal>) in quelle clausole possono essere riorganizzate
+in qualsiasi modo permesso dalle leggi dell'algebra booleana.
    </para>
 
    <para>
     When it is essential to force evaluation order, a <literal>CASE</literal>
+Quando è essenziale forzare l'ordine di valutazione, può essere usato un costrutto <literal>CASE</literal>
     construct (see <xref linkend="functions-conditional"/>) can be
+(si veda <xref linkend="functions-conditional"/>).
     used.  For example, this is an untrustworthy way of trying to
+Per esempio, questo è un modo inaffidabile di provare ad evittare
     avoid division by zero in a <literal>WHERE</literal> clause:
+divisioni per zero in una clausola <literal>WHERE</literal>:
 <programlisting>
 SELECT ... WHERE x &gt; 0 AND y/x &gt; 1.5;
 </programlisting>
-    But this is safe:
+Ma questo è sicuro:
 <programlisting>
 SELECT ... WHERE CASE WHEN x &gt; 0 THEN y/x &gt; 1.5 ELSE false END;
 </programlisting>
-    A <literal>CASE</literal> construct used in this fashion will defeat optimization
-    attempts, so it should only be done when necessary.  (In this particular
-    example, it would be better to sidestep the problem by writing
-    <literal>y &gt; 1.5*x</literal> instead.)
+Un costrutto <literal>CASE</literal> usado in questo modo rifiuterà tentativi di ottimizzazione,
+così dovrebbe essere usato solo se necessario. (In questo particolare esempio,
+sarebbe meglio evitare il problema scrivendo <literal>y &gt; 1.5*x</literal>).
    </para>
   </sect2>
  </sect1>
 
  <sect1 id="sql-syntax-calling-funcs">
-  <title>Calling Functions</title>
+  <title>Chiamare funzioni</title>
 
    <indexterm zone="sql-syntax-calling-funcs">
-    <primary>notation</primary>
-    <secondary>functions</secondary>
+    <primary>notazione</primary>
+    <secondary>funzioni</secondary>
    </indexterm>
 
    <para>
-    <productname>PostgreSQL</productname> allows functions that have named
-    parameters to be called using either <firstterm>positional</firstterm> or
-    <firstterm>named</firstterm> notation.  Named notation is especially
-    useful for functions that have a large number of parameters, since it
-    makes the associations between parameters and actual arguments more
-    explicit and reliable.
-    In positional notation, a function call is written with
-    its argument values in the same order as they are defined in the function
-    declaration.  In named notation, the arguments are matched to the
-    function parameters by name and can be written in any order.
+<productname>PostgreSQL</productname> la chiamata di funzioni che hanno 
+parametri nominati usando sia notazione <firstterm>posizionale</firstterm> che
+<firstterm>nominale</firstterm>. La notazione nominale è utile sopratutto
+per funzioni che hanno un elevato numero di parametri, dato che rende l'associazione tra
+i parametri e gli effettivi argomenti più esplicita e attendibile.
+Nella notazione posizionale, una chiamata di funzione viene scritta con
+i suoi valori di argomento nello stesso ordine di come sono definiti 
+nella dichiarazione di funzione. Nella notazione nominale, gli argomenti corrispondono 
+ai parametri di funzione per nome e possono essere scritti in qualsiasi ordine.
    </para>
 
    <para>
-    In either notation, parameters that have default values given in the
-    function declaration need not be written in the call at all.  But this
-    is particularly useful in named notation, since any combination of
-    parameters can be omitted; while in positional notation parameters can
-    only be omitted from right to left.
+Nelle due notazioni, i parametri che hanno valori predefiniti forniti nella 
+dichiarazione di funzione non hanno bisogno di essere scritti per niente. Ma questo
+è particolarmente utile nella notazione nominale, dato che qualsiasi combinazione di 
+parametri può essere omessa; mentre nella notazione posizionale i parametri possono
+essere omessi sono da destra a  sinistra.
    </para>
 
    <para>
-    <productname>PostgreSQL</productname> also supports
-    <firstterm>mixed</firstterm> notation, which combines positional and
-    named notation.  In this case, positional parameters are written first
-    and named parameters appear after them.
+<productname>PostgreSQL</productname> supporta anche la notazione 
+<firstterm>mista</firstterm>, che combina le notazioni posizionale e nominale.  
+In questo caso, i parametri posizionali sono scritti prima
+e i parametri nominali appaiono dopo.
    </para>
 
    <para>
-    The following examples will illustrate the usage of all three
-    notations, using the following function definition:
+Gli esempi seguenti illustreranno l'utilizzo di tutte e tre le notazioni,
+usando la seguente definizione di funzione:
 <programlisting>
 CREATE FUNCTION concat_lower_or_upper(a text, b text, uppercase boolean DEFAULT false)
 RETURNS text
@@ -2245,28 +2246,27 @@ $$
 $$
 LANGUAGE SQL IMMUTABLE STRICT;
 </programlisting>
-    Function <function>concat_lower_or_upper</function> has two mandatory
-    parameters, <literal>a</literal> and <literal>b</literal>.  Additionally
-    there is one optional parameter <literal>uppercase</literal> which defaults
-    to <literal>false</literal>.  The <literal>a</literal> and
-    <literal>b</literal> inputs will be concatenated, and forced to either
-    upper or lower case depending on the <literal>uppercase</literal>
-    parameter.  The remaining details of this function
-    definition are not important here (see <xref linkend="extend"/> for
-    more information).
+La funzione <function>concat_lower_or_upper</function> ha due parametri obbligatori,
+<literal>a</literal> and <literal>b</literal>. In più,
+c'è un parametro opzionale <literal>uppercase</literal> che in modo predefinito è
+<literal>false</literal>. Gli input <literal>a</literal> e <literal>b</literal>
+saranno concatenati, e forzati a maiuscolo o a minuscolo in dipendenza del parametro
+<literal>uppercase</literal>. I rimanenti dettagli di questa funzione
+non sono importanti qui (si veda <xref linkend="extend"/> per 
+maggiori informazioni).
    </para>
 
    <sect2 id="sql-syntax-calling-funcs-positional">
-    <title>Using positional notation</title>
+    <title>Usare la notazione posizionale</title>
 
     <indexterm>
-     <primary>function</primary>
-     <secondary>positional notation</secondary>
+     <primary>funzione</primary>
+     <secondary>notazione posizionale</secondary>
     </indexterm>
 
     <para>
-     Positional notation is the traditional mechanism for passing arguments
-     to functions in <productname>PostgreSQL</productname>.  An example is:
+La notazione posizionale è il meccanismo tradizionale per il passaggio di argomenti
+a funzioni in <productname>PostgreSQL</productname>. Un esempio è: 
 <screen>
 SELECT concat_lower_or_upper('Hello', 'World', true);
  concat_lower_or_upper 
@@ -2274,9 +2274,9 @@ SELECT concat_lower_or_upper('Hello', 'World', true);
  HELLO WORLD
 (1 row)
 </screen>
-     All arguments are specified in order.  The result is upper case since
-     <literal>uppercase</literal> is specified as <literal>true</literal>.
-     Another example is:
+Tutti gli argomenti sono specificati in ordine. Il risultato è maiuscolo dato che
+<literal>uppercase</literal> è impostata a <literal>true</literal>.
+Un altro esempio è:
 <screen>
 SELECT concat_lower_or_upper('Hello', 'World');
  concat_lower_or_upper 
@@ -2284,25 +2284,25 @@ SELECT concat_lower_or_upper('Hello', 'World');
  hello world
 (1 row)
 </screen>
-     Here, the <literal>uppercase</literal> parameter is omitted, so it
-     receives its default value of <literal>false</literal>, resulting in
-     lower case output.  In positional notation, arguments can be omitted
-     from right to left so long as they have defaults.
+Qui, il parametro <literal>uppercase</literal> viene omesso, e così riceve
+il suo valore predefinito come <literal>false</literal>, generando un output
+minuscolo. In notazione posizionale, gli argomenti possono essere omessi
+da destra a sinistra dal momento che hanno valori predefiniti.
     </para>
    </sect2>
 
    <sect2 id="sql-syntax-calling-funcs-named">
-    <title>Using named notation</title>
+    <title>Usare la notazione nominale</title>
 
     <indexterm>
-     <primary>function</primary>
-     <secondary>named notation</secondary>
+     <primary>funzione</primary>
+     <secondary>notazione nominale</secondary>
     </indexterm>
 
     <para>
-     In named notation, each argument's name is specified using
-     <literal>:=</literal> to separate it from the argument expression.
-     For example:
+Nella notazione nominale, ogni nome di argomento viene specificato usando
+<literal>:=</literal> per separarlo dall'espressione dell'argomento.
+Per esempio:
 <screen>
 SELECT concat_lower_or_upper(a := 'Hello', b := 'World');
  concat_lower_or_upper 
@@ -2310,10 +2310,10 @@ SELECT concat_lower_or_upper(a := 'Hello', b := 'World');
  hello world
 (1 row)
 </screen>
-     Again, the argument <literal>uppercase</literal> was omitted
-     so it is set to <literal>false</literal> implicitly.  One advantage of
-     using named notation is that the arguments may be specified in any
-     order, for example:
+Di nuovo, l'argomento <literal>uppercase</literal> è stato omesso
+e per questo viene impostato a <literal>false</literal> implicitamente. Un vantaggio di
+usare la notazione nominale è che gli argomento possono essere specificati in 
+qualsiasi ordine, per esempio:
 <screen>
 SELECT concat_lower_or_upper(a := 'Hello', b := 'World', uppercase := true);
  concat_lower_or_upper 
@@ -2331,17 +2331,17 @@ SELECT concat_lower_or_upper(a := 'Hello', uppercase := true, b := 'World');
    </sect2>
 
   <sect2 id="sql-syntax-calling-funcs-mixed">
-   <title>Using mixed notation</title>
+   <title>Usare la notazione mista</title>
 
    <indexterm>
-    <primary>function</primary>
-    <secondary>mixed notation</secondary>
+    <primary>funzione</primary>
+    <secondary>notazione mista</secondary>
    </indexterm>
 
    <para>
-    The mixed notation combines positional and named notation. However, as
-    already mentioned, named arguments cannot precede positional arguments.
-    For example:
+La notazione mista combina la notazione posizionale e quella nominale. Comunque,
+come già detto, argomenti nominali non possono precedere argomenti posizionali.
+Per esempio:
 <screen>
 SELECT concat_lower_or_upper('Hello', 'World', uppercase := true);
  concat_lower_or_upper 
@@ -2349,12 +2349,12 @@ SELECT concat_lower_or_upper('Hello', 'World', uppercase := true);
  HELLO WORLD
 (1 row)
 </screen>
-    In the above query, the arguments <literal>a</literal> and
-    <literal>b</literal> are specified positionally, while
-    <literal>uppercase</literal> is specified by name.  In this example,
-    that adds little except documentation.  With a more complex function
-    having numerous parameters that have default values, named or mixed
-    notation can save a great deal of writing and reduce chances for error.
+Nella query sopra, gli argomenti <literal>a</literal> e
+<literal>b</literal> sono specificati posizionalmente, mentre 
+<literal>uppercase</literal> è specificato dal nome. In questo esempio, 
+questo aggiunge poco ad eccezione di documentazione. Con una funzione più
+complessa avente numerodi parametri che hanno valori predefiniti, la notazione
+nominale o posizionale può far risparmiare scritture e ridurre le possibilità di errori.
    </para>
   </sect2>
  </sect1>

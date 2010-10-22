@@ -24,34 +24,34 @@ PostgreSQL documentation
 <synopsis>
 COMMENT ON
 {
-  TABLE <replaceable class="PARAMETER">object_name</replaceable> |
-  COLUMN <replaceable class="PARAMETER">table_name</replaceable>.<replaceable class="PARAMETER">column_name</replaceable> |
-  AGGREGATE <replaceable class="PARAMETER">agg_name</replaceable> (<replaceable class="PARAMETER">agg_type</replaceable> [, ...] ) |
+  TABLE <replaceable class="parameter">object_name</replaceable> |
+  COLUMN <replaceable class="parameter">table_name</replaceable>.<replaceable class="parameter">column_name</replaceable> |
+  AGGREGATE <replaceable class="parameter">agg_name</replaceable> (<replaceable class="parameter">agg_type</replaceable> [, ...] ) |
   CAST (<replaceable>source_type</replaceable> AS <replaceable>target_type</replaceable>) |
-  CONSTRAINT <replaceable class="PARAMETER">constraint_name</replaceable> ON <replaceable class="PARAMETER">table_name</replaceable> |
-  CONVERSION <replaceable class="PARAMETER">object_name</replaceable> |
-  DATABASE <replaceable class="PARAMETER">object_name</replaceable> |
-  DOMAIN <replaceable class="PARAMETER">object_name</replaceable> |
-  FUNCTION <replaceable class="PARAMETER">function_name</replaceable> ( [ [ <replaceable class="parameter">argmode</replaceable> ] [ <replaceable class="parameter">argname</replaceable> ] <replaceable class="parameter">argtype</replaceable> [, ...] ] ) |
-  INDEX <replaceable class="PARAMETER">object_name</replaceable> |
-  LARGE OBJECT <replaceable class="PARAMETER">large_object_oid</replaceable> |
-  OPERATOR <replaceable class="PARAMETER">operator_name</replaceable> (<replaceable class="PARAMETER">left_type</replaceable>, <replaceable class="PARAMETER">right_type</replaceable>) |
-  OPERATOR CLASS <replaceable class="PARAMETER">object_name</replaceable> USING <replaceable class="parameter">index_method</replaceable> |
-  OPERATOR FAMILY <replaceable class="PARAMETER">object_name</replaceable> USING <replaceable class="parameter">index_method</replaceable> |
-  [ PROCEDURAL ] LANGUAGE <replaceable class="PARAMETER">object_name</replaceable> |
-  ROLE <replaceable class="PARAMETER">object_name</replaceable> |
-  RULE <replaceable class="PARAMETER">rule_name</replaceable> ON <replaceable class="PARAMETER">table_name</replaceable> |
-  SCHEMA <replaceable class="PARAMETER">object_name</replaceable> |
-  SEQUENCE <replaceable class="PARAMETER">object_name</replaceable> |
-  TABLESPACE <replaceable class="PARAMETER">object_name</replaceable> |
-  TEXT SEARCH CONFIGURATION <replaceable class="PARAMETER">object_name</replaceable> |
-  TEXT SEARCH DICTIONARY <replaceable class="PARAMETER">object_name</replaceable> |
-  TEXT SEARCH PARSER <replaceable class="PARAMETER">object_name</replaceable> |
-  TEXT SEARCH TEMPLATE <replaceable class="PARAMETER">object_name</replaceable> |
-  TRIGGER <replaceable class="PARAMETER">trigger_name</replaceable> ON <replaceable class="PARAMETER">table_name</replaceable> |
-  TYPE <replaceable class="PARAMETER">object_name</replaceable> |
-  VIEW <replaceable class="PARAMETER">object_name</replaceable>
-} IS '<replaceable class="PARAMETER">text</replaceable>'
+  CONSTRAINT <replaceable class="parameter">constraint_name</replaceable> ON <replaceable class="parameter">table_name</replaceable> |
+  CONVERSION <replaceable class="parameter">object_name</replaceable> |
+  DATABASE <replaceable class="parameter">object_name</replaceable> |
+  DOMAIN <replaceable class="parameter">object_name</replaceable> |
+  FUNCTION <replaceable class="parameter">function_name</replaceable> ( [ [ <replaceable class="parameter">argmode</replaceable> ] [ <replaceable class="parameter">argname</replaceable> ] <replaceable class="parameter">argtype</replaceable> [, ...] ] ) |
+  INDEX <replaceable class="parameter">object_name</replaceable> |
+  LARGE OBJECT <replaceable class="parameter">large_object_oid</replaceable> |
+  OPERATOR <replaceable class="parameter">operator_name</replaceable> (<replaceable class="parameter">left_type</replaceable>, <replaceable class="parameter">right_type</replaceable>) |
+  OPERATOR CLASS <replaceable class="parameter">object_name</replaceable> USING <replaceable class="parameter">index_method</replaceable> |
+  OPERATOR FAMILY <replaceable class="parameter">object_name</replaceable> USING <replaceable class="parameter">index_method</replaceable> |
+  [ PROCEDURAL ] LANGUAGE <replaceable class="parameter">object_name</replaceable> |
+  ROLE <replaceable class="parameter">object_name</replaceable> |
+  RULE <replaceable class="parameter">rule_name</replaceable> ON <replaceable class="parameter">table_name</replaceable> |
+  SCHEMA <replaceable class="parameter">object_name</replaceable> |
+  SEQUENCE <replaceable class="parameter">object_name</replaceable> |
+  TABLESPACE <replaceable class="parameter">object_name</replaceable> |
+  TEXT SEARCH CONFIGURATION <replaceable class="parameter">object_name</replaceable> |
+  TEXT SEARCH DICTIONARY <replaceable class="parameter">object_name</replaceable> |
+  TEXT SEARCH PARSER <replaceable class="parameter">object_name</replaceable> |
+  TEXT SEARCH TEMPLATE <replaceable class="parameter">object_name</replaceable> |
+  TRIGGER <replaceable class="parameter">trigger_name</replaceable> ON <replaceable class="parameter">table_name</replaceable> |
+  TYPE <replaceable class="parameter">object_name</replaceable> |
+  VIEW <replaceable class="parameter">object_name</replaceable>
+} IS '<replaceable class="parameter">text</replaceable>'
 </synopsis>
  </refsynopsisdiv>
 

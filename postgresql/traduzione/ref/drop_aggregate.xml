@@ -22,7 +22,7 @@ PostgreSQL documentation
 
  <refsynopsisdiv>
 <synopsis>
-DROP AGGREGATE [ IF EXISTS ] <replaceable class="PARAMETER">name</replaceable> ( <replaceable class="PARAMETER">type</replaceable> [ , ... ] ) [ CASCADE | RESTRICT ]
+DROP AGGREGATE [ IF EXISTS ] <replaceable class="parameter">name</replaceable> ( <replaceable class="parameter">type</replaceable> [ , ... ] ) [ CASCADE | RESTRICT ]
 </synopsis>
  </refsynopsisdiv>
 

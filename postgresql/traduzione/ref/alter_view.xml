@@ -22,9 +22,9 @@ PostgreSQL documentation
 
  <refsynopsisdiv>
 <synopsis>
-ALTER VIEW <replaceable class="parameter">name</replaceable> ALTER [ COLUMN ] <replaceable class="PARAMETER">column</replaceable> SET DEFAULT <replaceable class="PARAMETER">expression</replaceable>
-ALTER VIEW <replaceable class="parameter">name</replaceable> ALTER [ COLUMN ] <replaceable class="PARAMETER">column</replaceable> DROP DEFAULT
-ALTER VIEW <replaceable class="parameter">name</replaceable> OWNER TO <replaceable class="PARAMETER">new_owner</replaceable>
+ALTER VIEW <replaceable class="parameter">name</replaceable> ALTER [ COLUMN ] <replaceable class="parameter">column</replaceable> SET DEFAULT <replaceable class="parameter">expression</replaceable>
+ALTER VIEW <replaceable class="parameter">name</replaceable> ALTER [ COLUMN ] <replaceable class="parameter">column</replaceable> DROP DEFAULT
+ALTER VIEW <replaceable class="parameter">name</replaceable> OWNER TO <replaceable class="parameter">new_owner</replaceable>
 ALTER VIEW <replaceable class="parameter">name</replaceable> RENAME TO <replaceable class="parameter">new_name</replaceable>
 ALTER VIEW <replaceable class="parameter">name</replaceable> SET SCHEMA <replaceable class="parameter">new_schema</replaceable>
 </synopsis>
@@ -78,7 +78,7 @@ ALTER VIEW <replaceable class="parameter">name</replaceable> SET SCHEMA <replace
    </varlistentry>
 
    <varlistentry>
-    <term><replaceable class="PARAMETER">new_owner</replaceable></term>
+    <term><replaceable class="parameter">new_owner</replaceable></term>
     <listitem>
      <para>
       The user name of the new owner of the view.

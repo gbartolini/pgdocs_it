@@ -22,8 +22,8 @@ PostgreSQL documentation
 
  <refsynopsisdiv>
 <synopsis>
-INSERT INTO <replaceable class="PARAMETER">table</replaceable> [ ( <replaceable class="PARAMETER">column</replaceable> [, ...] ) ]
-    { DEFAULT VALUES | VALUES ( { <replaceable class="PARAMETER">expression</replaceable> | DEFAULT } [, ...] ) [, ...] | <replaceable class="PARAMETER">query</replaceable> }
+INSERT INTO <replaceable class="parameter">table</replaceable> [ ( <replaceable class="parameter">column</replaceable> [, ...] ) ]
+    { DEFAULT VALUES | VALUES ( { <replaceable class="parameter">expression</replaceable> | DEFAULT } [, ...] ) [, ...] | <replaceable class="parameter">query</replaceable> }
     [ RETURNING * | <replaceable class="parameter">output_expression</replaceable> [ [ AS ] <replaceable class="parameter">output_name</replaceable> ] [, ...] ]
 </synopsis>
  </refsynopsisdiv>
@@ -75,7 +75,7 @@ INSERT INTO <replaceable class="PARAMETER">table</replaceable> [ ( <replaceable 
    Use of the <literal>RETURNING</literal> clause requires <literal>SELECT</literal>
    privilege on all columns mentioned in <literal>RETURNING</literal>.
    If you use the <replaceable
-   class="PARAMETER">query</replaceable> clause to insert rows from a
+   class="parameter">query</replaceable> clause to insert rows from a
    query, you of course need to have <literal>SELECT</literal> privilege on
    any table or column used in the query.
   </para>
@@ -86,7 +86,7 @@ INSERT INTO <replaceable class="PARAMETER">table</replaceable> [ ( <replaceable 
 
   <variablelist>
    <varlistentry>
-    <term><replaceable class="PARAMETER">table</replaceable></term>
+    <term><replaceable class="parameter">table</replaceable></term>
     <listitem>
      <para>
       The name (optionally schema-qualified) of an existing table.
@@ -95,10 +95,10 @@ INSERT INTO <replaceable class="PARAMETER">table</replaceable> [ ( <replaceable 
    </varlistentry>
 
    <varlistentry>
-    <term><replaceable class="PARAMETER">column</replaceable></term>
+    <term><replaceable class="parameter">column</replaceable></term>
     <listitem>
      <para>
-      The name of a column in <replaceable class="PARAMETER">table</replaceable>.
+      The name of a column in <replaceable class="parameter">table</replaceable>.
       The column name can be qualified with a subfield name or array
       subscript, if needed.  (Inserting into only some fields of a
       composite column leaves the other fields null.)
@@ -116,11 +116,11 @@ INSERT INTO <replaceable class="PARAMETER">table</replaceable> [ ( <replaceable 
    </varlistentry>
 
    <varlistentry>
-    <term><replaceable class="PARAMETER">expression</replaceable></term>
+    <term><replaceable class="parameter">expression</replaceable></term>
     <listitem>
      <para>
       An expression or value to assign to the corresponding <replaceable
-      class="PARAMETER">column</replaceable>.
+      class="parameter">column</replaceable>.
      </para>
     </listitem>
    </varlistentry>
@@ -136,7 +136,7 @@ INSERT INTO <replaceable class="PARAMETER">table</replaceable> [ ( <replaceable 
    </varlistentry>
 
    <varlistentry>
-    <term><replaceable class="PARAMETER">query</replaceable></term>
+    <term><replaceable class="parameter">query</replaceable></term>
     <listitem>
      <para>
       A query (<command>SELECT</command> statement) that supplies the
@@ -148,19 +148,19 @@ INSERT INTO <replaceable class="PARAMETER">table</replaceable> [ ( <replaceable 
    </varlistentry>
 
    <varlistentry>
-    <term><replaceable class="PARAMETER">output_expression</replaceable></term>
+    <term><replaceable class="parameter">output_expression</replaceable></term>
     <listitem>
      <para>
       An expression to be computed and returned by the <command>INSERT</command>
       command after each row is inserted.  The expression can use any
-      column names of the <replaceable class="PARAMETER">table</replaceable>.
+      column names of the <replaceable class="parameter">table</replaceable>.
       Write <literal>*</literal> to return all columns of the inserted row(s).
      </para>
     </listitem>
    </varlistentry>
 
    <varlistentry>
-    <term><replaceable class="PARAMETER">output_name</replaceable></term>
+    <term><replaceable class="parameter">output_name</replaceable></term>
     <listitem>
      <para>
       A name to use for a returned column.
@@ -296,7 +296,7 @@ INSERT INTO distributors (did, dname) VALUES (DEFAULT, 'XYZ Widgets')
 
   <para>
    Possible limitations of the <replaceable
-   class="PARAMETER">query</replaceable> clause are documented under
+   class="parameter">query</replaceable> clause are documented under
    <xref linkend="sql-select"/>.
   </para>
  </refsect1>

@@ -22,23 +22,23 @@ PostgreSQL documentation
 
  <refsynopsisdiv>
 <synopsis>
-CREATE AGGREGATE <replaceable class="PARAMETER">name</replaceable> ( <replaceable class="PARAMETER">input_data_type</replaceable> [ , ... ] ) (
-    SFUNC = <replaceable class="PARAMETER">sfunc</replaceable>,
-    STYPE = <replaceable class="PARAMETER">state_data_type</replaceable>
-    [ , FINALFUNC = <replaceable class="PARAMETER">ffunc</replaceable> ]
-    [ , INITCOND = <replaceable class="PARAMETER">initial_condition</replaceable> ]
-    [ , SORTOP = <replaceable class="PARAMETER">sort_operator</replaceable> ]
+CREATE AGGREGATE <replaceable class="parameter">name</replaceable> ( <replaceable class="parameter">input_data_type</replaceable> [ , ... ] ) (
+    SFUNC = <replaceable class="parameter">sfunc</replaceable>,
+    STYPE = <replaceable class="parameter">state_data_type</replaceable>
+    [ , FINALFUNC = <replaceable class="parameter">ffunc</replaceable> ]
+    [ , INITCOND = <replaceable class="parameter">initial_condition</replaceable> ]
+    [ , SORTOP = <replaceable class="parameter">sort_operator</replaceable> ]
 )
 
 <phrase>or the old syntax</phrase>
 
-CREATE AGGREGATE <replaceable class="PARAMETER">name</replaceable> (
-    BASETYPE = <replaceable class="PARAMETER">base_type</replaceable>,
-    SFUNC = <replaceable class="PARAMETER">sfunc</replaceable>,
-    STYPE = <replaceable class="PARAMETER">state_data_type</replaceable>
-    [ , FINALFUNC = <replaceable class="PARAMETER">ffunc</replaceable> ]
-    [ , INITCOND = <replaceable class="PARAMETER">initial_condition</replaceable> ]
-    [ , SORTOP = <replaceable class="PARAMETER">sort_operator</replaceable> ]
+CREATE AGGREGATE <replaceable class="parameter">name</replaceable> (
+    BASETYPE = <replaceable class="parameter">base_type</replaceable>,
+    SFUNC = <replaceable class="parameter">sfunc</replaceable>,
+    STYPE = <replaceable class="parameter">state_data_type</replaceable>
+    [ , FINALFUNC = <replaceable class="parameter">ffunc</replaceable> ]
+    [ , INITCOND = <replaceable class="parameter">initial_condition</replaceable> ]
+    [ , SORTOP = <replaceable class="parameter">sort_operator</replaceable> ]
 )
 </synopsis>
  </refsynopsisdiv>
@@ -74,19 +74,19 @@ CREATE AGGREGATE <replaceable class="PARAMETER">name</replaceable> (
    An aggregate function is made from one or two ordinary
    functions:
    a state transition function
-   <replaceable class="PARAMETER">sfunc</replaceable>,
+   <replaceable class="parameter">sfunc</replaceable>,
    and an optional final calculation function
-   <replaceable class="PARAMETER">ffunc</replaceable>.
+   <replaceable class="parameter">ffunc</replaceable>.
    These are used as follows:
 <programlisting>
-<replaceable class="PARAMETER">sfunc</replaceable>( internal-state, next-data-values ) ---> next-internal-state
-<replaceable class="PARAMETER">ffunc</replaceable>( internal-state ) ---> aggregate-value
+<replaceable class="parameter">sfunc</replaceable>( internal-state, next-data-values ) ---> next-internal-state
+<replaceable class="parameter">ffunc</replaceable>( internal-state ) ---> aggregate-value
 </programlisting>
   </para>
 
   <para>
    <productname>PostgreSQL</productname> creates a temporary variable
-   of data type <replaceable class="PARAMETER">stype</replaceable>
+   of data type <replaceable class="parameter">stype</replaceable>
    to hold the current internal state of the aggregate.  At each input row,
    the aggregate argument value(s) are calculated and
    the state transition function is invoked with the current state value
@@ -117,9 +117,9 @@ CREATE AGGREGATE <replaceable class="PARAMETER">name</replaceable> (
    all-nonnull input values.
    This is handy for implementing aggregates like <function>max</function>.
    Note that this behavior is only available when
-   <replaceable class="PARAMETER">state_data_type</replaceable>
+   <replaceable class="parameter">state_data_type</replaceable>
    is the same as the first
-   <replaceable class="PARAMETER">input_data_type</replaceable>.
+   <replaceable class="parameter">input_data_type</replaceable>.
    When these types are different, you must supply a nonnull initial
    condition or use a nonstrict transition function.
   </para>
@@ -171,7 +171,7 @@ SELECT col FROM tab ORDER BY col USING sortop LIMIT 1;
 
   <variablelist>
    <varlistentry>
-    <term><replaceable class="PARAMETER">name</replaceable></term>
+    <term><replaceable class="parameter">name</replaceable></term>
     <listitem>
      <para>
       The name (optionally schema-qualified) of the aggregate function
@@ -181,7 +181,7 @@ SELECT col FROM tab ORDER BY col USING sortop LIMIT 1;
    </varlistentry>
 
    <varlistentry>
-    <term><replaceable class="PARAMETER">input_data_type</replaceable></term>
+    <term><replaceable class="parameter">input_data_type</replaceable></term>
     <listitem>
      <para>
       An input data type on which this aggregate function operates.
@@ -193,7 +193,7 @@ SELECT col FROM tab ORDER BY col USING sortop LIMIT 1;
    </varlistentry>
 
    <varlistentry>
-    <term><replaceable class="PARAMETER">base_type</replaceable></term>
+    <term><replaceable class="parameter">base_type</replaceable></term>
     <listitem>
      <para>
       In the old syntax for <command>CREATE AGGREGATE</command>, the input data type
@@ -207,18 +207,18 @@ SELECT col FROM tab ORDER BY col USING sortop LIMIT 1;
    </varlistentry>
 
    <varlistentry>
-    <term><replaceable class="PARAMETER">sfunc</replaceable></term>
+    <term><replaceable class="parameter">sfunc</replaceable></term>
     <listitem>
      <para>
       The name of the state transition function to be called for each
-      input row.  For an <replaceable class="PARAMETER">N</replaceable>-argument
-      aggregate function, the <replaceable class="PARAMETER">sfunc</replaceable>
-      must take <replaceable class="PARAMETER">N</replaceable>+1 arguments,
+      input row.  For an <replaceable class="parameter">N</replaceable>-argument
+      aggregate function, the <replaceable class="parameter">sfunc</replaceable>
+      must take <replaceable class="parameter">N</replaceable>+1 arguments,
       the first being of type <replaceable
-      class="PARAMETER">state_data_type</replaceable> and the rest
+      class="parameter">state_data_type</replaceable> and the rest
       matching the declared input data type(s) of the aggregate.
       The function must return a value of type <replaceable
-      class="PARAMETER">state_data_type</replaceable>.  This function
+      class="parameter">state_data_type</replaceable>.  This function
       takes the current state value and the current input data value(s),
       and returns the next state value.
      </para>
@@ -226,7 +226,7 @@ SELECT col FROM tab ORDER BY col USING sortop LIMIT 1;
    </varlistentry>
 
    <varlistentry>
-    <term><replaceable class="PARAMETER">state_data_type</replaceable></term>
+    <term><replaceable class="parameter">state_data_type</replaceable></term>
     <listitem>
      <para>
       The data type for the aggregate's state value.
@@ -235,36 +235,36 @@ SELECT col FROM tab ORDER BY col USING sortop LIMIT 1;
    </varlistentry>
 
    <varlistentry>
-    <term><replaceable class="PARAMETER">ffunc</replaceable></term>
+    <term><replaceable class="parameter">ffunc</replaceable></term>
     <listitem>
      <para>
       The name of the final function called to compute the aggregate's
       result after all input rows have been traversed.  The function
       must take a single argument of type <replaceable
-      class="PARAMETER">state_data_type</replaceable>.  The return
+      class="parameter">state_data_type</replaceable>.  The return
       data type of the aggregate is defined as the return type of this
-      function.  If <replaceable class="PARAMETER">ffunc</replaceable>
+      function.  If <replaceable class="parameter">ffunc</replaceable>
       is not specified, then the ending state value is used as the
       aggregate's result, and the return type is <replaceable
-      class="PARAMETER">state_data_type</replaceable>.
+      class="parameter">state_data_type</replaceable>.
      </para>
     </listitem>
    </varlistentry>
 
    <varlistentry>
-    <term><replaceable class="PARAMETER">initial_condition</replaceable></term>
+    <term><replaceable class="parameter">initial_condition</replaceable></term>
     <listitem>
      <para>
       The initial setting for the state value.  This must be a string
       constant in the form accepted for the data type <replaceable
-      class="PARAMETER">state_data_type</replaceable>.  If not
+      class="parameter">state_data_type</replaceable>.  If not
       specified, the state value starts out null.
      </para>
     </listitem>
    </varlistentry>
 
    <varlistentry>
-    <term><replaceable class="PARAMETER">sort_operator</replaceable></term>
+    <term><replaceable class="parameter">sort_operator</replaceable></term>
     <listitem>
      <para>
       The associated sort operator for a <function>MIN</function>- or

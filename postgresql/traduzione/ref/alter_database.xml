@@ -22,22 +22,22 @@ PostgreSQL documentation
 
  <refsynopsisdiv>
 <synopsis>
-ALTER DATABASE <replaceable class="PARAMETER">name</replaceable> [ [ WITH ] <replaceable class="PARAMETER">option</replaceable> [ ... ] ]
+ALTER DATABASE <replaceable class="parameter">name</replaceable> [ [ WITH ] <replaceable class="parameter">option</replaceable> [ ... ] ]
 
-<phrase>where <replaceable class="PARAMETER">option</replaceable> can be:</phrase>
+<phrase>where <replaceable class="parameter">option</replaceable> can be:</phrase>
 
-    CONNECTION LIMIT <replaceable class="PARAMETER">connlimit</replaceable>
+    CONNECTION LIMIT <replaceable class="parameter">connlimit</replaceable>
 
-ALTER DATABASE <replaceable class="PARAMETER">name</replaceable> RENAME TO <replaceable>new_name</replaceable>
+ALTER DATABASE <replaceable class="parameter">name</replaceable> RENAME TO <replaceable>new_name</replaceable>
 
-ALTER DATABASE <replaceable class="PARAMETER">name</replaceable> OWNER TO <replaceable>new_owner</replaceable>
+ALTER DATABASE <replaceable class="parameter">name</replaceable> OWNER TO <replaceable>new_owner</replaceable>
 
-ALTER DATABASE <replaceable class="PARAMETER">name</replaceable> SET TABLESPACE <replaceable class="PARAMETER">new_tablespace</replaceable>
+ALTER DATABASE <replaceable class="parameter">name</replaceable> SET TABLESPACE <replaceable class="parameter">new_tablespace</replaceable>
 
-ALTER DATABASE <replaceable class="PARAMETER">name</replaceable> SET <replaceable>configuration_parameter</replaceable> { TO | = } { <replaceable>value</replaceable> | DEFAULT }
-ALTER DATABASE <replaceable class="PARAMETER">name</replaceable> SET <replaceable>configuration_parameter</replaceable> FROM CURRENT
-ALTER DATABASE <replaceable class="PARAMETER">name</replaceable> RESET <replaceable>configuration_parameter</replaceable>
-ALTER DATABASE <replaceable class="PARAMETER">name</replaceable> RESET ALL
+ALTER DATABASE <replaceable class="parameter">name</replaceable> SET <replaceable>configuration_parameter</replaceable> { TO | = } { <replaceable>value</replaceable> | DEFAULT }
+ALTER DATABASE <replaceable class="parameter">name</replaceable> SET <replaceable>configuration_parameter</replaceable> FROM CURRENT
+ALTER DATABASE <replaceable class="parameter">name</replaceable> RESET <replaceable>configuration_parameter</replaceable>
+ALTER DATABASE <replaceable class="parameter">name</replaceable> RESET ALL
 </synopsis>
  </refsynopsisdiv>
 
@@ -99,7 +99,7 @@ ALTER DATABASE <replaceable class="PARAMETER">name</replaceable> RESET ALL
 
     <variablelist>
      <varlistentry>
-      <term><replaceable class="PARAMETER">name</replaceable></term>
+      <term><replaceable class="parameter">name</replaceable></term>
       <listitem>
        <para>
         The name of the database whose attributes are to be altered.

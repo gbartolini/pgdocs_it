@@ -143,7 +143,7 @@ mydb=# select ts_headline('fr','H&ocirc;tel de la Mer',to_tsquery('fr','Hotels')
  </indexterm>
 
 <synopsis>
-unaccent(<optional><replaceable class="PARAMETER">dictionary</replaceable>, </optional> <replaceable class="PARAMETER">string</replaceable>) returns <type>text</type>
+unaccent(<optional><replaceable class="parameter">dictionary</replaceable>, </optional> <replaceable class="parameter">string</replaceable>) returns <type>text</type>
 </synopsis>
 
  <para>

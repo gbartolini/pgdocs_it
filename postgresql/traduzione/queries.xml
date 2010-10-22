@@ -1454,7 +1454,7 @@ potrebbe essere inefficiente.
 che possa essere usata in una query senza dovere effettivamente creare e popolare 
 una tabella su disco. La sintassi è
 <synopsis>
-VALUES ( <replaceable class="PARAMETER">expression</replaceable> [, ...] ) [, ...]
+VALUES ( <replaceable class="parameter">expression</replaceable> [, ...] ) [, ...]
 </synopsis>
 Ogni elenco tra parentesi di espressioni genera una riga nella tabella.
 Gli elenchi devono avere lo stesso numero di elementi (per es., il numero

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#refids=$(grep "<refentry id=" ref/*.xml | cut -f 2 -d ':' | cut -f 2 -d "\"")
+token=$(grep "linkend=" release*.xml | cut -f 2 -d ':' | cut -f 2 -d "\"")
+
+for r in $token
+do
+    s=$(echo $r | sed -e 'y/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/')
+    echo "$r - $s"
+    for f in *.xml
+    do
+        sed -e "s/$r/$s/g" $f > $f.new
+        mv $f.new $f
+    done
+done

@@ -27,7 +27,7 @@ PostgreSQL documentation
 
  <refsynopsisdiv>
 <synopsis>
-MOVE [ <replaceable class="PARAMETER">direction</replaceable> [ FROM | IN ] ] <replaceable class="PARAMETER">cursor_name</replaceable>
+MOVE [ <replaceable class="parameter">direction</replaceable> [ FROM | IN ] ] <replaceable class="parameter">cursor_name</replaceable>
 </synopsis>
  </refsynopsisdiv>
 

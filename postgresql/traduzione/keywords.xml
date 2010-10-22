@@ -3769,7 +3769,7 @@
     <entry>reserved</entry>
    </row>
    <row>
-    <entry><token>PARAMETER</token></entry>
+    <entry><token>parameter</token></entry>
     <entry></entry>
     <entry>reserved</entry>
     <entry>reserved</entry>
@@ -3777,7 +3777,7 @@
     <entry></entry>
    </row>
    <row>
-    <entry><token>PARAMETERS</token></entry>
+    <entry><token>parameterS</token></entry>
     <entry></entry>
     <entry></entry>
     <entry></entry>
@@ -3785,7 +3785,7 @@
     <entry></entry>
    </row>
    <row>
-    <entry><token>PARAMETER_MODE</token></entry>
+    <entry><token>parameter_MODE</token></entry>
     <entry></entry>
     <entry>non-reserved</entry>
     <entry>non-reserved</entry>
@@ -3793,7 +3793,7 @@
     <entry></entry>
    </row>
    <row>
-    <entry><token>PARAMETER_NAME</token></entry>
+    <entry><token>parameter_NAME</token></entry>
     <entry></entry>
     <entry>non-reserved</entry>
     <entry>non-reserved</entry>
@@ -3801,7 +3801,7 @@
     <entry></entry>
    </row>
    <row>
-    <entry><token>PARAMETER_ORDINAL_POSITION</token></entry>
+    <entry><token>parameter_ORDINAL_POSITION</token></entry>
     <entry></entry>
     <entry>non-reserved</entry>
     <entry>non-reserved</entry>
@@ -3809,7 +3809,7 @@
     <entry></entry>
    </row>
    <row>
-    <entry><token>PARAMETER_SPECIFIC_CATALOG</token></entry>
+    <entry><token>parameter_SPECIFIC_CATALOG</token></entry>
     <entry></entry>
     <entry>non-reserved</entry>
     <entry>non-reserved</entry>
@@ -3817,7 +3817,7 @@
     <entry></entry>
    </row>
    <row>
-    <entry><token>PARAMETER_SPECIFIC_NAME</token></entry>
+    <entry><token>parameter_SPECIFIC_NAME</token></entry>
     <entry></entry>
     <entry>non-reserved</entry>
     <entry>non-reserved</entry>
@@ -3825,7 +3825,7 @@
     <entry></entry>
    </row>
    <row>
-    <entry><token>PARAMETER_SPECIFIC_SCHEMA</token></entry>
+    <entry><token>parameter_SPECIFIC_SCHEMA</token></entry>
     <entry></entry>
     <entry>non-reserved</entry>
     <entry>non-reserved</entry>

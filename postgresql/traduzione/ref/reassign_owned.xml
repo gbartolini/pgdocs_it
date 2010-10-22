@@ -22,7 +22,7 @@ PostgreSQL documentation
 
  <refsynopsisdiv>
 <synopsis>
-REASSIGN OWNED BY <replaceable class="PARAMETER">old_role</replaceable> [, ...] TO <replaceable class="PARAMETER">new_role</replaceable>
+REASSIGN OWNED BY <replaceable class="parameter">old_role</replaceable> [, ...] TO <replaceable class="parameter">new_role</replaceable>
 </synopsis>
  </refsynopsisdiv>
 
@@ -41,18 +41,18 @@ REASSIGN OWNED BY <replaceable class="PARAMETER">old_role</replaceable> [, ...] 
 
   <variablelist>
    <varlistentry>
-    <term><replaceable class="PARAMETER">old_role</replaceable></term>
+    <term><replaceable class="parameter">old_role</replaceable></term>
     <listitem>
      <para>
       The name of a role. The ownership of all the objects in the
       current database owned by this role will be reassigned to
-      <replaceable class="PARAMETER">new_role</replaceable>.
+      <replaceable class="parameter">new_role</replaceable>.
      </para>
     </listitem>
    </varlistentry>
 
    <varlistentry>
-    <term><replaceable class="PARAMETER">new_role</replaceable></term>
+    <term><replaceable class="parameter">new_role</replaceable></term>
     <listitem>
      <para>
       The name of the role that will be made the new owner of the

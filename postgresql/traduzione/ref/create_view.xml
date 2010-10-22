@@ -22,8 +22,8 @@ PostgreSQL documentation
 
  <refsynopsisdiv>
 <synopsis>
-CREATE [ OR REPLACE ] [ TEMP | TEMPORARY ] VIEW <replaceable class="PARAMETER">name</replaceable> [ ( <replaceable class="PARAMETER">column_name</replaceable> [, ...] ) ]
-    AS <replaceable class="PARAMETER">query</replaceable>
+CREATE [ OR REPLACE ] [ TEMP | TEMPORARY ] VIEW <replaceable class="parameter">name</replaceable> [ ( <replaceable class="parameter">column_name</replaceable> [, ...] ) ]
+    AS <replaceable class="parameter">query</replaceable>
 </synopsis>
  </refsynopsisdiv>
 
@@ -183,7 +183,7 @@ CREATE VIEW comedies AS
    <command>CREATE VIEW</command> statement:
 <synopsis>
 CREATE VIEW <replaceable class="parameter">name</replaceable> [ ( <replaceable class="parameter">column_name</replaceable> [, ...] ) ]
-    AS <replaceable class="PARAMETER">query</replaceable>
+    AS <replaceable class="parameter">query</replaceable>
     [ WITH [ CASCADED | LOCAL ] CHECK OPTION ]
 </synopsis>
   </para>

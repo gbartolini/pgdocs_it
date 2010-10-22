@@ -24,9 +24,9 @@ PostgreSQL documentation
 
  <refsynopsisdiv>
 <synopsis>
-ALTER TYPE <replaceable class="PARAMETER">name</replaceable> RENAME TO <replaceable class="PARAMETER">new_name</replaceable>
-ALTER TYPE <replaceable class="PARAMETER">name</replaceable> OWNER TO <replaceable class="PARAMETER">new_owner</replaceable> 
-ALTER TYPE <replaceable class="PARAMETER">name</replaceable> SET SCHEMA <replaceable class="PARAMETER">new_schema</replaceable>
+ALTER TYPE <replaceable class="parameter">name</replaceable> RENAME TO <replaceable class="parameter">new_name</replaceable>
+ALTER TYPE <replaceable class="parameter">name</replaceable> OWNER TO <replaceable class="parameter">new_owner</replaceable> 
+ALTER TYPE <replaceable class="parameter">name</replaceable> SET SCHEMA <replaceable class="parameter">new_schema</replaceable>
 </synopsis>
  </refsynopsisdiv>
 
@@ -55,7 +55,7 @@ ALTER TYPE <replaceable class="PARAMETER">name</replaceable> SET SCHEMA <replace
    <para>
     <variablelist>
      <varlistentry>
-      <term><replaceable class="PARAMETER">name</replaceable></term>
+      <term><replaceable class="parameter">name</replaceable></term>
       <listitem>
        <para>
         The name (possibly schema-qualified) of an existing type to
@@ -65,7 +65,7 @@ ALTER TYPE <replaceable class="PARAMETER">name</replaceable> SET SCHEMA <replace
      </varlistentry>
 
      <varlistentry>
-      <term><replaceable class="PARAMETER">new_name</replaceable></term>
+      <term><replaceable class="parameter">new_name</replaceable></term>
       <listitem>
        <para>
         The new name for the type.
@@ -74,7 +74,7 @@ ALTER TYPE <replaceable class="PARAMETER">name</replaceable> SET SCHEMA <replace
      </varlistentry>
 
      <varlistentry>
-      <term><replaceable class="PARAMETER">new_owner</replaceable></term>
+      <term><replaceable class="parameter">new_owner</replaceable></term>
       <listitem>
        <para>
         The user name of the new owner of the type.
@@ -83,7 +83,7 @@ ALTER TYPE <replaceable class="PARAMETER">name</replaceable> SET SCHEMA <replace
      </varlistentry>
 
      <varlistentry>
-      <term><replaceable class="PARAMETER">new_schema</replaceable></term>
+      <term><replaceable class="parameter">new_schema</replaceable></term>
       <listitem>
        <para>
         The new schema for the type.

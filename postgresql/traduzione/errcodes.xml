@@ -441,13 +441,13 @@
 
 <row>
 <entry><literal>22010</literal></entry>
-<entry>INVALID INDICATOR PARAMETER VALUE</entry>
+<entry>INVALID INDICATOR parameter VALUE</entry>
 <entry>invalid_indicator_parameter_value</entry>
 </row>
 
 <row>
 <entry><literal>22023</literal></entry>
-<entry>INVALID PARAMETER VALUE</entry>
+<entry>INVALID parameter VALUE</entry>
 <entry>invalid_parameter_value</entry>
 </row>
 
@@ -495,7 +495,7 @@
 
 <row>
 <entry><literal>22002</literal></entry>
-<entry>NULL VALUE NO INDICATOR PARAMETER</entry>
+<entry>NULL VALUE NO INDICATOR parameter</entry>
 <entry>null_value_no_indicator_parameter</entry>
 </row>
 
@@ -1095,7 +1095,7 @@
 
 <row>
 <entry><literal>42P02</literal></entry>
-<entry>UNDEFINED PARAMETER</entry>
+<entry>UNDEFINED parameter</entry>
 <entry>undefined_parameter</entry>
 </row>
 
@@ -1173,7 +1173,7 @@
 
 <row>
 <entry><literal>42P08</literal></entry>
-<entry>AMBIGUOUS PARAMETER</entry>
+<entry>AMBIGUOUS parameter</entry>
 <entry>ambiguous_parameter</entry>
 </row>
 

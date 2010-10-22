@@ -8110,7 +8110,7 @@ colonne di questo tipo.
       </thead>
       <tbody>
        <row>
-        <entry><literal><function>to_tsvector(<optional> <replaceable class="PARAMETER">config</replaceable> <type>regconfig</type> , </optional> <replaceable class="PARAMETER">document</replaceable> <type>text</type>)</function></literal></entry>
+        <entry><literal><function>to_tsvector(<optional> <replaceable class="parameter">config</replaceable> <type>regconfig</type> , </optional> <replaceable class="parameter">document</replaceable> <type>text</type>)</function></literal></entry>
         <entry><type>tsvector</type></entry>
         <entry>converte un documento di testo in <type>tsvector</type></entry>
         <entry><literal>to_tsvector('english', 'The Fat Rats')</literal></entry>
@@ -8138,14 +8138,14 @@ colonne di questo tipo.
         <entry><literal>'cat' 'fat' 'rat'</literal></entry>
        </row>
        <row>
-        <entry><literal><function>to_tsquery(<optional> <replaceable class="PARAMETER">config</replaceable> <type>regconfig</type> , </optional> <replaceable class="PARAMETER">query</replaceable> <type>text</type>)</function></literal></entry>
+        <entry><literal><function>to_tsquery(<optional> <replaceable class="parameter">config</replaceable> <type>regconfig</type> , </optional> <replaceable class="parameter">query</replaceable> <type>text</type>)</function></literal></entry>
         <entry><type>tsquery</type></entry>
         <entry>normalizza le parole e le converte in <type>tsquery</type></entry>
         <entry><literal>to_tsquery('english', 'The &amp; Fat &amp; Rats')</literal></entry>
         <entry><literal>'fat' &amp; 'rat'</literal></entry>
        </row>
        <row>
-        <entry><literal><function>plainto_tsquery(<optional> <replaceable class="PARAMETER">config</replaceable> <type>regconfig</type> , </optional> <replaceable class="PARAMETER">query</replaceable> <type>text</type>)</function></literal></entry>
+        <entry><literal><function>plainto_tsquery(<optional> <replaceable class="parameter">config</replaceable> <type>regconfig</type> , </optional> <replaceable class="parameter">query</replaceable> <type>text</type>)</function></literal></entry>
         <entry><type>tsquery</type></entry>
         <entry>produce <type>tsquery</type> ignorando la punteggiatura</entry>
         <entry><literal>plainto_tsquery('english', 'The Fat Rats')</literal></entry>
@@ -8159,14 +8159,14 @@ colonne di questo tipo.
         <entry><literal>5</literal></entry>
        </row>
        <row>
-        <entry><literal><function>querytree(<replaceable class="PARAMETER">query</replaceable> <type>tsquery</type>)</function></literal></entry>
+        <entry><literal><function>querytree(<replaceable class="parameter">query</replaceable> <type>tsquery</type>)</function></literal></entry>
         <entry><type>text</type></entry>
         <entry>ottiene la parte indicizzabile di una <type>tsquery</type></entry>
         <entry><literal>querytree('foo &amp; ! bar'::tsquery)</literal></entry>
         <entry><literal>'foo'</literal></entry>
        </row>
        <row>
-        <entry><literal><function>ts_rank(<optional> <replaceable class="PARAMETER">weights</replaceable> <type>float4[]</type>, </optional> <replaceable class="PARAMETER">vector</replaceable> <type>tsvector</type>, <replaceable class="PARAMETER">query</replaceable> <type>tsquery</type> <optional>, <replaceable class="PARAMETER">normalization</replaceable> <type>integer</type> </optional>)</function></literal></entry>
+        <entry><literal><function>ts_rank(<optional> <replaceable class="parameter">weights</replaceable> <type>float4[]</type>, </optional> <replaceable class="parameter">vector</replaceable> <type>tsvector</type>, <replaceable class="parameter">query</replaceable> <type>tsquery</type> <optional>, <replaceable class="parameter">normalization</replaceable> <type>integer</type> </optional>)</function></literal></entry>
         <entry><type>float4</type></entry>
         <entry>classifica il documento per la query</entry>
         <entry><literal>ts_rank(textsearch, query)</literal></entry>
@@ -8175,10 +8175,10 @@ colonne di questo tipo.
        <row>
         <entry>
             <literal>
-                <function>ts_rank_cd(<optional> <replaceable class="PARAMETER">weights</replaceable> <type>float4[]</type>, 
-                </optional> <replaceable class="PARAMETER">vector</replaceable> <type>tsvector</type>, 
-                <replaceable class="PARAMETER">query</replaceable> <type>tsquery</type> <optional>, 
-                <replaceable class="PARAMETER">normalization</replaceable> <type>integer</type> 
+                <function>ts_rank_cd(<optional> <replaceable class="parameter">weights</replaceable> <type>float4[]</type>, 
+                </optional> <replaceable class="parameter">vector</replaceable> <type>tsvector</type>, 
+                <replaceable class="parameter">query</replaceable> <type>tsquery</type> <optional>, 
+                <replaceable class="parameter">normalization</replaceable> <type>integer</type> 
                 </optional>)</function>
             </literal>
         </entry>
@@ -8188,21 +8188,21 @@ colonne di questo tipo.
         <entry><literal>2.01317</literal></entry>
        </row>
        <row>
-        <entry><literal><function>ts_headline(<optional> <replaceable class="PARAMETER">config</replaceable> <type>regconfig</type>, </optional> <replaceable class="PARAMETER">document</replaceable> <type>text</type>, <replaceable class="PARAMETER">query</replaceable> <type>tsquery</type> <optional>, <replaceable class="PARAMETER">options</replaceable> <type>text</type> </optional>)</function></literal></entry>
+        <entry><literal><function>ts_headline(<optional> <replaceable class="parameter">config</replaceable> <type>regconfig</type>, </optional> <replaceable class="parameter">document</replaceable> <type>text</type>, <replaceable class="parameter">query</replaceable> <type>tsquery</type> <optional>, <replaceable class="parameter">options</replaceable> <type>text</type> </optional>)</function></literal></entry>
         <entry><type>text</type></entry>
         <entry>visualizza una uguaglianza di query</entry>
         <entry><literal>ts_headline('x y z', 'z'::tsquery)</literal></entry>
         <entry><literal>x y &lt;b&gt;z&lt;/b&gt;</literal></entry>
        </row>
        <row>
-        <entry><literal><function>ts_rewrite(<replaceable class="PARAMETER">query</replaceable> <type>tsquery</type>, <replaceable class="PARAMETER">target</replaceable> <type>tsquery</type>, <replaceable class="PARAMETER">substitute</replaceable> <type>tsquery</type>)</function></literal></entry>
+        <entry><literal><function>ts_rewrite(<replaceable class="parameter">query</replaceable> <type>tsquery</type>, <replaceable class="parameter">target</replaceable> <type>tsquery</type>, <replaceable class="parameter">substitute</replaceable> <type>tsquery</type>)</function></literal></entry>
         <entry><type>tsquery</type></entry>
         <entry>rimpiazza target con  sobstitute dentro la query</entry>
         <entry><literal>ts_rewrite('a &amp; b'::tsquery, 'a'::tsquery, 'foo|bar'::tsquery)</literal></entry>
         <entry><literal>'b' &amp; ( 'foo' | 'bar' )</literal></entry>
        </row>
        <row>
-        <entry><literal><function>ts_rewrite(<replaceable class="PARAMETER">query</replaceable> <type>tsquery</type>, <replaceable class="PARAMETER">select</replaceable> <type>text</type>)</function></literal></entry>
+        <entry><literal><function>ts_rewrite(<replaceable class="parameter">query</replaceable> <type>tsquery</type>, <replaceable class="parameter">select</replaceable> <type>text</type>)</function></literal></entry>
         <entry><type>tsquery</type></entry>
         <entry>rimpiazza usando i target ed i substitutes da un comando <command>SELECT</command></entry>
         <entry><literal>SELECT ts_rewrite('a &amp; b'::tsquery, 'SELECT t,s FROM aliases')</literal></entry>
@@ -8266,49 +8266,49 @@ nuove configurazioni di ricerca testo.
       </thead>
       <tbody>
        <row>
-        <entry><literal><function>ts_debug(<optional> <replaceable class="PARAMETER">config</replaceable> <type>regconfig</type>, </optional> <replaceable class="PARAMETER">document</replaceable> <type>text</type>, OUT <replaceable class="PARAMETER">alias</replaceable> <type>text</type>, OUT <replaceable class="PARAMETER">description</replaceable> <type>text</type>, OUT <replaceable class="PARAMETER">token</replaceable> <type>text</type>, OUT <replaceable class="PARAMETER">dictionaries</replaceable> <type>regdictionary[]</type>, OUT <replaceable class="PARAMETER">dictionary</replaceable> <type>regdictionary</type>, OUT <replaceable class="PARAMETER">lexemes</replaceable> <type>text[]</type>)</function></literal></entry>
+        <entry><literal><function>ts_debug(<optional> <replaceable class="parameter">config</replaceable> <type>regconfig</type>, </optional> <replaceable class="parameter">document</replaceable> <type>text</type>, OUT <replaceable class="parameter">alias</replaceable> <type>text</type>, OUT <replaceable class="parameter">description</replaceable> <type>text</type>, OUT <replaceable class="parameter">token</replaceable> <type>text</type>, OUT <replaceable class="parameter">dictionaries</replaceable> <type>regdictionary[]</type>, OUT <replaceable class="parameter">dictionary</replaceable> <type>regdictionary</type>, OUT <replaceable class="parameter">lexemes</replaceable> <type>text[]</type>)</function></literal></entry>
         <entry><type>setof record</type></entry>
         <entry>testa una configurazione</entry>
         <entry><literal>ts_debug('english', 'The Brightest supernovaes')</literal></entry>
         <entry><literal>(asciiword,"Word, all ASCII",The,{english_stem},english_stem,{}) ...</literal></entry>
        </row>
        <row>
-        <entry><literal><function>ts_lexize(<replaceable class="PARAMETER">dict</replaceable> <type>regdictionary</type>, <replaceable class="PARAMETER">token</replaceable> <type>text</type>)</function></literal></entry>
+        <entry><literal><function>ts_lexize(<replaceable class="parameter">dict</replaceable> <type>regdictionary</type>, <replaceable class="parameter">token</replaceable> <type>text</type>)</function></literal></entry>
         <entry><type>text[]</type></entry>
         <entry>testa un dizionario</entry>
         <entry><literal>ts_lexize('english_stem', 'stars')</literal></entry>
         <entry><literal>{star}</literal></entry>
        </row>
        <row>
-        <entry><literal><function>ts_parse(<replaceable class="PARAMETER">parser_name</replaceable> <type>text</type>, <replaceable class="PARAMETER">document</replaceable> <type>text</type>, OUT <replaceable class="PARAMETER">tokid</replaceable> <type>integer</type>, OUT <replaceable class="PARAMETER">token</replaceable> <type>text</type>)</function></literal></entry>
+        <entry><literal><function>ts_parse(<replaceable class="parameter">parser_name</replaceable> <type>text</type>, <replaceable class="parameter">document</replaceable> <type>text</type>, OUT <replaceable class="parameter">tokid</replaceable> <type>integer</type>, OUT <replaceable class="parameter">token</replaceable> <type>text</type>)</function></literal></entry>
         <entry><type>setof record</type></entry>
         <entry>testa un parser</entry>
         <entry><literal>ts_parse('default', 'foo - bar')</literal></entry>
         <entry><literal>(1,foo) ...</literal></entry>
        </row>
        <row>
-        <entry><literal><function>ts_parse(<replaceable class="PARAMETER">parser_oid</replaceable> <type>oid</type>, <replaceable class="PARAMETER">document</replaceable> <type>text</type>, OUT <replaceable class="PARAMETER">tokid</replaceable> <type>integer</type>, OUT <replaceable class="PARAMETER">token</replaceable> <type>text</type>)</function></literal></entry>
+        <entry><literal><function>ts_parse(<replaceable class="parameter">parser_oid</replaceable> <type>oid</type>, <replaceable class="parameter">document</replaceable> <type>text</type>, OUT <replaceable class="parameter">tokid</replaceable> <type>integer</type>, OUT <replaceable class="parameter">token</replaceable> <type>text</type>)</function></literal></entry>
         <entry><type>setof record</type></entry>
         <entry>testa un parser</entry>
         <entry><literal>ts_parse(3722, 'foo - bar')</literal></entry>
         <entry><literal>(1,foo) ...</literal></entry>
        </row>
        <row>
-        <entry><literal><function>ts_token_type(<replaceable class="PARAMETER">parser_name</replaceable> <type>text</type>, OUT <replaceable class="PARAMETER">tokid</replaceable> <type>integer</type>, OUT <replaceable class="PARAMETER">alias</replaceable> <type>text</type>, OUT <replaceable class="PARAMETER">description</replaceable> <type>text</type>)</function></literal></entry>
+        <entry><literal><function>ts_token_type(<replaceable class="parameter">parser_name</replaceable> <type>text</type>, OUT <replaceable class="parameter">tokid</replaceable> <type>integer</type>, OUT <replaceable class="parameter">alias</replaceable> <type>text</type>, OUT <replaceable class="parameter">description</replaceable> <type>text</type>)</function></literal></entry>
         <entry><type>setof record</type></entry>
         <entry>ottiene i tipi di token definiti dal parser</entry>
         <entry><literal>ts_token_type('default')</literal></entry>
         <entry><literal>(1,asciiword,"Word, all ASCII") ...</literal></entry>
        </row>
        <row>
-        <entry><literal><function>ts_token_type(<replaceable class="PARAMETER">parser_oid</replaceable> <type>oid</type>, OUT <replaceable class="PARAMETER">tokid</replaceable> <type>integer</type>, OUT <replaceable class="PARAMETER">alias</replaceable> <type>text</type>, OUT <replaceable class="PARAMETER">description</replaceable> <type>text</type>)</function></literal></entry>
+        <entry><literal><function>ts_token_type(<replaceable class="parameter">parser_oid</replaceable> <type>oid</type>, OUT <replaceable class="parameter">tokid</replaceable> <type>integer</type>, OUT <replaceable class="parameter">alias</replaceable> <type>text</type>, OUT <replaceable class="parameter">description</replaceable> <type>text</type>)</function></literal></entry>
         <entry><type>setof record</type></entry>
         <entry>ottiene i tipi di token definiti dal parser</entry>
         <entry><literal>ts_token_type(3722)</literal></entry>
         <entry><literal>(1,asciiword,"Word, all ASCII") ...</literal></entry>
        </row>
        <row>
-        <entry><literal><function>ts_stat(<replaceable class="PARAMETER">sqlquery</replaceable> <type>text</type>, <optional> <replaceable class="PARAMETER">weights</replaceable> <type>text</type>, </optional> OUT <replaceable class="PARAMETER">word</replaceable> <type>text</type>, OUT <replaceable class="PARAMETER">ndoc</replaceable> <type>integer</type>, OUT <replaceable class="PARAMETER">nentry</replaceable> <type>integer</type>)</function></literal></entry>
+        <entry><literal><function>ts_stat(<replaceable class="parameter">sqlquery</replaceable> <type>text</type>, <optional> <replaceable class="parameter">weights</replaceable> <type>text</type>, </optional> OUT <replaceable class="parameter">word</replaceable> <type>text</type>, OUT <replaceable class="parameter">ndoc</replaceable> <type>integer</type>, OUT <replaceable class="parameter">nentry</replaceable> <type>integer</type>)</function></literal></entry>
         <entry><type>setof record</type></entry>
         <entry>ottiene le statistiche di una colonna <type>tsvector</type></entry>
         <entry><literal>ts_stat('SELECT vector from apod')</literal></entry>

@@ -22,47 +22,47 @@ PostgreSQL documentation
 
  <refsynopsisdiv>
 <synopsis>
-ALTER TABLE [ ONLY ] <replaceable class="PARAMETER">name</replaceable> [ * ]
-    <replaceable class="PARAMETER">action</replaceable> [, ... ]
-ALTER TABLE [ ONLY ] <replaceable class="PARAMETER">name</replaceable> [ * ]
-    RENAME [ COLUMN ] <replaceable class="PARAMETER">column</replaceable> TO <replaceable class="PARAMETER">new_column</replaceable>
-ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
-    RENAME TO <replaceable class="PARAMETER">new_name</replaceable>
-ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
-    SET SCHEMA <replaceable class="PARAMETER">new_schema</replaceable>
+ALTER TABLE [ ONLY ] <replaceable class="parameter">name</replaceable> [ * ]
+    <replaceable class="parameter">action</replaceable> [, ... ]
+ALTER TABLE [ ONLY ] <replaceable class="parameter">name</replaceable> [ * ]
+    RENAME [ COLUMN ] <replaceable class="parameter">column</replaceable> TO <replaceable class="parameter">new_column</replaceable>
+ALTER TABLE <replaceable class="parameter">name</replaceable>
+    RENAME TO <replaceable class="parameter">new_name</replaceable>
+ALTER TABLE <replaceable class="parameter">name</replaceable>
+    SET SCHEMA <replaceable class="parameter">new_schema</replaceable>
 
-<phrase>where <replaceable class="PARAMETER">action</replaceable> is one of:</phrase>
+<phrase>where <replaceable class="parameter">action</replaceable> is one of:</phrase>
 
-    ADD [ COLUMN ] <replaceable class="PARAMETER">column</replaceable> <replaceable class="PARAMETER">type</replaceable> [ <replaceable class="PARAMETER">column_constraint</replaceable> [ ... ] ]
-    DROP [ COLUMN ] [ IF EXISTS ] <replaceable class="PARAMETER">column</replaceable> [ RESTRICT | CASCADE ]
-    ALTER [ COLUMN ] <replaceable class="PARAMETER">column</replaceable> [ SET DATA ] TYPE <replaceable class="PARAMETER">type</replaceable> [ USING <replaceable class="PARAMETER">expression</replaceable> ]
-    ALTER [ COLUMN ] <replaceable class="PARAMETER">column</replaceable> SET DEFAULT <replaceable class="PARAMETER">expression</replaceable>
-    ALTER [ COLUMN ] <replaceable class="PARAMETER">column</replaceable> DROP DEFAULT
-    ALTER [ COLUMN ] <replaceable class="PARAMETER">column</replaceable> { SET | DROP } NOT NULL
-    ALTER [ COLUMN ] <replaceable class="PARAMETER">column</replaceable> SET STATISTICS <replaceable class="PARAMETER">integer</replaceable>
-    ALTER [ COLUMN ] <replaceable class="PARAMETER">column</replaceable> SET ( <replaceable class="PARAMETER">attribute_option</replaceable> = <replaceable class="PARAMETER">value</replaceable> [, ... ] )
-    ALTER [ COLUMN ] <replaceable class="PARAMETER">column</replaceable> RESET ( <replaceable class="PARAMETER">attribute_option</replaceable> [, ... ] )
-    ALTER [ COLUMN ] <replaceable class="PARAMETER">column</replaceable> SET STORAGE { PLAIN | EXTERNAL | EXTENDED | MAIN }
-    ADD <replaceable class="PARAMETER">table_constraint</replaceable>
-    DROP CONSTRAINT [ IF EXISTS ]  <replaceable class="PARAMETER">constraint_name</replaceable> [ RESTRICT | CASCADE ]
-    DISABLE TRIGGER [ <replaceable class="PARAMETER">trigger_name</replaceable> | ALL | USER ]
-    ENABLE TRIGGER [ <replaceable class="PARAMETER">trigger_name</replaceable> | ALL | USER ]
-    ENABLE REPLICA TRIGGER <replaceable class="PARAMETER">trigger_name</replaceable>
-    ENABLE ALWAYS TRIGGER <replaceable class="PARAMETER">trigger_name</replaceable>
-    DISABLE RULE <replaceable class="PARAMETER">rewrite_rule_name</replaceable>
-    ENABLE RULE <replaceable class="PARAMETER">rewrite_rule_name</replaceable>
-    ENABLE REPLICA RULE <replaceable class="PARAMETER">rewrite_rule_name</replaceable>
-    ENABLE ALWAYS RULE <replaceable class="PARAMETER">rewrite_rule_name</replaceable>
-    CLUSTER ON <replaceable class="PARAMETER">index_name</replaceable>
+    ADD [ COLUMN ] <replaceable class="parameter">column</replaceable> <replaceable class="parameter">type</replaceable> [ <replaceable class="parameter">column_constraint</replaceable> [ ... ] ]
+    DROP [ COLUMN ] [ IF EXISTS ] <replaceable class="parameter">column</replaceable> [ RESTRICT | CASCADE ]
+    ALTER [ COLUMN ] <replaceable class="parameter">column</replaceable> [ SET DATA ] TYPE <replaceable class="parameter">type</replaceable> [ USING <replaceable class="parameter">expression</replaceable> ]
+    ALTER [ COLUMN ] <replaceable class="parameter">column</replaceable> SET DEFAULT <replaceable class="parameter">expression</replaceable>
+    ALTER [ COLUMN ] <replaceable class="parameter">column</replaceable> DROP DEFAULT
+    ALTER [ COLUMN ] <replaceable class="parameter">column</replaceable> { SET | DROP } NOT NULL
+    ALTER [ COLUMN ] <replaceable class="parameter">column</replaceable> SET STATISTICS <replaceable class="parameter">integer</replaceable>
+    ALTER [ COLUMN ] <replaceable class="parameter">column</replaceable> SET ( <replaceable class="parameter">attribute_option</replaceable> = <replaceable class="parameter">value</replaceable> [, ... ] )
+    ALTER [ COLUMN ] <replaceable class="parameter">column</replaceable> RESET ( <replaceable class="parameter">attribute_option</replaceable> [, ... ] )
+    ALTER [ COLUMN ] <replaceable class="parameter">column</replaceable> SET STORAGE { PLAIN | EXTERNAL | EXTENDED | MAIN }
+    ADD <replaceable class="parameter">table_constraint</replaceable>
+    DROP CONSTRAINT [ IF EXISTS ]  <replaceable class="parameter">constraint_name</replaceable> [ RESTRICT | CASCADE ]
+    DISABLE TRIGGER [ <replaceable class="parameter">trigger_name</replaceable> | ALL | USER ]
+    ENABLE TRIGGER [ <replaceable class="parameter">trigger_name</replaceable> | ALL | USER ]
+    ENABLE REPLICA TRIGGER <replaceable class="parameter">trigger_name</replaceable>
+    ENABLE ALWAYS TRIGGER <replaceable class="parameter">trigger_name</replaceable>
+    DISABLE RULE <replaceable class="parameter">rewrite_rule_name</replaceable>
+    ENABLE RULE <replaceable class="parameter">rewrite_rule_name</replaceable>
+    ENABLE REPLICA RULE <replaceable class="parameter">rewrite_rule_name</replaceable>
+    ENABLE ALWAYS RULE <replaceable class="parameter">rewrite_rule_name</replaceable>
+    CLUSTER ON <replaceable class="parameter">index_name</replaceable>
     SET WITHOUT CLUSTER
     SET WITH OIDS
     SET WITHOUT OIDS
-    SET ( <replaceable class="PARAMETER">storage_parameter</replaceable> = <replaceable class="PARAMETER">value</replaceable> [, ... ] )
-    RESET ( <replaceable class="PARAMETER">storage_parameter</replaceable> [, ... ] )
-    INHERIT <replaceable class="PARAMETER">parent_table</replaceable>
-    NO INHERIT <replaceable class="PARAMETER">parent_table</replaceable>
-    OWNER TO <replaceable class="PARAMETER">new_owner</replaceable>
-    SET TABLESPACE <replaceable class="PARAMETER">new_tablespace</replaceable>
+    SET ( <replaceable class="parameter">storage_parameter</replaceable> = <replaceable class="parameter">value</replaceable> [, ... ] )
+    RESET ( <replaceable class="parameter">storage_parameter</replaceable> [, ... ] )
+    INHERIT <replaceable class="parameter">parent_table</replaceable>
+    NO INHERIT <replaceable class="parameter">parent_table</replaceable>
+    OWNER TO <replaceable class="parameter">new_owner</replaceable>
+    SET TABLESPACE <replaceable class="parameter">new_tablespace</replaceable>
 </synopsis>
  </refsynopsisdiv>
 
@@ -160,8 +160,8 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
    </varlistentry>
 
    <varlistentry>
-    <term><literal>SET ( <replaceable class="PARAMETER">attribute_option</replaceable> = <replaceable class="PARAMETER">value</replaceable> [, ... ] )</literal></term>
-    <term><literal>RESET ( <replaceable class="PARAMETER">attribute_option</replaceable> [, ... ] )</literal></term>
+    <term><literal>SET ( <replaceable class="parameter">attribute_option</replaceable> = <replaceable class="parameter">value</replaceable> [, ... ] )</literal></term>
+    <term><literal>RESET ( <replaceable class="parameter">attribute_option</replaceable> [, ... ] )</literal></term>
     <listitem>
      <para>
       This form sets or resets attribute-level options.  Currently, the only
@@ -221,7 +221,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
    </varlistentry>
 
    <varlistentry>
-    <term><literal>ADD <replaceable class="PARAMETER">table_constraint</replaceable></literal></term>
+    <term><literal>ADD <replaceable class="parameter">table_constraint</replaceable></literal></term>
     <listitem>
      <para>
       This form adds a new constraint to a table using the same syntax as
@@ -337,7 +337,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
    </varlistentry>
 
    <varlistentry>
-    <term><literal>SET ( <replaceable class="PARAMETER">storage_parameter</replaceable> = <replaceable class="PARAMETER">value</replaceable> [, ... ] )</literal></term>
+    <term><literal>SET ( <replaceable class="parameter">storage_parameter</replaceable> = <replaceable class="parameter">value</replaceable> [, ... ] )</literal></term>
     <listitem>
      <para>
       This form changes one or more storage parameters for the table.  See
@@ -355,7 +355,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
       <para>
        While <command>CREATE TABLE</command> allows <literal>OIDS</literal> to be specified
        in the <literal>WITH (<replaceable
-       class="PARAMETER">storage_parameter</replaceable>)</literal> syntax,
+       class="parameter">storage_parameter</replaceable>)</literal> syntax,
        <command>ALTER TABLE</command> does not treat <literal>OIDS</literal> as a
        storage parameter.  Instead use the <literal>SET WITH OIDS</literal>
        and <literal>SET WITHOUT OIDS</literal> forms to change OID status.
@@ -365,7 +365,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
    </varlistentry>
 
    <varlistentry>
-    <term><literal>RESET ( <replaceable class="PARAMETER">storage_parameter</replaceable> [, ... ] )</literal></term>
+    <term><literal>RESET ( <replaceable class="parameter">storage_parameter</replaceable> [, ... ] )</literal></term>
     <listitem>
      <para>
       This form resets one or more storage parameters to their
@@ -376,7 +376,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
    </varlistentry>
 
    <varlistentry>
-    <term><literal>INHERIT <replaceable class="PARAMETER">parent_table</replaceable></literal></term>
+    <term><literal>INHERIT <replaceable class="parameter">parent_table</replaceable></literal></term>
     <listitem>
      <para>
       This form adds the target table as a new child of the specified parent
@@ -400,7 +400,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
    </varlistentry>
 
    <varlistentry>
-    <term><literal>NO INHERIT <replaceable class="PARAMETER">parent_table</replaceable></literal></term>
+    <term><literal>NO INHERIT <replaceable class="parameter">parent_table</replaceable></literal></term>
     <listitem>
      <para>
       This form removes the target table from the list of children of the
@@ -488,7 +488,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
     <variablelist>
 
      <varlistentry>
-      <term><replaceable class="PARAMETER">name</replaceable></term>
+      <term><replaceable class="parameter">name</replaceable></term>
       <listitem>
        <para>
         The name (possibly schema-qualified) of an existing table to
@@ -500,7 +500,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
      </varlistentry>
 
      <varlistentry>
-      <term><replaceable class="PARAMETER">column</replaceable></term>
+      <term><replaceable class="parameter">column</replaceable></term>
       <listitem>
        <para>
         Name of a new or existing column.
@@ -509,7 +509,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
      </varlistentry>
 
      <varlistentry>
-      <term><replaceable class="PARAMETER">new_column</replaceable></term>
+      <term><replaceable class="parameter">new_column</replaceable></term>
       <listitem>
        <para>
         New name for an existing column.
@@ -518,7 +518,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
      </varlistentry>
 
      <varlistentry>
-      <term><replaceable class="PARAMETER">new_name</replaceable></term>
+      <term><replaceable class="parameter">new_name</replaceable></term>
       <listitem>
        <para>
         New name for the table.
@@ -527,7 +527,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
      </varlistentry>
 
      <varlistentry>
-      <term><replaceable class="PARAMETER">type</replaceable></term>
+      <term><replaceable class="parameter">type</replaceable></term>
       <listitem>
        <para>
         Data type of the new column, or new data type for an existing
@@ -537,7 +537,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
      </varlistentry>
 
      <varlistentry>
-      <term><replaceable class="PARAMETER">table_constraint</replaceable></term>
+      <term><replaceable class="parameter">table_constraint</replaceable></term>
       <listitem>
        <para>
         New table constraint for the table.
@@ -546,7 +546,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
      </varlistentry>
 
      <varlistentry>
-      <term><replaceable class="PARAMETER">constraint_name</replaceable></term>
+      <term><replaceable class="parameter">constraint_name</replaceable></term>
       <listitem>
        <para>
         Name of an existing constraint to drop.
@@ -575,7 +575,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
      </varlistentry>
 
      <varlistentry>
-      <term><replaceable class="PARAMETER">trigger_name</replaceable></term>
+      <term><replaceable class="parameter">trigger_name</replaceable></term>
       <listitem>
        <para>
         Name of a single trigger to disable or enable.
@@ -609,7 +609,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
      </varlistentry>
 
      <varlistentry>
-      <term><replaceable class="PARAMETER">index_name</replaceable></term>
+      <term><replaceable class="parameter">index_name</replaceable></term>
       <listitem>
        <para>
         The index name on which the table should be marked for clustering.
@@ -618,7 +618,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
      </varlistentry>
 
      <varlistentry>
-      <term><replaceable class="PARAMETER">storage_parameter</replaceable></term>
+      <term><replaceable class="parameter">storage_parameter</replaceable></term>
       <listitem>
        <para>
         The name of a table storage parameter.
@@ -627,7 +627,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
      </varlistentry>
 
      <varlistentry>
-      <term><replaceable class="PARAMETER">value</replaceable></term>
+      <term><replaceable class="parameter">value</replaceable></term>
       <listitem>
        <para>
         The new value for a table storage parameter.
@@ -637,7 +637,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
      </varlistentry>
 
      <varlistentry>
-      <term><replaceable class="PARAMETER">parent_table</replaceable></term>
+      <term><replaceable class="parameter">parent_table</replaceable></term>
       <listitem>
        <para>
         A parent table to associate or de-associate with this table.
@@ -646,7 +646,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
      </varlistentry>
 
      <varlistentry>
-      <term><replaceable class="PARAMETER">new_owner</replaceable></term>
+      <term><replaceable class="parameter">new_owner</replaceable></term>
       <listitem>
        <para>
         The user name of the new owner of the table.
@@ -655,7 +655,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
      </varlistentry>
 
      <varlistentry>
-      <term><replaceable class="PARAMETER">new_tablespace</replaceable></term>
+      <term><replaceable class="parameter">new_tablespace</replaceable></term>
       <listitem>
        <para>
         The name of the tablespace to which the table will be moved.
@@ -664,7 +664,7 @@ ALTER TABLE <replaceable class="PARAMETER">name</replaceable>
      </varlistentry>
 
      <varlistentry>
-      <term><replaceable class="PARAMETER">new_schema</replaceable></term>
+      <term><replaceable class="parameter">new_schema</replaceable></term>
       <listitem>
        <para>
         The name of the schema to which the table will be moved.

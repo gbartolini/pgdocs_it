@@ -792,7 +792,7 @@ Solamente un lock <literal>ACCESS EXCLUSIVE</literal> blocca un'istruzione
 
 
     <table tocentry="1" id="table-lock-compatibility">
-     <titlei>Modalità di lock che vanno in conflitto</title>
+     <title>Modalità di lock che vanno in conflitto</title>
      <tgroup cols="9">
       <colspec colnum="2" colname="lockst"/>
       <colspec colnum="9" colname="lockend"/>

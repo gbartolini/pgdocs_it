@@ -3473,7 +3473,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
         la funzione ritorna un array di testo di cui
         l'<replaceable>n</replaceable>-simo è la sottostringa corrispondente all'<replaceable>n</replaceable>-sima sottoespressione
         tra parentesi del modello
-        (senza contare le parentesi <quote>non catturanti</quote>; Vedere sotto per
+        (senza contare le parentesi <quote>non catturanti</quote>; si veda sotto per
         dettagli).
         Il parametro <replaceable>flag</replaceable> è una stringa di testo opzionale
         contenente zero o più flag di una lettera che cambiano il comportamento della 
@@ -3735,7 +3735,7 @@ SELECT foo FROM regexp_split_to_table('the quick brown fox', E'\\s*') AS foo;
        (eventualmente seguito da altri caratteri)
        è un <firstterm>escape</firstterm>, 
         consultare <xref linkend="posix-escape-sequences" />
-       (solo per le ARE; Nelle ERE e nelle BRE, 
+       (solo per le ARE; nelle ERE e nelle BRE, 
         viene confrontato <replaceable>c</replaceable>) </entry>
        </row>
 

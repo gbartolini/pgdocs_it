@@ -27,7 +27,7 @@
                 <a href="http://www.postgresql.org" title="PostgreSQL"><img src="http://www.postgresql.org/layout/images/docs/hdr_logo.png" width="206" height="80" alt="PostgreSQL" /></a>
             </div>
             <div id="header_dx">
-                <a href="http://www.itpug.org" title="ITPUG Italian PostgreSQL Users"><img src="images/logo.png" /></a>
+                <a href="http://www.itpug.org" title="ITPUG Italian PostgreSQL Users"><img src="images/logo.png" alt="ITPUG" width="161" height="75" /></a>
             </div>
             <br style="clear:both;" />
         </div>

@@ -2,116 +2,114 @@
 <!-- $PostgreSQL$ -->
 
  <chapter id="mvcc">
-  <title>Concurrency Control</title>
+  <title>Controllo concorrente</title>
 
   <indexterm>
-   <primary>concurrency</primary>
+   <primary>concorrenza</primary>
   </indexterm>
 
   <para>
-   This chapter describes the behavior of the
-   <productname>PostgreSQL</productname> database system when two or
-   more sessions try to access the same data at the same time.  The
-   goals in that situation are to allow efficient access for all
-   sessions while maintaining strict data integrity.  Every developer
-   of database applications should be familiar with the topics covered
-   in this chapter.
+Questo capitolo descrive il comportamento del sistema di database
+<productname>PostgreSQL</productname> quando due o più
+sessioni provano ad accedere agli stessi dati contemporaneamente. Gli obiettivi
+in questa situazione sono di permettere un accesso efficiente per tutte le sessioni
+mentre si mantiene una severa integrità dei dati. Ogni sviluppatore
+di applicazioni database dovrebbe essere familiare con gli argomenti trattati
+in questo capitolo.
   </para>
 
   <sect1 id="mvcc-intro">
-   <title>Introduction</title>
+   <title>Introduzione</title>
 
    <indexterm>
     <primary>MVCC</primary>
    </indexterm>
 
    <para>
-    <productname>PostgreSQL</productname> provides a rich set of tools 
-    for developers to manage concurrent access to data.  Internally,
-    data consistency is maintained by using a multiversion 
-    model (Multiversion Concurrency Control, <acronym>MVCC</acronym>). 
-    This means that while querying a database each transaction sees
-    a snapshot of data (a <firstterm>database version</firstterm>)
-    as it was some
-    time ago, regardless of the current state of the underlying data.
-    This protects the transaction from viewing inconsistent data that
-    could be caused by (other) concurrent transaction updates on the same
-    data rows, providing <firstterm>transaction isolation</firstterm>
-    for each database session.  <acronym>MVCC</acronym>, by eschewing
-    explicit locking methodologies of traditional database systems,
-    minimizes lock contention in order to allow for reasonable 
-    performance in multiuser environments.
+<productname>PostgreSQL</productname> fornisce agli sviluppatori un ricco insieme di strumenti
+per gestire l'accesso concorrente ai dati. Internamente, 
+la consistenza dei dati è mantenuta usando un modello multiversione
+(Multiversion Concurrency Control, <acronym>MVCC</acronym>).
+Questo significa che mentre una transazione interroga un database, vede
+un'istantanea dei dati (una <firstterm>versione del database</firstterm>)
+come era poco prima, senza curarsi dello stato attuale dei dati sottostanti.
+Questo protegge una transazione dal vedere dati inconsistenti che 
+potrebbero essere causati da (altre) transazioni di update concorrenti sulle stesse
+righe di dati, fornendo un  <firstterm>isolamento di transazione</firstterm>
+per ogni sessione di database. <acronym>MVCC</acronym>, evitando
+le metodologie di lock esplicite dei sustemi di database tradizionali,
+minimizano i lock in modo da permettere performance elevate in
+sistemi multiutente.
    </para>
 
    <para>
-    The main advantage of using the <acronym>MVCC</acronym> model of
-    concurrency control rather than locking is that in
-    <acronym>MVCC</acronym> locks acquired for querying (reading) data
-    do not conflict with locks acquired for writing data, and so
-    reading never blocks writing and writing never blocks reading.
+Il vantaggio principale dell'uso del modello di controllo concorrente <acronym>MVCC</acronym> 
+piuttosto che i meccanismi di lock è che nell'<acronym>MVCC</acronym>
+i lock acquisiti per interrogare dati (lettura), non vanno in conflitto 
+con i lock acquisiti per scrivere dati, e così 
+la lettura non blocca mai la scrittura e la scrittura non blocca mai la lettura.
    </para>
 
    <para>
-    Table- and row-level locking facilities are also available in
-    <productname>PostgreSQL</productname> for applications that cannot
-    adapt easily to <acronym>MVCC</acronym> behavior.  However, proper
-    use of <acronym>MVCC</acronym> will generally provide better
-    performance than locks.  In addition, application-defined advisory
-    locks provide a mechanism for acquiring locks that are not tied
-    to a single transaction.
+Funzionalità di locking a livello di riga e tabella sono comunque disponibili 
+in <productname>PostgreSQL</productname> per applicazioni che non si adattano
+facilmente al comportamento <acronym>MVCC</acronym>. Comunque, un uso appropriato
+di <acronym>MVCC</acronym> generalmente risulterà in performance migliori 
+rispetto ai lock. Inoltre, i lock consultivi prevedono un meccanismo 
+per l'acquisizione dei lock che non sono legati
+a una singola transazione.
    </para>
   </sect1>
 
   <sect1 id="transaction-iso">
-   <title>Transaction Isolation</title>
+   <title>Isolamento transazionale</title>
 
    <indexterm>
-    <primary>transaction isolation</primary>
+    <primary>isolamento transazionale</primary>
    </indexterm>
 
    <para>
-    The <acronym>SQL</acronym> standard defines four levels of
-    transaction isolation in terms of three phenomena that must be
-    prevented between concurrent transactions.  These undesirable
-    phenomena are:
+Lo standard <acronym>SQL</acronym> definisce quattro livelli di 
+isolamento transazionale in termini di tre fenomeni che devono essere
+preventivati tra transazioni concorrenti. Questi fenomeni indesiderati sono:
 
     <variablelist>
      <varlistentry>
       <term>
-       dirty read
-       <indexterm><primary>dirty read</primary></indexterm>
+       lettura sporca
+       <indexterm><primary>lettura sporca</primary></indexterm>
       </term>
      <listitem>
       <para>
-        A transaction reads data written by a concurrent uncommitted transaction.
+Una transazione legge i dati scritti da una transazione concorrente che non ha fatto un commit.
        </para>
       </listitem>
      </varlistentry>
 
      <varlistentry>
       <term>
-       nonrepeatable read
-       <indexterm><primary>nonrepeatable read</primary></indexterm>
+       lettura non ripetibile
+       <indexterm><primary>lettura non ripetibile </primary></indexterm>
       </term>
      <listitem>
       <para>
-        A transaction re-reads data it has previously read and finds that data
-        has been modified by another transaction (that committed since the
-        initial read).
+Una transazione legge di nuovo dati che ha letto precedentemente e scopre che i 
+dati sono stati modificati da un'altra transazione (che ha eseguito un commit dopo la 
+lettura iniziale).
        </para>
       </listitem>
      </varlistentry>
 
      <varlistentry>
       <term>
-       phantom read
-       <indexterm><primary>phantom read</primary></indexterm>
+       lettura fantasma
+       <indexterm><primary>lettura fantasma</primary></indexterm>
       </term>
      <listitem>
       <para>
-        A transaction re-executes a query returning a set of rows that satisfy a
-        search condition and finds that the set of rows satisfying the condition
-        has changed due to another recently-committed transaction.
+Una transazione esegue di nuovo una query che restituisce un insieme di righe che soddisfa
+una condizione di ricerca e scopre che l'insieme di righe che soddisfano la condizione 
+è cambiata a causa di un'altra transazione che ha eseguito un commit di recente.
        </para>
       </listitem>
      </varlistentry>
@@ -120,89 +118,90 @@
 
    <para>
     <indexterm>
-     <primary>transaction isolation level</primary>
+     <primary>livello di isolamento transazionale</primary>
+
     </indexterm>
-    The four transaction isolation levels and the corresponding
-    behaviors are described in <xref linkend="mvcc-isolevel-table"/>.
+I quattro livelli di isolamento transazionale e i comportamenti corrispondenti
+sono descritti in <xref linkend="mvcc-isolevel-table"/>.
    </para>
 
     <table tocentry="1" id="mvcc-isolevel-table">
-     <title><acronym>SQL</acronym> Transaction Isolation Levels</title>
+     <title>Livelli di isolamento di transazione <acronym>SQL</acronym></title>
      <tgroup cols="4">
       <thead>
        <row>
         <entry>
-         Isolation Level
+         Livello di isolamento
         </entry>
         <entry>
-         Dirty Read
+         Lettura sporca
         </entry>
         <entry>
-         Nonrepeatable Read
+         Lettura non ripetibile
         </entry>
         <entry>
-         Phantom Read
+         Lettura fantasma
         </entry>
        </row>
       </thead>
       <tbody>
        <row>
         <entry>
-         Read uncommitted
+         Lettura che non ha fatto commit
         </entry>
         <entry>
-         Possible
+         Possibile
         </entry>
         <entry>
-         Possible
+         Possibile
         </entry>
         <entry>
-         Possible
-        </entry>
-       </row>
-
-       <row>
-        <entry>
-         Read committed
-        </entry>
-        <entry>
-         Not possible
-        </entry>
-        <entry>
-         Possible
-        </entry>
-        <entry>
-         Possible
+         Possibile
         </entry>
        </row>
 
        <row>
         <entry>
-         Repeatable read
+         Lettura che ha fatto commit
         </entry>
         <entry>
-         Not possible
+         Non possibile
         </entry>
         <entry>
-         Not possible
+         Possibile
         </entry>
         <entry>
-         Possible
+         Possibile
         </entry>
        </row>
 
        <row>
         <entry>
-         Serializable
+         Lettura ripetibile
         </entry>
         <entry>
-         Not possible
+         Non possibile
         </entry>
         <entry>
-         Not possible
+         Non possibile
         </entry>
         <entry>
-         Not possible
+         Possibile
+        </entry>
+       </row>
+
+       <row>
+        <entry>
+         Serializzabile
+        </entry>
+        <entry>
+         Non possibile
+        </entry>
+        <entry>
+         Non possibile
+        </entry>
+        <entry>
+         Non possibile
         </entry>
        </row>
       </tbody>
@@ -210,60 +209,61 @@
     </table>
 
    <para>
-    In <productname>PostgreSQL</productname>, you can request any of the
-    four standard transaction isolation levels.  But internally, there are
-    only two distinct isolation levels, which correspond to the levels Read
-    Committed and Serializable.  When you select the level Read
-    Uncommitted you really get Read Committed, and when you select
-    Repeatable Read you really get Serializable, so the actual
-    isolation level might be stricter than what you select.  This is
-    permitted by the SQL standard: the four isolation levels only
-    define which phenomena must not happen, they do not define which
-    phenomena must happen.  The reason that <productname>PostgreSQL</productname>
-    only provides two isolation levels is that this is the only
-    sensible way to map the standard isolation levels to the multiversion
-    concurrency control architecture.  The behavior of the available
-    isolation levels is detailed in the following subsections.
+In <productname>PostgreSQL</productname>, è possibile richiedere uno qualsiasi 
+dei quattro livelli standard di isolamento di transazione. Ma internalmente, ci sono 
+solo due distinti livelli di isolamento, che corrispondono ai livelli Read
+Committed e Serializable. Quando si sceglie il livello Read Uncommitted 
+in realtà si otterrà Read Committed, e quando si sceglie 
+Repeatable Read in realtà si otterrà Serializable, così il livello di isolamento effettivo
+potrebbe essere più stretto di quello scelto. Questo è permesso dallo standard SQL:
+i quattro livelli di isolamento definiscono solo quali fenomeni 
+non devono accadere, non definiscono quali fenomeni devono accadere.
+La ragione per la quale <productname>PostgreSQL</productname>
+fornisce solo due livelli di isolamento è che questo è l'unico modo sensato
+per gestire i livelli di isolamento standard nell'architettura 
+di controllo concorrente. Il comportamento dei livelli di isolamento 
+è spiegato in dettaglio nelle sottosezioni seguenti.
    </para>
 
    <para>
-    To set the transaction isolation level of a transaction, use the
-    command <xref linkend="sql-set-transaction"/>.
+Per impostare il livello di isolamento transazionale di una transazione, usare 
+il comando <xref linkend="sql-set-transaction"/>.
    </para>
 
   <sect2 id="xact-read-committed">
-   <title>Read Committed Isolation Level</title>
+   <title>Livello di isolamento  Read Committed </title>
 
    <indexterm>
-    <primary>transaction isolation level</primary>
+    <primary>livello di isolamento transazionale</primary>
     <secondary>read committed</secondary>
    </indexterm>
 
    <para>
-    <firstterm>Read Committed</firstterm> is the default isolation
-    level in <productname>PostgreSQL</productname>.  When a transaction
-    uses this isolation level, a <command>SELECT</command> query
-    (without a <literal>FOR UPDATE/SHARE</literal> clause) sees only data
-    committed before the query began; it never sees either uncommitted
-    data or changes committed during query execution by concurrent
-    transactions.  In effect, a <command>SELECT</command> query sees
-    a snapshot of the database as of the instant the query begins to
-    run.   However, <command>SELECT</command> does see the effects
-    of previous updates executed within its own transaction, even
-    though they are not yet committed.  Also note that two successive
-    <command>SELECT</command> commands can see different data, even
-    though they are within a single transaction, if other transactions
-    commit changes during execution of the first <command>SELECT</command>.
+<firstterm>Read Committed</firstterm> è il livello di isolamento predefinito
+in <productname>PostgreSQL</productname>. Quando una transazione usa 
+questo livello di isolamento, una query <command>SELECT</command> 
+(senza clausola <literal>FOR UPDATE/SHARE</literal>) vede solo i dati 
+che sono stati sottoposti a commit prima che query iniziasse; essa non vede mai nè 
+i dati non sottoposti a commit nè i cambiamenti sottoposti a commit da transazioni  
+concorrenti durante l'esecuzione
+della query.  In effetti, una query <command>SELECT</command> vede un'istantanea
+del database nell'istante in cui è partita.
+Ad ogni modo,  <command>SELECT</command> vede gli effetti
+di update precedenti eseguite all'interno della propria transazione, 
+anche se non sono ancora stati sottoposti a commit. Notare inoltre che due 
+comandi <command>SELECT</command> possono vedere dati differenti, anche 
+se sono all'interno di una singola transazione, se altre transazioni 
+eseguono cambiamenti durante l'esecuzione della prima <command>SELECT</command>.
    </para>
 
    <para>
-    <command>UPDATE</command>, <command>DELETE</command>, <command>SELECT
-    FOR UPDATE</command>, and <command>SELECT FOR SHARE</command> commands
-    behave the same as <command>SELECT</command>
-    in terms of searching for target rows: they will only find target rows
-    that were committed as of the command start time.  However, such a target
-    row might have already been updated (or deleted or locked) by
+I comandi <command>UPDATE</command>, <command>DELETE</command>, <command>SELECT
+FOR UPDATE</command>, e <command>SELECT FOR SHARE</command> 
+si comportano allo stesso modo di <command>SELECT</command>
+che sono state sottoposte a commit dopo il momento di inizio del comando. In ogni caso, tale
+riga potrebbe essere già stata aggiornata (o cancellata, o sottoposta a lock) da un'altra
     another concurrent transaction by the time it is found.  In this case, the
+transazione concorrente nel momento che viene trovata. In questo caso, 
     would-be updater will wait for the first updating transaction to commit or
     roll back (if it is still in progress).  If the first updater rolls back,
     then its effects are negated and the second updater can proceed with
@@ -278,16 +278,24 @@
     SHARE</command>, this means it is the updated version of the row that is
     locked and returned to the client.
    </para>
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
 
    <para>
-    Because of the above rule, it is possible for an updating command to see an
-    inconsistent snapshot: it can see the effects of concurrent updating
-    commands on the same rows it is trying to update, but it
-    does not see effects of those commands on other rows in the database.
-    This behavior makes Read Committed mode unsuitable for commands that
-    involve complex search conditions; however, it is just right for simpler
-    cases.  For example, consider updating bank balances with transactions
-    like:
+A causa della regola sopra, è possibile, per un comando di aggiornamento, vedere 
+un'istantanea inconsistene: può vedere gli effetti di comandi di aggiornamento
+concorrenti sulle stesse righe che sta tentando di aggiornare, ma non vede 
+gli effetti di quei comandi sulle altre righe nel database.
+Questo comportamento rende la modalità Read Committed inadatta a comandi che 
+coinvolgono condizioni di ricerca complesse; in ogni caso, va bene per casi più semplici.
+Per esempio, considerare l'aggiornamento di saldi bancari con transazioni tipo:
 
 <screen>
 BEgin;
@@ -296,142 +304,145 @@ UPDATE accounts SET balance = balance - 100.00 WHERE acctnum = 7534;
 COMMIT;
 </screen>
 
-    If two such transactions concurrently try to change the balance of account
-    12345, we clearly want the second transaction to start with the updated
-    version of the account's row.  Because each command is affecting only a
-    predetermined row, letting it see the updated version of the row does
-    not create any troublesome inconsistency.
+Se due di quelle transazioni provano a cambiare concorrentemente il saldo dell'account 
+12345, chiaramente si vorrà che la seconda transazione cominci con la versione 
+aggiornata della riga di account. Dato che ogni comando incluisce solamente su una riga 
+predetermiata, lasciargli vedere la versione aggiornata della riga non crea 
+nessun problema di inconsistenza.
    </para>
 
    <para>
-    More complex usage can produce undesirable results in Read Committed
-    mode.  For example, consider a <command>DELETE</command> command
-    operating on data that is being both added and removed from its
-    restriction criteria by another command, e.g., assume
-    <literal>website</literal> is a two-row table with
-    <literal>website.hits</literal> equaling <literal>9</literal> and
-    <literal>10</literal>:
+Un utilizzo più complesso può produrre risultati non desiderati in modalità
+Read Committed. Per esempio, considerare un comando <command>DELETE</command>
+che opera su dati che sono stati sia aggiunti che rimossi dai suoi 
+criteri di restrizione da un altro comando, per es., sia
+<literal>website</literal> una tabella  con due righe con
+<literal>website.hits</literal> uguale a <literal>9</literal> e
+<literal>10</literal>:
 
 <screen>
 BEgin;
 UPDATE website SET hits = hits + 1;
--- run from another session:  DELETE FROM website WHERE hits = 10;
+-- eseguito da un'altra sessione:  DELETE FROM website WHERE hits = 10;
 COMMIT;
 </screen>
 
-    The <command>DELETE</command> will have no effect even though
-    there is a <literal>website.hits = 10</literal> row before and
-    after the <command>UPDATE</command>. This occurs because the
-    pre-update row value <literal>9</literal> is skipped, and when the
-    <command>UPDATE</command> completes and <command>DELETE</command>
-    obtains a lock, the new row value is no longer <literal>10</literal> but
-    <literal>11</literal>, which no longer matches the criteria.
+<command>DELETE</command> non avrà effetti dato che 
+c'è una riga <literal>website.hits = 10</literal> prima e dopo 
+l'<command>UPDATE</command>. Questo accade perchè 
+il valore di riga precedentemente aggiornato <literal>9</literal> viene saltato, e quando
+l'<command>UPDATE</command> è completo e <command>DELETE</command>
+ottiene un lock, il nuovo valore di riga non è più <literal>10</literal> ma
+<literal>11</literal>, che non corrisponde più ai criteri di ricerca.
    </para>
 
    <para>
-    Because Read Committed mode starts each command with a new snapshot
-    that includes all transactions committed up to that instant,
-    subsequent commands in the same transaction will see the effects
-    of the committed concurrent transaction in any case.  The point
-    at issue above is whether or not a <emphasis>single</emphasis> command
-    sees an absolutely consistent view of the database.
+Dato che la modalità Read Committed comincia ogni comando con una nuova istantanea
+che include tutte le transazioni sottoposte a commit fino a quell'istante,
+i comandi successivi nella stessa transazione vedranno gli effetti 
+della transazione concorrente sottoposta a commit in ogni caso. Il punto della questione 
+è se un <emphasis>singolo</emphasis> comando ha o meno una visione assolutamente consistente del database.
    </para>
 
    <para>
-    The partial transaction isolation provided by Read Committed mode
-    is adequate for many applications, and this mode is fast and simple
-    to use;  however, it is not sufficient for all cases.  Applications
-    that do complex queries and updates might require a more rigorously
-    consistent view of the database than Read Committed mode provides.
+L'isolamento transazionale parziale fornito dalla modalità Read Committed
+è adeguato per molte applicazioni, e questa modalità è veloce e semplice da usare;
+comunque, non è sufficiente per tutti i casi. Le applicazioni che 
+fanno query e aggiornamenti complessi potrebbero richiedere una visione consistente del database
+più rigorosa che quella fornita dalla modalità Read Committed.
    </para>
   </sect2>
 
   <sect2 id="xact-serializable">
-   <title>Serializable Isolation Level</title>
+   <title>Livello di isolamento serializzabile</title>
 
    <indexterm>
-    <primary>transaction isolation level</primary>
-    <secondary>serializable</secondary>
+    <primary>livello di isolamento transazionale</primary>
+    <secondary>serializzabile</secondary>
    </indexterm>
 
    <para>
-    The <firstterm>Serializable</firstterm> isolation level provides the strictest transaction
-    isolation.  This level emulates serial transaction execution,
-    as if transactions had been executed one after another, serially,
-    rather than concurrently.  However, applications using this level must
-    be prepared to retry transactions due to serialization failures.
+Il livello di isolamento <firstterm>Serializable</firstterm> fornisce l'isolamento
+transazionale più rigido. Questo livello emula l'esecuzione di transazioni seriali,
+come se le transazioni fossero state eseguite una dopo l'altra, in maniera seriale,
+invece che concorrentemente. Comunque, applicazioni che usano questo livello devono 
+essere preparate a ritentare le transazioni dopo fallimenti della serializzazione.
    </para>
 
    <para>
-    When a transaction is using the serializable level,
-    a <command>SELECT</command> query only sees data committed before the
-    transaction began; it never sees either uncommitted data or changes
-    committed
-    during transaction execution by concurrent transactions.  (However,
-    the query does see the effects of previous updates
-    executed within its own transaction, even though they are not yet
-    committed.)  This is different from Read Committed in that
-    a query in a serializable transaction
-    sees a snapshot as of the start of the <emphasis>transaction</emphasis>,
-    not as of the start
-    of the current query within the transaction.  Thus, successive
-    <command>SELECT</command> commands within a <emphasis>single</emphasis>
-    transaction see the same data, i.e., they do not see changes made by
-    other transactions that committed after their own transaction started.
-    (This behavior can be ideal for reporting applications.)
+Quando una transazione usa il livello serializzabile,
+una query <command>SELECT</command> vede i dati sottoposti a commit prima che la transazione sia iniziata;
+non vede mai nè dati non sottoposti a commit nè cambiamenti
+sottoposti a commit durante l'esecuzione di transazione 
+da parte di transazioni concorrenti. (Comunque, 
+la query vede gli effetti di aggiornamenti precedenti
+eseguiti all'interno della propria transazione, anche se non sono ancora state 
+sottoposte a commit). Questo è diverso dal Read Committed nel quale 
+una query in una transazione serializzabile 
+vede un'istantanea all'inizio della  <emphasis>transazione</emphasis>,
+non all'inizio della quey corrente all'interno della transazione. Così,
+comandi <command>SELECT</command> successivi all'interno di una <emphasis>singola</emphasis>
+transazione vedono gli stessi dati, per es., non vedono cambiamenti fatti 
+da altre transazioni che sono stati sottoposti a commit dopo che le proprie transazioni sono partite.
+(Questo comportamento può essere ideale per applicazioni di riportistica).
    </para>
 
    <para>
-    <command>UPDATE</command>, <command>DELETE</command>, <command>SELECT
-    FOR UPDATE</command>, and <command>SELECT FOR SHARE</command> commands
-    behave the same as <command>SELECT</command>
-    in terms of searching for target rows: they will only find target rows
-    that were committed as of the transaction start time.  However, such a
-    target
-    row might have already been updated (or deleted or locked) by
-    another concurrent transaction by the time it is found.  In this case, the
-    serializable transaction will wait for the first updating transaction to commit or
-    roll back (if it is still in progress).  If the first updater rolls back,
-    then its effects are negated and the serializable transaction can proceed
-    with updating the originally found row.  But if the first updater commits
-    (and actually updated or deleted the row, not just locked it)
-    then the serializable transaction will be rolled back with the message
+I comandi <command>UPDATE</command>, <command>DELETE</command>, <command>SELECT
+FOR UPDATE</command>, e <command>SELECT FOR SHARE</command> 
+si comportano come <command>SELECT</command>
+in termini di ricerca di righe: trovano solo righe che sono state sottoposte a commit
+dal momento di inizio della transazione. Comunque, quella riga
+potrebbe essere già stata aggiornata (o cancellata, o sottoposta a lock) da
+un'altra transazione concorrente, nel momento in cui è stata trovata. In questo caso,
+la transazione serializzabile aspetterà che la prima transazione esegua un commit o un
+rool back (se è ancora in corso). Se la prima transazione esegue un rollback, 
+allora i suoi effetti sono negati e la transazione serializzabile può procedere
+con l'aggiornamento della riga trovata originariamente. Ma se la prima transazione esegue un commit
+(ed effettivamente aggiorna o cancella la riga, non esegue semplicemente un lock)
+allora la transazione serializzabile sarà sottoposta a rollback con il messaggio
 
 <screen>
 ERROR:  could not serialize access due to concurrent update
 </screen>
 
-    because a serializable transaction cannot modify or lock rows changed by
-    other transactions after the serializable transaction began.
+dato che una transazione serializabile non può modificare i eseguire lock su righe 
+cambiate da altre transzioni dopo che la transazione serializzabile è iniziata.
    </para>
 
    <para>
-    When an application receives this error message, it should abort
-    the current transaction and retry the whole transaction from
-    the beginning.  The second time through, the transaction will see the
-    previously-committed change as part of its initial view of the database,
-    so there is no logical conflict in using the new version of the row
-    as the starting point for the new transaction's update.
+Quando l'applicazione riceve questo messaggio di errore, dovrebbe 
+annullare la transazione corrente e riprovare l'intera transazione dall'inizio.
+La seconda volta, la transazione vedrà il cambiamento sottoposto a commit precedentemente
+come parte della sua visione iniziale del database,
+così non c'è conflitto logico nell'usare la nuova versione della riga 
+come punto di partenza per la nuova transazione.
    </para>
 
    <para>
-    Note that only updating transactions might need to be retried; read-only
-    transactions will never have serialization conflicts.
+Notare che solo transazioni di aggiornamento potrebbero necessitare di essere riprovate; 
+transazioni a sola lettura non avranno mai conflitti di serializzazione.
    </para>
 
    <para>
-    The Serializable mode provides a rigorous guarantee that each
-    transaction sees a wholly consistent view of the database.  However,
-    the application has to be prepared to retry transactions when concurrent
-    updates make it impossible to sustain the illusion of serial execution.
-    Since the cost of redoing complex transactions can be significant,
-    serializable mode is recommended only when updating transactions contain logic
-    sufficiently complex that they might give wrong answers in Read
-    Committed mode.  Most commonly, Serializable mode is necessary when
-    a transaction executes several successive commands that must see
-    identical views of the database.
+La modalità Serializable fornisce una garanzia rigorosa che ogni 
+transazione abbia una visione completamente consistente del database. Comunque,
+l'applicazione dev'essere preparata a ritentare le transazioni quando aggiornamenti concorrenti
+rendono impossibile l'illusione di esecuzione seriale.
+Dato che il costo di rifare transazioni complesse può essere significativo,
+la modalità Serializable è raccomandata solo quando transazioni di aggiornamento contengono
+logiche sufficientemente complesse che potrebbero fornire risposte sbagliate in modalità
+Read Committed. Di solito, la modalità Serializable è necessaria quando 
+una transazione esegue diversi comandi successivi che devono avere
+visioni identiche del database.
    </para>
 
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
    <sect3 id="mvcc-serializability">
     <title>Serializable Isolation versus True Serializability</title>
 
@@ -443,17 +454,23 @@ ERROR:  could not serialize access due to concurrent update
     <primary>predicate locking</primary>
    </indexterm>
 
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
    <para>
-    The intuitive meaning (and mathematical definition) of
-    <quote>serializable</quote> execution is that any two successfully committed
-    concurrent transactions will appear to have executed strictly serially,
-    one after the other &mdash; although which one appeared to occur first might
-    not be predictable in advance.  It is important to realize that forbidding
-    the undesirable behaviors listed in <xref linkend="mvcc-isolevel-table"/>
-    is not sufficient to guarantee true serializability, and in fact
-    <productname>PostgreSQL</productname>'s Serializable mode <emphasis>does
-    not guarantee serializable execution in this sense</emphasis>.  As an example,
-    consider a table <structname>mytab</structname>, initially containing:
+Il significato intuitivo (e la definiziona matematica) di 
+esecuzione <quote>serializzabile</quote> è che qualsiasi due transazioni che hanno 
+effettuato un commit con successo appariranno come se fossero state eseguite in maniera strettamente
+seriale, una dopo l'altra - sebbene quale appaia come eseguita prima potrebbe
+non  essere prevedibile in anticipo. È importante rendersi conto che vietare  
+i comportamenti indesiderati elencati nella <xref linkend="mvcc-isolevel-table"/>
+non è sufficiente a garantire una vera serializzazione, e infatti 
+la modalità Serializable di <productname>PostgreSQL</productname> <emphasis>non
+garantisce l'esecuzione serializzabile in questo senso</emphasis>. Come esempio,
+considerare una tabella <structname>mytab</structname>, contenente inizialmente: 
 <screen>
  class | value 
 -------+-------
@@ -462,80 +479,77 @@ ERROR:  could not serialize access due to concurrent update
      2 |   100
      2 |   200
 </screen>
-    Suppose that serializable transaction A computes:
+Supporre che la transazione serializzabile A calcola:
 <screen>
 SELECT SUM(value) FROM mytab WHERE class = 1;
 </screen>
-    and then inserts the result (30) as the <structfield>value</structfield> in a
-    new row with <structfield>class</structfield><literal> = 2</literal>.  Concurrently, serializable
-    transaction B computes:
+e poi inserisce il risultato (30) come <structfield>valore</structfield> in una 
+nuova riga con <structfield>class</structfield><literal> = 2</literal>. Concorrentemente, la transazione
+serializzabile B calcola:
 <screen>
 SELECT SUM(value) FROM mytab WHERE class = 2;
 </screen>
-    and obtains the result 300, which it inserts in a new row with
-    <structfield>class</structfield><literal> = 1</literal>.  Then both transactions commit.  None of
-    the listed undesirable behaviors have occurred, yet we have a result
-    that could not have occurred in either order serially.  If A had
-    executed before B, B would have computed the sum 330, not 300, and
-    similarly the other order would have resulted in a different sum
-    computed by A.
+e ottiene il risultato 300, che inserisce in una nuova riga con
+<structfield>class</structfield><literal> = 1</literal>. Quindi entrambe le transazioni fanno il commit.
+Nessuno dei comportamenti indesiderati elencati si è presentato, ma si otterrà
+un risultato che non potrebbe essere successo in nessun ordine serialmente. 
+Se A è stata eseguita prima di B, B avrebbe calcolato la somma 330, non 300, 
+e similmente l'altro ordine sarebbe risultato in una somma diversa di quella calcolata da A.
    </para>
 
    <para>
-    To guarantee true mathematical serializability, it is necessary for
-    a database system to enforce <firstterm>predicate locking</firstterm>, which
-    means that a transaction cannot insert or modify a row that would
-    have matched the <literal>WHERE</literal> condition of a query in another concurrent
-    transaction.  For example, once transaction A has executed the query
-    <literal>SELECT ... WHERE class = 1</literal>, a predicate-locking system
-    would forbid transaction B from inserting any new row with class 1
-    until A has committed.
+Per garantire vera serializzazione matematica, è necessario per un sistema di   
+database assicurare il <firstterm>predicate locking</firstterm>, che significa che 
+una transazione non può inserire o modificare una riga che potrebbe corrispondere
+a una condizione <literal>WHERE</literal> di una query in un'altra transazione
+concorrente. Per esempio, una volta che la transazione A ha eseguito la query 
+<literal>SELECT ... WHERE class = 1</literal>, un sistema di <firstterm>predicate locking</firstterm>
+eviterebbe che la transzione B inserisse qualsiasi nuova riga con class 1 finchè
+A ha fatto commit.
      <footnote>
       <para>
-       Essentially, a predicate-locking system prevents phantom reads
-       by restricting what is written, whereas MVCC prevents them by
-       restricting what is read.
+Essenzialmente, un sistema di <firstterm>predicate locking</firstterm> previene 
+letture fantasma restringendo cosa viene scritto, mentre MVCC le previene restringendo cosa
+viene letto.
       </para>
      </footnote>
-    Such a locking system is complex to
-    implement and extremely expensive in execution, since every session must
-    be aware of the details of every query executed by every concurrent
-    transaction.  And this large expense is mostly wasted, since in
-    practice most applications do not do the sorts of things that could
-    result in problems.  (Certainly the example above is rather contrived
-    and unlikely to represent real software.)  For these reasons,
-    <productname>PostgreSQL</productname> does not implement predicate
-    locking.
+Tale sistema di locking è complesso da implementare
+e estremamente costoso in esecuzione, dato che ogni sessione deve
+fare attenzione ai dettagli di ogni query eseguita da ogni transazione concorrente.
+E questa grande spesa è per la maggior parte inutile, dato che in pratica
+la maggior parte della applicazioni non fanno il tipo di cose che potrebbero generare problemi.
+(Certamente l'esempio sopra è abbastanza forzato ed è improbabile che rappresenti 
+software reale). Per queste ragioni, 
+<productname>PostgreSQL</productname> non implementa il predicate locking.
    </para>
 
    <para>
-    In cases where the possibility of non-serializable execution
-    is a real hazard, problems can be prevented by appropriate use of
-    explicit locking.  Further discussion appears in the following
-    sections.
+In casi dove la possibilità di esecuzione non-serializzabile è realmente
+un azzardo, è possibile prevenire i problemi con un uso appropriato di 
+lock esplicito. Maggiori dettagli appaiono nelle sezioni seguenti.
    </para>
   </sect3>
   </sect2>
  </sect1>
 
   <sect1 id="explicit-locking">
-   <title>Explicit Locking</title>
+   <title>Lock esplicito</title>
 
    <indexterm>
     <primary>lock</primary>
    </indexterm>
 
    <para>
-    <productname>PostgreSQL</productname> provides various lock modes
-    to control concurrent access to data in tables.  These modes can
-    be used for application-controlled locking in situations where
-    <acronym>MVCC</acronym> does not give the desired behavior.  Also,
-    most <productname>PostgreSQL</productname> commands automatically
-    acquire locks of appropriate modes to ensure that referenced
-    tables are not dropped or modified in incompatible ways while the
-    command executes.  (For example, <command>TRUNCATE</command> cannot safely be
-    executed concurrently with other operations on the same table, so it
-    obtains an exclusive lock on the table to enforce that.)
+<productname>PostgreSQL</productname> fornisce varie modalità di lock
+per controllare accessi concorrenti ai dati nelle tabelle. Queste modalità possono
+essere usate per fare dei lock controllate dall'applicazione in situazioni dove
+<acronym>MVCC</acronym> non fornisce ilcomportamento desiderato. Inoltre, 
+la maggior parte dei comandi <productname>PostgreSQL</productname> acquisiscono 
+automaticamente lock delle modalità appropriate per assicurare che tabelle 
+a cui si fa riferimento non siano cancellate o modificate in modi incompatibili mentre
+il comando è in esecuzione. (Per esempio,  <command>TRUNCATE</command> non può essere eseguito  
+concorrentemente ad altre operazioni sulla stessa tabella in maniera sicura, e così ottiene
+un lock esclusivo sulla tabella per assicurarlo).
    </para>
 
    <para>

@@ -265,18 +265,20 @@ riga potrebbe essere già stata aggiornata (o cancellata, o sottoposta a lock) d
     another concurrent transaction by the time it is found.  In this case, the
 transazione concorrente nel momento che viene trovata. In questo caso, 
     would-be updater will wait for the first updating transaction to commit or
-    roll back (if it is still in progress).  If the first updater rolls back,
-    then its effects are negated and the second updater can proceed with
-    updating the originally found row.  If the first updater commits, the
-    second updater will ignore the row if the first updater deleted it,
-    otherwise it will attempt to apply its operation to the updated version of
-    the row.  The search condition of the command (the <literal>WHERE</literal> clause) is
-    re-evaluated to see if the updated version of the row still matches the
-    search condition.  If so, the second updater proceeds with its operation
-    using the updated version of the row.  In the case of
-    <command>SELECT FOR UPDATE</command> and <command>SELECT FOR
-    SHARE</command>, this means it is the updated version of the row that is
-    locked and returned to the client.
+    roll back (if it is still in progress).  
+    If the first updater rolls back,
+Se la prima transazione esegue un rollback,
+allora i suoi effetti sono negati e la seconda transazione di aggiornamento può procedere 
+con l'aggiornamento della riga trovata originariamente. Se la prima transazione esegue un commit, la seconda
+ignorerà la riga se la transazioni l'ha cancellata,
+altrimenti tenterà di applicare la sua operazione alla versione aggiornata della riga. 
+La condizione di ricerca del comando (la clausola <literal>WHERE</literal>) viene 
+rivalutata per vedere se la versiona ggiornata della riga corrisponde ancora alla condizione di ricerca.
+Se si, la seconda transazione procede con le sue operazioni
+usando la versione aggiornata della riga. Nel caso di 
+<command>SELECT FOR UPDATE</command> e <command>SELECT FOR
+SHARE</command>, questo significa che è la versione aggiornata della riga che
+viene sottoposta a lock e restituita al client.
    </para>
 <!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
 <!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->

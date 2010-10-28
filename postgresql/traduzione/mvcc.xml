@@ -553,11 +553,10 @@ un lock esclusivo sulla tabella per assicurarlo).
    </para>
 
    <para>
-    To examine a list of the currently outstanding locks in a database
-    server, use the
-    <link linkend="view-pg-locks"><structname>pg_locks</structname></link>
-    system view. For more information on monitoring the status of the lock
-    manager subsystem, refer to <xref linkend="monitoring"/>.
+Per esaminare un elenco dei lock attualmente presenti in un server database,
+usare la vista di sistema <link linkend="view-pg-locks"><structname>pg_locks</structname></link>.
+Per maggiori informazioni sul monitoraggio dello stato del sottosistema di gestione 
+dei lock, si veda <xref linkend="monitoring"/>.
    </para>
 
   <sect2 id="locking-tables">
@@ -568,46 +567,44 @@ un lock esclusivo sulla tabella per assicurarlo).
    </indexterm>
 
    <para>
-    The list below shows the available lock modes and the contexts in
-    which they are used automatically by
-    <productname>PostgreSQL</productname>.  You can also acquire any
-    of these locks explicitly with the command <xref
-    linkend="sql-lock"/>.
-    Remember that all of these lock modes are table-level locks,
-    even if the name contains the word
-    <quote>row</quote>; the names of the lock modes are historical.
-    To some extent the names reflect the typical usage of each lock
-    mode &mdash; but the semantics are all the same.  The only real difference
-    between one lock mode and another is the set of lock modes with
-    which each conflicts (see <xref linkend="table-lock-compatibility"/>).
-    Two transactions cannot hold locks of conflicting
-    modes on the same table at the same time.  (However, a transaction
-    never conflicts with itself.  For example, it might acquire
-    <literal>ACCESS EXCLUSIVE</literal> lock and later acquire
-    <literal>ACCESS SHARE</literal> lock on the same table.)  Non-conflicting
-    lock modes can be held concurrently by many transactions.  Notice in
-    particular that some lock modes are self-conflicting (for example,
-    an <literal>ACCESS EXCLUSIVE</literal> lock cannot be held by more than one
-    transaction at a time) while others are not self-conflicting (for example,
-    an <literal>ACCESS SHARE</literal> lock can be held by multiple transactions).
+L'elenco sottostante mostra le modalità di lock disponibili a i contesti in cui 
+sono usati automaticamente da 
+<productname>PostgreSQL</productname>.  È anche possibile ottenere uno qualsiasi di questi lock 
+esplicitamente col comando <xref linkend="sql-lock"/>.
+Ricordare che tutte queste modalità di lock sono lock a livello di tabella, 
+anche se il nome contiene la parola <quote>row</quote>; i nomi
+delle modalità di lock sono storici.
+In qualche modo i nomi rispecchiano l'utilizzo tipico di ogni modalità di lock -
+ma la semantica è sempre la stessa. L'unica vera differenza 
+tra una modalità di lock e un'altra è l'insieme di modalità di lock con le quali 
+ognuna va in conflitto (si veda <xref linkend="table-lock-compatibility"/>).
+Due transazioni non possono ottenere lock di modalità che vanno in conflitto
+sulla stessa tabella nello stesso momento. (Comunque, una transazione non va mai in conflitto 
+con sè stessa. Per esempio, potrebbe ottenere
+un lock <literal>ACCESS EXCLUSIVE</literal> e più tardi un lock 
+<literal>ACCESS SHARE</literal> sulla stessa tabella). Modalità di lock che non vanno 
+in conflitto possono essere trattenute concorrentemente da molte transazioni. Notare  
+in particolare che alcune modalità di lock vanno in conflitto con sè stesse (per esempio,  
+un lock <literal>ACCESS EXCLUSIVE</literal> non può essere trattenuto da più di una transazione alla volta)
+mentre gli altri non vanno in conflitto con sè stessi (per esempio, 
+un lock <literal>ACCESS SHARE</literal> può essere trattenuto da molteplici transazioni).
    </para>
 
      <variablelist>
-      <title>Table-level lock modes</title>
+      <title>Modalità di lock a livello di tabella</title>
       <varlistentry>
        <term>
         <literal>ACCESS SHARE</literal>
        </term>
        <listitem>
         <para>
-         Conflicts with the <literal>ACCESS EXCLUSIVE</literal> lock
-         mode only.
+Va in conflitto solamente con la modalità di lock <literal>ACCESS EXCLUSIVE</literal>.
         </para>
 
         <para>
-         The <command>SELECT</command> command acquires a lock of this mode on
-         referenced tables.  In general, any query that only <emphasis>reads</emphasis> a table
-         and does not modify it will acquire this lock mode.
+Il comando <command>SELECT</command> acquisisce un lock di questo tipo sulle tabelle    
+referenziate. In generale, qualsiasi query che <emphasis>legge</emphasis> una tabella
+e non la modifica acquisirà questo tipo di lock.    
         </para>
        </listitem>
       </varlistentry>
@@ -618,17 +615,15 @@ un lock esclusivo sulla tabella per assicurarlo).
        </term>
        <listitem>
         <para>
-         Conflicts with the <literal>EXCLUSIVE</literal> and
-         <literal>ACCESS EXCLUSIVE</literal> lock modes.
+Va in conflitto con le modalità di lock <literal>EXCLUSIVE</literal> e
+<literal>ACCESS EXCLUSIVE</literal>.
         </para>
 
         <para>
-         The <command>SELECT FOR UPDATE</command> and
-         <command>SELECT FOR SHARE</command> commands acquire a
-         lock of this mode on the target table(s) (in addition to
-         <literal>ACCESS SHARE</literal> locks on any other tables
-         that are referenced but not selected
-         <option>FOR UPDATE/FOR SHARE</option>).
+I comandi <command>SELECT FOR UPDATE</command> e <command>SELECT FOR SHARE</command>
+acquisiscono un lock di questo tipo sulla tabella/e richieste (in aggiunta a 
+dei lock <literal>ACCESS SHARE</literal> su qualsiasi altra tabella 
+che è referenziata ma non selezionata <option>FOR UPDATE/FOR SHARE</option>).
         </para>
        </listitem>
       </varlistentry>
@@ -639,18 +634,18 @@ un lock esclusivo sulla tabella per assicurarlo).
        </term>
        <listitem>
         <para>
-         Conflicts with the <literal>SHARE</literal>, <literal>SHARE ROW
-         EXCLUSIVE</literal>, <literal>EXCLUSIVE</literal>, and
-         <literal>ACCESS EXCLUSIVE</literal> lock modes.
+VA in conflitto con le modalità <literal>SHARE</literal>, <literal>SHARE ROW
+EXCLUSIVE</literal>, <literal>EXCLUSIVE</literal> e
+<literal>ACCESS EXCLUSIVE</literal>.
         </para>
 
         <para>
-         The commands <command>UPDATE</command>,
-         <command>DELETE</command>, and <command>INSERT</command>
-         acquire this lock mode on the target table (in addition to
-         <literal>ACCESS SHARE</literal> locks on any other referenced
-         tables).  In general, this lock mode will be acquired by any
-         command that <emphasis>modifies data</emphasis> in a table.
+I comandi <command>UPDATE</command>,
+<command>DELETE</command>, e <command>INSERT</command>
+acquisiscono questa modalità di lock sulla tabella desiderata (in aggiunta a 
+dei lock <literal>ACCESS SHARE</literal> su qualsiasi altra tabella referenziata).
+In generale, questa modalità di lock sarà acquisita da qualsiasi comando 
+che <emphasis>modifica i dati</emphasis> in una tabella.
         </para>
        </listitem>
       </varlistentry>
@@ -661,17 +656,17 @@ un lock esclusivo sulla tabella per assicurarlo).
        </term>
        <listitem>
         <para>
-         Conflicts with the <literal>SHARE UPDATE EXCLUSIVE</literal>,
-         <literal>SHARE</literal>, <literal>SHARE ROW
-         EXCLUSIVE</literal>, <literal>EXCLUSIVE</literal>, and
-         <literal>ACCESS EXCLUSIVE</literal> lock modes.
-         This mode protects a table against
-         concurrent schema changes and <command>VACUUM</command> runs.
+VA in conflitto con le modalità di lock <literal>SHARE UPDATE EXCLUSIVE</literal>,
+<literal>SHARE</literal>, <literal>SHARE ROW
+EXCLUSIVE</literal>, <literal>EXCLUSIVE</literal> e 
+<literal>ACCESS EXCLUSIVE</literal>.
+Questa modalità protegge una tabella rispetto 
+a cambiamenti di schema concorrenti e al <command>VACUUM</command>.
         </para>
 
         <para>
-         Acquired by <command>VACUUM</command> (without <option>FULL</option>),
-         <command>ANALYZE</command>, and <command>CREATE INDEX CONCURRENTLY</command>.
+Acquisito da <command>VACUUM</command> (senza <option>FULL</option>),
+<command>ANALYZE</command> e <command>CREATE INDEX CONCURRENTLY</command>.
         </para>
        </listitem>
       </varlistentry>
@@ -682,16 +677,16 @@ un lock esclusivo sulla tabella per assicurarlo).
        </term>
        <listitem>
         <para>
-         Conflicts with the <literal>ROW EXCLUSIVE</literal>,
-         <literal>SHARE UPDATE EXCLUSIVE</literal>, <literal>SHARE ROW
-         EXCLUSIVE</literal>, <literal>EXCLUSIVE</literal>, and
-         <literal>ACCESS EXCLUSIVE</literal> lock modes.
-         This mode protects a table against concurrent data changes.
+Va in conflitto con le modalità <literal>ROW EXCLUSIVE</literal>,
+<literal>SHARE UPDATE EXCLUSIVE</literal>, <literal>SHARE ROW
+EXCLUSIVE</literal>, <literal>EXCLUSIVE</literal> e
+<literal>ACCESS EXCLUSIVE</literal>.
+Questa modalità protegge una tabella rispetto a cambiamenti di dato concorrente.
         </para>
 
         <para>
-         Acquired by <command>CREATE INDEX</command>
-         (without <option>CONCURRENTLY</option>).
+Acquisito da <command>CREATE INDEX</command>
+(senza <option>CONCURRENTLY</option>).
         </para>
        </listitem>
       </varlistentry>
@@ -702,17 +697,17 @@ un lock esclusivo sulla tabella per assicurarlo).
        </term>
        <listitem>
         <para>
-         Conflicts with the <literal>ROW EXCLUSIVE</literal>,
-         <literal>SHARE UPDATE EXCLUSIVE</literal>,
-         <literal>SHARE</literal>, <literal>SHARE ROW
-         EXCLUSIVE</literal>, <literal>EXCLUSIVE</literal>, and
-         <literal>ACCESS EXCLUSIVE</literal> lock modes.
+Va in conflitto con le modalità <literal>ROW EXCLUSIVE</literal>,
+<literal>SHARE UPDATE EXCLUSIVE</literal>,
+<literal>SHARE</literal>, <literal>SHARE ROW
+EXCLUSIVE</literal>, <literal>EXCLUSIVE</literal> e
+<literal>ACCESS EXCLUSIVE</literal>.
         </para>
 
         <para>
-         Acquired by <command>CREATE TRIGGER</command>,
-         <command>CREATE RULE</command> (except for <literal>ON SELECT</literal>
-         rules) and in some cases <command>ALTER TABLE</command>.
+Acquisito da <command>CREATE TRIGGER</command>,
+<command>CREATE RULE</command> (ad eccezione di regole <literal>ON SELECT</literal>)
+ed in alcuni casi <command>ALTER TABLE</command>.
         </para>
        </listitem>
       </varlistentry>
@@ -723,20 +718,20 @@ un lock esclusivo sulla tabella per assicurarlo).
        </term>
        <listitem>
         <para>
-         Conflicts with the <literal>ROW SHARE</literal>, <literal>ROW
-         EXCLUSIVE</literal>, <literal>SHARE UPDATE
-         EXCLUSIVE</literal>, <literal>SHARE</literal>, <literal>SHARE
-         ROW EXCLUSIVE</literal>, <literal>EXCLUSIVE</literal>, and
-         <literal>ACCESS EXCLUSIVE</literal> lock modes.
-         This mode allows only concurrent <literal>ACCESS SHARE</literal> locks,
-         i.e., only reads from the table can proceed in parallel with a
-         transaction holding this lock mode.
+Va in conflitto con le modalità <literal>ROW SHARE</literal>, <literal>ROW
+EXCLUSIVE</literal>, <literal>SHARE UPDATE
+EXCLUSIVE</literal>, <literal>SHARE</literal>, <literal>SHARE
+ROW EXCLUSIVE</literal>, <literal>EXCLUSIVE</literal> e
+<literal>ACCESS EXCLUSIVE</literal>.
+Questa modalità permette solo lock  <literal>ACCESS SHARE</literal> concorrenti,
+per es., con una transazione che possiede questo tipo di lock  
+possono procedere in parallelo solo le letture dalla tabella.
         </para>
 
         <para>
-         This lock mode is not automatically acquired on user tables by any
-         <productname>PostgreSQL</productname> command.  However it is
-         acquired on certain system catalogs in some operations.
+Questa modalità di lock non viene acquisita automaticamente su tabelle utente da
+nessun comando <productname>PostgreSQL</productname>. Comunque viene acquisita
+su certi cataloghi di sistema in alcune operazioni.
         </para>
        </listitem>
       </varlistentry>
@@ -747,23 +742,24 @@ un lock esclusivo sulla tabella per assicurarlo).
        </term>
        <listitem>
         <para>
-         Conflicts with locks of all modes (<literal>ACCESS
-         SHARE</literal>, <literal>ROW SHARE</literal>, <literal>ROW
-         EXCLUSIVE</literal>, <literal>SHARE UPDATE
-         EXCLUSIVE</literal>, <literal>SHARE</literal>, <literal>SHARE
-         ROW EXCLUSIVE</literal>, <literal>EXCLUSIVE</literal>, and
-         <literal>ACCESS EXCLUSIVE</literal>).
-         This mode guarantees that the
-         holder is the only transaction accessing the table in any way.
+Va in conflitto con lock di tutti i tipi (<literal>ACCESS
+SHARE</literal>, <literal>ROW SHARE</literal>, <literal>ROW
+EXCLUSIVE</literal>, <literal>SHARE UPDATE
+EXCLUSIVE</literal>, <literal>SHARE</literal>, <literal>SHARE
+ROW EXCLUSIVE</literal>, <literal>EXCLUSIVE</literal> e
+<literal>ACCESS EXCLUSIVE</literal>).
+Questa modalità garantisce che chi possiede il lock 
+sia l'unica transazione che ha accesso alla tabella in qualsiasi modo.
         </para>
 
         <para>
          Acquired by the <command>DROP TABLE</command>,
-         <command>TRUNCATE</command>, <command>REINDEX</command>,
-         <command>CLUSTER</command>, and <command>VACUUM FULL</command>
-         commands, as well as most variants of <command>ALTER TABLE</command>.
-         This is also the default lock mode for <command>LOCK TABLE</command>
-         statements that do not specify a mode explicitly.
+Acquisito dai comandi <command>DROP TABLE</command>,
+<command>TRUNCATE</command>, <command>REINDEX</command>,
+<command>CLUSTER</command> e <command>VACUUM FULL</command>, 
+così come la maggior parte delle varianti di <command>ALTER TABLE</command>.
+Questa, inoltre, è la moda predefinita per le istruzioni <command>LOCK TABLE</command>
+che non specificano una modalità esplicitamente.
         </para>
        </listitem>
       </varlistentry>
@@ -771,12 +767,16 @@ un lock esclusivo sulla tabella per assicurarlo).
 
      <tip>
       <para>
-       Only an <literal>ACCESS EXCLUSIVE</literal> lock blocks a
-       <command>SELECT</command> (without <option>FOR UPDATE/SHARE</option>)
-       statement.
+Solamente un lock <literal>ACCESS EXCLUSIVE</literal> blocca un'istruzione 
+<command>SELECT</command> (senza <option>FOR UPDATE/SHARE</option>)
       </para>
      </tip>
 
+    <para>
+        <note>
+            TODO
+        </note>
+    </para>
    <para>
     Once acquired, a lock is normally held till end of transaction.  But if a
     lock is acquired after establishing a savepoint, the lock is released
@@ -790,15 +790,15 @@ un lock esclusivo sulla tabella per assicurarlo).
 
 
     <table tocentry="1" id="table-lock-compatibility">
-     <title> Conflicting lock modes</title>
+     <titlei>Modalità di lock che vanno in conflitto</title>
      <tgroup cols="9">
       <colspec colnum="2" colname="lockst"/>
       <colspec colnum="9" colname="lockend"/>
       <spanspec namest="lockst" nameend="lockend" spanname="lockreq"/>
       <thead>
        <row>
-        <entry morerows="1">Requested Lock Mode</entry>
-        <entry spanname="lockreq">Current Lock Mode</entry>
+        <entry morerows="1">Modalità di lock richiesta</entry>
+        <entry spanname="lockreq">Modalità di lock corrente</entry>
        </row>
        <row>
         <entry>ACCESS SHARE</entry>
@@ -906,114 +906,112 @@ un lock esclusivo sulla tabella per assicurarlo).
    </sect2>
 
    <sect2 id="locking-rows">
-    <title>Row-Level Locks</title>
+    <title>Lock a livello di riga</title>
 
     <para>
-     In addition to table-level locks, there are row-level locks, which
-     can be exclusive or shared locks.  An exclusive row-level lock on a
-     specific row is automatically acquired when the row is updated or
-     deleted.  The lock is held until the transaction commits or rolls
-     back, just like table-level locks.  Row-level locks do
-     not affect data querying; they block only <emphasis>writers to the same
-     row</emphasis>.
+In aggiunta ai lock a livello di tabella, ci sono lock a livello di riga, che 
+possono essere lock esclusivi o condivisi. Un lock esclusivo 
+su una specifica riga viene automaticamente acquisito quando la riga viene aggiornata
+o cancellata. Il lock è conservato fino a che la transazione fa un commit o un rollback, 
+esattamente come lock a livello di tabella. Lock a livello di riga 
+non hanno effetto sull'interrogazione dei dati; bloccano solo <emphasis>scritture sulla stessa riga</emphasis>.
     </para>
 
     <para>
-     To acquire an exclusive row-level lock on a row without actually
-     modifying the row, select the row with <command>SELECT FOR
-     UPDATE</command>.  Note that once the row-level lock is acquired,
-     the transaction can update the row multiple times without
-     fear of conflicts.
+Per ottenere un lock di riga esclusivo su una riga senza modificare effettivamente la riga,
+selezionare la riga con <command>SELECT FOR
+UPDATE</command>.  Notare che una volta che il lock di riga viene acquisito,  
+la transazione può aggiornare la riga molte volte senza
+paura di conflitti.
     </para>
 
     <para>
-     To acquire a shared row-level lock on a row, select the row with
-     <command>SELECT FOR SHARE</command>.  A shared lock does not prevent
-     other transactions from acquiring the same shared lock.  However,
-     no transaction is allowed to update, delete, or exclusively lock a
-     row on which any other transaction holds a shared lock.  Any attempt
-     to do so will block until the shared lock(s) have been released.
+Per acquisire un lock di riga condiviso, selezionare la riga con  
+<command>SELECT FOR SHARE</command>. Un lock condiviso non previene il fatto
+che altre transazioni possano acquisire lo stesso lock condiviso. Comunque,
+nessuna dtransazione ha il permesso di aggiornare, cancellare, o ottenere un lock esclusivo su una
+riga sulla quale qualsiasi altra transazione mantiene un lock condiviso. Qualsiasi tentativo
+di farlo si bloccherà finchè il lock non viene rilasciato.
     </para>
 
     <para>
-     <productname>PostgreSQL</productname> doesn't remember any
-     information about modified rows in memory, so there is no limit on
-     the number of rows locked at one time.  However, locking a row
-     might cause a disk write, e.g., <command>SELECT FOR
-     UPDATE</command> modifies selected rows to mark them locked, and so
-     will result in disk writes.
+<productname>PostgreSQL</productname> non ricorda nessuna informazione
+sulle righe modificate in memoria, così non c'è un limite per il numero 
+di righe con lock contemporanee. Comunque, fare il lock di una riga 
+potrebbe causare una scrittura su disco, per es., <command>SELECT FOR
+UPDATE</command> modifica le righe selezionate per contrassegnarle come sottoposte a lock, 
+e quindi risulterà in scritture su disco.
     </para>
 
     <para>
-     In addition to table and row locks, page-level share/exclusive locks are
-     used to control read/write access to table pages in the shared buffer
-     pool.  These locks are released immediately after a row is fetched or
-     updated.  Application developers normally need not be concerned with
-     page-level locks, but they are mentioned here for completeness.
+In aggiunta a lock di tabella e riga, vengono usati locki condivisi/esclusivi a livello di pagina
+per controllare gli accessi in lettura/scrittura alle pagine della tabella nel buffer condiviso.
+Questi lock sono rilasciati immediatamente dopo che una riga viene "fetched" o 
+aggiornata. Gli sviluppatori di applicazioni normalmente non devono preoccuparsi dei lock 
+di pagina, ma sono menzionati qui per completezza.
     </para>
 
    </sect2>
 
    <sect2 id="locking-deadlocks">
-    <title>Deadlocks</title>
+    <title>Deadlock</title>
 
     <indexterm zone="locking-deadlocks">
      <primary>deadlock</primary>
     </indexterm>
 
     <para>
-     The use of explicit locking can increase the likelihood of
-     <firstterm>deadlocks</firstterm>, wherein two (or more) transactions each
-     hold locks that the other wants.  For example, if transaction 1
-     acquires an exclusive lock on table A and then tries to acquire
-     an exclusive lock on table B, while transaction 2 has already
-     exclusive-locked table B and now wants an exclusive lock on table
-     A, then neither one can proceed.
-     <productname>PostgreSQL</productname> automatically detects
-     deadlock situations and resolves them by aborting one of the
-     transactions involved, allowing the other(s) to complete.
-     (Exactly which transaction will be aborted is difficult to
-     predict and should not be relied upon.)
+L'uso di lock espliciti può incrementare la probabilità di  
+<firstterm>deadlock</firstterm>, in cui due (o più) transazioni 
+mantengono entrambe lock che gli altri vogliono. Per esempio, se la transazione 1
+acquisisce un lock esclusivo sulla tabella A e quindi prova ad acquisire 
+un lock esclusivo sulla tabella B, mentre la transazione 2 ha già
+eseguito un lock esclusivo sulla tabella B e adesso vuole un lock esclusivo sulla
+tabella A, allora nessuna delle due può procedere.
+<productname>PostgreSQL</productname> riconosce automaticamente 
+situazioni di deadlock e le risolve annullando una delle transazioni coinvolte,
+permettendo all'altra/e di completarsi.
+(È difficile predirre esattamente quale transazione sarà annullata
+e quindi non si dovrebbe farci affidamento).
     </para>
 
     <para>
-     Note that deadlocks can also occur as the result of row-level
-     locks (and thus, they can occur even if explicit locking is not
-     used). Consider the case in which two concurrent
-     transactions modify a table. The first transaction executes:
+Notare che i deadlock possono avvenire anche come risultato di lock di riga
+(e così, possono accadere anche se non viene usato un lock esplicito).
+Considerare il caso in cui due transazioni concorrenti 
+modificano una tabella. La prima transazione esegue:
 
 <screen>
 UPDATE accounts SET balance = balance + 100.00 WHERE acctnum = 11111;
 </screen>
 
-     This acquires a row-level lock on the row with the specified
-     account number. Then, the second transaction executes:
+Questo acquisisce un lock di riga sulla riga con il numero di account specificato.
+Quindi, la seconda transazione esegue:
 
 <screen>
 UPDATE accounts SET balance = balance + 100.00 WHERE acctnum = 22222;
 UPDATE accounts SET balance = balance - 100.00 WHERE acctnum = 11111;
 </screen>
 
-     The first <command>UPDATE</command> statement successfully
-     acquires a row-level lock on the specified row, so it succeeds in
-     updating that row. However, the second <command>UPDATE</command>
-     statement finds that the row it is attempting to update has
-     already been locked, so it waits for the transaction that
-     acquired the lock to complete. Transaction two is now waiting on
-     transaction one to complete before it continues execution. Now,
-     transaction one executes:
+La prima istruzione <command>UPDATE</command> ottiene con successo
+un lock di riga sulla riga specificata, e così riesce ad aggiornare con successo quella riga.
+Comunque, la seconda istruzione <command>UPDATE</command>
+scopre che la riga che sta tentando di aggiornare è già stata sottoposta a lock, 
+e quindi aspetta che la transazione che aveva acquisito il lock sia completa.
+La transazione due aspetta quindi che la transazione uno dia completata prima di 
+continuare l'esecuzione. Ora, la transazione uno esegue:
 
 <screen>
 UPDATE accounts SET balance = balance - 100.00 WHERE acctnum = 22222;
 </screen>
 
-     Transaction one attempts to acquire a row-level lock on the
-     specified row, but it cannot: transaction two already holds such
-     a lock. So it waits for transaction two to complete. Thus,
-     transaction one is blocked on transaction two, and transaction
-     two is blocked on transaction one: a deadlock
-     condition. <productname>PostgreSQL</productname> will detect this
-     situation and abort one of the transactions.
+La transazione uno tenta di ottenere un lock di riga sulla riga specificata,
+ma non può: la transazione due possiede già quel lock.
+Così aspetta che la transazione due sia completa. Così,
+la transazione uno è bloccata sulla transazione due, e la transazione due
+è bloccata sulla transazione uno: una condizione di deadlock.
+<productname>PostgreSQL</productname> si accorge di questa situazione 
+e annulla una delle transazioni.
     </para>
 
     <para>

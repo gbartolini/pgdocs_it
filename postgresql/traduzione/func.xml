@@ -13473,7 +13473,6 @@ ai speruser.
    </para>
 
    <table id="functions-admin-signal-table">
-    <title>Server Signalling Functions</title>
     <title>Funzioni di segnalazione al server</title>
     <tgroup cols="3">
      <thead>
@@ -14246,7 +14245,6 @@ i lock consultivi. Per dettagli circa l'uso corretto di queste funzioni, vedere
         <literal><function>pg_try_advisory_lock_shared(<parameter>key1</parameter> <type>int</type>, <parameter>key2</parameter> <type>int</type>)</function></literal>
        </entry>
        <entry><type>boolean</type></entry>
-       <entry>Obtain shared advisory lock if available</entry>
        <entry>Ottiene un  lock consultivo condiviso se disponibile</entry>
       </row>
 

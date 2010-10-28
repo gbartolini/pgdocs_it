@@ -9,6 +9,8 @@
     <head>
       <xsl:call-template name="system.head.content"/>
       <xsl:call-template name="head.content"/>
+      <meta name="keywords" content="documentazione postgresql, documentazione postgres, postresql, postgres, italiano, documentazione italiana" />
+      <meta name="description" content="Documentazione di PostgreSQL in lingua italiana" />
       <xsl:call-template name="user.head.content"/>
     </head>
   </xsl:template>

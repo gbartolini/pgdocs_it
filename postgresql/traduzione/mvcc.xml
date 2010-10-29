@@ -411,7 +411,7 @@ allora la transazione serializzabile sarà sottoposta a rollback con il messaggi
 ERROR:  could not serialize access due to concurrent update
 </screen>
 
-dato che una transazione serializabile non può modificare i eseguire lock su righe 
+dato che una transazione serializzabile non può modificare e eseguire lock su righe 
 cambiate da altre transzioni dopo che la transazione serializzabile è iniziata.
    </para>
 
@@ -472,7 +472,7 @@ considerare una tabella <structname>mytab</structname>, contenente inizialmente:
      2 |   100
      2 |   200
 </screen>
-Supporre che la transazione serializzabile A calcola:
+Supporre che la transazione serializzabile A calcoli:
 <screen>
 SELECT SUM(value) FROM mytab WHERE class = 1;
 </screen>

@@ -194,7 +194,7 @@ Per creare tale ruolo, usare <literal>CREATE ROLE
      </varlistentry>
 
      <varlistentry>
-      <term>creazione di ruolo<indexterm><primary>role</primary><secondary>privilege di creazione</secondary></indexterm></term>
+      <term>creazione di ruolo<indexterm><primary>ruolo</primary><secondary>privilege di creazione</secondary></indexterm></term>
       <listitem>
        <para>
 A un ruolo deve essere dato esplicitamente il permesso di creare altri ruoli

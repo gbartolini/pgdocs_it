@@ -2,42 +2,42 @@
 <!-- $PostgreSQL$ -->
 
 <chapter id="user-manag">
- <title>Database Roles and Privileges</title>
+ <title>Privilegi e ruoli del database</title>
 
  <para>
-  <productname>PostgreSQL</productname> manages database access permissions
-  using the concept of <firstterm>roles</firstterm>.  A role can be thought of as
-  either a database user, or a group of database users, depending on how
-  the role is set up.  Roles can own database objects (for example,
-  tables) and can assign privileges on those objects to other roles to
-  control who has access to which objects.  Furthermore, it is possible
-  to grant <firstterm>membership</firstterm> in a role to another role, thus
-  allowing the member role to use privileges assigned to another role.
+<productname>PostgreSQL</productname> gestisce i permessi di accesso al database
+usando il concetto di <firstterm>ruoli</firstterm>. Un ruolo può essere pensato sia come  
+un utente del database, sia come gruppo di utenti del database, a seconda di come 
+è impostato il ruolo. I ruoli possono possedere gli oggetti del database (per esempio,
+tabelle) e possono assegnare privilegi su quegli oggetti ad altri ruoli per 
+controllare chi ha accesso a quali oggetti. Inoltre, è possibile 
+garantire l'<firstterm>appartenenza</firstterm> a un ruolo a un altro ruolo, permettendo in questo modo
+al membro del ruolo di usare i privilegi assegnati a un altro ruolo.
  </para>
 
  <para>
-  The concept of roles subsumes the concepts of <quote>users</quote> and
-  <quote>groups</quote>.  In <productname>PostgreSQL</productname> versions
-  before 8.1, users and groups were distinct kinds of entities, but now
-  there are only roles.  Any role can act as a user, a group, or both.
+Il concetto di ruoli comprende i concetti di <quote>utenti</quote> e 
+<quote>gruppi</quote>. Nelle versioni di <productname>PostgreSQL</productname>
+precedenti la 8.1, utenti e gruppi erano entità diverse, ma adesso ci sono solo 
+ruoli. Qualsiasi ruolo può comportarsi come un utente, un gruppo, o entrambi.
  </para>
 
  <para>
-  This chapter describes how to create and manage roles and introduces
-  the privilege system.  More information about the various types of
-  database objects and the effects of privileges can be found in
-  <xref linkend="ddl"/>.
+Questo capitolo descrive come creare e gestire i ruoli e introduce
+il sistema dei privilegi. Maggiori informazioni sui diversi tipi di 
+oggetti del database e gli effetti dei privilegi possono essere trovati in
+<xref linkend="ddl"/>.
  </para>
 
  <sect1 id="database-roles">
-  <title>Database Roles</title>
+  <title>Ruoli del database Database Roles</title>
 
   <indexterm zone="database-roles">
-   <primary>role</primary>
+   <primary>ruolo</primary>
   </indexterm>
 
   <indexterm zone="database-roles">
-   <primary>user</primary>
+   <primary>utente</primary>
   </indexterm>
 
   <indexterm>
@@ -49,21 +49,21 @@
   </indexterm>
 
   <para>
-   Database roles are conceptually completely separate from
-   operating system users. In practice it might be convenient to
-   maintain a correspondence, but this is not required. Database roles
-   are global across a database cluster installation (and not
-   per individual database). To create a role use the <xref
-   linkend="sql-createrole"/> SQL command:
+I ruoli del database sono completamente separati concettualmente dagli 
+utenti del sistema operativo. In pratica potrebbe essere conveniente 
+mantenere una corrispondenza, ma questo non è richiesto. I ruoli del database
+sono globali attraverso l'installazione di un cluster di database (e non 
+per singoli database). Per creare un ruolo usare il comando SQL  <xref
+linkend="sql-createrole"/>:
 <synopsis>
 CREATE ROLE <replaceable>name</replaceable>;
 </synopsis>
-   <replaceable>name</replaceable> follows the rules for SQL
-   identifiers: either unadorned without special characters, or
-   double-quoted.  (In practice, you will usually want to add additional
-   options, such as <literal>LOgin</literal>, to the command.  More details appear
-   below.)  To remove an existing role, use the analogous
-   <xref linkend="sql-droprole"/> command:
+<replaceable>name</replaceable> segue le regole per gli identificatori SQL: 
+sia non adornati senza caratteri speciali, oppore tra doppi apici.
+(In pratica, di solito si vorrà aggiungere opzioni addizionali al comando, tipo 
+<literal>LOgin</literal>. Maggiori dettagli appaiono sotto.
+Per rimuovere un ruolo esistente, usare l'analogo
+comando   <xref linkend="sql-droprole"/>:
 <synopsis>
 DROP ROLE <replaceable>name</replaceable>;
 </synopsis>
@@ -78,10 +78,9 @@ DROP ROLE <replaceable>name</replaceable>;
   </indexterm>
 
   <para>
-   For convenience, the programs <xref linkend="app-createuser"/>
-   and <xref linkend="app-dropuser"/> are provided as wrappers
-   around these SQL commands that can be called from the shell command
-   line:
+Per convenienza, i programmi <xref linkend="app-createuser"/> 
+e <xref linkend="app-dropuser"/> sono fornite come wrapper 
+per quei comandi SQL che possono essere lanciati dalla shell:
 <synopsis>
 createuser <replaceable>name</replaceable>
 dropuser <replaceable>name</replaceable>
@@ -89,79 +88,75 @@ dropuser <replaceable>name</replaceable>
   </para>
 
   <para>
-   To determine the set of existing roles, examine the <structname>pg_roles</structname>
-   system catalog, for example
+Per determinare l'insieme di ruoli esistenti, esaminare il catalogo di sistema
+<structname>pg_roles</structname>, per esempio
 <synopsis>
 SELECT rolname FROM pg_roles;
 </synopsis>
-   The <xref linkend="app-psql"/> program's <literal>\du</literal> meta-command
-   is also useful for listing the existing roles.
+Il meta comando <literal>\du</literal> del programma <xref linkend="app-psql"/>
+è utile per elencare i ruoli esistenti.
   </para>
 
   <para>
-   In order to bootstrap the database system, a freshly initialized
-   system always contains one predefined role. This role is always
-   a <quote>superuser</quote>, and by default (unless altered when running
-   <command>initdb</command>) it will have the same name as the
-   operating system user that initialized the database
-   cluster. Customarily, this role will be named
-   <literal>postgres</literal>. In order to create more roles you
-   first have to connect as this initial role.
+Per fare il bootstrap di unsistema di database, un sistema appena installato  
+contiene un ruolo predefinito. Questo ruolo è sempre un <quote>superuser</quote>,   
+e in maniera predefinita (a meno che non sia stato cambiato con l'<command>initdb</command>)
+avrà lo stesso nome dell'utente del sistema operativo che ha inizializzato il cluster di database.
+Di norma, questo ruolo sarà chiamato <literal>postgres</literal>. 
+Per creare altri ruoli si deve prima connettersi come questo ruolo iniziale.
   </para>
 
   <para>
-   Every connection to the database server is made using the name of some
-   particular role, and this role determines the initial access privileges for
-   commands issued in that connection.
-   The role name to use for a particular database
-   connection is indicated by the client that is initiating the
-   connection request in an application-specific fashion. For example,
-   the <command>psql</command> program uses the
-   <option>-U</option> command line option to indicate the role to
-   connect as.  Many applications assume the name of the current
-   operating system user by default (including
-   <command>createuser</command> and <command>psql</command>).  Therefore it
-   is often convenient to maintain a naming correspondence between
-   roles and operating system users.
+Ogni connessione al server di database è fatta usando il nome di qualche ruolo particolare,
+e questo ruolo determina i privilegi d'accesso iniziali per i comandi
+emessi in quella connessione.
+Il nome del ruolo da usare per un particolare connessione al database
+è indicato dal client che inizia la richiesta di connessione nel modo specifico
+dell'applicazione. Per esempio, 
+il programma <command>psql</command> usa l'opzione a linea di comando
+<option>-U</option> per indicare il ruolo con cui connettersi.
+Molte applicazioni assumono il nome dell'utente corrente del sistema operativo
+come predefinito (incluse <command>createuser</command> e <command>psql</command>).
+Comunque spesso è conveniente mantenere una corrispondenza di nomi tra 
+i ruoli e gli utenti del sistema operativo.
   </para>
 
   <para>
-   The set of database roles a given client connection can connect as
-   is determined by the client authentication setup, as explained in
-   <xref linkend="client-authentication"/>. (Thus, a client is not
-   limited to connect as the role matching
-   its operating system user, just as a person's login name 
-   need not match her real name.)  Since the role
-   identity determines the set of privileges available to a connected
-   client, it is important to carefully configure privileges when setting up
-   a multiuser environment.
+L'insieme dei ruoli del database coi quali un dato client può connettersi 
+è determinato dall'impostazione dell'autenticazione del client, come spiegato in
+<xref linkend="client-authentication"/>. (In più, un client non è 
+limitato alla possibilità di connettersi come il ruolo corrispondente
+al suo utente del sistema operativo, esattamente come il nome di login di una persona 
+non deve corrispondere al suo nome reale). Dato che l'identità del ruolo
+determina l'insieme di privilegi disponibili a un client connesso,
+è importante configurare con cura i privilegi quando si mette su un ambiente multiutente.
   </para>
  </sect1>
 
  <sect1 id="role-attributes">
-  <title>Role Attributes</title>
+  <title>Attributi del ruolo</title>
 
    <para>
-    A database role can have a number of attributes that define its
-    privileges and interact with the client authentication system.
+Un ruolo del database può avere un numero di attributi che definisce i suoi 
+privilegi e interagisce con il sistema di sutenticazione del client.
 
     <variablelist>
      <varlistentry>
-      <term>login privilege<indexterm><primary>login privilege</primary></indexterm></term>
+      <term>privilegio di login<indexterm><primary>privilegio di login</primary></indexterm></term>
       <listitem>
        <para>
-        Only roles that have the <literal>LOgin</literal> attribute can be used
-        as the initial role name for a database connection.  A role with
-        the <literal>LOgin</literal> attribute can be considered the same
-        as a <quote>database user</quote>.  To create a role with login privilege,
-        use either:
+Solo i ruoli che hanno l'attributo <literal>LOgin</literal> possono essere usati
+come nome del ruolo iniziale di una connessione al database. Un ruolo con
+l'attributo <literal>LOgin</literal> può essere considerato come un 
+<quote>utente del database</quote>. Per creare un ruolo con i privilegi di login,
+usare:
 <programlisting>
 CREATE ROLE <replaceable>name</replaceable> LOgin;
 CREATE USER <replaceable>name</replaceable>;
 </programlisting>
-        (<command>CREATE USER</command> is equivalent to <command>CREATE ROLE</command>
-        except that <command>CREATE USER</command> assumes <literal>LOgin</literal> by
-        default, while <command>CREATE ROLE</command> does not.)
+(<command>CREATE USER</command> è equivalente a <command>CREATE ROLE</command>
+ad eccezione che <command>CREATE USER</command> assume <literal>LOgin</literal> come predefinito,
+mentre <command>CREATE ROLE</command> no).
        </para>
       </listitem>
      </varlistentry>
@@ -170,41 +165,47 @@ CREATE USER <replaceable>name</replaceable>;
       <term>superuser status<indexterm><primary>superuser</primary></indexterm></term>
       <listitem>
        <para>
-        A database superuser bypasses all permission checks.  This is a
-        dangerous privilege and should not be used carelessly; it is best
-        to do most of your work as a role that is not a superuser.
-        To create a new database superuser, use <literal>CREATE ROLE
-        <replaceable>name</replaceable> SUPERUSER</literal>.  You must do
-        this as a role that is already a superuser.
+Un superutente del database scavalca tutti i controlli di permesso. Questo è un privilegio pericoloso
+e non dovrebbe essere usato imprudentemente; è meglio 
+fare la maggior parte del lavoro con un ruolo che non è di superutente.
+Per creare un nuovo superutente del database, usare <literal>CREATE ROLE
+<replaceable>name</replaceable> SUPERUSER</literal>. Questo va fatto
+usando un ruolo che è già di superutente.
        </para>
       </listitem>
      </varlistentry>
 
      <varlistentry>
-      <term>database creation<indexterm><primary>database</primary><secondary>privilege to create</secondary></indexterm></term>
-      <listitem>
+        <term>
+            creazione del database
+            <indexterm>
+                <primary>database</primary>
+                <secondary>privilegio di creazione</secondary>
+            </indexterm>
+        </term>
+        <listitem>
        <para>
-        A role must be explicitly given permission to create databases
-        (except for superusers, since those bypass all permission
-        checks). To create such a role, use <literal>CREATE ROLE
-        <replaceable>name</replaceable> CREATEDB</literal>.
+A un ruolo devono essere dati esplicitamente i permessi per creare database
+(ad eccezione del superutente, dato che scavalca tutti i controlli di permessi).
+Per creare tale ruolo, usare <literal>CREATE ROLE
+<replaceable>name</replaceable> CREATEDB</literal>.
        </para>
       </listitem>
      </varlistentry>
 
      <varlistentry>
-      <term>role creation<indexterm><primary>role</primary><secondary>privilege to create</secondary></indexterm></term>
+      <term>creazione di ruolo<indexterm><primary>role</primary><secondary>privilege di creazione</secondary></indexterm></term>
       <listitem>
        <para>
-        A role must be explicitly given permission to create more roles
-        (except for superusers, since those bypass all permission
-        checks). To create such a role, use <literal>CREATE ROLE
-        <replaceable>name</replaceable> CREATEROLE</literal>.
-        A role with <literal>CREATEROLE</literal> privilege can alter and drop
-        other roles, too, as well as grant or revoke membership in them.
-        However, to create, alter, drop, or change membership of a
-        superuser role, superuser status is required;
-        <literal>CREATEROLE</literal> is insufficient for that.
+A un ruolo deve essere dato esplicitamente il permesso di creare altri ruoli
+(ad eccezione dei superutenti, dato che questi scavalcano tutti i controlli dei permessi).
+Per creare tale ruolo,  usare <literal>CREATE ROLE
+<replaceable>name</replaceable> CREATEROLE</literal>.
+Un ruolo con privilegio <literal>CREATEROLE</literal> può modificare ed eliminare
+altri ruoli, anche, così come garantire o revocare l'appartenenza ad essi.
+Comunque, per creare, modificare, eliminare o cambiare l'appartenenza a
+un ruolo di superutente, è richiesto lo status di superutente;
+<literal>CREATEROLE</literal> è insufficiente a fare ciò.
        </para>
       </listitem>
      </varlistentry>
@@ -213,55 +214,51 @@ CREATE USER <replaceable>name</replaceable>;
       <term>password<indexterm><primary>password</primary></indexterm></term>
       <listitem>
        <para>
-        A password is only significant if the client authentication
-        method requires the user to supply a password when connecting
-        to the database. The <option>password</option> and
-        <option>md5</option> authentication methods
-        make use of passwords. Database passwords are separate from
-        operating system passwords. Specify a password upon role
-        creation with <literal>CREATE ROLE
-        <replaceable>name</replaceable> PASSWORD '<replaceable>string</replaceable>'</literal>. 
+Una password è significativa solo se il metodo di autenticazione del client
+richiede che l'utente fornisca una password quando si connette
+al database. I metodi di autenticazione <option>password</option> e
+<option>md5</option> fanno uso delle password. Le password di database sono separate
+dalle password del sistema operativo. Specificare una password durante la creazione di un ruolo con
+<literal>CREATE ROLE <replaceable>name</replaceable> PASSWORD '<replaceable>string</replaceable>'</literal>.
        </para>
       </listitem>
      </varlistentry>
     </variablelist>
 
-    A role's attributes can be modified after creation with
-    <command>ALTER ROLE</command>.<indexterm><primary>ALTER ROLE</primary></indexterm>
-    See the reference pages for the <xref linkend="sql-createrole"
-   /> and <xref linkend="sql-alterrole"
-   /> commands for details.
+Gli attributi di un ruolo possono essere modificati dopo la creazione con
+<command>ALTER ROLE</command>.<indexterm><primary>ALTER ROLE</primary></indexterm>
+Si vedano le pagine di riferimento dei comandi <xref linkend="sql-createrole" />
+e <xref linkend="sql-alterrole"/> per dettagli.
    </para>
 
   <tip>
    <para>
-    It is good practice to create a role that has the <literal>CREATEDB</literal>
-    and <literal>CREATEROLE</literal> privileges, but is not a superuser, and then
-    use this role for all routine management of databases and roles.  This
-    approach avoids the dangers of operating as a superuser for tasks that
-    do not really require it.
+È buona prassi creare un ruolo che ha i privilegi <literal>CREATEDB</literal>
+e <literal>CREATEROLE</literal>, ma che non è un superutente, e quindi usare questo ruolo 
+per tutte le operazioni di gestione dei database e dei ruoli. Questo approccio
+evita i pericoli di operare come un superutente per compiti che in realtà non lo 
+necessitano.
    </para>
   </tip>
 
   <para>
-   A role can also have role-specific defaults for many of the run-time
-   configuration settings described in <xref
-   linkend="runtime-config"/>.  For example, if for some reason you
-   want to disable index scans (hint: not a good idea) anytime you
-   connect, you can use:
+Un ruolo può anche avere valori predefiniti per molte impostazioni di configurazione 
+descritte in <xref
+linkend="runtime-config"/>.  Per esempio, se per qualche ragione 
+si vogliono disabilitare le scansioni di indice (consiglio: non è una buona idea) ogni volta che ci si connette,
+è possibile usare:
 <programlisting>
 ALTER ROLE myname SET statement_timeout = '5min';
 </programlisting>
-   This will save the setting (but not set it immediately).  In
-   subsequent connections by this role it will appear as though
-   <literal>SET statement_timeout = '5min'</literal> had been executed
-   just before the session started.
-   You can still alter this setting during the session; it will only
-   be the default. To remove a role-specific default setting, use
-   <literal>ALTER ROLE <replaceable>rolename</replaceable> RESET <replaceable>varname</replaceable></literal>.
-   Note that role-specific defaults attached to roles without
-   <literal>LOgin</literal> privilege are fairly useless, since they will never
-   be invoked.
+Questo salverà le impostazioni (ma non le renderà effettive immediatamente). In
+connessioni successive di questo ruolo apparirà come se 
+<literal>SET statement_timeout = '5min'</literal> fosse stato eseguito 
+appena prima che la sessione cominciasse.
+È comunque possibile modificare questa impostazione durante la sessione; essa sarà solo la predefinita. 
+Per rimuovere un'impostazione predefinita specifica di un ruolo, usare
+<literal>ALTER ROLE <replaceable>rolename</replaceable> RESET <replaceable>varname</replaceable></literal>.
+Notare che i valori predefiniti specifici di un ruolo attaccatti a ruoli senza il privilegio di 
+<literal>LOgin</literal> sono abbastanza inutili, dato che non saranno mai invocati.
   </para>
  </sect1>
 

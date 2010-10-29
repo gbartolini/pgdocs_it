@@ -263,14 +263,14 @@ Notare che i valori predefiniti specifici di un ruolo attaccatti a ruoli senza i
  </sect1>
 
  <sect1 id="privileges">
-  <title>Privileges</title>
+  <title>Privilegi</title>
 
   <indexterm zone="privileges">
-   <primary>privilege</primary>
+   <primary>privilegio</primary>
   </indexterm>
 
   <indexterm zone="privileges">
-   <primary>owner</primary>
+   <primary>proprietario</primary>
   </indexterm>
 
   <indexterm zone="privileges">
@@ -282,113 +282,109 @@ Notare che i valori predefiniti specifici di un ruolo attaccatti a ruoli senza i
   </indexterm>
 
   <para>
-   When an object is created, it is assigned an owner. The
-   owner is normally the role that executed the creation statement.
-   For most kinds of objects, the initial state is that only the owner
-   (or a superuser) can do anything with the object. To allow
-   other roles to use it, <firstterm>privileges</firstterm> must be
-   granted.
-   There are several different kinds of privilege: <literal>SELECT</literal>,
-   <literal>INSERT</literal>, <literal>UPDATE</literal>, <literal>DELETE</literal>,
-   <literal>TRUNCATE</literal>, <literal>REFERENCES</literal>, <literal>TRIGGER</literal>,
-   <literal>CREATE</literal>, <literal>CONNECT</literal>, <literal>TEMPORARY</literal>,
-   <literal>EXECUTE</literal>, and <literal>USAGE</literal>.
-   For more information on the different types of privileges supported by
-   <productname>PostgreSQL</productname>, see the
-   <xref linkend="sql-grant"/> reference page.
+Quando un oggetto viene creato, gli viene assegnato un proprietario. Il proprietario
+di solito è il ruolo che esegue l'istruzione di creazione.
+Per la maggior parte degli oggetti, lo stato iniziale è che solo il proprietario
+(o un superutente) può fare qualsiasi cosa con l'oggetto. Per permettere
+ad altri ruoli di usarlo, devono essere garantiti dei <firstterm>privilegi</firstterm>.
+Ci sono diversi tipi di privilegio: <literal>SELECT</literal>,
+<literal>INSERT</literal>, <literal>UPDATE</literal>, <literal>DELETE</literal>,
+<literal>TRUNCATE</literal>, <literal>REFERENCES</literal>, <literal>TRIGGER</literal>,
+<literal>CREATE</literal>, <literal>CONNECT</literal>, <literal>TEMPORARY</literal>,
+<literal>EXECUTE</literal>  <literal>USAGE</literal>.
+Per maggiori informazioni sui diversi tipi di privilegi supportati da 
+<productname>PostgreSQL</productname>, si veda 
+la pagina di riferimento <xref linkend="sql-grant"/>.
   </para>
 
   <para>
-   To assign privileges, the <command>GRANT</command> command is
-   used. So, if <literal>joe</literal> is an existing role, and
-   <literal>accounts</literal> is an existing table, the privilege to
-   update the table can be granted with:
+Per assegnare privilegi, si usa il comando <command>GRANT</command>. 
+Così, se <literal>joe</literal> è un ruolo esistente, e 
+<literal>accounts</literal> è una tabella esistente, il privilegio di 
+aggiornare la tabella può essere concesso con:
 <programlisting>
 GRANT UPDATE ON accounts TO joe;
 </programlisting>
-   The special name <literal>PUBLIC</literal> can
-   be used to grant a privilege to every role on the system. Writing
-   <literal>ALL</literal> in place of a specific privilege specifies that all
-   privileges that apply to the object will be granted.
+Il nome speciale <literal>PUBLIC</literal> può essere usato 
+per concedere un privilegio ad ogni ruolo del sistema. Scrivere 
+<literal>ALL</literal> al posto di uno specifico privilegio indica che tutti
+i privilegi applicabili all'oggetto saranno concessi.
   </para>
 
   <para>
-   To revoke a privilege, use the fittingly named
-   <xref linkend="sql-revoke"/> command:
+Per revocare un privilegio, usare il comando
+chiamato appropriatamente <xref linkend="sql-revoke"/>:
 <programlisting>
 REVOKE ALL ON accounts FROM PUBLIC;
 </programlisting>
   </para>
 
   <para>
-   The special privileges of an object's owner (i.e., the right to modify
-   or destroy the object) are always implicit in being the owner,
-   and cannot be granted or revoked.  But the owner can choose
-   to revoke his own ordinary privileges, for example to make a
-   table read-only for himself as well as others.
+I privilegi speciali del proprietario di un oggetto (per es., il diritto a modificare
+o distruggere l'oggetto) sono sempre impliciti dell'esserne il proprietario,
+e non possono essere concessi o tolti. Ma il proprietario può scegliere 
+di revocare i suoi privilegi normali, per esempio per rendere una tabella
+a sola lettura per sè stesso oltre che per gli altri.
   </para>
 
   <para>
-   An object can be assigned to a new owner with an <command>ALTER</command>
-   command of the appropriate kind for the object.  Superusers can always do
-   this; ordinary roles can only do it if they are both the current owner
-   of the object (or a member of the owning role) and a member of the new
-   owning role.
+Un oggetto può essere assegnato ad un nuovo proprietario con un comando <command>ALTER</command>
+del tipo appropriato per l'oggetto. I superutenti possono sempre farlo;
+i ruoli ordinari possono farlo solo se sono sia l'attuale proprietario
+dell'oggetto (o un membro del ruolo proprietario) che un membro del nuovo 
+ruolo proprietario.
   </para>
  </sect1>
 
  <sect1 id="role-membership">
-  <title>Role Membership</title>
+  <title>Appartenenza a ruolo</title>
 
   <indexterm zone="role-membership">
-   <primary>role</primary><secondary>membership in</secondary>
+   <primary>ruolo</primary><secondary>appartenenza</secondary>
   </indexterm>
 
   <para>
-   It is frequently convenient to group users together to ease
-   management of privileges: that way, privileges can be granted to, or
-   revoked from, a group as a whole.  In <productname>PostgreSQL</productname>
-   this is done by creating a role that represents the group, and then
-   granting <firstterm>membership</firstterm> in the group role to individual user
-   roles.
+Di frequente è utile raggruppare utenti per facilitare 
+la gestione dei privilegi: in questo modo, i privilegi possono essere garantiti a, o
+revocati da, un intero gruppo. In <productname>PostgreSQL</productname>
+questo viene fatto creando un ruolo che rappresenta il gruppo, e quindi 
+concedendo l'<firstterm>appertenza</firstterm> nel ruolo gruppo a ruoli utente individuali 
   </para>
 
   <para>
-   To set up a group role, first create the role:
+Per creare un ruolo di gruppo, prima creare il ruolo:
 <synopsis>
 CREATE ROLE <replaceable>name</replaceable>;
 </synopsis>
-   Typically a role being used as a group would not have the <literal>LOgin</literal>
-   attribute, though you can set it if you wish.
+Tipicamente un ruolo usato come gruppo non avrebbe l'attributo <literal>LOgin</literal>,
+ma si può impostarlo se lo si desidera.
   </para>
 
   <para>
-   Once the group role exists, you can add and remove members using the
-   <xref linkend="sql-grant"/> and
-   <xref linkend="sql-revoke"/> commands:
+Una volta che il ruolo gruppo esiste, è possibile aggiungere e rimuovere membri usando
+i comandi <xref linkend="sql-grant"/> e  <xref linkend="sql-revoke"/>:
 <synopsis>
 GRANT <replaceable>group_role</replaceable> TO <replaceable>role1</replaceable>, ... ;
 REVOKE <replaceable>group_role</replaceable> FROM <replaceable>role1</replaceable>, ... ;
 </synopsis>
-   You can grant membership to other group roles, too (since there isn't
-   really any distinction between group roles and non-group roles).  The
-   database will not let you set up circular membership loops.  Also,
-   it is not permitted to grant membership in a role to
-   <literal>PUBLIC</literal>.
+È anche possibile garantire l'appartenenza ad altri ruoli gruppo, (dato che non c'è 
+nessuna distinzione tra ruoli gruppo e ruoli non-gruppo). Il database
+non ti lascierà impostare loop di appartenenza circolari. Inoltre, 
+non è permesso garantire appartenza in un ruolo a
+<literal>PUBLIC</literal>.
   </para>
 
   <para>
-   The members of a group role can use the privileges of the role in two
-   ways.  First, every member of a group can explicitly do
-   <xref linkend="sql-set-role"/> to
-   temporarily <quote>become</quote> the group role.  In this state, the
-   database session has access to the privileges of the group role rather
-   than the original login role, and any database objects created are
-   considered owned by the group role not the login role.  Second, member
-   roles that have the <literal>INHERIT</literal> attribute automatically inherit the
-   privileges of roles of which they are members, including their
-   <literal>INHERIT</literal> attributes.  As an example, suppose we have
-   done:
+I membri di un ruolo gruppo possono usare i privilegi del ruolo in due modi.
+Primo, ogni membro di un gruppo può esplicitamente fare 
+<xref linkend="sql-set-role"/> per <quote>diventare</quote>
+temporaneamente il ruolo gruppo. In questo modo, la sessione del database ha accesso
+ai privilegi del ruolo gruppo piuttosto che 
+dell'originale ruolo login, e qualsiasi oggetto di database creato è considerato
+proprietà del ruolo gruppo e non del ruolo login. Secondo, i ruoli membri 
+che hanno l'attributo <literal>INHERIT</literal> automaticamente ereditano i privilegi 
+dei ruoli di cui sono membri, inclusi i loro attributi 
+<literal>INHERIT</literal>. Come esempio, supporre di aver fatto:
 <programlisting>
 CREATE ROLE joe LOgin INHERIT;
 CREATE ROLE admin NOINHERIT;
@@ -396,26 +392,26 @@ CREATE ROLE wheel NOINHERIT;
 GRANT admin TO joe;
 GRANT wheel TO admin;
 </programlisting>
-   Immediately after connecting as role <literal>joe</literal>, a database
-   session will have use of privileges granted directly to <literal>joe</literal>
-   plus any privileges granted to <literal>admin</literal>, because <literal>joe</literal>
-   <quote>inherits</quote> <literal>admin</literal>'s privileges.  However, privileges
-   granted to <literal>wheel</literal> are not available, because even though
-   <literal>joe</literal> is indirectly a member of <literal>wheel</literal>, the
-   membership is via <literal>admin</literal> which has the <literal>NOINHERIT</literal>
-   attribute.  After:
+Immediatamente dopo essersi connessi con ruolo <literal>joe</literal>, una sessione di database
+userà i privilegi concessi a <literal>joe</literal>
+più qualsiasi privilegio concesso a <literal>admin</literal>, dato che <literal>joe</literal>
+<quote>eredita</quote> i privilegi di  <literal>admin</literal>. In ogni caso, i privilegi 
+garantiti a <literal>wheel</literal> non sono disponibili, perchè anche se 
+<literal>joe</literal> è indirettamente un membro di <literal>wheel</literal>, l'appartenenza
+viene specificata via <literal>admin</literal>, che l'attributo <literal>NOINHERIT</literal>. 
+Dopo:
 <programlisting>
 SET ROLE admin;
 </programlisting>
-   the session would have use of only those privileges granted to
-   <literal>admin</literal>, and not those granted to <literal>joe</literal>.  After:
+la sessione userebbe solo quei privilegi concessi a
+<literal>admin</literal>, e non quelli concessi a <literal>joe</literal>. Dopo:
 <programlisting>
 SET ROLE wheel;
 </programlisting>
-   the session would have use of only those privileges granted to
-   <literal>wheel</literal>, and not those granted to either <literal>joe</literal>
-   or <literal>admin</literal>.  The original privilege state can be restored
-   with any of:
+la sessione userebbe solo i privilegi concessi a
+<literal>wheel</literal>, e non quelli garantiti a <literal>joe</literal>
+o a <literal>admin</literal>.  Lo stato originale dei privilegi può essere ripristinato 
+con uno tra:
 <programlisting>
 SET ROLE joe;
 SET ROLE NONE;
@@ -425,20 +421,21 @@ RESET ROLE;
 
   <note>
    <para>
-    The <command>SET ROLE</command> command always allows selecting any role
-    that the original login role is directly or indirectly a member of.
-    Thus, in the above example, it is not necessary to become
-    <literal>admin</literal> before becoming <literal>wheel</literal>.
+Il comando <command>SET ROLE</command> permette sempre di selezionare qualsiasi 
+ruolo di cui il ruolo login originale è direttamente o indirettamente membro.
+Così, nell'esempio sopra, non è necessario diventare 
+<literal>admin</literal> prima di diventare <literal>wheel</literal>.
    </para>
   </note>
 
   <note>
    <para>
-    In the SQL standard, there is a clear distinction between users and roles,
-    and users do not automatically inherit privileges while roles do.  This
-    behavior can be obtained in <productname>PostgreSQL</productname> by giving
-    roles being used as SQL roles the <literal>INHERIT</literal> attribute, while
-    giving roles being used as SQL users the <literal>NOINHERIT</literal> attribute.
+Nello standard SQL, c'è una chiara distinzione tra utenti e ruoli, 
+e gli utenti non ereditano automaticamente privilegi mentre i ruoli si.
+Questo
+comportamento può essere ottenuto in <productname>PostgreSQL</productname> fornendo ai ruoli 
+usati come ruoli SQL l'attributo <literal>INHERIT</literal>, e
+fornendo ai ruoli usati come utenti SQL l'attributo <literal>NOINHERIT</literal>.
     However, <productname>PostgreSQL</productname> defaults to giving all roles
     the <literal>INHERIT</literal> attribute, for backwards compatibility with pre-8.1
     releases in which users always had use of permissions granted to groups
@@ -447,56 +444,55 @@ RESET ROLE;
   </note>
 
   <para>
-   The role attributes <literal>LOgin</literal>, <literal>SUPERUSER</literal>,
-   <literal>CREATEDB</literal>, and <literal>CREATEROLE</literal> can be thought of as
-   special privileges, but they are never inherited as ordinary privileges
-   on database objects are.  You must actually <command>SET ROLE</command> to a
-   specific role having one of these attributes in order to make use of
-   the attribute.  Continuing the above example, we might choose to
-   grant <literal>CREATEDB</literal> and <literal>CREATEROLE</literal> to the
-   <literal>admin</literal> role.  Then a session connecting as role <literal>joe</literal>
-   would not have these privileges immediately, only after doing
-   <command>SET ROLE admin</command>.
+Gli attributi del ruolo <literal>LOgin</literal>, <literal>SUPERUSER</literal>,
+<literal>CREATEDB</literal> e <literal>CREATEROLE</literal> possono essere pensati come
+privilegi speciali, ma non sono mai ereditati come invece lo sono i  privilegi ordinari
+sugli oggetti del database.
+Si deve effettivamente eseguire un <command>SET ROLE</command> specificando 
+un ruolo che ha uno di quegli attributi per 'usare l'attributo.
+Continuando con l'esempio sopra, si potrebbe scegliere di
+grantire <literal>CREATEDB</literal> e <literal>CREATEROLE</literal> al ruolo 
+<literal>admin</literal>.
+Quindi una sessione che si connette come ruolo <literal>joe</literal>
+non avrebbe questi privilegi immediatamente, solo dopo aver fatto 
+<command>SET ROLE admin</command>.
   </para>
 
   <para>
-  </para>
-
-  <para>
-   To destroy a group role, use <xref
-   linkend="sql-droprole"/>:
+Per distruggere un ruolo gruppo, usare <xref
+linkend="sql-droprole"/>:
 <synopsis>
 DROP ROLE <replaceable>name</replaceable>;
 </synopsis>
-   Any memberships in the group role are automatically revoked (but the
-   member roles are not otherwise affected).  Note however that any objects
-   owned by the group role must first be dropped or reassigned to other
-   owners; and any permissions granted to the group role must be revoked.
+Le appartenenze al ruolo gruppo sono automaticamente revocate (ma altrimenti i ruoli membro 
+non sono colpiti). Notare comunque che gli oggetti  
+posseduti dal ruolo gruppo devono essere prima eliminati o riassignati ad altri
+proprietari; e i permessi garantiti al ruolo gruppo devono essere revocati.
   </para>
  </sect1>
 
  <sect1 id="perm-functions">
-  <title>Function and Trigger Security</title>
+  <title>Sicurezza di funzioni e trigger</title>
 
   <para>
-   Functions and triggers allow users to insert code into the backend
-   server that other users might execute unintentionally. Hence, both
-   mechanisms permit users to <quote>Trojan horse</quote>
-   others with relative ease. The only real protection is tight
-   control over who can define functions.
+Funzioni e trigger permettono agli utenti di inserire codice nel server backend
+che altri utenti potrebbero eseguire non intenzionalmente. Da adesso, entrambi i meccanismi 
+permettono agli utenti di <quote>Trojan horse</quote> altri 
+con relativa facilità. La sola protezione reale è un rigoroso controllo
+su chi può definire le funzioni.
   </para>
 
   <para>
-   Functions run inside the backend
-   server process with the operating system permissions of the
-   database server daemon.  If the programming language
-   used for the function allows unchecked memory accesses, it is
-   possible to change the server's internal data structures.
-   Hence, among many other things, such functions can circumvent any
-   system access controls.  Function languages that allow such access
-   are considered <quote>untrusted</quote>, and
-   <productname>PostgreSQL</productname> allows only superusers to
-   create functions written in those languages.
+Le funzioni vengono eseguite all'interno del processo server backend
+con permessi del sistema operativo del demone del server database.
+Se il linguaggio di programmazione usato per la funzione permette
+accessi incontrollati alla memoria, è possibile 
+cambiare le strutture dati interne del server.
+Per questo, come molte altre cose, tali funzioni possono eludere qualsiasi 
+sistema di controllo degli accessi. Linguaggi funzionali che permettono tale accesso
+sono cosiderati <quote>untrusted</quote>, e 
+<productname>PostgreSQL</productname> permette solo ai superutenti di 
+creare funzioni scritte in quei linguaggi.
   </para>
  </sect1>
 

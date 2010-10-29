@@ -439,29 +439,17 @@ una transazione esegue diversi comandi successivi che devono avere
 visioni identiche del database.
    </para>
 
-<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
-<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
-<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
-<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
-<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
-<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
    <sect3 id="mvcc-serializability">
-    <title>Serializable Isolation versus True Serializability</title>
+    <title>Isolamento serializzabile contro serializzabilità reale</title>
 
    <indexterm>
-    <primary>serializability</primary>
+    <primary>serializzabilità</primary>
    </indexterm>
 
    <indexterm>
-    <primary>predicate locking</primary>
+    <primary>lock di predicati</primary>
    </indexterm>
 
-<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
-<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
-<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
-<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
-<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
-<!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
    <para>
 Il significato intuitivo (e la definiziona matematica) di 
 esecuzione <quote>serializzabile</quote> è che qualsiasi due transazioni che hanno 
@@ -565,7 +553,7 @@ dei lock, si veda <xref linkend="monitoring"/>.
    <title>Table-Level Locks</title>
 
    <indexterm zone="locking-tables">
-    <primary>LOCK</primary>
+    <primary>lock</primary>
    </indexterm>
 
    <para>
@@ -755,7 +743,6 @@ sia l'unica transazione che ha accesso alla tabella in qualsiasi modo.
         </para>
 
         <para>
-         Acquired by the <command>DROP TABLE</command>,
 Acquisito dai comandi <command>DROP TABLE</command>,
 <command>TRUNCATE</command>, <command>REINDEX</command>,
 <command>CLUSTER</command> e <command>VACUUM FULL</command>, 
@@ -774,11 +761,6 @@ Solamente un lock <literal>ACCESS EXCLUSIVE</literal> blocca un'istruzione
       </para>
      </tip>
 
-    <para>
-        <note>
-            TODO
-        </note>
-    </para>
    <para>
     Once acquired, a lock is normally held till end of transaction.  But if a
     lock is acquired after establishing a savepoint, the lock is released
@@ -924,7 +906,7 @@ Per ottenere un lock di riga esclusivo su una riga senza modificare effettivamen
 selezionare la riga con <command>SELECT FOR
 UPDATE</command>.  Notare che una volta che il lock di riga viene acquisito,  
 la transazione può aggiornare la riga molte volte senza
-paura di conflitti.
+temere conflitti.
     </para>
 
     <para>
@@ -937,7 +919,7 @@ di farlo si bloccherà finchè il lock non viene rilasciato.
     </para>
 
     <para>
-<productname>PostgreSQL</productname> non ricorda nessuna informazione
+<productname>PostgreSQL</productname> non mantiene nessuna informazione
 sulle righe modificate in memoria, così non c'è un limite per il numero 
 di righe con lock contemporanee. Comunque, fare il lock di una riga 
 potrebbe causare una scrittura su disco, per es., <command>SELECT FOR
@@ -965,8 +947,8 @@ di pagina, ma sono menzionati qui per completezza.
     <para>
 L'uso di lock espliciti può incrementare la probabilità di  
 <firstterm>deadlock</firstterm>, in cui due (o più) transazioni 
-mantengono entrambe lock che gli altri vogliono. Per esempio, se la transazione 1
-acquisisce un lock esclusivo sulla tabella A e quindi prova ad acquisire 
+mantengono entrambe lock che gli altri vogliono. Per esempio, se la transazione uno
+acquisisce un lock esclusivo sulla tabella A e successivamente prova ad acquisire 
 un lock esclusivo sulla tabella B, mentre la transazione 2 ha già
 eseguito un lock esclusivo sulla tabella B e adesso vuole un lock esclusivo sulla
 tabella A, allora nessuna delle due può procedere.
@@ -1017,221 +999,220 @@ e annulla una delle transazioni.
     </para>
 
     <para>
-     The best defense against deadlocks is generally to avoid them by
-     being certain that all applications using a database acquire
-     locks on multiple objects in a consistent order. In the example
-     above, if both transactions
-     had updated the rows in the same order, no deadlock would have
-     occurred. One should also ensure that the first lock acquired on
-     an object in a transaction is the most restrictive mode that will be
-     needed for that object.  If it is not feasible to verify this in
-     advance, then deadlocks can be handled on-the-fly by retrying
-     transactions that abort due to deadlocks.
+La miglior difesa contro i deadlock, generalmente, è evitare che diventi
+certo che tutte le applicazioni che usano un database acquisiscano
+lock su molteplici oggetti in un ordine costante. Nell'esempio 
+sopra, se entrambe le transazioni 
+hanno aggiornato le righe nello stesso ordine, non si saranno verificati deadlock.
+Si dovrebbe esser sicuri che il primo lock acquisito su un oggetto in una transazione
+è nella modalità più restrittiva che sarà necessaria a quell'oggetto.
+Se non è fattibile verificarlo in anticipo,  
+allora i deadlock possono essere gestiti al volo ritentando le transazioni
+annullate a causa di deadlock.
     </para>
 
     <para>
-     So long as no deadlock situation is detected, a transaction seeking
-     either a table-level or row-level lock will wait indefinitely for
-     conflicting locks to be released.  This means it is a bad idea for
-     applications to hold transactions open for long periods of time
-     (e.g., while waiting for user input).
+Finchè nessuna situazione di deadlock viene riscontrata, una transazione che cerca
+o un lock di tabella o un lock di riga aspetterà indefinitamente che i lock in conflitto 
+siano rilasciati. Questo significa che è una cattiva idea per le applicazioni 
+trattenere transazioni aperte per lunghi periodi di tempo
+(per es., mentre aspettano input dell'utente).
     </para>
    </sect2>
 
    <sect2 id="advisory-locks">
-    <title>Advisory Locks</title>
+    <title>Lock consultivi</title>
 
     <indexterm zone="advisory-locks">
      <primary>lock</primary>
-     <secondary>advisory</secondary>
+     <secondary>consultivo</secondary>
     </indexterm>
 
     <para>
-     <productname>PostgreSQL</productname> provides a means for
-     creating locks that have application-defined meanings.  These are
-     called <firstterm>advisory locks</firstterm>, because the system does not
-     enforce their use &mdash; it is up to the application to use them
-     correctly.  Advisory locks can be useful for locking strategies
-     that are an awkward fit for the MVCC model.  Once acquired, an
-     advisory lock is held until explicitly released or the session ends.
-     Unlike standard locks, advisory locks do not
-     honor transaction semantics: a lock acquired during a
-     transaction that is later rolled back will still be held following the
-     rollback, and likewise an unlock is effective even if the calling
-     transaction fails later.  The same lock can be acquired multiple times by
-     its owning process: for each lock request there must be a corresponding
-     unlock request before the lock is actually released.  (If a session
-     already holds a given lock, additional requests will always succeed, even
-     if other sessions are awaiting the lock.)  Like all locks in
-     <productname>PostgreSQL</productname>, a complete list of advisory
-     locks currently held by any session can be found in the
-     <link linkend="view-pg-locks"><structname>pg_locks</structname></link>
-     system view.
+<productname>PostgreSQL</productname> fornisce dei mezzi per
+la creazione di lock che hanno significati definiti dall'applicazione. Questi vengono
+chiamati <firstterm>lock consultivi</firstterm>, dato che il sistema non impone 
+il loro urtilizzo - è compito dell'applicazione usarli correttamente.
+I lock consultivi possono essere utili per strategie di locking 
+che sono poco maneggevoli per il modello MVCC. Una  volta acquisito, un
+lock consultivo viene tenuto fino a che non viene rilasciato esplicitamente o se la sessione termina.
+A differenza dei lock standard, i lock consultivi non rispettano
+la semantica transazionale: un lock acquisito durante una transazione
+che successivamente è sottoposto a rollback sarà ancora trattenuto seguendo il rollback,
+e anche un unlock entra in vigore anche se le la transazione chiamante successivamente fallisce.
+Lo stesso lock può essere acquisito molteplici volte dal processo a cui appartiene:
+per ogni richiesta di lock  ci deve essere una corrispondente
+richiesta di unlock prima che venga effettivamente rilasciato. (Se una sessione
+possiede già un dato lock, avranno luogo richieste aggiuntive,  anche se altre sessioni
+sono in attesa del lock). Come tutti i lock in 
+<productname>PostgreSQL</productname>, un elenco completo dei lock consultivi
+legati a una qualsiasi sessione possono essere trovati nella vista di sistema
+<link linkend="view-pg-locks"><structname>pg_locks</structname></link>
     </para>
 
     <para>
-     Advisory locks are allocated out of a shared memory pool whose size
-     is defined by the configuration variables
-     <xref linkend="guc-max-locks-per-transaction"/> and
-     <xref linkend="guc-max-connections"/>.
-     Care must be taken not to exhaust this
-     memory or the server will be unable to grant any locks at all.
-     This imposes an upper limit on the number of advisory locks
-     grantable by the server, typically in the tens to hundreds of thousands
-     depending on how the server is configured.
+I lock consultivi vengono allocati fuori dal pool di memoria condivisa di cui 
+la dimensione viene definita dalle variabili di configurazione
+<xref linkend="guc-max-locks-per-transaction"/> e
+<xref linkend="guc-max-connections"/>.
+Si deve fare attenzione a non esaurire questa
+memoria o il server sarà incapace di concedere del tutto qualsiasi lock. 
+Questo impone un limite superiore sul numero di lock consultivi 
+concessi dal server, tipicamente in decine o centinaia di migliaia
+dipendentemente da come è configurato il server.
     </para>
 
     <para>
-     A common use of advisory locks is to emulate pessimistic locking
-     strategies typical of so called <quote>flat file</quote> data management
-     systems.
-     While a flag stored in a table could be used for the same purpose,
-     advisory locks are faster, avoid MVCC bloat, and are automatically
-     cleaned up by the server at the end of the session.
-     In certain cases using this advisory locking method, especially in queries
-     involving explicit ordering and <literal>LIMIT</literal> clauses, care must be
-     taken to control the locks acquired because of the order in which SQL
-     expressions are evaluated.  For example:
+Un utilizzo comune dei lock consultivi è di emulare strategie di lock 
+pessimistiche tipiche dei sistemi di gestione di dati chiamti <quote>flat file</quote>.
+Mentre una flag immagazzinata in una tabella potrebbe essere usata per lo stesso scopo,
+i lock consultivi sono più veloci, evitando che MVCC si gonfi, e sono automaticamente 
+puliti dal server alla fine della sessione.
+In certi casi, usare questo metodo di locking consultivo, specialmente in query 
+che coinvolgono ordinamento esplicito e clausole <literal>LIMIT</literal>, si deve fare attenzione
+a controllare i lock acquisiti a causa dell'ordine in cui le espressioni SQL 
+vengono valutate. Per esempio:
 <screen>
 SELECT pg_advisory_lock(id) FROM foo WHERE id = 12345; -- ok
-SELECT pg_advisory_lock(id) FROM foo WHERE id &gt; 12345 LIMIT 100; -- danger!
+SELECT pg_advisory_lock(id) FROM foo WHERE id &gt; 12345 LIMIT 100; -- pericoloso!
 SELECT pg_advisory_lock(q.id) FROM
 (
   SELECT id FROM foo WHERE id &gt; 12345 LIMIT 100
 ) q; -- ok
 </screen>
-     In the above queries, the second form is dangerous because the
-     <literal>LIMIT</literal> is not guaranteed to be applied before the locking
-     function is executed.  This might cause some locks to be acquired
-     that the application was not expecting, and hence would fail to release
-     (until it ends the session).
-     From the point of view of the application, such locks
-     would be dangling, although still viewable in
-     <structname>pg_locks</structname>.
+Nelle query sopra, la seconda forma è pericolosa perchè non è garantito che la 
+<literal>LIMIT</literal> venga applicata prima che la funzione di locking sia eseguita.
+Questo potrebbe causare che alcuni lock che l'applicazione non si aspettava siano acquisiti, 
+per cui fallirebbe nel tentativo di rilasciarli
+(finchè la sessione non finisce).
+Dal punto di vista dell'applicazione, quei lock 
+sarebbero pendenti, anche se ancora visibili in
+<structname>pg_locks</structname>.
     </para>
 
     <para>
-     The functions provided to manipulate advisory locks are described in
-     <xref linkend="functions-advisory-locks"/>.
+Le funzioni poste per manipolare lock consultivi sono descritte in  
+<xref linkend="functions-advisory-locks"/>.
     </para>
    </sect2>
 
   </sect1>
 
   <sect1 id="applevel-consistency">
-   <title>Data Consistency Checks at the Application Level</title>
+   <title>Controlli di consistenza dei dati a livello di applicazione</title>
 
    <para>
-    Because readers in <productname>PostgreSQL</productname>
-    do not lock data, regardless of
-    transaction isolation level, data read by one transaction can be
-    overwritten by another concurrent transaction. In other words,
-    if a row is returned by <command>SELECT</command> it doesn't mean that
-    the row is still current at the instant it is returned (i.e., sometime
-    after the current query began).  The row might have been modified or
-    deleted by an already-committed transaction that committed after
-    the <command>SELECT</command> started.
-    Even if the row is still valid <quote>now</quote>, it could be changed or
-    deleted
-    before the current transaction does a commit or rollback.
+Dato che le letture in <productname>PostgreSQL</productname>
+non eseguono lock dei dati, malgrado il livello di isolamento transazionale,
+i dati letti da una transazione possono essere sovrascritti 
+da un'altra transazione concorrente. In altre parole, 
+se una riga viene restituita da <command>SELECT</command> non significa che 
+la riga è ancora la corrente nell'istante che è restituita (per es., a volte 
+dopo che la query attuale è cominciata). La riga potrebbe essere stata modificata o
+cancellata da una transazione che ha già fatto un commit dopo che la 
+<command>SELECT</command> è iniziata.
+Anche se la riga è comunque valida <quote>ora</quote>, potrebbe essere cambiato o  
+cancellato 
+prima che la transazione corrente faccia un commit o un rollback.
    </para>
 
    <para>
-    Another way to think about it is that each
-    transaction sees a snapshot of the database contents, and concurrently
-    executing transactions might very well see different snapshots.  So the
-    whole concept of <quote>now</quote> is somewhat ill-defined anyway.
-    This is not normally
-    a big problem if the client applications are isolated from each other,
-    but if the clients can communicate via channels outside the database
-    then serious confusion might ensue.
+
+Un altro modo di pensare a questo è che ogni transazione vede
+un'istantanea del contenuto del database, e concorrentemente  
+transazioni in esecuzione  potrebbero vedere differenti istantanee. Così 
+l'intero concetto di <quote>ora</quote> in qualche modo è comunque non ben definito. 
+Normalmente non è 
+un gran problema se le applicazioni client sono isolate l'una dall'altra,
+me se i client possono comunicare attraverso canali esterni al database
+allora potrebbe verificarsi molta confusione. 
    </para>
 
    <para>
-    To ensure the current validity of a row and protect it against
-    concurrent updates one must use <command>SELECT FOR UPDATE</command>,
-    <command>SELECT FOR SHARE</command>, or an appropriate <command>LOCK
-    TABLE</command> statement.  (<command>SELECT FOR UPDATE</command>
-    and <command>SELECT FOR SHARE</command> lock just the
-    returned rows against concurrent updates, while <command>LOCK
-    TABLE</command> locks the whole table.)  This should be taken into
-    account when porting applications to
-    <productname>PostgreSQL</productname> from other environments.
+Per assicurare la validità della riga corrente e proteggerla rispetto 
+ad aggiornamenti concorrenti si deve usare <command>SELECT FOR UPDATE</command>,
+<command>SELECT FOR SHARE</command> o un'istruzione <command>LOCK TABLE</command> appropriata. 
+(<command>SELECT FOR UPDATE</command>
+e <command>SELECT FOR SHARE</command> eseguono un lock solamente sulle 
+righe restituite rispetto a agiornamenti concorrenti, mentre <command>LOCK
+TABLE</command> esegue un lock sull'intera tabella). Questo dovrebbe essere messo in conto
+quando si portano applicazioni a <productname>PostgreSQL</productname>
+da altri ambienti.
    </para>
 
    <para>
-    Global validity checks require extra thought under <acronym>MVCC</acronym>.
-    For example, a banking application might wish to check that the sum of
-    all credits in one table equals the sum of debits in another table,
-    when both tables are being actively updated.  Comparing the results of two
-    successive <literal>SELECT sum(...)</literal> commands will not work reliably in
-    Read Committed mode, since the second query will likely include the results
-    of transactions not counted by the first.  Doing the two sums in a
-    single serializable transaction will give an accurate picture of only the
-    effects of transactions that committed before the serializable transaction
-    started &mdash; but one might legitimately wonder whether the answer is still
-    relevant by the time it is delivered.  If the serializable transaction
-    itself applied some changes before trying to make the consistency check,
-    the usefulness of the check becomes even more debatable, since now it
-    includes some but not all post-transaction-start changes.  In such cases
-    a careful person might wish to lock all tables needed for the check,
-    in order to get an indisputable picture of current reality.  A
-    <literal>SHARE</literal> mode (or higher) lock guarantees that there are no
-    uncommitted changes in the locked table, other than those of the current
-    transaction.
+I controlli di validità globale richiedono ulteriori considerazioni con <acronym>MVCC</acronym>.
+Per esempio, un'applicazione bancaria potrebbe voler controllare che la somma
+di tutti i crediti in una tabella uguagli la somma dei debiti in un'altra tabella,
+mentre entrambe le tabelle vengono aggiornate attivamente. Confrontare i risultati di 
+due comandi <literal>SELECT sum(...)</literal>  successivi non funzionerà correttamente in modalità 
+Read Committed, dato che la seconda query probabilmente includerà i risultati 
+di transazioni non contate dalla prima. Fare le due somme in una singola transazione serializzabile
+fornirà una fotografia accurata solo degli effetti di transazioni che hanno fatto un commit 
+prima che la transazione serializzabile cominciasse - ma si potrebbe legittimamente 
+meravigliarsi se la risposta è ancora rilevante al momento della consegna.
+Se la transazione serializzabile da sola ha applicato alcuni cambiamenti prima di tentare 
+di fare un controllo di consistenza, 
+l'utilità di questo  controllo è cmunque molto dibattuta, dato che adesso include alcuni 
+ma non tutti i cambiamenti post-transazione. In quei casi 
+una persona prudente potrebbe desiderare di fare un lock su tutte le tabelle necessarie al controllo,
+per ottenere un'immagine indiscutibile della realtà corrente. Un lock in modalità
+<literal>SHARE</literal> (o superiore) garantisce che non ci siano 
+cambiamenti non sottoposti a commit nella tabella che ha il lock, diversi da quelli 
+della transazione corrente.
    </para>
 
    <para>
-    Note also that if one is relying on explicit locking to prevent concurrent
-    changes, one should either use Read Committed mode, or in Serializable
-    mode be careful to obtain
-    locks before performing queries.  A lock obtained by a
-    serializable transaction guarantees that no other transactions modifying
-    the table are still running, but if the snapshot seen by the
-    transaction predates obtaining the lock, it might predate some now-committed
-    changes in the table.  A serializable transaction's snapshot is actually
-    frozen at the start of its first query or data-modification command
-    (<literal>SELECT</literal>, <literal>INSERT</literal>,
-    <literal>UPDATE</literal>, or <literal>DELETE</literal>), so
-    it is possible to obtain locks explicitly before the snapshot is
-    frozen.
+Notare anche che se si fa affidamento sul locking esplicito per prevenire cambiamenti 
+concorrenti, di dovrebbe usare o la modalità Read Committed, altrimenti in modalità Serializable
+fare attenzione a ottenere i lock prima di eseguire le query.
+Un lock ottenuto da una transazione serializzabile garantisce
+che nessun'altra transazione che modifichi la tabella
+sia in esecuzione, ma se l'istantanea vista dalla transazione 
+precede l'acquisizione del lock, potrebbe anticipare alcuni cambiamenti appena sottoposti a commit 
+nella tabella. Un'istantanea di transazione serializzabile attualmente viene 
+bloccata all'inizio del suo primo comando di interrogazione o modifica dei dati
+(<literal>SELECT</literal>, <literal>INSERT</literal>,
+<literal>UPDATE</literal> o <literal>DELETE</literal>), così
+è possibile ottenere lock esplicitamente prima che l'istantanea sia 
+"congelata".
    </para>
   </sect1>
 
   <sect1 id="locking-indexes">
-   <title>Locking and Indexes</title>
+   <title>Locking e indici</title>
 
    <indexterm zone="locking-indexes">
-    <primary>index</primary>
-    <secondary>locks</secondary>
+    <primary>indice</primary>
+    <secondary>lock</secondary>
    </indexterm>
 
    <para>
-    Though <productname>PostgreSQL</productname>
-    provides nonblocking read/write access to table
-    data, nonblocking read/write access is not currently offered for every
-    index access method implemented
-    in <productname>PostgreSQL</productname>.
-    The various index types are handled as follows:
+Nonostante <productname>PostgreSQL</productname>
+fornisce accesso in lettura/scrittura "non bloccante" ai dati di tabella,
+l'accesso in lettura/scrittura non bloccante  non è attualmente offerto per ogni
+metodo di accesso agli indici implementato
+in <productname>PostgreSQL</productname>.
+I diversi tipi di indice sono gestiti nel seguente modo:
 
     <variablelist>
      <varlistentry>
       <term>
-       B-tree and <acronym>gist</acronym> indexes
+       indici B-tree e <acronym>gist</acronym> 
       </term>
       <listitem>
        <para>
-        Short-term share/exclusive page-level locks are used for
-        read/write access. Locks are released immediately after each
-        index row is fetched or inserted.  These index types provide
-        the highest concurrency without deadlock conditions.
+Lock di pagina condivisi/esclusivi a breve termine sono usati per 
+accessi il lettura/scrittura. I lock vengono rilasciati immediatamente dopo che ogni
+indice di riga viene preso o inserito. Questi tipi di indice forniscono 
+le maggiori condizioni di concorrenza senza deadlock.
        </para>
       </listitem>
      </varlistentry>
 
      <varlistentry>
       <term>
-       Hash indexes
+       indici hash
       </term>
       <listitem>
        <para>
@@ -1246,16 +1227,16 @@ SELECT pg_advisory_lock(q.id) FROM
 
      <varlistentry>
       <term>
-       <acronym>gin</acronym> indexes
+       indici <acronym>gin</acronym>
       </term>
       <listitem>
        <para>
-        Short-term share/exclusive page-level locks are used for
-        read/write access. Locks are released immediately after each
-        index row is fetched or inserted. But note that insertion of a
-        gin-indexed value usually produces several index key insertions
-        per row, so gin might do substantial work for a single value's
-        insertion.
+Lock di pagina condivisi/esclusivi a breve termine sono usati per 
+accessi il lettura/scrittura. I lock sono rilasciati immediatamente dopo che ogni
+indice di riga viene preso o inserito. Ma si noti che l'inserimento di                  
+un valore sottoposto a indice gin di solito produce diversi inserimenti 
+di chiavi indice per riga, 
+così gin potrebbe svolgere un considerevole lavoro per l'inserimento di un singolo valore.
        </para>
       </listitem>
      </varlistentry>
@@ -1263,12 +1244,11 @@ SELECT pg_advisory_lock(q.id) FROM
    </para>
 
    <para>
-    Currently, B-tree indexes offer the best performance for concurrent
-    applications; since they also have more features than hash
-    indexes, they are the recommended index type for concurrent
-    applications that need to index scalar data. When dealing with
-    non-scalar data, B-trees are not useful, and gist or gin indexes should
-    be used instead.
+Correntemente, gli indici B-tree offrono la miglior prestazione per applicazioni 
+concorrenti; dato che hanno anche maggiori caratteristiche rispetto agli indici 
+hash, sono il tipo di indice raccomandato per applicazioni concorrenti
+che hanno bisongno di indicizzare dati scalari. Quando si ha a che fare con
+dati non scalari, i B-tree non sono utili, si dovrebbero unvece usare gli indici gist o gin. 
    </para>
   </sect1>
  </chapter>

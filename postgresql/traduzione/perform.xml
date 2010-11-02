@@ -135,7 +135,7 @@ o scansionate dal nodo del piano. Di solito è meno,
 in quanto riflette la selettività stimata di qualsiasi condizione <literal>WHERE</literal> applicata
 al nodo. 
 Idealmente le righe stimate si avvicineranno al numero di righe effettivamente restituite,  
-aggiotnate, o cancellate dalla query.
+aggiornate, o cancellate dalla query.
    </para>
 
    <para>

@@ -2,70 +2,67 @@
 <!-- $PostgreSQL$ -->
 
  <chapter id="performance-tips">
-  <title>Performance Tips</title>
+  <title>Suggerimenti per migliorare le prestazioni</title>
 
   <indexterm zone="performance-tips">
-   <primary>performance</primary>
+   <primary>prestazioni</primary>
   </indexterm>
 
   <para>
-   Query performance can be affected by many things. Some of these can
-   be controlled by the user, while others are fundamental to the underlying
-   design of the system.  This chapter provides some hints about understanding
-   and tuning <productname>PostgreSQL</productname> performance.
+Le prestazioni della query possono essere influenzate da molte cose. Alcune di queste possono
+essere controllate dall'utente, mentre altre sono fondamentali per il disegno del 
+sistema. Questo capitolo presenta alcuni consigli per capire e mettere a punto 
+le prestazioni di <productname>PostgreSQL</productname>.
   </para>
 
   <sect1 id="using-explain">
-   <title>Using <command>EXPLAIN</command></title>
+   <title>Usare <command>EXPLAIN</command></title>
 
    <indexterm zone="using-explain">
     <primary>EXPLAIN</primary>
    </indexterm>
 
    <indexterm zone="using-explain">
-    <primary>query plan</primary>
+    <primary>piano della query</primary>
    </indexterm>
 
    <para>
-    <productname>PostgreSQL</productname> devises a <firstterm>query
-    plan</firstterm> for each query it receives.  Choosing the right
-    plan to match the query structure and the properties of the data
-    is absolutely critical for good performance, so the system includes
-    a complex <firstterm>planner</firstterm> that tries to choose good plans.
-    You can use the
-    <xref linkend="sql-explain"/> command
-    to see what query plan the planner creates for any query.
-    Plan-reading is an art that deserves an extensive tutorial, which
-    this is not; but here is some basic information.
+<productname>PostgreSQL</productname> crea un <firstterm>piano di query</firstterm>
+per ogni query che riceve. Scegliere il giusto piano che corrisponda alla struttura della query
+e alle proprietà dei dati è fondamentale per avere buone prestazioni, per questo il sistema
+include un complesso <firstterm>pianificatore</firstterm> che prova a scegliere piani buoni.
+È possibile usare il comando <xref linkend="sql-explain"/>
+per vedere che piano di query viene generato dal pianificatore per ogni query.
+La lettura dei piani è un'arte che necessita una vasta spiegazione,  
+questo libro non lo è; ma ecco alcune informazioni.
    </para>
 
    <para>
-    The structure of a query plan is a tree of <firstterm>plan nodes</firstterm>.
-    Nodes at the bottom level of the tree are table scan nodes: they return raw rows
-    from a table.  There are different types of scan nodes for different
-    table access methods: sequential scans, index scans, and bitmap index
-    scans.  If the query requires joining, aggregation, sorting, or other
-    operations on the raw rows, then there will be additional nodes
-    above the scan nodes to perform these operations.  Again,
-    there is usually more than one possible way to do these operations,
-    so different node types can appear here too.  The output
-    of <command>EXPLAIN</command> has one line for each node in the plan
-    tree, showing the basic node type plus the cost estimates that the planner
-    made for the execution of that plan node.  The first line (topmost node)
-    has the estimated total execution cost for the plan; it is this number
-    that the planner seeks to minimize.
+La struttura di un piano di query è un albero di <firstterm>nodi di piano</firstterm>.
+I nodi al livello più basso dell'albero sono nodi di scanzione di tabella: essi restituiscono righe grezze
+da una tabella. Ci sono diversi tipi di nodi di scansione per diversi metodi di accesso 
+alla tabella: scansioni sequenziali, scansioni con indice, scansioni con indice bitmap.
+Se la query richiede il join, l'aggregazione, l'ordinamento o altre operazioni
+sulle righe grezze, allora ci saranno nodi aggiuntivi superiori ai nodi di scansione
+per eseguire queste operazioni. Di nuovo,
+di solito c'è più di un modo possibile per fare queste operazioni,
+così anche qui possono essere usati diversi tipi di nodo. L'output di 
+<command>EXPLAIN</command> ha una linea per ogni nodo nell'albero del piano,
+che mostra il tipo di base del nodo più il costo stimato che il pianificatore
+ha calcolato per l'esecuzione di quel nodo. La prima linea (il nodo superiore a tutti gli altri)
+possiede il costo totale stimato per l'esecuzione del piano; il pianificatore 
+cerca di minimizzare questo numero.
    </para>
 
    <para>
-    Here is a trivial example, just to show what the output looks like:
+Ecco un banale esempio, solo per mostrare come appare l'output: 
     <footnote>
      <para>
-      Examples in this section are drawn from the regression test database
-      after doing a <command>VACUUM ANALYZE</command>, using 8.2 development sources.
-      You should be able to get similar results if you try the examples yourself,
-      but your estimated costs and row counts might vary slightly
-      because <command>ANALYZE</command>'s statistics are random samples rather
-      than exact.
+Gli esempi in questa sezione sono presi dal database di test di regressione
+dopo aver fatto un <command>VACUUM ANALYZE</command>, usando i sorgenti di sviluppo della versione 8.2.
+Si dovrebbe essere capaci di ottenere risultati simili se si provano gli esempi,
+ma i costi stimati e i conteggi delle righe potrebbero variare sensibilmente
+dato che le statistiche di <command>ANALYZE</command> sono campioni casuali piuttosto che esatte.
      </para>
     </footnote>
 
@@ -79,76 +76,70 @@ EXPLAIN SELECT * FROM tenk1;
    </para>
 
    <para>
-    The numbers that are quoted by <command>EXPLAIN</command> are (left
-    to right):
+I numeri presentati da <command>EXPLAIN</command> sono (da sinistra a destra):
 
     <itemizedlist>
      <listitem>
       <para>
-       Estimated start-up cost (time expended before the output scan can start,
-       e.g., time to do the sorting in a sort node)
+Il costo stimato per iniziare (tempo speso prima che la scanzione di output possa partire,
+per es., il tempo per fare l'ordinamento in un nodo di ordinamento)
       </para>
      </listitem>
 
      <listitem>
       <para>
-       Estimated total cost (if all rows are retrieved, though they might
-       not be; e.g., a query with a <literal>LIMIT</literal> clause will stop
-       short of paying the total cost of the <literal>Limit</literal> plan node's
-       input node)
+Costo totale stimato (se vengono recuperate tutte le righe, sebbene potrebbero non esserlo;
+per es., una query con una clausola <literal>LIMIT</literal> si fermerà prima 
+di pagare il costo totale del nodo <literal>Limit</literal> di input del piano)
       </para>
      </listitem>
 
      <listitem>
       <para>
-       Estimated number of rows output by this plan node (again, only if
-       executed to completion)
+Numero stimato di righe in output da questo nodo del piano (di nuovo, solo 
+se eseguito fino al completamento)
       </para>
      </listitem>
 
      <listitem>
       <para>
-       Estimated average width (in bytes) of rows output by this plan
-       node
+Dimensione media stimata (in byte) delle righe in output da questo nodo del piano
       </para>
      </listitem>
     </itemizedlist>
    </para>
 
    <para>
-    The costs are measured in arbitrary units determined by the planner's
-    cost parameters (see <xref linkend="runtime-config-query-constants"/>).
-    Traditional practice is to measure the costs in units of disk page
-    fetches; that is, <xref linkend="guc-seq-page-cost"/> is conventionally
-    set to <literal>1.0</literal> and the other cost parameters are set relative
-    to that.  (The examples in this section are run with the default cost
-    parameters.)
+I costi sono misurati in unità arbitrarie determinate dai parametri di costo del
+pianificatore (si veda <xref linkend="runtime-config-query-constants"/>).
+La prassi tradizionale è di misurare i costi in unità di pagina disco;
+così, <xref linkend="guc-seq-page-cost"/> è impostato convenzionalmente
+a <literal>1.0</literal> e i parametri degli altri costi sono impostati relavitamente a quello.
+(Gli esempi in questa sezione sono eseguiti con i parametri di costo predefiniti).
    </para>
 
    <para>
-    It's important to note that the cost of an upper-level node includes
-    the cost of all its child nodes.  It's also important to realize that
-    the cost only reflects things that the planner cares about.
-    In particular, the cost does not consider the time spent transmitting
-    result rows to the client, which could be an important
-    factor in the real elapsed time; but the planner ignores it because
-    it cannot change it by altering the plan.  (Every correct plan will
-    output the same row set, we trust.)
+È importatnte notare che il costo di un nodo di livello superiore include 
+il costo di tutti i suoi nodi figli. È importante anche capire che il costo 
+tiene conto solo di cose di cui il pianificatore tiene di conto.
+In particolare, il costo non considera il tempo speso trasmettendo le righe risultanti 
+al client, che potrebbe essere un fattore importante
+nel calcolo del reale tempo di esecuzione; ma il pianificatore lo ignora dato che non può  
+cambiarlo modificando il piano. (Ogni piano corretto fornirà in output lo stesso insieme di righe).
    </para>
 
    <para>
-    The <literal>rows</literal> value is a little tricky
-    because it is <emphasis>not</emphasis> the
-    number of rows processed or scanned by the plan node.  It is usually less,
-    reflecting the estimated selectivity of any <literal>WHERE</literal>-clause
-    conditions that are being
-    applied at the node.  Ideally the top-level rows estimate will
-    approximate the number of rows actually returned, updated, or deleted
-    by the query.
+Il valore delle <literal>righe</literal> è un po' complicato 
+dato che <emphasis>non</emphasis> è il numero di righe processate 
+o scansionate dal nodo del piano. Di solito è meno, 
+in quanto riflette la selettività stimata di qualsiasi condizione <literal>WHERE</literal> applicata
+al nodo. 
+Idealmente le righe stimate si avvicineranno al numero di righe effettivamente restituite,  
+aggiotnate, o cancellate dalla query.
    </para>
 
    <para>
-    Returning to our example:
+Ritornando ai nostri esempi:
 
 <programlisting>
 EXPLAIN SELECT * FROM tenk1;
@@ -160,22 +151,22 @@ EXPLAIN SELECT * FROM tenk1;
    </para>
 
    <para>
-    This is about as straightforward as it gets.  If you do:
+Questo è semplice come appare. Se si fa:
 
 <programlisting>
 SELECT relpages, reltuples FROM pg_class WHERE relname = 'tenk1';
 </programlisting>
 
-    you will find that <classname>tenk1</classname> has 358 disk
-    pages and 10000 rows.  The estimated cost is computed as (disk pages read *
-    <xref linkend="guc-seq-page-cost"/>) + (rows scanned *
-    <xref linkend="guc-cpu-tuple-cost"/>).  By default,
-    <varname>seq_page_cost</varname> is 1.0 and <varname>cpu_tuple_cost</varname> is 0.01,
-    so the estimated cost is (358 * 1.0) + (10000 * 0.01) = 458.
+si scoprirà che <classname>tenk1</classname> ha 358 pagine di disco
+e 10000 righe. Il costo stimato è calcolato come (pagine disco lette * 
+<xref linkend="guc-seq-page-cost"/>) + (righe scansionate *
+<xref linkend="guc-cpu-tuple-cost"/>). In maniera predefinita,
+<varname>seq_page_cost</varname> è 1.0 e <varname>cpu_tuple_cost</varname> è 0.01,
+così il costo stimato è (358 * 1.0) + (10000 * 0.01) = 458.
    </para>
 
    <para>
-    Now let's modify the original query to add a <literal>WHERE</literal> condition:
+Adesso si modifichi la query originale per aggiungere una condizione <literal>WHERE</literal>:
 
 <programlisting>
 EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 7000;
@@ -186,29 +177,28 @@ EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 7000;
    Filter: (unique1 &lt; 7000)
 </programlisting>
 
-    Notice that the <command>EXPLAIN</command> output shows the <literal>WHERE</literal>
-    clause being applied as a <quote>filter</quote> condition; this means that
-    the plan node checks the condition for each row it scans, and outputs
-    only the ones that pass the condition.
-    The estimate of output rows has been reduced because of the <literal>WHERE</literal>
-    clause.
-    However, the scan will still have to visit all 10000 rows, so the cost
-    hasn't decreased; in fact it has gone up a bit (by 10000 * <xref
-    linkend="guc-cpu-operator-cost"/>, to be exact) to reflect the extra CPU
-    time spent checking the <literal>WHERE</literal> condition.
+Notare che l'output di <command>EXPLAIN</command> mostra che la clausola <literal>WHERE</literal>
+è stata applicata come una condizione <quote>filtro</quote>; questo significa che 
+il nodo del piano controlla la condizione per ogni riga che scansiona, e mostra in output solo
+quelle che soddisfano la condizione.
+La stima delle righe di output è stata ridotta a causa della clausola <literal>WHERE</literal>.
+Comunque, la scansione dovrà comunque visitare tutte le 10000 righe, così il costo
+non è diminuito; infatti si è alzato un po' (di 10000 * <xref
+linkend="guc-cpu-operator-cost"/>, per essere esatti) per riflettere il tempo in più speso dalla CPU
+per controllare la condizione  <literal>WHERE</literal>.
    </para>
 
    <para>
-    The actual number of rows this query would select is 7000, but the <literal>rows</literal>
-    estimate is only approximate.  If you try to duplicate this experiment,
-    you will probably get a slightly different estimate; moreover, it will
-    change after each <command>ANALYZE</command> command, because the
-    statistics produced by <command>ANALYZE</command> are taken from a
-    randomized sample of the table.
+Il numero effettivo di righe che questa query selezionerà sono 7000, ma le  <literal>righe</literal>
+stimate sono solo approssimate. Se si prova a duplicare questo esperimento,
+probabilmente si otterranno stime leggermente diverse; in più, cambierà 
+dopo ogni comando <command>ANALYZE</command>, dato che le statistiche 
+prodotte da <command>ANALYZE</command> sono prese da un campione 
+casuale della tabella.
    </para>
 
    <para>
-    Now, let's make the condition more restrictive:
+Adesso, rendiamo la condizione più restrittiva:
 
 <programlisting>
 EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 100;
@@ -221,22 +211,21 @@ EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 100;
          Index Cond: (unique1 &lt; 100)
 </programlisting>
 
-    Here the planner has decided to use a two-step plan: the bottom plan
-    node visits an index to find the locations of rows matching the index
-    condition, and then the upper plan node actually fetches those rows
-    from the table itself.  Fetching the rows separately is much more
-    expensive than sequentially reading them, but because not all the pages
-    of the table have to be visited, this is still cheaper than a sequential
-    scan.  (The reason for using two plan levels is that the upper plan
-    node sorts the row locations identified by the index into physical order
-    before reading them, to minimize the cost of separate fetches.
-    The <quote>bitmap</quote> mentioned in the node names is the mechanism that
-    does the sorting.)
+Qui il pianificatore ha deciso di usare un piano a due passaggi: il nodo del piano inferiore 
+visita un indice per trovare le posizioni delle righe che corrispondono alla condizione 
+dell'indice, e quindi il nodo di  piano superiore effettivamente ottiene le righe dalla tabella 
+stessa. Prendere le righe separatamente è molto più costoso 
+che leggerle sequenzialmente, ma dato che tutte le pagine  
+della tabella devono essere visitate, è comunque più conveniente di una scansione
+sequenziale. (La ragione per usare due livelli di piano è che il nodo del piano superiore 
+ordina le posizioni della riga identificate dall'indice nell'ordine fisico
+prima di leggerle, per minimizzare il costo di fetch separate.
+Il <quote>bitmap</quote> menzionato nei nomi di nodo è il meccanismo che fa l'ordinamento).
    </para>
 
    <para>
-    If the <literal>WHERE</literal> condition is selective enough, the planner might
-    switch to a <quote>simple</quote> index scan plan:
+Se la condizione <literal>WHERE</literal> è abbastanza selettiva, il pianificatore potrebbe
+usare un <quote>simple</quote> piano di scansione di indice:
 
 <programlisting>
 EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 3;
@@ -247,16 +236,15 @@ EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 3;
    Index Cond: (unique1 &lt; 3)
 </programlisting>
 
-    In this case the table rows are fetched in index order, which makes them
-    even more expensive to read, but there are so few that the extra cost
-    of sorting the row locations is not worth it.  You'll most often see
-    this plan type for queries that fetch just a single row, and for queries
-    that have an <literal>ORDER BY</literal> condition that matches the index
-    order.
+In questo caso le righe della tabella sono ottenute in ordine di indice, che le rende
+ancora più costose da leggere, ma ce ne sono anche alcune per cui il costo aggiuntivo 
+dell'ordinamento delle posizioni della riga non ha importanza. La maggior parte delle volte si vedrà 
+questo tipo di piano per query che ottengono solo una singola riga, e per query
+che hanno una condizione <literal>ORDER BY</literal> che corrisponde all'ordine dell'indice.
    </para>
 
    <para>
-    Add another condition to the <literal>WHERE</literal> clause:
+Aggiungere un'altra condizione alla clausola <literal>WHERE</literal>:
 
 <programlisting>
 EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 3 AND stringu1 = 'xxx';
@@ -268,18 +256,18 @@ EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 3 AND stringu1 = 'xxx';
    Filter: (stringu1 = 'xxx'::name)
 </programlisting>
 
-    The added condition <literal>stringu1 = 'xxx'</literal> reduces the
-    output-rows estimate, but not the cost because we still have to visit the
-    same set of rows.  Notice that the <literal>stringu1</literal> clause
-    cannot be applied as an index condition (since this index is only on
-    the <literal>unique1</literal> column).  Instead it is applied as a filter on
-    the rows retrieved by the index.  Thus the cost has actually gone up
-    slightly to reflect this extra checking.
+La condizione <literal>stringu1 = 'xxx'</literal> aggiunta riduce la stima 
+delle righe in output, ma non il costo, dato che si dovrà comunque visitare lo stesso
+insieme di righe. Notare che la clausola <literal>stringu1</literal>
+non può essere applicata come condizione di indice (dato che questo indice è solo sulla colonna
+<literal>unique1</literal>). Invece viene applicato come filtro sulle righe 
+ricavate dall'indice. Per questo il costo è aumentato sensibilmente 
+per rispecchiare questo controllo ulteriore.
    </para>
 
    <para>
-    If there are indexes on several columns referenced in <literal>WHERE</literal>, the
-    planner might choose to use an AND or OR combination of the indexes:
+Se ci sono indici su diverse colonne referenziate nella <literal>WHERE</literal>, il pianificatore
+potrebbe scegliere di usare una combinazione di AND o OR degli indici:
 
 <programlisting>
 EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 100 AND unique2 &gt; 9000;
@@ -295,14 +283,13 @@ EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 100 AND unique2 &gt; 9000;
                Index Cond: (unique2 &gt; 9000)
 </programlisting>
 
-    But this requires visiting both indexes, so it's not necessarily a win
-    compared to using just one index and treating the other condition as
-    a filter.  If you vary the ranges involved you'll see the plan change
-    accordingly.
+Ma questo richiede la visita di entrambi gli indici, che non è necessariamente un vantaggio  
+rispetto ad usare solo un indice e trattare l'altra condizione come un filtro.
+Se si cambiano gli intervalli coinvolti si noterà che il piano cambia conseguentemente.
    </para>
 
    <para>
-    Let's try joining two tables, using the columns we have been discussing:
+Si provi a fare il join di due tabelle, usando le colonne di cui abbiamo discusso:
 
 <programlisting>
 EXPLAIN SELECT *
@@ -350,11 +337,12 @@ WHERE t1.unique1 &lt; 100 AND t1.unique2 = t2.unique2;
    </para>
 
    <para>
-    One way to look at variant plans is to force the planner to disregard
-    whatever strategy it thought was the cheapest, using the enable/disable
-    flags described in <xref linkend="runtime-config-query-enable"/>.
-    (This is a crude tool, but useful.  See
-    also <xref linkend="explicit-joins"/>.)
+Un modo di guardare ai diversi piani è di forzare il pianificatore a ignorare 
+qualsiasi strategia pensi sia la più economica, usando i flag abilita/disabilita
+descritti in <xref linkend="runtime-config-query-enable"/>.
+(Queso è uno strumento rudimentale, ma utile. Si veda anche 
+<xref linkend="explicit-joins"/>).
+
 
 <programlisting>
 SET enable_nestloop = off;
@@ -374,24 +362,24 @@ WHERE t1.unique1 &lt; 100 AND t1.unique2 = t2.unique2;
                      Index Cond: (unique1 &lt; 100)
 </programlisting>
 
-    This plan proposes to extract the 100 interesting rows of <classname>tenk1</classname>
-    using that same old index scan, stash them into an in-memory hash table,
-    and then do a sequential scan of <classname>tenk2</classname>, probing into the hash table
-    for possible matches of <literal>t1.unique2 = t2.unique2</literal> for each <classname>tenk2</classname> row.
-    The cost to read <classname>tenk1</classname> and set up the hash table is a start-up
-    cost for the hash join, since there will be no output until we can
-    start reading <classname>tenk2</classname>.  The total time estimate for the join also
-    includes a hefty charge for the CPU time to probe the hash table
-    10000 times.  Note, however, that we are <emphasis>not</emphasis> charging 10000 times 232.35;
-    the hash table setup is only done once in this plan type.
+Questo piano propone di estrarre le 100 righe di interesse di <classname>tenk1</classname>
+usando la stessa vecchia scansione di indice, mettendoli via in una tabella hash in memoria,
+e quindi facendo una scansione sequenziale di <classname>tenk2</classname>, 
+per possibili corrispondenze di <literal>t1.unique2 = t2.unique2</literal> per ogni riga di <classname>tenk2</classname>.
+Il costo di leggere <classname>tenk1</classname> e impostare la tabella hash è un costo di inizio
+per la join hash, dato che non ci sarà output finchè non è possibile 
+cominciare a leggere  <classname>tenk2</classname>. Il tempo totale stimato per la join include anche
+un costo massiccio per la CPU per sondare la tabella hash 10000 volte. 
+Notare, comunque, che <emphasis>non</emphasis> si conterà 10000 volte  232.35;
+la messa a punto della tabella hash viene fatta solo una volta in questo tipo di piano.
    </para>
 
    <para>
-    It is possible to check the accuracy of the planner's estimated costs
-    by using <command>EXPLAIN ANALYZE</command>.  This command actually executes the query,
-    and then displays the true run time accumulated within each plan node
-    along with the same estimated costs that a plain <command>EXPLAIN</command> shows.
-    For example, we might get a result like this:
+È possibile controllare l'accuratezza dei costi stimati del pianificatore
+usando <command>EXPLAIN ANALYZE</command>.  Questo comando esegue effettivamente la query,
+e quindi mostra il tempo di esecuzione reale accumulato all'interno di ogni nodo del piano
+così come i costi stimati mostrati da  una normale <command>EXPLAIN</command>.
+Per esempio, si potrebbe ottenere un risultato simile a questo:
 
 <screen>
 EXPLAIN ANALYZE SELECT *
@@ -410,39 +398,38 @@ WHERE t1.unique1 &lt; 100 AND t1.unique2 = t2.unique2;
  Total runtime: 14.452 ms
 </screen>
 
-    Note that the <quote>actual time</quote> values are in milliseconds of
-    real time, whereas the <literal>cost</literal> estimates are expressed in
-    arbitrary units; so they are unlikely to match up.
-    The thing to pay attention to is whether the ratios of actual time and
-    estimated costs are consistent.
+Notare che i valori di <quote>actual time</quote> sono in millisecondi, 
+mentre i <literal>costi</literal> stimati sono espressi in 
+unità arbitrarie; così probabilmente non corrisponderanno.
+La cosa da tener conto è se il rapporto tra il tempo effettivo e i costi stimati sono
+molto diversi.
    </para>
 
    <para>
-    In some query plans, it is possible for a subplan node to be executed more
-    than once.  For example, the inner index scan is executed once per outer
-    row in the above nested-loop plan.  In such cases, the
-    <literal>loops</literal> value reports the
-    total number of executions of the node, and the actual time and rows
-    values shown are averages per-execution.  This is done to make the numbers
-    comparable with the way that the cost estimates are shown.  Multiply by
-    the <literal>loops</literal> value to get the total time actually spent in
-    the node.
+In alcuni piani di query, è possibile che un nodo di sottopiano venga eseguito più di una
+volta. Per esempio, la scansione di indice interna viene eseguita una volta per ogni riga esterna 
+nel piano con ciclo annidato visto sopra. In questi casi, 
+il valore <literal>loops</literal> riporta il numero totale
+di esecuzioni del nodo, e il tempo effettivo e i valori delle righe mostrate sono medie per esecuzione. 
+Viene fatto questo per rendere i numeri confrontabili con il modo in cui sono mostrati i costi stimati.
+Moltiplicare per il valore <literal>loops</literal> per avere il tempo totale speso effettivamente
+in quel nodo.
    </para>
 
    <para>
-    The <literal>Total runtime</literal> shown by <command>EXPLAIN
-    ANALYZE</command> includes executor start-up and shut-down time, as well
-    as time spent processing the result rows.  It does not include parsing,
-    rewriting, or planning time.  For a <command>SELECT</command> query, the total
-    run time will normally be just a little larger than the total time
-    reported for the top-level plan node.  For <command>INSERT</command>,
-    <command>UPDATE</command>, and <command>DELETE</command> commands, the total run time
-    might be considerably larger, because it includes the time spent processing
-    the result rows.  For these commands, the time for the top plan node is
-    essentially the time spent locating the old rows and/or computing
-    the new ones, but it doesn't include the time spent applying the changes.
-    Time spent firing triggers, if any, is also outside the top plan node,
-    and is shown separately for each trigger.
+Il <literal>tempo di esecuzione totale</literal> mostrato in <command>EXPLAIN
+ANALYZE</command> include l'avvio dell'esecutore e il tempo per la chiusura, così come
+il tempo speso processando le righe risultanti. Non include il tempo per il parsing,
+la riscrittura, o la pianificazione. Per una query <command>SELECT</command>, il tempo di esecuzione totale
+normalmente sarà solo un po' più grande rispetto al tempo totale
+riportato per il nodo del piano più alto. Per i comandi <command>INSERT</command>, 
+<command>UPDATE</command>, e <command>DELETE</command>, il tempo totale di esecuzione potrebbe essere
+considerevolmente grande, dato che include il tempo speso processando le righe risultanti.
+Per questi comandi, il tempo per il nodo di piano superiore è essenzialmente il 
+tempo speso localizzando le vecchie righe e/o calcolando 
+le nuove, ma non include il tempo speso applicando i cambiamenti.
+Anche il tempo speso attivando i trigger, se presenti, sta fuori del nodo di piano superiore,
+e viene mostrato separatamente per ogni trigger.
    </para>
 
    <para>
@@ -468,10 +455,10 @@ WHERE t1.unique1 &lt; 100 AND t1.unique2 = t2.unique2;
   </indexterm>
 
   <para>
-   As we saw in the previous section, the query planner needs to estimate
-   the number of rows retrieved by a query in order to make good choices
-   of query plans.  This section provides a quick look at the statistics
-   that the system uses for these estimates.
+Come abbiamo visto nella sezione precedente, il pianificatore di query ha bisogno di stimare
+il numero di righe recuperate da una query per prendere buone scelte 
+di piani di query. Questa sezione fornisce un'occhiata veloce alle statistiche 
+che il sistema usa per queste stime.
   </para>
 
   <para>
@@ -498,23 +485,23 @@ WHERE relname LIKE 'tenk1%';
 (5 rows)
 </screen>
 
-   Here we can see that <structname>tenk1</structname> contains 10000
-   rows, as do its indexes, but the indexes are (unsurprisingly) much
-   smaller than the table.
+Qui è possibile notare che <structname>tenk1</structname> contiene 10000
+righe, con i suoi indici, ma gli indici sono (ovviamente) molto più
+piccoli della tabella.
   </para>
 
   <para>
-   For efficiency reasons, <structfield>reltuples</structfield>
-   and <structfield>relpages</structfield> are not updated on-the-fly,
-   and so they usually contain somewhat out-of-date values.
-   They are updated by <command>VACUUM</command>, <command>ANALYZE</command>, and a
-   few DDL commands such as <command>CREATE INDEX</command>.  A stand-alone
-   <command>ANALYZE</command>, that is one not part of <command>VACUUM</command>,
-   generates an approximate <structfield>reltuples</structfield> value
-   since it does not read every row of the table.  The planner
-   will scale the values it finds in <structname>pg_class</structname>
-   to match the current physical table size, thus obtaining a closer
-   approximation.
+Per ragioni di efficienza, <structfield>reltuples</structfield>
+e <structfield>relpages</structfield> non sono aggiornate al volo, 
+e così di solito contengono valori non aggiornati. 
+Essi sono aggiornati dai comandi <command>VACUUM</command>, <command>ANALYZE</command> e
+alcuni comandi DDL come <command>CREATE INDEX</command>.  Un <command>ANALYZE</command>
+a sè stante, che non fa parte di <command>VACUUM</command>,
+genera un valore <structfield>reltuples</structfield> approssimato
+dato che non legge ogni riga della tabella. Il pianificatore 
+bilancierà i valori che trova in <structname>pg_class</structname>
+per corrispondere alla dimensione fisica corrente della tabella, ottenendo così un'approssimazione
+più precisa.
   </para>
 
   <indexterm>
@@ -522,18 +509,17 @@ WHERE relname LIKE 'tenk1%';
   </indexterm>
 
   <para>
-   Most queries retrieve only a fraction of the rows in a table, due
-   to <literal>WHERE</literal> clauses that restrict the rows to be
-   examined.  The planner thus needs to make an estimate of the
-   <firstterm>selectivity</firstterm> of <literal>WHERE</literal> clauses, that is,
-   the fraction of rows that match each condition in the
-   <literal>WHERE</literal> clause.  The information used for this task is
-   stored in the
-   <link linkend="catalog-pg-statistic"><structname>pg_statistic</structname></link>
-   system catalog.  Entries in <structname>pg_statistic</structname>
-   are updated by the <command>ANALYZE</command> and <command>VACUUM
-   ANALYZE</command> commands, and are always approximate even when freshly
-   updated.
+La maggior parte delle query ricava solo una frazione delle righe in una tabella, 
+considerando che le clausole  <literal>WHERE</literal> restringono le righe da esaminare.
+Il pianificatore perciò deve fare una stima della 
+<firstterm>selettività</firstterm> delle clausole <literal>WHERE</literal>, cioè
+la frazione di righe che corrisponde ad ogni condizione nella clausola
+<literal>WHERE</literal>. Le informazioni usate per questo compito sono salvate
+nel catalogo di sistema 
+<link linkend="catalog-pg-statistic"><structname>pg_statistic</structname></link>
+Le voci in <structname>pg_statistic</structname> sono aggiornate 
+dai comandi <command>ANALYZE</command>  e <command>VACUUM
+ANALYZE</command>, e sono sempre approssimate anche quando appena aggiornate.
   </para>
 
   <indexterm>
@@ -541,18 +527,18 @@ WHERE relname LIKE 'tenk1%';
   </indexterm>
 
   <para>
-   Rather than look at <structname>pg_statistic</structname> directly,
-   it's better to look at its view
-   <link linkend="view-pg-stats"><structname>pg_stats</structname></link>
-   when examining the statistics manually.  <structname>pg_stats</structname>
-   is designed to be more easily readable.  Furthermore,
-   <structname>pg_stats</structname> is readable by all, whereas
-   <structname>pg_statistic</structname> is only readable by a superuser.
-   (This prevents unprivileged users from learning something about
-   the contents of other people's tables from the statistics.  The
-   <structname>pg_stats</structname> view is restricted to show only
-   rows about tables that the current user can read.)
-   For example, we might do:
+Invece di guardare direttamente in <structname>pg_statistic</structname>,
+è preferibile guardare nella sua vista 
+<link linkend="view-pg-stats"><structname>pg_stats</structname></link>
+quando di esaminano le statistiche manualmente. <structname>pg_stats</structname>
+è progettata per essere più facilmente leggibile. Inoltre,
+<structname>pg_stats</structname> è leggibile da tutti, mentre 
+<structname>pg_statistic</structname> è leggibile solo dal superutente.
+(Questo previene che gli utenti senza privilegi ricavino informazioni sul contenuto 
+delle tabelle degli altri utenti dalle statistiche. La vista 
+<structname>pg_stats</structname> mostra solo 
+le righe di tabelle che l'utente corrente può leggere).
+Per esempio, si potrebbe fare:
 
 <screen>
 SELECT attname, inherited, n_distinct,
@@ -575,71 +561,68 @@ WHERE tablename = 'road';
 (2 rows)
 </screen>
 
-   Note that two rows are displayed for the same column, one corresponding
-   to the complete inheritance hierarchy starting at the
-   <literal>road</literal> table (<literal>inherited</literal>=<literal>t</literal>),
-   and another one including only the <literal>road</literal> table itself
-   (<literal>inherited</literal>=<literal>f</literal>).
+Notare che due righe sono visualizzate per la stessa colonna, una corrispondente 
+alla gerarchia di ereditarietà completa cominciando dalla tabella 
+<literal>road</literal> (<literal>inherited</literal>=<literal>t</literal>),
+e l'altra includendo solo la tabella <literal>road</literal> stessa 
+(<literal>inherited</literal>=<literal>f</literal>).
   </para>
 
   <para>
-   The amount of information stored in <structname>pg_statistic</structname>
-   by <command>ANALYZE</command>, in particular the maximum number of entries in the
-   <structfield>most_common_vals</structfield> and <structfield>histogram_bounds</structfield>
-   arrays for each column, can be set on a
-   column-by-column basis using the <command>ALTER TABLE SET STATISTICS</command>
-   command, or globally by setting the
-   <xref linkend="guc-default-statistics-target"/> configuration variable.
-   The default limit is presently 100 entries.  Raising the limit
-   might allow more accurate planner estimates to be made, particularly for
-   columns with irregular data distributions, at the price of consuming
-   more space in <structname>pg_statistic</structname> and slightly more
-   time to compute the estimates.  Conversely, a lower limit might be
-   sufficient for columns with simple data distributions.
+L'ammontare di informazioni salvate in <structname>pg_statistic</structname>
+da <command>ANALYZE</command>, in particolare il massimo numero di voci negli array
+<structfield>most_common_vals</structfield> e <structfield>histogram_bounds</structfield>
+per ogni colonna, può essere impostato in base alla colonna usando il comando  
+<command>ALTER TABLE SET STATISTICS</command>, o globalmente impostando 
+la variabile di configurazione <xref linkend="guc-default-statistics-target"/>.
+Il limite predefinito è attualmente di 100 voci. Incrementare il limite 
+potrebbe permettere strime del pianificatore più accurate, in particolare per
+colonne con distribuzione dei dati non omogenea, al prezzo di consumare maggiore 
+spazio in <structname>pg_statistic</structname> e leggermente più tempo per calcolare le stime.
+Al contrario, un limite più basso potrebbe essere sufficiente
+per colonne con distribuzione dei dati più semplice.
   </para>
 
   <para>
-   Further details about the planner's use of statistics can be found in
-   <xref linkend="planner-stats-details"/>.
+Ulteriori dettagli sull'uso delle statistiche da parte del pianificatore possono essere trovati
+in <xref linkend="planner-stats-details"/>.
   </para>
 
  </sect1>
 
  <sect1 id="explicit-joins">
-  <title>Controlling the Planner with Explicit <literal>JOIN</literal> Clauses</title>
+  <title>Controllare il pianificatore con clausole <literal>JOIN</literal> esplicite</title>
 
   <indexterm zone="explicit-joins">
    <primary>join</primary>
-   <secondary>controlling the order</secondary>
+   <secondary>controllare l'ordine</secondary>
   </indexterm>
 
   <para>
-   It is possible
-   to control the query planner to some extent by using the explicit <literal>JOIN</literal>
-   syntax.  To see why this matters, we first need some background.
+È possibile 
+controllare il pianificatore di query fino ad un certo punto usando la sintassi esplicita  <literal>JOIN</literal>.
+Per vedere come mai è importante, abbiamo bisogno di alcune informazioni di base.
   </para>
 
   <para>
-   In a simple join query, such as:
+In una join semplice, tipo:
 <programlisting>
 SELECT * FROM a, b, c WHERE a.id = b.id AND b.ref = c.id;
 </programlisting>
-   the planner is free to join the given tables in any order.  For
-   example, it could generate a query plan that joins A to B, using
-   the <literal>WHERE</literal> condition <literal>a.id = b.id</literal>, and then
-   joins C to this joined table, using the other <literal>WHERE</literal>
-   condition.  Or it could join B to C and then join A to that result.
-   Or it could join A to C and then join them with B &mdash; but that
-   would be inefficient, since the full Cartesian product of A and C
-   would have to be formed, there being no applicable condition in the
-   <literal>WHERE</literal> clause to allow optimization of the join.  (All
-   joins in the <productname>PostgreSQL</productname> executor happen
-   between two input tables, so it's necessary to build up the result
-   in one or another of these fashions.)  The important point is that
-   these different join possibilities give semantically equivalent
-   results but might have hugely different execution costs.  Therefore,
-   the planner will explore all of them to try to find the most
-   efficient query plan.
+il pianificatore è libero di fare il join per le tabelle specificate in qualsiasi ordine. Per 
+esempio, potrebbe generare un piano di query che fa il join tra A e B, usando 
+la condizione <literal>WHERE</literal><literal>a.id = b.id</literal>, e quindi 
+fare il join di C con questa tabella, usando l'altra condizione <literal>WHERE</literal>.
+O potrebbe fare il join di B con C e quindi fare il join del risultato con A.
+O potrebbe fare il join di A con C e poi fare il join con B - ma questo sarebbe inefficiente,
+dato che si dovrebbe calcolare l'intero prodotto Cartesiano tra A e C,
+non ci sono condizioni applicabili nella clausola <literal>WHERE</literal>
+che permettano l'ottimizzazione della join. (Tutte le join
+nell'esecutore di <productname>PostgreSQL</productname> avvengono
+tra 2 tabelle di input, così è necessario costruire il risultato nell'uno o l'altro di questi due modi).
+Il punto è che queste diverse possibilità di join danno risultati 
+semanticamente equivalenti ma potrebbero avere costi di esecuzione immensamente diversi. 
+Inoltre, il pianificatore li esplorerà tutti provando a trovare il piano query più efficiente. 
   </para>
 
   <para>
@@ -659,114 +642,113 @@ SELECT * FROM a, b, c WHERE a.id = b.id AND b.ref = c.id;
   </para>
 
   <para>
-   When the query involves outer joins, the planner has less freedom
-   than it does for plain (inner) joins. For example, consider:
+Quando la query coinvolge outer join, il pianificatore ha meno libertà
+rispetto a normali  (inner) join. Per esempio, considerare:
 <programlisting>
 SELECT * FROM a LEFT JOIN (b JOIN c ON (b.ref = c.id)) ON (a.id = b.id);
 </programlisting>
-   Although this query's restrictions are superficially similar to the
-   previous example, the semantics are different because a row must be
-   emitted for each row of A that has no matching row in the join of B and C.
-   Therefore the planner has no choice of join order here: it must join
-   B to C and then join A to that result.  Accordingly, this query takes
-   less time to plan than the previous query.  In other cases, the planner
-   might be able to determine that more than one join order is safe.
-   For example, given:
+Anche se le restrizioni di questa query sono simili, superficialmente, all'esempio precedente,
+le semantiche sono diverse perchè una riga dev'essere
+emessa per ogni riga di A che non ha una riga corrispondente nella join di A con C.
+Inoltre il pianificatore non ha scelta per l'ordine delle join qui: deve fare il join
+di B con C e quindi il join di A con quel risultato. Di conseguenza, questa query impiega 
+meno tempo a pianificare della query precedente. In altri casi, il pianificatore
+potrebbe stabilire che più di un ordine di join è sicuro.
+Per esempio, dato:
 <programlisting>
 SELECT * FROM a LEFT JOIN b ON (a.bid = b.id) LEFT JOIN c ON (a.cid = c.id);
 </programlisting>
-   it is valid to join A to either B or C first.  Currently, only
-   <literal>FULL JOIN</literal> completely constrains the join order.  Most
-   practical cases involving <literal>LEFT JOIN</literal> or <literal>RIGHT JOIN</literal>
-   can be rearranged to some extent.
+è valido fare il join di A sia con B che con C prima. Attualmente, solo
+<literal>FULL JOIN</literal> vincola completamente l'ordine di join. La maggior parte dei 
+casi pratici che coinvolgono <literal>LEFT JOIN</literal> o <literal>RIGHT JOIN</literal>
+per certi versi possono essere risistemati. 
   </para>
 
   <para>
-   Explicit inner join syntax (<literal>INNER JOIN</literal>, <literal>CROSS
-   JOIN</literal>, or unadorned <literal>JOIN</literal>) is semantically the same as
-   listing the input relations in <literal>FROM</literal>, so it does not
-   constrain the join order.
+La sintassi esplicita delle inner join (<literal>INNER JOIN</literal>, <literal>CROSS
+JOIN</literal>, o <literal>JOIN</literal>) è semantimante lo stesso di elencare le relazioni 
+di input nella <literal>FROM</literal>, così non vincola
+l'ordine di join.
   </para>
 
   <para>
-   Even though most kinds of <literal>JOIN</literal> don't completely constrain
-   the join order, it is possible to instruct the
-   <productname>PostgreSQL</productname> query planner to treat all
-   <literal>JOIN</literal> clauses as constraining the join order anyway.
-   For example, these three queries are logically equivalent:
+Anche se la maggior parte dei tipo di <literal>JOIN</literal> non vincola completamente
+l'ordine di join, è possibile istruire il pianificatore di query di 
+<productname>PostgreSQL</productname> a trattare tutte le clausole
+<literal>JOIN</literal> comunque come vincolanti per l'ordine di join. 
+Per esempio, queste tre query sono logicalmente equivalenti:
 <programlisting>
 SELECT * FROM a, b, c WHERE a.id = b.id AND b.ref = c.id;
 SELECT * FROM a CROSS JOIN b CROSS JOIN c WHERE a.id = b.id AND b.ref = c.id;
 SELECT * FROM a JOIN (b JOIN c ON (b.ref = c.id)) ON (a.id = b.id);
 </programlisting>
-   But if we tell the planner to honor the <literal>JOIN</literal> order,
-   the second and third take less time to plan than the first.  This effect
-   is not worth worrying about for only three tables, but it can be a
-   lifesaver with many tables.
+Ma se si dice al pianificatore di onorare l'ordine <literal>JOIN</literal>,
+il secondo e il terzo prende meno tempo per pianificare rispetto al primo. Questo effetto
+non varrà la pena quando si ha a che fare con solo tre tabelle, ma può essere un 
+salvavita con molte tabelle.
   </para>
 
   <para>
-   To force the planner to follow the join order laid out by explicit
-   <literal>JOIN</literal>s,
-   set the <xref linkend="guc-join-collapse-limit"/> run-time parameter to 1.
-   (Other possible values are discussed below.)
+Per forzare il pianificatore a seguire l'ordine di join predisposto escplicitamente dalle
+<literal>JOIN</literal>,
+impostare il parametro <xref linkend="guc-join-collapse-limit"/> a 1.
+(Altri valori possibili sono discussi sotto).
   </para>
 
   <para>
-   You do not need to constrain the join order completely in order to
-   cut search time, because it's OK to use <literal>JOIN</literal> operators
-   within items of a plain <literal>FROM</literal> list.  For example, consider:
+Non si ha bisogno di vincolare completamente l'ordine della join per risparmiare 
+tempo di ricerca, dato che è giusto usare gli operatori <literal>JOIN</literal>
+all'interno di elementi di un elenco di una normale <literal>FROM</literal>. Per esempio, considerare:
 <programlisting>
 SELECT * FROM a CROSS JOIN b, c, d, e WHERE ...;
 </programlisting>
-   With <varname>join_collapse_limit</varname> = 1, this
-   forces the planner to join A to B before joining them to other tables,
-   but doesn't constrain its choices otherwise.  In this example, the
-   number of possible join orders is reduced by a factor of 5.
+Con  <varname>join_collapse_limit</varname> = 1, questo 
+forza il pianificatore a fare il join di A con B prima di fare il join con altre tabelle, 
+ma altrimenti non vincola le sue scelte. In questo esempio, il numero di 
+possibili ordini di join viene ridotto di un fattore di 5.
   </para>
 
   <para>
-   Constraining the planner's search in this way is a useful technique
-   both for reducing planning time and for directing the planner to a
-   good query plan.  If the planner chooses a bad join order by default,
-   you can force it to choose a better order via <literal>JOIN</literal> syntax
-   &mdash; assuming that you know of a better order, that is.  Experimentation
-   is recommended.
+Vincolare la ricerca del planner in questo modo è una tecnica utile 
+sia per ridurre il tempo di pianificazione sia per direzionare il pianificatore verso 
+un buon piano di query. Se il pianificatore sceglie un cattivo ordine di join in modo predefinito, 
+è possibile costringerlo a scegliere un ordine migliore con la sintassi <literal>JOIN</literal> -
+assumendo che si conosca un ordine migliore, ovviamente. Si raccomanda di sperimentare. 
   </para>
 
   <para>
-   A closely related issue that affects planning time is collapsing of
-   subqueries into their parent query.  For example, consider:
+Una questione correlata che influisce sul tempo di pianificazione è di  
+collassare le sottoquery nelle loro query genitore. Per esempio, considerare:
 <programlisting>
 SELECT *
 FROM x, y,
     (SELECT * FROM a, b, c WHERE something) AS ss
 WHERE somethingelse;
 </programlisting>
-   This situation might arise from use of a view that contains a join;
-   the view's <literal>SELECT</literal> rule will be inserted in place of the view
-   reference, yielding a query much like the above.  Normally, the planner
-   will try to collapse the subquery into the parent, yielding:
+Questa situazione potrebbe presentarsi dall'uso di una vista che contiene una join; 
+la regola <literal>SELECT</literal> della vista sarà inserita al posto del riferimento alla vista,
+generando una query molto simile a quella sopra. Normalmente, il pianificatore
+proverà a collassare la sottoquery nella query genitore, generando:
 <programlisting>
 SELECT * FROM x, y, a, b, c WHERE something AND somethingelse;
 </programlisting>
-   This usually results in a better plan than planning the subquery
-   separately.  (For example, the outer <literal>WHERE</literal> conditions might be such that
-   joining X to A first eliminates many rows of A, thus avoiding the need to
-   form the full logical output of the subquery.)  But at the same time,
-   we have increased the planning time; here, we have a five-way join
-   problem replacing two separate three-way join problems.  Because of the
-   exponential growth of the number of possibilities, this makes a big
-   difference.  The planner tries to avoid getting stuck in huge join search
-   problems by not collapsing a subquery if more than <varname>from_collapse_limit</varname>
-   <literal>FROM</literal> items would result in the parent
-   query.  You can trade off planning time against quality of plan by
-   adjusting this run-time parameter up or down.
+Questo di solito risulta in un piano migliore rispetto a pianificare le sottoquery 
+separatamente. (Per esempio, le condizioni <literal>WHERE</literal> esterne potrebbero essere tali che  
+il join di X con A elimini prima molte righe di A, eliminando così il bisogno di 
+formare l'intero output logico della sottoquery). Ma allo stesso tempo,
+abbiamo incrementato il tempo di pianificazione; qui, abbiamo un problema di join a cinque vie che 
+sostituisce due problemi di join a tre vie. Data la crescita esponenziale 
+del numero di possibilità, questo fa molta differenza. Il pianificatore 
+prova ad evitare di bloccarsi in enormi problemi di  ricerche join 
+non collassando una sottoquery se risultassero più di <varname>from_collapse_limit</varname>
+elementi <literal>FROM</literal> nella query genitore.
+È possibile variare il tempo di pianificazione a dispetto della qualità del piano 
+aggiustando questo parametro. 
   </para>
 
   <para>
-   <xref linkend="guc-from-collapse-limit"/> and <xref
-   linkend="guc-join-collapse-limit"/>
+    <xref linkend="guc-from-collapse-limit"/> and <xref
+    linkend="guc-join-collapse-limit"/>
    are similarly named because they do almost the same thing: one controls
    when the planner will <quote>flatten out</quote> subqueries, and the
    other controls when it will flatten out explicit joins.  Typically
@@ -780,36 +762,34 @@ SELECT * FROM x, y, a, b, c WHERE something AND somethingelse;
  </sect1>
 
  <sect1 id="populate">
-  <title>Populating a Database</title>
+  <title>Popolare un database</title>
 
   <para>
-   One might need to insert a large amount of data when first populating
-   a database. This section contains some suggestions on how to make
-   this process as efficient as possible.
+Si potrebbe voler inserire una grande quantità di dati quando si popola per la prima volta 
+un database. Questa sezione contiene alcuni suggerimenti su come farlo 
+nel modo più efficiente possibile.
   </para>
 
   <sect2 id="disable-autocommit">
-   <title>Disable Autocommit</title>
+   <title>Disabilitare l'autocommit</title>
 
    <indexterm>
     <primary>autocommit</primary>
-    <secondary>bulk-loading data</secondary>
+    <secondary>caricare dati in grandi quantità</secondary>
    </indexterm>
 
    <para>
-    When using multiple <command>INSERT</command>s, turn off autocommit and just do
-    one commit at the end.  (In plain
-    SQL, this means issuing <command>BEgin</command> at the start and
-    <command>COMMIT</command> at the end.  Some client libraries might
-    do this behind your back, in which case you need to make sure the
-    library does it when you want it done.)  If you allow each
-    insertion to be committed separately,
-    <productname>PostgreSQL</productname> is doing a lot of work for
-    each row that is added.  An additional benefit of doing all
-    insertions in one transaction is that if the insertion of one row
-    were to fail then the insertion of all rows inserted up to that
-    point would be rolled back, so you won't be stuck with partially
-    loaded data.
+Quando si usano molteplici <command>INSERT</command>, disabilitare l'autocommit e fare solo 
+una commit alla fine. (In SQL, questo significa scrivere <command>BEGIN</command> all'inizio
+e <command>COMMIT</command> alla fine. Alcune librerie client potrebbero
+farlo alle vostre spalle, nel qual caso ci si deve assicurare che 
+la libreria lo faccia quando si vuole che venga fatto). Se si consente che ogni 
+inserimento sia fatto separatamente, 
+<productname>PostgreSQL</productname> farà molto lavoro per ogni riga che viene aggiunta.
+Un beneficio aggiuntivo di fare tutti gli inserimenti 
+in una transazione è che se l'inserimento di una riga 
+è fallito allora l'inserimento di tutte le righe inserite fino a quel punto 
+sarà sottoposto a rollback, così non si rimarrà bloccati con dati caricati parzialmente.
    </para>
   </sect2>
 
@@ -839,70 +819,69 @@ SELECT * FROM x, y, a, b, c WHERE something AND somethingelse;
    </para>
 
    <para>
-    Note that loading a large number of rows using
-    <command>COPY</command> is almost always faster than using
-    <command>INSERT</command>, even if <command>PREPARE</command> is used and
-    multiple insertions are batched into a single transaction.
+Notare che caricare un grande numero di righe usando 
+<command>COPY</command> di solito è quasi sempre più veloce che usare 
+<command>INSERT</command>, anche se viene usato <command>PREPARE</command> e 
+inserimenti multipli sono racchiusi in una singola transazione.
    </para>
 
    <para>
-    <command>COPY</command> is fastest when used within the same
-    transaction as an earlier <command>CREATE TABLE</command> or
-    <command>TRUNCATE</command> command. In such cases no WAL
-    needs to be written, because in case of an error, the files
-    containing the newly loaded data will be removed anyway.
-    However, this consideration only applies when
-    <xref linkend="guc-wal-level"/> is <literal>minimal</literal> as all commands
-    must write WAL otherwise.
+<command>COPY</command> è più veloce quando usato all'interno della stessa transazione di un
+precedente comando <command>CREATE TABLE</command> o <command>TRUNCATE</command>.
+In tali casi non deve essere scritto nessun WAL,
+dato che in caso di un errore, i file 
+contenenti i dati nuovi caricati saranno comunque rimossi.
+Comunque, questa considerazione si applica solo quando 
+<xref linkend="guc-wal-level"/> è <literal>minimal</literal> altrimenti tutti i comandi
+devono scrivere WAL.
    </para>
 
   </sect2>
 
   <sect2 id="populate-rm-indexes">
-   <title>Remove Indexes</title>
+   <title>Rimozione di indici</title>
 
    <para>
-    If you are loading a freshly created table, the fastest method is to
-    create the table, bulk load the table's data using
-    <command>COPY</command>, then create any indexes needed for the
-    table.  Creating an index on pre-existing data is quicker than
-    updating it incrementally as each row is loaded.
+Se si sta caricando una tabella creata di recente, il metodo più veloce è di 
+creare la tabella, caricare i dati della tabella usando 
+<command>COPY</command>, quindi creare gli indici necessari per la tabella.
+Creare un indice su dati pre-esistenti è più veloce di aggiornarli 
+in modo incrementale quando ogni riga viene caricata.
    </para>
 
    <para>
-    If you are adding large amounts of data to an existing table,
-    it might be a win to drop the indexes,
-    load the table, and then recreate the indexes.  Of course, the
-    database performance for other users might suffer
-    during the time the indexes are missing.  One should also think
-    twice before dropping a unique index, since the error checking
-    afforded by the unique constraint will be lost while the index is
-    missing.
+Se si sta aggiungendo una grande quantità di dati a una tabella esistente,
+potrebbe essere vantaggioso eliminare gli indici, 
+caricare la tabella, e quindi ricreare gli indici. Ovviamente, le prestazioni
+del database per altri utenti potrebbero soffrire durante 
+il periodo che gli indici sono mancanti. Ci si dovrebbe pensare due volte prima di
+eliminare un indice univoco, dato che i controlli di errore permessi dal
+vincolo unique andranno persi mentre l'indice è mancante. 
    </para>
   </sect2>
 
   <sect2 id="populate-rm-fkeys">
-   <title>Remove Foreign Key Constraints</title>
+   <title>Rimozione di vincoli chiave esterna</title>
 
    <para>
-    Just as with indexes, a foreign key constraint can be checked
-    <quote>in bulk</quote> more efficiently than row-by-row.  So it might be
-    useful to drop foreign key constraints, load data, and re-create
-    the constraints.  Again, there is a trade-off between data load
-    speed and loss of error checking while the constraint is missing.
+Esattamente come con gli indici, un vincolo chiave esterna può essere controllato 
+<quote>in grandi quantità</quote> più efficientemente riga per riga. Per questo potrebbe essere
+utile eliminare vincoli chiave esterna, caricare dati, e ri-creare 
+i vincoli. Di nuovo, c'è un bilanciamento tra la velocità di  caricamento dei dati  
+e la perdita di controllo di errori mentre il vincolo è mancante. 
    </para>
 
    <para>
-    What's more, when you load data into a table with existing foreign key
-    constraints, each new row requires an entry in the server's list of
-    pending trigger events (since it is the firing of a trigger that checks
-    the row's foreign key constraint).  Loading many millions of rows can
-    cause the trigger event queue to overflow available memory, leading to
-    intolerable swapping or even outright failure of the command.  Therefore
-    it may be <emphasis>necessary</emphasis>, not just desirable, to drop and re-apply
-    foreign keys when loading large amounts of data.  If temporarily removing
-    the constraint isn't acceptable, the only other recourse may be to split
-    up the load operation into smaller transactions.
+Oltretutto, quando si caricano dati all'interno di tabelle coni vincoli di chiave esterna,
+ogni nuova  riga richiede una voce nell'elenco di trigger pendenti del server
+(dato che è l'attivazione di un trigger che controlla 
+il vincolo di chiave esterna della riga). Caricare molti milioni di righe può 
+causare che la coda di eventi del trigger superi la memoria disponibile, portando a
+uno swapping intollerabile o al fallimento totale del comando. Inoltre  
+può essere <emphasis>necessario</emphasis>, non semplicemenete desiderabile, eliminare e ri-applicare
+le chiavi esterne quando si caricano grandi quantità di dati. Se rimuovere temporaneamente 
+il vincolo non è accettabile, l'unico altro modo può essere dividere 
+l'operazione di caicamenti in transazioni più piccole.
    </para>
   </sect2>
 

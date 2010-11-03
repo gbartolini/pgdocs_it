@@ -309,7 +309,7 @@ WHERE t1.unique1 &lt; 100 AND t1.unique2 = t2.unique2;
    </para>
 
    <para>
-    In this nested-loop join, the outer (upper) scan is the same bitmap index scan we
+    In this nested-loop join, the outer (upper) scan is the same bitmap index scan we 
     saw earlier, and so its cost and row count are the same because we are
     applying the <literal>WHERE</literal> clause <literal>unique1 &lt; 100</literal>
     at that node.
@@ -326,14 +326,14 @@ WHERE t1.unique1 &lt; 100 AND t1.unique2 = t2.unique2;
    </para>
 
    <para>
-    In this example the join's output row count is the same as the product
-    of the two scans' row counts, but that's not true in all cases because
-    you can have <literal>WHERE</literal> clauses that mention both tables
-    and so can only be applied at the join point, not to either input scan.
-    For example, if we added
-    <literal>WHERE ... AND t1.hundred &lt; t2.hundred</literal>,
-    that would decrease the output row count of the join node, but not change
-    either input scan.
+In questo esempio il conteggio della riga di output è lo stesso del prodotto 
+dei conteggi delle due scansioni, ma questo non è vero in tutti i casi dato che
+ci potrebbero essere clausole <literal>WHERE</literal> che fanno riferimento a entrambe le tabelle
+e quindi possono essere applicate solo al punto join, non della scansione dell'input. 
+Per esempio, se avessimo aggiunto
+<literal>WHERE ... AND t1.hundred &lt; t2.hundred</literal>,
+diminuirebbe il conteggio delle righe di output del nodo join, ma non cambierebbe 
+la scansione dell'input.
    </para>
 
    <para>
@@ -433,25 +433,25 @@ e viene mostrato separatamente per ogni trigger.
    </para>
 
    <para>
-    It is worth noting that <command>EXPLAIN</command> results should not be extrapolated
-    to situations other than the one you are actually testing; for example,
-    results on a toy-sized table cannot be assumed to apply to large tables.
-    The planner's cost estimates are not linear and so it might choose
-    a different plan for a larger or smaller table.  An extreme example
-    is that on a table that only occupies one disk page, you'll nearly
-    always get a sequential scan plan whether indexes are available or not.
-    The planner realizes that it's going to take one disk page read to
-    process the table in any case, so there's no value in expending additional
-    page reads to look at an index.
+Vale la pena notare che i risultati di <command>EXPLAIN</command> non devono essere estrapolati
+in situazioni diverse da quella che si sta attualmente testando; per esempio,
+non si possono prendere per buoni i risultati di una tabella di piccole dimensioni 
+se applicati ad una di grandi dimensioni. Le stime di costo del pianificatore non sono lineari 
+e quindi si potrebbe essere scelto un piano diverso per una tabella di dimensioni diverse.
+Un esempio estremo è che su una tabella che occupa solo una pagina disco, quasi sempre
+si otterrà un piano scan sequenziale sia che gli indici siano disponibili che non.
+Il pianificatore si rende conto che dovrà fare una lettura di pagina disco in ogni caso 
+per processare la tabella, e quindi non c'è vantaggio nello spendere 
+letture di pagina aggiuntive per cercare un indice.
    </para>
   </sect1>
 
  <sect1 id="planner-stats">
-  <title>Statistics Used by the Planner</title>
+  <title>Statistiche usate dal pianificatore</title>
 
   <indexterm zone="planner-stats">
-   <primary>statistics</primary>
-   <secondary>of the planner</secondary>
+   <primary>statistiche</primary>
+   <secondary>del pianificatore</secondary>
   </indexterm>
 
   <para>
@@ -462,13 +462,13 @@ che il sistema usa per queste stime.
   </para>
 
   <para>
-   One component of the statistics is the total number of entries in
-   each table and index, as well as the number of disk blocks occupied
-   by each table and index.  This information is kept in the table
-   <link linkend="catalog-pg-class"><structname>pg_class</structname></link>,
-   in the columns <structfield>reltuples</structfield> and
-   <structfield>relpages</structfield>.  We can look at it with
-   queries similar to this one:
+Un componente delle statistiche è il numero totale di voci in ogni tabella e 
+indice, così come il numero di blocchi del disco occupati 
+da ogni tabella e indice. Questa informazione è mantenuta nella tabella
+<link linkend="catalog-pg-class"><structname>pg_class</structname></link>,
+nelle colonne <structfield>reltuples</structfield> e
+<structfield>relpages</structfield>. È possibile darci un'occhiata con
+query simili a questa:
 
 <screen>
 SELECT relname, relkind, reltuples, relpages
@@ -600,7 +600,8 @@ in <xref linkend="planner-stats-details"/>.
 
   <para>
 È possibile 
-controllare il pianificatore di query fino ad un certo punto usando la sintassi esplicita  <literal>JOIN</literal>.
+controllare il pianificatore di query fino ad un certo punto usando la sintassi 
+esplicita  <literal>JOIN</literal>.
 Per vedere come mai è importante, abbiamo bisogno di alcune informazioni di base.
   </para>
 
@@ -626,19 +627,17 @@ Inoltre, il pianificatore li esplorerà tutti provando a trovare il piano query 
   </para>
 
   <para>
-   When a query only involves two or three tables, there aren't many join
-   orders to worry about.  But the number of possible join orders grows
-   exponentially as the number of tables expands.  Beyond ten or so input
-   tables it's no longer practical to do an exhaustive search of all the
-   possibilities, and even for six or seven tables planning might take an
-   annoyingly long time.  When there are too many input tables, the
-   <productname>PostgreSQL</productname> planner will switch from exhaustive
-   search to a <firstterm>genetic</firstterm> probabilistic search
-   through a limited number of possibilities.  (The switch-over threshold is
-   set by the <xref linkend="guc-geqo-threshold"/> run-time
-   parameter.)
-   The genetic search takes less time, but it won't
-   necessarily find the best possible plan.
+Quando una query coinvolge solo due o tre tabelle, non ci sono molti ordini di join
+di cui preoccuparsi. Ma il numero di possibili ordini di join cresce
+esponenzialmente man mano che il numero di tabelle si espande. Sotto le dieci o più tabelle di input 
+non è più pratico fare una ricerca completa di tutte le possibilità,
+ed anche per sei o sette tabelle la pianificazione potrebbe richiedere un tempo fastidiosamente lungo.
+Quando ci sono ttroppe tabelle di input, il pianificatore di <productname>PostgreSQL</productname> 
+passerà da una ricerca completa a una ricerca <firstterm>genetica</firstterm> probabilistica
+attraverso un numero limitato di possibilità. (La soglia di passaggio
+è definita dal parametro <xref linkend="guc-geqo-threshold"/>).
+La ricerca genetica impiega meno tempo, ma non troverà 
+necessariamente il miglior piano possibile.
   </para>
 
   <para>
@@ -747,17 +746,17 @@ aggiustando questo parametro.
   </para>
 
   <para>
-    <xref linkend="guc-from-collapse-limit"/> and <xref
-    linkend="guc-join-collapse-limit"/>
-   are similarly named because they do almost the same thing: one controls
-   when the planner will <quote>flatten out</quote> subqueries, and the
-   other controls when it will flatten out explicit joins.  Typically
-   you would either set <varname>join_collapse_limit</varname> equal to
-   <varname>from_collapse_limit</varname> (so that explicit joins and subqueries
-   act similarly) or set <varname>join_collapse_limit</varname> to 1 (if you want
-   to control join order with explicit joins).  But you might set them
-   differently if you are trying to fine-tune the trade-off between planning
-   time and run time.
+<xref linkend="guc-from-collapse-limit"/> e <xref
+linkend="guc-join-collapse-limit"/>
+hanno nomi simili perchè fanno quasi la stessa cosa: una controlla
+quando il pianificatore <quote>distruggerà</quote> le sottoquery, e l'altra controlla 
+quando distruggerà le join esplicite. Tipicamente
+si vorrà o impostare <varname>join_collapse_limit</varname> uguale a 
+<varname>from_collapse_limit</varname> (così che le join esplicite e le sottoquery
+si comportino similmente) o impostare <varname>join_collapse_limit</varname> a 1 (se di vuole
+controllare l'ordine di join con join esplicite). Ma si potrebbe impostarli   
+diversamente se si sta provando a mettere a punto il passaggio tra 
+il tempo di pianificazione e il tempo di esecuzione.  
   </para>
  </sect1>
 
@@ -794,28 +793,26 @@ sarà sottoposto a rollback, così non si rimarrà bloccati con dati caricati pa
   </sect2>
 
   <sect2 id="populate-copy-from">
-   <title>Use <command>COPY</command></title>
+   <title>Usare <command>COPY</command></title>
 
    <para>
-    Use <xref linkend="sql-copy"/> to load
-    all the rows in one command, instead of using a series of
-    <command>INSERT</command> commands.  The <command>COPY</command>
-    command is optimized for loading large numbers of rows; it is less
-    flexible than <command>INSERT</command>, but incurs significantly
-    less overhead for large data loads. Since <command>COPY</command>
-    is a single command, there is no need to disable autocommit if you
-    use this method to populate a table.
+Usare <xref linkend="sql-copy"/> per caricare
+tutte le righe con un comando, invece di usare una serie di 
+comandi <command>INSERT</command>. Il comando <command>COPY</command>
+è ottimizzato per il caricaemento di grandi quantità di righe; è meno flessibile
+di <command>INSERT</command>, ma provoca un overhead significativamente minore 
+per caricamenti di grandi quantità di dati. Dato che <command>COPY</command>
+è un singolo comando, non c'è bisogno di disabilitare l'autocommit se si usa 
+questo metodo per popolare una tabella.
    </para>
 
    <para>
-    If you cannot use <command>COPY</command>, it might help to use <xref
-    linkend="sql-prepare"/> to create a
-    prepared <command>INSERT</command> statement, and then use
-    <command>EXECUTE</command> as many times as required.  This avoids
-    some of the overhead of repeatedly parsing and planning
-    <command>INSERT</command>. Different interfaces provide this facility
-    in different ways; look for <quote>prepared statements</quote> in the interface
-    documentation.
+Se non si può usare <command>COPY</command>, potrebbe essere d'aiuto usare <xref
+linkend="sql-prepare"/> per creare un'istruzione <command>INSERT</command> "preparata",
+quindi usare <command>EXECUTE</command> tante volte quanto richiesto. Questo evita 
+un po' dell'overhead di fare ripetutamente il parsing e la pianificazione dell'<command>INSERT</command>.
+Le diverse interfaccie forniscono questa facilitazione in maniere differenti;
+si cerchi <quote>istruzioni preparate</quote> nella documentazione dell'interfaccia.
    </para>
 
    <para>
@@ -886,49 +883,48 @@ l'operazione di caicamenti in transazioni più piccole.
   </sect2>
 
   <sect2 id="populate-work-mem">
-   <title>Increase <varname>maintenance_work_mem</varname></title>
+   <title>Incrementare <varname>maintenance_work_mem</varname></title>
 
    <para>
-    Temporarily increasing the <xref linkend="guc-maintenance-work-mem"/>
-    configuration variable when loading large amounts of data can
-    lead to improved performance.  This will help to speed up <command>CREATE
-    INDEX</command> commands and <command>ALTER TABLE ADD FOREIGN KEY</command> commands.
-    It won't do much for <command>COPY</command> itself, so this advice is
-    only useful when you are using one or both of the above techniques.
+Aumentare temporaneamente la variabile di configurazione <xref linkend="guc-maintenance-work-mem"/>
+quando si caricano grandi quantità di dati può portare ad un aumento delle prestazioni.
+Questo aiuterà a velocizzare i comandi <command>CREATE INDEX</command>
+e <command>ALTER TABLE ADD FOREIGN KEY</command>.
+Non farà molto per il comando <command>COPY</command> stesso, così questo consiglio 
+è utile solo quando si sta usando una o entrambe delle tecniche viste sopra.
    </para>
   </sect2>
 
   <sect2 id="populate-checkpoint-segments">
-   <title>Increase <varname>checkpoint_segments</varname></title>
+   <title>Incrementare <varname>checkpoint_segments</varname></title>
 
    <para>
-    Temporarily increasing the <xref
-    linkend="guc-checkpoint-segments"/> configuration variable can also
-    make large data loads faster.  This is because loading a large
-    amount of data into <productname>PostgreSQL</productname> will
-    cause checkpoints to occur more often than the normal checkpoint
-    frequency (specified by the <varname>checkpoint_timeout</varname>
-    configuration variable). Whenever a checkpoint occurs, all dirty
-    pages must be flushed to disk. By increasing
-    <varname>checkpoint_segments</varname> temporarily during bulk
-    data loads, the number of checkpoints that are required can be
-    reduced.
+Anche incrementare temporaneamente la variabile di configurazione <xref
+linkend="guc-checkpoint-segments"/> puù rendere più veloce il caricamento dei dati.
+Questo perchè il caricamento di una grande quantità di dati 
+in <productname>PostgreSQL</productname> causerà 
+che si verifichino checkpoint più spesso della frequenza normale dei checkpoint
+(specificata dalla variabile di configurazione <varname>checkpoint_timeout</varname>).
+Ogni volta che avviene un checkpoint, tutte le pagine sporche devono essere
+liberate su disco. Incrementando temporaneamente <varname>checkpoint_segments</varname>
+durante un caricamento di grandi quantità di dati, il numero di checkpoint 
+richiesti può essere ridotto.
    </para>
   </sect2>
 
   <sect2 id="populate-pitr">
-   <title>Disable WAL archival and streaming replication</title>
+   <title>Disabilitare l'archiviazione WAL e la replica streaming</title>
 
    <para>
-    When loading large amounts of data into an installation that uses
-    WAL archiving or streaming replication, it might be faster to take a
-    new base backup after the load has completed than to process a large
-    amount of incremental WAL data.  To prevent incremental WAL logging
-    while loading, disable archiving and streaming replication, by setting
-    <xref linkend="guc-wal-level"/> to <literal>minimal</literal>,
-    <xref linkend="guc-archive-mode"/> to <literal>off</literal>, and
-    <xref linkend="guc-max-wal-senders"/> to zero.
-    But note that changing these settings requires a server restart.
+Quando si caricano grandi quantità di dati all'interno di una installazione che usa
+l'archiviazione WAL o la replica streaming, potrebbe essere più veloce prendere 
+un nuovo backup di base dopoi che il caricamento è completato piuttosto che processare 
+una grande quantità di dati WAL. Per prevenire i log WAL incrementali 
+durante il caricamento, disabilitare l'archiviazione e la replica streaming, impostando
+<xref linkend="guc-wal-level"/> a <literal>minimal</literal>,
+<xref linkend="guc-archive-mode"/> a <literal>off</literal>, e
+<xref linkend="guc-max-wal-senders"/> a zero.
+Ma si noti che cambiare queste impostazioni richiede che il server venga riavviato.
    </para>
 
    <para>
@@ -936,9 +932,10 @@ l'operazione di caicamenti in transazioni più piccole.
     process the WAL data,
     doing this will actually make certain commands faster, because they
     are designed not to write WAL at all if <varname>wal_level</varname>
-    is <literal>minimal</literal>.  (They can guarantee crash safety more cheaply
-    by doing an <function>fsync</function> at the end than by writing WAL.)
-    This applies to the following commands:
+    is <literal>minimal</literal>.  
+(Essi possono garantire sicurezza rispetto ai crash in maniera più conveniente
+facendo un <function>fsync</function> alla fine invece che scrivere WAL).
+Questo si applica ai seguenti comandi:
     <itemizedlist>
      <listitem>
       <para>
@@ -947,7 +944,7 @@ l'operazione di caicamenti in transazioni più piccole.
      </listitem>
      <listitem>
       <para>
-       <command>CREATE INDEX</command> (and variants such as
+       <command>CREATE INDEX</command> (e varianti tipo 
        <command>ALTER TABLE ADD PRIMARY KEY</command>)
       </para>
      </listitem>
@@ -963,8 +960,9 @@ l'operazione di caicamenti in transazioni più piccole.
      </listitem>
      <listitem>
       <para>
-       <command>COPY FROM</command>, when the target table has been
-       created or truncated earlier in the same transaction
+       <command>COPY FROM</command>, 
+quando la tabella destinazione è stata creata o troncata precedentemente 
+nella stessa transazione
       </para>
      </listitem>
     </itemizedlist>
@@ -972,166 +970,164 @@ l'operazione di caicamenti in transazioni più piccole.
   </sect2>
 
   <sect2 id="populate-analyze">
-   <title>Run <command>ANALYZE</command> Afterwards</title>
+   <title>Eseguire <command>ANALYZE</command> dopo</title>
 
    <para>
-    Whenever you have significantly altered the distribution of data
-    within a table, running <xref linkend="sql-analyze"/> is strongly recommended. This
-    includes bulk loading large amounts of data into the table.  Running
-    <command>ANALYZE</command> (or <command>VACUUM ANALYZE</command>)
-    ensures that the planner has up-to-date statistics about the
-    table.  With no statistics or obsolete statistics, the planner might
-    make poor decisions during query planning, leading to poor
-    performance on any tables with inaccurate or nonexistent
-    statistics.  Note that if the autovacuum daemon is enabled, it might
-    run <command>ANALYZE</command> automatically; see
-    <xref linkend="vacuum-for-statistics"/>
-    and <xref linkend="autovacuum"/> for more information.
+Ogni volta che si è modificato significativamente la distribuzione dei dati
+all'interno di una tabella, si raccomanda fortemente di eseguire <xref linkend="sql-analyze"/>.
+Questo include il caricamento in massa di grandi quantità di dati nella tabella. Eseguire 
+<command>ANALYZE</command> (o <command>VACUUM ANALYZE</command>)
+assicute che il pianificatore abbia statistiche aggiornate sulla tabella.
+Senza statistiche o con statistiche obsolete,  il pianificatore potrebbe
+prendere decisioni sbagliate durante la pianificazione della query, generando cattive prestazioni
+su qualsiasi tabella con statistiche inaccurate o non esistenti.
+Notare che se il demone di autovacuum è attivo, potrebbe eseguire  
+<command>ANALYZE</command> automaticamente; si veda 
+<xref linkend="vacuum-for-statistics"/>
+e <xref linkend="autovacuum"/> per maggiori informazioni.
    </para>
   </sect2>
 
   <sect2 id="populate-pg-dump">
-   <title>Some Notes About <application>pg_dump</application></title>
+   <title>Alcune note riguardo <application>pg_dump</application></title>
 
    <para>
-    Dump scripts generated by <application>pg_dump</application> automatically apply
-    several, but not all, of the above guidelines.  To reload a
-    <application>pg_dump</application> dump as quickly as possible, you need to
-    do a few extra things manually.  (Note that these points apply while
-    <emphasis>restoring</emphasis> a dump, not while <emphasis>creating</emphasis> it.
-    The same points apply whether loading a text dump with
-    <application>psql</application> or using <application>pg_restore</application> to load
-    from a <application>pg_dump</application> archive file.)
+Gli script di dump generati da <application>pg_dump</application> applicano automaticamente
+diverse, ma non tutte, linee guida viste sopra. Per ricaricare un dump 
+<application>pg_dump</application> il più velocemente possibile, si devono fare 
+alcune cose aggiuntive manualmente. (Si noti che questi punti si applicano mentre  
+si <emphasis>ripristina</emphasis> un dump, non mentre lo si <emphasis>crea</emphasis>.
+Gli stessi punti si applicano sia che si carichi un dump testuale con   
+<application>psql</application> sia usando <application>pg_restore</application> per caricare
+da un file di archivio <application>pg_dump</application>).
    </para>
 
    <para>
-    By default, <application>pg_dump</application> uses <command>COPY</command>, and when
-    it is generating a complete schema-and-data dump, it is careful to
-    load data before creating indexes and foreign keys.  So in this case
-    several guidelines are handled automatically.  What is left
-    for you to do is to:
+In maniera predefinita, <application>pg_dump</application> usa <command>COPY</command>, e quando
+sta generando un dump completo di schema e dati, è prudente caricari i dati prima
+di creare gli indici e le chiavi esterne. Così, in questo caso
+diverse linee guida sono gestite automaticamente. 
+Quello che viene lasciato da fare all'utente è:
     <itemizedlist>
      <listitem>
       <para>
-       Set appropriate (i.e., larger than normal) values for
-       <varname>maintenance_work_mem</varname> and
-       <varname>checkpoint_segments</varname>.
+Impostare valori appropriati (per es., più grandi del normale) per
+<varname>maintenance_work_mem</varname> e
+<varname>checkpoint_segments</varname>.
       </para>
      </listitem>
      <listitem>
       <para>
-       If using WAL archiving or streaming replication, consider disabling
-       them during the restore. To do that, set <varname>archive_mode</varname>
-       to <literal>off</literal>,
-       <varname>wal_level</varname> to <literal>minimal</literal>, and
-       <varname>max_wal_senders</varname> to zero before loading the dump.
-       Afterwards, set them back to the right values and take a fresh
-       base backup.
+Se si usa l'archiviazione WAL o le replica streaming, considerare di disabilitarle
+durante il restore. Per fare ciò, impostare <varname>archive_mode</varname>
+a <literal>off</literal>,
+<varname>wal_level</varname> a <literal>minimal</literal> e
+<varname>max_wal_senders</varname> a zero prima di caricare il dump.
+Successivamente, rimetterli ai valori giusti e prendere un nuovo backup di base.
       </para>
      </listitem>
      <listitem>
       <para>
-       Consider whether the whole dump should be restored as a single
-       transaction.  To do that, pass the <option>-1</option> or
-       <option>--single-transaction</option> command-line option to
-       <application>psql</application> or <application>pg_restore</application>. When using this
-       mode, even the smallest of errors will rollback the entire restore,
-       possibly discarding many hours of processing.  Depending on how
-       interrelated the data is, that might seem preferable to manual cleanup,
-       or not.  <command>COPY</command> commands will run fastest if you use a single
-       transaction and have WAL archiving turned off.
+Considerare se l'intero dump debba essere ripristinato come singola transazione.
+Per fare ciò, passare a <application>psql</application> o a <application>pg_restore</application>
+l'opzione a riga di comando <option>-1</option> o
+<option>--single-transaction</option>. Quando si utilizza questa modalità, 
+il minimo errore provocherà il rollback dell'intero ripristino,    
+eventualmente annullando diverse ore di elaborazione. Dipende da quanto sono 
+collegati i dati il fatto che sia preferibile o meno eseguirer una pulizia manuale.
+I comandi <command>COPY</command> saranno più veloci se si usa una singola transazione
+e l'archiviazione WAL è disabilitata.
       </para>
      </listitem>
      <listitem>
       <para>
-       If multiple CPUs are available in the database server, consider using
-       <application>pg_restore</application>'s <option>--jobs</option> option.  This
-       allows concurrent data loading and index creation.
+Se sul server database sono disponibili diverse CPU, considerare l'utilizzo dell'opzione
+<option>--jobs</option> di <application>pg_restore</application>. Questo permette
+il caricamento concorrente dei dati e la creazione concorrente di indici.
       </para>
      </listitem>
      <listitem>
       <para>
-       Run <command>ANALYZE</command> afterwards.
+Successivamente lanciare <command>ANALYZE</command>.
       </para>
      </listitem>
     </itemizedlist>
    </para>
 
    <para>
-    A data-only dump will still use <command>COPY</command>, but it does not
-    drop or recreate indexes, and it does not normally touch foreign
-    keys.
+Anche un dump solamente dei dati utilizza <command>COPY</command>, ma non cancella o 
+ricrea indici, e di solito non tocca le chiavi esterne.
 
      <footnote>
       <para>
-       You can get the effect of disabling foreign keys by using
-       the <option>--disable-triggers</option> option &mdash; but realize that
-       that eliminates, rather than just postpones, foreign key
-       validation, and so it is possible to insert bad data if you use it.
+Si può ottenere l'effetto di disabilitazione delle chiavi esterne usando l'opzione
+<option>--disable-triggers</option> - ma si tenga presente che 
+questo elimina, piuttosto che solamente postporre, la validazione delle chiavi esterne,
+e così è possibile inserire dati sbagliati se la si usa.
       </para>
      </footnote>
 
-    So when loading a data-only dump, it is up to you to drop and recreate
-    indexes and foreign keys if you wish to use those techniques.
-    It's still useful to increase <varname>checkpoint_segments</varname>
-    while loading the data, but don't bother increasing
-    <varname>maintenance_work_mem</varname>; rather, you'd do that while
-    manually recreating indexes and foreign keys afterwards.
-    And don't forget to <command>ANALYZE</command> when you're done; see
-    <xref linkend="vacuum-for-statistics"/>
-    and <xref linkend="autovacuum"/> for more information.
+Così quando si caricano dump di soli dati, è compito vostro cancellare e ricreare
+gli indici e le chiavi esterne se si desidera usare quelle tecniche.
+È comuqnue utile incrementare <varname>checkpoint_segments</varname>
+mentre si caricano i dati, ma non preoccuparsi di incrementare
+<varname>maintenance_work_mem</varname>; piuttosto, si potrebbe farlo successivamente mentre
+si ricreano manualmente gli indici e le chiavi esterne.
+E non dimenticarsi di lanciare <command>ANALYZE</command> quando si è fatto; si veda 
+<xref linkend="vacuum-for-statistics"/>
+e <xref linkend="autovacuum"/> per maggiori informazioni.
    </para>
   </sect2>
   </sect1>
 
   <sect1 id="non-durability">
-   <title>Non-Durable Settings</title>
+   <title>Impostazioni non durevoli</title>
 
    <indexterm zone="non-durability">
-    <primary>non-durable</primary>
+    <primary>non-durevole</primary>
    </indexterm>
 
    <para>
-    Durability is a database feature that guarantees the recording of
-    committed transactions even if the server crashes or loses
-    power.  However, durability adds significant database overhead,
-    so if your site does not require such a guarantee,
-    <productname>PostgreSQL</productname> can be configured to run
-    much faster.  The following are configuration changes you can make
-    to improve performance in such cases;  they do not invalidate
-    commit guarantees related to database crashes, only abrupt operating
-    system stoppage, except as mentioned below:
+La durabilità è una caratteristica del database che garantisce la registrazione di 
+transazioni che hanno fatto il commit anche se il server ha un crash o perde
+potenza. Comunque, la durevolezza aggiunge un overhead significativo al database, 
+così se il sito non richiede tale garanzia, 
+<productname>PostgreSQL</productname> può essere configurato per andare molto 
+più veloce. I seguenti cambiamenti alla configurazione possono essere fatti
+per aumentare le prestazioni in quei casi; essi non invalidano 
+le garanzie di commit relative ai crash del database, 
+solo per blocchi
+bruschi del sistema, ad eccezione dei seguenti casi:
 
     <itemizedlist>
      <listitem>
       <para>
-       Place the database cluster's data directory in a memory-backed
-       file system (i.e. <acronym>RAM</acronym> disk).  This eliminates all
-       database disk I/O, but limits data storage to the amount of
-       available memory (and perhaps swap).
+Posizionare la directory dei dati del cluster in un file system "memory-backed"
+(per es. il disco <acronym>RAM</acronym>). Questo elimina tutto l'I/O del database,
+ma limita i dati immagazzinati all'ammontare della memoria disponibile 
+(e forse alla swap).
       </para>
      </listitem>
 
      <listitem>
       <para>
-       Turn off <xref linkend="guc-fsync"/>;  there is no need to flush
-       data to disk.
+Disabilitare <xref linkend="guc-fsync"/>; non c'è necessità di fare un flush dei dati su disco.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       Turn off <xref linkend="guc-full-page-writes"/>;  there is no need
-       to guard against partial page writes.
+Disabilitare <xref linkend="guc-full-page-writes"/>; non c'è bisogno di 
+preoccuparsi di scritture di pagina parziali.    
       </para>
      </listitem>
 
      <listitem>
       <para>
-       Increase <xref linkend="guc-checkpoint-segments"/> and <xref
-       linkend="guc-checkpoint-timeout"/> ; this reduces the frequency
-       of checkpoints, but increases the storage requirements of
-       <filename>/pg_xlog</filename>.
+Incrementare <xref linkend="guc-checkpoint-segments"/> e <xref
+linkend="guc-checkpoint-timeout"/>; questo riduce la frequenza dei checkpoint,
+ma incrementa i requisiti di immagazzinamento di  
+<filename>/pg_xlog</filename>.
       </para>
      </listitem>
 
@@ -1139,7 +1135,7 @@ l'operazione di caicamenti in transazioni più piccole.
       <para>
        Turn off <xref linkend="guc-synchronous-commit"/>;  there might be no
        need to write the <acronym>WAL</acronym> to disk on every
-       commit.  This does affect database crash transaction durability.
+       commit.  This does affect database crash transaction durability.  
       </para>
      </listitem>
     </itemizedlist>

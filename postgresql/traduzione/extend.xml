@@ -2,77 +2,75 @@
 <!-- $PostgreSQL$ -->
 
  <chapter id="extend">
-  <title>Extending <acronym>SQL</acronym></title>
+  <title>Estendere <acronym>SQL</acronym></title>
 
   <indexterm zone="extend">
-   <primary>extending SQL</primary>
+   <primary>estendere SQL</primary>
   </indexterm>
 
   <para>
-   In  the  sections  that follow, we will discuss how you
-   can extend the <productname>PostgreSQL</productname> 
-   <acronym>SQL</acronym> query language by adding:
+Nelle sezioni che seguono, discuteremo di come è possibile
+estendere il linguaggio <acronym>SQL</acronym> di <productname>PostgreSQL</productname>
+aggiungendo:
 
    <itemizedlist spacing="compact" mark="bullet">
     <listitem>
      <para>
-      functions (starting in <xref linkend="xfunc"/>)
+funzioni (cominciando da <xref linkend="xfunc"/>)
      </para>
     </listitem>
     <listitem>
      <para>
-      aggregates (starting in <xref linkend="xaggr"/>)
+aggregate (cominciando da <xref linkend="xaggr"/>)
      </para>
     </listitem>
     <listitem>
      <para>
-      data types (starting in <xref linkend="xtypes"/>)
+tipi di dato (cominciando da <xref linkend="xtypes"/>)
      </para>
     </listitem>
     <listitem>
      <para>
-      operators (starting in <xref linkend="xoper"/>)
+operatori (cominciando da <xref linkend="xoper"/>)
      </para>
     </listitem>
     <listitem>
      <para>
-      operator classes for indexes (starting in <xref linkend="xindex"/>)
+classi di operatori per indici (cominciando da <xref linkend="xindex"/>)
      </para>
     </listitem>
    </itemizedlist>
   </para>
 
   <sect1 id="extend-how">
-   <title>How Extensibility Works</title>
+   <title>Come funziona l'estensibilità</title>
 
    <para>
-    <productname>PostgreSQL</productname> is extensible because its operation  is  
-    catalog-driven.   If  you  are familiar with standard 
-    relational database systems, you know that  they  store  information
-    about  databases,  tables,  columns,  etc., in what are
-    commonly known as system catalogs.  (Some systems  call
-    this  the data dictionary.)  The catalogs appear to the
-    user as tables like any other, but  the  <acronym>DBMS</acronym>  stores
-    its  internal  bookkeeping in them.  One key difference
-    between <productname>PostgreSQL</productname> and  standard  relational database systems  is
-    that <productname>PostgreSQL</productname> stores much more information in its 
-    catalogs: not only information about tables and  columns,
-    but also information about data types, functions, access
-    methods, and so on.  These tables can be  modified  by
-    the  user, and since <productname>PostgreSQL</productname> bases its operation 
-    on these tables, this means that <productname>PostgreSQL</productname> can  be
-    extended   by   users.    By  comparison,  conventional
-    database systems can only be extended by changing hardcoded  
-    procedures in the source code or by loading modules
-    specially written by the <acronym>DBMS</acronym> vendor.
+<productname>PostgreSQL</productname> è estensibile dato che le sue operazioni sono 
+orientate al catalogo. Se si è familiari con i sistemi di database relazionali standard,
+si dovrebbe sapere che tengono informazioni 
+su database, tabelle, colonne, ecc., in quelli che comunemente 
+sono chiamati cataloghi di sistema. (Alcuni sistemi chiamano questi dati dizionari). 
+I cataloghi appaiono agli utenti come tabelle uguali alle altre, ma il <acronym>DBMS</acronym>
+salva in essi la sua contabilità. 
+Una differenza fondamentale tra <productname>PostgreSQL</productname> e i sistemi di database relazionali standard
+è che <productname>PostgreSQL</productname> salva molte più informazioni nei suoi
+cataloghi: non solo informazioni riguardanti tabelle e colonne,
+ma anche informazioni sui tipi di dato, funzioni, metodi di accesso,
+e così via. Queste tabelle possono essere modificate dall'utente
+e dato che <productname>PostgreSQL</productname> basa le sue operazioni
+su queste tabelle, questo significa che <productname>PostgreSQL</productname> può essere
+esteso dall'utente. Per fare un paragone, i sistemi di database convenzionali    
+possono essere estesi solo cambiando procedure nel codice sorgente
+o caricando moduli scritti appositamente dal distributore del <acronym>DBMS</acronym>
    </para>
 
    <para>
-    The <productname>PostgreSQL</productname> server can moreover
-    incorporate user-written code into itself through dynamic loading.
-    That is, the user can specify an object code file (e.g., a shared
-    library) that implements a new type or function, and
-    <productname>PostgreSQL</productname> will load it as required.
+Il server <productname>PostgreSQL</productname> può inoltre 
+incorporare codice scritto dall'utente in sè stesso attraverso il caricamento dinamico.
+Così, l'utente può specificare un file di codice oggeto (per es., una libreria condivisa)
+che implementa un nuovo tipo o funzione, e <productname>PostgreSQL</productname>
+la caricherà come richiesto.
     Code written in <acronym>SQL</acronym> is even more trivial to add
     to the server.  This ability to modify its operation <quote>on the
     fly</quote> makes <productname>PostgreSQL</productname> uniquely

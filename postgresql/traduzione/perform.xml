@@ -928,11 +928,11 @@ Ma si noti che cambiare queste impostazioni richiede che il server venga riavvia
    </para>
 
    <para>
-    Aside from avoiding the time for the archiver or WAL sender to
-    process the WAL data,
-    doing this will actually make certain commands faster, because they
-    are designed not to write WAL at all if <varname>wal_level</varname>
-    is <literal>minimal</literal>.  
+A prescindere dall'eliminazione del tempo impegato dall'archiviatore o dallo smistatore WAL per
+elaborare i dati,
+fare questo renderà effettivamente più veloci certi comandi, dato che sono  
+sono progettati per non scrivere i WAL del tutto se <varname>wal_level</varname>
+è <literal>minimal</literal>. 
 (Essi possono garantire sicurezza rispetto ai crash in maniera più conveniente
 facendo un <function>fsync</function> alla fine invece che scrivere WAL).
 Questo si applica ai seguenti comandi:
@@ -1133,9 +1133,9 @@ ma incrementa i requisiti di immagazzinamento di
 
      <listitem>
       <para>
-       Turn off <xref linkend="guc-synchronous-commit"/>;  there might be no
-       need to write the <acronym>WAL</acronym> to disk on every
-       commit.  This does affect database crash transaction durability.  
+Disabilitare <xref linkend="guc-synchronous-commit"/>; non ci potrebbe essere bisogno 
+di scrivere il <acronym>WAL</acronym> su disco ad ogni commit.
+This does affect database crash transaction durability.  
       </para>
      </listitem>
     </itemizedlist>

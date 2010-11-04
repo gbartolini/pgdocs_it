@@ -237,7 +237,7 @@ EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 3;
 </programlisting>
 
 In questo caso le righe della tabella sono ottenute in ordine di indice, che le rende
-ancora più costose da leggere, ma ce ne sono anche alcune per cui il costo aggiuntivo 
+ancora più costose da leggere, ma ce ne sono alcune per cui il costo aggiuntivo 
 dell'ordinamento delle posizioni della riga non ha importanza. La maggior parte delle volte si vedrà 
 questo tipo di piano per query che ottengono solo una singola riga, e per query
 che hanno una condizione <literal>ORDER BY</literal> che corrisponde all'ordine dell'indice.

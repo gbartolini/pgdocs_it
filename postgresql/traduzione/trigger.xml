@@ -2,293 +2,288 @@
 <!-- $PostgreSQL$ -->
 
  <chapter id="triggers">
-  <title>Triggers</title>
+  <title>Trigger</title>
 
   <indexterm zone="triggers">
    <primary>trigger</primary>
   </indexterm>
 
   <para>
-   This chapter provides general information about writing trigger functions.
-   Trigger functions can be written in most of the available procedural
-   languages, including
-   <application>PL/pgSQL</application> (<xref linkend="plpgsql"/>),
-   <application>PL/Tcl</application> (<xref linkend="pltcl"/>),
-   <application>PL/Perl</application> (<xref linkend="plperl"/>), and
-   <application>PL/Python</application> (<xref linkend="plpython"/>).
-   After reading this chapter, you should consult the chapter for
-   your favorite procedural language to find out the language-specific
-   details of writing a trigger in it.
+Questo capitolo fornisce informazioni generali sulla scrittura di funzioni trigger.
+Le funzioni trigger possono essere scritte nella maggior parte dei linguaggi procedurali,
+inclusi
+<application>PL/pgSQL</application> (<xref linkend="plpgsql"/>),
+<application>PL/Tcl</application> (<xref linkend="pltcl"/>),
+<application>PL/Perl</application> (<xref linkend="plperl"/>), e
+<application>PL/Python</application> (<xref linkend="plpython"/>).
+Dopo aver letto questo capitolo, si dovrebbe consultare il capitolo riguardante
+il linguaggio procedurale preferito per scoprire i dettagli specifici del linguaggio
+e come usarlo per scrivere un trigger.
   </para>
 
   <para>
-   It is also possible to write a trigger function in C, although
-   most people find it easier to use one of the procedural languages.
-   It is not currently possible to write a trigger function in the
-   plain SQL function language.
+È anche possibile scrivere una funzione trigger in C, sebbene la maggior parte delle  
+persone trova più semplice usare uno dei linguaggi procedurali. 
+Attualmente non è possibile scrivere una funzione trigger utilizzando il  linguaggio funzionale SQL.
   </para>
 
   <sect1 id="trigger-definition">
-   <title>Overview of Trigger Behavior</title>
+   <title>Panoramica del comportamento dei trigger</title>
 
    <para>
-    A trigger is a specification that the database should automatically
-    execute a particular function whenever a certain type of operation is
-    performed.  Triggers can be defined to execute either before or after any
-    <command>INSERT</command>, <command>UPDATE</command>, or
-    <command>DELETE</command> operation, either once per modified row,
-    or once per <acronym>SQL</acronym> statement.
-    <command>UPDATE</command> triggers can moreover be set to fire only if
-    certain columns are mentioned in the <literal>SET</literal> clause of the
-    <command>UPDATE</command> statement.
-    Triggers can also fire for <command>TRUNCATE</command> statements.
-    If a trigger event occurs, the trigger's function is called at the
-    appropriate time to handle the event.
+Un trigger è una specifica che indica che il database dovrebbe eseguire automaticamente 
+una funzione particolare ogni volte che un certo tipo di operazione viene svolta.
+I trigger possono essere definiti per essere eseguiti sia prima che dopo qualsiasi operazione  
+<command>INSERT</command>, <command>UPDATE</command>, o
+<command>DELETE</command>, sia una volta per ogni riga modificata,
+sia una volta per ogni funzione <acronym>SQL</acronym>.
+I trigger <command>UPDATE</command> possono inoltre essere impostati per attivarsi solo 
+se certe colonne sono menzionate nella clausola <literal>SET</literal> dell'istruzione 
+<command>UPDATE</command>.
+I trigger possono anche attivarsi per istruzioni <command>TRUNCATE</command>.
+Se si manifesta un evento trigger, la funzione trigger viene chiamata nel momento opportuno 
+per gestire l'evento.
    </para>
 
    <para>
-    The trigger function must be defined before the trigger itself can be
-    created.  The trigger function must be declared as a
-    function taking no arguments and returning type <literal>trigger</literal>.
-    (The trigger function receives its input through a specially-passed
-    <structname>TriggerData</structname> structure, not in the form of ordinary function
-    arguments.)
+La funzione trigger deve essere definita prima che il trigger stesso possa essere creato.
+La funzione trigger dev'essere dichiarata come una funzione che non prende
+argomenti e che restituisce il tipo <literal>trigger</literal>.
+(La funzione trigger riceve il suo input attraverso una struttura <structname>TriggerData</structname> 
+passata in modo speciale, non nella forma degli argomenti normali di funzione).
    </para>
 
    <para>
-    Once a suitable trigger function has been created, the trigger is
-    established with
-    <xref linkend="sql-createtrigger"/>.
-    The same trigger function can be used for multiple triggers.
+Una volte che una funzione trigger adatta è stata creata, il trigger è
+definito con
+<xref linkend="sql-createtrigger"/>.
+La stessa funzione trigger può essere usata per molteplici trigger.
    </para>
 
    <para>
-    <productname>PostgreSQL</productname> offers both <firstterm>per-row</firstterm>
-    triggers and <firstterm>per-statement</firstterm> triggers.  With a per-row
-    trigger, the trigger function
-    is invoked once for each row that is affected by the statement
-    that fired the trigger. In contrast, a per-statement trigger is
-    invoked only once when an appropriate statement is executed,
-    regardless of the number of rows affected by that statement. In
-    particular, a statement that affects zero rows will still result
-    in the execution of any applicable per-statement triggers. These
-    two types of triggers are sometimes called <firstterm>row-level</firstterm>
-    triggers and <firstterm>statement-level</firstterm> triggers,
-    respectively. Triggers on <command>TRUNCATE</command> may only be
-    defined at statement-level.
+<productname>PostgreSQL</productname> offre sia trigger <firstterm>per-riga</firstterm>
+che trigger <firstterm>per-istruzione</firstterm>. Con un trigger per-riga, 
+la funzione trigger viene invocata una volta per ogni riga che è coinvolta 
+dall'istruzione che ha lanciato il trigger. Al contrario, un trigger per-istruzione
+viene invocato solo una volta quando un'istruzione adatta viene eseguita,
+a prescindere dal numero di righe coinvolte dall'istruzione. In particolare,
+un'istruzione che coinvolge zero righe risulterà comunque nell'esecuzione
+di qualsiasi trigger per-istruzione applicabile. Questi due tipi 
+di tipi di trigger a volte vengono chiamati rispettivamente trigger <firstterm>a livello di riga</firstterm>
+e trigger <firstterm>a livello di funzione</firstterm>.
+I trigger sul <command>TRUNCATE</command> possono essere definiti solo 
+a livello di istruzione.
    </para>
 
    <para>
-    Triggers are also classified as <firstterm>before</firstterm> triggers and
-    <firstterm>after</firstterm> triggers.
-    Statement-level before triggers naturally fire before the
-    statement starts to do anything, while statement-level after
-    triggers fire at the very end of the statement.  Row-level before
-    triggers fire immediately before a particular row is operated on,
-    while row-level after triggers fire at the end of the statement
-    (but before any statement-level after triggers).
+I trigger vengono classificati anche come trigger <firstterm>before</firstterm> e 
+trigger <firstterm>after</firstterm>.
+I trigger before a livello di istruzione naturalmente si attivano prima 
+che l'istruzione cominci a fare qualsiasi cosa, mentre i trigger after 
+a livello di istruzione si attivano alla reale fine dell'istruzione. I trigger
+before a livello di riga si attivano immediatamente prima si operi su una riga,
+mentre i trigger after a livello di riga si attivano alla fine dell'istruzione
+(ma prima di qualsiasi trigger after a livello di istruzione).
    </para>
 
    <para>
-    Trigger functions invoked by per-statement triggers should always
-    return <symbol>NULL</symbol>. Trigger functions invoked by per-row
-    triggers can return a table row (a value of
-    type <structname>HeapTuple</structname>) to the calling executor,
-    if they choose.  A row-level trigger fired before an operation has
-    the following choices:
+Le funzioni trigger invocate dai trigger per instruzione dovrebbero sempre 
+ritornare <symbol>NULL</symbol>. Le funzioni trigger invocate da trigger 
+per riga possono ritornare una riga di tabella (un valore di
+tipo <structname>HeapTuple</structname>), se vogliono.
+Un trigger a livello di riga attivato prima di un'operazione ha le seguenti possibilità:
 
     <itemizedlist>
      <listitem>
       <para>
-       It can return <symbol>NULL</symbol> to skip the operation for the
-       current row. This instructs the executor to not perform the
-       row-level operation that invoked the trigger (the insertion or
-       modification of a particular table row).
+Può ritornare <symbol>NULL</symbol> per saltare l'operazione per la riga corrente.
+Questo istruisce l'esecutore a non svolgere l'operazione a livello di riga 
+che ha invocato il trigger (l'inserimento o la modifica
+di una particolare riga di tabella).
       </para>
      </listitem>
 
      <listitem>
       <para>
-       For row-level <command>INSERT</command>
-       and <command>UPDATE</command> triggers only, the returned row
-       becomes the row that will be inserted or will replace the row
-       being updated.  This allows the trigger function to modify the
-       row being inserted or updated.
+Solo per trigger <command>INSERT</command> e <command>UPDATE</command>
+a livello di riga, la riga ritornata
+diventa la riga che sarà inserita o rimpiazzerà la riga che è stata aggiornata.
+Questo permette  che la funzione trigger modifichi la riga che è 
+stata inserita o aggiornata.
       </para>
      </listitem>
     </itemizedlist>
 
-    A row-level before trigger that does not intend to cause either of
-    these behaviors must be careful to return as its result the same
-    row that was passed in (that is, the <varname>NEW</varname> row
-    for <command>INSERT</command> and <command>UPDATE</command>
-    triggers, the <varname>OLD</varname> row for
-    <command>DELETE</command> triggers).
+Un trigger before a livello di riga che non intende causare nessuno di questi 
+comportamenti deve far attenzione a restituire come suo risultato la stessa
+riga che gli è stata passata (cioè, la riga <varname>NEW</varname>
+per i trigger <command>INSERT</command> e <command>UPDATE</command>,
+la riga  <varname>OLD</varname> per i trigger 
+<command>DELETE</command>).
    </para>
 
    <para>
-    The return value is ignored for row-level triggers fired after an
-    operation, and so they can return <symbol>NULL</symbol>.
+Il valore di ritorno viene ignorato per trigger a livello di riga attivati dopo 
+un operazione, e quindi possono ritornare <symbol>NULL</symbol>.
    </para>
 
    <para>
-    If more than one trigger is defined for the same event on the same
-    relation, the triggers will be fired in alphabetical order by
-    trigger name.  In the case of before triggers, the
-    possibly-modified row returned by each trigger becomes the input
-    to the next trigger.  If any before trigger returns
-    <symbol>NULL</symbol>, the operation is abandoned for that row and subsequent
-    triggers are not fired.
+Se è definito più di un trigger per lo stesso evento sulla stessa relazione,
+i trigger saranno attivati in ordine alfabetico per nome del trigger.
+Nel caso di trigger before, la riga restituita possibilmente-modificata
+da ogni trigger diventa l'input del prossimo trigger. Se qualunque
+dei trigger before ritorna <symbol>NULL</symbol>, l'operazione 
+viene abbandonata per quella riga e i trigger successivi non vengono attivati.
    </para>
 
    <para>
-    A trigger definition can also specify a Boolean <literal>WHEN</literal>
-    condition, which will be tested to see whether the trigger should
-    be fired.  In row-level triggers the <literal>WHEN</literal> condition can
-    examine the old and/or new values of columns of the row.  (Statement-level
-    triggers can also have <literal>WHEN</literal> conditions, although the feature
-    is not so useful for them.)  In a before trigger, the <literal>WHEN</literal>
-    condition is evaluated just before the function is or would be executed,
-    so using <literal>WHEN</literal> is not materially different from testing the
-    same condition at the beginning of the trigger function.  However, in
-    an after trigger, the <literal>WHEN</literal> condition is evaluated just after
-    the row update occurs, and it determines whether an event is queued to
-    fire the trigger at the end of statement.  So when an after trigger's
-    <literal>WHEN</literal> condition does not return true, it is not necessary
-    to queue an event nor to re-fetch the row at end of statement.  This
-    can result in significant speedups in statements that modify many
-    rows, if the trigger only needs to be fired for a few of the rows.
+La definizione di un trigger può anche specificare una condizione booleana <literal>WHEN</literal>,
+che sarà testata per vedere se il trigger dovrebbe essere attivato.
+Nei trigger a livello di riga la condizione <literal>WHEN</literal> può esaminare 
+i valori vecchi e/o nuovi delle colonne della riga. (I trigger a livello di istruzione
+possono anche avere condizioni <literal>WHEN</literal>, anche se la caratteristica
+non gli è utile). In un trigger before, la condizione <literal>WHEN</literal>
+viene valutata appena prima che la funzione venga o verrebbe eseguita,
+per questo usare <literal>WHEN</literal> in pratica non è differente da testare 
+la stessa condizione all'inizio della funzione trigger. Comunque, in un trigger after,
+la condizione <literal>WHEN</literal> viene valutata appena dopo 
+che avvenga l'aggiornamento della riga, e determina se un evento viene messo in coda per 
+attivare il trigger alla fine dell'istruzione. Per questo quando la condizione 
+<literal>WHEN</literal> del trigger non ritorna true, non è necessario 
+mettere in coda un evento e nemmeno ri-ottenere la riga alla fine dell'istruzione. Questo 
+può risultare in significative velocizzazioni di instruzioni che modificano molte
+righe, se il trigger necessita di essere attivato solo per poche righe.
    </para>
 
    <para>
-    Typically, row before triggers are used for checking or
-    modifying the data that will be inserted or updated.  For example,
-    a before trigger might be used to insert the current time into a
-    <type>timestamp</type> column, or to check that two elements of the row are
-    consistent. Row after triggers are most sensibly
-    used to propagate the updates to other tables, or make consistency
-    checks against other tables.  The reason for this division of labor is
-    that an after trigger can be certain it is seeing the final value of the
-    row, while a before trigger cannot; there might be other before triggers
-    firing after it.  If you have no specific reason to make a trigger before
-    or after, the before case is more efficient, since the information about
-    the operation doesn't have to be saved until end of statement.
+Tipicamente, i trigger before a livello di riga sono usati per controllare o
+modificare i dati che saranno inseriti o aggiornati. Per esempio,
+un trigger before potrebbe essere usato per inserire l'orario corrente in una 
+colonna <type>timestamp</type>, o per controllare che due elementi della riga siano
+consistenti. I trigger after a livello di riga sono i più usati per 
+propagare gli aggiornamenti ad altre tabelle, o per fare controlli di consistenza
+rispetto ad altre tabelle. La ragione per questa divisione del lavoro è che 
+un trigger after può essere certo che sta vedendo il valore finale della riga,
+mentre un trigger before non può; ci potrebbero essere altri trigger before 
+che si attivano dopo. Se non si hanno ragioni specifiche per realizzare un trigger befor o after,
+la modalità before è più efficiente, dato che l'informazione sull'operazione
+non deve essere salvata fino alla fine dell'istruzione.
    </para>
 
    <para>
-    If a trigger function executes SQL commands then these
-    commands might fire triggers again. This is known as cascading
-    triggers.  There is no direct limitation on the number of cascade
-    levels.  It is possible for cascades to cause a recursive invocation
-    of the same trigger; for example, an <command>INSERT</command>
-    trigger might execute a command that inserts an additional row
-    into the same table, causing the <command>INSERT</command> trigger
-    to be fired again.  It is the trigger programmer's responsibility
-    to avoid infinite recursion in such scenarios.
+Se una funzione trigger esegue comandi SQL allora questi comandi
+potrebbero attivare altri trigger. Questi sono conosciuti come 
+trigger in cascata. Non c'è una limitazione diretta sul numero di livelli in cascata.
+È possibile causare un'invocazione ricorsiva dello stesso trigger;
+per esempio, un trigger <command>INSERT</command>
+potrebbe eseguire un comando che inserisce una riga addizionale
+nella stessa tabella, causando l'ulteriore attivazione del trigger <command>INSERT</command>.
+È responsabilità del programmatore di trigger
+escludere le ricursioni infinite in tali scenari.
    </para>
 
    <para>
-    When a trigger is being defined, arguments can be specified for
-    it.<indexterm><primary>trigger</primary><secondary>arguments for trigger
-    functions</secondary></indexterm> The purpose of including arguments in the
-    trigger definition is to allow different triggers with similar
-    requirements to call the same function.  As an example, there
-    could be a generalized trigger function that takes as its
-    arguments two column names and puts the current user in one and
-    the current time stamp in the other.  Properly written, this
-    trigger function would be independent of the specific table it is
-    triggering on.  So the same function could be used for
-    <command>INSERT</command> events on any table with suitable
-    columns, to automatically track creation of records in a
-    transaction table for example. It could also be used to track
-    last-update events if defined as an <command>UPDATE</command>
-    trigger.
+Quando si definisce un trigger, gli si possono specificare degli argomenti.
+<indexterm><primary>trigger</primary><secondary>argomenti per funzioni trigger</secondary></indexterm> 
+Lo scopo di includere argomenti nella definizione del trigger
+è di permette che trigger diversi con requisiti simili
+chiamino la stessa funzione. Come esempio, ci potrebbe essere
+una funzione trigger generalizzata che prende come argomenti
+due nomi di colonna e mette l'utente corrente in una e il timestap corrente 
+nell'altra. Se scritta correttamente, questa funzione trigger    
+sarà indipendente della specifica tabella su cui sta "triggerando".
+Per questo la stessa funzione potrebbe essere usata per eventi 
+<command>INSERT</command> su ogni tabella con colonne adatte,
+per esempio 
+per tenere traccia automaticamente della creazione di record in una 
+tabella di transazione. Può essere anche usata per tenere traccia
+degli eventi aggiornati per ultimi se definito come trigger <command>UPDATE</command>.
    </para>
 
    <para>
-    Each programming language that supports triggers has its own method
-    for making the trigger input data available to the trigger function.
-    This input data includes the type of trigger event (e.g.,
-    <command>INSERT</command> or <command>UPDATE</command>) as well as any
-    arguments that were listed in <command>CREATE TRIGGER</command>.
-    For a row-level trigger, the input data also includes the
-    <varname>NEW</varname> row for <command>INSERT</command> and
-    <command>UPDATE</command> triggers, and/or the <varname>OLD</varname> row
-    for <command>UPDATE</command> and <command>DELETE</command> triggers.
-    Statement-level triggers do not currently have any way to examine the
-    individual row(s) modified by the statement.
+Ogni linguaggio di programmazione che supporta i trigger ha i propri metodi
+per rendere i dati in input al trigger disponibili alla funzione trigger.
+Questi dati in input includono il tipo dell'evento trigger (per es.,
+<command>INSERT</command> o <command>UPDATE</command>) così come qualsiasi
+argomento elencato in <command>CREATE TRIGGER</command>.
+Per un trigger a livello di riga, i dati in input includono anche 
+la riga  <varname>NEW</varname> per trigger <command>INSERT</command> e 
+<command>UPDATE</command>, e/o la riga <varname>OLD</varname>
+per trigger <command>UPDATE</command> e <command>DELETE</command>.
+I trigger a livello di istruzione non hanno attualmente nessuna possibilità di 
+esaminare la riga/e individuale modificata dall'istruzione.
    </para>
 
   </sect1>
 
   <sect1 id="trigger-datachanges">
-   <title>Visibility of Data Changes</title>
+   <title>Visibilità del cambiamento dei dati</title>
 
    <para>
-    If you execute SQL commands in your trigger function, and these
-    commands access the table that the trigger is for, then
-    you need to be aware of the data visibility rules, because they determine
-    whether these SQL commands will see the data change that the trigger
-    is fired for.  Briefly:
+Se si eseguono comandi SQL nella funzione trigger, e questi comandi
+accedono alla tabella su cui è il trigger, allora si deve stare attenti 
+alle regole di visibilità dei dati, dato che esse determinano 
+se questi comandi SQL vedranno il cambiamento dei dati su cui è attivo il trigger.
+Brevemente:
 
     <itemizedlist>
 
      <listitem>
       <para>
-       Statement-level triggers follow simple visibility rules: none of
-       the changes made by a statement are visible to statement-level
-       triggers that are invoked before the statement, whereas all
-       modifications are visible to statement-level after triggers.
+I trigger a livello di istruzione seguono regole di visibilità semplici: 
+nessuno dei cambiamenti fatti da un'istruzione è visibile ai trigger a livello di  
+istruzione che sono invocati prima dell'istruzione, mentre tutte le
+modifiche sono visibili ai trigger after a livello di istruzione.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       The data change (insertion, update, or deletion) causing the
-       trigger to fire is naturally <emphasis>not</emphasis> visible
-       to SQL commands executed in a row-level before trigger, because
-       it hasn't happened yet.
+Il cambiamento dei dati (inserimento, aggiornamento o cancellazione) provoca
+che il trigger da attivare <emphasis>non</emphasis> sia naturalmente visibile
+ai comandi SQL eseguiti in un trigger before a livello di riga, dato che non è ancora 
+accaduto.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       However, SQL commands executed in a row-level before
-       trigger <emphasis>will</emphasis> see the effects of data
-       changes for rows previously processed in the same outer
-       command.  This requires caution, since the ordering of these
-       change events is not in general predictable; a SQL command that
-       affects multiple rows can visit the rows in any order.
+Comunque, i comandi SQL eseguiti in un trigger before a livello di riga  
+<emphasis>vedranno</emphasis> gli effetti dei cambiamenti ai dati 
+per le righe processate precedendemente nello stesso comando esterno.
+Questo richiede cautela, dato che l'ordine di questi eventi di modifica non è 
+generalmente prevedibile; un comando SQL che coinvolge molteplici righe 
+può visitare le righe in qualsiasi ordine.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       When a row-level after trigger is fired, all data changes made
-       by the outer command are already complete, and are visible to
-       the invoked trigger function.
+Quando viene attivato un trigger after a livello di riga, tutti i cambiamenti ai dati
+fatti dal comando più esterno sono già completati, e sono visibili alla funzione 
+trigger invocata.
       </para>
      </listitem>
     </itemizedlist>
    </para>
 
    <para>
-    If your trigger function is written in any of the standard procedural
-    languages, then the above statements apply only if the function is
-    declared <literal>VOLATILE</literal>.  Functions that are declared
-    <literal>STABLE</literal> or <literal>IMMUTABLE</literal> will not see changes made by
-    the calling command in any case.
+Se la funzione trigger è scritta in uno qualsiasi dei linguaggi procedurali standard,
+allora le istruzioni sopra si applicano solo se la funzione è dichiarata 
+<literal>VOLATILE</literal>.  Le funzioni dichiarate 
+<literal>STABLE</literal> o <literal>IMMUTABLE</literal> non vedranno cambiamenti fatti dal 
+comando chiamante in ogni caso.
    </para>
 
    <para>
-    Further information about data visibility rules can be found in
-    <xref linkend="spi-visibility"/>.  The example in <xref
-    linkend="trigger-example"/> contains a demonstration of these rules.
+Ulteriori informazioni sulle regole di visibilità dei dati possono essere trovate
+in <xref linkend="spi-visibility"/>.   L'esempio in <xref
+linkend="trigger-example"/> contiene una dimostrazione di queste regole.
    </para>
   </sect1>
 
   <sect1 id="trigger-interface">
-   <title>Writing Trigger Functions in C</title>
+   <title>Scrivere funzioni trigger in C</title>
 
    <indexterm zone="trigger-interface">
     <primary>trigger</primary>
@@ -296,43 +291,42 @@
    </indexterm>
 
    <para>
-    This section describes the low-level details of the interface to a
-    trigger function.  This information is only needed when writing
-    trigger functions in C.  If you are using a higher-level language then
-    these details are handled for you.  In most cases you should consider
-    using a procedural language before writing your triggers in C.  The
-    documentation of each procedural language explains how to write a
-    trigger in that language.
+Questa sezione descrive i dettagli a basso livello dell'interfaccia verso una 
+funzione trigger. Queste informazioni sono necessarie solo quando si scrive una funzione
+trigger in C. Se si sta usando un linguaggio di più alto livello allora questi dettagli sono
+gestiti per te. Nella maggior parte dei casi di dovrebbe prenderre in considerazione 
+l'utilizzo di un linguaggio procedurale prima di scrivere un trigger in C. 
+La documentazione di ogni linguaggio procedurale spiega come scrivere un 
+trigger in quel linguaggio.
    </para>
 
    <para>
-    Trigger functions must use the <quote>version 1</quote> function manager
-    interface.
+Le funzioni trigger devono usare l'interfaccia di gestione delle funzioni <quote>version 1</quote>.
    </para>
 
    <para>
-    When a function is called by the trigger manager, it is not passed
-    any normal arguments, but it is passed a <quote>context</quote>
-    pointer pointing to a <structname>TriggerData</structname> structure.  C
-    functions can check whether they were called from the trigger
-    manager or not by executing the macro:
+Quando una funzione viene chiamata dal gestore dei trigger, non viene passato  
+nessun normale argomento, ma viene passato un puntatore <quote>context</quote> 
+che punta a una struttura <structname>TriggerData</structname>. 
+Le funzioni C possono controllare se sono state chiamate dal gestore dei trigger 
+o no eseguendo la macro:
 <programlisting>
 CALLED_AS_TRIGGER(fcinfo)
 </programlisting>
-    which expands to:
+che si espande in:
 <programlisting>
 ((fcinfo)-&gt;context != NULL &amp;&amp; IsA((fcinfo)-&gt;context, TriggerData))
 </programlisting>
-    If this returns true, then it is safe to cast
-    <literal>fcinfo-&gt;context</literal> to type <literal>TriggerData
-    *</literal> and make use of the pointed-to
-    <structname>TriggerData</structname> structure.  The function must
-    <emphasis>not</emphasis> alter the <structname>TriggerData</structname>
-    structure or any of the data it points to.
+Se questo restituisce true, allora è sicuro eseguire un cast
+<literal>fcinfo-&gt;context</literal> al tipo <literal>TriggerData
+*</literal> ed usare la struttura    
+<structname>TriggerData</structname>. La funzione <emphasis>non</emphasis>  deve
+modificate la struttura <structname>TriggerData</structname>
+o qualsiasi dato a cui punta.
    </para>
 
    <para>
-    <structname>struct TriggerData</structname> is defined in
+La struttura <structname>TriggerData</structname> è definita in
     <filename>commands/trigger.h</filename>:
 
 <programlisting>
@@ -349,14 +343,14 @@ typedef struct TriggerData
 } TriggerData;
 </programlisting>
 
-    where the members are defined as follows:
+dove i membri sono definiti come segue:
 
     <variablelist>
      <varlistentry>
       <term><structfield>type</structfield></term>
       <listitem>
        <para>
-        Always <literal>T_TriggerData</literal>.
+Sempre <literal>T_TriggerData</literal>.
        </para>
       </listitem>
      </varlistentry>
@@ -365,15 +359,15 @@ typedef struct TriggerData
       <term><structfield>tg_event</structfield></term>
       <listitem>
        <para>
-        Describes the event for which the function is called. You can use the
-        following macros to examine <literal>tg_event</literal>:
+Descrive l'evento per il quale la funzione è chiamata. Si possono usare le seguenti macro 
+per esaminare <literal>tg_event</literal>:
 
         <variablelist>
          <varlistentry>
           <term><literal>TRIGGER_FIRED_BEFORE(tg_event)</literal></term>
           <listitem>
            <para>
-            Returns true if the trigger fired before the operation.
+Restituisce true se il trigger è avvenuto prima dell'operazione.
            </para>
           </listitem>
          </varlistentry>
@@ -382,7 +376,7 @@ typedef struct TriggerData
           <term><literal>TRIGGER_FIRED_AFTER(tg_event)</literal></term>
           <listitem>
            <para>
-            Returns true if the trigger fired after the operation.
+Restituisce true se il trigger è avvenuto dopo l'operazione.
            </para>
           </listitem>
          </varlistentry>
@@ -391,7 +385,7 @@ typedef struct TriggerData
           <term><literal>TRIGGER_FIRED_FOR_ROW(tg_event)</literal></term>
           <listitem>
            <para>
-            Returns true if the trigger fired for a row-level event.
+Restituisce true se il trigger è avvenuto per un evento a livello di riga.
            </para>
           </listitem>
          </varlistentry>
@@ -400,7 +394,7 @@ typedef struct TriggerData
           <term><literal>TRIGGER_FIRED_FOR_STATEMENT(tg_event)</literal></term>
           <listitem>
            <para>
-            Returns true if the trigger fired for a statement-level event.
+Restituisce true se il trigger è avvenuto per un evento a livello di istruzione.
            </para>
           </listitem>
          </varlistentry>
@@ -409,7 +403,7 @@ typedef struct TriggerData
           <term><literal>TRIGGER_FIRED_BY_INSERT(tg_event)</literal></term>
           <listitem>
            <para>
-            Returns true if the trigger was fired by an <command>INSERT</command> command.
+Restituisce true se il trigger è stato attivato da un comando <command>INSERT</command>. 
            </para>
           </listitem>
          </varlistentry>
@@ -418,7 +412,7 @@ typedef struct TriggerData
           <term><literal>TRIGGER_FIRED_BY_UPDATE(tg_event)</literal></term>
           <listitem>
            <para>
-            Returns true if the trigger was fired by an <command>UPDATE</command> command.
+Restituisce true se il trigger è stato attivato da un comando <command>UPDATE</command>.
            </para>
           </listitem>
          </varlistentry>
@@ -427,7 +421,7 @@ typedef struct TriggerData
           <term><literal>TRIGGER_FIRED_BY_DELETE(tg_event)</literal></term>
           <listitem>
            <para>
-            Returns true if the trigger was fired by a <command>DELETE</command> command.
+Restituisce true se il trigger è stato atttivato da un comando <command>DELETE</command>.
            </para>
           </listitem>
          </varlistentry>
@@ -436,7 +430,7 @@ typedef struct TriggerData
           <term><literal>TRIGGER_FIRED_BY_TRUNCATE(tg_event)</literal></term>
           <listitem>
            <para>
-            Returns true if the trigger was fired by a <command>TRUNCATE</command> command.
+Restituisce true se il trigger è stato attivato da un comando <command>TRUNCATE</command>.
            </para>
           </listitem>
          </varlistentry>
@@ -449,15 +443,15 @@ typedef struct TriggerData
       <term><structfield>tg_relation</structfield></term>
       <listitem>
        <para>
-        A pointer to a structure describing the relation that the trigger fired for.
-        Look at <filename>utils/rel.h</filename> for details about
-        this structure.  The most interesting things are
-        <literal>tg_relation-&gt;rd_att</literal> (descriptor of the relation
-        tuples) and <literal>tg_relation-&gt;rd_rel-&gt;relname</literal>
-        (relation name; the type is not <type>char*</type> but
-        <type>NameData</type>; use
-        <literal>SPI_getrelname(tg_relation)</literal> to get a <type>char*</type> if you
-        need a copy of the name).
+Un puntatore a una struttura che descrive la relazione per la quale il trigger si è attivato.
+Si veda <filename>utils/rel.h</filename> per dettagli su questa 
+struttura. Le cose più interessanti sono
+<literal>tg_relation-&gt;rd_att</literal> (descrittore delle tuple della relazione)
+e <literal>tg_relation-&gt;rd_rel-&gt;relname</literal>
+(nome della relazione; il tipo non è <type>char*</type> ma 
+<type>NameData</type>; usare 
+<literal>SPI_getrelname(tg_relation)</literal> per ottenere un <type>char*</type> se si ha bisogno 
+della copia del nome).
        </para>
       </listitem>
      </varlistentry>
@@ -466,13 +460,12 @@ typedef struct TriggerData
       <term><structfield>tg_trigtuple</structfield></term>
       <listitem>
        <para>
-        A pointer to the row for which the trigger was fired. This is
-        the row being inserted, updated, or deleted.  If this trigger
-        was fired for an <command>INSERT</command> or
-        <command>DELETE</command> then this is what you should return
-        from the function if you don't want to replace the row with
-        a different one (in the case of <command>INSERT</command>) or
-        skip the operation.
+Un puntatore alla riga per la quale è stato attivato il trigger. Questa è 
+la riga che è stata inserita, aggiornata o cancellata. Se questo trigger
+è stato attivato con un <command>INSERT</command> o
+<command>DELETE</command> allora questo è quello che si dovrebbe restituire
+dalla funzione se non si vuole sostituire la riga  con una diversa
+(nel caso di <command>INSERT</command>) o saltare l'operazione.
        </para>
       </listitem>
      </varlistentry>
@@ -481,13 +474,12 @@ typedef struct TriggerData
       <term><structfield>tg_newtuple</structfield></term>
       <listitem>
        <para>
-        A pointer to the new version of the row, if the trigger was
-        fired for an <command>UPDATE</command>, and <symbol>NULL</symbol> if
-        it is for an <command>INSERT</command> or a
-        <command>DELETE</command>. This is what you have to return
-        from the function if the event is an <command>UPDATE</command>
-        and you don't want to replace this row by a different one or
-        skip the operation.
+Un puntatore alla nuova versione della riga, se il trigger è stato attivato 
+per un <command>UPDATE</command>, e <symbol>NULL</symbol> se
+è per un <command>INSERT</command> o un <command>DELETE</command>. 
+Questo è quello che si deve restituire dalla funzione se l'evento
+è un <command>UPDATE</command> e non si vuole sostituire 
+questa riga con una diversa o saltare l'operazione.
        </para>
       </listitem>
      </varlistentry>
@@ -496,8 +488,8 @@ typedef struct TriggerData
       <term><structfield>tg_trigger</structfield></term>
       <listitem>
        <para>
-        A pointer to a structure of type <structname>Trigger</structname>,
-        defined in <filename>utils/rel.h</filename>:
+Un puntatore a una struttura di tipo <structname>Trigger</structname>,
+definita in <filename>utils/rel.h</filename>:
 
 <programlisting>
 typedef struct Trigger
@@ -521,12 +513,11 @@ typedef struct Trigger
 } Trigger;
 </programlisting>
 
-       where <structfield>tgname</structfield> is the trigger's name,
-       <structfield>tgnargs</structfield> is the number of arguments in
-       <structfield>tgargs</structfield>, and <structfield>tgargs</structfield> is an array of
-       pointers to the arguments specified in the <command>CREATE
-       TRIGGER</command> statement. The other members are for internal use
-       only.
+dove <structfield>tgname</structfield> è il nome del trigger,
+<structfield>tgnargs</structfield> è il numero di argomenti in 
+<structfield>tgargs</structfield>, e <structfield>tgargs</structfield> è un array di 
+puntatori agli argomenti specificati nell'istruzione <command>CREATE
+TRIGGER</command>. Gli altri membri sono solo per uso interno.
        </para>
       </listitem>
      </varlistentry>
@@ -535,8 +526,8 @@ typedef struct Trigger
       <term><structfield>tg_trigtuplebuf</structfield></term>
       <listitem>
        <para>
-        The buffer containing <structfield>tg_trigtuple</structfield>, or <symbol>InvalidBuffer</symbol> if there
-        is no such tuple or it is not stored in a disk buffer.
+Il buffer contenente <structfield>tg_trigtuple</structfield>, o <symbol>InvalidBuffer</symbol> non c'è
+quella tupla o non è salvata in un buffer disco.
        </para>
       </listitem>
      </varlistentry>
@@ -545,8 +536,8 @@ typedef struct Trigger
       <term><structfield>tg_newtuplebuf</structfield></term>
       <listitem>
        <para>
-        The buffer containing <structfield>tg_newtuple</structfield>, or <symbol>InvalidBuffer</symbol> if there
-        is no such tuple or it is not stored in a disk buffer.
+Il buffer contenente <structfield>tg_newtuple</structfield>, o <symbol>InvalidBuffer</symbol> se non c'è
+quella tupla o non è salvata in un buffer disco.
        </para>
       </listitem>
      </varlistentry>
@@ -555,34 +546,34 @@ typedef struct Trigger
    </para>
 
    <para>
-    A trigger function must return either a
-    <structname>HeapTuple</structname> pointer or a <symbol>NULL</symbol> pointer
-    (<emphasis>not</emphasis> an SQL null value, that is, do not set <parameter>isNull</parameter> true).
-    Be careful to return either
-    <structfield>tg_trigtuple</structfield> or <structfield>tg_newtuple</structfield>,
-    as appropriate, if you don't want to modify the row being operated on.
+Una funzione trigger deve restituire o un puntatore 
+<structname>HeapTuple</structname> o un puntatore <symbol>NULL</symbol>
+(<emphasis>non</emphasis> un valore null SQL, cioè, non imposta <parameter>isNull</parameter> a true).
+Fare attenzione a restituire o
+<structfield>tg_trigtuple</structfield> o <structfield>tg_newtuple</structfield>,
+nel modo giusto, se non si vuole modificare la riga sulla quale si è operato.
    </para>
   </sect1>
 
   <sect1 id="trigger-example">
-   <title>A Complete Trigger Example</title>
+   <title>Un esempio completo di trigger</title>
 
    <para>
-    Here is a very simple example of a trigger function written in C.
-    (Examples of triggers written in procedural languages can be found
-    in the documentation of the procedural languages.)
+Ecco un semplice esempio di funzione trigger scritta in C. 
+(Esempi di trigger scritti in linguaggi procedurali possono essere trovati
+nella documentazione dei linguaggi procedurali).
    </para>
 
    <para>
-    The function <function>trigf</function> reports the number of rows in the
-    table <structname>ttest</structname> and skips the actual operation if the
-    command attempts to insert a null value into the column
-    <structfield>x</structfield>. (So the trigger acts as a not-null constraint but
-    doesn't abort the transaction.)
+La funzione  <function>trigf</function> riporta il numero di righe nella tabella 
+<structname>ttest</structname> e salta l'attuale operazione se il comando tenta di inserire 
+un valore null nella colonna 
+<structfield>x</structfield>. (Per questo il trigger agisce come un vincolo non null ma
+non annulla la transione).
    </para>
 
    <para>
-    First, the table definition:
+Prima, la definizione della tabella:
 <programlisting>
 CREATE TABLE ttest (
     x integer
@@ -591,7 +582,7 @@ CREATE TABLE ttest (
    </para>
 
    <para>
-    This is the source code of the trigger function:
+Questo è il sorgenete della funzione trigger:
 <programlisting><![CDATA[
 #include "postgres.h"
 #include "executor/spi.h"       /* this is what you need to work with SPI */
@@ -672,8 +663,9 @@ trigf(PG_FUNCTION_ARGS)
    </para>
 
    <para>
-    After you have compiled the source code (see <xref
-    linkend="dfunc"/>), declare the function and the triggers:
+Dopo che si è compilato il codice sorgenete (si veda <xref
+linkend="dfunc"/>), dichiarare la funzione e il trigger:
+
 <programlisting>
 CREATE FUNCTION trigf() RETURNS trigger
     AS '<replaceable>filename</replaceable>'
@@ -688,7 +680,7 @@ CREATE TRIGGER tafter AFTER INSERT OR UPDATE OR DELETE ON ttest
    </para>
 
    <para>
-    Now you can test the operation of the trigger:
+Adesso è possibile testare l'operazione del trigger:
 <screen>
 =&gt; INSERT INTO ttest VALUES (NULL);
 INFO:  trigf (fired before): there are 0 rows in ttest
@@ -705,7 +697,7 @@ INSERT 0 0
 INFO:  trigf (fired before): there are 0 rows in ttest
 INFO:  trigf (fired after ): there are 1 rows in ttest
                                        ^^^^^^^^
-                             remember what we said about visibility.
+                             ricordare cosa abbiamo detto sulla visibilità.
 INSERT 167793 1
 vac=&gt; SELECT * FROM ttest;
  x
@@ -717,7 +709,7 @@ vac=&gt; SELECT * FROM ttest;
 INFO:  trigf (fired before): there are 1 rows in ttest
 INFO:  trigf (fired after ): there are 2 rows in ttest
                                        ^^^^^^
-                             remember what we said about visibility.
+                             ricordare cosa abbiamo detto sulla visibilità.
 INSERT 167794 1
 =&gt; SELECT * FROM ttest;
  x
@@ -746,7 +738,7 @@ INFO:  trigf (fired before): there are 1 rows in ttest
 INFO:  trigf (fired after ): there are 0 rows in ttest
 INFO:  trigf (fired after ): there are 0 rows in ttest
                                        ^^^^^^
-                             remember what we said about visibility.
+                             ricordare cosa abbiamo detto sulla visibilità.
 DELETE 2
 =&gt; SELECT * FROM ttest;
  x
@@ -757,9 +749,9 @@ DELETE 2
    </para>
 
    <para>
-    There are more complex examples in
-    <filename>src/test/regress/regress.c</filename> and
-    in <filename>contrib/spi</filename>.
+Ci sono esempi più complessi in
+<filename>src/test/regress/regress.c</filename> e
+in <filename>contrib/spi</filename>.
    </para>
   </sect1>
  </chapter>

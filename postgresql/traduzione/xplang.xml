@@ -2,121 +2,119 @@
 <!-- $PostgreSQL$ -->
 
  <chapter id="xplang">
-  <title>Procedural Languages</title>
+  <title>Linguaggi procedurali</title>
 
   <indexterm zone="xplang">
-   <primary>procedural language</primary>
+   <primary>linguaggio procedurale</primary>
   </indexterm>
 
   <para>
-   <productname>PostgreSQL</productname> allows user-defined functions
-   to be written in other languages besides SQL and C.  These other
-   languages are generically called <firstterm>procedural
-   languages</firstterm> (<acronym>PL</acronym>s).  For a function
-   written in a procedural language, the database server has
-   no built-in knowledge about how to interpret the function's source
-   text. Instead, the task is passed to a special handler that knows
-   the details of the language.  The handler could either do all the
-   work of parsing, syntax analysis, execution, etc. itself, or it
-   could serve as <quote>glue</quote> between
-   <productname>PostgreSQL</productname> and an existing implementation
-   of a programming language.  The handler itself is a
-   C language function compiled into a shared object and
-   loaded on demand, just like any other C function.
+<productname>PostgreSQL</productname> permette che le funzioni 
+definite dall'utente siano scritte in altri linguaggi oltre a SQL e C. Questi altri
+linguaggi sono chiamati genericalmente <firstterm>linguaggi procedurali</firstterm>
+(<acronym>PL</acronym>). Per una funzione
+scritta in un linguaggio procedurale, il server database non
+ha conoscienze incluse riguardo a come interpretare il sorgenete della funzione.
+Invece, il compito viene passato a un gestore speciale che conosce 
+i dettagli del linguaggio. Il gestore potrebbe fare sia tutto il lavoro di parsing, 
+analisi di sintassi, esecuzione, ecc. da solo, sia fungere da <quote>collante</quote>
+tra <productname>PostgreSQL</productname> e un'implementazione esistente
+di un linguaggio di programmazione. Il gestore stesso è una funzione 
+C compilata all'interno di un oggetto condiviso e caricato su richiesta,
+esattamente come qualsiasi altra funzione C.
   </para>
 
   <para>
-   There are currently four procedural languages available in the
-   standard <productname>PostgreSQL</productname> distribution:
-   <application>PL/pgSQL</application> (<xref linkend="plpgsql"/>),
-   <application>PL/Tcl</application> (<xref linkend="pltcl"/>),
-   <application>PL/Perl</application> (<xref linkend="plperl"/>), and
-   <application>PL/Python</application> (<xref linkend="plpython"/>).
-   There are additional procedural languages available that are not
-   included in the core distribution. <xref linkend="external-projects"/>
-   has information about finding them. In addition other languages can
-   be defined by users; the basics of developing a new procedural
-   language are covered in <xref linkend="plhandler"/>.
+Attualmente ci sono quattro linguaggi procedurali disponibili nella
+distribuzione standard di <productname>PostgreSQL</productname>:
+<application>PL/pgSQL</application> (<xref linkend="plpgsql"/>),
+<application>PL/Tcl</application> (<xref linkend="pltcl"/>),
+<application>PL/Perl</application> (<xref linkend="plperl"/>) e
+<application>PL/Python</application> (<xref linkend="plpython"/>).
+Ci sono linguaggi procedurali aggiuntivi disponibili che non sono
+incluse nella distribuzione core.  <xref linkend="external-projects"/>
+raccoglie informazioni su come trovarli. In aggiunta possono essere definiti altri linguaggi dall'utente;
+le basi per lo sviluppo di un nuovo linguaggio procedurale 
+sono trattate in <xref linkend="plhandler"/>.
   </para>
 
   <sect1 id="xplang-install">
-   <title>Installing Procedural Languages</title>
+   <title>Installare i linguaggi procedurali</title>
 
    <para>
-    A procedural language must be <quote>installed</quote> into each
-    database where it is to be used.  But procedural languages installed in
-    the database <literal>template1</literal> are automatically available in all
-    subsequently created databases, since their entries in
-    <literal>template1</literal> will be copied by <command>CREATE DATABASE</command>.
-    So the database administrator can
-    decide which languages are available in which databases and can make
-    some languages available by default if he chooses.
+Un linguaggio procedurale deve essere <quote>installato</quote> in ogni
+database dove sarà usato. Ma i linguaggi procedurali installati nel database  
+<literal>template1</literal> sono automaticamente disponibili in tutti
+i database creati successivamente, dato che le loro voci in
+<literal>template1</literal> saranno copiate da <command>CREATE DATABASE</command>.
+Così l'amministratore può decidere
+quali linguaggi sono disponibili in quali database e se vuole può rendere 
+alcuni linguaggi disponibili in modo predefinito.
    </para>
 
    <para>
-    For the languages supplied with the standard distribution, it is
-    only necessary to execute <command>CREATE LANGUAGE</command>
-    <replaceable>language_name</replaceable> to install the language into the
-    current database.  Alternatively, the program <xref
-    linkend="app-createlang"/> can be used to do this from the shell
-    command line.  For example, to install the language
-    <application>PL/Perl</application> into the database
-    <literal>template1</literal>, use:
+Per i linguaggi forniti con la distribuzione standard, è necessario solamente
+eseguire <command>CREATE LANGUAGE</command>
+<replaceable>language_name</replaceable> per installare il linguaggio nel database
+corrente. Alternitavamente, il programma <xref
+linkend="app-createlang"/> può essere usato per farlo dalla shell.
+Per esempio, per installare il linguaggio 
+<application>PL/Perl</application> nel database 
+<literal>template1</literal>, usare:
 <programlisting>
 createlang plperl template1
 </programlisting>
-    The manual procedure described below is only recommended for
-    installing custom languages that <command>CREATE LANGUAGE</command>
-    does not know about.
+La procedura manuale descritta sotto è raccomandata solo per installare 
+linguaggi personalizzati sconosciuti a  <command>CREATE LANGUAGE</command>.
    </para>
 
    <procedure>
     <title>
-     Manual Procedural Language Installation
+     Installazione manuale di un linguaggio procedurale
     </title>
 
     <para>
-     A procedural language is installed in a database in five steps,
-     which must be carried out by a database superuser.  (For languages
-     known to <command>CREATE LANGUAGE</command>, the second through fourth steps
-     can be omitted, because they will be carried out automatically
-     if needed.)
+Un linguaggio procedurale viene installato in un database in cinque passi,
+che devono essere portati avanti da un superutente del database. (Per linguaggi
+conosciuti a <command>CREATE LANGUAGE</command>, i passi dal secondo al quarto 
+possono essere omessi, dato che saranno svolti automaticamente
+se necessario).
     </para>
 
     <step performance="required" id="xplang-install-cr1">
      <para>
-      The shared object for the language handler must be compiled and
-      installed into an appropriate library directory.  This works in the same
-      way as building and installing modules with regular user-defined C
-      functions does; see <xref linkend="dfunc"/>.  Often, the language
-      handler will depend on an external library that provides the actual
-      programming language engine; if so, that must be installed as well.
+L'oggetto condiviso per il gestore del linguaggio deve essere compilato e
+installato in una directory apposita. Questo funziona nello stesso modo
+di compilare e installare moduli come fanno normali funzioni C definite dall'utente;
+si veda  <xref linkend="dfunc"/>. Spesso, il gestore del linguaggio 
+dipenderò da una libreria esterna che fornisce l'effetivo motore del linguaggio di 
+programmazione; se è così, dev'essere installato anche quello.
      </para>
     </step>
 
     <step performance="required" id="xplang-install-cr2">
      <para>
-      The handler must be declared with the command
+Il gestore dev'essere dichiarato con il comando
 <synopsis>
 CREATE FUNCTION <replaceable>handler_function_name</replaceable>()
     RETURNS language_handler
     AS '<replaceable>path-to-shared-object</replaceable>'
     LANGUAGE C;
 </synopsis>
-      The special return type of <type>language_handler</type> tells
-      the database system that this function does not return one of
-      the defined <acronym>SQL</acronym> data types and is not directly usable
-      in <acronym>SQL</acronym> statements.
+Il tipo di ritorno speciale <type>language_handler</type> dice al 
+sistema di database che questa funzione non restituisce un tipo di dato 
+definito in <acronym>SQL</acronym> e non è direttamente usabile 
+in istruzioni <acronym>SQL</acronym>.
      </para>
     </step>
 
     <step performance="optional" id="xplang-install-cr3">
      <para>
-      Optionally, the language handler can provide an <quote>inline</quote>
-      handler function that executes anonymous code blocks
-      (<xref linkend="sql-do"/> commands)
-      written in this language.  If an inline handler function
-      is provided by the language, declare it with a command like
+Opzionalmente, il gestore del linguaggio può fornire una funzioni <quote>inline</quote>
+che esegue blocchi anonimi di codice
+(comandi <xref linkend="sql-do"/>)
+scritti in questo linguaggio. Se una funzione handler inline 
+viene fornita dal linguaggio, dichiararla con un comando come
 <synopsis>
 CREATE FUNCTION <replaceable>inline_function_name</replaceable>(internal)
     RETURNS void
@@ -128,11 +126,10 @@ CREATE FUNCTION <replaceable>inline_function_name</replaceable>(internal)
 
     <step performance="optional" id="xplang-install-cr4">
      <para>
-      Optionally, the language handler can provide a <quote>validator</quote>
-      function that checks a function definition for correctness without
-      actually executing it.  The validator function is called by
-      <command>CREATE FUNCTION</command> if it exists.  If a validator function
-      is provided by the language, declare it with a command like
+Opzionalmente, il gestore del linguaggio può fornire una funzione <quote>validator</quote>
+che controlla la correttezza di una funzione senza eseguira realmente. La funzione validator
+è chiamata da <command>CREATE FUNCTION</command> se esiste. Se una funzione validator
+viene fornita dal linguaggio, dichiararla con un comando come
 <synopsis>
 CREATE FUNCTION <replaceable>validator_function_name</replaceable>(oid)
     RETURNS void
@@ -144,48 +141,47 @@ CREATE FUNCTION <replaceable>validator_function_name</replaceable>(oid)
 
     <step performance="required" id="xplang-install-cr5">
      <para>
-      The PL must be declared with the command
+Il PL dev'essere dichiarato con il comando
 <synopsis>
 CREATE <optional>TRUSTED</optional> <optional>PROCEDURAL</optional> LANGUAGE <replaceable>language-name</replaceable>
     HANDLER <replaceable>handler_function_name</replaceable>
     <optional>INLINE <replaceable>inline_function_name</replaceable></optional>
     <optional>VALIDATOR <replaceable>validator_function_name</replaceable></optional> ;
 </synopsis>
-      The optional key word <literal>TRUSTED</literal> specifies that
-      the language does not grant access to data that the user would
-      not otherwise have.  Trusted languages are designed for ordinary
-      database users (those without superuser privilege) and allows them
-      to safely create of functions and trigger
-      procedures. Since PL functions are executed inside the database
-      server, the <literal>TRUSTED</literal> flag should only be given
-      for languages that do not allow access to database server
-      internals or the file system. The languages
-      <application>PL/pgSQL</application>,
-      <application>PL/Tcl</application>, and
-      <application>PL/Perl</application>
-      are considered trusted; the languages
-      <application>PL/TclU</application>,
-      <application>PL/PerlU</application>, and
-      <application>PL/PythonU</application>
-      are designed to provide unlimited functionality and should
-      <emphasis>not</emphasis> be marked trusted.
+La parola chiave opzionale <literal>TRUSTED</literal> specifica che 
+il linguaggio non concede accesso ai dati che l'utente 
+non avrebbe altrimenti. I linguaggi trusted sono progettati per 
+utenti normali del database (quelli senza privilegio di superutente) e permettono loro
+di creare in maniera sicura funzioni e procedure trigger.
+Dato che le funzioni PL sono eseguite all'interno del server  database, 
+il flag <literal>TRUSTED</literal> dovrebbe essere fornito solo per linguaggi che 
+non permettono l'accesso all'interno del server database o al file system.
+I linguagggi
+<application>PL/pgSQL</application>,
+<application>PL/Tcl</application>, e
+<application>PL/Perl</application>
+sono considerati trusted; i linguaggi 
+<application>PL/TclU</application>,
+<application>PL/PerlU</application>, e
+<application>PL/PythonU</application>
+sono progettati per fornire funzionalità illimitate e <emphasis>non</emphasis> 
+dovrebbero essere segnati come trusted.
      </para>
     </step>
    </procedure>
 
    <para>
-    <xref linkend="xplang-install-example"/> shows how the manual
-    installation procedure would work with the language
-    <application>PL/Perl</application>.
+<xref linkend="xplang-install-example"/> mostra come la procedura di installazione manuale 
+dovrebbe funzionare con il linguaggio 
+<application>PL/Perl</application>.
    </para>
 
    <example id="xplang-install-example">
-    <title>Manual Installation of <application>PL/Perl</application></title>
+    <title>Installazione manuale di <application>PL/Perl</application></title>
 
      <para>
-      The following command tells the database server where to find the
-      shared object for the <application>PL/Perl</application> language's call
-      handler function:
+I seguenti comandi dicono al server database dove trovare l'oggetto condiviso 
+per la funzione che gestisce le chiamate del linguaggio <application>PL/Perl</application>:
 
 <programlisting>
 CREATE FUNCTION plperl_call_handler() RETURNS language_handler AS
@@ -194,8 +190,8 @@ CREATE FUNCTION plperl_call_handler() RETURNS language_handler AS
      </para>
 
      <para>
-      <application>PL/Perl</application> has an inline handler function
-      and a validator function, so we declare those too:
+<application>PL/Perl</application> ha una funzione di gestione inline 
+e una funzione validator, così si dichiarano anche queste:
 
 <programlisting>
 CREATE FUNCTION plperl_inline_handler(internal) RETURNS void AS
@@ -207,33 +203,33 @@ CREATE FUNCTION plperl_validator(oid) RETURNS void AS
      </para>
 
      <para>
-      The command:
+Il comando:
 <programlisting>
 CREATE TRUSTED PROCEDURAL LANGUAGE plperl
     HANDLER plperl_call_handler
     INLINE plperl_inline_handler
     VALIDATOR plperl_validator;
 </programlisting>
-      then defines that the previously declared functions
-      should be invoked for functions and trigger procedures where the
-      language attribute is <literal>plperl</literal>.
+quindi definire che le funzioni dichiarate precedentemente 
+dovrebbero essere invocate per le funzioni e le procedure trigger dove 
+l'attributo linguaggio è <literal>plperl</literal>.
      </para>
   </example>
 
    <para>
-    In a default <productname>PostgreSQL</productname> installation,
-    the handler for the <application>PL/pgSQL</application> language
-    is built and installed into the <quote>library</quote>
-    directory; furthermore, the <application>PL/pgSQL</application> language
-    itself is installed in all databases.
-    If <application>Tcl</application> support is configured in, the handlers for
-    <application>PL/Tcl</application> and <application>PL/TclU</application> are built and installed
-    in the library directory, but the language itself is not installed in any
-    database by default.
-    Likewise, the <application>PL/Perl</application> and <application>PL/PerlU</application>
-    handlers are built and installed if Perl support is configured, and the
-    <application>PL/PythonU</application> handler is installed if Python support is
-    configured, but these languages are not installed by default.
+In una installazione predefinita di <productname>PostgreSQL</productname>,
+il gestore per il linguaggio <application>PL/pgSQL</application>
+è compilato e installato nella directory <quote>library</quote>;
+inoltre, il linguaggio <application>PL/pgSQL</application> stesso
+vine installato in tutti i database.
+Se il supporto a <application>Tcl</application> è configurato, i gestori per 
+<application>PL/Tcl</application> and <application>PL/TclU</application> sono compilati e installati
+nella directory library, ma il linguaggio stesso non viene installato in nessun
+database in maniera predefinita.
+Ugualmente, i gestori di  <application>PL/Perl</application> e <application>PL/PerlU</application>
+sono compilati e installati se il supporto Perl è configurato, e il gestore 
+<application>PL/PythonU</application> viene installato se il supporto a Python è configurato,
+ma questi linguaggi non sono installati in modo predefinito.
    </para>
 
   </sect1>

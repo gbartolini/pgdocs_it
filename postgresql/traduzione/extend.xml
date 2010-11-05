@@ -71,197 +71,190 @@ incorporare codice scritto dall'utente in sè stesso attraverso il caricamento d
 Così, l'utente può specificare un file di codice oggeto (per es., una libreria condivisa)
 che implementa un nuovo tipo o funzione, e <productname>PostgreSQL</productname>
 la caricherà come richiesto.
-    Code written in <acronym>SQL</acronym> is even more trivial to add
-    to the server.  This ability to modify its operation <quote>on the
-    fly</quote> makes <productname>PostgreSQL</productname> uniquely
-    suited for rapid prototyping of new applications and storage
-    structures.
+Il codice scritto in <acronym>SQL</acronym> è ancora più banale da aggiungere
+al server. L'abilità di modificare le sue operazioni <quote>al volo</quote>
+rende <productname>PostgreSQL</productname> adatto 
+a creare rapidamente nuove applicazioni e e strutture di immagazzinamento.
    </para>
   </sect1>
 
   <sect1 id="extend-type-system">
-   <title>The <productname>PostgreSQL</productname> Type System</title>
+   <title>Il sistema dei tipi di <productname>PostgreSQL</productname></title>
 
    <indexterm zone="extend-type-system">
-    <primary>base type</primary>
+    <primary>tipo base</primary>
    </indexterm>
 
    <indexterm zone="extend-type-system">
-    <primary>data type</primary>
+    <primary>tipo di dato</primary>
     <secondary>base</secondary>
    </indexterm>
 
    <indexterm zone="extend-type-system">
-    <primary>composite type</primary>
+    <primary>tipo composto</primary>
    </indexterm>
 
    <indexterm zone="extend-type-system">
-    <primary>data type</primary>
-    <secondary>composite</secondary>
+    <primary>tipo di dato</primary>
+    <secondary>composito</secondary>
    </indexterm>
 
    <para>
-    <productname>PostgreSQL</productname> data types are divided into base
-    types, composite types, domains, and pseudo-types.
+I tipi di dato di <productname>PostgreSQL</productname> sono divisi in tipi di base,
+tipi composti, domini e pseudo-tipi.
    </para>
 
    <sect2>
-    <title>Base Types</title>
+    <title>Tipi di base</title>
 
     <para>
-     Base types are those, like <type>int4</type>, that are
-     implemented below the level of the <acronym>SQL</acronym> language
-     (typically in a low-level language such as C).  They generally
-     correspond to what are often known as abstract data types.
-     <productname>PostgreSQL</productname> can only operate on such
-     types through functions provided by the user and only understands
-     the behavior of such types to the extent that the user describes
-     them.  Base types are further subdivided into scalar and array
-     types.  For each scalar type, a corresponding array type is
-     automatically created that can hold variable-size arrays of that
-     scalar type.
+I tipi di base sono quelli che, come <type>int4</type>, sono 
+implementati sotto il livello del linguaggio <acronym>SQL</acronym>
+(tipicamente in un linguaggio a basso livello tipo il C). Generalmente 
+corrispondono a quelli che spesso sono conosciuti come tipi di dato astratti.
+<productname>PostgreSQL</productname> può lavorare solo con questi tipi
+attraverso le funzioni fornite dall'utente e capire solo il
+comportamento di questi tipi nella misura in cui l'utente li descrive.
+I tipi di base sono suddivisi in tipi scalari e array.
+Per ogni tipo scalare, viene creato automaticamente un tipo array corrispondente 
+che può gestire array di dimensione variabile di quel tipo scalare.
     </para>
    </sect2>
 
    <sect2>
-    <title>Composite Types</title>
+    <title>Tipi composti</title>
 
     <para>
-     Composite types, or row types, are created whenever the user
-     creates a table. It is also possible to use <xref
-     linkend="sql-createtype"/> to
-     define a <quote>stand-alone</quote> composite type with no associated
-     table.  A composite type is simply a list of types with
-     associated field names.  A value of a composite type is a row or
-     record of field values.  The user can access the component fields
-     from <acronym>SQL</acronym> queries. Refer to <xref linkend="rowtypes"/>
-     for more information on composite types.
+I tipi composti, o tipi riga, vengono creati ogni volta che l'utente
+crea una tabella. È anche possibile usare <xref
+linkend="sql-createtype"/> per
+definire un tipo composto <quote>a sè stante</quote> senza tabella associata.
+Un tipo composto è semplicemente un elenco di tipi con 
+nomi di campo associati. Un valore di un tipo composto è una riga o 
+record di valori di campo. L'utente può accedere ai campi "componente" 
+dalle query <acronym>SQL</acronym>. Si veda <xref linkend="rowtypes"/>
+per maggiori informazioni dui tipi composti.
     </para>
    </sect2>
 
    <sect2>
-    <title>Domains</title>
+    <title>Domini</title>
 
     <para>
-     A domain is based on a particular base type and for many purposes
-     is interchangeable with its base type.  However, a domain can
-     have constraints that restrict its valid values to a subset of
-     what the underlying base type would allow.
+Un dominio è basato su un particolare tipo di base e per molti scopi
+è intercambiabile col suo tipo di base. Comunque, un dominio può
+avere vincoli che restringono i suoi valori validi a un sottoinsieme di 
+cosa permette il sottostante tipo di base.
     </para>
 
     <para>
-     Domains can be created using the <acronym>SQL</acronym> command
-     <xref linkend="sql-createdomain"/>.
+I domini possono essere creati usando il comando <acronym>SQL</acronym>
+<xref linkend="sql-createdomain"/>.
      Their creation and use is not discussed in this chapter.
     </para>
    </sect2>
 
    <sect2>
-    <title>Pseudo-Types</title>
+    <title>Pseudo-tipi</title>
 
     <para>
-     There are a few <quote>pseudo-types</quote> for special purposes.
-     Pseudo-types cannot appear as columns of tables or attributes of
-     composite types, but they can be used to declare the argument and
-     result types of functions.  This provides a mechanism within the
-     type system to identify special classes of functions.  <xref
-     linkend="datatype-pseudotypes-table"/> lists the existing
-     pseudo-types.
+Ci sono alcuni <quote>pseudo-tipi</quote> per scopi speciali.
+Gli pseudo-tipi non possono apparire come colonne di tabelle o attributi 
+di tipi composti, ma possono essere usati per dichiarare i tipi degli argomenti 
+e del valore di ritorno delle funzioni. Questo fornisce un meccanismo all'interno
+del sistema di tipo per identificare classi di funzioni speciali. <xref
+linkend="datatype-pseudotypes-table"/> elenca gli pseudo-tipi esistenti.
     </para>
    </sect2>
 
    <sect2 id="extend-types-polymorphic">
-    <title>Polymorphic Types</title>
+    <title>Tipi polimorfi</title>
 
    <indexterm zone="extend-types-polymorphic">
-    <primary>polymorphic type</primary>
+    <primary>tipo polimorfico</primary>
    </indexterm>
 
    <indexterm zone="extend-types-polymorphic">
-    <primary>polymorphic function</primary>
+    <primary>funzione polimorfica</primary>
    </indexterm>
 
    <indexterm zone="extend-types-polymorphic">
-    <primary>type</primary>
-    <secondary>polymorphic</secondary>
+    <primary>tipo</primary>
+    <secondary>polimorfico</secondary>
    </indexterm>
 
    <indexterm zone="extend-types-polymorphic">
-    <primary>function</primary>
-    <secondary>polymorphic</secondary>
+    <primary>funzione</primary>
+    <secondary>poliformica</secondary>
    </indexterm>
 
     <para>
-     Four pseudo-types of special interest are <type>anyelement</type>,
-     <type>anyarray</type>, <type>anynonarray</type>, and <type>anyenum</type>,
-     which are collectively called <firstterm>polymorphic types</firstterm>.
-     Any function declared using these types is said to be
-     a <firstterm>polymorphic function</firstterm>.  A polymorphic function can
-     operate on many different data types, with the specific data type(s)
-     being determined by the data types actually passed to it in a particular
-     call.
+Quattro pseudo-tipi di speciale interesse sono <type>anyelement</type>,
+<type>anyarray</type>, <type>anynonarray</type> e <type>anyenum</type>,
+che sono chiamati collettivamente <firstterm>tipi polimorfici</firstterm>. 
+Qualsiasi funzione dichiarata usando questi tipi è definita 
+una <firstterm>funzione polimorfica</firstterm>. Una funzione polimorfica può
+operare su diversi tipi di dato, con lo specifico tipo/i di dato  
+determinato dai tipi di dato effettivamente passati ad essa in una particolare chiamata.
     </para>
 
     <para>
-     Polymorphic arguments and results are tied to each other and are resolved
-     to a specific data type when a query calling a polymorphic function is
-     parsed.  Each position (either argument or return value) declared as
-     <type>anyelement</type> is allowed to have any specific actual
-     data type, but in any given call they must all be the
-     <emphasis>same</emphasis> actual type. Each 
-     position declared as <type>anyarray</type> can have any array data type,
-     but similarly they must all be the same type. If there are
-     positions declared <type>anyarray</type> and others declared
-     <type>anyelement</type>, the actual array type in the
-     <type>anyarray</type> positions must be an array whose elements are
-     the same type appearing in the <type>anyelement</type> positions.
-     <type>anynonarray</type> is treated exactly the same as <type>anyelement</type>,
-     but adds the additional constraint that the actual type must not be
-     an array type.
-     <type>anyenum</type> is treated exactly the same as <type>anyelement</type>,
-     but adds the additional constraint that the actual type must
-     be an enum type.
+Gli argomenti polimorfici e i risultati sono legati l'uni gli altri e vengono risolti 
+da uno specifico tipo di dato quando la chiamata di una funzione polimorfica viene 
+sottoposta al parsing. Ogni posizione (o il valore dell'argomento o il valore di ritorno) dichiarata come
+<type>anyelement</type> può avere qualsiasi tipo di dato, ma 
+in ogni data chiamata devono essere tutti dello <emphasis>stesso</emphasis> tipo effettivo.
+Ogni posizione dichiarata come <type>anyarray</type> può avere qualsiasi tipo di dato array,
+ma similmente devono essere tutti dello stesso tipo. Se ci sono 
+posizioni dichiarate <type>anyarray</type> e altre dichiarate 
+<type>anyelement</type>, il tipo array effettivo nelle posizioni 
+<type>anyarray</type> deve essere un array i cui elementi sono 
+dello stesso tipo di quelli che appaiono nelle posizioni  <type>anyelement</type>.
+<type>anynonarray</type> viene trattato esattamente alla stessa maniera di  <type>anyelement</type>,
+ma aggiunge il vincolo che il tipo effettivo non deve essere un tipo array.
+<type>anyenum</type> viene trattato esattamente allo stesso modo di <type>anyelement</type>,
+ma aggiunge il vincolo che il tipo effettivo dev'essere un tipo enum.
     </para>
 
     <para>
-     Thus, when more than one argument position is declared with a polymorphic
-     type, the net effect is that only certain combinations of actual argument
-     types are allowed.  For example, a function declared as
-     <literal>equal(anyelement, anyelement)</literal> will take any two input values,
-     so long as they are of the same data type.
+Perciò, quando più di una posizione argomento viene dichiarata con un tipo polimorfico,
+l'effetto è che solo certe combinazioni di effettivi tipi sono permesse.
+Per esempio, una funzione dichiarata come <literal>equal(anyelement, anyelement)</literal> 
+prenderà qualsiasi due valori di input, 
+se sono dello stesso tipo di dato.
     </para>
 
     <para>
-     When the return value of a function is declared as a polymorphic type,
-     there must be at least one argument position that is also polymorphic,
-     and the actual data type supplied as the argument determines the actual
-     result type for that call.  For example, if there were not already
-     an array subscripting mechanism, one could define a function that
-     implements subscripting as <literal>subscript(anyarray, integer)
-     returns anyelement</literal>.  This declaration constrains the actual first
-     argument to be an array type, and allows the parser to infer the correct
-     result type from the actual first argument's type.  Another example
-     is that a function declared as <literal>f(anyarray) returns anyenum</literal>
-     will only accept arrays of enum types.
+Quando il valore di ritorno di una funzione è dichiarato come un tipo polimorfico,
+ci deve anche essere almeno una posizione di argomento che è poliformica,
+e il tipo di dato effettivo fornito come argomento determina  l'effettivo tipo del risultato  
+per quella chiamata. Per esempio, se non c'era già
+un meccanismo di sottoscript dell'array, si potrebbe definire una funzione che
+implementa il sottoscripting come <literal>subscript(anyarray, integer) 
+returns anyelement</literal>. Questa dichiarazione vincola l'effettivo primo
+argomento ad essere un tipo array, e permette che il parser deduca 
+il tipo del risultato dal tipo effettivo del primo argomento. Un altro esempio
+è che una funzione dichiarata come <literal>f(anyarray) returns anyenum</literal> 
+accetterà solo array di tipi enum.
     </para>
 
     <para>
-     Note that <type>anynonarray</type> and <type>anyenum</type> do not represent
-     separate type variables; they are the same type as
-     <type>anyelement</type>, just with an additional constraint.  For
-     example, declaring a function as <literal>f(anyelement, anyenum)</literal>
-     is equivalent to declaring it as <literal>f(anyenum, anyenum)</literal>:
-     both actual arguments have to be the same enum type.
+Notare che <type>anynonarray</type>  e <type>anyenum</type> non rappresentano
+variabili di tipo separate; sono lo stesso tipo di 
+<type>anyelement</type>, solo con un vincolo aggiuntivo. Per esempio,
+dichiarando una funzione come <literal>f(anyelement, anyenum)</literal>
+è equivalente a dichiararla come <literal>f(anyenum, anyenum)</literal>:
+entrambi gli effettivi argomenti devono essere dello stesso tipo enum.
     </para>
 
     <para>
-     A variadic function (one taking a variable number of arguments, as in
-     <xref linkend="xfunc-sql-variadic-functions"/>) can be
-     polymorphic: this is accomplished by declaring its last parameter as
-     <literal>VARIADIC</literal> <type>anyarray</type>.  For purposes of argument
-     matching and determining the actual result type, such a function behaves
-     the same as if you had written the appropriate number of
-     <type>anynonarray</type> parameters.
+Una funzione variadica (che prende un numero variabile di argomenti, come in
+<xref linkend="xfunc-sql-variadic-functions"/>) puà essere
+polimorfica: questo è fatto dichiarando il suo ultimo parametro come 
+<literal>VARIADIC</literal> <type>anyarray</type>.  Per scopi di corrispondenza di argomenti
+e per determinare l'effettivo tipo del risultati, tale funzione si comporta 
+allo stesso modo se è stata scritta con l'appropriato numero di 
+parametri <type>anynonarray</type>.
     </para>
    </sect2>
   </sect1>
@@ -273,65 +266,64 @@ la caricherà come richiesto.
   &xindex;
 
   <sect1 id="extend-Cpp">
-   <title>Using C++ for Extensibility</title>
+   <title>Usare  C++ per l'estendibilità</title>
 
    <indexterm zone="extend-Cpp">
     <primary>C++</primary>
    </indexterm>
 
    <para>
-    It is possible to use a compiler in C++ mode to build
-    <productname>PostgreSQL</productname> extensions by following these
-    guidelines:
+È possibile usare un compilatore in modalità  C++ per compilare 
+estensioni <productname>PostgreSQL</productname> seguendo queste 
+linee guida:
 
     <itemizedlist>
      <listitem>
       <para>
-        All functions accessed by the backend must present a C interface
-        to the backend;  these C functions can then call C++ functions.
-        For example, <literal>extern C</literal> linkage is required for
-        backend-accessed functions.  This is also necessary for any
-        functions that are passed as pointers between the backend and
-        C++ code.
+Tutte le funzioni a cui accede il backend devono  fornire un'interfaccia C
+al backend; queste funzioni C possono quindi chiamare funzioni C++.
+Per esempio, il collegamento <literal>extern C</literal> è richiesto per 
+funzioni a cui accede il backend. Questo è necessario per qualsiasi   
+funzione passata come puntatore tra il backend e il codice C++.
       </para>
      </listitem>
      <listitem>
       <para>
-       Free memory using the appropriate deallocation method.  For example,
-       most backend memory is allocated using <function>palloc()</function>, so use
-       <function>pfree()</function> to free it, i.e. using C++
-       <function>delete()</function> in such cases will fail.
+Liberare la memoria usando l'appropriato metodo di deallocazione. Per esempio, 
+la maggior parte della memoria del back è allocata usando <function>palloc()</function>, quindi 
+usare <function>pfree()</function> per liberarla, per es. usando la 
+<function>delete()</function> del C++ in quei casi risulterà in un fallimento.
       </para>
      </listitem>
      <listitem>
       <para>
-       Prevent exceptions from propagating into the C code (use a
-       catch-all block at the top level of all <literal>extern C</literal>
-       functions).  This is necessary even if the C++ code does not
-       throw any exceptions because events like out-of-memory still
-       throw exceptions.  Any exceptions must be caught and appropriate
-       errors passed back to the C interface.  If possible, compile C++
-       with <option>-fno-exceptions</option> to eliminate exceptions entirely;
-       in such cases, you must check for failures in your C++ code, e.g.
-       check for NULL returned by <function>new()</function>.
+Prevenire che le eccezioni si propaghino all'interno del codice C (usare un
+blocco catch-all al livello superiore di tutte le funzioni <literal>extern C</literal>).
+Questo è necessario anche se il codice C++ non lancia nessuna eccezione perchè
+eventi come out-of-memory continuano a lanciare eccezioni. Qualsiasi eccezione
+deve essere intercettata e gli errori appropriati devono essere ritornati all'interfaccia C.
+Se possibile, compilare il C++ con <option>-fno-exceptions</option> per eliminare
+interamente le eccezioni; in questi casi, si devono controllare i fallimenti  
+nel proprio codice C++, per es. controllare se le <function>new()</function>
+restituiscano NULL.
       </para>
      </listitem>
      <listitem>
       <para>
-       If calling backend functions from C++ code, be sure that the
-       C++ call stack contains only plain old data structure
-       (<acronym>POD</acronym>).  This is necessary because backend errors
-       generate a distant <function>longjump()</function> that does not properly
-       unroll a C++ call stack with non-POD objects.
+Se si chiamano funzioni di backend dal codice C++, assicurarsi che lo 
+stack delle chiamate C++ contenga solo semplici strutture dati
+(<acronym>POD</acronym>). Questo è necessario dato che errori di backend
+generano un <function>longjump()</function> lontano che non srotola correttamente
+uno stack di chiamata C++ con oggetti non-POD.
       </para>
      </listitem>
     </itemizedlist>
    </para>
 
    <para>
-    In summary, it is best to place C++ code behind a wall of
-    <literal>extern C</literal> functions that interface to the backend,
-    and avoid exception, memory, and call stack leakage.
+Riassumendo, è meglio mettere il codice C++ dietro un muro di 
+funzioni <literal>extern C</literal> che si interfaccia col backend,
+e evitare la perdita di eccezioni, memoria e stack di chiamate.
    </para>
   </sect1>
 

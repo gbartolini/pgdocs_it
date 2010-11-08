@@ -2,234 +2,237 @@
 <!-- $PostgreSQL$ -->
 
 <chapter id="plpgsql">
-  <title><application>PL/pgSQL</application> - <acronym>SQL</acronym> Procedural Language</title>
+  <title><application>PL/pgSQL</application> - Linguaggio procedurale <acronym>SQL</acronym></title>
 
  <indexterm zone="plpgsql">
   <primary>PL/pgSQL</primary>
  </indexterm>
 
  <sect1 id="plpgsql-overview">
-  <title>Overview</title>
+  <title>Panoramica</title>
 
  <para>
-  <application>PL/pgSQL</application> is a loadable procedural
-  language for the <productname>PostgreSQL</productname> database
-  system.  The design goals of <application>PL/pgSQL</application> were to create
-  a loadable procedural language that
+<application>PL/pgSQL</application> è un linguaggio procedurale 
+caricabile nel sistema di database  <productname>PostgreSQL</productname>.
+Gli obiettivi del design di <application>PL/pgSQL</application> erano di creare 
+un linguaggio caricabile che
 
     <itemizedlist>
      <listitem>
       <para>
-       can be used to create functions and trigger procedures,
+potesse essere usato per creare funzioni e procedure trigger,
       </para>
      </listitem>
      <listitem>
       <para>
-       adds control structures to the <acronym>SQL</acronym> language,
+aggiungesse strutture di controllo al lingiaggio <acronym>SQL</acronym>,
       </para>
      </listitem>
      <listitem>
       <para>
-       can perform complex computations,
+potesse svolgere calcoli complessi,
+
       </para>
      </listitem>
      <listitem>
       <para>
-       inherits all user-defined types, functions, and operators,
+ereditasse tutti i tipi, le funzioni e gli operatori definiti dall'utente,
       </para>
      </listitem>
      <listitem>
       <para>
-       can be defined to be trusted by the server,
+potesse essere definito per essere trusted dal server,
       </para>
      </listitem>
      <listitem>
       <para>
-       is easy to use.
+fosse facile da usare.
       </para>
      </listitem>
     </itemizedlist>
    </para>
 
    <para>
-    Functions created with <application>PL/pgSQL</application> can be
-    used anywhere that built-in functions could be used.
-    For example, it is possible to
-    create complex conditional computation functions and later use
-    them to define operators or use them in index expressions.
+Funzioni create con  <application>PL/pgSQL</application> possono essere 
+usate ovunque possano essere usate funzioni incorporate.
+Per esempio, è possibile creare 
+funzioni di calcolo condizionale complesse e successivamente 
+usarle per definire operatori o usarle in espressioni di indice.
    </para>
 
    <para>
-    In <productname>PostgreSQL</productname> 9.0 and later,
-    <application>PL/pgSQL</application> is installed by default.
-    However it is still a loadable module, so especially security-conscious
-    administrators could choose to remove it.
+In <productname>PostgreSQL</productname> 9.0 e successivi,
+<application>PL/pgSQL</application> è installato in maniera predefinita.
+Comunque è ancora un modulo caricabile, per questo amministratori particolarmente attenti alla sicurezza
+potrebbero decidere di rimuoverlo.
    </para>
 
   <sect2 id="plpgsql-advantages">
-   <title>Advantages of Using <application>PL/pgSQL</application></title>
+   <title>Vantaggi dell'utilizzo di <application>PL/pgSQL</application></title>
 
     <para>
-     <acronym>SQL</acronym> is the language <productname>PostgreSQL</productname>
-     and most other relational databases use as query language. It's
-     portable and easy to learn. But every <acronym>SQL</acronym>
-     statement must be executed individually by the database server.
+<acronym>SQL</acronym> è il linguaggio che <productname>PostgreSQL</productname>
+e la maggior parte degli altri database relazioni usano come linguaggio di interrogazione. È
+portabile e facile da imparare. Ma ogni istruzione <acronym>SQL</acronym>
+dev'essere eseguita individualmente dal server database.
     </para>
 
     <para>
-     That means that your client application must send each query to
-     the database server, wait for it to be processed, receive and
-     process the results, do some computation, then send further
-     queries to the server.  All this incurs interprocess
-     communication and will also incur network overhead if your client
-     is on a different machine than the database server.
+Questo significa che l'applicazione client deve mandare ogni query al server database,
+aspettare che sia elaborata, ricevere ed elaborare il risultato,
+eseguire alcuni calcoli, quindi mandare ulteriori 
+query al server. Tutto questo genera comunicazione tra processi 
+e genererà anche overhead di rete se il client
+è su una macchina differente rispetto al server database.
     </para>
 
     <para>
-     With <application>PL/pgSQL</application> you can group a block of
-     computation and a series of queries <emphasis>inside</emphasis>
-     the database server, thus having the power of a procedural
-     language and the ease of use of SQL, but with considerable
-     savings of client/server communication overhead.
+Con <application>PL/pgSQL</application> si può raggruppare un blocco di
+calcolo e una serie di query <emphasis>all'interno</emphasis>
+del server database, avendo quindi la potenza di un linguaggio procedurale
+e la facilità d'uso dell'SQL, ma con considerevole risparmio
+di overhead di comunicazione client/server.
     </para>
     <itemizedlist>
 
-     <listitem><para> Extra round trips between
-     client and server are eliminated </para></listitem>
+     <listitem><para>
+Sono eliminati i giri aggiuntivi tra il client e il server
+     </para></listitem>
 
-     <listitem><para> Intermediate results that the client does not
-     need do not have to be marshaled or transferred between server
-     and client </para></listitem>
+     <listitem><para> 
+I risultati intermedi non necessari al client non devono essere 
+smistati o trasferiti tra il server e il client
+     </para></listitem>
 
-     <listitem><para> Multiple rounds of query
-     parsing can be avoided </para></listitem>
+     <listitem><para> 
+Possono essere evitati molteplici stadi di parsing delle query
+     </para></listitem>
 
     </itemizedlist>
-    <para> This can result in a considerable performance increase as
-    compared to an application that does not use stored functions.
+<para> Questo risulta in un incremento di prestazioni considerevole 
+se confrontato con un'applicazione che non usa funzioni immagazzinate.
     </para>
 
     <para>
-     Also, with <application>PL/pgSQL</application> you can use all
-     the data types, operators and functions of SQL.
+Inoltre, con <application>PL/pgSQL</application> si possono usare
+tutti i tipi di dato, gli operatori e le funzioni di SQL.
     </para>
   </sect2>
 
   <sect2 id="plpgsql-args-results">
-   <title>Supported Argument and Result Data Types</title>
+   <title>Argomenti supportati e tipi di dato risultanti</title>
 
     <para>
-     Functions written in <application>PL/pgSQL</application> can accept
-     as arguments any scalar or array data type supported by the server,
-     and they can return a result of any of these types.  They can also
-     accept or return any composite type (row type) specified by name.
-     It is also possible to declare a <application>PL/pgSQL</application>
-     function as returning <type>record</type>, which means that the result
-     is a row type whose columns are determined by specification in the
-     calling query, as discussed in <xref linkend="queries-tablefunctions"/>.
+Le funzioni scritte in <application>PL/pgSQL</application> possono accettare 
+come argomenti qualsiasi tipo scalare o array supportato dal server,
+e possono restituire un risultato di qualsiasi di quei tipi. Possono anche 
+accettare o restituire qualsiasi tipo composto (tipo riga) specificato dal nome.
+È inoltre possibile dichiarare una funzione <application>PL/pgSQL</application>
+che restituisce un <type>record</type>, che significa che il risultato
+è un tipo riga le cui colonne sono determinate dalle specifiche nella 
+query chiamante, come discusso in <xref linkend="queries-tablefunctions"/>.
     </para>
 
     <para>
-     <application>PL/pgSQL</application> functions can be declared to accept a variable
-     number of arguments by using the <literal>VARIADIC</literal> marker.  This
-     works exactly the same way as for SQL functions, as discussed in
-     <xref linkend="xfunc-sql-variadic-functions"/>.
+Le funzioni <application>PL/pgSQL</application> possono essere dichiarate per accettare un numero variabile di argomenti
+usando <literal>VARIADIC</literal>. Questo funziona esattamente
+allo stesso modo delle funzioni SQL, come discusso in 
+<xref linkend="xfunc-sql-variadic-functions"/>.
     </para>
 
     <para>
-     <application>PL/pgSQL</application> functions can also be declared to accept
-     and return the polymorphic types
-     <type>anyelement</type>, <type>anyarray</type>, <type>anynonarray</type>,
-     and <type>anyenum</type>.  The actual
-     data types handled by a polymorphic function can vary from call to
-     call, as discussed in <xref linkend="extend-types-polymorphic"/>.
-     An example is shown in <xref linkend="plpgsql-declaration-parameters"/>.
+Le funzioni <application>PL/pgSQL</application> possono inoltre essere dichiarate per accettare 
+e restituire tipo polimorfi
+<type>anyelement</type>, <type>anyarray</type>, <type>anynonarray</type>
+e <type>anyenum</type>.  Gli effettivi tipi di dato gestiti da una funzione polimorfa
+possono variare da chiamata a chiamata, come discusso in  <xref linkend="extend-types-polymorphic"/>.
+Un esempio è mostrato in <xref linkend="plpgsql-declaration-parameters"/>.
     </para>
 
     <para>
-     <application>PL/pgSQL</application> functions can also be declared to return
-     a <quote>set</quote> (or table) of any data type that can be returned as
-     a single instance.  Such a function generates its output by executing
-     <command>RETURN NEXT</command> for each desired element of the result
-     set, or by using <command>RETURN QUERY</command> to output the result of
-     evaluating a query.
+Funzioni  <application>PL/pgSQL</application> possono anche essere dichiarate per restituire
+un <quote>insieme</quote> (o tabella) di qualsiasi tipo di dato che può essere restituito
+come singola istanza. Tale funzione genera il suo output eseguendo 
+<command>RETURN NEXT</command> per ogni elemento desiderato dell'insieme risultato,
+o usando <command>RETURN QUERY</command> per mostrare in output il risultato della valutazione
+della query.
     </para>
 
     <para>
-     Finally, a <application>PL/pgSQL</application> function can be declared to return
-     <type>void</type> if it has no useful return value.
+Infine, una funzione <application>PL/pgSQL</application> può essere dichiarata per restituire
+<type>void</type> se non ha valori di ritorno utili.
     </para>
 
     <para>
-     <application>PL/pgSQL</application> functions can also be declared with output
-     parameters in place of an explicit specification of the return type.
-     This does not add any fundamental capability to the language, but
-     it is often convenient, especially for returning multiple values.
-     The <literal>RETURNS TABLE</literal> notation can also be used in place
-     of <literal>RETURNS SETOF</literal>.
+Funzioni <application>PL/pgSQL</application> possono anche essere dichiarate con
+parametri di output al posto di una dichiarazione esplicita del tipo di ritorno.
+Questo non aggiunge nessuna capacità fondamentale al linguaggio, ma 
+spesso è conveniente, specialmente per restituire molteplici valori.
+La notazione <literal>RETURNS TABLE</literal> può essere usata al posto di 
+<literal>RETURNS SETOF</literal>.
     </para>
 
     <para>
-     Specific examples appear in
-     <xref linkend="plpgsql-declaration-parameters"/> and
-     <xref linkend="plpgsql-statements-returning"/>.
+Esempi specifici appaiono in 
+<xref linkend="plpgsql-declaration-parameters"/> e
+<xref linkend="plpgsql-statements-returning"/>.
     </para>
   </sect2>
  </sect1>
 
  <sect1 id="plpgsql-structure">
-  <title>Structure of <application>PL/pgSQL</application></title>
+  <title>Struttura di <application>PL/pgSQL</application></title>
 
   <para>
-   <application>PL/pgSQL</application> is a block-structured language.
-   The complete text of a function definition must be a
-   <firstterm>block</firstterm>. A block is defined as:
+<application>PL/pgSQL</application> è un linguaggio strutturato a blocchi.
+Il testo completo della definizione di una funzione deve essere un
+<firstterm>blocco</firstterm>. Un blocco è definito come:
 
 <synopsis>
 <optional> &lt;&lt;<replaceable>label</replaceable>&gt;&gt; </optional>
 <optional> DECLARE
     <replaceable>declarations</replaceable> </optional>
-BEgin
+BEGIN
     <replaceable>statements</replaceable>
 END <optional> <replaceable>label</replaceable> </optional>;
 </synopsis>
     </para>
 
     <para>
-     Each declaration and each statement within a block is terminated
-     by a semicolon.  A block that appears within another block must
-     have a semicolon after <literal>END</literal>, as shown above;
-     however the final <literal>END</literal> that
-     concludes a function body does not require a semicolon.
+Ogni dichiarazione e ogni istruzione all'interno di un blocco è terminata da 
+un punto e virgola. Un blocco che appare all'interno di un altro blocco deve
+avere un punto e virgola dopo <literal>END</literal>, come mostrato sopra;
+comunque l'<literal>END</literal> finale che conclude il corpo di una
+funzione non richiede un punto e virgola.
     </para>
 
     <tip>
      <para>
-      A common mistake is to write a semicolon immediately after
-      <literal>BEgin</literal>.  This is incorrect and will result in a syntax error.
+Un errore comunque è di scrivere un punto e virgola immediatamente dopo 
+<literal>BEGIN</literal>. Questo non è corretto e causerà un errore di sintassi.
      </para>
     </tip>
 
     <para>
-     A <replaceable>label</replaceable> is only needed if you want to
-     identify the block for use
-     in an <literal>EXIT</literal> statement, or to qualify the names of the
-     variables declared in the block.  If a label is given after
-     <literal>END</literal>, it must match the label at the block's beginning.
+Una  <replaceable>label</replaceable> è necessaria solo se si vuole 
+identificare il blocco per usarlo 
+in un'istruzione <literal>EXIT</literal>, o per qualificare i nomi delle variabili
+dichiarate nel blocco. Se un'etichetta viene fornita dopo 
+<literal>END</literal>, deve corrispondere all'ettichetta all'inizio del blocco.
     </para>
 
     <para>
-     All key words are case-insensitive.
-     Identifiers are implicitly converted to lower case
-     unless double-quoted, just as they are in ordinary SQL commands.
+Tutte le parole chiave sono insensibili al case.
+Gli identificatori sono implicitamente convertiti in minuscolo
+a meno che non siano tra doppi apici, esattamente come nei comandi SQL comuni.
     </para>
 
     <para>
-     Comments work the same way in <application>PL/pgSQL</application> code as in
-     ordinary SQL.  A double dash (<literal>--</literal>) starts a comment
-     that extends to the end of the line. A <literal>/*</literal> starts a
-     block comment that extends to the matching occurrence of
-     <literal>*/</literal>.  Block comments nest.
+I commenti in <application>PL/pgSQL</application>  funzionano allo stesso modo del comune
+SQL. Un trattino doppio (<literal>--</literal>) comincia un commento 
+che si estende fino alla fine della linea. Un <literal>/*</literal>  comincia un blocco di commento 
+che si estende fino all'occorrenza corispondente di
+<literal>*/</literal>. I blocchi commenti possono essere nidificati.
     </para>
 
     <para>
@@ -268,54 +271,54 @@ $$ LANGUAGE plpgsql;
 
     <note>
      <para>
-      There is actually a hidden <quote>outer block</quote> surrounding the body
-      of any <application>PL/pgSQL</application> function.  This block provides the
-      declarations of the function's parameters (if any), as well as some
-      special variables such as <literal>FOUND</literal> (see
-      <xref linkend="plpgsql-statements-diagnostics"/>).  The outer block is
-      labeled with the function's name, meaning that parameters and special
-      variables can be qualified with the function's name.
+Attualmente c'è un <quote>blocco esterno</quote> nascosto che racchiude il corpo 
+di qualsiasi funzione <application>PL/pgSQL</application>. Questo blocco fornisce le dichiarazioni
+dei parametri di funzione (se presenti), così come alcune variabili speciali 
+tipo <literal>FOUND</literal> (si veda 
+<xref linkend="plpgsql-statements-diagnostics"/>). Il blocco esterno è 
+etichettato con il nome della funzione, quindi i parametri e le variabili speciali 
+possono essere qualificate con il nome della funzione.
      </para>
     </note>
 
     <para>
-     It is important not to confuse the use of
-     <command>BEgin</command>/<command>END</command> for grouping statements in
-     <application>PL/pgSQL</application> with the similarly-named SQL commands
-     for transaction
-     control.  <application>PL/pgSQL</application>'s <command>BEgin</command>/<command>END</command>
-     are only for grouping; they do not start or end a transaction.
-     Functions and trigger procedures are always executed within a transaction
-     established by an outer query &mdash; they cannot start or commit that
-     transaction, since there would be no context for them to execute in.
-     However, a block containing an <literal>EXCEPTION</literal> clause effectively
-     forms a subtransaction that can be rolled back without affecting the
-     outer transaction.  For more about that see <xref
-     linkend="plpgsql-error-trapping"/>.
+È importante non confondere l'uso di 
+<command>BEGIN</command>/<command>END</command> per raggruppare istruzioni in 
+<application>PL/pgSQL</application> con i comandi SQL chiamati similmente
+per il controllo 
+delle transazioni. <command>BEgin</command>/<command>END</command> di <application>PL/pgSQL</application>
+sono solo per raggruppamento; essi non cominciano o finiscono una transazione.
+Funzioni e procedure trigger sono eseguite sempre all'interno di una transazione
+definita da una query esterna - non possono cominciare o fare il commit di quella
+transzione, dato che non ci sarebbe contesto per loro in cui essere eseguite.
+Comunque, un blocco che contiene una clausola <literal>EXCEPTION</literal> effettivamente
+forma una sottotransazione di cui si può fare il rollback senza coinvolgere
+la transazione esterna. Per maggiori informazioni su questo si veda <xref
+linkend="plpgsql-error-trapping"/>.
     </para>
   </sect1>
 
   <sect1 id="plpgsql-declarations">
-    <title>Declarations</title>
+    <title>Dichiarazioni</title>
 
     <para>
-     All variables used in a block must be declared in the
-     declarations section of the block.
-     (The only exceptions are that the loop variable of a <literal>FOR</literal> loop
-     iterating over a range of integer values is automatically declared as an
-     integer variable, and likewise the loop variable of a <literal>FOR</literal> loop
-     iterating over a cursor's result is automatically declared as a
-     record variable.)
+Tutte le variabili usate in un blocco devono essere dichiarate nella sezione 
+delle dichiarazioni del blocco.
+(Le uniche eccezioni sono che la variabile loop di un ciclo <literal>FOR</literal>
+che itera su un intervallo di valori interi è automaticamente dichiarata come una variabile intera,
+come anche la variabile loop di un ciclo <literal>FOR</literal>
+che itera sul risultato di un cursore viene automaticamente dichiarata come una 
+variabile record).
     </para>
 
     <para>
-     <application>PL/pgSQL</application> variables can have any SQL data type, such as
-     <type>integer</type>, <type>varchar</type>, and
-     <type>char</type>.
+Le variabili <application>PL/pgSQL</application> possono avere qualsiasi tipo di dato SQL, tipo 
+<type>integer</type>, <type>varchar</type> e 
+<type>char</type>.
     </para>
 
     <para>
-     Here are some examples of variable declarations:
+Ecco alcuni esempi di dichiarazione di variabili:
 <programlisting>
 user_id integer;
 quantity numeric(5);
@@ -327,30 +330,28 @@ arow RECORD;
     </para>
 
     <para>
-     The general syntax of a variable declaration is:
+La sintassi generale di una dichiarazione di variabile è:
 <synopsis>
 <replaceable>name</replaceable> <optional> CONSTANT </optional> <replaceable>type</replaceable> <optional> NOT NULL </optional> <optional> { DEFAULT | := } <replaceable>expression</replaceable> </optional>;
 </synopsis>
-      The <literal>DEFAULT</literal> clause, if given, specifies the initial value assigned
-      to the variable when the block is entered.  If the <literal>DEFAULT</literal> clause
-      is not given then the variable is initialized to the
-      <acronym>SQL</acronym> null value.
-      The <literal>CONSTANT</literal> option prevents the variable from being
-      assigned to, so that its value will remain constant for the duration of
-      the block.
-      If <literal>NOT NULL</literal>
-      is specified, an assignment of a null value results in a run-time
-      error. All variables declared as <literal>NOT NULL</literal>
-      must have a nonnull default value specified.
+La clausola <literal>DEFAULT</literal>, se fornita, specifica il valore iniziale assegnato 
+alla variabile quando viene specificato il blocco. Se la clausola  <literal>DEFAULT</literal> 
+non è fornita allora la variabile è inizializzata al valore 
+<acronym>SQL</acronym> null.
+L'opzione <literal>CONSTANT</literal> evita che la variabile possa essere assegnata,
+così quel valore rimarrà costante per tutta la durata del blocco.
+Se è specificato <literal>NOT NULL</literal>, un'assegnazione di un valore null
+risulterà in un errore durante l'esecuzione. 
+Tutte le variabili dichiarate come <literal>NOT NULL</literal>
+devono avere un valore non null di default specificato.
      </para>
 
      <para>
-      A variable's default value is evaluated and assigned to the variable
-      each time the block is entered (not just once per function call).
-      So, for example, assigning <literal>now()</literal> to a variable of type
-      <type>timestamp</type> causes the variable to have the
-      time of the current function call, not the time when the function was
-      precompiled.
+Il valore di default di una variabile è valutato e assegnato alla variabile 
+ogni volta che il blocco è iniziato (non solo una volta per chiamata di funzione).
+Quindi, per esempio, assegnare <literal>now()</literal> a una variabile di tipo 
+<type>timestamp</type> fa sì che la variabile avrà l'orario della chiamata di fuzione corrente,
+non l'orario in cui la funzione è stata precompilata.
      </para>
 
      <para>
@@ -363,37 +364,37 @@ user_id CONSTANT integer := 10;
      </para>
 
     <sect2 id="plpgsql-declaration-parameters">
-     <title>Declaring Function Parameters</title>
+     <title>Dichiarazione di parametri di funzione</title>
 
      <para>
-      Parameters passed to functions are named with the identifiers
-      <literal>$1</literal>, <literal>$2</literal>,
-      etc.  Optionally, aliases can be declared for
-      <literal>$<replaceable>n</replaceable></literal>
-      parameter names for increased readability.  Either the alias or the
-      numeric identifier can then be used to refer to the parameter value.
+I parametri passati alle funzioni sono chiamati con gli identificatori 
+<literal>$1</literal>, <literal>$2</literal>,
+ecc. Opzionalmente, possono essere dichiarati degli alias per 
+<literal>$<replaceable>n</replaceable></literal>
+nomi di parametri per aumentare la leggibilità. Sia l'alias che l'identificatore 
+numerico possono quindi essere usati per riferirsi al valore del parametro.
      </para>
 
      <para>
-      There are two ways to create an alias.  The preferred way is to give a
-      name to the parameter in the <command>CREATE FUNCTION</command> command,
-      for example:
+Ci sono due modi di creare un alias. Il modo preferito è di dare un nome
+al parametro nel comando <command>CREATE FUNCTION</command>,
+per esempio:
 <programlisting>
 CREATE FUNCTION sales_tax(subtotal real) RETURNS real AS $$
-BEgin
+BEGIN
     RETURN subtotal * 0.06;
 END;
 $$ LANGUAGE plpgsql;
 </programlisting>
-      The other way, which was the only way available before
-      <productname>PostgreSQL</productname> 8.0, is to explicitly
-      declare an alias, using the declaration syntax
+L'altro modo, che era l'unico disponibile prima di 
+<productname>PostgreSQL</productname> 8.0, è di dichiarare esplicitamente 
+un alias, usando la sintassi di dichiarazione
 
 <synopsis>
 <replaceable>name</replaceable> ALIAS FOR $<replaceable>n</replaceable>;
 </synopsis>
 
-      The same example in this style looks like:
+Lo stesso esempio in questo stile somiglia a:
 <programlisting>
 CREATE FUNCTION sales_tax(real) RETURNS real AS $$
 DECLARE
@@ -407,23 +408,23 @@ $$ LANGUAGE plpgsql;
 
     <note>
      <para>
-      These two examples are not perfectly equivalent.  In the first case,
-      <literal>subtotal</literal> could be referenced as
-      <literal>sales_tax.subtotal</literal>, but in the second case it could not.
-      (Had we attached a label to the inner block, <literal>subtotal</literal> could
-      be qualified with that label, instead.)
+Questi due esempi non sono perfettamente equivalenti. Nel primo caso,
+<literal>subtotal</literal> potrebbe essere riferito come 
+<literal>sales_tax.subtotal</literal>, ma nel secondo caso non potrebbe.
+(Dato che abbiamo attaccato un'etichetta al blocco interno, <literal>subtotal</literal> potrebbe
+essere qualificato con quell'etichetta, invece).
      </para>
     </note>
 
      <para>
-      Some more examples:
+Altri esempi:
 <programlisting>
 CREATE FUNCTION instr(varchar, integer) RETURNS integer AS $$
 DECLARE
     v_string ALIAS FOR $1;
     index ALIAS FOR $2;
 BEgin
-    -- some computations using v_string and index here
+    -- alcuni calcoli usando v_string e index
 END;
 $$ LANGUAGE plpgsql;
 
@@ -437,14 +438,14 @@ $$ LANGUAGE plpgsql;
      </para>
 
      <para>
-      When a <application>PL/pgSQL</application> function is declared
-      with output parameters, the output parameters are given
-      <literal>$<replaceable>n</replaceable></literal> names and optional
-      aliases in just the same way as the normal input parameters.  An
-      output parameter is effectively a variable that starts out NULL;
-      it should be assigned to during the execution of the function.
-      The final value of the parameter is what is returned.  For instance,
-      the sales-tax example could also be done this way:
+Quando una funzione <application>PL/pgSQL</application> è dichiarata 
+con parametri di output, ai parametri di output sono dati 
+<literal>$<replaceable>n</replaceable></literal> nomi e opzionalmente alias
+nello stesso modo dei normali parametri di input. Un parametro di output 
+è effettivamente una variabile che parte NULL;
+dovrebbe essere assegnata durante l'esecuzione della funzione.
+Il valore finale del parametro è cosa viene restituito. Per esempio, 
+l'esempio delle sales_tax potrebbe anche essere fatto in questo modo:
 
 <programlisting>
 CREATE FUNCTION sales_tax(subtotal real, OUT tax real) AS $$
@@ -454,13 +455,13 @@ END;
 $$ LANGUAGE plpgsql;
 </programlisting>
 
-      Notice that we omitted <literal>RETURNS real</literal> &mdash; we could have
-      included it, but it would be redundant.
+Notare che si è omesso <literal>RETURNS real</literal> - potevamo includerlo, 
+ma sarebbe stato ridondante.
      </para>
 
      <para>
-      Output parameters are most useful when returning multiple values.
-      A trivial example is:
+I parametri di output sono utili quando si restituiscono molteplivi valori.
+Un esempio banale è:
 
 <programlisting>
 CREATE FUNCTION sum_n_product(x int, y int, OUT sum int, OUT prod int) AS $$
@@ -471,15 +472,15 @@ END;
 $$ LANGUAGE plpgsql;
 </programlisting>
 
-      As discussed in <xref linkend="xfunc-output-parameters"/>, this
-      effectively creates an anonymous record type for the function's
-      results.  If a <literal>RETURNS</literal> clause is given, it must say
-      <literal>RETURNS record</literal>.
+Come discusso in  <xref linkend="xfunc-output-parameters"/>, questo crea 
+effettivamente un tipo record anonimo per i risultati della funzione.
+Se viene specificata una clausola  <literal>RETURNS</literal>, deve essere specificato 
+<literal>RETURNS record</literal>.
      </para>
 
      <para>
-      Another way to declare a <application>PL/pgSQL</application> function
-      is with <literal>RETURNS TABLE</literal>, for example:
+Un altro modo di dichiarare una funzione <application>PL/pgSQL</application>
+è con <literal>RETURNS TABLE</literal>, per esempio:
 
 <programlisting>
 CREATE FUNCTION extended_sales(p_itemno int)
@@ -491,26 +492,26 @@ END;
 $$ LANGUAGE plpgsql;
 </programlisting>
 
-      This is exactly equivalent to declaring one or more <literal>OUT</literal>
-      parameters and specifying <literal>RETURNS SETOF
-      <replaceable>sometype</replaceable></literal>.
+Questo è esattamente equivalente a dichiarare uno o più parametri <literal>OUT</literal>
+e specificare <literal>RETURNS SETOF
+<replaceable>sometype</replaceable></literal>.
      </para>
 
      <para>
-      When the return type of a <application>PL/pgSQL</application>
-      function is declared as a polymorphic type (<type>anyelement</type>,
-      <type>anyarray</type>, <type>anynonarray</type>, or <type>anyenum</type>),
-      a special parameter <literal>$0</literal>
-      is created.  Its data type is the actual return type of the function,
-      as deduced from the actual input types (see <xref
-      linkend="extend-types-polymorphic"/>).
-      This allows the function to access its actual return type
-      as shown in <xref linkend="plpgsql-declaration-type"/>.
-      <literal>$0</literal> is initialized to null and can be modified by
-      the function, so it can be used to hold the return value if desired,
-      though that is not required.  <literal>$0</literal> can also be
-      given an alias.  For example, this function works on any data type
-      that has a <literal>+</literal> operator:
+Quando il tipo di ritorno di una funzione <application>PL/pgSQL</application>
+viene dichiarata come un tipo polimorfico  (<type>anyelement</type>,
+<type>anyarray</type>, <type>anynonarray</type>, or <type>anyenum</type>),
+viene creato un parametro speciale <literal>$0</literal>
+Il suo tipo di dato è effettivamente il tipo di ritorno della funzione,
+come dedotto fagli effettivi tipi di input (si veda <xref
+linkend="extend-types-polymorphic"/>).
+Questo permette alla funzione di accedere il suo effettivo tipo di ritorno
+come mostrato in <xref linkend="plpgsql-declaration-type"/>. 
+<literal>$0</literal> viene inizializzato a null e può essere modificato dalla
+funzione, così può essere usato per tenere il valore di ritorno se lo si desidera,
+anche se non è richiesto. È possibile dare un alias a <literal>$0</literal>.
+Per esempio, questa funzione funziona su qualsiasi tipo di dato 
+che ha un operatore <literal>+</literal>:
 
 <programlisting>
 CREATE FUNCTION add_three_values(v1 anyelement, v2 anyelement, v3 anyelement)
@@ -526,10 +527,10 @@ $$ LANGUAGE plpgsql;
      </para>
 
      <para>
-      The same effect can be had by declaring one or more output parameters as
-      polymorphic types.  In this case the
-      special <literal>$0</literal> parameter is not used; the output
-      parameters themselves serve the same purpose.  For example:
+Lo stesso effetto può essere ottenuto dichiarando uno o più parametri come 
+tipi polimorfici. In questo caso il parametro speciale
+<literal>$0</literal> non viene usato; i parametri di output
+stessi servono allo stesso scopo. PEr esempio:
 
 <programlisting>
 CREATE FUNCTION add_three_values(v1 anyelement, v2 anyelement, v3 anyelement,
@@ -551,16 +552,16 @@ $$ LANGUAGE plpgsql;
 </synopsis>
 
    <para>
-    The <literal>ALIAS</literal> syntax is more general than is suggested in the
-    previous section: you can declare an alias for any variable, not just
-    function parameters.  The main practical use for this is to assign
-    a different name for variables with predetermined names, such as
-    <varname>NEW</varname> or <varname>OLD</varname> within
-    a trigger procedure.
+La sintassi di <literal>ALIAS</literal> è più generale rispetto a come suggerito nella
+sezione precedente: è possibile dichiarare un alias per qualsiasi variabile, non solo
+parametri di funzione. L'uso pratico principale per questo è di assegnare
+un nome diverso per variabili con nomi predeterminati, tipo 
+<varname>NEW</varname> o <varname>OLD</varname> all'interno
+di una procedura trigger.
    </para>
 
    <para>
-    Examples:
+Esempi:
 <programlisting>
 DECLARE
   prior ALIAS FOR old;
@@ -569,52 +570,53 @@ DECLARE
    </para>
 
    <para>
-    Since <literal>ALIAS</literal> creates two different ways to name the same
-    object, unrestricted use can be confusing.  It's best to use it only
-    for the purpose of overriding predetermined names.
+Dato che <literal>ALIAS</literal> crea due modi differenti per nominare lo stesso oggetto,
+l'uso incontrollato può confondere. È meglio usarlo solo
+per lo scopo di sovrascrivere nomi predeterminati.
    </para>
    </sect2>
 
   <sect2 id="plpgsql-declaration-type">
-   <title>Copying Types</title>
+   <title>Copiare tipi</title>
 
 <synopsis>
 <replaceable>variable</replaceable>%TYPE
 </synopsis>
 
    <para>
-    <literal>%TYPE</literal> provides the data type of a variable or
-    table column. You can use this to declare variables that will hold
-    database values. For example, let's say you have a column named
-    <literal>user_id</literal> in your <literal>users</literal>
-    table. To declare a variable with the same data type as
-    <literal>users.user_id</literal> you write:
+<literal>%TYPE</literal> fornisce il tipo di dato di una variabile o
+una colonna di tabella. È possibile usarlo per dichiarare variabili che conterranno
+valori di database. Per esempio, diciamo che si ha una colonna chiamata 
+<literal>user_id</literal> nella tabella <literal>users</literal>.
+Per dichiarare una variabile con lo stesso tipo di dato di 
+<literal>users.user_id</literal> scrivere:
+
 <programlisting>
 user_id users.user_id%TYPE;
 </programlisting>
    </para>
 
    <para>
-    By using <literal>%TYPE</literal> you don't need to know the data
-    type of the structure you are referencing, and most importantly,
-    if the data type of the referenced item changes in the future (for
-    instance: you change the type of <literal>user_id</literal>
-    from <type>integer</type> to <type>real</type>), you might not need
-    to change your function definition.
+Usando <literal>%TYPE</literal> non si ha bisogno di conoscere il tipo di dato 
+della struttura a cui ci si riferisce, e più importante, 
+se il tipo di dato dell'elemento riferito in futuro cambia (per esempio:
+si cambia il tipo di <literal>user_id</literal>
+da <type>integer</type> a <type>real</type>), non ci sarà bisogno di 
+cambiare la definizione di funzione.
    </para>
 
    <para>
-    <literal>%TYPE</literal> is particularly valuable in polymorphic
-    functions, since the data types needed for internal variables can
-    change from one call to the next.  Appropriate variables can be
-    created by applying <literal>%TYPE</literal> to the function's
-    arguments or result placeholders.
+<literal>%TYPE</literal> è particolarmente utile in funzioni polimorfiche,
+dato che i tipi di dato necessari per le variabili interne possono 
+cambiare da una chiamata alla successiva. Variabili appropriate possono essere
+create applicando <literal>%TYPE</literal> agli argomenti della funzione 
+o agli argomenti del risultato.
    </para>
 
   </sect2>
 
     <sect2 id="plpgsql-declaration-rowtypes">
-     <title>Row Types</title>
+     <title>Tipi riga</title>
 
 <synopsis>
 <replaceable>name</replaceable> <replaceable>table_name</replaceable><literal>%ROWTYPE</literal>;
@@ -622,46 +624,46 @@ user_id users.user_id%TYPE;
 </synopsis>
 
    <para>
-    A variable of a composite type is called a <firstterm>row</firstterm>
-    variable (or <firstterm>row-type</firstterm> variable).  Such a variable
-    can hold a whole row of a <command>SELECT</command> or <command>FOR</command>
-    query result, so long as that query's column set matches the
-    declared type of the variable.
-    The individual fields of the row value
-    are accessed using the usual dot notation, for example
-    <literal>rowvar.field</literal>.
+Una variabile di un tipo composto viene chiamata variabile <firstterm>row</firstterm>
+(o variabile <firstterm>tipo riga</firstterm>). Tale variabile 
+può contenere una riga intera del risultato di una query <command>SELECT</command> o <command>FOR</command>,
+a patto che l'insieme delle colonne della query corrisponda al tipo dichiarato della
+variabile.
+Si accede ai campi individuali del valore della riga 
+usando la solita notazione con il punto, per esempio
+<literal>rowvar.field</literal>.
    </para>
 
    <para>
-    A row variable can be declared to have the same type as the rows of
-    an existing table or view, by using the
-    <replaceable>table_name</replaceable><literal>%ROWTYPE</literal>
-    notation; or it can be declared by giving a composite type's name.
-    (Since every table has an associated composite type of the same name,
-    it actually does not matter in <productname>PostgreSQL</productname> whether you
-    write <literal>%ROWTYPE</literal> or not.  But the form with
-    <literal>%ROWTYPE</literal> is more portable.)
+Una variabile riga può essere dichiarata per avere lo stesso tipo delle righe 
+di una tabella o vista esistente, usando la notazione
+<replaceable>table_name</replaceable><literal>%ROWTYPE</literal>;
+o può essere dichiarata fornendo un nome di tipo composto.
+(Dato che ogni tabella ha un tipo composto associato dello stesso nome,
+attualmente in <productname>PostgreSQL</productname> non importa se si scrive 
+<literal>%ROWTYPE</literal> o no. Ma la forma con 
+<literal>%ROWTYPE</literal> è più portabile).
    </para>
 
    <para>
-    Parameters to a function can be
-    composite types (complete table rows). In that case, the
-    corresponding identifier <literal>$<replaceable>n</replaceable></literal> will be a row variable, and fields can
-    be selected from it, for example <literal>$1.user_id</literal>.
+I parametri di una funzione possono essere
+tipi composti (righe di tabella complete). In tal caso, l'identificatore
+corrispondente <literal>$<replaceable>n</replaceable></literal> sarà una variabile riga, e i campi possono 
+essere selezionati da essa, per esempio <literal>$1.user_id</literal>.
    </para>
 
    <para>
-    Only the user-defined columns of a table row are accessible in a
-    row-type variable, not the OID or other system columns (because the
-    row could be from a view).  The fields of the row type inherit the
-    table's field size or precision for data types such as
-    <type>char(<replaceable>n</replaceable>)</type>.
+Solo le colonne definite dall'utente di una riga di tabella sono accessibili in 
+una variabile di tipo riga, non l'OID o altre colonne di sistema (dato che
+la riga poteva provenire da una vista). I campi del tipo riga ereditano 
+la dimensione e la precisione dei campi della tabella per i tipi di dato come
+<type>char(<replaceable>n</replaceable>)</type>.
    </para>
 
    <para>
-    Here is an example of using composite types.  <structname>table1</structname>
-    and <structname>table2</structname> are existing tables having at least the
-    mentioned fields:
+Ecco un esempio dell'utilizzo di tipi composti. <structname>table1</structname>
+e <structname>table2</structname> sono tabelle esistenti aventi almeno i campi 
+menzionati:
 
 <programlisting>
 CREATE FUNCTION merge_fields(t_row table1) RETURNS text AS $$
@@ -679,100 +681,99 @@ SELECT merge_fields(t.*) FROM table1 t WHERE ... ;
   </sect2>
 
   <sect2 id="plpgsql-declaration-records">
-   <title>Record Types</title>
+   <title>Tipi record</title>
 
 <synopsis>
 <replaceable>name</replaceable> RECORD;
 </synopsis>
 
    <para>
-    Record variables are similar to row-type variables, but they have no
-    predefined structure.  They take on the actual row structure of the
-    row they are assigned during a <command>SELECT</command> or <command>FOR</command> command.  The substructure
-    of a record variable can change each time it is assigned to.
-    A consequence of this is that until a record variable is first assigned
-    to, it has no substructure, and any attempt to access a
-    field in it will draw a run-time error.
+Le variabili record sono simili alle variabili di tipo riga, ma non hanno 
+strutture predefinite. Esse si preoccupano dell'effettiva struttura della 
+riga a cui sono assegnate durante un comando  <command>SELECT</command> o <command>FOR</command>. La sottostruttura 
+di una variabile record può cambiare ogni volta che viene assegnata.
+Una conseguenza di questo è che finchè una variabile record non è assegnata, 
+non ha sottostrutture, e qualsiasi tentativo di accedere ad un campo
+in essa genera un errore in fase di esecuzione.
    </para>
 
    <para>
-    Note that <literal>RECORD</literal> is not a true data type, only a placeholder.
-    One should also realize that when a <application>PL/pgSQL</application>
-    function is declared to return type <type>record</type>, this is not quite the
-    same concept as a record variable, even though such a function might
-    use a record variable to hold its result.  In both cases the actual row
-    structure is unknown when the function is written, but for a function
-    returning <type>record</type> the actual structure is determined when the
-    calling query is parsed, whereas a record variable can change its row
-    structure on-the-fly.
+Notare che <literal>RECORD</literal> non è un vero tipo di dato, solo un segnaposto.
+Ci si dovrebbe rendere conto che quando una funzione <application>PL/pgSQL</application>
+viene dichiarata per ritornare un tipo <type>record</type>, non è esattamente lo stesso concetto di
+una variabile record, anche se tale funzuione potrebbe 
+usare una variabile recordo per contenere il suo risultato. In emtrambi i casi la struttura effettiva della riga
+è sconosciuta quando viene scritta la funzione, ma per una funzione 
+che ritorna <type>record</type> l'effettiva struttura viene determinata quando viene fatto il parsing della
+query chiamante, mentre una variabile record può cambiare la sua struttura di riga al volo. 
    </para>
   </sect2>
   </sect1>
 
   <sect1 id="plpgsql-expressions">
-  <title>Expressions</title>
+  <title>Espressioni</title>
 
     <para>
-     All expressions used in <application>PL/pgSQL</application>
-     statements are processed using the server's main
-     <acronym>SQL</acronym> executor.  For example, when you write
-     a <application>PL/pgSQL</application> statement like
+Tutte le espressioni usate in istruzioni <application>PL/pgSQL</application>
+sono elaborate usando l'esecutore <acronym>SQL</acronym> principale 
+del server. Per esempio, quando si scrive 
+un'istruzione <application>PL/pgSQL</application> tipo
 <synopsis>
 IF <replaceable>expression</replaceable> THEN ...
 </synopsis>
-     <application>PL/pgSQL</application> will evaluate the expression by
-     feeding a query like
+<application>PL/pgSQL</application> valuterà l'espressione fornendo una query 
+tipo
 <synopsis>
 SELECT <replaceable>expression</replaceable>
 </synopsis>
-     to the main SQL engine.  While forming the <command>SELECT</command> command,
-     any occurrences of <application>PL/pgSQL</application> variable names
-     are replaced by parameters, as discussed in detail in
-     <xref linkend="plpgsql-var-subst"/>.
-     This allows the query plan for the <command>SELECT</command> to
-     be prepared just once and then reused for subsequent
-     evaluations with different values of the variables.  Thus, what
-     really happens on first use of an expression is essentially a
-     <command>PREPARE</command> command.  For example, if we have declared
-     two integer variables <literal>x</literal> and <literal>y</literal>, and we write
+al motore SQL principale. Mentre forma il comando <command>SELECT</command>,
+qualsiasi occorrenza di nomi di bariabile <application>PL/pgSQL</application>
+viene sostituita da parametri, come discusso in dettaglio in 
+<xref linkend="plpgsql-var-subst"/>.
+Questo permette al pianificatore di query per la <command>SELECT</command> di
+essere preparata sono una volta e quindi riusata per 
+successive valutazioni con valori diversi delle variabili. Così, quello 
+che realmente accade al primo utilizzo di una espressione è essenzialmente un comando 
+<command>PREPARE</command>. Per esempio, se si sono dichiarate
+due variabili intere <literal>x</literal> e <literal>y</literal>, e si scrive
 <programlisting>
 IF x &lt; y THEN ...
 </programlisting>
-     what happens behind the scenes is equivalent to
+Quello che succede dietro le quinte è equivalente a 
 <programlisting>
 PREPARE <replaceable>statement_name</replaceable>(integer, integer) AS SELECT $1 &lt; $2;
 </programlisting>
-     and then this prepared statement is <command>EXECUTE</command>d for each
-     execution of the <command>IF</command> statement, with the current values
-     of the <application>PL/pgSQL</application> variables supplied as
-     parameter values.
-     The query plan prepared in this way is saved for the life of the database
-     connection, as described in
-     <xref linkend="plpgsql-plan-caching"/>.  Normally these details are
-     not important to a <application>PL/pgSQL</application> user, but
-     they are useful to know when trying to diagnose a problem.
+quindi questa istruzione preparata viene eseguita (<command>EXECUTE</command>) per ogni
+esecuzione dell'istruzione <command>IF</command>, con i valori correnti
+delle variabili <application>PL/pgSQL</application> forniti come 
+valori dei parametri.
+Il piano di query preparato in questo modo viene salvato per la durata della connessione al database,
+come descritto in 
+<xref linkend="plpgsql-plan-caching"/>. Normalmente, questi dettagli non sono 
+importanti per un utente <application>PL/pgSQL</application>, ma 
+sono utili da sapere quando si tenta di diagnosticare un problema.
     </para>
   </sect1>
 
   <sect1 id="plpgsql-statements">
-  <title>Basic Statements</title>
+  <title>Istruzioni di base</title>
 
    <para>
-    In this section and the following ones, we describe all the statement
-    types that are explicitly understood by
-    <application>PL/pgSQL</application>.
-    Anything not recognized as one of these statement types is presumed
-    to be an SQL command and is sent to the main database engine to execute,
-    as described in <xref linkend="plpgsql-statements-sql-noresult"/>
-    and <xref linkend="plpgsql-statements-sql-onerow"/>.
+In questa sezione e nelle seguenti, descriveremo tutti i tipi di istruzione
+che sono implicitamente compresi da 
+<application>PL/pgSQL</application>.
+Qualsiasi cosa non riconosciuta come uno si questi tipi di istruzione è supposta 
+essere un comando SQL ed è spedita al motore principale del database per essere eseguita,
+come descritto in <xref linkend="plpgsql-statements-sql-noresult"/>
+e <xref linkend="plpgsql-statements-sql-onerow"/>.
    </para>
 
    <sect2 id="plpgsql-statements-assignment">
-    <title>Assignment</title>
+    <title>Assegnazione</title>
 
     <para>
-     An assignment of a value to a <application>PL/pgSQL</application>
-     variable is written as:
+Un'assegnazione di un valore a una variabile <application>PL/pgSQL</application>
+è scritta come:
 <synopsis>
 <replaceable>variable</replaceable> := <replaceable>expression</replaceable>;
 </synopsis>
@@ -786,18 +787,18 @@ PREPARE <replaceable>statement_name</replaceable>(integer, integer) AS SELECT $1
     </para>
 
     <para>
-     If the expression's result data type doesn't match the variable's
-     data type, or the variable has a specific size/precision
-     (like <type>char(20)</type>), the result value will be implicitly
-     converted by the <application>PL/pgSQL</application> interpreter using
-     the result type's output-function and
-     the variable type's input-function. Note that this could potentially
-     result in run-time errors generated by the input function, if the
-     string form of the result value is not acceptable to the input function.
+Se il tipo di dato risultante dell'espressione non corrisponde al tipo di dato 
+della variabile, o la variabile ha una dimensione/precisione specifica
+(tipo <type>char(20)</type>), il valore del risultato sarà implicitamente
+convertito dall'interprete <application>PL/pgSQL</application> usando 
+la funzione output del tipo del risultato e 
+la funzione input del tipo della variabile. Si noti che questo risulta in potenziali 
+errori in fase di esecuzione generati dalla funzioni di input, se la forma della stringa
+del valore del risultato non è accettabile per la funzione di input.
     </para>
 
     <para>
-     Examples:
+Esempi:
 <programlisting>
 tax := subtotal * 0.06;
 my_record.user_id := 20;
@@ -806,63 +807,62 @@ my_record.user_id := 20;
    </sect2>
 
    <sect2 id="plpgsql-statements-sql-noresult">
-    <title>Executing a Command With No Result</title>
+    <title>Eseguire un comando senza risultato</title>
 
     <para>
-     For any SQL command that does not return rows, for example
-     <command>INSERT</command> without a <literal>RETURNING</literal> clause, you can
-     execute the command within a <application>PL/pgSQL</application> function
-     just by writing the command.
+Per qualsiasi comando SQL che non restituisce righe, per 
+esempio <command>INSERT</command> senza una clausola <literal>RETURNING</literal>, 
+è possibile eseguire il comando all'interno di una funzione  <application>PL/pgSQL</application>
+semplicemente scrivendo il comando.
     </para>
 
     <para>
-     Any <application>PL/pgSQL</application> variable name appearing
-     in the command text is treated as a parameter, and then the
-     current value of the variable is provided as the parameter value
-     at run time.  This is exactly like the processing described earlier
-     for expressions; for details see <xref linkend="plpgsql-var-subst"/>.
+Qualsiasi nome di variabile <application>PL/pgSQL</application> che appare
+nel testo del comando viene trattato come parametro, e quindi il valore corrente
+della variabile viene fornito come il valore del parametro in fase
+di esecuzione. Questo è esattamente come l'elaborazione descritta precedentemente
+per le espressioni; per i dettagli si veda <xref linkend="plpgsql-var-subst"/>.
     </para>
 
     <para>
-     When executing a SQL command in this way,
-     <application>PL/pgSQL</application> plans the command just once
-     and re-uses the plan on subsequent executions, for the life of
-     the database connection.  The implications of this are discussed
-     in detail in <xref linkend="plpgsql-plan-caching"/>.
+Quando si esegue un comando SQL in questo modo,
+<application>PL/pgSQL</application> pianifica il comando solo una volta 
+e riusa il piano per successive esecuzioni, fino alla fine della 
+connessione al database. Le implicazioni di questo sono discusse
+in dettaglio in <xref linkend="plpgsql-plan-caching"/>.
     </para>
 
     <para>
-     Sometimes it is useful to evaluate an expression or <command>SELECT</command>
-     query but discard the result, for example when calling a function
-     that has side-effects but no useful result value.  To do
-     this in <application>PL/pgSQL</application>, use the
-     <command>PERFORM</command> statement:
+A volte è utile valutare un'espressione i una query <command>SELECT</command>
+ma scartare il risultato, per esempio quando si chiama una funzione
+che ha effetti collaterali ma non un risultato utile. Per fare questo
+in <application>PL/pgSQL</application>, usare l'istruzione 
+<command>PERFORM</command>:
 
 <synopsis>
 PERFORM <replaceable>query</replaceable>;
 </synopsis>
 
-     This executes <replaceable>query</replaceable> and discards the
-     result.  Write the <replaceable>query</replaceable> the same
-     way you would write an SQL <command>SELECT</command> command, but replace the
-     initial keyword <command>SELECT</command> with <command>PERFORM</command>.
-     <application>PL/pgSQL</application> variables will be
-     substituted into the query just as for commands that return no result,
-     and the plan is cached in the same way.  Also, the special variable
-     <literal>FOUND</literal> is set to true if the query produced at
-     least one row, or false if it produced no rows (see
-     <xref linkend="plpgsql-statements-diagnostics"/>).
+Questo esegue  <replaceable>query</replaceable> e scarta il risultato.
+Scrivere la <replaceable>query</replaceable> allo stesso modo di come
+si scriverebbe un comando SQL <command>SELECT</command>, ma sostituire la parola 
+chiave iniziale <command>SELECT</command> con <command>PERFORM</command>.
+Le variabili <application>PL/pgSQL</application> saranno
+sostituiti nella query esattamente come per i comandi che non restituiscono risultati,
+e il piano viene sottoposto a cache nello stesso modo. Inoltre, la variabile speciale 
+<literal>FOUND</literal> viene impostata a true se la query ha prodotto almeno 
+una riga, o false se non ha prodotto righe (si veda 
+<xref linkend="plpgsql-statements-diagnostics"/>).
     </para>
 
     <note>
      <para>
-      One might expect that writing <command>SELECT</command> directly
-      would accomplish this result, but at
-      present the only accepted way to do it is
-      <command>PERFORM</command>.  A SQL command that can return rows,
-      such as <command>SELECT</command>, will be rejected as an error
-      unless it has an <literal>INTO</literal> clause as discussed in the
-      next section.
+Ci si potrebbe aspettare che scrivere direttamente <command>SELECT</command>
+avrebbe questo risultato, ma al momento l'unico modo accettato 
+per farlo è 
+<command>PERFORM</command>. Un comando SQL che può restituire righe, 
+tipo un <command>SELECT</command>, sarà rifiutato come errore
+finchè non ha una clausola <literal>INTO</literal> come discusso nella prossima sezione.
      </para>
     </note>
 
@@ -875,7 +875,7 @@ PERFORM create_mv('cs_session_page_requests_mv', my_query);
    </sect2>
 
    <sect2 id="plpgsql-statements-sql-onerow">
-    <title>Executing a Query with a Single-Row Result</title>
+    <title>Eseguire una query con un risultato di una singola riga</title>
 
     <indexterm zone="plpgsql-statements-sql-onerow">
      <primary>SELECT INTO</primary>
@@ -888,10 +888,10 @@ PERFORM create_mv('cs_session_page_requests_mv', my_query);
     </indexterm>
 
     <para>
-     The result of a SQL command yielding a single row (possibly of multiple
-     columns) can be assigned to a record variable, row-type variable, or list
-     of scalar variables.  This is done by writing the base SQL command and
-     adding an <literal>INTO</literal> clause.  For example,
+Il risultato di una comando SQL che genera una singola riga (possibilmente di molteplici colonne)
+può essere assegnato a una variabile record, tipo riga, o elenco di variabili scalari.
+Questo viene fatto scrivendo il comando SQL di base e aggiungendo una 
+clausola <literal>INTO</literal>. Per esempio,
 
 <synopsis>
 SELECT <replaceable>select_expressions</replaceable> INTO <optional>STRICT</optional> <replaceable>target</replaceable> FROM ...;
@@ -900,60 +900,60 @@ UPDATE ... RETURNING <replaceable>expressions</replaceable> INTO <optional>STRIC
 DELETE ... RETURNING <replaceable>expressions</replaceable> INTO <optional>STRICT</optional> <replaceable>target</replaceable>;
 </synopsis>
 
-     where <replaceable>target</replaceable> can be a record variable, a row
-     variable, or a comma-separated list of simple variables and
-     record/row fields.
-     <application>PL/pgSQL</application> variables will be
-     substituted into the rest of the query, and the plan is cached,
-     just as described above for commands that do not return rows.
-     This works for <command>SELECT</command>,
-     <command>INSERT</command>/<command>UPDATE</command>/<command>DELETE</command> with
-     <literal>RETURNING</literal>, and utility commands that return row-set
-     results (such as <command>EXPLAIN</command>).
-     Except for the <literal>INTO</literal> clause, the SQL command is the same
-     as it would be written outside <application>PL/pgSQL</application>.
+dove <replaceable>target</replaceable> può essere una variabile record, una variabile riga,
+o un elenco separato da virgole di variabili semplici e 
+campi record/riga.
+Le variabili <application>PL/pgSQL</application> saranno sostituite 
+nel resto della query, e il piano viene sottoposto a cache,
+esattamente come descritto sopra per comandi che non ritornano righe.
+Questo funziona per <command>SELECT</command>,
+<command>INSERT</command>/<command>UPDATE</command>/<command>DELETE</command> con 
+<literal>RETURNING</literal>, e comandi di utilità che restituiscono risultati insieme di righe
+(come <command>EXPLAIN</command>).
+Ad eccezione della clausola <literal>INTO</literal>, il comando SQL è lo stesso  
+di come sarebbe scritto fuori da <application>PL/pgSQL</application>.
     </para>
 
    <tip>
     <para>
-     Note that this interpretation of <command>SELECT</command> with <literal>INTO</literal>
-     is quite different from <productname>PostgreSQL</productname>'s regular
-     <command>SELECT INTO</command> command, wherein the <literal>INTO</literal>
-     target is a newly created table.  If you want to create a table from a
-     <command>SELECT</command> result inside a
-     <application>PL/pgSQL</application> function, use the syntax
-     <command>CREATE TABLE ... AS SELECT</command>.
+Si noti che questa interpretazione di <command>SELECT</command> con <literal>INTO</literal>
+è abbastanza diversa dal normale comando <command>SELECT INTO</command> 
+di <productname>PostgreSQL</productname>, in cui il target di <literal>INTO</literal>
+e una tabella creata ex-novo. Se si vuole creare una tabella dal risultato di una
+<command>SELECT</command> all'interno di una funzione <application>PL/pgSQL</application>,
+usare la sintassi
+<command>CREATE TABLE ... AS SELECT</command>.
     </para>
    </tip>
 
     <para>
-     If a row or a variable list is used as target, the query's result columns
-     must exactly match the structure of the target as to number and data
-     types, or else a run-time error
-     occurs.  When a record variable is the target, it automatically
-     configures itself to the row type of the query result columns.
+Se una riga o un elenco di variabili è usato come target, le colonne risultanti della query 
+devono corrispondere esattamente alla struttura del target come numero e tipi di dato,
+altrimenti si genera un errore in fase di esecuzione. 
+Quando una variabile record è il target, essa automaticamente configura sè stessa 
+al tipo riga delle colonne del risultato della query.
     </para>
 
     <para>
-     The <literal>INTO</literal> clause can appear almost anywhere in the SQL
-     command.  Customarily it is written either just before or just after
-     the list of <replaceable>select_expressions</replaceable> in a
-     <command>SELECT</command> command, or at the end of the command for other
-     command types.  It is recommended that you follow this convention
-     in case the <application>PL/pgSQL</application> parser becomes
-     stricter in future versions.
+La clausola <literal>INTO</literal> può apparire quasi ovunque nel comando   
+SQL. Di norma è scritta o appena prima o appena dopo    
+l'elenco di <replaceable>select_expressions</replaceable> in un comando 
+<command>SELECT</command>, o alla fine del comando per altri tipi di comando. 
+Si raccomanda di seguire questa convenzione nel caso 
+che il parser di <application>PL/pgSQL</application> diventi 
+più rigido in versioni future.
     </para>
 
     <para>
-     If <literal>STRICT</literal> is not specified in the <literal>INTO</literal>
-     clause, then <replaceable>target</replaceable> will be set to the first
-     row returned by the query, or to nulls if the query returned no rows.
-     (Note that <quote>the first row</quote> is not
-     well-defined unless you've used <literal>ORDER BY</literal>.)  Any result rows
-     after the first row are discarded.
-     You can check the special <literal>FOUND</literal> variable (see
-     <xref linkend="plpgsql-statements-diagnostics"/>) to
-     determine whether a row was returned:
+Se <literal>STRICT</literal> non è specificato nella clausola <literal>INTO</literal>,
+allora <replaceable>target</replaceable> sarà impostato alla prima 
+riga restituita dalla query, o a null se la query non ha restituito righe.
+(Notare che <quote>la prima riga</quote> non è
+ben definita a meno che non si sia usato <literal>ORDER BY</literal>). Ogni riga risultante 
+dopo la prima viene scartata.
+Si può controllare la variabile speciale <literal>FOUND</literal> (si veda 
+<xref linkend="plpgsql-statements-diagnostics"/>) per
+determinare se una riga è stata restituita:
 
 <programlisting>
 SELECT * INTO myrec FROM emp WHERE empname = myname;
@@ -962,14 +962,14 @@ IF NOT FOUND THEN
 END IF;
 </programlisting>
 
-     If the <literal>STRICT</literal> option is specified, the query must
-     return exactly one row or a run-time error will be reported, either
-     <literal>NO_DATA_FOUND</literal> (no rows) or <literal>TOO_MANY_ROWS</literal>
-     (more than one row). You can use an exception block if you wish
-     to catch the error, for example:
+Se l'opzione <literal>STRICT</literal> è specificata, la query deve
+ritornare esattamente una riga o sarà riportato un errore al momento dell'esecuzione, 
+o <literal>NO_DATA_FOUND</literal> (nessusa riga) o <literal>TOO_MANY_ROWS</literal>
+(più di una riga). Si può usare un blocco eccezione se si desidera intercettare 
+l'errore, per esempio:
 
 <programlisting>
-BEgin
+BEGIN
     SELECT * INTO STRICT myrec FROM emp WHERE empname = myname;
     EXCEPTION
         WHEN NO_DATA_FOUND THEN
@@ -978,57 +978,57 @@ BEgin
             RAISE EXCEPTION 'employee % not unique', myname;
 END;
 </programlisting>
-     Successful execution of a command with <literal>STRICT</literal>
-     always sets <literal>FOUND</literal> to true.
+L'esecuzione con successo di un comando con <literal>STRICT</literal> 
+imposta sempre <literal>FOUND</literal> a true. 
     </para>
 
     <para>
-     For <command>INSERT</command>/<command>UPDATE</command>/<command>DELETE</command> with
-     <literal>RETURNING</literal>, <application>PL/pgSQL</application> reports
-     an error for more than one returned row, even when
-     <literal>STRICT</literal> is not specified.  This is because there
-     is no option such as <literal>ORDER BY</literal> with which to determine
-     which affected row should be returned.
+Per <command>INSERT</command>/<command>UPDATE</command>/<command>DELETE</command> con 
+<literal>RETURNING</literal>, <application>PL/pgSQL</application> riporta un errore
+per più di una riga restituita, anche quando 
+<literal>STRICT</literal> non è specificato. Questo perchè non c'è un opzione tipo  
+la <literal>ORDER BY</literal> con la quale determinare  
+quali righe coinvolte dovrebbero essere restituite.
     </para>
 
     <note>
      <para>
-      The <literal>STRICT</literal> option matches the behavior of
-      Oracle PL/SQL's <command>SELECT INTO</command> and related statements.
+L'opzione <literal>STRICT</literal> corrisponde al comportamento di  
+del comando Oracle PL/SQL <command>SELECT INTO</command> e relative istruzioni.
      </para>
     </note>
 
     <para>
-     To handle cases where you need to process multiple result rows
-     from a SQL query, see <xref linkend="plpgsql-records-iterating"/>.
+Per gestire casi dove si ha bisogno di elaborare moltpeplici righe risultanti da una query SQL,
+si veda <xref linkend="plpgsql-records-iterating"/>.
     </para>
 
    </sect2>
 
    <sect2 id="plpgsql-statements-executing-dyn">
-    <title>Executing Dynamic Commands</title>
+    <title>Eseguire comandi dinamici</title>
 
     <para>
-     Oftentimes you will want to generate dynamic commands inside your
-     <application>PL/pgSQL</application> functions, that is, commands
-     that will involve different tables or different data types each
-     time they are executed.  <application>PL/pgSQL</application>'s
-     normal attempts to cache plans for commands (as discussed in
-     <xref linkend="plpgsql-plan-caching"/>) will not work in such
-     scenarios.  To handle this sort of problem, the
-     <command>EXECUTE</command> statement is provided:
+Spesso si vorrà generare comandi dinamici all'interno delle funzioni
+<application>PL/pgSQL</application>, cioè, comandi 
+che coinvolgeranno differenti tabelle o diversi tipi di dato ogni volta che sono 
+vengono eseguiti. I normali tentativi di  <application>PL/pgSQL</application> 
+di sottoporre a cache i piani per i comandi (come discusso in
+<xref linkend="plpgsql-plan-caching"/>) non funzioneranno in queste
+situazioni. Per gestire questa sorta di problemi, è disponibile 
+l'istruzione <command>EXECUTE</command>:
 
 <synopsis>
 EXECUTE <replaceable class="command">command-string</replaceable> <optional> INTO <optional>STRICT</optional> <replaceable>target</replaceable> </optional> <optional> USING <replaceable>expression</replaceable> <optional>, ... </optional> </optional>;
 </synopsis>
 
-     where <replaceable>command-string</replaceable> is an expression
-     yielding a string (of type <type>text</type>) containing the
-     command to be executed.  The optional <replaceable>target</replaceable>
-     is a record variable, a row variable, or a comma-separated list of
-     simple variables and record/row fields, into which the results of
-     the command will be stored.  The optional <literal>USING</literal> expressions
-     supply values to be inserted into the command.
+dove <replaceable>command-string</replaceable>  è un'espressione
+che genera una stringa (di tipo <type>text</type>) contenente il comando  
+che deve essere eseguito. L'opzionale <replaceable>target</replaceable>
+è una variabile record, una variabile riga, o un elenco separato da virgole di 
+semplici variabili e campi di riga/record, nei quali i risultati del 
+comando saranno salavti. Le espressioni <literal>USING</literal> opzionali  
+forniscono valori da essere inseriti nel comando.
     </para>
 
     <para>
@@ -1039,40 +1039,40 @@ EXECUTE <replaceable class="command">command-string</replaceable> <optional> INT
     </para>
 
     <para>
-     Also, there is no plan caching for commands executed via
-     <command>EXECUTE</command>.  Instead, the
-     command is prepared each time the statement is run. Thus the command
-     string can be dynamically created within the function to perform
-     actions on different tables and columns.
+Inoltre, il piano non viene sottoposto a cache per comandi eseguiti attraverso
+<command>EXECUTE</command>. Invece, il comando 
+viene preparato ogni volta che l'istruzione è eseguita. Così la stringa comando 
+può essere creata dinamicamente all'interno della funzione per eseguire azioni 
+su diverse tabelle e colonne.
     </para>
 
     <para>
-     The <literal>INTO</literal> clause specifies where the results of
-     a SQL command returning rows should be assigned. If a row
-     or variable list is provided, it must exactly match the structure
-     of the query's results (when a
-     record variable is used, it will configure itself to match the
-     result structure automatically). If multiple rows are returned,
-     only the first will be assigned to the <literal>INTO</literal>
-     variable. If no rows are returned, NULL is assigned to the
-     <literal>INTO</literal> variable(s). If no <literal>INTO</literal>
-     clause is specified, the query results are discarded.
+La clausola <literal>INTO</literal> specifica dove dovrebbero essere assegnati 
+i risultati di un comando SQL che restituisce righe. Se viene fornita  una riga
+o elenco variabile, deve corrispondere esattamente la struttura 
+dei risultati della query (quando è usata una 
+variabile record, essa configurerà automaticamente sè stessa per corrispondere  
+la struttura del risultato). Se vengono restituite molteplici righe, 
+solo la prima sarà assegnata alla variabile <literal>INTO</literal>.
+Se non sono restituite righe, alla variabile/i NULL viene assegnato NULL.
+Se non è specificata la clausola <literal>INTO</literal>,
+i risultati della query vengono scartati.
     </para>
 
     <para>
-     If the <literal>STRICT</literal> option is given, an error is reported
-     unless the query produces exactly one row.
+Se viene fornita l'opzione <literal>STRICT</literal>, viene riportato un errore  
+finchè la query esattamente una riga.
     </para>
 
     <para>
-     The command string can use parameter values, which are referenced
-     in the command as <literal>$1</literal>, <literal>$2</literal>, etc.
-     These symbols refer to values supplied in the <literal>USING</literal>
-     clause.  This method is often preferable to inserting data values
-     into the command string as text: it avoids run-time overhead of
-     converting the values to text and back, and it is much less prone
-     to SQL-injection attacks since there is no need for quoting or escaping.
-     An example is:
+La stringa del comando può usare valori parametro, che sono referenziati 
+nel comando come <literal>$1</literal>, <literal>$2</literal>, ecc.
+Questi simboli si riferiscono a valori forniti nella clausola  <literal>USING</literal>
+Questo metodo spesso è preferibile per inserire valori di dati 
+nella stringa comando come testo: elimina overhead in fase di esecuzione convertendo
+i valori a testo e viceversa, ed è molto meno soggetta a attacchi di tipo SQL.injection
+dato che non c'è necessità di effettuare il quoting o l'escaping.
+Un esempio è:
 <programlisting>
 EXECUTE 'SELECT count(*) FROM mytable WHERE inserted_by = $1 AND inserted &lt;= $2'
    INTO c
@@ -1081,11 +1081,11 @@ EXECUTE 'SELECT count(*) FROM mytable WHERE inserted_by = $1 AND inserted &lt;= 
     </para>
 
     <para>
-     Note that parameter symbols can only be used for data values
-     &mdash; if you want to use dynamically determined table or column
-     names, you must insert them into the command string textually.
-     For example, if the preceding query needed to be done against a
-     dynamically selected table, you could do this:
+Notare che i simboli parametro possono essere usati solo per valori di dati -
+se si vogliono usare nomi di tabelle o colonne determinati dinamicamente,
+si devono inserire testualmente nella stringa comando.
+Per esempio, se la precedente query necessitava di essere fatta su una tabella 
+selezionata dinamicamente, si potrebbe fare così:
 <programlisting>
 EXECUTE 'SELECT count(*) FROM '
     || tabname::regclass
@@ -1093,15 +1093,15 @@ EXECUTE 'SELECT count(*) FROM '
    INTO c
    USING checked_user, checked_date;
 </programlisting>
-     Another restriction on parameter symbols is that they only work in
-     <command>SELECT</command>, <command>INSERT</command>, <command>UPDATE</command>, and
-     <command>DELETE</command> commands.  In other statement
-     types (generically called utility statements), you must insert
-     values textually even if they are just data values.
+Un'altra restrizione sui simboli parametro è che funzionano solo in comandi
+<command>SELECT</command>, <command>INSERT</command>, <command>UPDATE</command>, e
+<command>DELETE</command>. In altri tipi di  istruzione
+(chiamate genericamente istruzioni d'ulitità), si devono inserire 
+i valori testualmente anche se sono solamente valori di dati.
     </para>
 
     <para>
-     An <command>EXECUTE</command> with a simple constant command string and some
+     An <command>EXECUTE</command> with a simple constant command string and some 
      <literal>USING</literal> parameters, as in the first example above, is
      functionally equivalent to just writing the command directly in
      <application>PL/pgSQL</application> and allowing replacement of
@@ -1117,57 +1117,56 @@ EXECUTE 'SELECT count(*) FROM '
     </para>
 
     <para>
-     <command>SELECT INTO</command> is not currently supported within
-     <command>EXECUTE</command>; instead, execute a plain <command>SELECT</command>
-     command and specify <literal>INTO</literal> as part of the <command>EXECUTE</command>
-     itself.
+<command>SELECT INTO</command> attualmente non è supportato all'interno di 
+<command>EXECUTE</command>; invece, eseguire un semplice comando <command>SELECT</command>
+e specificare <literal>INTO</literal> come parte dell'<command>EXECUTE</command>
+stesso.
     </para>
 
    <note>
     <para>
-     The <application>PL/pgSQL</application>
-     <command>EXECUTE</command> statement is not related to the
-     <xref linkend="sql-execute"/> SQL
-     statement supported by the
-     <productname>PostgreSQL</productname> server. The server's
-     <command>EXECUTE</command> statement cannot be used directly within
-     <application>PL/pgSQL</application> functions (and is not needed).
+L'istruzione <command>EXECUTE</command> di <application>PL/pgSQL</application>
+non è correlata con la funzione SQL 
+<xref linkend="sql-execute"/> supportata
+dal server <productname>PostgreSQL</productname>. La funzione <command>EXECUTE</command>
+del server non può essere usata direttamente all'interno di funzioni
+<application>PL/pgSQL</application> (e non è necessaria). 
     </para>
    </note>
 
    <example id="plpgsql-quote-literal-example">
-   <title>Quoting values in dynamic queries</title>
+   <title>Quotare valori in query dinamiche</title>
 
     <indexterm>
      <primary>quote_ident</primary>
-     <secondary>use in PL/PgSQL</secondary>
+     <secondary>uso in PL/PgSQL</secondary>
     </indexterm>
 
     <indexterm>
      <primary>quote_literal</primary>
-     <secondary>use in PL/PgSQL</secondary>
+     <secondary>uso in PL/PgSQL</secondary>
     </indexterm>
 
     <indexterm>
      <primary>quote_nullable</primary>
-     <secondary>use in PL/PgSQL</secondary>
+     <secondary>uso in PL/PgSQL</secondary>
     </indexterm>
 
     <para>
-     When working with dynamic commands you will often have to handle escaping
-     of single quotes.  The recommended method for quoting fixed text in your
-     function body is dollar quoting.  (If you have legacy code that does
-     not use dollar quoting, please refer to the
-     overview in <xref linkend="plpgsql-quote-tips"/>, which can save you
-     some effort when translating said code to a more reasonable scheme.)
+Quando si lavora con comandi dinamici spesso di dovrà gestire l'escape di 
+apici singoli. Il metodo raccomandato per quotare testo fisso nel corpo di una funziona 
+è il quoting con dollari. (Se si ha codice datato che non usa  
+la quotazione con dollari, si prega di riferirsi alla panoramica 
+in <xref linkend="plpgsql-quote-tips"/>, che può far risprmiare qualche sforzo  
+quando si traduce tale codice a uno schema più ragionevole).
     </para>
 
     <para>
-     Dynamic values that are to be inserted into the constructed
-     query require careful handling since they might themselves contain
-     quote characters.
-     An example (this assumes that you are using dollar quoting for the
-     function as a whole, so the quote marks need not be doubled):
+Valori dinamici che devono essere iseriti nella query costruita  
+richiedono una gestione attenta dato che potrebbero contenere 
+caratteri apice.
+Un esempio (quato assume che si stia usando la quotazione con dollari per l'intera
+funzione, così gli apici non necessitano di essere raddoppiati):
 <programlisting>
 EXECUTE 'UPDATE tbl SET '
         || quote_ident(colname)
@@ -1179,29 +1178,29 @@ EXECUTE 'UPDATE tbl SET '
     </para>
 
     <para>
-     This example demonstrates the use of the
-     <function>quote_ident</function> and
-     <function>quote_literal</function> functions (see <xref
-     linkend="functions-string"/>).  For safety, expressions containing column
-     or table identifiers should be passed through
-     <function>quote_ident</function> before insertion in a dynamic query.
-     Expressions containing values that should be literal strings in the
-     constructed command should be passed through <function>quote_literal</function>.
-     These functions take the appropriate steps to return the input text
-     enclosed in double or single quotes respectively, with any embedded
-     special characters properly escaped.
+Questo esempio dimostra l'utilizzo delle funzioni 
+<function>quote_ident</function> e
+<function>quote_literal</function> (si veda <xref
+linkend="functions-string"/>). Per sicurezza, espressioni contenenti identificatori 
+di colonna o tabella dovrebbero essere passati attraverso
+<function>quote_ident</function>  prima dell'inserimento in una query dinamica.
+Espressioni contenenti valori che dovrebbero essere stringhe letterali nel comando 
+costruito dovrebbero essere passate attraverso <function>quote_literal</function>.
+Queste funzioni eseguono i passi appropriati a restituire il testo in input  
+racchiuso rispettivamente tra apici doppi o singoli, con qualsiasi carattere speciale incluso
+sottoposto a appropriatamente a  escape.
     </para>
 
     <para>
-     Because <function>quote_literal</function> is labelled
-     <literal>STRICT</literal>, it will always return null when called with a
-     null argument.  In the above example, if <literal>newvalue</literal> or
-     <literal>keyvalue</literal> were null, the entire dynamic query string would
-     become null, leading to an error from <command>EXECUTE</command>.
-     You can avoid this problem by using the <function>quote_nullable</function>
-     function, which works the same as <function>quote_literal</function> except that
-     when called with a null argument it returns the string <literal>NULL</literal>.
-     For example,
+Dato che <function>quote_literal</function> è etichettata come 
+<literal>STRICT</literal>, restituirà sempre null quando chiamata con un argomento null.
+Nell'esempio sopra, se <literal>newvalue</literal> o 
+<literal>keyvalue</literal> erano null, l'intera stringa di query dinamica diventerebbe null, 
+generando un errore da <command>EXECUTE</command>.
+È possibile evitare questo problema usando la funzione <function>quote_nullable</function>,
+che lavora allo stesso modi di <function>quote_literal</function> ad accezione che 
+quando chiamata con un argomento null restituisce la stringa <literal>NULL</literal>.
+Per esempio,
 <programlisting>
 EXECUTE 'UPDATE tbl SET '
         || quote_ident(colname)

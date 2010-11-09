@@ -1102,9 +1102,7 @@ i valori testualmente anche se sono solamente valori di dati.
 
     <para>
      An <command>EXECUTE</command> with a simple constant command string and some 
-Un <command>EXECUTE</command> con una semplice stringa si comando costante e alcuni
      <literal>USING</literal> parameters, as in the first example above, is
-parametri <literal>USING</literal>, 
      functionally equivalent to just writing the command directly in
      <application>PL/pgSQL</application> and allowing replacement of
      <application>PL/pgSQL</application> variables to happen automatically.
@@ -1746,7 +1744,7 @@ ELSIF number &gt; 0 THEN
 ELSIF number &lt; 0 THEN
     result := 'negative';
 ELSE
-    -- hmm, l'unica altra possibilità è che il numeria sia null
+    -- hmm, l'unica altra possibilità è che il numero sia null
     result := 'NULL';
 END IF;
 </programlisting>
@@ -2165,48 +2163,50 @@ END;
 $$ LANGUAGE plpgsql;
 </programlisting>
 
-     If the loop is terminated by an <literal>EXIT</literal> statement, the last
-     assigned row value is still accessible after the loop.
+Se il ciclo è terminato da un'istruzione <literal>EXIT</literal>, l'ultimo
+valore assegnato della riga è comunque accessibile dopo il ciclo.
+
     </para>
 
     <para>
-     The <replaceable>query</replaceable> used in this type of <literal>FOR</literal>
-     statement can be any SQL command that returns rows to the caller:
-     <command>SELECT</command> is the most common case,
-     but you can also use <command>INSERT</command>, <command>UPDATE</command>, or
-     <command>DELETE</command> with a <literal>RETURNING</literal> clause.  Some utility
-     commands such as <command>EXPLAIN</command> will work too.
+La <replaceable>query</replaceable> usata in questo tipo di istruzione <literal>FOR</literal>
+può essere qualsiasi comando SQL che ritorna righe al chiamante:
+<command>SELECT</command> è il caso più comune, 
+ma si possono usare anche <command>INSERT</command>, <command>UPDATE</command>, o
+<command>DELETE</command> con una clausola <literal>RETURNING</literal>. 
+Funzioneranno anche alcuni comandi di utilità
+tipo <command>EXPLAIN</command>. 
     </para>
 
     <para>
-     <application>PL/pgSQL</application> variables are substituted into the query text,
-     and the query plan is cached for possible re-use, as discussed in
-     detail in <xref linkend="plpgsql-var-subst"/> and
-     <xref linkend="plpgsql-plan-caching"/>.
+Le variabili <application>PL/pgSQL</application> sono sostituiti nel testo della query,
+e il piano della query è sottoposto a cache per un possibile riutilizzo, come discusso in
+dettaglio in <xref linkend="plpgsql-var-subst"/> e
+<xref linkend="plpgsql-plan-caching"/>.
     </para>
 
     <para>
-     The <literal>FOR-IN-EXECUTE</literal> statement is another way to iterate over
-     rows:
+L'istruzione <literal>FOR-IN-EXECUTE</literal> rappresenta un altro modo di iterare 
+le righe:
 <synopsis>
 <optional> &lt;&lt;<replaceable>label</replaceable>&gt;&gt; </optional>
 FOR <replaceable>target</replaceable> IN EXECUTE <replaceable>text_expression</replaceable> <optional> USING <replaceable>expression</replaceable> <optional>, ... </optional> </optional> LOOP
     <replaceable>statements</replaceable>
 END LOOP <optional> <replaceable>label</replaceable> </optional>;
 </synopsis>
-     This is like the previous form, except that the source query
-     is specified as a string expression, which is evaluated and replanned
-     on each entry to the <literal>FOR</literal> loop.  This allows the programmer to
-     choose the speed of a preplanned query or the flexibility of a dynamic
-     query, just as with a plain <command>EXECUTE</command> statement.
-     As with <command>EXECUTE</command>, parameter values can be inserted
-     into the dynamic command via <literal>USING</literal>.
+Questo è simile alla forma precedente, ad eccezione che la query sorgente 
+viene specificata come una espressione stringa, che è calcolata e ripianificata 
+ad ogni voce del ciclo <literal>FOR</literal>. Questo permette al programmatore di 
+scegliere la velocità di una query prepianificata o la flessibilità di una query dinamica, 
+proprio come con una normale istruzione  <command>EXECUTE</command>.
+Come con <command>EXECUTE</command>, i valori dei parametri possono essere inseriti 
+nel comando dinamico con <literal>USING</literal>.
     </para>
 
     <para>
-     Another way to specify the query whose results should be iterated
-     through is to declare it as a cursor.  This is described in
-     <xref linkend="plpgsql-cursor-for-loop"/>.
+Un altro modo di specificare la query i cui risultati dovrebbero essere iterati
+è di dichiararla come cursore. Questo è descritto in
+<xref linkend="plpgsql-cursor-for-loop"/>.
     </para>
    </sect2>
 
@@ -2214,23 +2214,22 @@ END LOOP <optional> <replaceable>label</replaceable> </optional>;
     <title>Trapping Errors</title>
 
     <indexterm>
-     <primary>exceptions</primary>
+     <primary>eccezioni</primary>
      <secondary>in PL/PgSQL</secondary>
     </indexterm>
 
     <para>
-     By default, any error occurring in a <application>PL/pgSQL</application>
-     function aborts execution of the function, and indeed of the
-     surrounding transaction as well.  You can trap errors and recover
-     from them by using a <command>BEgin</command> block with an
-     <literal>EXCEPTION</literal> clause.  The syntax is an extension of the
-     normal syntax for a <command>BEgin</command> block:
+In maniera predefinitia, qualsiasi errore accada in una funzione <application>PL/pgSQL</application>
+annulla l'esecuzione della funzione, ed effettivamente anche la transazione circostante. 
+È possibile intrappolare gli errori e ripristinarli usando un blocco <command>BEGIN</command> 
+con una clausola <literal>EXCEPTION</literal>. La sintassi è una  estensione 
+della sintassi normale di un blocco <command>BEGIN</command>:
 
 <synopsis>
 <optional> &lt;&lt;<replaceable>label</replaceable>&gt;&gt; </optional>
 <optional> DECLARE
     <replaceable>declarations</replaceable> </optional>
-BEgin
+BEGIN
     <replaceable>statements</replaceable>
 EXCEPTION
     WHEN <replaceable>condition</replaceable> <optional> OR <replaceable>condition</replaceable> ... </optional> THEN
@@ -2243,32 +2242,31 @@ END;
     </para>
 
     <para>
-     If no error occurs, this form of block simply executes all the
-     <replaceable>statements</replaceable>, and then control passes
-     to the next statement after <literal>END</literal>.  But if an error
-     occurs within the <replaceable>statements</replaceable>, further
-     processing of the <replaceable>statements</replaceable> is
-     abandoned, and control passes to the <literal>EXCEPTION</literal> list.
-     The list is searched for the first <replaceable>condition</replaceable>
-     matching the error that occurred.  If a match is found, the
-     corresponding <replaceable>handler_statements</replaceable> are
-     executed, and then control passes to the next statement after
-     <literal>END</literal>.  If no match is found, the error propagates out
-     as though the <literal>EXCEPTION</literal> clause were not there at all:
-     the error can be caught by an enclosing block with
-     <literal>EXCEPTION</literal>, or if there is none it aborts processing
-     of the function.
+Se non si verificano errori, questa forma di blocco semplicemente esegue tutte le
+istruzioni <replaceable>statements</replaceable>, e quindi il controllo passa
+alla successiva istruzione dopo <literal>END</literal>. Ma se un errore
+accade all'interno di <replaceable>statements</replaceable>, l'ulteriore elaborazione
+di istruzioni <replaceable>statements</replaceable> viene abbandonata,
+e il controllo passa all'elenco <literal>EXCEPTION</literal>.
+L'elenco viene cercato per la prima <replaceable>condition</replaceable>
+corrispondente all'errore accaduto. Se viene trovata una corrispondenza, 
+vengono eseguite le corrispondenti istruzioni <replaceable>handler_statements</replaceable>,
+e quindi il controllo passa alla successiva istruzione dopo 
+<literal>END</literal>. Se non vengono trovate corrispondenze, l'errore si propaga  
+sebbene la clausola <literal>EXCEPTION</literal> non ci fosse stata:
+l'errore può essere catturato da un blocco con <literal>EXCEPTION</literal>,
+o se non ce ne sono esso annulla l'elaborazione della funzione.
     </para>
 
     <para>
-     The <replaceable>condition</replaceable> names can be any of
-     those shown in <xref linkend="errcodes-appendix"/>.  A category
-     name matches any error within its category.  The special
-     condition name <literal>OTHERS</literal> matches every error type except
-     <literal>QUERY_CANCELED</literal>.  (It is possible, but often unwise,
-     to trap <literal>QUERY_CANCELED</literal> by name.)  Condition names are
-     not case-sensitive.  Also, an error condition can be specified
-     by <literal>SQLSTATE</literal> code; for example these are equivalent:
+I nomi delle condizioni <replaceable>condition</replaceable> possono essere 
+qualsiasi di quelli mostrati in <xref linkend="errcodes-appendix"/>. Un nome di categoria
+corrisponde a qualsiasi errore all'interno della sua categoria. Il nome della condizione speciale
+<literal>OTHERS</literal> corrisponde ad ogni tipo di errore ad eccezione di 
+<literal>QUERY_CANCELED</literal>.  (È possibile, ma spesso imprudente,
+intercettare <literal>QUERY_CANCELED</literal> dal nome). I nomi delle condizioni non 
+sono sensibili al case. Inoltre, una condizione di errore può essere specificata
+dal codice <literal>SQLSTATE</literal>; per esempio, questi sono equivalenti:
 <programlisting>
 WHEN division_by_zero THEN ...
 WHEN SQLSTATE '22012' THEN ...
@@ -2276,18 +2274,18 @@ WHEN SQLSTATE '22012' THEN ...
     </para>
 
     <para>
-     If a new error occurs within the selected
-     <replaceable>handler_statements</replaceable>, it cannot be caught
-     by this <literal>EXCEPTION</literal> clause, but is propagated out.
-     A surrounding <literal>EXCEPTION</literal> clause could catch it.
+Se succede un nuovo errore all'interno delle istruzioni 
+<replaceable>handler_statements</replaceable>, non può essere catturato 
+da questa clausola <literal>EXCEPTION</literal>, ma viene propagato al di fuori.
+Una clausola <literal>EXCEPTION</literal> circostante potrebbe intercettarlo.
     </para>
 
     <para>
-     When an error is caught by an <literal>EXCEPTION</literal> clause,
-     the local variables of the <application>PL/pgSQL</application> function
-     remain as they were when the error occurred, but all changes
-     to persistent database state within the block are rolled back.
-     As an example, consider this fragment:
+Quando un errore è catturato da una clausola <literal>EXCEPTION</literal>,
+le variabili locali della funzione <application>PL/pgSQL</application>
+rimangono come erano quando l'errore è accaduto, ma tutti i cambiamenti
+allo stato persistente del database all'interno del blocco sono sottoposti a rollback.
+Come esempio, considerare questo frammento:
 
 <programlisting>
 INSERT INTO mytab(firstname, lastname) VALUES('Tom', 'Jones');
@@ -2302,40 +2300,41 @@ EXCEPTION
 END;
 </programlisting>
 
-     When control reaches the assignment to <literal>y</literal>, it will
-     fail with a <literal>division_by_zero</literal> error.  This will be caught by
-     the <literal>EXCEPTION</literal> clause.  The value returned in the
-     <command>RETURN</command> statement will be the incremented value of
-     <literal>x</literal>, but the effects of the <command>UPDATE</command> command will
-     have been rolled back.  The <command>INSERT</command> command preceding the
-     block is not rolled back, however, so the end result is that the database
-     contains <literal>Tom Jones</literal> not <literal>Joe Jones</literal>.
+Quando il controllo raggiunge l'assegnazione a <literal>y</literal>, fallirà
+con un errore <literal>division_by_zero</literal>. Questo sarà catturato dalla 
+clausola <literal>EXCEPTION</literal>. Il valore restituito nell'istruzione 
+<command>RETURN</command> sarà il valore incrementato di
+<literal>x</literal>, ma gli effetti del comando <command>UPDATE</command> saranno stati
+sottoposti a rollback. Il comando <command>INSERT</command> precedente il blocco 
+non è sottoposto a rollback, comunque, quindi il risultato finale è che il database
+contiene <literal>Tom Jones</literal> e  non <literal>Joe Jones</literal>.
+
     </para>
 
     <tip>
      <para>
-      A block containing an <literal>EXCEPTION</literal> clause is significantly
-      more expensive to enter and exit than a block without one.  Therefore,
-      don't use <literal>EXCEPTION</literal> without need.
+Un blocco contenente una clausola <literal>EXCEPTION</literal> è significativamente 
+più costoso da entrare e uscire rispetto a un blocco senza. Per questo,
+non usare <literal>EXCEPTION</literal> senza bisogno.
      </para>
     </tip>
 
     <para>
-     Within an exception handler, the <varname>SQLSTATE</varname>
-     variable contains the error code that corresponds to the
-     exception that was raised (refer to <xref
-     linkend="errcodes-table"/> for a list of possible error
-     codes). The <varname>SQLERRM</varname> variable contains the
-     error message associated with the exception. These variables are
-     undefined outside exception handlers.
+All'interno di un gestore di eccezione, la variabile <varname>SQLSTATE</varname>
+contiene il codice dell'errore che corrisponde all'eccezione che è
+stata generata (si veda <xref
+linkend="errcodes-table"/> per un elenco dei possibili codici di errore).
+La variabile <varname>SQLERRM</varname> contiene il messaggio di errore 
+associato con l'eccezione. Queste variabili sono 
+indefinite all'esterno del gestore di eccezione.
     </para>
 
     <example id="plpgsql-upsert-example">
-    <title>Exceptions with <command>UPDATE</command>/<command>INSERT</command></title>
+    <title>Eccezioni con <command>UPDATE</command>/<command>INSERT</command></title>
     <para>
 
-    This example uses exception handling to perform either
-    <command>UPDATE</command> or <command>INSERT</command>, as appropriate:
+Questo esempio usa la gestione delle eccezioni per eseguire o una 
+<command>UPDATE</command> o una <command>INSERT</command>, come appropriato:
 
 <programlisting>
 CREATE TABLE db (a INT PRIMARY KEY, b TEXT);
@@ -2344,19 +2343,19 @@ CREATE FUNCTION merge_db(key INT, data TEXT) RETURNS VOID AS
 $$
 BEgin
     LOOP
-        -- first try to update the key
+        -- prima prova ad aggiornare la chiave 
         UPDATE db SET b = data WHERE a = key;
         IF found THEN
             RETURN;
         END IF;
-        -- not there, so try to insert the key
-        -- if someone else inserts the same key concurrently,
-        -- we could get a unique-key failure
+        -- non trovata, quindi prova ad inserire la chiave
+        -- se qualcun altro inserisce la stessa chiave concorrentemente,
+        -- potremmo ottenere un fallimento unique-key
         BEgin
             INSERT INTO db(a,b) VALUES (key, data);
             RETURN;
         EXCEPTION WHEN unique_violation THEN
-            -- do nothing, and loop to try the UPDATE again
+            -- non fa niente, e cicla per provare di nuovo l'UPDATE
         END;
     END LOOP;
 END;
@@ -2373,36 +2372,36 @@ SELECT merge_db(1, 'dennis');
   </sect1>
 
   <sect1 id="plpgsql-cursors">
-   <title>Cursors</title>
+   <title>Cursori</title>
 
    <indexterm zone="plpgsql-cursors">
-    <primary>cursor</primary>
+    <primary>cursore</primary>
     <secondary>in PL/pgSQL</secondary>
    </indexterm>
 
    <para>
-    Rather than executing a whole query at once, it is possible to set
-    up a <firstterm>cursor</firstterm> that encapsulates the query, and then read
-    the query result a few rows at a time. One reason for doing this is
-    to avoid memory overrun when the result contains a large number of
-    rows. (However, <application>PL/pgSQL</application> users do not normally need
-    to worry about that, since <literal>FOR</literal> loops automatically use a cursor
-    internally to avoid memory problems.) A more interesting usage is to
-    return a reference to a cursor that a function has created, allowing the
-    caller to read the rows. This provides an efficient way to return
-    large row sets from functions.
+Piuttosto che eseguire l'intera query tutta insieme, è possibile impostare un 
+<firstterm>cursore</firstterm> che incapsula la query, e quindi legge 
+il risultato della query un po' di righe alla volta. Un aragione per fare questo è
+di evitare l'eccedere di memoria quando il risultato contiene un gran numero di 
+righe. (Comunque, gli utenti di <application>PL/pgSQL</application>  normalmente non devo preoccuparsi
+di questo, dato che i cicli <literal>FOR</literal> internamente usano automaticamente un cursore
+per evitare problemi di memoria). Un utilizzo più interessante e di 
+restituire un riferimento a un cursore che una funzione ha creato, permettendo 
+al chiamante di leggere le righe. Questo fornisce un modo efficiente di restituire 
+grandi insiemi di righe da funzioni.
    </para>
 
    <sect2 id="plpgsql-cursor-declarations">
-    <title>Declaring Cursor Variables</title>
+    <title>Dichiarare variabili cursore</title>
 
     <para>
-     All access to cursors in <application>PL/pgSQL</application> goes through
-     cursor variables, which are always of the special data type
-     <type>refcursor</type>.  One way to create a cursor variable
-     is just to declare it as a variable of type <type>refcursor</type>.
-     Another way is to use the cursor declaration syntax,
-     which in general is:
+Tutto l'accesso ai cursori in <application>PL/pgSQL</application> avviene attraverso
+variabili cursore, che sono sempre del tipo 
+<type>refcursor</type>. Un modo di creare una variabile cursore 
+e semplicemente dichiararla come variabile del tipo <type>refcursor</type>.
+Un altro modo è di usare la sintassi di dichiarazione di cursore, 
+che in generale è:
 <synopsis>
 <replaceable>name</replaceable> <optional> <optional> NO </optional> SCROLL </optional> CURSOR <optional> ( <replaceable>arguments</replaceable> ) </optional> FOR <replaceable>query</replaceable>;
 </synopsis>

@@ -201,7 +201,7 @@ con il linguaggio di programmazione usato dall'interfaccia.
 
   <partintro>
    <para>
-Questa parte tratta l'estensione delle dunzionalità del server con
+Questa parte tratta l'estensione delle funzionalità del server con
 funzioni definite dall'utente, tipi di dato, trigger, ecc. Questi sono
 argomenti avanzati che dovrebbero, probabilmente, essere affrontati solo dopo 
 che tutta l'altra documentazione su <productname>PostgreSQL</productname>
@@ -209,7 +209,7 @@ che tutta l'altra documentazione su <productname>PostgreSQL</productname>
 di programmazione lato server disponibili in 
 <productname>PostgreSQL</productname> così come questioni generali
 sui linguaggi di programmazione lato server. È essenziale
-leggere almeno le prime sezioni di <xref
+leggere almeno le prime sezioni del <xref
 linkend="extend"/> (che trattano le funzioni) prima di addentrarsi nel 
 materiale sui lunguaggi di programmazione lato server.
    </para>

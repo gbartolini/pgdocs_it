@@ -62,7 +62,7 @@ e dato che <productname>PostgreSQL</productname> basa le sue operazioni
 su queste tabelle, questo significa che <productname>PostgreSQL</productname> può essere
 esteso dall'utente. Per fare un paragone, i sistemi di database convenzionali    
 possono essere estesi solo cambiando procedure nel codice sorgente
-o caricando moduli scritti appositamente dal distributore del <acronym>DBMS</acronym>
+o caricando moduli scritti appositamente dal distributore del <acronym>DBMS</acronym>.
    </para>
 
    <para>
@@ -150,7 +150,7 @@ cosa permette il sottostante tipo di base.
     <para>
 I domini possono essere creati usando il comando <acronym>SQL</acronym>
 <xref linkend="sql-createdomain"/>.
-     Their creation and use is not discussed in this chapter.
+La loro creazione ed utilizzo non sono discussi in questo capitolo.
     </para>
    </sect2>
 
@@ -162,13 +162,13 @@ Ci sono alcuni <quote>pseudo-tipi</quote> per scopi speciali.
 Gli pseudo-tipi non possono apparire come colonne di tabelle o attributi 
 di tipi composti, ma possono essere usati per dichiarare i tipi degli argomenti 
 e del valore di ritorno delle funzioni. Questo fornisce un meccanismo all'interno
-del sistema di tipo per identificare classi di funzioni speciali. <xref
+del sistema dei tipi per identificare classi di funzioni speciali. <xref
 linkend="datatype-pseudotypes-table"/> elenca gli pseudo-tipi esistenti.
     </para>
    </sect2>
 
    <sect2 id="extend-types-polymorphic">
-    <title>Tipi polimorfi</title>
+    <title>Tipi polimorfici</title>
 
    <indexterm zone="extend-types-polymorphic">
     <primary>tipo polimorfico</primary>
@@ -193,14 +193,14 @@ Quattro pseudo-tipi di speciale interesse sono <type>anyelement</type>,
 <type>anyarray</type>, <type>anynonarray</type> e <type>anyenum</type>,
 che sono chiamati collettivamente <firstterm>tipi polimorfici</firstterm>. 
 Qualsiasi funzione dichiarata usando questi tipi è definita 
-una <firstterm>funzione polimorfica</firstterm>. Una funzione polimorfica può
+<firstterm>funzione polimorfica</firstterm>. Una funzione polimorfica può
 operare su diversi tipi di dato, con lo specifico tipo/i di dato  
 determinato dai tipi di dato effettivamente passati ad essa in una particolare chiamata.
     </para>
 
     <para>
 Gli argomenti polimorfici e i risultati sono legati l'uni gli altri e vengono risolti 
-da uno specifico tipo di dato quando la chiamata di una funzione polimorfica viene 
+ad uno specifico tipo di dato quando la chiamata di una funzione polimorfica viene 
 sottoposta al parsing. Ogni posizione (o il valore dell'argomento o il valore di ritorno) dichiarata come
 <type>anyelement</type> può avere qualsiasi tipo di dato, ma 
 in ogni data chiamata devono essere tutti dello <emphasis>stesso</emphasis> tipo effettivo.

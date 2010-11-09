@@ -1102,7 +1102,9 @@ i valori testualmente anche se sono solamente valori di dati.
 
     <para>
      An <command>EXECUTE</command> with a simple constant command string and some 
+Un <command>EXECUTE</command> con una semplice stringa si comando costante e alcuni
      <literal>USING</literal> parameters, as in the first example above, is
+parametri <literal>USING</literal>, 
      functionally equivalent to just writing the command directly in
      <application>PL/pgSQL</application> and allowing replacement of
      <application>PL/pgSQL</application> variables to happen automatically.
@@ -1209,32 +1211,33 @@ EXECUTE 'UPDATE tbl SET '
         || ' WHERE key = '
         || quote_nullable(keyvalue);
 </programlisting>
-     If you are dealing with values that might be null, you should usually
-     use <function>quote_nullable</function> in place of <function>quote_literal</function>.
+Se si stanno trattando valori che potrebbero essere null, si dovrebbe di solito
+usare <function>quote_nullable</function> al posto di <function>quote_literal</function>.
     </para>
 
     <para>
-     As always, care must be taken to ensure that null values in a query do
-     not deliver unintended results.  For example the <literal>WHERE</literal> clause
+Come al solito, dev'essere posta attenzione che i valori null in una query
+non portino a risultati non voluti. 
+Per esempio la clausola <literal>WHERE</literal>
 <programlisting>
 'WHERE key = ' || quote_nullable(keyvalue)
 </programlisting>
-     will never succeed if <literal>keyvalue</literal> is null, because the
-     result of using the equality operator <literal>=</literal> with a null operand
-     is always null.  If you wish null to work like an ordinary key value,
-     you would need to rewrite the above as
+non avrà mai successo se <literal>keyvalue</literal> è null, dato che
+il risultato di usare l'operatore uguale <literal>=</literal> con un operando null
+è sempre null. Se si desidera che null funzioni come un valore chiave normale,
+si dovrà riscrivere il sopra come
 <programlisting>
 'WHERE key IS NOT DISTINCT FROM ' || quote_nullable(keyvalue)
 </programlisting>
-     (At present, <literal>IS NOT DISTINCT FROM</literal> is handled much less
-     efficiently than <literal>=</literal>, so don't do this unless you must.
-     See <xref linkend="functions-comparison"/> for
-     more information on nulls and <literal>IS DISTINCT</literal>.)
+(Al momento, <literal>IS NOT DISTINCT FROM</literal> viene gestito molto meno
+efficientemente di <literal>=</literal>, quindi non farlo a meno che non si debba.
+Si veda <xref linkend="functions-comparison"/> per 
+maggiori informazioni sui null e <literal>IS DISTINCT</literal>).
     </para>
 
     <para>
-     Note that dollar quoting is only useful for quoting fixed text.
-     It would be a very bad idea to try to write this example as:
+Notare che la quitazione con dollari è utile solo per quotare testo fisso.
+Sarebbe una cattiva idea provare a scrivere questo esempio come:
 <programlisting>
 EXECUTE 'UPDATE tbl SET '
         || quote_ident(colname)
@@ -1253,135 +1256,131 @@ EXECUTE 'UPDATE tbl SET '
    </example>
 
     <para>
-     A much larger example of a dynamic command and
-     <command>EXECUTE</command> can be seen in <xref
-     linkend="plpgsql-porting-ex2"/>, which builds and executes a
-     <command>CREATE FUNCTION</command> command to define a new function.
+Un esempio più vasto di comando dinamico e 
+<command>EXECUTE</command> si trova in <xref
+linkend="plpgsql-porting-ex2"/>, che costruisce ed esegue un comando
+<command>CREATE FUNCTION</command> per definire una nuova funzione.
     </para>
    </sect2>
 
    <sect2 id="plpgsql-statements-diagnostics">
-    <title>Obtaining the Result Status</title>
+    <title>Ottenere lo stato del risultato</title>
 
     <para>
-     There are several ways to determine the effect of a command. The
-     first method is to use the <command>GET DIAGNOSTICS</command>
-     command, which has the form:
+Ci sono diversi modi di determinare l'effetto di un comando. Il primo metodo 
+è di usare il comando <command>GET DIAGNOSTICS</command>,
+che ha la forma:
 
 <synopsis>
 GET DIAGNOSTICS <replaceable>variable</replaceable> = <replaceable>item</replaceable> <optional> , ... </optional>;
 </synopsis>
 
-     This command allows retrieval of system status indicators.  Each
-     <replaceable>item</replaceable> is a key word identifying a state
-     value to be assigned to the specified variable (which should be
-     of the right data type to receive it).  The currently available
-     status items are <varname>ROW_COUNT</varname>, the number of rows
-     processed by the last <acronym>SQL</acronym> command sent to
-     the <acronym>SQL</acronym> engine, and <varname>RESULT_OID</varname>,
-     the OID of the last row inserted by the most recent
-     <acronym>SQL</acronym> command.  Note that <varname>RESULT_OID</varname>
-     is only useful after an <command>INSERT</command> command into a
-     table containing OIDs.
+Questo comando permettere il recupero di indicatori dello stato del sistema. Ogni
+<replaceable>item</replaceable> è una parola chiave che identifica il valore di uno stato
+da assegnare alla specifica variabile (che dovrebbe essere del giusto tipo per
+riceverlo). Gli elementi di stato attualmente disponibili sono <varname>ROW_COUNT</varname>, 
+il numero di righe elaborate dall'ultimo comando <acronym>SQL</acronym> 
+mandato al motore <acronym>SQL</acronym>, e <varname>RESULT_OID</varname>,
+l'OID dell'ultima riga inserita dal più recente
+comando <acronym>SQL</acronym>. Notare che <varname>RESULT_OID</varname>
+è utile solo dopo un comando <command>INSERT</command> in una tabella contenente
+OID.
     </para>
 
     <para>
-     An example:
+Un esempio:
 <programlisting>
 GET DIAGNOSTICS integer_var = ROW_COUNT;
 </programlisting>
     </para>
 
     <para>
-     The second method to determine the effects of a command is to check the
-     special variable named <literal>FOUND</literal>, which is of
-     type <type>boolean</type>.  <literal>FOUND</literal> starts out
-     false within each <application>PL/pgSQL</application> function call.
-     It is set by each of the following types of statements:
+Il secondo metodo per determinare gli effetti di un comando è di controllare 
+la variabile speciale chiamata <literal>FOUND</literal>, che è di tipo
+<type>boolean</type>.  <literal>FOUND</literal> all'inizio è
+false all'interno di ogni chiamata di funzione <application>PL/pgSQL</application>.
+È impostata da ognuno dei seguenti tipi di istruzione:
 
          <itemizedlist>
           <listitem>
            <para>
-            A <command>SELECT INTO</command> statement sets
-            <literal>FOUND</literal> true if a row is assigned, false if no
-            row is returned.
+Un'istruzione <command>SELECT INTO</command> imposta 
+<literal>FOUND</literal> a true se una riga viene assegnata, 
+false se non viene restituita nessuna riga.
            </para>
           </listitem>
           <listitem>
            <para>
-            A <command>PERFORM</command> statement sets <literal>FOUND</literal>
-            true if it produces (and discards) one or more rows, false if
-            no row is produced.
+Un'istruzione <command>PERFORM</command> imposta <literal>FOUND</literal>
+a true se produce (e scarta) una o più righe, false se non vengono prodotte righe.
            </para>
           </listitem>
           <listitem>
            <para>
-            <command>UPDATE</command>, <command>INSERT</command>, and <command>DELETE</command>
-            statements set <literal>FOUND</literal> true if at least one
-            row is affected, false if no row is affected.
+Le istruzioni <command>UPDATE</command>, <command>INSERT</command>, e <command>DELETE</command>
+impostano <literal>FOUND</literal> a true se almeno una riga è coinvolta, 
+false se nessuna riga è interessata.
            </para>
           </listitem>
           <listitem>
            <para>
-            A <command>FETCH</command> statement sets <literal>FOUND</literal>
-            true if it returns a row, false if no row is returned.
+Un'istruzione <command>FETCH</command> imposta <literal>FOUND</literal>
+a true se restituisce una riga, false se non viene restituita nessuna riga.
            </para>
           </listitem>
           <listitem>
            <para>
-            A <command>MOVE</command> statement sets <literal>FOUND</literal>
-            true if it successfully repositions the cursor, false otherwise.
+Un'istruzione <command>MOVE</command> imposta <literal>FOUND</literal> a true
+se riposiziona con successo il cursore, altrimenti false.
            </para>
           </listitem>
 
           <listitem>
            <para>
-            A <command>FOR</command> statement sets <literal>FOUND</literal> true
-            if it iterates one or more times, else false.  This applies to
-            all four variants of the <command>FOR</command> statement (integer
-            <command>FOR</command> loops, record-set <command>FOR</command> loops,
-            dynamic record-set <command>FOR</command> loops, and cursor
-            <command>FOR</command> loops).
-            <literal>FOUND</literal> is set this way when the
-            <command>FOR</command> loop exits; inside the execution of the loop,
-            <literal>FOUND</literal> is not modified by the
-            <command>FOR</command> statement, although it might be changed by the
-            execution of other statements within the loop body.
+Un'istruzione <command>FOR</command> imposta <literal>FOUND</literal> a true
+se itera una o più volte, altrimenti false. Questo si applica a tutte le quattro varianti di 
+dell'istruzione <command>FOR</command> (cicli <command>FOR</command> di interi, 
+cicli <command>FOR</command> di insiemi di record, cicli <command>FOR</command> di
+insiemi di record dinamici e cicli <command>FOR</command> di cursori).
+<literal>FOUND</literal> è impostato in questo modo quando 
+il ciclo <command>FOR</command> esiste; all'interno dell'esecuzione del loop,
+<literal>FOUND</literal> non viene modificato dall'istruzione 
+<command>FOR</command>, sebbene potrebbe essere cambiato dall'esecuzione
+di altre istruzioni all'interno del corpo del ciclo.
            </para>
           </listitem>
           <listitem>
            <para>
-            A <command>RETURN QUERY</command> and <command>RETURN QUERY
-            EXECUTE</command> statements set <literal>FOUND</literal>
-            true if the query returns at least one row, false if no row
-            is returned.
+Le istruzioni <command>RETURN QUERY</command> e <command>RETURN QUERY
+EXECUTE</command> impostano <literal>FOUND</literal>
+a true se la query restituisce almeno una riga, false se non viene restituita nessuna riga.
            </para>
           </listitem>
          </itemizedlist>
 
-     Other <application>PL/pgSQL</application> statements do not change
-     the state of <literal>FOUND</literal>.
-     Note in particular that <command>EXECUTE</command>
-     changes the output of <command>GET DIAGNOSTICS</command>, but
-     does not change <literal>FOUND</literal>.
+Altre istruzioni <application>PL/pgSQL</application> non camnbiano
+lo stato di <literal>FOUND</literal>.
+Notare in particolare che <command>EXECUTE</command> cambia l'output
+di <command>GET DIAGNOSTICS</command>, ma non cambia 
+<literal>FOUND</literal>.
     </para>
 
     <para>
-     <literal>FOUND</literal> is a local variable within each
-     <application>PL/pgSQL</application> function; any changes to it
-     affect only the current function.
+<literal>FOUND</literal> è una variabile locale all'interno di ogni 
+funzione <application>PL/pgSQL</application>; qualsiasi cambiamento di essa
+interessa solo la funzione corrente.
     </para>
 
    </sect2>
 
    <sect2 id="plpgsql-statements-null">
-    <title>Doing Nothing At All</title>
+    <title>Non fare assolutamente niente</title>
 
     <para>
-     Sometimes a placeholder statement that does nothing is useful.
-     For example, it can indicate that one arm of an if/then/else
-     chain is deliberately empty.  For this purpose, use the
-     <command>NULL</command> statement:
+A volte è utile un'istruzione "segnaposto" che non faccia niente.
+Per esempio, potrebbe indicare che un anello della catena if/then/else
+è deliberatamente vuoto. Per questo scopo, usare l'istruzione
+<command>NULL</command>:
 
 <synopsis>
 NULL;
@@ -1389,32 +1388,31 @@ NULL;
     </para>
 
     <para>
-     For example, the following two fragments of code are equivalent:
+Per esempio, i seguenti due frammenti di codice sono equivalenti:
 <programlisting>
-BEgin
+BEGIN
     y := x / 0;
 EXCEPTION
     WHEN division_by_zero THEN
-        NULL;  -- ignore the error
+        NULL;  -- ignorare l'errore
 END;
 </programlisting>
 
 <programlisting>
-BEgin
+BEGIN
     y := x / 0;
 EXCEPTION
-    WHEN division_by_zero THEN  -- ignore the error
+    WHEN division_by_zero THEN  -- ignorare l'errore
 END;
 </programlisting>
-     Which is preferable is a matter of taste.
+Quale sia preferibile è una questione di gusti.
     </para>
 
     <note>
      <para>
-      In Oracle's PL/SQL, empty statement lists are not allowed, and so
-      <command>NULL</command> statements are <emphasis>required</emphasis> for situations
-      such as this.  <application>PL/pgSQL</application> allows you to
-      just write nothing, instead.
+In  PL/SQL di Oracle, elenchi di istruzione vuoti non sono permessi, e quindi 
+le istruzioni <command>NULL</command> sono <emphasis>richieste</emphasis> per situazioni
+come questa. <application>PL/pgSQL</application> invece permette di non scrivere niente.
      </para>
     </note>
 
@@ -1422,23 +1420,23 @@ END;
   </sect1>
 
   <sect1 id="plpgsql-control-structures">
-   <title>Control Structures</title>
+   <title>Strutture di controllo</title>
 
    <para>
-    Control structures are probably the most useful (and
-    important) part of <application>PL/pgSQL</application>. With
-    <application>PL/pgSQL</application>'s control structures,
-    you can manipulate <productname>PostgreSQL</productname> data in a very
-    flexible and powerful way.
+Le strutture di controllo sono probabilmente la parte più utile (e
+importante) di <application>PL/pgSQL</application>. Con le
+strutture di controllo di <application>PL/pgSQL</application>,
+è possibile manipolare i dati di <productname>PostgreSQL</productname>
+in modo molto flessibile e potente.
    </para>
 
    <sect2 id="plpgsql-statements-returning">
-    <title>Returning From a Function</title>
+    <title>Ritorno da una funzione</title>
 
     <para>
-     There are two commands available that allow you to return data
-     from a function: <command>RETURN</command> and <command>RETURN
-     NEXT</command>.
+Ci sono due comandi disponibili che permettono di restituire dati 
+da una funzione: <command>RETURN</command> e <command>RETURN
+NEXT</command>.
     </para>
 
     <sect3>
@@ -1449,47 +1447,48 @@ RETURN <replaceable>expression</replaceable>;
 </synopsis>
 
      <para>
-      <command>RETURN</command> with an expression terminates the
-      function and returns the value of
-      <replaceable>expression</replaceable> to the caller.  This form
-      is used for <application>PL/pgSQL</application> functions that do
-      not return a set.
+<command>RETURN</command> con un'espressione termina la funzione
+e ritorna il valore di 
+<replaceable>expression</replaceable> al chiamante. Questa forma è usata 
+per funzioni <application>PL/pgSQL</application> che non restituiscono un
+insieme.
      </para>
 
      <para>
-      When returning a scalar type, any expression can be used. The
-      expression's result will be automatically cast into the
-      function's return type as described for assignments. To return a
-      composite (row) value, you must write a record or row variable
-      as the <replaceable>expression</replaceable>.
+Quando si restituisce un tipo scalare, può essere usata qualsiasi espressione. 
+Il risultato dell'espressione sarà automaticamente convertito al tipo di 
+ritorno della funzione come descritto per le assegnazioni. Per restituire un valore
+composto (riga), si deve scrivere una variabile record o riga
+come <replaceable>expression</replaceable>.
      </para>
 
      <para>
-      If you declared the function with output parameters, write just
-      <command>RETURN</command> with no expression.  The current values
-      of the output parameter variables will be returned.
+Se si dichiara la funzione con parametri di output, scrivere solo
+<command>RETURN</command> senza espressione. Saranno restituiti i 
+valori attuali dei parametri di 
+output. 
      </para>
 
      <para>
-      If you declared the function to return <type>void</type>, a
-      <command>RETURN</command> statement can be used to exit the function
-      early; but do not write an expression following
-      <command>RETURN</command>.
+Se si dichiara la funzione per ritornare <type>void</type>, un'istruzione
+<command>RETURN</command> può essere usata per uscire dalla funzione
+in anticipo; ma non scrivere un espressione dopo 
+<command>RETURN</command>.
      </para>
 
      <para>
-      The return value of a function cannot be left undefined. If
-      control reaches the end of the top-level block of the function
-      without hitting a <command>RETURN</command> statement, a run-time
-      error will occur.  This restriction does not apply to functions
-      with output parameters and functions returning <type>void</type>,
-      however.  In those cases a <command>RETURN</command> statement is
-      automatically executed if the top-level block finishes.
+Il valore di ritorno di una funzione non può essere lasciato indefinito. Se
+il controllo raggiunge la fine del blocco superiore della funzione
+senza incontrare un'istruzione <command>RETURN</command>, viene generato un errore
+in fase di esecuzione. Questa restrizione comunque non si applica a funzioni
+con parametri di output e funzioni che restituiscono <type>void</type>.
+In quei casi un'istruzione <command>RETURN</command> viene eseguita automaticamente 
+quando il blocco superiore finisce.
      </para>
     </sect3>
 
     <sect3>
-     <title><command>RETURN NEXT</command> and <command>RETURN QUERY</command></title>
+     <title><command>RETURN NEXT</command> e <command>RETURN QUERY</command></title>
     <indexterm>
      <primary>RETURN NEXT</primary>
      <secondary>in PL/PgSQL</secondary>
@@ -1506,60 +1505,59 @@ RETURN QUERY EXECUTE <replaceable class="command">command-string</replaceable> <
 </synopsis>
 
      <para>
-      When a <application>PL/pgSQL</application> function is declared to return
-      <literal>SETOF <replaceable>sometype</replaceable></literal>, the procedure
-      to follow is slightly different.  In that case, the individual
-      items to return are specified by a sequence of <command>RETURN
-      NEXT</command> or <command>RETURN QUERY</command> commands, and
-      then a final <command>RETURN</command> command with no argument
-      is used to indicate that the function has finished executing.
-      <command>RETURN NEXT</command> can be used with both scalar and
-      composite data types; with a composite result type, an entire
-      <quote>table</quote> of results will be returned.
-      <command>RETURN QUERY</command> appends the results of executing
-      a query to the function's result set. <command>RETURN
-      NEXT</command> and <command>RETURN QUERY</command> can be freely
-      intermixed in a single set-returning function, in which case
-      their results will be concatenated.
+Quando una funzione <application>PL/pgSQL</application> viene dichiarata per restituire
+<literal>SETOF <replaceable>sometype</replaceable></literal>, la procedura
+da seguire e leggermente diversa. In quel caso, gli elementi individuali 
+da restituire sono specificati da una sequenza di comandi <command>RETURN
+NEXT</command> o <command>RETURN QUERY</command>, e 
+quindi un comando <command>RETURN</command> finale senza argomenti
+viene usato epr indicare che la funzione ha terminato l'esecuzione.
+<command>RETURN NEXT</command> può essere usato sia con tipi di dato scalari che composti;
+con un tipo di risultato composto, sarà restituita un'intera <quote>table</quote>.
+<command>RETURN QUERY</command> aggiunge i risultati dell'esecuzione di una query
+all'insieme dei risultati della funzione. <command>RETURN
+NEXT</command> e <command>RETURN QUERY</command> possono essere liberamente
+interscambiati in una singola funzione che ritorna un insieme, nel qual caso 
+i loro risultati saranno concatenati.
      </para>
 
      <para>
-      <command>RETURN NEXT</command> and <command>RETURN
-      QUERY</command> do not actually return from the function &mdash;
-      they simply append zero or more rows to the function's result
-      set.  Execution then continues with the next statement in the
-      <application>PL/pgSQL</application> function.  As successive
-      <command>RETURN NEXT</command> or <command>RETURN
-      QUERY</command> commands are executed, the result set is built
-      up.  A final <command>RETURN</command>, which should have no
-      argument, causes control to exit the function (or you can just
-      let control reach the end of the function).
+<command>RETURN NEXT</command> e <command>RETURN
+QUERY</command> in realtà non ritornano dalla funzione -
+semplicemente aggiungono zero o più righe al risultato di una funzione.
+L'esecuzione quindi continua con la prossima istruzione nella funzione 
+<application>PL/pgSQL</application>. Come vengono eseguiti successivi
+comandi <command>RETURN NEXT</command> o <command>RETURN
+QUERY</command>, l'insieme risultato è formato.
+Un <command>RETURN</command> finale, che non dovrebbe avere argomenti,
+causa che il controllo esca dalla funzione (o è possibile
+lasciare che il controllo raggiunga la fine della funzione).
      </para>
 
      <para>
-      <command>RETURN QUERY</command> has a variant
-      <command>RETURN QUERY EXECUTE</command>, which specifies the
-      query to be executed dynamically.  Parameter expressions can
-      be inserted into the computed query string via <literal>USING</literal>,
-      in just the same way as in the <command>EXECUTE</command> command.
+<command>RETURN QUERY</command> ha una variante 
+<command>RETURN QUERY EXECUTE</command>, che specifica che la query sia 
+eseguita dinamicamente. Espressioni di parametro possono essere inserite 
+nella stringa calcolata della query attraverso <literal>USING</literal>,
+nello stesso modo del comando <command>EXECUTE</command>.
      </para>
 
      <para>
-      If you declared the function with output parameters, write just
-      <command>RETURN NEXT</command> with no expression.  On each
-      execution, the current values of the output parameter
-      variable(s) will be saved for eventual return as a row of the
-      result.  Note that you must declare the function as returning
-      <literal>SETOF record</literal> when there are multiple output
-      parameters, or <literal>SETOF <replaceable>sometype</replaceable></literal>
-      when there is just one output parameter of type
-      <replaceable>sometype</replaceable>, in order to create a set-returning
-      function with output parameters.
+Se si è dichiarata la funzione senza parametri di output, scrivere
+solo <command>RETURN NEXT</command>  senza espressione. Ad ogni esecuzione,  
+i valori correnti della variabile/i parametro di output saranno salvati 
+per l'eventuale ritorno come riga del risultato.
+Si noti che si deve dichiarare la funzione in modo che ritorni  
+<literal>SETOF record</literal> quando ci sono molteplici parametri di output, 
+o <literal>SETOF <replaceable>sometype</replaceable></literal>
+quando c'è sono un parametro di output di tipo
+<replaceable>sometype</replaceable>, per creare una funzione che restituisce un insieme 
+con parametri di output.
      </para>
 
      <para>
-      Here is an example of a function using <command>RETURN
-      NEXT</command>:
+Ecco un esempio di una funzione che usa  <command>RETURN
+NEXT</command>:
 
 <programlisting>
 CREATE TABLE foo (fooid INT, foosubid INT, fooname TEXT);
@@ -1574,8 +1572,8 @@ BEgin
     FOR r IN SELECT * FROM foo
     WHERE fooid &gt; 0
     LOOP
-        -- can do some processing here
-        RETURN NEXT r; -- return current row of SELECT
+        -- qui è possibile fare elaborazioni
+        RETURN NEXT r; -- restituisce la riga corrente della SELECT
     END LOOP;
     RETURN;
 END
@@ -1588,33 +1586,33 @@ SELECT * FROM getallfoo();
 
      <note>
       <para>
-       The current implementation of <command>RETURN NEXT</command>
-       and <command>RETURN QUERY</command> stores the entire result set
-       before returning from the function, as discussed above.  That
-       means that if a <application>PL/pgSQL</application> function produces a
-       very large result set, performance might be poor: data will be
-       written to disk to avoid memory exhaustion, but the function
-       itself will not return until the entire result set has been
-       generated.  A future version of <application>PL/pgSQL</application> might
-       allow users to define set-returning functions
-       that do not have this limitation.  Currently, the point at
-       which data begins being written to disk is controlled by the
-       <xref linkend="guc-work-mem"/>
-       configuration variable.  Administrators who have sufficient
-       memory to store larger result sets in memory should consider
-       increasing this parameter.
+L'implementazione corrente di <command>RETURN NEXT</command>
+e <command>RETURN QUERY</command> salva l'intero insieme dei risultati  
+prima di ritornare dalla funzione, come discusso sopra. Questo significa
+che se una funzione <application>PL/pgSQL</application> produce un insieme di risultati molto grande,
+le prestazioni potrebbero risentirne: i dati saranno scritti su disco
+per evitare l'esaurimento della memoria, ma la funzione 
+stessa non ritornerà finchè l'intero insieme dei risultati sia
+stato generato. Una versione futura di <application>PL/pgSQL</application> potrebbe
+permettere agli utenti di definire funzioni che ritornano insiemi 
+che non hanno questa limitazione. Attualmente, il punto in cui i dati 
+cominciano ad essere scritti su disco è controllato dalla variabile di configurazione 
+<xref linkend="guc-work-mem"/>.
+Gli amministratori che hanno memoria sufficiente per immagazzinare 
+in memoria grandi insiemi di risultati dovrebbero considerare 
+l'incremento di questo parametro.
       </para>
      </note>
     </sect3>
    </sect2>
 
    <sect2 id="plpgsql-conditionals">
-    <title>Conditionals</title>
+    <title>Condizioni</title>
 
     <para>
-     <command>IF</command> and <command>CASE</command> statements let you execute
-     alternative commands based on certain conditions.
-     <application>PL/pgSQL</application> has three forms of <command>IF</command>:
+Le istruzioni <command>IF</command> e <command>CASE</command> ti permettono 
+di eseguire comandi alternativi in base a certe condizioni.
+<application>PL/pgSQL</application> ha tre forme di <command>IF</command>:
     <itemizedlist>
      <listitem>
       <para><literal>IF ... THEN</literal></para>
@@ -1627,7 +1625,7 @@ SELECT * FROM getallfoo();
      </listitem>
     </itemizedlist>
 
-    and two forms of <command>CASE</command>:
+    e due forme di <command>CASE</command>:
     <itemizedlist>
      <listitem>
       <para><literal>CASE ... WHEN ... THEN ... ELSE ... END CASE</literal></para>
@@ -1648,15 +1646,15 @@ END IF;
 </synopsis>
 
        <para>
-        <literal>IF-THEN</literal> statements are the simplest form of
-        <literal>IF</literal>. The statements between
-        <literal>THEN</literal> and <literal>END IF</literal> will be
-        executed if the condition is true. Otherwise, they are
-        skipped.
+Le istruzioni <literal>IF-THEN</literal> sono la forma più semplice di 
+<literal>IF</literal>. Le istruzioni tra 
+<literal>THEN</literal> e <literal>END IF</literal> saranno
+eseguite se la condizione è true.  Altrimenti, vengono 
+saltate.
        </para>
 
        <para>
-        Example:
+Esempio:
 <programlisting>
 IF v_user_id &lt;&gt; 0 THEN
     UPDATE users SET email = v_email WHERE user_id = v_user_id;
@@ -1677,15 +1675,15 @@ END IF;
 </synopsis>
 
        <para>
-        <literal>IF-THEN-ELSE</literal> statements add to
-        <literal>IF-THEN</literal> by letting you specify an
-        alternative set of statements that should be executed if the
-        condition is not true.  (Note this includes the case where the
-        condition evaluates to NULL.)
+Le istruzioni <literal>IF-THEN-ELSE</literal> si aggiungono a 
+<literal>IF-THEN</literal> permettendo di specificare un insieme di istruzioni
+alternative che dovrebbero essere eseguite se la condizione 
+non è true. (Notare che questo include i casi dove la condizione è valutata
+essere NULL).
        </para>
 
        <para>
-        Examples:
+Esempi:
 <programlisting>
 IF parentid IS NULL OR parentid = ''
 THEN
@@ -1725,20 +1723,20 @@ END IF;
 </synopsis>
 
        <para>
-        Sometimes there are more than just two alternatives.
-        <literal>IF-THEN-ELSIF</literal> provides a convenient
-        method of checking several alternatives in turn.
-        The <literal>IF</literal> conditions are tested successively
-        until the first one that is true is found.  Then the
-        associated statement(s) are executed, after which control
-        passes to the next statement after <literal>END IF</literal>.
-        (Any subsequent <literal>IF</literal> conditions are <emphasis>not</emphasis>
-        tested.)  If none of the <literal>IF</literal> conditions is true,
-        then the <literal>ELSE</literal> block (if any) is executed.
+A volte ci sono più di due sole alternative. 
+<literal>IF-THEN-ELSIF</literal> fornisce un metodo conveniente 
+di controllare a turno diverse alternative. 
+Le condizioni  <literal>IF</literal> sono testate successivamente
+finchè la prima che è true viene trovata. Quindi 
+l'istruzione/i associate sono eseguite, dopo le quali il controllo
+passa alla prossima istruzione dopo <literal>END IF</literal>.
+(Ogni successiva condizione <literal>IF</literal> <emphasis>non</emphasis> è testata).
+Se nessuna delle condizioni <literal>IF</literal> è true,
+allora viene eseguito il blocco <literal>ELSE</literal> (se presente). 
        </para>
 
        <para>
-        Here is an example:
+Ecco un esempio:
 
 <programlisting>
 IF number = 0 THEN
@@ -1748,21 +1746,20 @@ ELSIF number &gt; 0 THEN
 ELSIF number &lt; 0 THEN
     result := 'negative';
 ELSE
-    -- hmm, the only other possibility is that number is null
+    -- hmm, l'unica altra possibilità è che il numeria sia null
     result := 'NULL';
 END IF;
 </programlisting>
        </para>
 
        <para>
-        The key word <literal>ELSIF</literal> can also be spelled
-        <literal>ELSEIF</literal>.
+La parola chiave <literal>ELSIF</literal> può essere scritta anche
+<literal>ELSEIF</literal>.
        </para>
 
        <para>
-        An alternative way of accomplishing the same task is to nest
-        <literal>IF-THEN-ELSE</literal> statements, as in the
-        following example:
+Un modo alternativo di svolgere lo stesso compito è di annidare le  istruzioni
+<literal>IF-THEN-ELSE</literal>, come nell'esempio seguente:
 
 <programlisting>
 IF demo_row.sex = 'm' THEN
@@ -1776,14 +1773,14 @@ END IF;
        </para>
 
        <para>
-        However, this method requires writing a matching <literal>END IF</literal>
-        for each <literal>IF</literal>, so it is much more cumbersome than
-        using <literal>ELSIF</literal> when there are many alternatives.
+Comunque, questo metodo richiede la scrittura di un corrispondente <literal>END IF</literal>
+per ogni <literal>IF</literal>, quindi è molto più scomodo rispetto ad usare
+<literal>ELSIF</literal> quando ci sono molte alternative.
        </para>
      </sect3>
 
      <sect3>
-      <title>Simple <literal>CASE</literal></title>
+      <title><literal>CASE</literal> semplice</title>
 
 <synopsis>
 CASE <replaceable>search-expression</replaceable>
@@ -1798,21 +1795,21 @@ END CASE;
 </synopsis>
 
       <para>
-       The simple form of <command>CASE</command> provides conditional execution
-       based on equality of operands.  The <replaceable>search-expression</replaceable>
-       is evaluated (once) and successively compared to each
-       <replaceable>expression</replaceable> in the <literal>WHEN</literal> clauses.
-       If a match is found, then the corresponding
-       <replaceable>statements</replaceable> are executed, and then control
-       passes to the next statement after <literal>END CASE</literal>.  (Subsequent
-       <literal>WHEN</literal> expressions are not evaluated.)  If no match is
-       found, the <literal>ELSE</literal> <replaceable>statements</replaceable> are
-       executed; but if <literal>ELSE</literal> is not present, then a
-       <literal>CASE_NOT_FOUND</literal> exception is raised.
+La forma semplice di <command>CASE</command> fornisce l'esecuzione condizionale 
+basata sull'uguaglianza di operandi. La <replaceable>search-expression</replaceable>
+viene valutata (una volta) e successivamente confrontata con ogni
+<replaceable>expression</replaceable> nelle clausole <literal>WHEN</literal>.
+Se viene trovata una corrispondenza, allora le corrispondenti 
+istruzioni <replaceable>statements</replaceable> sono eseguite, e quindi il controllo
+passa all'istruzione successiva dopo <literal>END CASE</literal>.  (Successive 
+espressioni <literal>WHEN</literal> non sono valutate). Se non viene trovata nessuna corrispondenza,
+vengono eseguite le istruzioni <replaceable>statements</replaceable> <literal>ELSE</literal>;
+ma se <literal>ELSE</literal> non è presente, allora viene generata un'eccezione  
+<literal>CASE_NOT_FOUND</literal>.
       </para>
 
       <para>
-       Here is a simple example:
+Ecco un semplice esempio:
 
 <programlisting>
 CASE x
@@ -1826,7 +1823,7 @@ END CASE;
      </sect3>
 
      <sect3>
-      <title>Searched <literal>CASE</literal></title>
+      <title><literal>CASE</literal> cercato</title>
 
 <synopsis>
 CASE
@@ -1841,21 +1838,22 @@ END CASE;
 </synopsis>
 
       <para>
-       The searched form of <command>CASE</command> provides conditional execution
-       based on truth of Boolean expressions.  Each <literal>WHEN</literal> clause's
-       <replaceable>boolean-expression</replaceable> is evaluated in turn,
-       until one is found that yields <literal>true</literal>.  Then the
-       corresponding <replaceable>statements</replaceable> are executed, and
-       then control passes to the next statement after <literal>END CASE</literal>.
-       (Subsequent <literal>WHEN</literal> expressions are not evaluated.)
-       If no true result is found, the <literal>ELSE</literal>
-       <replaceable>statements</replaceable> are executed;
-       but if <literal>ELSE</literal> is not present, then a
-       <literal>CASE_NOT_FOUND</literal> exception is raised.
+La forma cercata di <command>CASE</command> fornisce l'esecuzione condizionale
+basata sulla verità di espressioni Booleane. Ogni <replaceable>boolean-expression</replaceable>
+della clausola <literal>WHEN</literal> viene valutata a turno,
+finchè non ne viene trovata una che risulta <literal>true</literal>. Quindi 
+le corrispondenti istruzioni <replaceable>statements</replaceable> vengono eseguite, e
+poi il controllo passa alla successiva istruzione dopo <literal>END CASE</literal>.
+(Successive espressioni <literal>WHEN</literal> non sono valutate).
+Se non vengono trovati risultati true, allora vengono eseguite 
+le istruzioni <replaceable>statements</replaceable>
+<literal>ELSE</literal>;
+ma se  <literal>ELSE</literal> non è presente, allora viene generata un'eccezione
+<literal>CASE_NOT_FOUND</literal>.
       </para>
 
       <para>
-       Here is an example:
+Ecco un esempio:
 
 <programlisting>
 CASE
@@ -1868,28 +1866,27 @@ END CASE;
       </para>
 
       <para>
-       This form of <command>CASE</command> is entirely equivalent to
-       <literal>IF-THEN-ELSIF</literal>, except for the rule that reaching
-       an omitted <literal>ELSE</literal> clause results in an error rather
-       than doing nothing.
+Questa forma di <command>CASE</command> è completamente equivalente a 
+<literal>IF-THEN-ELSIF</literal>, ad eccezione della regola per cui raggiungere 
+una clausola <literal>ELSE</literal> omessa genera un errore invece di non fare niente.
       </para>
 
      </sect3>
    </sect2>
 
    <sect2 id="plpgsql-control-structures-loops">
-    <title>Simple Loops</title>
+    <title>Cicli semplici</title>
 
     <indexterm zone="plpgsql-control-structures-loops">
-     <primary>loop</primary>
+     <primary>ciclo</primary>
      <secondary>in PL/pgSQL</secondary>
     </indexterm>
 
     <para>
-     With the <literal>LOOP</literal>, <literal>EXIT</literal>,
-     <literal>CONTINUE</literal>, <literal>WHILE</literal>, and <literal>FOR</literal>
-     statements, you can arrange for your <application>PL/pgSQL</application>
-     function to repeat a series of commands.
+Con le istruzioni <literal>LOOP</literal>, <literal>EXIT</literal>,
+<literal>CONTINUE</literal>, <literal>WHILE</literal> e <literal>FOR</literal>,
+è possibile fare in modo che la funzione <application>PL/pgSQL</application>
+ripeta una serie di comandi.
     </para>
 
     <sect3>
@@ -1903,12 +1900,12 @@ END LOOP <optional> <replaceable>label</replaceable> </optional>;
 </synopsis>
 
      <para>
-      <literal>LOOP</literal> defines an unconditional loop that is repeated
-      indefinitely until terminated by an <literal>EXIT</literal> or
-      <command>RETURN</command> statement.  The optional
-      <replaceable>label</replaceable> can be used by <literal>EXIT</literal>
-      and <literal>CONTINUE</literal> statements within nested loops to
-      specify which loop those statements refer to.
+<literal>LOOP</literal> definisce un ciclo incondizionato che viene ripetuto 
+indefinitzmente finchè terminato da un'istruzione <literal>EXIT</literal> o
+<command>RETURN</command>. L'etichetta <replaceable>label</replaceable> opzionale
+può essere usata dalle istruzioni <literal>EXIT</literal> e 
+<literal>CONTINUE</literal> all'interno di cicli annidati per specificare 
+a quale ciclo si riferiscono quelle istruzioni.
      </para>
     </sect3>
 
@@ -1925,60 +1922,60 @@ EXIT <optional> <replaceable>label</replaceable> </optional> <optional> WHEN <re
 </synopsis>
 
        <para>
-        If no <replaceable>label</replaceable> is given, the innermost
-        loop is terminated and the statement following <literal>END
-        LOOP</literal> is executed next.  If <replaceable>label</replaceable>
-        is given, it must be the label of the current or some outer
-        level of nested loop or block. Then the named loop or block is
-        terminated and control continues with the statement after the
-        loop's/block's corresponding <literal>END</literal>.
+Se nessuna <replaceable>label</replaceable> è fornita, il ciclo 
+più interno viene terminato e l'istruzione seguente <literal>END
+LOOP</literal> viene eseguita. Se <replaceable>label</replaceable> 
+è fornita, deve essere l'etichetta del ciclo annidato o del blocco corrente o esterno.
+Quindi il ciclo nominato o il blocco viene terminato 
+e il controllo continua con l'istruzione dopo la <literal>END</literal>
+corrispondente del ciclo/blocco.
        </para>
 
        <para>
-        If <literal>WHEN</literal> is specified, the loop exit occurs only if
-        <replaceable>boolean-expression</replaceable> is true. Otherwise, control passes
-        to the statement after <literal>EXIT</literal>.
+Se <literal>WHEN</literal> è specificato, l'uscita dal ciclo avviene solo se 
+<replaceable>boolean-expression</replaceable> è true. Altrimenti, il controllo passa 
+all'istruzione dopo <literal>EXIT</literal>.
        </para>
 
        <para>
-        <literal>EXIT</literal> can be used with all types of loops; it is
-        not limited to use with unconditional loops.
+<literal>EXIT</literal> può essere usato con tutti i tipi di ciclo; non è limitato all'utilizzo 
+con cicli incondizionali. 
        </para>
 
        <para>
-        When used with a
-        <literal>BEgin</literal> block, <literal>EXIT</literal> passes
-        control to the next statement after the end of the block.
-        Note that a label must be used for this purpose; an unlabelled
-        <literal>EXIT</literal> is never considered to match a
-        <literal>BEgin</literal> block.  (This is a change from
-        pre-8.4 releases of <productname>PostgreSQL</productname>, which
-        would allow an unlabelled <literal>EXIT</literal> to match
-        a <literal>BEgin</literal> block.)
+Quando usato con un blocco
+<literal>BEGIN</literal>, <literal>EXIT</literal> passa il controllo
+alla successiva istruzione dopo la fine del blocco. 
+Notare che una etichetta deve essere usata per questo scopo; una 
+<literal>EXIT</literal> senza etichetta non è mai considerata corrispondente a
+un blocco <literal>BEGIN</literal>. (Questo è un cambiamento rispetto 
+alle versioni precedenti la 8.4 di <productname>PostgreSQL</productname>, che
+avrebbero permesso a una <literal>EXIT</literal> senza etichetta di corrispondere a un
+blocco <literal>BEGIN</literal>).
        </para>
 
        <para>
-        Examples:
+Esempi:
 <programlisting>
 LOOP
-    -- some computations
+    -- alcuni calcoli
     IF count &gt; 0 THEN
-        EXIT;  -- exit loop
+        EXIT;  -- esce dal ciclo
     END IF;
 END LOOP;
 
 LOOP
-    -- some computations
-    EXIT WHEN count &gt; 0;  -- same result as previous example
+    -- alcuni calcoli
+    EXIT WHEN count &gt; 0;  -- stesso risultato dell'esempio precedente
 END LOOP;
 
 &lt;&lt;ablock&gt;&gt;
-BEgin
-    -- some computations
+BEGIN
+    -- alcuni calcoli
     IF stocks &gt; 100000 THEN
-        EXIT ablock;  -- causes exit from the BEgin block
+        EXIT ablock;  -- causa l'uscita dal blocco BEGIN
     END IF;
-    -- computations here will be skipped when stocks &gt; 100000
+    -- i calcoli qui saranno saltati quando stocks &gt; 100000
 END;
 </programlisting>
        </para>
@@ -1997,36 +1994,35 @@ CONTINUE <optional> <replaceable>label</replaceable> </optional> <optional> WHEN
 </synopsis>
 
        <para>
-        If no <replaceable>label</replaceable> is given, the next iteration of
-        the innermost loop is begun. That is, all statements remaining
-        in the loop body are skipped, and control returns
-        to the loop control expression (if any) to determine whether
-        another loop iteration is needed.
-        If <replaceable>label</replaceable> is present, it
-        specifies the label of the loop whose execution will be
-        continued.
+Se non viene fornita nessuna <replaceable>label</replaceable>, la successiva iterazione 
+del ciclo più interno è iniziata. Cioè, tutte le istruzioni restanti
+nel corpo del ciclo sono saltate, e il controllo ritorna all'espressione 
+di controllo del ciclo (se presente) per determinare se
+un'altra iterazione del loop è necessaria.
+Se <replaceable>label</replaceable> è presente, specifica  
+l'etichetta del ciclo la cui esecuzione sarà continuata.
        </para>
 
        <para>
-        If <literal>WHEN</literal> is specified, the next iteration of the
-        loop is begun only if <replaceable>boolean-expression</replaceable> is
-        true. Otherwise, control passes to the statement after
-        <literal>CONTINUE</literal>.
+Se <literal>WHEN</literal> è specificata, la successiva iterazione del ciclo 
+è cominciata solo se <replaceable>boolean-expression</replaceable> è
+true. Altrimenti, il controllo passa all'istruzione dopo 
+<literal>CONTINUE</literal>.
        </para>
 
        <para>
-        <literal>CONTINUE</literal> can be used with all types of loops; it
-        is not limited to use with unconditional loops.
+<literal>CONTINUE</literal> puù essere usato con tutti i tipi di ciclo; non è 
+limitato all'uso con cicli incondizionali.
        </para>
 
        <para>
-        Examples:
+Esempi:
 <programlisting>
 LOOP
-    -- some computations
+    -- alcuni calcoli
     EXIT WHEN count &gt; 100;
     CONTINUE WHEN count &lt; 50;
-    -- some computations for count IN [50 .. 100]
+    -- alcuni calcoli per count IN [50 .. 100]
 END LOOP;
 </programlisting>
        </para>
@@ -2049,29 +2045,28 @@ END LOOP <optional> <replaceable>label</replaceable> </optional>;
 </synopsis>
 
        <para>
-        The <literal>WHILE</literal> statement repeats a
-        sequence of statements so long as the
-        <replaceable>boolean-expression</replaceable>
-        evaluates to true.  The expression is checked just before
-        each entry to the loop body.
+L'istruzione <literal>WHILE</literal> ripete una sequenza di istruzioni
+finchè l'espressione <replaceable>boolean-expression</replaceable>
+risulta true. L'espressione è controllata appena prima 
+ogni ingresso nel corpo del ciclo.
        </para>
 
        <para>
-        For example:
+Per esempio:
 <programlisting>
 WHILE amount_owed &gt; 0 AND gift_certificate_balance &gt; 0 LOOP
-    -- some computations here
+    -- alcuni calcoli qui
 END LOOP;
 
 WHILE NOT done LOOP
-    -- some computations here
+    -- alcuni calcoli qui
 END LOOP;
 </programlisting>
        </para>
      </sect3>
 
      <sect3 id="plpgsql-integer-for">
-      <title><literal>FOR</literal> (integer variant)</title>
+      <title><literal>FOR</literal> (variante intera)</title>
 
 <synopsis>
 <optional> &lt;&lt;<replaceable>label</replaceable>&gt;&gt; </optional>
@@ -2081,80 +2076,80 @@ END LOOP <optional> <replaceable>label</replaceable> </optional>;
 </synopsis>
 
        <para>
-        This form of <literal>FOR</literal> creates a loop that iterates over a range
-        of integer values. The variable
-        <replaceable>name</replaceable> is automatically defined as type
-        <type>integer</type> and exists only inside the loop (any existing
-        definition of the variable name is ignored within the loop).
-        The two expressions giving
-        the lower and upper bound of the range are evaluated once when entering
-        the loop. If the <literal>BY</literal> clause isn't specified the iteration
-        step is 1, otherwise it's the value specified in the <literal>BY</literal>
-        clause, which again is evaluated once on loop entry.
-        If <literal>REVERSE</literal> is specified then the step value is
-        subtracted, rather than added, after each iteration.
+Questa forma di <literal>FOR</literal> crea un ciclo che itera su un intervallo
+di valori interi. La variabile 
+<replaceable>name</replaceable> viene definita automaticamente come 
+tipo  <type>integer</type> ed esiste solo all'interno del ciclo (qualsiasi 
+definizione esistente del nome della variabile viene ignorata all'interno del ciclo).
+Le due espressioni che forniscono il limite inferiore e superiore dell'intervallo
+sono calcolate una volta quando si entra nel ciclo. 
+Se la clausola <literal>BY</literal> non è specificata, il passo di iterazione è
+1, altrimenti è il valore specificato nella clausola <literal>BY</literal>,
+che di nuovo viene clcolato una volta all'ingresso del ciclo.
+Se <literal>REVERSE</literal> è specificato allora il valore dell'incremento è 
+sottratto, invece che aggiunto, dopo ogni iterazione.
        </para>
 
        <para>
-        Some examples of integer <literal>FOR</literal> loops:
+Alcuni esempi di cicli <literal>FOR</literal> di interi:
 <programlisting>
 FOR i IN 1..10 LOOP
-    -- i will take on the values 1,2,3,4,5,6,7,8,9,10 within the loop
+    -- i assumerà i valori 1,2,3,4,5,6,7,8,9,10 all'interno del ciclo
 END LOOP;
 
 FOR i IN REVERSE 10..1 LOOP
-    -- i will take on the values 10,9,8,7,6,5,4,3,2,1 within the loop
+    -- i assumerà i valori 10,9,8,7,6,5,4,3,2,1 all'interno del ciclo
 END LOOP;
 
 FOR i IN REVERSE 10..1 BY 2 LOOP
-    -- i will take on the values 10,8,6,4,2 within the loop
+    -- i assumerà i valori 10,8,6,4,2 all'interno del ciclo
 END LOOP;
 </programlisting>
        </para>
 
        <para>
-        If the lower bound is greater than the upper bound (or less than,
-        in the <literal>REVERSE</literal> case), the loop body is not
-        executed at all.  No error is raised.
+Se il limite inferiore è maggiore del limite superiore (o minore di,
+nel caso di <literal>REVERSE</literal>), il corpo del ciclo non 
+viene eseguito. Non viene generato errore.
        </para>
 
        <para>
-        If a <replaceable>label</replaceable> is attached to the
-        <literal>FOR</literal> loop then the integer loop variable can be
-        referenced with a qualified name, using that
-        <replaceable>label</replaceable>.
+Se una etichetta <replaceable>label</replaceable> viene assegnata al ciclo 
+<literal>FOR</literal> allora ci si può riferire alla variabile ciclo di interi 
+con un nome qualificato, usando quell'etichetta
+<replaceable>label</replaceable>.
        </para>
      </sect3>
    </sect2>
 
    <sect2 id="plpgsql-records-iterating">
-    <title>Looping Through Query Results</title>
+    <title>Cicli attraverso i risultati di una query</title>
 
     <para>
-     Using a different type of <literal>FOR</literal> loop, you can iterate through
-     the results of a query and manipulate that data
-     accordingly. The syntax is:
+Usando un tipo diverso di ciclo <literal>FOR</literal>, è possibile iterare attraverso
+i risultati di una query e manipolare quei dati 
+di conseguenza. La sintassi è:
 <synopsis>
 <optional> &lt;&lt;<replaceable>label</replaceable>&gt;&gt; </optional>
 FOR <replaceable>target</replaceable> IN <replaceable>query</replaceable> LOOP
     <replaceable>statements</replaceable>
 END LOOP <optional> <replaceable>label</replaceable> </optional>;
 </synopsis>
-     The <replaceable>target</replaceable> is a record variable, row variable,
-     or comma-separated list of scalar variables.
-     The <replaceable>target</replaceable> is successively assigned each row
-     resulting from the <replaceable>query</replaceable> and the loop body is
-     executed for each row. Here is an example:
+Il <replaceable>target</replaceable> è una variabile record, variabile riga, o 
+elenco separato da virgole di variabili scalari.
+Il <replaceable>target</replaceable> successivamemente è assegnato ad ogni riga 
+risultante dalla  <replaceable>query</replaceable> e il corpo del ciclo viene 
+eseguito per ogni riga. Ecco un esempio:
 <programlisting>
 CREATE FUNCTION cs_refresh_mviews() RETURNS integer AS $$
 DECLARE
     mviews RECORD;
-BEgin
+BEGIN
     PERFORM cs_log('Refreshing materialized views...');
 
     FOR mviews IN SELECT * FROM cs_materialized_views ORDER BY sort_key LOOP
 
-        -- Now "mviews" has one record from cs_materialized_views
+        -- Adesso "mviews" ha un record da cs_materialized_views
 
         PERFORM cs_log('Refreshing materialized view '
                    || quote_ident(mviews.mv_name) || ' ...');

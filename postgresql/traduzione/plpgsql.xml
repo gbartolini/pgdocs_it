@@ -2405,54 +2405,54 @@ che in generale è:
 <synopsis>
 <replaceable>name</replaceable> <optional> <optional> NO </optional> SCROLL </optional> CURSOR <optional> ( <replaceable>arguments</replaceable> ) </optional> FOR <replaceable>query</replaceable>;
 </synopsis>
-     (<literal>FOR</literal> can be replaced by <literal>IS</literal> for
-     <productname>Oracle</productname> compatibility.)
-     If <literal>SCROLL</literal> is specified, the cursor will be capable of
-     scrolling backward; if <literal>NO SCROLL</literal> is specified, backward
-     fetches will be rejected; if neither specification appears, it is
-     query-dependent whether backward fetches will be allowed.
-     <replaceable>arguments</replaceable>, if specified, is a
-     comma-separated list of pairs <literal><replaceable>name</replaceable>
-     <replaceable>datatype</replaceable></literal> that define names to be
-     replaced by parameter values in the given query.  The actual
-     values to substitute for these names will be specified later,
-     when the cursor is opened.
+(<literal>FOR</literal> può essere sostituito da <literal>IS</literal> per 
+compatibilità <productname>Oracle</productname>).
+Sei viene specificato <literal>SCROLL</literal>, il cursore sarà capace di
+scorrere all'indietro; se è specificato <literal>NO SCROLL</literal>, saranno rifiutate   
+ricerche all'indietro; se non appare nessuna delle due specifiche, dipenderà dalla query 
+se saranno permesse ricerche all'indietro. 
+<replaceable>arguments</replaceable>, se specificato, è un elenco
+separato da virgole di coppie <literal><replaceable>name</replaceable>
+<replaceable>datatype</replaceable></literal> che definisce i nomi da essere 
+sostituiti da valori dei parametri nella data query. I valori effettivi
+da sostituire per questi nomi saranno specificati più tardi,
+quando il cursore è aperto.
     </para>
     <para>
-     Some examples:
+Alcuni esempi:
 <programlisting>
 DECLARE
     curs1 refcursor;
     curs2 CURSOR FOR SELECT * FROM tenk1;
     curs3 CURSOR (key integer) IS SELECT * FROM tenk1 WHERE unique1 = key;
 </programlisting>
-     All three of these variables have the data type <type>refcursor</type>,
-     but the first can be used with any query, while the second has
-     a fully specified query already <firstterm>bound</firstterm> to it, and the last
-     has a parameterized query bound to it.  (<literal>key</literal> will be
-     replaced by an integer parameter value when the cursor is opened.)
-     The variable <literal>curs1</literal>
-     is said to be <firstterm>unbound</firstterm> since it is not bound to
-     any particular query.
+Tutte e tre queste variabili hanno il tipo di dato <type>refcursor</type>,
+ma la prima può essere usata con qualsiasi query, mentre la seconda ha
+una query completamente specificata già <firstterm>legata</firstterm> ad essa, e l'ultima
+ha una query parametrizzata legata. (<literal>key</literal> sarà 
+sostituita da un valore di parametro intero quando il cursore è aperto).
+La variabile <literal>curs1</literal>
+è detta essere <firstterm>non legata</firstterm> dato che non è legata a  nessuna 
+query particolare.
     </para>
    </sect2>
 
    <sect2 id="plpgsql-cursor-opening">
-    <title>Opening Cursors</title>
+    <title>Aprire cursori</title>
 
     <para>
-     Before a cursor can be used to retrieve rows, it must be
-     <firstterm>opened</firstterm>. (This is the equivalent action to the SQL
-     command <command>DECLARE CURSOR</command>.) <application>PL/pgSQL</application> has
-     three forms of the <command>OPEN</command> statement, two of which use unbound
-     cursor variables while the third uses a bound cursor variable.
+Prima che un cursore possa essere usato per recuperare righe, deve essere
+<firstterm>aperto</firstterm>. (Questa è l'azione equivalente al comando SQL
+<command>DECLARE CURSOR</command>). <application>PL/pgSQL</application> ha 
+tre forme di istruzione <command>OPEN</command>, due delle quali usano variabili cursore
+non legate mentre la terza usa una variabile cursore legata.
     </para>
 
     <note>
      <para>
-      Bound cursor variables can also be used without explicitly opening the cursor,
-      via the <command>FOR</command> statement described in
-      <xref linkend="plpgsql-cursor-for-loop"/>.
+Variabili di cursore legate possono anche essere usate senza aprire esplicitamente il cursore,
+attraverso l'istruzione <command>FOR</command> descritta in
+<xref linkend="plpgsql-cursor-for-loop"/>.
      </para>
     </note>
 
@@ -2464,26 +2464,26 @@ OPEN <replaceable>unbound_cursorvar</replaceable> <optional> <optional> NO </opt
 </synopsis>
 
        <para>
-        The cursor variable is opened and given the specified query to
-        execute.  The cursor cannot be open already, and it must have been
-        declared as an unbound cursor variable (that is, as a simple
-        <type>refcursor</type> variable).  The query must be a
-        <command>SELECT</command>, or something else that returns rows
-        (such as <command>EXPLAIN</command>).  The query
-        is treated in the same way as other SQL commands in
-        <application>PL/pgSQL</application>: <application>PL/pgSQL</application>
-        variable names are substituted, and the query plan is cached for
-        possible reuse.  When a <application>PL/pgSQL</application>
-        variable is substituted into the cursor query, the value that is
-        substituted is the one it has at the time of the <command>OPEN</command>;
-        subsequent changes to the variable will not affect the cursor's
-        behavior.
-        The <literal>SCROLL</literal> and <literal>NO SCROLL</literal>
-        options have the same meanings as for a bound cursor.
+La variabile cursore è aperta ed è fornita la specifica query da eseguire.
+Il cursore non può essere già aperto, e deve essere stato
+dichiarato come una variabile cursore non legata (cioè, come semplice
+variabile <type>refcursor</type>). La query deve essere una 
+<command>SELECT</command>, o qualcos'altro che restituisce righe
+(tipo <command>EXPLAIN</command>). La query
+viene trattata allo stesso modo di altri comandi SQL in 
+<application>PL/pgSQL</application>: i nomi delle variabili <application>PL/pgSQL</application>
+sono sostituiti, e il piano della query viene sottoposto a cache per 
+il possibile riuso. Quando una variabile <application>PL/pgSQL</application>
+è sostituita nella query cursore, il valore che è sostituito 
+è quello che era al momento della <command>OPEN</command>;
+cambiamenti successivi alla variabile non avranno effetti sul comportamento
+del cursore.
+Le opzioni <literal>SCROLL</literal> e <literal>NO SCROLL</literal>
+hanno gli stessi significati come per un cursore legato.
        </para>
 
        <para>
-        An example:
+Un esempio:
 <programlisting>
 OPEN curs1 FOR SELECT * FROM foo WHERE key = mykey;
 </programlisting>
@@ -2499,52 +2499,51 @@ OPEN <replaceable>unbound_cursorvar</replaceable> <optional> <optional> NO </opt
 </synopsis>
 
          <para>
-          The cursor variable is opened and given the specified query to
-          execute.  The cursor cannot be open already, and it must have been
-          declared as an unbound cursor variable (that is, as a simple
-          <type>refcursor</type> variable).  The query is specified as a string
-          expression, in the same way as in the <command>EXECUTE</command>
-          command.  As usual, this gives flexibility so the query plan can vary
-          from one run to the next (see <xref linkend="plpgsql-plan-caching"/>),
-          and it also means that variable substitution is not done on the
-          command string. As with <command>EXECUTE</command>, parameter values
-          can be inserted into the dynamic command via <literal>USING</literal>.
-          The <literal>SCROLL</literal> and
-          <literal>NO SCROLL</literal> options have the same meanings as for a bound
-          cursor.
+La variabile cursore è aperta è viene fornita la speifica query da eseguire.
+Il cursore non può essere già aperto, e deve essere stato dichiarato come una variabile
+dichiarata come un cursore non legato (cioè, come una semplice variabile
+<type>refcursor</type>). La query è specificata come una espressione stringa,
+nello stesso modo del comando <command>EXECUTE</command>.
+Come al solito, questo dà flessibilità e così il piano della query può variare
+da un'esecuzione ad un'altra (si veda <xref linkend="plpgsql-plan-caching"/>),
+e significa anche che la sostituzione di variabili non viene fatta sulla stringa comando.
+Come con <command>EXECUTE</command>, i valori dei parametri 
+possono essere inseriti nel comando dinamico con <literal>USING</literal>.
+Le opzioni <literal>SCROLL</literal> e <literal>NO SCROLL</literal>
+hanno gli stessi significati come per un cursore legato.
          </para>
 
        <para>
-        An example:
+Un esempio:
 <programlisting>
 OPEN curs1 FOR EXECUTE 'SELECT * FROM ' || quote_ident(tabname)
                                         || ' WHERE col1 = $1' USING keyvalue;
 </programlisting>
-        In this example, the table name is inserted into the query textually,
-        so use of <function>quote_ident()</function> is recommended to guard against
-        SQL injection.  The comparison value for <literal>col1</literal> is inserted
-        via a <literal>USING</literal> parameter, so it needs no quoting.
+In questo esempio, il nome della tabella è inserito nella query testualmente,
+così l'uso di <function>quote_ident()</function> è raccomandato per proteggersi contro 
+le SQL injection. Il valore di confronto per <literal>col1</literal> è inserito 
+attraverso un parametro <literal>USING</literal>, così non ha bisogno di quotazione.
        </para>
      </sect3>
 
     <sect3>
-     <title>Opening a Bound Cursor</title>
+     <title>Aprire una cursore legato</title>
 
 <synopsis>
 OPEN <replaceable>bound_cursorvar</replaceable> <optional> ( <replaceable>argument_values</replaceable> ) </optional>;
 </synopsis>
 
          <para>
-          This form of <command>OPEN</command> is used to open a cursor
-          variable whose query was bound to it when it was declared.  The
-          cursor cannot be open already.  A list of actual argument value
-          expressions must appear if and only if the cursor was declared to
-          take arguments.  These values will be substituted in the query.
-          The query plan for a bound cursor is always considered cacheable;
-          there is no equivalent of <command>EXECUTE</command> in this case.
-          Notice that <literal>SCROLL</literal> and
-          <literal>NO SCROLL</literal> cannot be specified, as the cursor's scrolling
-          behavior was already determined.
+Questa forma di <command>OPEN</command> è usata per aprire una variabile 
+cursore la cui query era legata ad esso quando fu dichiarato. Il cursore   
+non può essere già aperto. Un elenco di espressioni argomento effettive 
+deve apparire se e solo se il cursore è stato dichiarato per prendere argomenti.
+Questi valori saranno sostituiti nella query. 
+Il piano della query per un cursore legato è sempre considerato sottoponibile a cache;
+non c'è un equivalente di <command>EXECUTE</command> in questo caso.
+Notare che <literal>SCROLL</literal> e 
+<literal>NO SCROLL</literal> non possono essere specificate, dato che il comportamento  
+dello scorrimento del cursore era già stato determinato.
          </para>
 
          <para>

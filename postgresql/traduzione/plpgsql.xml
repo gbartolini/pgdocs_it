@@ -2547,18 +2547,18 @@ dello scorrimento del cursore era già stato determinato.
          </para>
 
          <para>
-          Note that because variable substitution is done on the bound
-          cursor's query, there are two ways to pass values into the cursor:
-          either with an explicit argument to <command>OPEN</command>, or
-          implicitly by referencing a <application>PL/pgSQL</application> variable
-          in the query.  However, only variables declared before the bound
-          cursor was declared will be substituted into it.  In either case
-          the value to be passed is determined at the time of the
-          <command>OPEN</command>.
+Notare che dato che la sostituzione di variabili è fatta sulla query del cursore legato,
+ci sono due modi di passare valori al cursore:
+o con un argomento esplicito a <command>OPEN</command>, o
+implicitamente facendo riferimento a una variabile <application>PL/pgSQL</application>
+nella query. Comunque, solo le variabili dichiarate prima che il cursore legato 
+fosse dichiarato saranno sostituite in essa. In entrambi i casi 
+il valore da essere passato è determinato al momento della
+<command>OPEN</command>.
          </para>
 
     <para>
-     Examples:
+     Esempi:
 <programlisting>
 OPEN curs2;
 OPEN curs3(42);
@@ -2568,27 +2568,27 @@ OPEN curs3(42);
    </sect2>
 
    <sect2 id="plpgsql-cursor-using">
-    <title>Using Cursors</title>
+    <title>Usare i cursori</title>
 
     <para>
-     Once a cursor has been opened, it can be manipulated with the
-     statements described here.
+Una volta che un cursore è stato aperto, può essere manipolato con
+le istruzioni descritte qui.
     </para>
 
     <para>
-     These manipulations need not occur in the same function that
-     opened the cursor to begin with.  You can return a <type>refcursor</type>
-     value out of a function and let the caller operate on the cursor.
-     (Internally, a <type>refcursor</type> value is simply the string name
-     of a so-called portal containing the active query for the cursor.  This name
-     can be passed around, assigned to other <type>refcursor</type> variables,
-     and so on, without disturbing the portal.)
+Queste manipolazioni non devono avvenire nella stessa funzione che 
+ha aperto il cursore all'inizio. È possibile restituire un valore <type>refcursor</type>
+da una funzione e lasciare operare il chiamante sul cursore.
+(Internamente, un valore <type>refcursor</type> è semplicemenete in nome della stringa
+di un portale così chiamato contenente la query attiva per il cursore. Questo nome
+può essere passato in giro, assegnato ad altre variabili <type>refcursor</type>,
+e così via, senza disturbare il portale).
     </para>
 
     <para>
-     All portals are implicitly closed at transaction end.  Therefore
-     a <type>refcursor</type> value is usable to reference an open cursor
-     only until the end of the transaction.
+Tutti i portali sono implicitamente chiusi alla fine della transazione. Quindi
+un valore <type>refcursor</type> è usabile per riferirsi a un cursore aperto 
+solo fino alla fine della transazione.
     </para>
 
     <sect3>
@@ -2599,42 +2599,42 @@ FETCH <optional> <replaceable>direction</replaceable> { FROM | IN } </optional> 
 </synopsis>
 
     <para>
-     <command>FETCH</command> retrieves the next row from the
-     cursor into a target, which might be a row variable, a record
-     variable, or a comma-separated list of simple variables, just like
-     <command>SELECT INTO</command>.  If there is no next row, the
-     target is set to NULL(s).  As with <command>SELECT
-     INTO</command>, the special variable <literal>FOUND</literal> can
-     be checked to see whether a row was obtained or not.
+<command>FETCH</command> ottiene la riga successiva dal cursore
+in un obiettivo, che potrebbe eserre una variabile riga, una variabile record, 
+o un elenco separato da virgole di variabili semplici, esattamente come 
+<command>SELECT INTO</command>. Se non c'è una riga seguente, l'obiettivo è
+impostato a NULL. Come con <command>SELECT
+INTO</command>, la variabile speciale <literal>FOUND</literal> può 
+essere controllato per vedere se una riga è stata ottenuta o no.
     </para>
 
     <para>
-     The <replaceable>direction</replaceable> clause can be any of the
-     variants allowed in the SQL <xref linkend="sql-fetch"/>
-     command except the ones that can fetch
-     more than one row; namely, it can be
-     <literal>NEXT</literal>,
-     <literal>PRIOR</literal>,
-     <literal>FIRST</literal>,
-     <literal>LAST</literal>,
-     <literal>ABSOLUTE</literal> <replaceable>count</replaceable>,
-     <literal>RELATIVE</literal> <replaceable>count</replaceable>,
-     <literal>FORWARD</literal>, or
-     <literal>BACKWARD</literal>.
-     Omitting <replaceable>direction</replaceable> is the same
-     as specifying <literal>NEXT</literal>.
-     <replaceable>direction</replaceable> values that require moving
-     backward are likely to fail unless the cursor was declared or opened
-     with the <literal>SCROLL</literal> option.
+La clausola <replaceable>direction</replaceable> può essere una qualsiasi delle varianti
+permesse nel comando SQL <xref linkend="sql-fetch"/>
+ad eccezione di quelle che possono ottenere 
+più di una riga; vale a dire, può essere
+<literal>NEXT</literal>,
+<literal>PRIOR</literal>,
+<literal>FIRST</literal>,
+<literal>LAST</literal>,
+<literal>ABSOLUTE</literal> <replaceable>count</replaceable>,
+<literal>RELATIVE</literal> <replaceable>count</replaceable>,
+<literal>FORWARD</literal>, o
+<literal>BACKWARD</literal>.
+Omettere <replaceable>direction</replaceable> è lo stesso di 
+specificare <literal>NEXT</literal>.
+Valori di <replaceable>direction</replaceable> che richiedono il movimento
+a ritroso probabilmente falliranno a meno che il cursore non fosse stato dichiarato o 
+aperto con l'opzione <literal>SCROLL</literal>.
     </para>
 
     <para>
-     <replaceable>cursor</replaceable> must be the name of a <type>refcursor</type>
-     variable that references an open cursor portal.
+<replaceable>cursor</replaceable> deve essere il nome di una variabile <type>refcursor</type>
+che si riferisce a un portale cursore aperto.
     </para>
 
     <para>
-     Examples:
+Esempi:
 <programlisting>
 FETCH curs1 INTO rowvar;
 FETCH curs2 INTO foo, bar, baz;
@@ -2652,36 +2652,36 @@ MOVE <optional> <replaceable>direction</replaceable> { FROM | IN } </optional> <
 </synopsis>
 
     <para>
-     <command>MOVE</command> repositions a cursor without retrieving
-     any data. <command>MOVE</command> works exactly like the
-     <command>FETCH</command> command, except it only repositions the
-     cursor and does not return the row moved to. As with <command>SELECT
-     INTO</command>, the special variable <literal>FOUND</literal> can
-     be checked to see whether there was a next row to move to.
+<command>MOVE</command> riposiziona un cursore senza ottenere nessun dato.
+<command>MOVE</command> funziona esattamente come il comando 
+<command>FETCH</command>, ad eccezione che riposiziona solamente il cursore
+e non restituisce la riga su cui si è mosso. Come con <command>SELECT
+INTO</command>, la variabile speciale <literal>FOUND</literal> può
+essere controllata per vedere se c'era una riga successiva su cui muoversi.
     </para>
 
     <para>
-     The <replaceable>direction</replaceable> clause can be any of the
-     variants allowed in the SQL <xref linkend="sql-fetch"/>
-     command, namely
-     <literal>NEXT</literal>,
-     <literal>PRIOR</literal>,
-     <literal>FIRST</literal>,
-     <literal>LAST</literal>,
-     <literal>ABSOLUTE</literal> <replaceable>count</replaceable>,
-     <literal>RELATIVE</literal> <replaceable>count</replaceable>,
-     <literal>ALL</literal>,
-     <literal>FORWARD</literal> <optional> <replaceable>count</replaceable> | <literal>ALL</literal> </optional>, or
-     <literal>BACKWARD</literal> <optional> <replaceable>count</replaceable> | <literal>ALL</literal> </optional>.
-     Omitting <replaceable>direction</replaceable> is the same
-     as specifying <literal>NEXT</literal>.
-     <replaceable>direction</replaceable> values that require moving
-     backward are likely to fail unless the cursor was declared or opened
-     with the <literal>SCROLL</literal> option.
+La clausola <replaceable>direction</replaceable> può essere qualsiasi delle varianti 
+permesse nel comando SQL <xref linkend="sql-fetch"/>,
+vale a dire
+<literal>NEXT</literal>,
+<literal>PRIOR</literal>,
+<literal>FIRST</literal>,
+<literal>LAST</literal>,
+<literal>ABSOLUTE</literal> <replaceable>count</replaceable>,
+<literal>RELATIVE</literal> <replaceable>count</replaceable>,
+<literal>ALL</literal>,
+<literal>FORWARD</literal> <optional> <replaceable>count</replaceable> | <literal>ALL</literal> </optional>, o
+<literal>BACKWARD</literal> <optional> <replaceable>count</replaceable> | <literal>ALL</literal> </optional>.
+Omettere <replaceable>direction</replaceable> è lo stesso di specificare 
+<literal>NEXT</literal>.
+I valori di <replaceable>direction</replaceable> che richiedono il movimento all'indietro
+probabilmente falliranno a meno che il cursorre non fosse stato dichiarato o aperto 
+con l'opzione <literal>SCROLL</literal>.
     </para>
 
     <para>
-     Examples:
+Esempi:
 <programlisting>
 MOVE curs1;
 MOVE LAST FROM curs3;
@@ -2700,17 +2700,16 @@ DELETE FROM <replaceable>table</replaceable> WHERE CURRENT OF <replaceable>curso
 </synopsis>
 
        <para>
-        When a cursor is positioned on a table row, that row can be updated
-        or deleted using the cursor to identify the row.  There are
-        restrictions on what the cursor's query can be (in particular,
-        no grouping) and it's best to use <literal>FOR UPDATE</literal> in the
-        cursor.  For more information see the
-        <xref linkend="sql-declare"/>
-        reference page.
+Quando un cursore è posizionato sulla riga di una tabella, quella riga può essere aggiornata
+o cancellata usando il cursore per identificarla. Ci sono restrizioni
+su cosa possa essere e la query del cursore (in particolare ,
+no raggruppamenti) ed è meglio usare <literal>FOR UPDATE</literal> nel cursore.
+Per maggiori informazioni si veda la pagina di riferimento
+<xref linkend="sql-declare"/>.
        </para>
 
        <para>
-        An example:
+Un esempio:
 <programlisting>
 UPDATE foo SET dataval = myval WHERE CURRENT OF curs1;
 </programlisting>
@@ -2725,13 +2724,13 @@ CLOSE <replaceable>cursor</replaceable>;
 </synopsis>
 
        <para>
-        <command>CLOSE</command> closes the portal underlying an open
-        cursor.  This can be used to release resources earlier than end of
-        transaction, or to free up the cursor variable to be opened again.
+<command>CLOSE</command> chiude il portale sottostante un cursore aperto.
+Questo può essere usato per rilasciare risorse prima della fine della transazione, 
+o per liberare la variabile cursore per essere aperta di nuovo.
        </para>
 
        <para>
-        An example:
+Un esempio:
 <programlisting>
 CLOSE curs1;
 </programlisting>
@@ -2739,45 +2738,45 @@ CLOSE curs1;
      </sect3>
 
     <sect3>
-     <title>Returning Cursors</title>
+     <title>Cursori di ritorno</title>
 
        <para>
-        <application>PL/pgSQL</application> functions can return cursors to the
-        caller. This is useful to return multiple rows or columns,
-        especially with very large result sets.  To do this, the function
-        opens the cursor and returns the cursor name to the caller (or simply
-        opens the cursor using a portal name specified by or otherwise known
-        to the caller).  The caller can then fetch rows from the cursor. The
-        cursor can be closed by the caller, or it will be closed automatically
-        when the transaction closes.
+Le funzioni <application>PL/pgSQL</application> possono restituire cursori al chiamante.
+Questo è utile per restituire molteplici righe o colonne, 
+specialmente con insiemi di risultati molto grandi. Per fare ciò, la funzione
+apre il cursore e restituisce il nome del cursore al chiamante (o semplicemente 
+apre il cursore usando un nome di portale specificato da, o saputo in altro modo, 
+al chiamante). Il chiamante può quindi recuperare righe dal cursore. Il cursore 
+può essere chiuso dal chimante, o sarà chiuso automaticamente
+quando la transazione si chiude.
        </para>
 
        <para>
-        The portal name used for a cursor can be specified by the
-        programmer or automatically generated.  To specify a portal name,
-        simply assign a string to the <type>refcursor</type> variable before
-        opening it.  The string value of the <type>refcursor</type> variable
-        will be used by <command>OPEN</command> as the name of the underlying portal.
-        However, if the <type>refcursor</type> variable is null,
-        <command>OPEN</command> automatically generates a name that does not
-        conflict with any existing portal, and assigns it to the
-        <type>refcursor</type> variable.
+Il nome del portale usato per un cursore può essere specificato dal programmatore
+o generato automaticamente. Per specificare il nome di un portale, 
+assegnare sempliciemente una stringa alla variabile <type>refcursor</type> prima 
+si aprirla. Il valore della stringa della variabile <type>refcursor</type>
+sarà usato da <command>OPEN</command> come nome del portale sottostante.
+Comunque, se la variabile <type>refcursor</type> è null,
+<command>OPEN</command> genera automaticamente un nome che non va in conflitto 
+con nessun altro portale esistente, e lo assegna alla variabile 
+<type>refcursor</type>.
        </para>
 
        <note>
         <para>
-         A bound cursor variable is initialized to the string value
-         representing its name, so that the portal name is the same as
-         the cursor variable name, unless the programmer overrides it
-         by assignment before opening the cursor.  But an unbound cursor
-         variable defaults to the null value initially, so it will receive
-         an automatically-generated unique name, unless overridden.
+Una variabile cursore legata è inizializzata al valore della stringa
+rappresentante il suo nome, così che il nome del portale è lo stesso del
+nome della variabile cursore, a meno che il programmatore lo sovrascriva 
+con un'assegnazione prima di aprire il cursore. Ma una variabile cursore non legata
+è inizialmente null, così riceverà un nome unico generato automaticamente, 
+a meno che sovrascritto.
         </para>
        </note>
 
        <para>
-        The following example shows one way a cursor name can be supplied by
-        the caller:
+L'esempio seguente mostra un modo in cui il nome di un cursore possa essere fornito
+dal chiamante:
 
 <programlisting>
 CREATE TABLE test (col text);
@@ -2798,7 +2797,7 @@ COMMIT;
        </para>
 
        <para>
-        The following example uses automatic cursor name generation:
+L'esempio seguente usa la generazione automatica del nome:
 
 <programlisting>
 CREATE FUNCTION reffunc2() RETURNS refcursor AS '
@@ -2825,8 +2824,8 @@ COMMIT;
        </para>
 
        <para>
-        The following example shows one way to return multiple cursors
-        from a single function:
+L'esempio seguente mostra un modo di restituire molteplici cursori 
+da una singola funzione:
 
 <programlisting>
 CREATE FUNCTION myfunc(refcursor, refcursor) RETURNS SETOF refcursor AS $$
@@ -2838,8 +2837,8 @@ BEgin
 END;
 $$ LANGUAGE plpgsql;
 
--- need to be in a transaction to use cursors.
-BEgin;
+-- deve essere in una transazione per usare i cursori.
+BEGIN;
 
 SELECT * FROM myfunc('a', 'b');
 
@@ -2855,8 +2854,8 @@ COMMIT;
     <title>Looping Through a Cursor's Result</title>
 
     <para>
-     There is a variant of the <command>FOR</command> statement that allows
-     iterating through the rows returned by a cursor.  The syntax is:
+C'è una variante dell'istruzione <command>FOR</command> che permette
+di iterare attraverso le righe ritornate da un cursore. La sintassi è:
 
 <synopsis>
 <optional> &lt;&lt;<replaceable>label</replaceable>&gt;&gt; </optional>
@@ -2865,38 +2864,38 @@ FOR <replaceable>recordvar</replaceable> IN <replaceable>bound_cursorvar</replac
 END LOOP <optional> <replaceable>label</replaceable> </optional>;
 </synopsis>
 
-     The cursor variable must have been bound to some query when it was
-     declared, and it <emphasis>cannot</emphasis> be open already.  The
-     <command>FOR</command> statement automatically opens the cursor, and it closes
-     the cursor again when the loop exits.  A list of actual argument value
-     expressions must appear if and only if the cursor was declared to take
-     arguments.  These values will be substituted in the query, in just
-     the same way as during an <command>OPEN</command>.
-     The variable <replaceable>recordvar</replaceable> is automatically
-     defined as type <type>record</type> and exists only inside the loop (any
-     existing definition of the variable name is ignored within the loop).
-     Each row returned by the cursor is successively assigned to this
-     record variable and the loop body is executed.
+La variabile cursore deve essere stata legata a qualche query quando è stata
+dichiarata, e <emphasis>non può</emphasis> essere già aperta. L'istruzione
+<command>FOR</command> apre automaticamente il cursore, e chiude di nuovo il cursore 
+quando il ciclo termina. Un elenco dei valori degli argomenti effettivi 
+deve apparire se e solo se il cursore fu dichiarato per prendere argomenti.
+Questi valori saranno sostituiti nella query, esattamente nello stesso modo 
+che durante una <command>OPEN</command>.
+La variabile <replaceable>recordvar</replaceable> viene definita automaticamente
+del tipo <type>record</type> ed esiste solo all'interno del ciclo (qualsiasi 
+definizione esistente del nome della variabile viene ignorata all'interno del ciclo).
+Ogni riga restituita dal cursore è successivamente assegnata a questa variabile record
+e viene eseguito il corpo del ciclo.
     </para>
    </sect2>
 
   </sect1>
 
   <sect1 id="plpgsql-errors-and-messages">
-   <title>Errors and Messages</title>
+   <title>Errori e messaggi</title>
 
    <indexterm>
     <primary>RAISE</primary>
    </indexterm>
 
    <indexterm>
-    <primary>reporting errors</primary>
+    <primary>riportare errori</primary>
     <secondary>in PL/PgSQL</secondary>
    </indexterm>
 
    <para>
-    Use the <command>RAISE</command> statement to report messages and
-    raise errors.
+Usare l'istruzione <command>RAISE</command> per riportare messaggi e 
+sollevare errori.
 
 <synopsis>
 RAISE <optional> <replaceable class="parameter">level</replaceable> </optional> '<replaceable class="parameter">format</replaceable>' <optional>, <replaceable class="parameter">expression</replaceable> <optional>, ... </optional></optional> <optional> USING <replaceable class="parameter">option</replaceable> = <replaceable class="parameter">expression</replaceable> <optional>, ... </optional> </optional>;
@@ -2906,66 +2905,67 @@ RAISE <optional> <replaceable class="parameter">level</replaceable> </optional> 
 RAISE ;
 </synopsis>
 
-    The <replaceable class="parameter">level</replaceable> option specifies
-    the error severity.  Allowed levels are <literal>DEBUG</literal>,
-    <literal>LOG</literal>, <literal>INFO</literal>,
-    <literal>NOTICE</literal>, <literal>WARNING</literal>,
-    and <literal>EXCEPTION</literal>, with <literal>EXCEPTION</literal>
-    being the default.
-    <literal>EXCEPTION</literal> raises an error (which normally aborts the
-    current transaction); the other levels only generate messages of different
-    priority levels.
-    Whether messages of a particular priority are reported to the client,
-    written to the server log, or both is controlled by the
-    <xref linkend="guc-log-min-messages"/> and
-    <xref linkend="guc-client-min-messages"/> configuration
-    variables. See <xref linkend="runtime-config"/> for more
-    information.
+L'opzione <replaceable class="parameter">level</replaceable> specifica
+la gravità dell'errore. I livelli permessi sono <literal>DEBUG</literal>, 
+<literal>LOG</literal>, <literal>INFO</literal>,
+<literal>NOTICE</literal>, <literal>WARNING</literal>,
+e <literal>EXCEPTION</literal>, con <literal>EXCEPTION</literal>
+che è il predefinito.
+<literal>EXCEPTION</literal> solleva un errore (che normalmente annulla la transazione
+corrente); gli altri livelli generano solamente messaggi di diversi 
+livelli di priorità.
+Il fatto che i messaggi di una particolare priorità siano riportati al client, 
+scritti sul log del server, o entrambi è controllato dalle variabili 
+di configurazione 
+<xref linkend="guc-log-min-messages"/> e
+<xref linkend="guc-client-min-messages"/>. 
+Si veda <xref linkend="runtime-config"/> per maggiori informazioni.
    </para>
 
    <para>
-    After <replaceable class="parameter">level</replaceable> if any,
-    you can write a <replaceable class="parameter">format</replaceable>
-    (which must be a simple string literal, not an expression).  The
-    format string specifies the error message text to be reported.
-    The format string can be followed
-    by optional argument expressions to be inserted into the message.
-    Inside the format string, <literal>%</literal> is replaced by the
-    string representation of the next optional argument's value. Write
-    <literal>%%</literal> to emit a literal <literal>%</literal>.
+Dopo <replaceable class="parameter">level</replaceable>, se presente, 
+è possibile scrivere  <replaceable class="parameter">format</replaceable>
+(che deve essere una semplice stringa letterale,  non un'espressione). La stringa 
+format specifica il testo del messaggio si errore da segnalare.
+La stringa format può essere seguita 
+da espressioni argomento opzionali da inserire nel messaggio.
+All'interno della stringa format, <literal>%</literal> viene sostituita 
+dalla rappresentazione in stringa del valore opzionale seguente. Scrivere
+<literal>%%</literal> per emettere un <literal>%</literal> letterale.
    </para>
 
    <para>
-    In this example, the value of <literal>v_job_id</literal> will replace the
-    <literal>%</literal> in the string:
+In questo esempio, il valore di <literal>v_job_id</literal> sostituirà il 
+<literal>%</literal> nella stringa:
 <programlisting>
 RAISE NOTICE 'Calling cs_create_job(%)', v_job_id;
 </programlisting>
    </para>
 
    <para>
-    You can attach additional information to the error report by writing
-    <literal>USING</literal> followed by <replaceable
-    class="parameter">option</replaceable> = <replaceable
-    class="parameter">expression</replaceable> items.  The allowed
-    <replaceable class="parameter">option</replaceable> keywords are
-    <literal>MESSAGE</literal>, <literal>DETAIL</literal>, <literal>HINT</literal>, and
-    <literal>ERRCODE</literal>, while each <replaceable
-    class="parameter">expression</replaceable> can be any string-valued
-    expression.
-    <literal>MESSAGE</literal> sets the error message text (this option can't
-    be used in the form of <command>RAISE</command> that includes a format
-    string before <literal>USING</literal>).
-    <literal>DETAIL</literal> supplies an error detail message, while
-    <literal>HINT</literal> supplies a hint message.
-    <literal>ERRCODE</literal> specifies the error code (SQLSTATE) to report,
-    either by condition name as shown in <xref linkend="errcodes-appendix"/>,
-    or directly as a five-character SQLSTATE code.
+È possibile allegare informazioni aggiuntive al resoconto dell'errore scriverndo
+<literal>USING</literal> seguito da elementi <replaceable
+class="parameter">option</replaceable> = <replaceable
+class="parameter">expression</replaceable>.  
+Le parole chiave 
+<replaceable class="parameter">option</replaceable> permesse sono 
+<literal>MESSAGE</literal>, <literal>DETAIL</literal>, <literal>HINT</literal>, e
+<literal>ERRCODE</literal>, mentre ogni <replaceable
+class="parameter">expression</replaceable> 
+può essere qualsiasi espressione stringa.
+<literal>MESSAGE</literal> imposta il testo del masseggio di errore (questa opzione
+non può essere usata nella forma di <command>RAISE</command> che include una stringa format
+prima di <literal>USING</literal>).
+<literal>DETAIL</literal> fornisce un messaggio del dettaglio dell'errore, mentre
+<literal>HINT</literal> fornisce un messaggio di suggerimento.
+<literal>ERRCODE</literal> specifica il codice dell'errore da riportare (SQLSTATE),
+o dal nome della condizione come mostrato in <xref linkend="errcodes-appendix"/>,
+o direttamente come codice SQL di cinque caratteri.
    </para>
 
    <para>
-    This example will abort the transaction with the given error message
-    and hint:
+Questo esempio annullerà la transazione con il dato messaggio di errore
+e suggerimento:
 <programlisting>
 RAISE EXCEPTION 'Nonexistent ID --> %', user_id
       USING HINT = 'Please check your user id';
@@ -2973,7 +2973,7 @@ RAISE EXCEPTION 'Nonexistent ID --> %', user_id
    </para>
 
    <para>
-    These two examples show equivalent ways of setting the SQLSTATE:
+Questi due esempi mostrano modi equivalenti di impostare il SQLSTATE:
 <programlisting>
 RAISE 'Duplicate user ID: %', user_id USING ERRCODE = 'unique_violation';
 RAISE 'Duplicate user ID: %', user_id USING ERRCODE = '23505';
@@ -2981,69 +2981,70 @@ RAISE 'Duplicate user ID: %', user_id USING ERRCODE = '23505';
    </para>
 
    <para>
-    There is a second <command>RAISE</command> syntax in which the main argument
-    is the condition name or SQLSTATE to be reported, for example:
+C'è una secondo tipo di sintassi per <command>RAISE</command> in cui l'argomento principale
+è il nome della condizione o SQLSTATE da riportare, per esempio:
 <programlisting>
 RAISE division_by_zero;
 RAISE SQLSTATE '22012';
 </programlisting>
-    In this syntax, <literal>USING</literal> can be used to supply a custom
-    error message, detail, or hint.  Another way to do the earlier
-    example is
+In questa sintassi, <literal>USING</literal> può essere usato per indicare un messaggio d'errore, 
+un dettaglio o un 
+suggerimento personalizzato. Un altro modo di fare l'esempio precedente
+è
 <programlisting>
 RAISE unique_violation USING MESSAGE = 'Duplicate user ID: ' || user_id;
 </programlisting>
    </para>
 
    <para>
-    Still another variant is to write <literal>RAISE USING</literal> or <literal>RAISE
-    <replaceable class="parameter">level</replaceable> USING</literal> and put
-    everything else into the <literal>USING</literal> list.
+Un'ulteriore variante è di scrivere <literal>RAISE USING</literal> o <literal>RAISE
+<replaceable class="parameter">level</replaceable> USING</literal> e mettere
+tutto il resto nell'elenco <literal>USING</literal>.
    </para>
 
    <para>
-    The last variant of <command>RAISE</command> has no parameters at all.
-    This form can only be used inside a <literal>BEgin</literal> block's
-    <literal>EXCEPTION</literal> clause;
-    it causes the error currently being handled to be re-thrown.
+L'ultima variante di <command>RAISE</command> non ha parametri del tutto.
+Quasta forma può essere usata solo all'interno della clausola <literal>EXCEPTION</literal>
+di un blocco <literal>BEGIN</literal>;
+esso causa che l'errore correntemente gestito sia lanciato di nuovo.
    </para>
 
    <note>
     <para>
-     Before <productname>PostgreSQL</productname> 9.1, <command>RAISE</command> without
-     parameters was interpreted as re-throwing the error from the block
-     containing the active exception handler.  Thus an <literal>EXCEPTION</literal>
-     clause nested within that handler could not catch it, even if the
-     <command>RAISE</command> was within the nested <literal>EXCEPTION</literal> clause's
-     block. This was deemed surprising as well as being incompatible with
-     Oracle's PL/SQL.
+Prima di <productname>PostgreSQL</productname> 9.1, <command>RAISE</command> senza
+parametri era interpretato come lanciare di nuovo l'errore dal blocco contenente
+il gestore di eccezioni attivo. Così una clausola <literal>EXCEPTION</literal>
+annidata all'interno di quel gestore potrebbe non catturarla, anche se
+il <command>RAISE</command> era all'interno del blocco della clausa  <literal>EXCEPTION</literal>
+annidata. Questo fu considerato anche essere sorprendentemente incompatibile con  
+PL/SQL di Oracle.
     </para>
    </note>
 
    <para>
-    If no condition name nor SQLSTATE is specified in a
-    <command>RAISE EXCEPTION</command> command, the default is to use
-    <literal>RAISE_EXCEPTION</literal> (<literal>P0001</literal>).  If no message
-    text is specified, the default is to use the condition name or
-    SQLSTATE as message text.
+Se non è specificato nessun nome di condizione nè SQLSTATE in un comando  
+<command>RAISE EXCEPTION</command>, come predefinito si usa 
+<literal>RAISE_EXCEPTION</literal> (<literal>P0001</literal>). Se nessun messaggio di testo
+viene specificato, il comportamento predefinito è di usare il nome della condizione o
+SQLSTATE come messaggio di testo.
    </para>
 
    <note>
     <para>
-     When specifying an error code by SQLSTATE code, you are not
-     limited to the predefined error codes, but can select any
-     error code consisting of five digits and/or upper-case ASCII
-     letters, other than <literal>00000</literal>.  It is recommended that
-     you avoid throwing error codes that end in three zeroes, because
-     these are category codes and can only be trapped by trapping
-     the whole category.
+Quando si specifica un codice di errore con un SQLSTATE, non si è limitati
+a codici di errore predefiniti, ma si può selezionare qualsiasi
+codice di errore che consiste di cinque cifre e/o lettere ASCII maiuscole, 
+diverse da <literal>00000</literal>.  Si raccomanda di 
+evitare di lanciare codici di errore che finiscano con tre zeri, dato che questi sono 
+codici di categorie e possono essere intercettati solo intercettando l'intera
+categoria.
     </para>
    </note>
 
  </sect1>
 
  <sect1 id="plpgsql-trigger">
-  <title>Trigger Procedures</title>
+  <title>Procedure Trigger</title>
 
   <indexterm zone="plpgsql-trigger">
    <primary>trigger</primary>
@@ -3051,30 +3052,30 @@ RAISE unique_violation USING MESSAGE = 'Duplicate user ID: ' || user_id;
   </indexterm>
 
   <para>
-    <application>PL/pgSQL</application> can be used to define trigger
-    procedures. A trigger procedure is created with the
-    <command>CREATE FUNCTION</command> command, declaring it as a function with
-    no arguments and a return type of <type>trigger</type>.  Note that
-    the function must be declared with no arguments even if it expects
-    to receive arguments specified in <command>CREATE TRIGGER</command> &mdash;
-    trigger arguments are passed via <varname>TG_ARGV</varname>, as described
-    below.
+<application>PL/pgSQL</application> può essere usato per definire procedure 
+trigger. Una procedura trigger viene creata con il comando 
+<command>CREATE FUNCTION</command>, dichiarandola come  una funzione senza
+argomenti e <type>trigger</type> come tipo di ritorno. Notare che   
+la funzione deve essere dichiarata senza argomenti anche se si aspetta 
+di ricevere argomenti specificati in <command>CREATE TRIGGER</command> -
+gli argomenti del trigger sono passati via <varname>TG_ARGV</varname>, come descritto
+sotto.
   </para>
 
   <para>
-   When a <application>PL/pgSQL</application> function is called as a
-   trigger, several special variables are created automatically in the
-   top-level block. They are:
+Quando una funzione <application>PL/pgSQL</application> è chiamata come trigger,
+diverse variabili speciali sono create automaticamente nel blocco 
+superiore. Esse sono:
 
    <variablelist>
     <varlistentry>
      <term><varname>NEW</varname></term>
      <listitem>
       <para>
-       Data type <type>RECORD</type>; variable holding the new
-       database row for <command>INSERT</command>/<command>UPDATE</command> operations in row-level
-       triggers. This variable is <symbol>NULL</symbol> in statement-level triggers
-       and for <command>DELETE</command> operations.
+Tipo di dato <type>RECORD</type>; variabile che tiene la nuova riga
+del database per operazioni <command>INSERT</command>/<command>UPDATE</command> in 
+trigger a livello di riga. Questa variabile è <symbol>NULL</symbol> in trigger a livello 
+di istruzione e per operazioni <command>DELETE</command>.
       </para>
      </listitem>
     </varlistentry>
@@ -3083,10 +3084,10 @@ RAISE unique_violation USING MESSAGE = 'Duplicate user ID: ' || user_id;
      <term><varname>OLD</varname></term>
      <listitem>
       <para>
-       Data type <type>RECORD</type>; variable holding the old
-       database row for <command>UPDATE</command>/<command>DELETE</command> operations in row-level
-       triggers. This variable is <symbol>NULL</symbol> in statement-level triggers
-       and for <command>INSERT</command> operations.
+Tipo di dato <type>RECORD</type>; variabile che tiene la vecchia riga del database
+per operazioni <command>UPDATE</command>/<command>DELETE</command> in trigger a livello di 
+riga. Questa variabile è <symbol>NULL</symbol> in trigger a livello di istruzione
+e per operazioni <command>INSERT</command>.
       </para>
      </listitem>
     </varlistentry>
@@ -3095,8 +3096,7 @@ RAISE unique_violation USING MESSAGE = 'Duplicate user ID: ' || user_id;
      <term><varname>TG_NAME</varname></term>
      <listitem>
       <para>
-       Data type <type>name</type>; variable that contains the name of the trigger actually
-       fired.
+Tipo di dato <type>name</type>; variabile che contiene il nome del trigger attualmente attivato.
       </para>
      </listitem>
     </varlistentry>
@@ -3106,8 +3106,8 @@ RAISE unique_violation USING MESSAGE = 'Duplicate user ID: ' || user_id;
      <listitem>
       <para>
        Data type <type>text</type>; a string of either
-       <literal>BEFORE</literal> or <literal>AFTER</literal>
-       depending on the trigger's definition.
+Tipo di dato <type>text</type>; una stringa <literal>BEFORE</literal> o <literal>AFTER</literal>
+a seconda della definizione del trigger.
       </para>
      </listitem>
     </varlistentry>
@@ -3116,9 +3116,9 @@ RAISE unique_violation USING MESSAGE = 'Duplicate user ID: ' || user_id;
      <term><varname>TG_LEVEL</varname></term>
      <listitem>
       <para>
-       Data type <type>text</type>; a string of either
-       <literal>ROW</literal> or <literal>STATEMENT</literal>
-       depending on the trigger's definition.
+Tipo di dato <type>text</type>; una stringa
+<literal>ROW</literal> o <literal>STATEMENT</literal>
+a seconda della definizione del trigger.
       </para>
      </listitem>
     </varlistentry>
@@ -3128,9 +3128,10 @@ RAISE unique_violation USING MESSAGE = 'Duplicate user ID: ' || user_id;
      <listitem>
       <para>
        Data type <type>text</type>; a string of
-       <literal>INSERT</literal>, <literal>UPDATE</literal>,
-       <literal>DELETE</literal>, or <literal>TRUNCATE</literal>
-       telling for which operation the trigger was fired.
+Tipo di dato <type>text</type>; una stringa
+<literal>INSERT</literal>, <literal>UPDATE</literal>,
+<literal>DELETE</literal>, o <literal>TRUNCATE</literal>
+che dice per quale operazione è stato attivato il trigger.
       </para>
      </listitem>
     </varlistentry>
@@ -3139,8 +3140,8 @@ RAISE unique_violation USING MESSAGE = 'Duplicate user ID: ' || user_id;
      <term><varname>TG_RELID</varname></term>
      <listitem>
       <para>
-       Data type <type>oid</type>; the object ID of the table that caused the
-       trigger invocation.
+Tipo di dato  <type>oid</type>; l'ID dell'oggetto della tabella che ha causato 
+l'invocazione del trigger.
       </para>
      </listitem>
     </varlistentry>
@@ -3149,9 +3150,9 @@ RAISE unique_violation USING MESSAGE = 'Duplicate user ID: ' || user_id;
      <term><varname>TG_RELNAME</varname></term>
      <listitem>
       <para>
-       Data type <type>name</type>; the name of the table that caused the trigger
-       invocation. This is now deprecated, and could disappear in a future
-       release. Use <literal>TG_TABLE_NAME</literal> instead.
+Tipo di dato <type>name</type>; il nome della tabella che ha causato l'invocazione del 
+trigger. Questo ora è deprecato, e può sparire in una versione futura.
+Usare invece <literal>TG_TABLE_NAME</literal>.
       </para>
      </listitem>
     </varlistentry>
@@ -3160,8 +3161,8 @@ RAISE unique_violation USING MESSAGE = 'Duplicate user ID: ' || user_id;
      <term><varname>TG_TABLE_NAME</varname></term>
      <listitem>
       <para>
-       Data type <type>name</type>; the name of the table that
-       caused the trigger invocation.
+Tipo di dato <type>name</type>; il nome della tabella che ha causato 
+l'invocazione del trigger.
       </para>
      </listitem>
     </varlistentry>
@@ -3170,8 +3171,8 @@ RAISE unique_violation USING MESSAGE = 'Duplicate user ID: ' || user_id;
      <term><varname>TG_TABLE_SCHEMA</varname></term>
      <listitem>
       <para>
-       Data type <type>name</type>; the name of the schema of the
-       table that caused the trigger invocation.
+Tipo di dato <type>name</type>; il nome dello schema della tabella che 
+ha causato l'invocazione del trigger.
       </para>
      </listitem>
     </varlistentry>
@@ -3180,8 +3181,8 @@ RAISE unique_violation USING MESSAGE = 'Duplicate user ID: ' || user_id;
      <term><varname>TG_NARGS</varname></term>
      <listitem>
       <para>
-       Data type <type>integer</type>; the number of arguments given to the trigger
-       procedure in the <command>CREATE TRIGGER</command> statement.
+Tipo di dato <type>integer</type>; il numero di argomenti forniti alla procedura trigger 
+nell'istruzione <command>CREATE TRIGGER</command>.
       </para>
      </listitem>
     </varlistentry>
@@ -3190,11 +3191,11 @@ RAISE unique_violation USING MESSAGE = 'Duplicate user ID: ' || user_id;
      <term><varname>TG_ARGV[]</varname></term>
      <listitem>
       <para>
-       Data type array of <type>text</type>; the arguments from
-       the <command>CREATE TRIGGER</command> statement.
-       The index counts from 0. Invalid
-       indexes (less than 0 or greater than or equal to <varname>tg_nargs</varname>)
-       result in a null value.
+Tipo di dato <type>text</type>; gli argomenti 
+dell'istruzione <command>CREATE TRIGGER</command>.
+L'indice conta da 0. Gli indici invalidi 
+(minori di 0 o maggiori di, o uguali, a <varname>tg_nargs</varname>)
+risultano in un valore null.
       </para>
      </listitem>
     </varlistentry>
@@ -3202,56 +3203,55 @@ RAISE unique_violation USING MESSAGE = 'Duplicate user ID: ' || user_id;
   </para>
 
    <para>
-    A trigger function must return either <symbol>NULL</symbol> or a
-    record/row value having exactly the structure of the table the
-    trigger was fired for.
+Una funzione trigger deve restituire o <symbol>NULL</symbol> o un valore record/riga
+avente esattamente la struttura della tabelle per cui è stato attivato il trigger.
    </para>
 
    <para>
-    Row-level triggers fired <literal>BEFORE</literal> can return null to signal the
-    trigger manager to skip the rest of the operation for this row
-    (i.e., subsequent triggers are not fired, and the
-    <command>INSERT</command>/<command>UPDATE</command>/<command>DELETE</command> does not occur
-    for this row).  If a nonnull
-    value is returned then the operation proceeds with that row value.
-    Returning a row value different from the original value
-    of <varname>NEW</varname> alters the row that will be inserted or
-    updated.  Thus, if the trigger function wants the triggering
-    action to succeed normally without altering the row
-    value, <varname>NEW</varname> (or a value equal thereto) has to be
-    returned.  To alter the row to be stored, it is possible to
-    replace single values directly in <varname>NEW</varname> and return the
-    modified <varname>NEW</varname>, or to build a complete new record/row to
-    return.  In the case of a before-trigger
-    on <command>DELETE</command>, the returned value has no direct
-    effect, but it has to be nonnull to allow the trigger action to
-    proceed.  Note that <varname>NEW</varname> is null
-    in <command>DELETE</command> triggers, so returning that is
-    usually not sensible.  A useful idiom in <command>DELETE</command>
-    triggers might be to return <varname>OLD</varname>.
+Trigger a livello di riga attivati prima (<literal>BEFORE</literal>) possono restituire null
+per segnalare al gestore dei trigger di saltare il resto dell'operazione per questa riga.
+(per es., i trigger successivi non vengono attivati, e 
+le <command>INSERT</command>/<command>UPDATE</command>/<command>DELETE</command> non accadono
+per questa riga). Se viene restituito un valore nonnull
+allora l'operazione procede con quel valore della riga.
+Restituire un valore rida diverso dal valore originale di
+<varname>NEW</varname> altera la riga che sarà inserita o aggiornata.
+Così, se la funzione trigger vuole che l'azione di trigger
+riesca normalmente senza alterare il valore della riga, 
+deve essere restituito <varname>NEW</varname> (o un valore ad esso equivalente).
+Per modificare la riga da salvare, è possibile 
+sostituire singoli valori direttamente in  <varname>NEW</varname> e restituire 
+la <varname>NEW</varname> modificata, o costruire un record/riga completamente nuovo
+da restituire. Nel caso di un trigger before 
+su <command>DELETE</command>, il valore restituito non ha un effetto diretto,
+ma deve essere non null per permettere all'azione trigger di
+procedere. Notare che <varname>NEW</varname> è null nei trigger
+<command>DELETE</command>, quindi restituirlo di solito non è sensato. 
+Un'espressione utile nei trigger <command>DELETE</command>
+potrebbe restituire <varname>OLD</varname>.
    </para>
 
    <para>
-    The return value of a row-level trigger
-    fired <literal>AFTER</literal> or a statement-level trigger
-    fired <literal>BEFORE</literal> or <literal>AFTER</literal> is
-    always ignored; it might as well be null. However, any of these types of
-    triggers might still abort the entire operation by raising an error.
+Il valore di ritorno di un trigger a livello di riga
+attivato <literal>AFTER</literal> o un trigger a livello di instruzione
+attivato <literal>BEFORE</literal> o <literal>AFTER</literal> è
+sempre ignorato; potrebbe anch'esso essere null. Comunque, uno qualsiasi di questi tipi di 
+trigger potrebbe ancora annullare l'intera operazione sollevando un errore.
    </para>
 
    <para>
-    <xref linkend="plpgsql-trigger-example"/> shows an example of a
-    trigger procedure in <application>PL/pgSQL</application>.
+<xref linkend="plpgsql-trigger-example"/> mostra un esempio di una procedura trigger
+in <application>PL/pgSQL</application>.
    </para>
 
    <example id="plpgsql-trigger-example">
-    <title>A <application>PL/pgSQL</application> Trigger Procedure</title>
+    <title>Una procedura trigger <application>PL/pgSQL</application></title>
 
     <para>
-     This example trigger ensures that any time a row is inserted or updated
-     in the table, the current user name and time are stamped into the
-     row. And it checks that an employee's name is given and that the
-     salary is a positive value.
+Questo trigger di esempio assicura che ogni volta una riga venga inserita o aggiornata
+nella tabella, il nome utente corrente e l'orario siano salvati nella riga.
+E controlla che oil nome di un impiegato sua fornito e che il salario
+sia un valore positivo.
     </para>
 
 <programlisting>
@@ -3290,21 +3290,21 @@ CREATE TRIGGER emp_stamp BEFORE INSERT OR UPDATE ON emp
    </example>
 
    <para>
-    Another way to log changes to a table involves creating a new table that
-    holds a row for each insert, update, or delete that occurs. This approach
-    can be thought of as auditing changes to a table.
-    <xref linkend="plpgsql-trigger-audit-example"/> shows an example of an
-    audit trigger procedure in <application>PL/pgSQL</application>.
+Un altro modo di annotare i cambiamenti a una tabella implica la creazione di una nuova tabella
+che salva una riga per ogni insert, update, o delete che accade. Questo approccio
+può essere pensato come una revisione dei cambiamenti a una tabella.
+<xref linkend="plpgsql-trigger-audit-example"/> mostra un esempio di una procedura trigger
+di revisione in <application>PL/pgSQL</application>.
    </para>
 
    <example id="plpgsql-trigger-audit-example">
-    <title>A <application>PL/pgSQL</application> Trigger Procedure For Auditing</title>
+    <title>Una procedura trigger <application>PL/pgSQL</application> per la revisione</title>
 
     <para>
-     This example trigger ensures that any insert, update or delete of a row
-     in the <literal>emp</literal> table is recorded (i.e., audited) in the <literal>emp_audit</literal> table.
-     The current time and user name are stamped into the row, together with
-     the type of operation performed on it.
+Questo trigger di  esempio assicura che qualsiasi inserimento, aggiornamento o cancellazione di una riga
+nella tabella <literal>emp</literal> sia registrata nella tabella <literal>emp_audit</literal>.
+L'orario e il nome utente corrente sono salvati nella riga, insieme al 
+tipo di operazione svolta.
     </para>
 
 <programlisting>
@@ -3322,10 +3322,10 @@ CREATE TABLE emp_audit(
 );
 
 CREATE OR REPLACE FUNCTION process_emp_audit() RETURNS TRIGGER AS $emp_audit$
-    BEgin
+    BEGIN
         --
-        -- Create a row in emp_audit to reflect the operation performed on emp,
-        -- make use of the special variable TG_OP to work out the operation.
+        -- Crea una riga un emp_audit per riflettere l'operazione eseguita su emp, 
+        -- usa la variabile speciale TG_OP per portare a termine l'operazione.
         --
         IF (TG_OP = 'DELETE') THEN
             INSERT INTO emp_audit SELECT 'D', now(), user, OLD.*;
@@ -3337,7 +3337,7 @@ CREATE OR REPLACE FUNCTION process_emp_audit() RETURNS TRIGGER AS $emp_audit$
             INSERT INTO emp_audit SELECT 'I', now(), user, NEW.*;
             RETURN NEW;
         END IF;
-        RETURN NULL; -- result is ignored since this is an AFTER trigger
+        RETURN NULL; -- il risultato viene ignorato dato che questo è un trigger AFTER
     END;
 $emp_audit$ LANGUAGE plpgsql;
 

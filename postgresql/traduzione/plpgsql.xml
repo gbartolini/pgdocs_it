@@ -3348,30 +3348,31 @@ AFTER INSERT OR UPDATE OR DELETE ON emp
    </example>
 
    <para>
-    One use of triggers is to maintain a summary table
-    of another table. The resulting summary can be used in place of the
-    original table for certain queries &mdash; often with vastly reduced run
-    times.
-    This technique is commonly used in Data Warehousing, where the tables
-    of measured or observed data (called fact tables) might be extremely large.
-    <xref linkend="plpgsql-trigger-summary-example"/> shows an example of a
-    trigger procedure in <application>PL/pgSQL</application> that maintains
-    a summary table for a fact table in a data warehouse.
+Un uso dei trigger è di mantenere una tabella di sommario
+di un'altra tabella. Il sommario risultante può essere usato al posto della
+tabella originale per certe query - spesso con tempi di esecuzione enormemente 
+ridotti.
+Questa tecnica è usata comunemente nel Data Warehousing, dove le tabelle
+dei dati misurati o osservati (chiamate tabelle dei fatti) potrebbero essere estremamente grandi.
+<xref linkend="plpgsql-trigger-summary-example"/> mostra un esempio di una 
+procedura trigger in <application>PL/pgSQL</application> che mantiene
+una tabella di sommario per una tabella di fatti in un data warehouse.
    </para>
 
 
    <example id="plpgsql-trigger-summary-example">
-    <title>A <application>PL/pgSQL</application> Trigger Procedure For Maintaining A Summary Table</title>
+    <title>Una procedura trigger <application>PL/pgSQL</application> per mantenere una tabella di sommario</title>
 
     <para>
-     The schema detailed here is partly based on the <emphasis>Grocery Store
-     </emphasis> example from <emphasis>The Data Warehouse Toolkit</emphasis>
-     by Ralph Kimball.
+Lo schema presentato in dettaglio qui è basato parzialmente sull'esempio <emphasis>Grocery Store
+</emphasis> preso da <emphasis>The Data Warehouse Toolkit</emphasis>
+di Ralph Kimball.
     </para>
 
 <programlisting>
 --
 -- Main tables - time dimension and sales fact.
+-- Tabelle principali - time dimension e sales fact.
 --
 CREATE TABLE time_dimension (
     time_key                    integer NOT NULL,
@@ -3394,7 +3395,7 @@ CREATE TABLE sales_fact (
 CREATE INDEX sales_fact_time ON sales_fact(time_key);
 
 --
--- Summary table - sales by time.
+-- Tabella di sommario - sales by time.
 --
 CREATE TABLE sales_summary_bytime (
     time_key                    integer NOT NULL,
@@ -3405,7 +3406,7 @@ CREATE TABLE sales_summary_bytime (
 CREATE UNIQUE INDEX sales_summary_bytime_key ON sales_summary_bytime(time_key);
 
 --
--- Function and trigger to amend summarized column(s) on UPDATE, INSERT, DELETE.
+-- Funzioni e trigger per rettificare le colonne sommarizate sulle UPDATE, INSERT, DELETE.
 --
 CREATE OR REPLACE FUNCTION maint_sales_summary_bytime() RETURNS TRIGGER
 AS $maint_sales_summary_bytime$
@@ -3416,7 +3417,7 @@ AS $maint_sales_summary_bytime$
         delta_amount_cost       numeric(15,2);
     BEgin
 
-        -- Work out the increment/decrement amount(s).
+        -- Mette a posto l'ammontare degli incrementi/decrementi.
         IF (TG_OP = 'DELETE') THEN
 
             delta_time_key = OLD.time_key;
@@ -3449,7 +3450,7 @@ AS $maint_sales_summary_bytime$
         END IF;
 
 
-        -- Insert or update the summary row with the new values.
+        -- Inserisce o aggiorna la riga di sommario con i nuovi valori.
         &lt;&lt;insert_update&gt;&gt;
         LOOP
             UPDATE sales_summary_bytime
@@ -3460,7 +3461,7 @@ AS $maint_sales_summary_bytime$
 
             EXIT insert_update WHEN found;
 
-            BEgin
+            BEGIN
                 INSERT INTO sales_summary_bytime (
                             time_key,
                             amount_sold,
@@ -3477,7 +3478,7 @@ AS $maint_sales_summary_bytime$
 
             EXCEPTION
                 WHEN UNIQUE_VIOLATION THEN
-                    -- do nothing
+                    -- non fare niente
             END;
         END LOOP insert_update;
 
@@ -3508,76 +3509,76 @@ SELECT * FROM sales_summary_bytime;
    <title><application>PL/pgSQL</application> Under the Hood</title>
 
    <para>
-    This section discusses some implementation details that are
-    frequently important for <application>PL/pgSQL</application> users to know.
+Questa sezione discute alcuni dettagli dell'implementazione che frequentemente
+sono importanti da sapere per gli utenti  <application>PL/pgSQL</application>.
    </para>
 
   <sect2 id="plpgsql-var-subst">
-   <title>Variable Substitution</title>
+   <title>Sostituzione di variabili</title>
 
    <para>
-    SQL statements and expressions within a <application>PL/pgSQL</application> function
-    can refer to variables and parameters of the function.  Behind the scenes,
-    <application>PL/pgSQL</application> substitutes query parameters for such references.
-    Parameters will only be substituted in places where a parameter or
-    column reference is syntactically allowed.  As an extreme case, consider
-    this example of poor programming style:
+Le funzioni SQL e le espressioni all'interno di funzioni <application>PL/pgSQL</application>
+possono fare riferimento a variabili e parametri della funzione. Dietro le quinte,
+<application>PL/pgSQL</application> sostituisce i parametri della query per tali riferimenti.
+I parametri saranno sostituiti solo in posti dove un riferimento a un parametro o 
+colonna è permesso sintatticamente. Come caso estremo, considerare 
+questo esempio di scarso stile di programmazione:
 <programlisting>
 INSERT INTO foo (foo) VALUES (foo);
 </programlisting>
-    The first occurrence of <literal>foo</literal> must syntactically be a table
-    name, so it will not be substituted, even if the function has a variable
-    named <literal>foo</literal>.  The second occurrence must be the name of a
-    column of the table, so it will not be substituted either.  Only the
-    third occurrence is a candidate to be a reference to the function's
-    variable.
+La prima occorenza di <literal>foo</literal> dev'essere sintatticamente il nome di una tabella, 
+quindi non sarà sostituito, anche se la funzione ha una variabile 
+chiamata <literal>foo</literal>.  La seconda occorrenza deve essere il nome di una
+colonna della tabella, quindi non sarà sostituita. Solo la terza occorrenza  
+è un candidato per essere un riferimento alla variabile della funzione.
    </para>
 
    <note>
     <para>
-     <productname>PostgreSQL</productname> versions before 9.0 would try
-     to substitute the variable in all three cases, leading to syntax errors.
+Le versioni di <productname>PostgreSQL</productname> precedenti la 9.0 avrebbero provato
+a sostituire la variabile in tutti e tre i casi, generando errori di sintassi.
     </para>
    </note>
 
    <para>
-    Since the names of variables are syntactically no different from the names
-    of table columns, there can be ambiguity in statements that also refer to
-    tables: is a given name meant to refer to a table column, or a variable?
-    Let's change the previous example to
+Dato che i nomi delle variabili non sono sintatticamente diversi dai nomi 
+delle colonne della tabella, ci può essere ambiguità in istruzioni che si riferiscono anche
+alle tabelle: un fato nome è inteso riferirsi a una colonna di tabella, o a una variabile?
+Si cambi l'esempio precedente in
 <programlisting>
 INSERT INTO dest (col) SELECT foo + bar FROM src;
 </programlisting>
-    Here, <literal>dest</literal> and <literal>src</literal> must be table names, and
-    <literal>col</literal> must be a column of <literal>dest</literal>, but <literal>foo</literal>
-    and <literal>bar</literal> might reasonably be either variables of the function
-    or columns of <literal>src</literal>.
+Qui, <literal>dest</literal> e <literal>src</literal> devono essere nomi di tabella, e 
+<literal>col</literal> deve essere una colonna di <literal>dest</literal>, ma <literal>foo</literal>
+e <literal>bar</literal> potrebbero ragionevolmente essere variabili della funzione
+o colonne di <literal>src</literal>.
    </para>
 
    <para>
-    By default, <application>PL/pgSQL</application> will report an error if a name
-    in a SQL statement could refer to either a variable or a table column.
-    You can fix such a problem by renaming the variable or column,
-    or by qualifying the ambiguous reference, or by telling
-    <application>PL/pgSQL</application> which interpretation to prefer.
+Come predefinito, <application>PL/pgSQL</application> riporterà un errore se un nome
+in un'istruzione SQL potrebbe riferirsi sia a una variabile che alla colonna di una tabella.
+Si può risolvere tale problema rinominando la variabile o la colonna,
+o qualificando il riferimento ambiguo, o dicendo a
+<application>PL/pgSQL</application> quale interpretazione preferire.
    </para>
 
    <para>
-    The simplest solution is to rename the variable or column.
-    A common coding rule is to use a
-    different naming convention for <application>PL/pgSQL</application>
-    variables than you use for column names.  For example,
-    if you consistently name function variables
-    <literal>v_<replaceable>something</replaceable></literal> while none of your
-    column names start with <literal>v_</literal>, no conflicts will occur.
+La soluzione più semplice è di rinominare la variabile o la colonna.
+Una regola comune di programmazione è  di usare una
+convenzione di nomenclatura diversa per le variabili <application>PL/pgSQL</application> 
+rispetto a quella usata per i nomi delle colonne. Per esempio,
+se coerentemente le variabili delle funzioni si chiamano 
+<literal>v_<replaceable>something</replaceable></literal>
+mentre nessuno dei nomi delle colonne comincia con <literal>v_</literal>,
+non si verificheranno conflitti.
    </para>
 
    <para>
-    Alternatively you can qualify ambiguous references to make them clear.
-    In the above example, <literal>src.foo</literal> would be an unambiguous reference
-    to the table column.  To create an unambiguous reference to a variable,
-    declare it in a labeled block and use the block's label
-    (see <xref linkend="plpgsql-structure"/>).  For example,
+Alternativamente si possono qualificare riferimenti ambigui per renderli chiari.
+Nell'esempio sopra, <literal>src.foo</literal> sarebbe un riferimento non ambiguo
+alla colonna della tabella. Per creare un riferimento non ambiguo a una variabile,
+dichiararla in un blocco con etichetta ed usare l'etichetta del blocco 
+(si veda <xref linkend="plpgsql-structure"/>).  Per esempio,
 <programlisting>
 &lt;&lt;block&gt;&gt;
 DECLARE
@@ -3586,75 +3587,76 @@ BEgin
     foo := ...;
     INSERT INTO dest (col) SELECT block.foo + bar FROM src;
 </programlisting>
-    Here <literal>block.foo</literal> means the variable even if there is a column
-    <literal>foo</literal> in <literal>src</literal>.  Function parameters, as well as
-    special variables such as <literal>FOUND</literal>, can be qualified by the
-    function's name, because they are implicitly declared in an outer block
-    labeled with the function's name.
+Qui <literal>block.foo</literal> infica la variabile anche se c'è una colonna 
+<literal>foo</literal> in <literal>src</literal>.  
+I parametri di funzione, così come
+variabili speciali tipo <literal>FOUND</literal>, possono essere qualificate 
+dal nome della funzione, dato che sono dichiarati implicitamente in un blocco esterno 
+etichettato con il nome della funzione.
    </para>
 
    <para>
-    Sometimes it is impractical to fix all the ambiguous references in a
-    large body of <application>PL/pgSQL</application> code.  In such cases you can
-    specify that <application>PL/pgSQL</application> should resolve ambiguous references
-    as the variable (which is compatible with <application>PL/pgSQL</application>'s
-    behavior before <productname>PostgreSQL</productname> 9.0), or as the
-    table column (which is compatible with some other systems such as
-    <productname>Oracle</productname>).
+A volte è impraticabile risolvere tutti i riferimenti ambigui in un sostanzioso
+pezzo di codice <application>PL/pgSQL</application>. In tali casi è possibile specificare 
+che <application>PL/pgSQL</application> dovrebbe risolvere riferimenti ambigui
+come riferimenti a  variabile (che è compatibile con il comportamento di <application>PL/pgSQL</application>
+prima di <productname>PostgreSQL</productname> 9.0), o come riferimento alla colonna della tabella  
+(che è compatibile con alcuni altri sistemi come
+<productname>Oracle</productname>).
    </para>
 
    <indexterm>
-     <primary><varname>plpgsql.variable_conflict</varname> configuration parameter</primary>
+     <primary>parametro di configurazione <varname>plpgsql.variable_conflict</varname></primary>
    </indexterm>
 
    <para>
-    To change this behavior on a system-wide basis, set the configuration
-    parameter <literal>plpgsql.variable_conflict</literal> to one of
-    <literal>error</literal>, <literal>use_variable</literal>, or
-    <literal>use_column</literal> (where <literal>error</literal> is the factory default).
-    This parameter affects subsequent compilations
-    of statements in <application>PL/pgSQL</application> functions, but not statements
-    already compiled in the current session.  To set the parameter before
-    <application>PL/pgSQL</application> has been loaded, it is necessary to have added
-    <quote><literal>plpgsql</literal></quote> to the <xref
-    linkend="guc-custom-variable-classes"/> list in
-    <filename>postgresql.conf</filename>.  Because changing this setting
-    can cause unexpected changes in the behavior of <application>PL/pgSQL</application>
-    functions, it can only be changed by a superuser.
+Per cambiare questo comportamento a livello di sistema, impostare il parametro di configurazione
+<literal>plpgsql.variable_conflict</literal> ad un valora tra
+<literal>error</literal>, <literal>use_variable</literal>, o
+<literal>use_column</literal> 
+(dove <literal>error</literal> è il predefinito).
+Questo parametro influisce successive compilazioni 
+o istruzioni in funzioni <application>PL/pgSQL</application>, ma non istruzioni 
+già compilate nella sessione corrente. Per impostare il parametro prima 
+che <application>PL/pgSQL</application> sia stato caricato, è necessario aver aggiunto
+<quote><literal>plpgsql</literal></quote> all'elenco <xref
+linkend="guc-custom-variable-classes"/> in
+<filename>postgresql.conf</filename>. Dato che cambiare quest'impostazione
+può causare cambiamenti inaspettati nel comportamento di funzioni <application>PL/pgSQL</application>,
+può essere cambiato solo da un superutente.
    </para>
 
    <para>
-    You can also set the behavior on a function-by-function basis, by
-    inserting one of these special commands at the start of the function
-    text:
+È anche possibile impostare il comportamento funzione per funzione, inserendo 
+uno di questi comandi speciali all'inizio del testo della funzione:
 <programlisting>
 #variable_conflict error
 #variable_conflict use_variable
 #variable_conflict use_column
 </programlisting>
-    These commands affect only the function they are written in, and override
-    the setting of <literal>plpgsql.variable_conflict</literal>.  An example is
+Questi comandi hanno consegnuenze solo sulla funzione in cui sono scritti, e sovrascrivono
+l'impostazione di <literal>plpgsql.variable_conflict</literal>. Un esempio è
 <programlisting>
 CREATE FUNCTION stamp_user(id int, comment text) RETURNS void AS $$
     #variable_conflict use_variable
     DECLARE
         curtime timestamp := now();
-    BEgin
+    BEGIN
         UPDATE users SET last_modified = curtime, comment = comment
           WHERE users.id = id;
     END;
 $$ LANGUAGE plpgsql;
 </programlisting>
-    In the <literal>UPDATE</literal> command, <literal>curtime</literal>, <literal>comment</literal>,
-    and <literal>id</literal> will refer to the function's variable and parameters
-    whether or not <literal>users</literal> has columns of those names.  Notice
-    that we had to qualify the reference to <literal>users.id</literal> in the
-    <literal>WHERE</literal> clause to make it refer to the table column.
-    But we did not have to qualify the reference to <literal>comment</literal>
-    as a target in the <literal>UPDATE</literal> list, because syntactically
-    that must be a column of <literal>users</literal>.  We could write the same
-    function without depending on the <literal>variable_conflict</literal> setting
-    in this way:
+Nel comando <literal>UPDATE</literal>, <literal>curtime</literal>, <literal>comment</literal>
+e <literal>id</literal> faranno riferimento alle variabili e parametri della funzione
+sia che <literal>users</literal> abbia o no colonne chiamate in quel modo. Notare 
+che si è dovuto qualificare il riferimento a <literal>users.id</literal> nella 
+clausola <literal>WHERE</literal> per renderlo un riferimento alla colonna della tabella.
+Ma non si è dovuto qualificare il riferimento a <literal>comment</literal>
+come obiettivo dell'elenco <literal>UPDATE</literal>, dato che sintatticamente
+quella deve essere una colonna di <literal>users</literal>. Si poteva scrivere la stessa
+funzione senza dipendere dall'impostazione di <literal>variable_conflict</literal>
+in questo modo:
 <programlisting>
 CREATE FUNCTION stamp_user(id int, comment text) RETURNS void AS $$
     &lt;&lt;fn&gt;&gt;
@@ -3669,149 +3671,148 @@ $$ LANGUAGE plpgsql;
    </para>
 
    <para>
-    Variable substitution does not happen in the command string given
-    to <command>EXECUTE</command> or one of its variants.  If you need to
-    insert a varying value into such a command, do so as part of
-    constructing the string value, or use <literal>USING</literal>, as illustrated in
-    <xref linkend="plpgsql-statements-executing-dyn"/>.
+La sostituzione di variabili non avviene nella stringa del comando fornito a 
+<command>EXECUTE</command> o una delle sue varianti. Se si ha bisogno di 
+inserire un valore variabile in tale comando, farlo come parte della
+costruzione del valore stringa, o usare  <literal>USING</literal>, come illustrato in
+<xref linkend="plpgsql-statements-executing-dyn"/>.
    </para>
 
    <para>
-    Variable substitution currently works only in <command>SELECT</command>,
-    <command>INSERT</command>, <command>UPDATE</command>, and <command>DELETE</command> commands,
-    because the main SQL engine allows query parameters only in these
-    commands.  To use a non-constant name or value in other statement
-    types (generically called utility statements), you must construct
-    the utility statement as a string and <command>EXECUTE</command> it.
+La sostituzione di variabile correntemente funziona solo in comandi
+<command>SELECT</command>, <command>INSERT</command>, <command>UPDATE</command>, and <command>DELETE</command>,
+dato che il motore SQL principale permette parametri per query solo in questi
+comandi. Per usare un nome o un valore non costante in altri tipi di istruzione
+(chiamate genericamente instruzioni di utilità), si deve costruire 
+l'istruzione di utilità come una stringa ed eseguirla con  <command>EXECUTE</command>.
    </para>
 
   </sect2>
 
   <sect2 id="plpgsql-plan-caching">
-   <title>Plan Caching</title>
+   <title>Cache del piano</title>
 
    <para>
-    The <application>PL/pgSQL</application> interpreter parses the function's source
-    text and produces an internal binary instruction tree the first time the
-    function is called (within each session).  The instruction tree
-    fully translates the
-    <application>PL/pgSQL</application> statement structure, but individual
-    <acronym>SQL</acronym> expressions and <acronym>SQL</acronym> commands
-    used in the function are not translated immediately.
+L'interprete <application>PL/pgSQL</application> fa il parsing del sorgente della funzione 
+e produce un albero di istruzioni binarie interne la prima volta che la funzione 
+viene chiamata (all'interno di ogni sessione). L'albero di istruzioni
+traduce completamente la struttura delle istruzioni
+<application>PL/pgSQL</application>, ma espressioni e comandi <acronym>SQL</acronym> 
+individuali usate nella funzione non sono tradotte immediatamente.
    </para>
 
    <para>
-    As each expression and <acronym>SQL</acronym> command is first
-    executed in the function, the <application>PL/pgSQL</application> interpreter
-    creates a prepared execution plan (using the
-    <acronym>SPI</acronym> manager's <function>SPI_prepare</function>
-    and <function>SPI_saveplan</function>
-    functions).<indexterm><primary>preparing a query</primary><secondary>in
-    PL/pgSQL</secondary></indexterm> Subsequent visits to that expression or command
+Ogni volta che un espressione e comando <acronym>SQL</acronym> viene eseguita,
+l'interprete  <application>PL/pgSQL</application> crea
+un piano di esecuzione (usando le funzioni del gestore 
+<acronym>SPI</acronym> <function>SPI_prepare</function>
+e <function>SPI_saveplan</function>).
+<indexterm><primary>preparare una query</primary><secondary>in
+PL/pgSQL</secondary></indexterm> 
+    Subsequent visits to that expression or command
     reuse the prepared plan.  Thus, a function with conditional code
     that contains many statements for which execution plans might be
     required will only prepare and save those plans that are really
-    used during the lifetime of the database connection.  This can
-    substantially reduce the total amount of time required to parse
-    and generate execution plans for the statements in a
-    <application>PL/pgSQL</application> function. A disadvantage is that errors
-    in a specific expression or command cannot be detected until that
-    part of the function is reached in execution.  (Trivial syntax
-    errors will be detected during the initial parsing pass, but
-    anything deeper will not be detected until execution.)
+    used during the lifetime of the database connection.  
+Questo può
+ridurre sostanzialmente l'ammontare totale del tempo richiesto per fare il parsing
+e generare i piani di esecuzione per le istruzioni in una funzione
+<application>PL/pgSQL</application>. Uno svantaggio è che errori 
+in una specifica espressione o comando non possono essere individuati finchè quella
+parte della funzione viene raggiunta durante l'esecuzione. (Errori di sintassi trascurabili
+saranno individuati durante il passo iniziale di parsing, ma qualsiasi cosa più
+approfondita non sarà individuata fino all'esecuzione).
    </para>
 
    <para>
-    A saved plan will be re-planned automatically if there is any schema
-    change to any table used in the query, or if any user-defined function
-    used in the query is redefined.  This makes the re-use of prepared plans
-    transparent in most cases, but there are corner cases where a stale plan
-    might be re-used.  An example is that dropping and re-creating a
-    user-defined operator won't affect already-cached plans; they'll continue
-    to call the original operator's underlying function, if that has not been
-    changed.  When necessary, the cache can be flushed by starting a fresh
-    database session.
+Un piano salvato sarà ripianificato automaticamente se c'è qualsiasi cambiamento allo schema
+in qualsiasi tabella usata nella query, o se una qualsiasi  funzione definita dall'utente
+usata nella query viene ridefinita. Questo rende il riuso di piano preparati
+trasparente nella maggior parte dei casi, ma ci sono casi limite dove un vecchio piano 
+potrebbe essere riusato. Un esempio è che eliminare e ricreare un operatore definito dall'utente
+non influenzerà piani già sottoposti a cache; loro continueranno a 
+chiamare la funzione originale sottostante dell'operatore, se non è stato cambiato.
+Quando necessario, la cache può essere svuotata cominciando una nuova sessione di database.
    </para>
 
    <para>
-    Because <application>PL/pgSQL</application> saves execution plans
-    in this way, SQL commands that appear directly in a
-    <application>PL/pgSQL</application> function must refer to the
-    same tables and columns on every execution; that is, you cannot use
-    a parameter as the name of a table or column in an SQL command.  To get
-    around this restriction, you can construct dynamic commands using
-    the <application>PL/pgSQL</application> <command>EXECUTE</command>
-    statement &mdash; at the price of constructing a new execution plan on
-    every execution.
+Dato che <application>PL/pgSQL</application> salva i piani di esecuzione 
+in questo modo, i comando SQL che appaiono direttamente in una
+funzione <application>PL/pgSQL</application> devono fare riferimento alle
+stesse tabelle e colonne ad ogni esecuzione; cioè, non è possbile usare 
+un parametro come nome di una tabella o colonna in un comando SQL. Per superare 
+questa restrizione, è possibile costruire comandi dinamici usando 
+l'istruzione <application>PL/pgSQL</application> <command>EXECUTE</command> -
+al prezzo di costruire un nuovo piano di esecuzione ad ogni esecuzione.
    </para>
 
    <para>
-    Another important point is that the prepared plans are parameterized
-    to allow the values of <application>PL/pgSQL</application> variables
-    to change from one use to the next, as discussed in detail above.
-    Sometimes this means that a plan is less efficient than it would be
-    if generated for a specific variable value.  As an example, consider
+Un altro punto importante è che i piani preparati vengono parametrizzati
+per permettere ai valori delle variabili <application>PL/pgSQL</application> 
+di cambiare da un uso al prossimo, come discusso in dettaglio sopra.
+A volte questo significa che un piano è meno efficiente rispetto a quello che sarebbe stato
+se generato per un valore della variabile specifico. Come esempio, considerare
 <programlisting>
 SELECT * INTO myrec FROM dictionary WHERE word LIKE search_term;
 </programlisting>
-    where <literal>search_term</literal> is a <application>PL/pgSQL</application>
-    variable.  The cached plan for this query will never use an index on
-    <structfield>word</structfield>, since the planner cannot assume that the
-    <literal>LIKE</literal> pattern will be left-anchored at run time.  To use
-    an index the query must be planned with a specific constant
-    <literal>LIKE</literal> pattern provided.  This is another situation where
-    <command>EXECUTE</command> can be used to force a new plan to be
-    generated for each execution.
+dove <literal>search_term</literal> è una variabile <application>PL/pgSQL</application>.
+Il piano sottoposto a cache per questa query non userà mai un indice su 
+<structfield>word</structfield>, dato che il pianificatore non può assumere che 
+il modello <literal>LIKE</literal> sia fissato a sinistra durante l'esecuzione. Per usare 
+un indice la query deve essere pianificata fornendo con uno specifico modello 
+<literal>LIKE</literal>. Questa è un'altra situazione dove 
+<command>EXECUTE</command> può essere usato per forzare la generazione di un nuovo piano per 
+ogni esecuzione.
    </para>
 
     <para>
-     The mutable nature of record variables presents another problem in this
-     connection.  When fields of a record variable are used in
-     expressions or statements, the data types of the fields must not
-     change from one call of the function to the next, since each
-     expression will be planned using the data type that is present
-     when the expression is first reached.  <command>EXECUTE</command> can be
-     used to get around this problem when necessary.
+La natura mutabile delle variabili record presenta un altro problema in questa 
+connessione. Quando i campi di una variabile  record sono usati in espressioni 
+o istruzioni, i tipi di dato del campo non devono cambiare
+da una chiamata della funzione alla successiva, dato che ogni 
+espressione sarà pianificata usando il tipo di dato che è presente 
+quando l'espressione viene raggiunta per la prima volta. <command>EXECUTE</command> può essere
+usata per scavalcare questo problema quando necessario.
     </para>
 
     <para>
-     If the same function is used as a trigger for more than one table,
-     <application>PL/pgSQL</application> prepares and caches plans
-     independently for each such table &mdash; that is, there is a cache
-     for each trigger function and table combination, not just for each
-     function.  This alleviates some of the problems with varying
-     data types; for instance, a trigger function will be able to work
-     successfully with a column named <literal>key</literal> even if it happens
-     to have different types in different tables.
+Se la stessa funzione viene usata come trigger  per più di una tabella, 
+<application>PL/pgSQL</application> prepara e sottopone a cache i piani 
+indipendentemente per ogni tabella - cioè, c'è una cache
+per ogni funzione  trigger e combinazione di tabella, non solo per ogni
+funzione. Questo allieva alcuni dei problemi con tipi di dato variabili;
+per esempio, una funzione trigger sarà capace di funzionare 
+con successo con una colonna chiamata  <literal>key</literal> anche se ha 
+tipi diversi in tabelle diverse.
     </para>
 
     <para>
-     Likewise, functions having polymorphic argument types have a separate
-     plan cache for each combination of actual argument types they have been
-     invoked for, so that data type differences do not cause unexpected
-     failures.
+Ugualmente, funzioni aventi tipi di argomento polimorfici hanno una cache di piano   
+separata per ogni combinazione dei tipi effettivi degli argomenti per i quali 
+sono invocate, così quelle differenze tra tipi di dato non causano fallimenti 
+inaspettati.
     </para>
 
    <para>
-    Plan caching can sometimes have surprising effects on the interpretation
-    of time-sensitive values.  For example there
-    is a difference between what these two functions do:
+La cache del piano può a volte avere effetti sull'interpretazione
+di valori sensibili al tempo. Per esempio c'è una differenza 
+tra quello che queste due funzioni fanno: 
 
 <programlisting>
 CREATE FUNCTION logfunc1(logtxt text) RETURNS void AS $$
-    BEgin
+    BEGIN
         INSERT INTO logtable VALUES (logtxt, 'now');
     END;
 $$ LANGUAGE plpgsql;
 </programlisting>
 
-     and:
+e:
 
 <programlisting>
 CREATE FUNCTION logfunc2(logtxt text) RETURNS void AS $$
     DECLARE
         curtime timestamp;
-    BEgin
+    BEGIN
         curtime := 'now';
         INSERT INTO logtable VALUES (logtxt, curtime);
     END;
@@ -3820,17 +3821,16 @@ $$ LANGUAGE plpgsql;
     </para>
 
     <para>
-     In the case of <function>logfunc1</function>, the
-     <productname>PostgreSQL</productname> main parser knows when
-     preparing the plan for the <command>INSERT</command> that the
-     string <literal>'now'</literal> should be interpreted as
-     <type>timestamp</type>, because the target column of
-     <classname>logtable</classname> is of that type. Thus,
-     <literal>'now'</literal> will be converted to a constant when the
-     <command>INSERT</command> is planned, and then used in all
-     invocations of <function>logfunc1</function> during the lifetime
-     of the session. Needless to say, this isn't what the programmer
-     wanted.
+Nel caso di <function>logfunc1</function>, il parser principale
+di <productname>PostgreSQL</productname> sa quando 
+preparare il piano per la <command>INSERT</command> che la 
+stringa <literal>'now'</literal> dovrebbe essere interpretrata come
+<type>timestamp</type>, dato che la colonna obiettivo di 
+<classname>logtable</classname> è di quel tipo. Perciò,
+<literal>'now'</literal> sarà convertito a una costante quando la 
+<command>INSERT</command> è pianificata, e quindi usata in tutte le invocazioni
+di <function>logfunc1</function> durante il ciclo di vita della
+sessione. Inutile dire che questo non è quello che voleva il programmatore.
     </para>
 
     <para>

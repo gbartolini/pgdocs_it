@@ -236,23 +236,25 @@ che si estende fino all'occorrenza corispondente di
     </para>
 
     <para>
-     Any statement in the statement section of a block
-     can be a <firstterm>subblock</firstterm>.  Subblocks can be used for
-     logical grouping or to localize variables to a small group
-     of statements.  Variables declared in a subblock mask any
-     similarly-named variables of outer blocks for the duration
-     of the subblock; but you can access the outer variables anyway
-     if you qualify their names with their block's label. For example:
+Qualsiasi istruzione nella sezione istruzioni di un blocco
+può essere un <firstterm>sottoblocco</firstterm>.
+I sottoblocchi possono essere usati per 
+raggruppare logicamente o localizzare variabili in un piccolo gruppo di 
+istruzioni.
+Le variabili dichiarate in un sottoblocco mascherano qualsiasi 
+variabile chiamata similarmente di blocchi esterni per la durata 
+del sottoblocco; ma si può accedere comunque le variabili esterne 
+se si qualificano i loro nomi con etichette di blocco. 
 <programlisting>
 CREATE FUNCTION somefunc() RETURNS integer AS $$
 &lt;&lt; outerblock &gt;&gt;
 DECLARE
     quantity integer := 30;
-BEgin
+BEGIN
     RAISE NOTICE 'Quantity here is %', quantity;  -- Prints 30
     quantity := 50;
     --
-    -- Create a subblock
+    -- Crea un sottoblocco
     --
     DECLARE
         quantity integer := 80;
@@ -779,11 +781,13 @@ Un'assegnazione di un valore a una variabile <application>PL/pgSQL</application>
 </synopsis>
      As explained previously, the expression in such a statement is evaluated
      by means of an SQL <command>SELECT</command> command sent to the main
-     database engine.  The expression must yield a single value (possibly
-     a row value, if the variable is a row or record variable).  The target
-     variable can be a simple variable (optionally qualified with a block
-     name), a field of a row or record variable, or an element of an array
-     that is a simple variable or field.
+     database engine.  
+L'espressione deve generare un singolo valore (possibilmente 
+un valore riga, se la variabile è una variabile riga o record).
+La variabile obiettivo
+può essere una variabile semplice (opzionalmente qualificata con un nome di blocco),
+un campo di una variabile riga o record, o un elemento di un array
+che è una variabile o campo semplice. 
     </para>
 
     <para>
@@ -1032,10 +1036,10 @@ forniscono valori da essere inseriti nel comando.
     </para>
 
     <para>
-     No substitution of <application>PL/pgSQL</application> variables is done on the
-     computed command string.  Any required variable values must be inserted
-     in the command string as it is constructed; or you can use parameters
-     as described below.
+Nessuna sostituzione di variabili <application>PL/pgSQL</application> viene fatta sulla
+stringa comando calcolata. Qualsiasi valore della variabile deve essere inserito 
+nella stringa comando come è costruito; o si possono usare parametri 
+come descritto sotto.
     </para>
 
     <para>
@@ -1101,19 +1105,19 @@ i valori testualmente anche se sono solamente valori di dati.
     </para>
 
     <para>
-     An <command>EXECUTE</command> with a simple constant command string and some 
-     <literal>USING</literal> parameters, as in the first example above, is
-     functionally equivalent to just writing the command directly in
-     <application>PL/pgSQL</application> and allowing replacement of
-     <application>PL/pgSQL</application> variables to happen automatically.
-     The important difference is that <command>EXECUTE</command> will re-plan
-     the command on each execution, generating a plan that is specific
-     to the current parameter values; whereas
-     <application>PL/pgSQL</application> normally creates a generic plan
-     and caches it for re-use.  In situations where the best plan depends
-     strongly on the parameter values, <command>EXECUTE</command> can be
-     significantly faster; while when the plan is not sensitive to parameter
-     values, re-planning will be a waste.
+Una <command>EXECUTE</command> con una semplice stringa di comando costante e alcuni
+parametri <literal>USING</literal>, come nel primo esempio sopra, è funzionalmente 
+equivalente a scrivere semplicemente il comando direttamente in 
+<application>PL/pgSQL</application> e permettendo che la sostituzione di 
+variabili <application>PL/pgSQL</application> accada automaticamente.
+La differenza importante è che <command>EXECUTE</command> ripianificherà il
+comando ad ogni esecuzione, generando un piano che è specifico 
+per i valori del parametro corrente; mentre
+<application>PL/pgSQL</application> normalmente crea un piano generico
+e lo sottopone a cache per il riuso. In situazioni dove il piano migliore dipende 
+fortemente dai valori dei parametri, <command>EXECUTE</command> può essere
+significativamente veloce; mentre quando il piano non è sensibile ai valori 
+dei parametri, ripianificare sarà uno spreco.
     </para>
 
     <para>

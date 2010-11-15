@@ -779,9 +779,8 @@ Un'assegnazione di un valore a una variabile <application>PL/pgSQL</application>
 <synopsis>
 <replaceable>variable</replaceable> := <replaceable>expression</replaceable>;
 </synopsis>
-     As explained previously, the expression in such a statement is evaluated
-     by means of an SQL <command>SELECT</command> command sent to the main
-     database engine.  
+Come spiegato precedentemente, l'espressione in tale istruzione viene valutata
+mediante un comando SQL  <command>SELECT</command> mandato al motore database principale.
 L'espressione deve generare un singolo valore (possibilmente 
 un valore riga, se la variabile è una variabile riga o record).
 La variabile obiettivo
@@ -871,7 +870,7 @@ finchè non ha una clausola <literal>INTO</literal> come discusso nella prossima
     </note>
 
     <para>
-     An example:
+Un esempio:
 <programlisting>
 PERFORM create_mv('cs_session_page_requests_mv', my_query);
 </programlisting>
@@ -1248,12 +1247,12 @@ EXECUTE 'UPDATE tbl SET '
         || '$$ WHERE key = '
         || quote_literal(keyvalue);
 </programlisting>
-     because it would break if the contents of <literal>newvalue</literal>
-     happened to contain <literal>$$</literal>.  The same objection would
-     apply to any other dollar-quoting delimiter you might pick.
-     So, to safely quote text that is not known in advance, you
-     <emphasis>must</emphasis> use <function>quote_literal</function>,
-     <function>quote_nullable</function>, or <function>quote_ident</function>, as appropriate.
+dato che si romperebbe se i contenuti di <literal>newvalue</literal>
+contenessero <literal>$$</literal>.  La stessa obiezione si applicherebbe 
+a qualsiasi altro delimitatore di quotazione con dollari si scelga.
+Quindi, per quotare in sicurezza testo che non è conosciuto in anticipo, si 
+<emphasis>deve</emphasis> usare <function>quote_literal</function>,
+<function>quote_nullable</function> o <function>quote_ident</function>, in modo appropriato.
     </para>
    </example>
 
@@ -3713,11 +3712,11 @@ un piano di esecuzione (usando le funzioni del gestore
 e <function>SPI_saveplan</function>).
 <indexterm><primary>preparare una query</primary><secondary>in
 PL/pgSQL</secondary></indexterm> 
-    Subsequent visits to that expression or command
-    reuse the prepared plan.  Thus, a function with conditional code
-    that contains many statements for which execution plans might be
-    required will only prepare and save those plans that are really
-    used during the lifetime of the database connection.  
+Visite successive a questa espressione o comando 
+riusano il piano preparato. Perciò, una funzione con codice condizionale 
+che contiene istruzioni per la cui esecuzione potrebbero essere necessari
+piani preparerà e salvera solo quei piani che sono realmente usati durante 
+il ciclo di vita della connessione al database.
 Questo può
 ridurre sostanzialmente l'ammontare totale del tempo richiesto per fare il parsing
 e generare i piani di esecuzione per le istruzioni in una funzione
@@ -3838,17 +3837,17 @@ sessione. Inutile dire che questo non è quello che voleva il programmatore.
     </para>
 
     <para>
-     In the case of <function>logfunc2</function>, the
-     <productname>PostgreSQL</productname> main parser does not know
-     what type <literal>'now'</literal> should become and therefore
-     it returns a data value of type <type>text</type> containing the string
-     <literal>now</literal>. During the ensuing assignment
-     to the local variable <varname>curtime</varname>, the
-     <application>PL/pgSQL</application> interpreter casts this
-     string to the <type>timestamp</type> type by calling the
-     <function>text_out</function> and <function>timestamp_in</function>
-     functions for the conversion.  So, the computed time stamp is updated
-     on each execution as the programmer expects.
+Nel caso di <function>logfunc2</function>, il parser principale di 
+<productname>PostgreSQL</productname> non sa quale tipo dovrebbe
+diventare <literal>'now'</literal> e quindi restituisce 
+un valore di tipo <type>text</type> contenente la stringa 
+<literal>now</literal>. Durante l'assegnamento conseguente 
+alla variabile locale <varname>curtime</varname>, l'interprete
+<application>PL/pgSQL</application> converte questa stringa 
+al tipo <type>timestamp</type> chiamando le funzioni per la conversione <function>text_out</function>
+e <function>timestamp_in</function>. 
+Così, il timestap calcolato viene aggiornato ad ogni esecuzione 
+come si aspetta il programmatore.
     </para>
 
   </sect2>
@@ -3856,17 +3855,17 @@ sessione. Inutile dire che questo non è quello che voleva il programmatore.
   </sect1>
 
  <sect1 id="plpgsql-development-tips">
-  <title>Tips for Developing in <application>PL/pgSQL</application></title>
+  <title>Consigli per lo sviluppo in <application>PL/pgSQL</application></title>
 
    <para>
-    One good way to develop in
-    <application>PL/pgSQL</application> is to use the text editor of your
-    choice to create your functions, and in another window, use
-    <application>psql</application> to load and test those functions.
-    If you are doing it this way, it
-    is a good idea to write the function using <command>CREATE OR
-    REPLACE FUNCTION</command>. That way you can just reload the file to update
-    the function definition.  For example:
+Un buon modo di sviluppare in
+<application>PL/pgSQL</application> è di usare l'editor di testo di propria scelta
+per creare le funzioni, e in un'altra finestra, usare
+<application>psql</application> per caricare e testare quelle funzioni.
+Se si fa in questa maniera, è una 
+buona idea scrivere la funzione usando <command>CREATE OR
+REPLACE FUNCTION</command>.  In questo modo è possibile ricaricare il file per aggiornare
+la definizione della funzione. Per esempio: 
 <programlisting>
 CREATE OR REPLACE FUNCTION testfunc(integer) RETURNS integer AS $$
           ....
@@ -3875,63 +3874,63 @@ $$ LANGUAGE plpgsql;
    </para>
 
    <para>
-    While running <application>psql</application>, you can load or reload such
-    a function definition file with:
+Mentre <application>psql</application> è in esecuzione, si può caricare o ricaricare
+tale definizione di funzione con:
 <programlisting>
 \i filename.sql
 </programlisting>
-    and then immediately issue SQL commands to test the function.
+e quindi fornire immediatamente comandi SQL per testare la funzione.
    </para>
 
    <para>
-    Another good way to develop in <application>PL/pgSQL</application> is with a
-    GUI database access tool that facilitates development in a
-    procedural language. One example of such a tool is
-    <application>pgAdmin</application>, although others exist. These tools often
-    provide convenient features such as escaping single quotes and
-    making it easier to recreate and debug functions.
+Un altro ottimo modo di sviluppare in <application>PL/pgSQL</application> è con uno strumento 
+GUI di accesso al database che facilita lo sviluppo in un linguaggio 
+procedurale. Un esempio di tale strumento è 
+<application>pgAdmin</application>, anche se ne esistono altri. Questi strumenti spesso
+forniscono caratteristiche utili come l'escape di apici singoli e
+rendono più facile ricreare e fare il debug delle funzioni.
    </para>
 
   <sect2 id="plpgsql-quote-tips">
    <title>Handling of Quotation Marks</title>
 
    <para>
-    The code of a <application>PL/pgSQL</application> function is specified in
-    <command>CREATE FUNCTION</command> as a string literal.  If you
-    write the string literal in the ordinary way with surrounding
-    single quotes, then any single quotes inside the function body
-    must be doubled; likewise any backslashes must be doubled (assuming
-    escape string syntax is used).
-    Doubling quotes is at best tedious, and in more complicated cases
-    the code can become downright incomprehensible, because you can
-    easily find yourself needing half a dozen or more adjacent quote marks.
-    It's recommended that you instead write the function body as a
-    <quote>dollar-quoted</quote> string literal (see <xref
-    linkend="sql-syntax-dollar-quoting"/>).  In the dollar-quoting
-    approach, you never double any quote marks, but instead take care to
-    choose a different dollar-quoting delimiter for each level of
-    nesting you need.  For example, you might write the <command>CREATE
-    FUNCTION</command> command as:
+Il codice di una funzione <application>PL/pgSQL</application> è specificato 
+in <command>CREATE FUNCTION</command> come una stringa. Se si scrive 
+la stringa nel modo ordinario circondato da apici singoli, 
+quindi qualsiasi apice singola dentro il corpo della funzione 
+deve essere raddoppiato; allo stesso modo le barre inverse devono essere raddoppiate (assumendo
+che sia usata la sintassi escape stringa).
+Raddoppiare gli apici è tedioso, e nei casi più complicati  
+il codice può diventare assolutamente incomprensibile, perchè è facile
+che si necessiti di mezza dozzina o più apici adiacenti.
+Si raccomanda di scrivere il corpo della funzione come una stringa
+<quote>quotata con dollari</quote> (si veda <xref
+linkend="sql-syntax-dollar-quoting"/>). Nell'approccio 'dollar-quoting', 
+non si raddoppia mai nessun apice, fare attenzione a scegliere 
+un delimitatore di quotazione con dollari diverso per ogni livello di 
+annidemento che si necessita. Per esempio, si potrebbe scrivere il comando
+<command>CREATE FUNCTION</command> come:
 <programlisting>
 CREATE OR REPLACE FUNCTION testfunc(integer) RETURNS integer AS $PROC$
           ....
 $PROC$ LANGUAGE plpgsql;
 </programlisting>
-    Within this, you might use quote marks for simple literal strings in
-    SQL commands and <literal>$$</literal> to delimit fragments of SQL commands
-    that you are assembling as strings.  If you need to quote text that
-    includes <literal>$$</literal>, you could use <literal>$Q$</literal>, and so on.
+All'interno di questo, si potrebbero usare le virgolette per semplici stringhe letterali 
+in comandi SQL e <literal>$$</literal> per delimitare frammenti di comandi SQL
+che si assemblano come stringhe. Se si necessita quotare testo che 
+include <literal>$$</literal>, si può usare <literal>$Q$</literal>, e così via.
    </para>
 
    <para>
-    The following chart shows what you have to do when writing quote
-    marks without dollar quoting.  It might be useful when translating
-    pre-dollar quoting code into something more comprehensible.
+Il seguente grafico mosta cosa si deve fare quando si scrivono virgolette 
+senza la quotazione con dollari. Potrebbe essere utile quando si traduce 
+codice pre-quotazione con dollari in qualcosa di più comprensibile.
   </para>
 
   <variablelist>
    <varlistentry>
-    <term>1 quotation mark</term>
+    <term>1 virgoletta</term>
     <listitem>
      <para>
       To begin and end the function body, for example:
@@ -3940,17 +3939,17 @@ CREATE FUNCTION foo() RETURNS integer AS '
           ....
 ' LANGUAGE plpgsql;
 </programlisting>
-      Anywhere within a single-quoted function body, quote marks
-      <emphasis>must</emphasis> appear in pairs.
+Ovunque all'interno del corpo di una funzione tra singoli apici, le virgolette 
+<emphasis>devono</emphasis> apparire in coppia.
      </para>
     </listitem>
    </varlistentry>
 
    <varlistentry>
-    <term>2 quotation marks</term>
+    <term>2 virgolette</term>
     <listitem>
      <para>
-      For string literals inside the function body, for example:
+Per letterali stringa all'interno del corspo della funzione, per esempio:
 <programlisting>
 a_output := ''Blah'';
 SELECT * FROM users WHERE f_name=''foobar'';
@@ -3960,49 +3959,49 @@ SELECT * FROM users WHERE f_name=''foobar'';
 a_output := 'Blah';
 SELECT * FROM users WHERE f_name='foobar';
 </programlisting>
-      which is exactly what the <application>PL/pgSQL</application> parser would see
-      in either case.
+che è esattamente quello che vedrebbe il parser <application>PL/pgSQL</application> 
+in ogni caso.
      </para>
     </listitem>
    </varlistentry>
 
    <varlistentry>
-    <term>4 quotation marks</term>
+    <term>4 virgolette</term>
     <listitem>
      <para>
-      When you need a single quotation mark in a string constant inside the
-      function body, for example:
+Quando si necessita di una virgoletta singola in una costante stringa all'interno del
+corpo della funzione, per esempio:
 <programlisting>
 a_output := a_output || '' AND name LIKE ''''foobar'''' AND xyz''
 </programlisting>
-      The value actually appended to <literal>a_output</literal> would be:
-      <literal> AND name LIKE 'foobar' AND xyz</literal>.
+Il valore effettivamente aggiunto a <literal>a_output</literal> sarebbe:
+<literal> AND name LIKE 'foobar' AND xyz</literal>.
      </para>
      <para>
-      In the dollar-quoting approach, you'd write:
+Nell'approccio di quotazione con dollari, si scriverebbe:
 <programlisting>
 a_output := a_output || $$ AND name LIKE 'foobar' AND xyz$$
 </programlisting>
-      being careful that any dollar-quote delimiters around this are not
-      just <literal>$$</literal>.
+facendo attenzione che ogni delimitatore di quotazione con dollari intorno a questo non sia 
+solo <literal>$$</literal>.
      </para>
     </listitem>
    </varlistentry>
 
    <varlistentry>
-    <term>6 quotation marks</term>
+    <term>6 virgolette</term>
     <listitem>
      <para>
-      When a single quotation mark in a string inside the function body is
-      adjacent to the end of that string constant, for example:
+Quando una virgoletta singola in una stringa all'interno del corpo della funzione è
+adiacente alla fine di quella costante stringa, per esempio:
 <programlisting>
 a_output := a_output || '' AND name LIKE ''''foobar''''''
 </programlisting>
-      The value appended to <literal>a_output</literal> would then be:
+Il valore aggiunto a <literal>a_output</literal> quindi sarebbe:
       <literal> AND name LIKE 'foobar'</literal>.
      </para>
      <para>
-      In the dollar-quoting approach, this becomes:
+Nell'approccio di quotazione con dollari, questo diventa:
 <programlisting>
 a_output := a_output || $$ AND name LIKE 'foobar'$$
 </programlisting>
@@ -4011,7 +4010,7 @@ a_output := a_output || $$ AND name LIKE 'foobar'$$
    </varlistentry>
 
    <varlistentry>
-    <term>10 quotation marks</term>
+    <term>10 virgolette</term>
     <listitem>
      <para>
       When you want two single quotation marks in a string constant (which
@@ -4019,7 +4018,7 @@ a_output := a_output || $$ AND name LIKE 'foobar'$$
       string constant (2 more).  You will probably only need that if
       you are writing a function that generates other functions, as in
       <xref linkend="plpgsql-porting-ex2"/>.
-      For example:
+Per esempio:
 <programlisting>
 a_output := a_output || '' if v_'' ||
     referrer_keys.kind || '' like ''''''''''
@@ -4027,21 +4026,21 @@ a_output := a_output || '' if v_'' ||
     then return ''''''  || referrer_keys.referrer_type
     || ''''''; end if;'';
 </programlisting>
-      The value of <literal>a_output</literal> would then be:
+Il valore di <literal>a_output</literal> quindi sarebbe:
 <programlisting>
 if v_... like ''...'' then return ''...''; end if;
 </programlisting>
      </para>
      <para>
-      In the dollar-quoting approach, this becomes:
+Nell'approccio di quotazione con dollari, questo diventa:
 <programlisting>
 a_output := a_output || $$ if v_$$ || referrer_keys.kind || $$ like '$$
     || referrer_keys.key_string || $$'
     then return '$$  || referrer_keys.referrer_type
     || $$'; end if;$$;
 </programlisting>
-      where we assume we only need to put single quote marks into
-      <literal>a_output</literal>, because it will be re-quoted before use.
+dove si assume che si abbia bisogno solo di mettere virgolette singole in 
+<literal>a_output</literal>, dato che sarà riquotato prima dell'uso.
      </para>
     </listitem>
    </varlistentry>
@@ -4053,101 +4052,97 @@ a_output := a_output || $$ if v_$$ || referrer_keys.kind || $$ like '$$
   <!-- **** Porting from Oracle PL/SQL **** -->
 
  <sect1 id="plpgsql-porting">
-  <title>Porting from <productname>Oracle</productname> PL/SQL</title>
+  <title>Porting da PL/SQL di <productname>Oracle</productname></title>
 
   <indexterm zone="plpgsql-porting">
    <primary>Oracle</primary>
-   <secondary>porting from PL/SQL to PL/pgSQL</secondary>
+   <secondary>porting da PL/SQL a PL/pgSQL</secondary>
   </indexterm>
 
   <indexterm zone="plpgsql-porting">
    <primary>PL/SQL (Oracle)</primary>
-   <secondary>porting to PL/pgSQL</secondary>
+   <secondary>porting a PL/pgSQL</secondary>
   </indexterm>
 
   <para>
-   This section explains differences between
-   <productname>PostgreSQL</productname>'s <application>PL/pgSQL</application>
-   language and Oracle's <application>PL/SQL</application> language,
-   to help developers who port applications from
-   <trademark class="registered">Oracle</trademark> to <productname>PostgreSQL</productname>.
+Questa sezione spiega le differenze tra il linguaggio 
+<application>PL/pgSQL</application> di <productname>PostgreSQL</productname> 
+e il linguaggio <application>PL/SQL</application> di Oracle,
+per aiutare di sviluppatori che portano applicazioni da
+<trademark class="registered">Oracle</trademark>  a  <productname>PostgreSQL</productname>.
   </para>
 
   <para>
-   <application>PL/pgSQL</application> is similar to PL/SQL in many
-   aspects. It is a block-structured, imperative language, and all
-   variables have to be declared.  Assignments, loops, conditionals
-   are similar.  The main differences you should keep in mind when
-   porting from <application>PL/SQL</application> to
-   <application>PL/pgSQL</application> are:
+<application>PL/pgSQL</application>  è simile a PL/SQL in molti aspetti.
+Esso è un linguaggio strutturato a blocchi, imperativo, e tutte le variabili devono essere dichiarate.
+Assegnamenti, cicli e condizioni sono simili. Le differenze principali 
+che si dovrebbero tenere in mente quando si fa il porting da 
+<application>PL/SQL</application> a <application>PL/pgSQL</application> sono:
 
     <itemizedlist>
      <listitem>
       <para>
-       If a name used in a SQL command could be either a column name of a
-       table or a reference to a variable of the function,
-       <application>PL/SQL</application> treats it as a column name.  This corresponds
-       to <application>PL/pgSQL</application>'s
-       <literal>plpgsql.variable_conflict</literal> = <literal>use_column</literal>
-       behavior, which is not the default,
-       as explained in <xref linkend="plpgsql-var-subst"/>.
-       It's often best to avoid such ambiguities in the first place,
-       but if you have to port a large amount of code that depends on
-       this behavior, setting <literal>variable_conflict</literal> may be the
-       best solution.
+Se un nome usato in un comando SQL può essere sia il nome di una colonna o di una tabella sia
+un riferimento a una variabile della funzione, 
+<application>PL/SQL</application> lo tratta come nome di una colonna. Questo corrisponde
+al comportamento <literal>plpgsql.variable_conflict</literal> = <literal>use_column</literal>
+di <application>PL/pgSQL</application>, che non è il modo predefinito,
+come spiegato in <xref linkend="plpgsql-var-subst"/>.
+Spesso è meglio evitare queste ambiguità fin da subito,
+ma se si deve portare una grande quantità di codice che usa
+questo comportamento, impostare <literal>variable_conflict</literal> potrebbe essere 
+la migliore soluzione.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       In <productname>PostgreSQL</productname> the function body must be written as
-       a string literal.  Therefore you need to use dollar quoting or escape
-       single quotes in the function body. (See <xref
-       linkend="plpgsql-quote-tips"/>.)
+In <productname>PostgreSQL</productname> il corpo della funzione deve essere scritto come 
+una stringa letterale. Perciò è necessario usare la quotazione con dollari o fare l'escape
+dei singoli apici nel corpo della funzione. (Si veda <xref
+linkend="plpgsql-quote-tips"/>.)
       </para>
      </listitem>
 
      <listitem>
       <para>
-       Instead of packages, use schemas to organize your functions
-       into groups.
+Invece di pacchetti, usare gli schemi per organizzare in gruppi le funzioni.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       Since there are no packages, there are no package-level variables
-       either. This is somewhat annoying.  You can keep per-session state
-       in temporary tables instead.
+Dato che non ci sono pacchetti, non ci sono nemmeno variabili a livello di pacchetto. 
+Questo è abbastanza irritante. È possibile invece mantenere gli stati della sessione 
+in tabelle temporanee.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       Integer <command>FOR</command> loops with <literal>REVERSE</literal> work
-       differently: <application>PL/SQL</application> counts down from the second
-       number to the first, while <application>PL/pgSQL</application> counts down
-       from the first number to the second, requiring the loop bounds
-       to be swapped when porting.  This incompatibility is unfortunate
-       but is unlikely to be changed. (See <xref
-       linkend="plpgsql-integer-for"/>.)
+I cicli <command>FOR</command> di interi con <literal>REVERSE</literal> funzionano 
+diversamente: <application>PL/SQL</application> conta all'indietro dal secondo numero al primo,
+mentre <application>PL/pgSQL</application> conta all'indietro 
+dal primo numero al secondo, richiedendo che i limiti del ciclo siano 
+invertiti quando si fa il porting. Questa incompatibilità è spiacevole
+ma probabilmente non sarà cambiata. (Si veda <xref
+linkend="plpgsql-integer-for"/>.)
       </para>
      </listitem>
 
      <listitem>
       <para>
-       <command>FOR</command> loops over queries (other than cursors) also work
-       differently: the target variable(s) must have been declared,
-       whereas <application>PL/SQL</application> always declares them implicitly.
-       An advantage of this is that the variable values are still accessible
-       after the loop exits.
+Anche i cicli <command>FOR</command> sulle query (all'infuori che i cursori) 
+funzionano diversamente: la variabile/i deve essere stata dichiarata,
+mentre  <application>PL/SQL</application> li dichiara sempre implicitamente.
+Un vantaggio di questo è che i valori della variabile sono comunque accessibili 
+dopo l'uscita dal ciclo.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       There are various notational differences for the use of cursor
-       variables.
+Ci sono varie differenze di notazione per l'uso di variabili cursore.
       </para>
      </listitem>
 
@@ -4155,18 +4150,19 @@ a_output := a_output || $$ if v_$$ || referrer_keys.kind || $$ like '$$
    </para>
 
   <sect2>
-   <title>Porting Examples</title>
+   <title>Esempi di porting</title>
 
    <para>
-    <xref linkend="pgsql-porting-ex1"/> shows how to port a simple
-    function from <application>PL/SQL</application> to <application>PL/pgSQL</application>.
+<xref linkend="pgsql-porting-ex1"/> mostra come portare una funzione semplice
+da <application>PL/SQL</application> a <application>PL/pgSQL</application>.
    </para>
 
    <example id="pgsql-porting-ex1">
-    <title>Porting a Simple Function from <application>PL/SQL</application> to <application>PL/pgSQL</application></title>
+    <title>Portare una funzione semplice da <application>PL/SQL</application> a 
+    <application>PL/pgSQL</application></title>
 
     <para>
-     Here is an <productname>Oracle</productname> <application>PL/SQL</application> function:
+Ecco una funzione <productname>Oracle</productname> <application>PL/SQL</application>:
 <programlisting>
 CREATE OR REPLACE FUNCTION cs_fmt_browser_version(v_name varchar,
                                                   v_version varchar)
@@ -4183,44 +4179,44 @@ show errors;
     </para>
 
     <para>
-     Let's go through this function and see the differences compared to
-     <application>PL/pgSQL</application>:
+Guardiamo questa funzione per vedere le differenze comparate a 
+<application>PL/pgSQL</application>:
 
      <itemizedlist>
       <listitem>
        <para>
-        The <literal>RETURN</literal> key word in the function
-        prototype (not the function body) becomes
-        <literal>RETURNS</literal> in
-        <productname>PostgreSQL</productname>.
-        Also, <literal>IS</literal> becomes <literal>AS</literal>, and you need to
-        add a <literal>LANGUAGE</literal> clause because <application>PL/pgSQL</application>
-        is not the only possible function language.
+La parola chiave <literal>RETURN</literal> nel prototipo della funzione 
+(non nel corpo della funzione) diventa 
+<literal>RETURNS</literal> in
+<productname>PostgreSQL</productname>.
+Inoltre, <literal>IS</literal> diventa <literal>AS</literal>, e c'è bisogno di 
+aggiungere una clausola <literal>LANGUAGE</literal> dato che <application>PL/pgSQL</application>
+non è l'unico linguaggio possibile per la funzione.
        </para>
       </listitem>
 
       <listitem>
        <para>
-        In <productname>PostgreSQL</productname>, the function body is considered
-        to be a string literal, so you need to use quote marks or dollar
-        quotes around it.  This substitutes for the terminating <literal>/</literal>
-        in the Oracle approach.
+In <productname>PostgreSQL</productname>, il corpo della funzione viene cosiderato 
+essere una stringa letterale, così è necessario usare le virgolette o la quotazione con dollari
+attorno ad essa. Questo sostituisce la <literal>/</literal> terminante
+nell'approccio Oracle.
        </para>
       </listitem>
 
       <listitem>
        <para>
-        The <literal>show errors</literal> command does not exist in
-        <productname>PostgreSQL</productname>, and is not needed since errors are
-        reported automatically.
+Il comando <literal>show errors</literal> non esiste in 
+<productname>PostgreSQL</productname>, e non è necessario dato che gli errori sono  
+riportati automaticamente.
        </para>
       </listitem>
      </itemizedlist>
     </para>
 
     <para>
-     This is how this function would look when ported to
-     <productname>PostgreSQL</productname>:
+Così è come apparirebbe la funzione quando portata a 
+<productname>PostgreSQL</productname>:
 
 <programlisting>
 CREATE OR REPLACE FUNCTION cs_fmt_browser_version(v_name varchar,
@@ -4238,30 +4234,30 @@ $$ LANGUAGE plpgsql;
    </example>
 
    <para>
-    <xref linkend="plpgsql-porting-ex2"/> shows how to port a
-    function that creates another function and how to handle the
-    ensuing quoting problems.
+<xref linkend="plpgsql-porting-ex2"/> mostra come portare una funzione 
+che crea un'altra funzione e come gestire i conseguenti problemi 
+di quotazione.
    </para>
 
    <example id="plpgsql-porting-ex2">
-    <title>Porting a Function that Creates Another Function from <application>PL/SQL</application> to <application>PL/pgSQL</application></title>
+    <title>Portare una funzione che crea un'altra funzione da
+    <application>PL/SQL</application> a <application>PL/pgSQL</application></title>
 
     <para>
-     The following procedure grabs rows from a
-     <command>SELECT</command> statement and builds a large function
-     with the results in <literal>IF</literal> statements, for the
-     sake of efficiency.
+La procedura seguente prende righe da un'istruzione <command>SELECT</command>
+e costruisce una grande funzione con i risultati in istruzioni <literal>IF</literal>,
+nell'interesse dell'efficienza.
     </para>
 
     <para>
-     This is the Oracle version:
+Questa è la versione Oracle:
 <programlisting>
 CREATE OR REPLACE PROCEDURE cs_update_referrer_type_proc IS
     CURSOR referrer_keys IS
         SELECT * FROM cs_referrer_keys
         ORDER BY try_order;
     func_cmd VARCHAR(4000);
-BEgin
+BEGIN
     func_cmd := 'CREATE OR REPLACE FUNCTION cs_find_referrer_type(v_host IN VARCHAR,
                  v_domain IN VARCHAR, v_url IN VARCHAR) RETURN VARCHAR IS BEgin';
 
@@ -4283,7 +4279,7 @@ show errors;
     </para>
 
     <para>
-     Here is how this function would end up in <productname>PostgreSQL</productname>:
+Ecco come questa funzione diventerebbe in <productname>PostgreSQL</productname>:
 <programlisting>
 CREATE OR REPLACE FUNCTION cs_update_referrer_type_proc() RETURNS void AS $func$
 DECLARE
@@ -4317,46 +4313,43 @@ BEgin
 END;
 $func$ LANGUAGE plpgsql;
 </programlisting>
-     Notice how the body of the function is built separately and passed
-     through <literal>quote_literal</literal> to double any quote marks in it.  This
-     technique is needed because we cannot safely use dollar quoting for
-     defining the new function: we do not know for sure what strings will
-     be interpolated from the <structfield>referrer_key.key_string</structfield> field.
-     (We are assuming here that <structfield>referrer_key.kind</structfield> can be
-     trusted to always be <literal>host</literal>, <literal>domain</literal>, or
-     <literal>url</literal>, but <structfield>referrer_key.key_string</structfield> might be
-     anything, in particular it might contain dollar signs.) This function
-     is actually an improvement on the Oracle original, because it will
-     not generate broken code when <structfield>referrer_key.key_string</structfield> or
-     <structfield>referrer_key.referrer_type</structfield> contain quote marks.
+Notare come corpo della funzione sia costruito separatamente e passato
+attraverso <literal>quote_literal</literal> per raddoppiare qualsiasi virgoletta. Questa
+tecnica è necessario perchè non è possibile usare la quotazione con dollari in sicurezza per
+definire la nuova funzione: non sappiamo con sicurezza quali stringhe saranno
+interpolate dal campo <structfield>referrer_key.key_string</structfield>.
+(Si sta assumendo che <structfield>referrer_key.kind</structfield> possa essere 
+creduto come essere sempre <literal>host</literal>, <literal>domain</literal>, o
+<literal>url</literal>, ma <structfield>referrer_key.key_string</structfield> potrebbe essere 
+qualsiasi cosa, in particolare potrebbe contenere segni dollaro). Questa funzione
+attualmente è effettivamente un miglioramento rispetto a Oracle, dato che non genererà
+codice rotto quando <structfield>referrer_key.key_string</structfield> o
+<structfield>referrer_key.referrer_type</structfield> contengono virgolette.
     </para>
    </example>
 
    <para>
-    <xref linkend="plpgsql-porting-ex3"/> shows how to port a function
-    with <literal>OUT</literal> parameters and string manipulation.
-    <productname>PostgreSQL</productname> does not have a built-in
-    <function>instr</function> function, but you can create one
-    using a combination of other
-    functions.<indexterm><primary>instr</primary></indexterm> In <xref
-    linkend="plpgsql-porting-appendix"/> there is a
-    <application>PL/pgSQL</application> implementation of
-    <function>instr</function> that you can use to make your porting
-    easier.
+<xref linkend="plpgsql-porting-ex3"/> mostra come portare una funzione 
+con parametri <literal>OUT</literal> e manipolazione di stringhe.
+<productname>PostgreSQL</productname> non ha una funzione <function>instr</function>
+incorporata, ma si può crearla usando una combinazione di 
+altre funzioni. <indexterm><primary>instr</primary></indexterm> 
+In <xref linkend="plpgsql-porting-appendix"/> c'è un'implementazione <application>PL/pgSQL</application>
+di <function>instr</function> che si più usare per rendere più facile il porting.
    </para>
 
    <example id="plpgsql-porting-ex3">
-    <title>Porting a Procedure With String Manipulation and
-    <literal>OUT</literal> Parameters from <application>PL/SQL</application> to
+    <title>Portare una procedura con manipolazione di stringhe 
+    e parametri <literal>OUT</literal> da <application>PL/SQL</application> a
     <application>PL/pgSQL</application></title>
 
     <para>
-     The following <productname>Oracle</productname> PL/SQL procedure is used
-     to parse a URL and return several elements (host, path, and query).
+La procedura <productname>Oracle</productname> PL/SQL seguente viene usata 
+per fare il parsing di un URL e restituire diversi elementi (host, path e query).
     </para>
 
     <para>
-     This is the Oracle version:
+Questa è la versione Oracle:
 <programlisting>
 CREATE OR REPLACE PROCEDURE cs_parse_url(
     v_url IN VARCHAR,
@@ -4366,7 +4359,7 @@ CREATE OR REPLACE PROCEDURE cs_parse_url(
 IS
     a_pos1 INTEGER;
     a_pos2 INTEGER;
-BEgin
+BEGIN
     v_host := NULL;
     v_path := NULL;
     v_query := NULL;
@@ -4399,7 +4392,7 @@ show errors;
     </para>
 
     <para>
-     Here is a possible translation into <application>PL/pgSQL</application>:
+Ecco una possibile traduzione in <application>PL/pgSQL</application>:
 <programlisting>
 CREATE OR REPLACE FUNCTION cs_parse_url(
     v_url IN VARCHAR,
@@ -4440,7 +4433,7 @@ END;
 $$ LANGUAGE plpgsql;
 </programlisting>
 
-     This function could be used like this:
+Questa procedura può essere usata in questo modo:
 <programlisting>
 SELECT * FROM cs_parse_url('http://foobar.com/query.cgi?baz');
 </programlisting>
@@ -4448,15 +4441,15 @@ SELECT * FROM cs_parse_url('http://foobar.com/query.cgi?baz');
    </example>
 
    <para>
-    <xref linkend="plpgsql-porting-ex4"/> shows how to port a procedure
-    that uses numerous features that are specific to Oracle.
+<xref linkend="plpgsql-porting-ex4"/> mostra come portare una procedura 
+che usa numerose caratteristiche che sono specifiche di Oracle.
    </para>
 
    <example id="plpgsql-porting-ex4">
-    <title>Porting a Procedure from <application>PL/SQL</application> to <application>PL/pgSQL</application></title>
+    <title>Portare una procedura da <application>PL/SQL</application> a <application>PL/pgSQL</application></title>
 
     <para>
-     The Oracle version:
+     La versione Oracle:
 
 <programlisting>
 CREATE OR REPLACE PROCEDURE cs_create_job(v_job_id IN INTEGER) IS
@@ -4489,41 +4482,39 @@ show errors
    </para>
 
    <para>
-    Procedures like this can easily be converted into <productname>PostgreSQL</productname>
-    functions returning <type>void</type>. This procedure in
-    particular is interesting because it can teach us some things:
+Procedure come questa possono essere facilmente convertire in funzioni <productname>PostgreSQL</productname>
+che ritornano <type>void</type>. Questa procedura in particole
+è interessante perchè insegna alcune cose:
 
     <calloutlist>
      <callout arearefs="co.plpgsql-porting-pragma">
       <para>
-       There is no <literal>PRAGMA</literal> statement in <productname>PostgreSQL</productname>.
+In <productname>PostgreSQL</productname> non c'è l'istruzione <literal>PRAGMA</literal>.
       </para>
      </callout>
 
      <callout arearefs="co.plpgsql-porting-locktable">
       <para>
-       If you do a <command>LOCK TABLE</command> in <application>PL/pgSQL</application>,
-       the lock will not be released until the calling transaction is
-       finished.
+Se si fa una <command>LOCK TABLE</command> in <application>PL/pgSQL</application>,
+il lock non sarà rilasciato finchè la transazione chiamante non è finita. 
       </para>
      </callout>
 
      <callout arearefs="co.plpgsql-porting-commit">
       <para>
-       You cannot issue <command>COMMIT</command> in a
-       <application>PL/pgSQL</application> function.  The function is
-       running within some outer transaction and so <command>COMMIT</command>
-       would imply terminating the function's execution.  However, in
-       this particular case it is not necessary anyway, because the lock
-       obtained by the <command>LOCK TABLE</command> will be released when
-       we raise an error.
+Non è possibile specificare <command>COMMIT</command> in una funzione 
+<application>PL/pgSQL</application>. La funzione è
+in esecuzione all'interno di qualche altra transazione e quindi <command>COMMIT</command>
+implicherebbe la terminazione dell'esecuzione della funzione. Comunque, in questo caso particolare
+non è necessaria, dato che il lock ottenuto da <command>LOCK TABLE</command>
+sarà rilasciato quando si genere un errore.
       </para>
      </callout>
     </calloutlist>
    </para>
 
    <para>
-    This is how we could port this procedure to <application>PL/pgSQL</application>:
+È possibile portare questa procedura a <application>PL/pgSQL</application> in questo modo:
 
 <programlisting>
 CREATE OR REPLACE FUNCTION cs_create_job(v_job_id integer) RETURNS void AS $$
@@ -4554,49 +4545,49 @@ $$ LANGUAGE plpgsql;
     <calloutlist>
      <callout arearefs="co.plpgsql-porting-raise">
       <para>
-       The syntax of <literal>RAISE</literal> is considerably different from
-       Oracle's statement, although the basic case <literal>RAISE</literal>
-       <replaceable class="parameter">exception_name</replaceable> works
-       similarly.
+La sintassi di <literal>RAISE</literal> è considerevolmente diversa dall'istruzione
+Oracle, anche se il caso base <literal>RAISE</literal>
+<replaceable class="parameter">exception_name</replaceable> funziona
+similmente.
       </para>
      </callout>
      <callout arearefs="co.plpgsql-porting-exception">
       <para>
-       The exception names supported by <application>PL/pgSQL</application> are
-       different from Oracle's.  The set of built-in exception names
-       is much larger (see <xref linkend="errcodes-appendix"/>).  There
-       is not currently a way to declare user-defined exception names,
-       although you can throw user-chosen SQLSTATE values instead.
+I nomi delle eccezioni supportate da <application>PL/pgSQL</application> sono 
+diversi da quelli di Oracle. L'insieme dei nomi di eccezione incorporate
+è molto più grande (si veda <xref linkend="errcodes-appendix"/>). Attualmente non c'è un modo
+per dichiarare nomi di eccezioni definite dall'utente,
+anche se è possibile lanciare valori SQLSTATE scelti dall'utente.
       </para>
      </callout>
     </calloutlist>
 
-    The main functional difference between this procedure and the
-    Oracle equivalent is that the exclusive lock on the <literal>cs_jobs</literal>
-    table will be held until the calling transaction completes.  Also, if
-    the caller later aborts (for example due to an error), the effects of
-    this procedure will be rolled back.
+La principale differenza funzionale tra questa procedura e l'equivalente 
+Oracle è che il lock esclusivo sulla tabella <literal>cs_jobs</literal>
+sarà preso finchè la transazione chiamante si completa. Inoltre, se 
+il chiamante più tardi fallsice (per esempio a caus di un errore), gli effetti di questa procedura saranno
+sottoposti a rollback.
    </para>
    </example>
   </sect2>
 
   <sect2 id="plpgsql-porting-other">
-   <title>Other Things to Watch For</title>
+   <title>Altre cose da tenere di conto</title>
 
    <para>
-    This section explains a few other things to watch for when porting
-    Oracle <application>PL/SQL</application> functions to
-    <productname>PostgreSQL</productname>.
+Questa sezione spiega alcune altre cose da tenere di conto quando si portano
+funzioni <application>PL/SQL</application> di Oracle a 
+<productname>PostgreSQL</productname>.
    </para>
 
    <sect3 id="plpgsql-porting-exceptions">
-    <title>Implicit Rollback after Exceptions</title>
+    <title>Rollback implicito dopo eccezioni</title>
 
     <para>
-     In <application>PL/pgSQL</application>, when an exception is caught by an
-     <literal>EXCEPTION</literal> clause, all database changes since the block's
-     <literal>BEgin</literal> are automatically rolled back.  That is, the behavior
-     is equivalent to what you'd get in Oracle with:
+In <application>PL/pgSQL</application>, quando un'eccezione viene catturata con una clausola 
+<literal>EXCEPTION</literal>, tutti i cambiamenti al database dal blocco <literal>BEGIN</literal>
+vengono automaticamente sottoposti a rollback. Cioè, il comportamento è equivalente
+a quello che si otterrebbe in Oracle con:     
 
 <programlisting>
 BEgin
@@ -4612,12 +4603,12 @@ EXCEPTION
 END;
 </programlisting>
 
-     If you are translating an Oracle procedure that uses
-     <command>SAVEPOINT</command> and <command>ROLLBACK TO</command> in this style,
-     your task is easy: just omit the <command>SAVEPOINT</command> and
-     <command>ROLLBACK TO</command>.  If you have a procedure that uses
-     <command>SAVEPOINT</command> and <command>ROLLBACK TO</command> in a different way
-     then some actual thought will be required.
+Se si sta traducendo una procedura Oracle che usa
+<command>SAVEPOINT</command> e <command>ROLLBACK TO</command> in questo stile, 
+il compito è semplice: omettere semplicemente  <command>SAVEPOINT</command> e
+<command>ROLLBACK TO</command>. Se si ha una procedura che usa
+<command>SAVEPOINT</command> e <command>ROLLBACK TO</command> in maniera differente allora
+sarà richiesto qualche effettivo pensiero.
     </para>
    </sect3>
 
@@ -4625,34 +4616,32 @@ END;
     <title><command>EXECUTE</command></title>
 
     <para>
-     The <application>PL/pgSQL</application> version of
-     <command>EXECUTE</command> works similarly to the
-     <application>PL/SQL</application> version, but you have to remember to use
-     <function>quote_literal</function> and
-     <function>quote_ident</function> as described in <xref
-     linkend="plpgsql-statements-executing-dyn"/>.  Constructs of the
-     type <literal>EXECUTE 'SELECT * FROM $1';</literal> will not work
-     reliably unless you use these functions.
+La versione  <application>PL/pgSQL</application> di
+<command>EXECUTE</command> funziona similarmente alla versione
+<application>PL/SQL</application>, ma si deve ricordare di usare 
+<function>quote_literal</function> e
+<function>quote_ident</function> come descritto in <xref
+linkend="plpgsql-statements-executing-dyn"/>. Costrutti del tipo
+<literal>EXECUTE 'SELECT * FROM $1';</literal> non funzioneranno 
+correttamente finchè si usano queste fuzioni.
     </para>
    </sect3>
 
    <sect3 id="plpgsql-porting-optimization">
-    <title>Optimizing <application>PL/pgSQL</application> Functions</title>
+    <title>Ottimizzare funzioni <application>PL/pgSQL</application></title>
 
     <para>
-     <productname>PostgreSQL</productname> gives you two function creation
-     modifiers to optimize execution: <quote>volatility</quote> (whether
-     the function always returns the same result when given the same
-     arguments) and <quote>strictness</quote> (whether the function
-     returns null if any argument is null).  Consult the <xref
-     linkend="sql-createfunction"/>
-     reference page for details.
+<productname>PostgreSQL</productname> fornisce due modificatori di creazione di funzioni
+per ottimizzare l'esecuzione: <quote>volatility</quote> (se la funzione restituisce 
+sempre lo stesso risultato quando forniti gli stessi argomenti) e 
+<quote>strictness</quote> (nel caso la funzione 
+restituisca null se qualsiasi argomento è null). Consultare la pagina di riferimento 
+<xref linkend="sql-createfunction"/> per dettagli.
     </para>
 
     <para>
-     When making use of these optimization attributes, your
-     <command>CREATE FUNCTION</command> statement might look something
-     like this:
+Quando si fa uso di questi attributi di ottimizzazione, 
+l'istruzione <command>CREATE FUNCTION</command> potrebbe somigliare a qualcosa del genere:
 
 <programlisting>
 CREATE FUNCTION foo(...) RETURNS integer AS $$
@@ -4664,22 +4653,22 @@ $$ LANGUAGE plpgsql STRICT IMMUTABLE;
   </sect2>
 
   <sect2 id="plpgsql-porting-appendix">
-   <title>Appendix</title>
+   <title>Appendice</title>
 
    <para>
-    This section contains the code for a set of Oracle-compatible
-    <function>instr</function> functions that you can use to simplify
-    your porting efforts.
+Questa sezione contiene il codice per un insieme di funzioni 
+compatibili Oracle <function>instr</function> che si possono usare per semplificare 
+gli sforzi di porting.
    </para>
 
 <programlisting>
 --
--- instr functions that mimic Oracle's counterpart
--- Syntax: instr(string1, string2, [n], [m]) where [] denotes optional parameters.
+-- funzioni instr che imitano la controparte Oracle
+-- Sintassi: instr(string1, string2, [n], [m]) dove [] denota parametri opzionali.
 --
--- Searches string1 beginning at the nth character for the mth occurrence
--- of string2.  If n is negative, search backwards.  If m is not passed,
--- assume 1 (search starts at first character).
+-- Le ricerche di string1 cominciano dal n-esimo carattere per la m-esima occorrenza
+-- di string2.  Se n è negativo, cerca all'indietro.  Se m non è passato,
+-- assume 1 (la ricerca comincia dal primo carattere).
 --
 
 CREATE FUNCTION instr(varchar, varchar) RETURNS integer AS $$

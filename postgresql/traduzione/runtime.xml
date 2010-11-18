@@ -2,120 +2,119 @@
 <!-- $PostgreSQL$ -->
 
 <chapter id="runtime">
- <title>Server Setup and Operation</title>
+ <title>Setup e operatività del server</title>
 
  <para>
-  This chapter discusses how to set up and run the database server
-  and its interactions with the operating system.
+Questo capitolo discute come impostare ed eseguire il server database
+e le sue interazioni con il sistema operativo.
  </para>
 
  <sect1 id="postgres-user">
-  <title>The <productname>PostgreSQL</productname> User Account</title>
+  <title>L'account utente <productname>PostgreSQL</productname></title>
 
   <indexterm>
-   <primary>postgres user</primary>
+   <primary>utente postgres</primary>
   </indexterm>
 
   <para>
-   As with any server daemon that is accessible to the outside world,
-   it is advisable to run <productname>PostgreSQL</productname> under a
-   separate user account. This user account should only own the data
-   that is managed by the server, and should not be shared with other
-   daemons. (For example, using the user <literal>nobody</literal> is a bad
-   idea.) It is not advisable to install executables owned by this 
-   user because compromised systems could then modify their own 
-   binaries.
+Come con qualsiasi demone server che è accessibile al mondo esterno,
+è consigliabile eseguire <productname>PostgreSQL</productname>  con 
+un account utente separato. Questo account dovrebbe possedere solo i dati che 
+sono gestiti dal server, e non dovrebbe essere condiviso con altri demoni.
+(Per esempio, usare l'utente <literal>nobody</literal> è una cattiva idea).
+Non è consigliabile installare eseguibili posseduti da questo utente 
+dato che sistemi compromessi potrebbero modificare i propri
+binari.
   </para>
 
   <para>
-   To add a Unix user account to your system, look for a command
-   <command>useradd</command> or <command>adduser</command>. The user
-   name <systemitem>postgres</systemitem> is often used, and is assumed
-   throughout this book, but you can use another name if you like.
+Per aggiungere un account utente Unix al proprio sistema, cercare un comando 
+<command>useradd</command> o <command>adduser</command>. Il nome utente 
+<systemitem>postgres</systemitem> è usato spesso, e assunto per tutto questo libro,
+ma si può usare un altro nome se lo si desidera.
   </para>
  </sect1>
 
  <sect1 id="creating-cluster">
-  <title>Creating a Database Cluster</title>
+  <title>Creare un cluster di database</title>
 
   <indexterm>
-   <primary>database cluster</primary>
+   <primary>cluster di database</primary>
   </indexterm>
 
   <indexterm>
-   <primary>data area</primary>
-   <see>database cluster</see>
+   <primary>area dati</primary>
+   <see>cluster di database</see>
   </indexterm>
 
   <para>
-   Before you can do anything, you must initialize a database storage
-   area on disk. We call this a <firstterm>database cluster</firstterm>.
-   (<acronym>SQL</acronym> uses the term catalog cluster.) A
-   database cluster is a collection of databases that is managed by a
-   single instance of a running database server. After initialization, a
-   database cluster will contain a database named <literal>postgres</literal>,
-   which is meant as a default database for use by utilities, users and third
-   party applications.  The database server itself does not require the
-   <literal>postgres</literal> database to exist, but many external utility
-   programs assume it exists.  Another database created within each cluster
-   during initialization is called
-   <literal>template1</literal>.  As the name suggests, this will be used
-   as a template for subsequently created databases; it should not be
-   used for actual work.  (See <xref linkend="managing-databases"/> for
-   information about creating new databases within a cluster.)
+Prima che si possa fare qualsiasi cosa, si deve inizializzare un'area di immagazzinamento dei 
+database su disco. Chiameremo questo <firstterm>cluster di database</firstterm>. 
+(<acronym>SQL</acronym> usa il termina cluster di catalogo). Un
+cluster di database è una collezione di database gestiti da una 
+singola istanza di un server database in esecuzione. Dopo l'installazione, un 
+cluster di database conterrà un database chiamato <literal>postgres</literal>,
+chè viene inteso come database predefinito per l'uso da parte di utilità, utenti e 
+applicazioni di terze parti. Il server database stesso non richiede che il database
+<literal>postgres</literal> esista, ma molte utilità esterne danno per scontato che esista.
+Un altro database creato all'interno di ogni cluster
+durante l'inizializzazione è chiamato
+<literal>template1</literal>. Come suggerisce il nome, questo sarà usato 
+come template per i database creati successivamente; non dovrebbe essere 
+usato per il lavoro effettivo. (Si veda <xref linkend="managing-databases"/> per
+informazioni circa la creazione di nuovi database all'interno del cluster). 
   </para>
 
   <para>
-   In file system terms, a database cluster will be a single directory
-   under which all data will be stored. We call this the <firstterm>data
-   directory</firstterm> or <firstterm>data area</firstterm>. It is
-   completely up to you where you choose to store your data.  There is no
-   default, although locations such as
-   <filename>/usr/local/pgsql/data</filename> or
-   <filename>/var/lib/pgsql/data</filename> are popular. To initialize a
-   database cluster, use the command <xref
-   linkend="app-initdb"/>,<indexterm><primary>initdb</primary></indexterm> which is
-   installed with <productname>PostgreSQL</productname>. The desired
-   file system location of your database cluster is indicated by the
-   <option>-D</option> option, for example:
+In termini di file system, un cluster di database sarà una singola directory
+nella quale tutti i dati saranno salvati. La chiameremo <firstterm>
+directory dei dati</firstterm> o <firstterm>area dei dati</firstterm>. Si è
+completamente liberi di scegliere dove immagazzinare i dati. Non c'è un valore
+predefinito, anche se posizioni come 
+<filename>/usr/local/pgsql/data</filename> o
+<filename>/var/lib/pgsql/data</filename> sono popolari. Per inizializzare un cluster
+di database, usare il comando <xref
+linkend="app-initdb"/>,<indexterm><primary>initdb</primary></indexterm> che viene 
+installato con <productname>PostgreSQL</productname>. La posizione nel 
+file system del proprio cluster di database è indicata dall'opzione 
+<option>-D</option>, per esempio:
 <screen>
 <prompt>$</prompt> <userinput>initdb -D /usr/local/pgsql/data</userinput>
 </screen>
-   Note that you must execute this command while logged into the
-   <productname>PostgreSQL</productname> user account, which is
-   described in the previous section.
+Notare che questo comando va eseguito mentre si è loggati con l'account utente 
+<productname>PostgreSQL</productname>, che è stato descritto nella sezione 
+precedente.
   </para>
 
   <tip>
    <para>
-    As an alternative to the <option>-D</option> option, you can set
-    the environment variable <envar>PGDATA</envar>.
-    <indexterm><primary><envar>PGDATA</envar></primary></indexterm>
+Un'alternativa all'opzione <option>-D</option> è di impostare 
+la variabile d'ambiente <envar>PGDATA</envar>.
+<indexterm><primary><envar>PGDATA</envar></primary></indexterm>
    </para>
   </tip>
 
   <para>
-   Alternatively, you can run <command>initdb</command> via
-   the <xref linkend="app-pg-ctl"/>
-   program<indexterm><primary>pg_ctl</primary></indexterm> like so:
+Alternativamente, si può eseguire <command>initdb</command> attraverso 
+il programma  <xref linkend="app-pg-ctl"/>
+    <indexterm><primary>pg_ctl</primary></indexterm> in questo modo:
 <screen>
 <prompt>$</prompt> <userinput>pg_ctl -D /usr/local/pgsql/data initdb</userinput>
 </screen>
-   This may be more intuitive if you are
-   using <command>pg_ctl</command> for starting and stopping the
-   server (see <xref linkend="server-start"/>), so
-   that <command>pg_ctl</command> would be the sole command you use
-   for managing the database server instance.
+Questo potrebbe essere più intuitivo se si sta usando 
+<command>pg_ctl</command> per avviare e fermare il server  
+(si veda <xref linkend="server-start"/>), così che
+<command>pg_ctl</command> sarebbe il solo comando usato per 
+gestire l'istanza del server database.
   </para>
 
   <para>
-   <command>initdb</command> will attempt to create the directory you
-   specify if it does not already exist. It is likely that it will not
-   have the permission to do so (if you followed our advice and created
-   an unprivileged account). In that case you should create the
-   directory yourself (as root) and change the owner to be the
-   <productname>PostgreSQL</productname> user. Here is how this might
-   be done:
+<command>initdb</command>  tenterà di creare la directory specificata,
+se non esiste già. È probabile che non avrà i permessi di farlo
+(se si è seguito il consiglio di creare un account non privilegiato).
+In questo caso si dovrebbe creare a mano la directory (come root) 
+e cambiare il proprietario in modo che sia l'utente <productname>PostgreSQL</productname>.
+Ecco come potrebbe essere fatto:
 <screen>
 root# <userinput>mkdir /usr/local/pgsql/data</userinput>
 root# <userinput>chown postgres /usr/local/pgsql/data</userinput>
@@ -125,83 +124,82 @@ postgres$ <userinput>initdb -D /usr/local/pgsql/data</userinput>
   </para>
 
   <para>
-   <command>initdb</command> will refuse to run if the data directory
-   looks like it has already been initialized.</para>
+<command>initdb</command> fallirà se la directory dei dati è già stata 
+inizializzata.</para>
 
   <para>
-   Because the data directory contains all the data stored in the
-   database, it is essential that it be secured from unauthorized
-   access. <command>initdb</command> therefore revokes access
-   permissions from everyone but the
-   <productname>PostgreSQL</productname> user.
+Dato che la directory dei dati contiene tutti i dati salvati nel database,
+è essenziale che sia sicura rispetto ad accessi non autorizzati.
+<command>initdb</command> revoca inoltre i permessi di accesso 
+a chiunque tranne che all'utente <productname>PostgreSQL</productname>.
   </para>
 
   <para>
-   However, while the directory contents are secure, the default
-   client authentication setup allows any local user to connect to the
-   database and even become the database superuser. If you do not
-   trust other local users, we recommend you use one of
-   <command>initdb</command>'s <option>-W</option>, <option>--pwprompt</option>
-   or <option>--pwfile</option> options to assign a password to the
-   database superuser.<indexterm><primary>password</primary><secondary>of the
-   superuser</secondary></indexterm>  Also, specify <option>-A md5</option> or
-   <option>-A password</option> so that the default <literal>trust</literal> authentication
-   mode is not used; or modify the generated <filename>pg_hba.conf</filename>
-   file after running <command>initdb</command>, but
-   <emphasis>before</emphasis> you start the server for the first time. (Other
-   reasonable approaches include using <literal>ident</literal> authentication
-   or file system permissions to restrict connections. See <xref
-   linkend="client-authentication"/> for more information.)
+Comunque, mentre i contenuti della directory sono sicuri, l'impostazione di autenticazione 
+predefinita del client permette a qualsiasi utente locale di connettersi al
+database e anche di diventare superutente del database. Se non ci si fida
+degli utenti locali, si raccomanda di usare una delle opzioni di <command>initdb</command> 
+<option>-W</option>, <option>--pwprompt</option> o <option>--pwfile</option>
+per assegnare una password al superutente del database.
+<indexterm><primary>password</primary><secondary>del 
+superutente</secondary></indexterm>  Inoltre, specificare <option>-A md5</option> o 
+<option>-A password</option> così che la modalità di autenticazione <literal>trust</literal>
+predefinita non sia usata; o modificare il file <filename>pg_hba.conf</filename>
+generato dopo aver lanciato <command>initdb</command>, ma
+<emphasis>prima</emphasis> che si avvii il server per la prima volta. (Altri approcci 
+ragionevoli includono l'utilizzo dell'autenticazione <literal>ident</literal>
+o i permessi del file system per restringere le connessioni. Si veda <xref
+linkend="client-authentication"/> per maggiori informazioni).
   </para>
 
   <para>
-   <command>initdb</command> also initializes the default
-   locale<indexterm><primary>locale</primary></indexterm> for the database cluster.
-   Normally, it will just take the locale settings in the environment
-   and apply them to the initialized database.  It is possible to
-   specify a different locale for the database; more information about
-   that can be found in <xref linkend="locale"/>.  The default sort order used
-   within the particular database cluster is set by
-   <command>initdb</command>, and while you can create new databases using
-   different sort order, the order used in the template databases that initdb
-   creates cannot be changed without dropping and recreating them.
-   There is also a performance impact for using locales
-   other than <literal>C</literal> or <literal>POSIX</literal>. Therefore, it is
-   important to make this choice correctly the first time.
+<command>initdb</command> inizializza anche la localizzazione <indexterm><primary>localizzazione</primary></indexterm> 
+predefinita per il cluster di database.
+Normalmente, prenderà semplicemente le impostazioni locali dell'ambiente 
+e le applicherà al database inizializzato. È possibile specificare 
+una localizzazione diversa per il database; maggiori informazioni su questo possono 
+essere trovate in <xref linkend="locale"/>. L'ordine predefinito usato all'interno 
+di un particolare cluster è impostato da
+<command>initdb</command>, e mentre si possono creare nuovi database usando 
+differenti ordinamenti, l'ordine usato nei database template che crea initdb
+non può essere cambiato senza eliminarli e ricrearli.
+C'è anche un impatto di prestazioni nell'usare localizzazioni diverse da
+<literal>C</literal> o <literal>POSIX</literal>. Inoltre, è importante 
+prendere la scelta giusta correttamente la prima  volta.
   </para>
 
   <para>
-   <command>initdb</command> also sets the default character set encoding
-   for the database cluster.  Normally this should be chosen to match the
-   locale setting.  For details see <xref linkend="multibyte"/>.
+<command>initdb</command> imposta anche la codifica del set di caratteri predefinita
+per il cluster di database. Normalmente questa dovrebbe essere scelta per corrispondere 
+all'impostazione locale. Per dettagli si veda <xref linkend="multibyte"/>.
   </para>
 
   <sect2 id="creating-cluster-nfs">
-   <title>Network File Systems</title>
+   <title>Network File System</title>
 
    <indexterm zone="creating-cluster-nfs">
-    <primary>Network File Systems</primary>
+    <primary>Network File System</primary>
    </indexterm>
-   <indexterm><primary><acronym>NFS</acronym></primary><see>Network File Systems</see></indexterm>
-   <indexterm><primary>Network Attached Storage (<acronym>NAS</acronym>)</primary><see>Network File Systems</see></indexterm>
+   <indexterm><primary><acronym>NFS</acronym></primary><see>Network File System</see></indexterm>
+   <indexterm><primary>Network Attached Storage (<acronym>NAS</acronym>)</primary><see>Network File System</see></indexterm>
 
    <para>
-    Many installations create database clusters on network file systems.
-    Sometimes this is done directly via <acronym>NFS</acronym>, or by using a
-    Network Attached Storage (<acronym>NAS</acronym>) device that uses
-    <acronym>NFS</acronym> internally.  <productname>PostgreSQL</productname> does nothing
-    special for <acronym>NFS</acronym> file systems, meaning it assumes
-    <acronym>NFS</acronym> behaves exactly like locally-connected drives
-    (<acronym>DAS</acronym>, Direct Attached Storage).  If client and server
-    <acronym>NFS</acronym> implementations have non-standard semantics, this can
-    cause reliability problems (see <ulink
-    url="http://www.time-travellers.org/shane/papers/NFS_considered_harmful.html"></ulink>).
-    Specifically, delayed (asynchronous) writes to the <acronym>NFS</acronym>
-    server can cause reliability problems;   if possible, mount
-    <acronym>NFS</acronym> file systems synchronously (without caching) to avoid
-    this.  Also, soft-mounting <acronym>NFS</acronym> is not recommended.
-    (Storage Area Networks (<acronym>SAN</acronym>) use a low-level
-    communication protocol rather than <acronym>NFS</acronym>.)
+Molte installazioni creano cluster di database su file system di rete.
+A volte questo viene fatto direttamente attraverso <acronym>NFS</acronym>, o usando un dispositivo
+<acronym>NAS</acronym> (Network Attached Storage) che usa
+<acronym>NFS</acronym> internamente. <productname>PostgreSQL</productname> non fa niente di 
+speciale per file system <acronym>NFS</acronym>, cioè presume che 
+<acronym>NFS</acronym> si comporti esattamente come volumi connessi localmente
+(<acronym>DAS</acronym>, Direct Attached Storage). Se le implementazioni del client e del server
+<acronym>NFS</acronym> hanno semantica non standard, questo può causare 
+problemi di affidabilità (si veda <ulink
+url="http://www.time-travellers.org/shane/papers/NFS_considered_harmful.html"></ulink>).
+Nello specifico, scritture ritardate (asincrone) verso il server <acronym>NFS</acronym>
+possono causare problemi di affidabilità; se possibile, montare 
+i file system <acronym>NFS</acronym> in modo sincrono (senza il caching) per evitare 
+questo. Inoltre, il montaggio soft di <acronym>NFS</acronym> non è raccomandato.
+(Storage Area Networks (<acronym>SAN</acronym>) usano un protocollo di comunicazione 
+a basso livello rispetto a <acronym>NFS</acronym>).
    </para>
 
   </sect2>
@@ -212,102 +210,100 @@ postgres$ <userinput>initdb -D /usr/local/pgsql/data</userinput>
   <title>Starting the Database Server</title>
 
   <para>
-   Before anyone can access the database, you must start the database
-   server. The database server program is called
-   <command>postgres</command>.<indexterm><primary>postgres</primary></indexterm>
-   The <command>postgres</command> program must know where to
-   find the data it is supposed to use. This is done with the
-   <option>-D</option> option. Thus, the simplest way to start the
-   server is:
+Prima che qualcuno possa accedere al database, si deve avviare il server database.
+Il programma server è chiamato 
+<command>postgres</command>.<indexterm><primary>postgres</primary></indexterm>
+Il programma <command>postgres</command> deve sapere dove 
+trovare i dati da usare. Questo è fatto con l'opzione 
+<option>-D</option>. Così, il modo più semplice di avviare il server è:
 <screen>
 $ <userinput>postgres -D /usr/local/pgsql/data</userinput>
 </screen>
-   which will leave the server running in the foreground. This must be
-   done while logged into the <productname>PostgreSQL</productname> user
-   account. Without <option>-D</option>, the server will try to use
-   the data directory named by the environment variable <envar>PGDATA</envar>.
-   If that variable is not provided either, it will fail.
+che lascerà il server in esecuzione in primo piano. Questo dev'essere fatto 
+mentre si è loggati come utente <productname>PostgreSQL</productname>.
+Senza <option>-D</option>, il server proverà a usare 
+la directory dei dati definita dalla variabile d'ambiente <envar>PGDATA</envar>.
+Se la variabile non è fornitam, fallirà.
   </para>
 
   <para>
-   Normally it is better to start <command>postgres</command> in the
-   background.  For this, use the usual Unix shell syntax:
+Normalmente è meglio lanciare <command>postgres</command> in 
+background. Per questo, usare la sintassi usuale della shell Unix:
 <screen>
 $ <userinput>postgres -D /usr/local/pgsql/data &gt;logfile 2&gt;&amp;1 &amp;</userinput>
 </screen>
-   It is important to store the server's <systemitem>stdout</systemitem> and
-   <systemitem>stderr</systemitem> output somewhere, as shown above. It will help
-   for auditing purposes and to diagnose problems. (See <xref
-   linkend="logfile-maintenance"/> for a more thorough discussion of log
-   file handling.)
+È importante salvare lo <systemitem>stdout</systemitem> e lo <systemitem>stderr</systemitem>
+del server da qualche parte, come mostrato sopra. Aiuterà 
+per scopi di monitoraggio e per diagnosticare problemi. (Si veda <xref
+linkend="logfile-maintenance"/> per una discussione più approfondita sulla 
+gestione dei file di log).
   </para>
 
   <para>
-   The <command>postgres</command> program also takes a number of other
-   command-line options. For more information, see the
-   <xref linkend="app-postgres"/> reference page
-   and <xref linkend="runtime-config"/> below.
+Il programma <command>postgres</command> inoltre accetta un certo numero di altre 
+opzioni a linea di comando. Per maggiori informazioni, si veda
+la pagina di riferimento <xref linkend="app-postgres"/> e  
+<xref linkend="runtime-config"/> sotto.
   </para>
 
   <para>
-   This shell syntax can get tedious quickly.  Therefore the wrapper
-   program
-   <xref linkend="app-pg-ctl"/><indexterm><primary>pg_ctl</primary></indexterm>
-   is provided to simplify some tasks.  For example:
+Questa sintassi di shell può diventare tediosa velocemente. Perciò è disponibile il programma wrapper
+<xref linkend="app-pg-ctl"/><indexterm><primary>pg_ctl</primary></indexterm>
+per semplificare alcuni compiti. Per esempio:
 <programlisting>
 pg_ctl start -l logfile
 </programlisting>
-   will start the server in the background and put the output into the
-   named log file. The <option>-D</option> option has the same meaning
-   here as for <command>postgres</command>. <command>pg_ctl</command>
-   is also capable of stopping the server.
+avvierà il server in background e metterà l'output nel file di log indicato. 
+L'opzione <option>-D</option> ha lo stesso significato 
+qui come per <command>postgres</command>. <command>pg_ctl</command>
+è anche capace di fermare il server.
   </para>
 
   <para>
-   Normally, you will want to start the database server when the
-   computer boots.<indexterm><primary>booting</primary><secondary>starting
-   the server during</secondary></indexterm> Autostart scripts are operating-system-specific.
-   There are a few distributed with
-   <productname>PostgreSQL</productname> in the
-   <filename>contrib/start-scripts</filename> directory. Installing one will require
-   root privileges.
+Normalmente, si vorrà avviare il server database all'avvio del computer.
+<indexterm><primary>avvio</primary><secondary>avviare il server</secondary></indexterm>
+Gli script di avvio automatico sono specifici al sistema operativo.
+Ce ne sono un po' distribuiti con 
+<productname>PostgreSQL</productname> nella directory 
+<filename>contrib/start-scripts</filename>. Installarne uno richiederà privilegi di root.
   </para>
 
   <para>
-   Different systems have different conventions for starting up daemons
-   at boot time. Many systems have a file
-   <filename>/etc/rc.local</filename> or
-   <filename>/etc/rc.d/rc.local</filename>. Others use
-   <filename>rc.d</filename> directories. Whatever you do, the server must be
-   run by the <productname>PostgreSQL</productname> user account
-   <emphasis>and not by root</emphasis> or any other user. Therefore you
-   probably should form your commands using <literal>su -c '...'
-   postgres</literal>.  For example:
+Sistemi diversi hanno convenzioni diverse per avviare i demoni all'avvio.
+Molti sistemi hanno un file
+<filename>/etc/rc.local</filename> o
+<filename>/etc/rc.d/rc.local</filename>. Altri usano
+directory <filename>rc.d</filename>. Qualsiasi cosa si faccia, il server deve essere
+eseguito dall'account utente <productname>PostgreSQL</productname>
+<emphasis>e non da root</emphasis> o da qualsiasi altro utente. Perciò 
+probabilmente si dovranno fornire i comandi usando <literal>su -c '...'
+postgres</literal>.  Per esempio:
 <programlisting>
 su -c 'pg_ctl start -D /usr/local/pgsql/data -l serverlog' postgres
 </programlisting>
   </para>
 
   <para>
-   Here are a few more operating-system-specific suggestions. (In each
-   case be sure to use the proper installation directory and user
-   name where we show generic values.)
+Ecco alcuni ulteriori suggerimenti specifici del sistema operativo. (In ogni 
+caso assicurarsi di usare la directory di installazione e il nome utente appropriati 
+dove vengono mostrati valori generici).
 
    <itemizedlist>
     <listitem>
      <para>
       For <productname>FreeBSD</productname>, look at the file
-      <filename>contrib/start-scripts/freebsd</filename> in the
-      <productname>PostgreSQL</productname> source distribution.
-      <indexterm><primary>FreeBSD</primary><secondary>start script</secondary></indexterm>
+Per <productname>FreeBSD</productname>, si veda il file  
+<filename>contrib/start-scripts/freebsd</filename> nella distribuzione del sorgente 
+<productname>PostgreSQL</productname>.
+<indexterm><primary>FreeBSD</primary><secondary>script d'avvio</secondary></indexterm>
      </para>
     </listitem>
 
     <listitem>
      <para>
-      On <productname>OpenBSD</productname>, add the following lines
-      to the file <filename>/etc/rc.local</filename>:
-      <indexterm><primary>OpenBSD</primary><secondary>start script</secondary></indexterm>
+Su <productname>OpenBSD</productname>, aggiungere le seguenti linee
+al file  <filename>/etc/rc.local</filename>:
+      <indexterm><primary>OpenBSD</primary><secondary>script d'avvio</secondary></indexterm>
 <programlisting>
 if [ -x /usr/local/pgsql/bin/pg_ctl -a -x /usr/local/pgsql/bin/postgres ]; then
     su - -c '/usr/local/pgsql/bin/pg_ctl start -l /var/postgresql/log -s' postgres
@@ -320,36 +316,38 @@ fi
     <listitem>
      <para>
       On <productname>Linux</productname> systems either add
-      <indexterm><primary>Linux</primary><secondary>start script</secondary></indexterm>
+Su sistemi <productname>Linux</productname> aggiungere 
+<indexterm><primary>Linux</primary><secondary>script d'avvio</secondary></indexterm>
 <programlisting>
 /usr/local/pgsql/bin/pg_ctl start -l logfile -D /usr/local/pgsql/data
 </programlisting>
-      to <filename>/etc/rc.d/rc.local</filename> or look at the file
-      <filename>contrib/start-scripts/linux</filename> in the
-      <productname>PostgreSQL</productname> source distribution.
+a <filename>/etc/rc.d/rc.local</filename> o si veda il file 
+<filename>contrib/start-scripts/linux</filename> nella distribuzione del 
+sorgente <productname>PostgreSQL</productname>.
      </para>
     </listitem>
 
     <listitem>
      <para>
       On <productname>NetBSD</productname>, either use the
-      <productname>FreeBSD</productname> or
-      <productname>Linux</productname> start scripts, depending on
-      preference. <indexterm><primary>NetBSD</primary><secondary>start script</secondary></indexterm>
+Su <productname>NetBSD</productname>, usare lo script d'avvio di 
+<productname>FreeBSD</productname> o
+di <productname>Linux</productname>, a seconda dei propri gusti.
+<indexterm><primary>NetBSD</primary><secondary>script d'avvio</secondary></indexterm>
      </para>
     </listitem>
 
     <listitem>
      <para>
-      On <productname>Solaris</productname>, create a file called
-      <filename>/etc/init.d/postgresql</filename> that contains
-      the following line:
-      <indexterm><primary>Solaris</primary><secondary>start script</secondary></indexterm>
+Su <productname>Solaris</productname>, creare un file chiamato 
+<filename>/etc/init.d/postgresql</filename> che contiene
+la seguente linea:
+<indexterm><primary>Solaris</primary><secondary>script d'avvio</secondary></indexterm>
 <programlisting>
 su - postgres -c "/usr/local/pgsql/bin/pg_ctl start -l logfile -D /usr/local/pgsql/data"
 </programlisting>
-      Then, create a symbolic link to it in <filename>/etc/rc3.d</filename> as
-      <filename>S99postgresql</filename>.
+Quindi, creare un link simbolico ad esso in <filename>/etc/rc3.d</filename> come 
+<filename>S99postgresql</filename>.
      </para>
     </listitem>
    </itemizedlist>
@@ -357,23 +355,23 @@ su - postgres -c "/usr/local/pgsql/bin/pg_ctl start -l logfile -D /usr/local/pgs
   </para>
 
    <para>
-    While the server is running, its
-    <acronym>PID</acronym> is stored in the file
-    <filename>postmaster.pid</filename> in the data directory. This is
-    used to prevent multiple server instances from
-    running in the same data directory and can also be used for
-    shutting down the server.
+Mentre il server è in esecuzione, il suo 
+<acronym>PID</acronym> è salvato nel file 
+<filename>postmaster.pid</filename> nella directory dei dati. Questo viene fatto per
+prevenire che molteplici istanze del server siano in esecuzione
+nella stessa directory di dati e può essere usato anche per 
+arrestare il server.
    </para>
 
    <sect2 id="server-start-failures">
-    <title>Server Start-up Failures</title>
+    <title>Fallimenti dell'avvio del server</title>
 
     <para>
-     There are several common reasons the server might fail to
-     start. Check the server's log file, or start it by hand (without
-     redirecting standard output or standard error) and see what error
-     messages appear. Below we explain some of the most common error
-     messages in more detail.
+Ci sono diverse ragioni comuni per cui il server potrebbe fallire 
+nel tentativo di avviarsi. Controllare il file di log del server, o avviarlo a mano (senza
+redirigere lo standard output o lo standard error) e controllare quali messaggi di errore
+appaiono. Sotto vengono spiegato alcuni dei messaggi di errore più comuni 
+in dettaglio.
     </para>
 
     <para>
@@ -382,12 +380,12 @@ LOG:  could not bind IPv4 socket: Address already in use
 HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
 FATAL:  could not create TCP/IP listen socket
 </screen>
-     This usually means just what it suggests: you tried to start
-     another server on the same port where one is already running.
-     However, if the kernel error message is not <computeroutput>Address
-     already in use</computeroutput> or some variant of that, there might
-     be a different problem. For example, trying to start a server
-     on a reserved port number might draw something like:
+Questo di solito significa esattamente cosa suggerisce: si è provato ad avviare
+un altro server sulla stessa porta in cui uno è già in esecuzione. 
+Comunque, se il messaggio di errore del kernel non è <computeroutput>Address
+already in use</computeroutput> o qualche variante di questo, ci potrebbe essere 
+un problema diverso. Per esempio, provare ad avviare un server
+su una numero di porta riservata potrebbe genereare qualcosa simile a:
 <screen>
 $ <userinput>postgres -p 666</userinput>
 LOG:  could not bind IPv4 socket: Permission denied
@@ -397,62 +395,62 @@ FATAL:  could not create TCP/IP listen socket
     </para>
 
     <para>
-     A message like:
+un messaggio come:
 <screen>
 FATAL:  could not create shared memory segment: Invalid argument
 DETAIL:  Failed system call was shmget(key=5440001, size=4011376640, 03600).
 </screen>
-     probably means your kernel's limit on the size of shared memory is
-     smaller than the work area <productname>PostgreSQL</productname>
-     is trying to create (4011376640 bytes in this example). Or it could
-     mean that you do not have System-V-style shared memory support
-     configured into your kernel at all. As a temporary workaround, you
-     can try starting the server with a smaller-than-normal number of
-     buffers (<xref linkend="guc-shared-buffers"/>). You will eventually want
-     to reconfigure your kernel to increase the allowed shared memory
-     size. You might also see this message when trying to start multiple
-     servers on the same machine, if their total space requested
-     exceeds the kernel limit.
+probabilmente significa che il limite del kernel sulla dimensione della memoria condivisa
+è più piccolo rispetto all'area di lavoro che <productname>PostgreSQL</productname>
+sta tentando di creare (4011376640 byte in questo esempio). O potrebbe significare
+che non si ha il supporto alla memoria condivisa System-V nel kernel.
+Come soluzione temporanea, si può provare ad avviare il server con un numero 
+più piccolo del normale di buffer (<xref linkend="guc-shared-buffers"/>).
+Eventualmente si vorrà configurare di nuovo il kernel per incrementare la dimensione della memoria condivisa
+permessa. Si potrebbe anche incontrare questo messaggio quando si tentano di avviare 
+molteplici server sulla stessa macchina, se il loro spazio totale richiesto
+eccede il limite del kernel.
     </para>
 
     <para>
-     An error like:
+Un errore come:
 <screen>
 FATAL:  could not create semaphores: No space left on device
 DETAIL:  Failed system call was semget(5440126, 17, 03600).
 </screen>
-     does <emphasis>not</emphasis> mean you've run out of disk
-     space. It means your kernel's limit on the number of <systemitem
-     class="osname">System V</systemitem> semaphores is smaller than the number
-     <productname>PostgreSQL</productname> wants to create. As above,
-     you might be able to work around the problem by starting the
-     server with a reduced number of allowed connections
-     (<xref linkend="guc-max-connections"/>), but you'll eventually want to
-     increase the kernel limit.
+<emphasis>non</emphasis> significa che si è ecceduto lo spazio su disco.
+Significa che il limite del proprio kernel sul numero di semafori <systemitem
+class="osname">System V</systemitem> è più piccolo rispetto al numero
+che <productname>PostgreSQL</productname> vuole creare. Come sopra,
+si potrebbe risolvere il problema avviando il servere con un numero ridotto 
+di connessioni permesse 
+(<xref linkend="guc-max-connections"/>) ma eventualmente è preferibile incrementare 
+il limite del kernel.
     </para>
 
     <para>
-     If you get an <quote>illegal system call</quote> error, it is likely that
-     shared memory or semaphores are not supported in your kernel at
-     all. In that case your only option is to reconfigure the kernel to
-     enable these features.
+Se si riceve un errore <quote>illegal system call</quote>, probabilmente la 
+memoria condivisa o i semafori non sono supportati per niente dal proprio kernel.
+In questo caso la sola opzione disponibile è di riconfigurare il kernel 
+per abilitare queste caratteristiche.
     </para>
 
     <para>
-     Details about configuring <systemitem class="osname">System V</systemitem>
-     <acronym>IPC</acronym> facilities are given in <xref linkend="sysvipc"/>.
+Dettagli sulla configurazione delle caratteristiche <acronym>IPC</acronym> di 
+<systemitem class="osname">System V</systemitem> sono presentati di <xref linkend="sysvipc"/>.
+
     </para>
    </sect2>
 
    <sect2 id="client-connection-problems">
-    <title>Client Connection Problems</title>
+    <title>Problemi di connessione al client</title>
 
     <para>
-     Although the error conditions possible on the client side are quite
-     varied and application-dependent, a few of them might be directly
-     related to how the server was started. Conditions other than
-     those shown below should be documented with the respective client
-     application.
+Anche se le condizioni di possili errori lato client sono abbastanza
+varie è dipendono dall'applicazione, alcune di queste potrebbero essere 
+collegate direttamente al modo in cui il server è stato lanciato. Condizioni 
+diverse da quelle mostrate sotto dovrebbero essere documentate con la 
+rispettiva applicazione. 
     </para>
 
     <para>
@@ -462,14 +460,15 @@ psql: could not connect to server: Connection refused
         TCP/IP connections on port 5432?
 </screen>
      This is the generic <quote>I couldn't find a server to talk
-     to</quote> failure. It looks like the above when TCP/IP
+Questo è il fallimento  generico <quote>Non riesco a trovare un server con cui comunicare</quote>. 
+     It looks like the above when TCP/IP
      communication is attempted. A common mistake is to forget to
      configure the server to allow TCP/IP connections.
     </para>
 
     <para>
-     Alternatively, you'll get this when attempting Unix-domain socket
-     communication to a local server:
+Alternativamente, si otterrò questo quando si tenta una comunicazione con Unix-domain socket
+a un server locale:
 <screen>
 psql: could not connect to server: No such file or directory
         Is the server running locally and accepting
@@ -478,82 +477,79 @@ psql: could not connect to server: No such file or directory
     </para>
 
     <para>
-     The last line is useful in verifying that the client is trying to
-     connect to the right place. If there is in fact no server
-     running there, the kernel error message will typically be either
-     <computeroutput>Connection refused</computeroutput> or
-     <computeroutput>No such file or directory</computeroutput>, as
-     illustrated. (It is important to realize that
-     <computeroutput>Connection refused</computeroutput> in this context
-     does <emphasis>not</emphasis> mean that the server got your
-     connection request and rejected it. That case will produce a
-     different message, as shown in <xref
-     linkend="client-authentication-problems"/>.) Other error messages
-     such as <computeroutput>Connection timed out</computeroutput> might
-     indicate more fundamental problems, like lack of network
-     connectivity.
+L'ultima linea è utile per verificare che il client stia tentando di connettersi 
+nel posto giusto. Se effettivamente non c'è un server in esecuzione là,
+il messaggio di errore del kernel tipicamente sarà o 
+<computeroutput>Connection refused</computeroutput> o
+<computeroutput>No such file or directory</computeroutput>, come 
+illustrato. (È importante rendersi conto che 
+<computeroutput>Connection refused</computeroutput> in questo contesto
+<emphasis>non</emphasis> significa che il server ha ottenuto la richiesta
+di connessione e l'ha rifiutata. Quel caso produrrà un messaggio diverso, 
+come mostrato in <xref
+linkend="client-authentication-problems"/>). Altri messaggi d'errore
+tipo <computeroutput>Connection timed out</computeroutput> potrebbero
+indicare problemi più gravi, come carenza di connettività.
     </para>
    </sect2>
   </sect1>
 
  <sect1 id="kernel-resources">
-  <title>Managing Kernel Resources</title>
+  <title>Gestire le risorse del Kernel</title>
 
   <para>
-   A large <productname>PostgreSQL</productname> installation can quickly exhaust
-   various operating system resource limits. (On some systems, the
-   factory defaults are so low that you don't even need a really
-   <quote>large</quote> installation.) If you have encountered this kind of
-   problem, keep reading.
+Un'installazione grande di <productname>PostgreSQL</productname> può esaurire velocemente
+i limiti di varie risorse del sistema operativo. (Su alcuni sistemi, 
+i valori predefiniti sono talmente bassi che non si ha nemmeno bisogno di un'installazione
+molto <quote>grande</quote>). Se si è riscontrato questo tipo di problemi, 
+continuare a leggere.
   </para>
 
   <sect2 id="sysvipc">
-   <title>Shared Memory and Semaphores</title>
+   <title>Memoria condivisa e semafori</title>
 
    <indexterm zone="sysvipc">
-    <primary>shared memory</primary>
+    <primary>memoria condivisa</primary>
    </indexterm>
 
    <indexterm zone="sysvipc">
-    <primary>semaphores</primary>
+    <primary>semafori</primary>
    </indexterm>
 
    <para>
     Shared memory and semaphores are collectively referred to as
-    <quote><systemitem class="osname">System V</systemitem>
     <acronym>IPC</acronym></quote> (together with message queues, which are not
     relevant for <productname>PostgreSQL</productname>). Almost all modern
     operating systems provide these features, but many of them don't have
     them turned on or sufficiently sized by default, especially as
     available RAM and the demands of database applications grow.
-    (On <systemitem class="osname">Windows</systemitem>,
-    <productname>PostgreSQL</productname> provides its own replacement 
-    implementation of these facilities, so most of this section
-    can be disregarded.)
+(Su <systemitem class="osname">Windows</systemitem>,
+<productname>PostgreSQL</productname> fornisce la  propria implementazione come rimpiazzo 
+di queste caratteristiche, quindi la maggior parte di questa sezione
+può essere trascurata).
    </para>
 
    <para>
-    The complete lack of these facilities is usually manifested by an
-    <errorname>Illegal system call</errorname> error upon server start. In
-    that case there is no alternative but to reconfigure your
-    kernel.  <productname>PostgreSQL</productname> won't work without them.
-    This situation is rare, however, among modern operating systems.
+La completa mancanza di queste caratteristiche è di solito manifestata da un errore 
+<errorname>Illegal system call</errorname> all'avvio del server. In quel caso 
+non c'è alternativa se non riconfigurare il kernel. <productname>PostgreSQL</productname>
+non funzionerà senza di loro.
+In ogni caso, questa situazione è rara tra i sistemi operativi moderni.
    </para>
 
    <para>
-    When <productname>PostgreSQL</productname> exceeds one of the various hard
-    <acronym>IPC</acronym> limits, the server will refuse to start and
-    should leave an instructive error message describing the problem
-    and what to do about it. (See also <xref
-    linkend="server-start-failures"/>.) The relevant kernel
-    parameters are named consistently across different systems; <xref
-    linkend="sysvipc-parameters"/> gives an overview. The methods to set
-    them, however, vary. Suggestions for some platforms are given below.
+Quando <productname>PostgreSQL</productname> eccede uno dei vari limiti <acronym>IPC</acronym>,
+il server rifiuterà di avviarsi e dovrebbe generare un errore informativo che descrive il problema
+e cosa fare. (Si veda anche <xref
+linkend="server-start-failures"/>). I parametri rilevanti del kernel 
+sono chiamati consistentemente tra i vari sistemi; <xref
+linkend="sysvipc-parameters"/> fornisce una fanoramica. I metodi per impostarli,
+comunque, variano. Suggerimenti per alcune piattaforme sono presentati sotto.
    </para>
 
 
    <table id="sysvipc-parameters">
-    <title><systemitem class="osname">System V</systemitem> <acronym>IPC</acronym> parameters</title>
+    <title>Parametri <acronym>IPC</acronym> <systemitem class="osname">System V</systemitem></title>
 
     <tgroup cols="3">
      <thead>

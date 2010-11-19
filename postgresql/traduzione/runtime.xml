@@ -554,71 +554,72 @@ comunque, variano. Suggerimenti per alcune piattaforme sono presentati sotto.
     <tgroup cols="3">
      <thead>
       <row>
-       <entry>Name</entry>
-       <entry>Description</entry>
-       <entry>Reasonable values</entry>
+       <entry>Nome</entry>
+       <entry>Descrizione</entry>
+       <entry>Valori ragionevoli</entry>
       </row>
      </thead>
 
      <tbody>
       <row>
        <entry><varname>SHMMAX</varname></entry>
-       <entry>Maximum size of shared memory segment (bytes)</entry>
-       <entry>at least several megabytes (see text)</entry>
+       <entry>Dimensione massima del segmento di memoria condivisa (byte)</entry>
+       <entry>almeno diversi megabyte (si veda text)</entry>
       </row>
 
       <row>
        <entry><varname>SHMMIN</varname></entry>
-       <entry>Minimum size of shared memory segment (bytes)</entry>
+       <entry>Dimensione minima del segmento di memoria condivisa (byte)</entry>
        <entry>1</entry>
       </row>
 
       <row>
        <entry><varname>SHMALL</varname></entry>
-       <entry>Total amount of shared memory available (bytes or pages)</entry>
-       <entry>if bytes, same as <varname>SHMMAX</varname>; if pages, <literal>ceil(SHMMAX/PAGE_SIZE)</literal></entry>
+       <entry>Quantità totale della memoria condivisa disponibile (byte o pagine)</entry>
+       <entry>se byte, lo stesso di <varname>SHMMAX</varname>; se pagine, <literal>ceil(SHMMAX/PAGE_SIZE)</literal></entry>
       </row>
 
       <row>
        <entry><varname>SHMSEG</varname></entry>
-       <entry>Maximum number of shared memory segments per process</entry>
-       <entry>only 1 segment is needed, but the default is much higher</entry>
+       <entry>Il massimo numero di segmenti di memoria condivisa per processo</entry>
+       <entry>solo 1 segmento è necessario, ma il valore predefinito è molto maggiore</entry>
       </row>
 
        <row>
         <entry><varname>SHMMNI</varname></entry>
-        <entry>Maximum number of shared memory segments system-wide</entry>
-        <entry>like <varname>SHMSEG</varname> plus room for other applications</entry>
+        <entry>Il massimo numero di segmenti di memeoria condivisa a livello di sistema</entry>
+        <entry>come <varname>SHMSEG</varname> più spazione per altre applicazioni</entry>
        </row>
 
        <row>
         <entry><varname>SEMMNI</varname></entry>
-        <entry>Maximum number of semaphore identifiers (i.e., sets)</entry>
-        <entry>at least <literal>ceil((max_connections + autovacuum_max_workers) / 16)</literal></entry>
+        <entry>Il massimo numero di identificatori di semaforo (per es., sets)</entry>
+        <entry>almeno <literal>ceil((max_connections + autovacuum_max_workers) / 16)</literal></entry>
        </row>
 
        <row>
         <entry><varname>SEMMNS</varname></entry>
-        <entry>Maximum number of semaphores system-wide</entry>
-        <entry><literal>ceil((max_connections + autovacuum_max_workers) / 16) * 17</literal> plus room for other applications</entry>
+        <entry>Il massimo numero di semafori a livello di sistema</entry>
+        <entry><literal>ceil((max_connections + autovacuum_max_workers) / 16) * 17</literal>  
+        più spazio per altre applicazioni</entry>
        </row>
 
        <row>
         <entry><varname>SEMMSL</varname></entry>
-        <entry>Maximum number of semaphores per set</entry>
-        <entry>at least 17</entry>
+        <entry>Il massimo numero di sema Maximum number of semaphores per insieme</entry>
+        <entry>almeno 17</entry>
        </row>
 
        <row>
         <entry><varname>SEMMAP</varname></entry>
-        <entry>Number of entries in semaphore map</entry>
-        <entry>see text</entry>
+        <entry>Numero di voci nella mappa dei semafori</entry>
+        <entry>si veda text</entry>
        </row>
 
        <row>
         <entry><varname>SEMVMX</varname></entry>
-        <entry>Maximum value of semaphore</entry>
-        <entry>at least 1000 (The default is often 32767; do not change unless necessary)</entry>
+        <entry>Il massimo valore del semaforo</entry>
+        <entry>almeno 1000 (Il valore predefiniro spesso è 32767; non cambiarlo a meno che non sia necessario)</entry>
        </row>
 
      </tbody>
@@ -627,78 +628,78 @@ comunque, variano. Suggerimenti per alcune piattaforme sono presentati sotto.
 
 
    <para>
-    <indexterm><primary>SHMMAX</primary></indexterm> The most important
-    shared memory parameter is <varname>SHMMAX</varname>, the maximum size, in
-    bytes, of a shared memory segment. If you get an error message from
-    <function>shmget</function> like <quote>Invalid argument</quote>, it is
-    likely that this limit has been exceeded.  The size of the required
-    shared memory segment varies depending on several
-    <productname>PostgreSQL</productname> configuration parameters, as shown in
-    <xref linkend="shared-memory-parameters"/>.  (Any error message you might
-    get will include the exact size of the failed allocation request.)
-    You can, as a temporary solution, lower some of those settings to
-    avoid the failure.  While it is possible to get
-    <productname>PostgreSQL</productname> to run with <varname>SHMMAX</varname> as small as
-    2 MB, you need considerably more for acceptable performance.  Desirable
-    settings are in the hundreds of megabytes to a few gigabytes.
+<indexterm><primary>SHMMAX</primary></indexterm> Il parametro più importante
+riguardante la memoria condivisa è <varname>SHMMAX</varname>, cioè la dimensione massima, 
+in byte, di un segmento di memoria condivisa. Se si ottiene un messaggio di errore da
+<function>shmget</function> tipo <quote>Invalid argument</quote>, è 
+probabile che questo limite sia stato superato. La dimensione del segmento di  
+memoria condivisa richiesta varia dipendentemente da diveri parametri di configurazione 
+di <productname>PostgreSQL</productname>, come mostrato in  
+<xref linkend="shared-memory-parameters"/>. (Qualsiasi messaggio di errore che si potrebbe 
+ottenere includeranno la dimensione esatta della richiesta di allocazione fallita).
+È possibile, come soluzione temporanea, abbassare alcune di queste impostazioni per 
+evitare il fallimento. Mentre è possibile avviare  
+<productname>PostgreSQL</productname> con <varname>SHMMAX</varname> grande 2 MB,
+probabilmente si avrà bisogno di più per prestazioni accettabili. Impostazioni 
+auspicabili sono da centinaia di megabyte a pochi gigabyte.
    </para>
 
    <para>
-    Some systems also have a limit on the total amount of shared memory in
-    the system (<varname>SHMALL</varname>).  Make sure this is large enough
-    for <productname>PostgreSQL</productname> plus any other applications that
-    are using shared memory segments.  Note that <varname>SHMALL</varname>
-    is measured in pages rather than bytes on many systems.
+Alcuni sistemi hanno anche un limite sulla quantità totale di memeoria condivisa
+nel sistema (<varname>SHMALL</varname>).  Assicurarsi che sia grande abbastanza 
+per <productname>PostgreSQL</productname>  più qualsiasi altra applicazione che
+stia usando segmenti di memoria condivisa. Notare che <varname>SHMALL</varname>
+viene misurata in pagine invece di byte su molti sistemi.
    </para>
 
    <para>
-    Less likely to cause problems is the minimum size for shared
-    memory segments (<varname>SHMMIN</varname>), which should be at most
-    approximately 500 kB for <productname>PostgreSQL</productname> (it is
-    usually just 1). The maximum number of segments system-wide
-    (<varname>SHMMNI</varname>) or per-process (<varname>SHMSEG</varname>) are unlikely
-    to cause a problem unless your system has them set to zero.
+È meno probabile che a causare problemi sia la dimensione minima per i segmenti
+di memoria condivisa (<varname>SHMMIN</varname>), che dovrebbero essere tutt'al più
+500 kB approssimativamente per <productname>PostgreSQL</productname> (di solito è 
+1). Il massimo numero di segmenti a livello di sistema
+(<varname>SHMMNI</varname>) o per processo (<varname>SHMSEG</varname>) probabilmente non 
+causeranno problemi a meno che il sistema non li abbia impostati a zero.
    </para>
 
    <para>
-    <productname>PostgreSQL</productname> uses one semaphore per allowed connection
-    (<xref linkend="guc-max-connections"/>) and allowed autovacuum worker
-    process (<xref linkend="guc-autovacuum-max-workers"/>), in sets of 16.
-    Each such set will
-    also contain a 17th semaphore which contains a <quote>magic
-    number</quote>, to detect collision with semaphore sets used by
-    other applications. The maximum number of semaphores in the system
-    is set by <varname>SEMMNS</varname>, which consequently must be at least
-    as high as <varname>max_connections</varname> plus
-    <varname>autovacuum_max_workers</varname>, plus one extra for each 16
-    allowed connections plus workers (see the formula in <xref
-    linkend="sysvipc-parameters"/>).  The parameter <varname>SEMMNI</varname>
-    determines the limit on the number of semaphore sets that can
-    exist on the system at one time.  Hence this parameter must be at
-    least <literal>ceil((max_connections + autovacuum_max_workers) / 16)</literal>.
-    Lowering the number
-    of allowed connections is a temporary workaround for failures,
-    which are usually confusingly worded <quote>No space
-    left on device</quote>, from the function <function>semget</function>.
+<productname>PostgreSQL</productname> usa un semaforo per ogni connessione permessa 
+(<xref linkend="guc-max-connections"/>) e processo worker dell'autovacuum consentito
+(<xref linkend="guc-autovacuum-max-workers"/>), in gruppi di 16.
+Ognuno di questi gruppi conterrà anche
+un 17esimo semaforo che contiene un <quote>numero magico</quote>,
+per accorgersi di collisioni con insiemi di semafori usati da altre applicazioni.
+Il massimo numero di semafori nel sistema è impostato da 
+<varname>SEMMNS</varname>, che di conseguenza deve essere grande almeno
+quanto <varname>max_connections</varname> più
+<varname>autovacuum_max_workers</varname>, più uno aggiuntivo per ogni 16
+connessioni più worker consentite (si veda la formula in <xref
+linkend="sysvipc-parameters"/>).  Il parametro <varname>SEMMNI</varname>
+determina il limite sul numero di gruppi di semafori che possono 
+esistere nel sistema in un dato istante. Da adesso questo parametro deve essere 
+almeno <literal>ceil((max_connections + autovacuum_max_workers) / 16)</literal>.
+Abbassare il numero di 
+connessioni permesse è una soluzione temporanea per fallimenti, 
+che di solito sono espressi confusamente come  <quote>No space
+left on device</quote>, dalla funzione <function>semget</function>.
    </para>
 
    <para>
-    In some cases it might also be necessary to increase
-    <varname>SEMMAP</varname> to be at least on the order of
-    <varname>SEMMNS</varname>. This parameter defines the size of the semaphore
-    resource map, in which each contiguous block of available semaphores
-    needs an entry. When a semaphore set is freed it is either added to
-    an existing entry that is adjacent to the freed block or it is
-    registered under a new map entry. If the map is full, the freed
-    semaphores get lost (until reboot). Fragmentation of the semaphore
-    space could over time lead to fewer available semaphores than there
-    should be.
+In alcuni casi potrebbe essere necessario anche incrementare 
+<varname>SEMMAP</varname> per essere almeno nell'ordine di 
+<varname>SEMMNS</varname>. Questo parametro definisce la dimensione della mappa
+delle risorse del semaforo, nella quale qualsiasi blocco contiguo di semafori disponibili
+necessita una voce. Quando un insieme di semafori viene liberato o è aggiunto 
+a una voce esistente che è adiacente al blocco liberato oppure viene registrata 
+con una nuova voce di mappa. Se la mappa è piena, i semafori liberati
+vengono persi (fino al riavvio). La frammentazione dello spazio dei semafori 
+potrebbe portare nel tempo ad avere meno semafori disponibili rispetto 
+a quanti ce ne dovrebbero essere.
    </para>
 
    <para>
-    The <varname>SEMMSL</varname> parameter, which determines how many
-    semaphores can be in a set, must be at least 17 for
-    <productname>PostgreSQL</productname>.
+Il parametro <varname>SEMMSL</varname>, che determina quanti semafori 
+possono esserci in un insieme, dev'essere almeno 17 per
+<productname>PostgreSQL</productname>.
    </para>
 
    <para>
@@ -711,44 +712,43 @@ comunque, variano. Suggerimenti per alcune piattaforme sono presentati sotto.
     <variablelist>
      <varlistentry>
       <term><systemitem class="osname">AIX</systemitem></term>
-      <indexterm><primary>AIX</primary><secondary>IPC configuration</secondary></indexterm>
+      <indexterm><primary>AIX</primary><secondary>configurazione IPC</secondary></indexterm>
       <listitem>
        <para>
-        At least as of version 5.1, it should not be necessary to do
-        any special configuration for such parameters as
-        <varname>SHMMAX</varname>, as it appears this is configured to
-        allow all memory to be used as shared memory.  That is the
-        sort of configuration commonly used for other databases such
-        as <application>DB/2</application>.</para>
+Almeno dalla versione 5.1, non dovrebbe essere necessario fare 
+nessuna configurazione speciale per parametri come <varname>SHMMAX</varname>,
+per come appare questo è configurato per  permettere
+a tutta la memoria di essere usata come memoria condivisa. Che è una sorta di 
+configurazione usata comunemente in altri database tipo 
+<application>DB/2</application>.</para>
 
-       <para> It might, however, be necessary to modify the global
-       <command>ulimit</command> information in
-       <filename>/etc/security/limits</filename>, as the default hard
-       limits for file sizes (<varname>fsize</varname>) and numbers of
-       files (<varname>nofiles</varname>) might be too low.
+<para>potrebbe comunque essere necessario modificare l'informazione
+globale <command>ulimit</command> in 
+<filename>/etc/security/limits</filename>, dato che il limite predefinito per 
+la dimensione dei file (<varname>fsize</varname>) e il numero di file 
+(<varname>nofiles</varname>) potrebbe essere troppo basso. 
        </para>
       </listitem>
      </varlistentry>
 
      <varlistentry>
       <term><systemitem class="osname">BSD/OS</systemitem></term>
-      <indexterm><primary>BSD/OS</primary><secondary>IPC configuration</secondary></indexterm>
+      <indexterm><primary>BSD/OS</primary><secondary>configurazione IPC</secondary></indexterm>
       <listitem>
        <formalpara>
-        <title>Shared Memory</title>
+        <title>Memoria condivisa</title>
         <para>
-         By default, only 4 MB of shared memory is supported. Keep in
-         mind that shared memory is not pageable; it is locked in RAM.
-         To increase the amount of shared memory supported by your
-         system, add something like the following to your kernel configuration
-         file:
+In modo predefinito, solo 4 MB di memoria condivisa sono supportati. Tenere a 
+mente che la memeoria condivisa non è paginabile; è bloccata in RAM.
+Per incrementare la quantità di memoria condivisa supportata dal sistema,
+aggiungere qualcosa di simile al seguente al file di configurazione del kernel:
 <programlisting>
 options "SHMALL=8192"
 options "SHMMAX=\(SHMALL*PAGE_SIZE\)"
 </programlisting>
-         <varname>SHMALL</varname> is measured in 4 kB pages, so a value of
-         1024 represents 4 MB of shared memory. Therefore the above increases
-         the maximum shared memory area to 32 MB.
+<varname>SHMALL</varname> viene misurato in pagine da 4 kB, quindi un valore di 
+1024 rappresenta 4 MB di memoria condivisa. Inoltre l'esempio sopra aumenta 
+l'area di massima memoria condivisa a 32 MB.
          For those running 4.3 or later, you will probably also need to increase
          <varname>KERNEL_VIRTUAL_MB</varname> above the default <literal>248</literal>.
          Once all changes have been made, recompile the kernel, and reboot.
@@ -756,12 +756,12 @@ options "SHMMAX=\(SHMALL*PAGE_SIZE\)"
        </formalpara>
 
        <formalpara>
-        <title>Semaphores</title>
+        <title>Semafori</title>
         <para>
-         You will probably want to increase the number of semaphores
-         as well; the default system total of 60 will only allow about
-         50 <productname>PostgreSQL</productname> connections.  Set the
-         values you want in your kernel configuration file, e.g.:
+Probabilmente si vorrà incrementare anche il numero di semafori;
+il valore 60 predefinito di sistema permetterà solo cira 50 connessioni 
+<productname>PostgreSQL</productname>. Impostare i valori 
+che si vogliono nel file di configurazione del kernel, per es.:
 <programlisting>
 options "SEMMNI=40"
 options "SEMMNS=240"
@@ -774,21 +774,21 @@ options "SEMMNS=240"
 
      <varlistentry>
       <term><systemitem class="osname">FreeBSD</systemitem></term>
-      <indexterm><primary>FreeBSD</primary><secondary>IPC configuration</secondary></indexterm>
+      <indexterm><primary>FreeBSD</primary><secondary>configurazione IPC</secondary></indexterm>
       <listitem>
        <para>
-        The default settings are only suitable for small installations
-        (for example, default <varname>SHMMAX</varname> is 32
-        MB). Changes can be made via the <command>sysctl</command> or
-        <command>loader</command> interfaces.  The following
-        parameters can be set using <command>sysctl</command>:
+Le impostazioni predefinite sono adatte solo a installazioni piccole
+(per esempio, il valore predefinito di <varname>SHMMAX</varname> è 32 MB).
+Possono essere fatti cambiamenti attraverso le interfaccie <command>sysctl</command> o 
+<command>loader</command>. I seguenti parametri
+possono essere impostati usando <command>sysctl</command>:
 <screen>
 <prompt>$</prompt> <userinput>sysctl -w kern.ipc.shmall=32768</userinput>
 <prompt>$</prompt> <userinput>sysctl -w kern.ipc.shmmax=134217728</userinput>
 <prompt>$</prompt> <userinput>sysctl -w kern.ipc.semmap=256</userinput>
 </screen>
-        To have these settings persist over reboots, modify
-        <filename>/etc/sysctl.conf</filename>.
+Per rendere queste impostazioni persistenti al riavvio, modificare 
+<filename>/etc/sysctl.conf</filename>.
        </para>
 
        <para>

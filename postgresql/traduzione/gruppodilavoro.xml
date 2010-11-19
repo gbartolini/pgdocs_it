@@ -50,4 +50,111 @@ La fase attuale del progetto è quella che prevede la traduzione della documenta
 
 <para>Il progetto è aperto a tutti ed è possibile partecipare inviando una e-mail a <ulink url="mailto:info@itpug.org">info@itpug.org</ulink>.</para>
 
+<sect2 id="lineeguida">
+ <title>Il gruppo di lavoro per la traduzione in italiano</title>
+
+ <para>Al fine di produrre traduzioni uniformi, è necessario partire da una base comune di best practice da adottare. Si segnalano le seguenti letture:</para>
+
+   <itemizedlist>
+    <listitem>
+     <para><ulink url="http://tp.linux.it/buona_traduzione.html">Regole per la buona traduzione</ulink> (di Emanuele Aina)</para>
+    </listitem>
+    <listitem>
+     <para><ulink url="http://tp.linux.it/">Free Translation Project - Sezione Italiana</ulink></para>
+    </listitem>
+   </itemizedlist>
+
+ <para>Di seguito una lista di regole derivanti dalla traduzione quotidiana del manuale di PostgreSQL.</para>
+
+<sect3>
+<title>Regola 1 - Lasciare i termini in inglese</title>
+
+<para>
+Non tradurre in italiano concetti assodati nella letteratura di database (database, trigger, stored procedure, cluster, ecc.).
+</para>
+
+</sect3>
+
+<sect3>
+<title>Regola 2 - Termini in inglese al singolare</title>
+
+<para>
+Non utilizzare i plurali dei termini in inglese, ma sempre la loro versione singolare (non scrivere "i files" ma soltanto "i file").
+</para>
+</sect3>
+
+<sect3>
+<title>Regola 3 - Caratteri accentati</title>
+
+<para>
+Fare attenzione ai caratteri accentati, che costituiscono parte integrante del nostro linguaggio italiano: non scrivere "perche'" ma "perché", oppure non scrivere "e'", ma "è". Affinché non ci siano problemi con le codifiche, è necessario lavorare sempre con file in codifica UTF8!
+</para>
+
+<para>
+Ogni editor (vim, Emacs, Eclipse, Notepad++, ecc.) ha il proprio modo di impostare la codifica del file. Leggete la documentazione del vostro editor e condividete qui le vostre esperienze.
+</para>
+</sect3>
+
+<sect3>
+<title>Regola 4 - Parentesi</title>
+
+<para>
+Nel manuale di Postgres si trovano spesso frasi del tipo: "[...] constraint definition. (If you don't specify a constraint name in this way, the system chooses a name for you.)"
+</para>
+
+<para>
+Si noti l'utilizzo delle parentesi, in una frase totalmente diversa dalla precedente (è separata dal punto).
+</para>
+
+<para>
+In italiano questo non è corretto e deve essere scritto portando il testo fra parentesi all'interno della frase precedente, nel seguente modo: "definizione del vincolo (qualora non venga specificato un nome in modo esplicito, il sistema ne sceglierà uno)."
+</para>
+
+</sect3>
+
+<sect3>
+<title>Regola 5 - Forma impersonale</title>
+
+<para>
+Nella documentazione in inglese, e in particolare in quella di PostgreSQL, i redattori tendono a rivolgersi
+in modo informale e direttamente al lettore, con frasi del tipo "You can create a table ...".
+In italiano è preferibile utilizzare la forma impersonale del tipo "&Egrave; possibile creare una tabella ...".
+</para>
+
+</sect3>
+
+<sect3>
+<title>Regola 6 - Collegamenti</title>
+
+<para>
+I collegamenti in Docbook portano già dietro la tipologia di sezione alla quale fanno riferimento, ad esempio un capitolo o una sezione. Nel momento in cui si scrivono frasi del tipo: "si veda ...", oppure "si rimanda a", sarebbe opportuno scrivere invece:
+</para>
+
+   <itemizedlist>
+    <listitem>
+     <para>
+    si veda il (in caso di capitolo)
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+    si veda la (in caso di sezione)
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+    si rimanda al (in caso di capitolo)
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+    si rimanda alla (in caso di sezione)
+     </para>
+    </listitem>
+   </itemizedlist>
+
+</sect3>
+
+</sect2>
+
 </sect1>

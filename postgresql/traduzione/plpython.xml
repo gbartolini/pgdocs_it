@@ -2,50 +2,50 @@
 <!-- $PostgreSQL$ -->
 
 <chapter id="plpython">
- <title>PL/Python - Python Procedural Language</title>
+ <title>PL/Python - linguaggio procedurale python</title>
 
  <indexterm zone="plpython"><primary>PL/Python</primary></indexterm>
  <indexterm zone="plpython"><primary>Python</primary></indexterm>
 
  <para>
-  The <application>PL/Python</application> procedural language allows
-  <productname>PostgreSQL</productname> functions to be written in the
-  <ulink url="http://www.python.org">Python language</ulink>.
+Il linguaggio procedurale <application>PL/Python</application> permette
+di scrivere funzioni <productname>PostgreSQL</productname> in 
+<ulink url="http://www.python.org">linguaggio Python</ulink>.
  </para>
 
  <para>
-  To install PL/Python in a particular database, use
-  <literal>createlang plpythonu <replaceable>dbname</replaceable></literal> (but
-  see also <xref linkend="plpython-python23"/>).
+Per installare PL/Python in un particolare database, usare 
+<literal>createlang plpythonu <replaceable>dbname</replaceable></literal> (ma
+si veda anche <xref linkend="plpython-python23"/>).
  </para>
 
   <tip>
    <para>
-    If a language is installed into <literal>template1</literal>, all subsequently
-    created databases will have the language installed automatically.
+Se un linguaggio è installato in <literal>template1</literal>, tutti i database 
+creati successivamente avranno il linguaggio installato automaticamente.
    </para>
   </tip>
 
  <para>
-  As of <productname>PostgreSQL</productname> 7.4, PL/Python is only
-  available as an <quote>untrusted</quote> language, meaning it does not
-  offer any way of restricting what users can do in it.  It has
-  therefore been renamed to <literal>plpythonu</literal>.  The trusted
-  variant <literal>plpython</literal> might become available again in future,
-  if a new secure execution mechanism is developed in Python.  The
-  writer of a function in untrusted PL/Python must take care that the
-  function cannot be used to do anything unwanted, since it will be
-  able to do anything that could be done by a user logged in as the
-  database administrator.  Only superusers can create functions in
-  untrusted languages such as <literal>plpythonu</literal>.
+Da <productname>PostgreSQL</productname> 7.4, PL/Python è disponibile solo come 
+linguaggio <quote>untrusted</quote>, che significa che non offre 
+nessun modo di restringere quello che gli utenti possono farci. È quindi stato rinominato
+in <literal>plpythonu</literal>.  La variante trusted di <literal>plpython</literal>
+potrebbe diventare disponibile in futuro, 
+e un nuovo meccanismo sicuro di esecuzione è sviluppato in Python. Chi scrive  
+una funzione in PL/Python untrusted deve fare attenzione che la funzione 
+non possa essere usata per fare niente di non voluto, dato che sarà
+capace di fare qualsiasi cosa che può essere fatta da un utente loggato come
+amministratore del database. Solo i superutenti possono creare funzioni in 
+linguaggi untrusted tipo <literal>plpythonu</literal>.
  </para>
 
  <note>
   <para>
-   Users of source packages must specially enable the build of
-   PL/Python during the installation process.  (Refer to the
-   installation instructions for more information.)  Users of binary
-   packages might find PL/Python in a separate subpackage.
+Specialmente gli utenti dei pacchetti sorgente devono abilitare la 
+compilazione di PL/Python durante il processo di installazione. (Fare riferimento 
+alle istruzioni di installazione per maggiori informazioni). Gli utenti dei pacchetti binari
+potrebbero trovare PL/Python in un pacchetto separato. 
   </para>
  </note>
 
@@ -53,135 +53,135 @@
   <title>Python 2 vs. Python 3</title>
 
   <para>
-   PL/Python supports both the Python 2 and Python 3 language
-   variants.  (The PostgreSQL installation instructions might contain
-   more precise information about the exact supported minor versions
-   of Python.)  Because the Python 2 and Python 3 language variants
-   are incompatible in some important aspects, the following naming
-   and transitioning scheme is used by PL/Python to avoid mixing them:
+PL/Python supporta le varianti del linguaggio Python 2 e Python 3.
+(Le istruzioni di installazione di PostgreSQL potrebbero contenere
+informazioni più precise sulle versioni minori di Python supportate).
+Dato che le varianti di linguaggio  Python 2 e Python 3 sono incompatibili 
+in alcuni aspetti importanti, il seguente schema di nomenclatura e transizione 
+viene usato da PL/Python per evitare di mischiarli:
 
    <itemizedlist>
     <listitem>
      <para>
-      The PostgreSQL language named <literal>plpython2u</literal>
-      implements PL/Python based on the Python 2 language variant.
+Il linguaggio PostgreSQL chiamato <literal>plpython2u</literal>
+implementa  PL/Python basato sulla variante Python 2 del linguaggio.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      The PostgreSQL language named <literal>plpython3u</literal>
-      implements PL/Python based on the Python 3 language variant.
+Il linguaggio PostgreSQL chiamato <literal>plpython3u</literal>
+implementa PL/Python basato sulla variante Python 3 del linguaggio.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      The language named <literal>plpythonu</literal> implements
-      PL/Python based on the default Python language variant, which is
-      currently Python 2.  (This default is independent of what any
-      local Python installations might consider to be
-      their <quote>default</quote>, for example,
-      what <filename>/usr/bin/python</filename> might be.)  The
-      default will probably be changed to Python 3 in a distant future
-      release of PostgreSQL, depending on the progress of the
-      migration to Python 3 in the Python community.
+Il linguaggio chiamato <literal>plpythonu</literal> implementa 
+PL/Python basato sulla variante predefinita del linguaggio Python, che è
+correntemente Python 2. (Questo è indipendente da quello che qualsiasi installazione locale di Python   
+potrebbe considerare come 
+proprio <quote>predefinito</quote>, per esempio, 
+quello che potrebbe essere <filename>/usr/bin/python</filename>). Il valore predefinito
+sarà probabilmente cambiato in Python 3 in una versione futura di PostgreSQL,
+in dipendenza dei progressi della migrazione a Python 3 nella 
+comunità Python.
      </para>
     </listitem>
    </itemizedlist>
 
-   It depends on the build configuration or the installed packages
-   whether PL/Python for Python 2 or Python 3 or both are available.
+Dipende dalla configurazione di compilazione o dai pacchetti installati se 
+PL/Python per Python 2 o Python 3 o entrambi è disponibile.
   </para>
 
   <tip>
    <para>
-    The built variant depends on which Python version was found during
-    the installation or which version was explicitly set using
-    the <envar>PYTHON</envar> environment variable;
-    see <xref linkend="install-procedure"/>.  To make both variants of
-    PL/Python available in one installation, the source tree has to be
-    configured and built twice.
+La variante compilata dipende da quale versione di Python è stata trovata 
+durante l'installazione o quale versione è stata esplicitamente impostata usando
+la variabile d'ambiente <envar>PYTHON</envar>;
+si veda <xref linkend="install-procedure"/>.  Per rendere disponibili entrambe le 
+varianti di PL/Python in una installazione, il sorgente deve essere configurato e compilato
+due volte.
    </para>
   </tip>
 
   <para>
-   This results in the following usage and migration strategy:
+Questo risulta nella seguente strategia si utilizzo e migrazione:
 
    <itemizedlist>
     <listitem>
      <para>
-      Existing users and users who are currently not interested in
-      Python 3 use the language name <literal>plpythonu</literal> and
-      don't have to change anything for the foreseeable future.  It is
-      recommended to gradually <quote>future-proof</quote> the code
-      via migration to Python 2.6/2.7 to simplify the eventual
-      migration to Python 3.
+Utenti esistenti che non sono attualmente interessati a Python 3
+usino il nome di linguaggio <literal>plpythonu</literal> e 
+non dovranno cambiare niente nell'immediato futuro. È raccomandato 
+gradualmente <quote>testare il futuro</quote> del codice 
+migrando a Python 2.6/2.7 per semplificare l'eventuale migrazione 
+a Python 3.
      </para>
 
      <para>
-      In practice, many PL/Python functions will migrate to Python 3
-      with few or no changes.
-     </para>
-    </listitem>
-
-    <listitem>
-     <para>
-      Users who know that they have heavily Python 2 dependent code
-      and don't plan to ever change it can make use of
-      the <literal>plpython2u</literal> language name.  This will
-      continue to work into the very distant future, until Python 2
-      support might be completely dropped by PostgreSQL.
+In pratica, molte funzioni PL/Python migreranno a Python 3
+con pochi o nessun cambiamento.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Users who want to dive into Python 3 can use
-      the <literal>plpython3u</literal> language name, which will keep
-      working forever by today's standards.  In the distant future,
-      when Python 3 might become the default, they might like to
-      remove the <quote>3</quote> for aesthetic reasons.
+Utenti che sanno di avere codice fortemente dipendente da Python 2
+e non hanno intenzione ci cambiarlo possono usare il nome di linguaggio
+<literal>plpython2u</literal>. Questo continuerà
+a funzionare in un futuro remoto, finchè il support a  Python 2 
+potrebbe essere completamente eliminato da PostgreSQL.
      </para>
     </listitem>
 
     <listitem>
      <para>
-      Daredevils, who want to build a Python-3-only operating system
-      environment, can change the build scripts to
-      make <literal>plpythonu</literal> be equivalent
-      to <literal>plpython3u</literal>, keeping in mind that this
-      would make their installation incompatible with most of the rest
-      of the world.
+Gli utenti che vogliono tuffarsi in Python 3 possono usare 
+il nome di linguaggio <literal>plpython3u</literal>, che continuerà a funzionare 
+per sempre per gli standard di oggi. In un futuro remoto
+quando Python 3 potrebbe diventare predefinito, potrebbero voler 
+rimuovere il <quote>3</quote> per ragioni estetiche.
+     </para>
+    </listitem>
+
+    <listitem>
+     <para>
+I temerari che vogliono compilare un ambiente che supporta solo Python 3,
+possono cambiare gli script di compilazione per rendere 
+<literal>plpythonu</literal> equivalente 
+a <literal>plpython3u</literal>, tenendo a mente che questo 
+renderebbe la loro installazione incompatibile con la maggior parte 
+del resto del mondo. 
      </para>
     </listitem>
    </itemizedlist>
   </para>
 
   <para>
-   See also the
-   document <ulink url="http://docs.python.org/py3k/whatsnew/3.0.html">What's
-   New In Python 3.0</ulink> for more information about porting to
-   Python 3.
+Vedere anche il 
+documento <ulink url="http://docs.python.org/py3k/whatsnew/3.0.html">New 
+In Python 3.0</ulink> per maggiori informazioni sul porting a 
+Python 3.
   </para>
 
   <para>
-   It is not allowed to use PL/Python based on Python 2 and PL/Python
-   based on Python 3 in the same session, because the symbols in the
-   dynamic modules would clash, which could result in crashes of the
-   PostgreSQL server process.  There is a check that prevents mixing
-   Python major versions in a session, which will abort the session if
-   a mismatch is detected.  It is possible, however, to use both
-   PL/Python variants in the same database, from separate sessions.
+Non è permesso usare PL/Python basato su Python 2 e Pl/Python 
+basato su Python 3 nella stessa sessione, dato che i simboli nei moduli dinamici 
+andrebbero in conflitto, che potrebbero risultare in crash del processo 
+server PostgreSQL. C'è un controllo che previene il mescolamento 
+di versioni di Python in una sessione, che annullerà la sessione se 
+viene riscontrato un conflitto. È possibile, comunque, usare entrambe le varianti 
+PL/Python nello stesso database, da sessioni separate.
   </para>
  </sect1>
 
  <sect1 id="plpython-funcs">
-  <title>PL/Python Functions</title>
+  <title>Funzioni PL/Python</title>
 
   <para>
-   Functions in PL/Python are declared via the
-   standard <xref linkend="sql-createfunction"/> syntax:
+Le funzioni in PL/Python sono dichiarate attraverso la sintassi 
+standard <xref linkend="sql-createfunction"/>:
 
 <programlisting>
 CREATE FUNCTION <replaceable>funcname</replaceable> (<replaceable>argument-list</replaceable>)
@@ -193,21 +193,21 @@ $$ LANGUAGE plpythonu;
   </para>
 
   <para>
-   The body of a function is simply a Python script. When the function
-   is called, its arguments are passed as elements of the list
-   <varname>args</varname>; named arguments are also passed as
-   ordinary variables to the Python script.  Use of named arguments is
-   usually more readable.  The result is returned from the Python code
-   in the usual way, with <literal>return</literal> or
-   <literal>yield</literal> (in case of a result-set statement).  If
-   you do not provide a return value, Python returns the default
-   <symbol>None</symbol>. <application>PL/Python</application> translates
-   Python's <symbol>None</symbol> into the SQL null value.
+Il corpo di una funzione è semplicemente uno script Python. Quando la funzione
+viene chiamata, i suoi argomenti sono passati come elementi dell'elenco 
+<varname>args</varname>; anche gli argomenti nominati sono passati come 
+variabili ordinarie allo script Python. L'uso di argomenti nominati
+di solito è più leggibile. Il risultato è restituito dal codice Python
+nel solito modo, con <literal>return</literal> o
+<literal>yield</literal> (in caso di un'istruzione result-set). Se
+non si fornisce un valore di ritorno, Python ritorna come predefinto 
+<symbol>None</symbol>. <application>PL/Python</application>  traduce 
+il <symbol>None</symbol> di Python nel valore SQL null.
   </para>
 
   <para>
-   For example, a function to return the greater of two integers can be
-   defined as:
+Per esempio, una funzione che restituisce il maggiore di due interi può essere 
+definita come:
 
 <programlisting>
 CREATE FUNCTION pymax (a integer, b integer)
@@ -219,8 +219,8 @@ AS $$
 $$ LANGUAGE plpythonu;
 </programlisting>
 
-   The Python code that is given as the body of the function definition
-   is transformed into a Python function. For example, the above results in:
+Il codice Python che è fornito come corpo della definizione della funzione 
+viene trasformato in una funzione Python. L'esempio sopra risulta in:
 
 <programlisting>
 def __plpython_procedure_pymax_23456():
@@ -229,17 +229,17 @@ def __plpython_procedure_pymax_23456():
   return b
 </programlisting>
 
-   assuming that 23456 is the OID assigned to the function by
-   <productname>PostgreSQL</productname>.
+assumendo che 23456 sia l'OID assegnato alla funzione da 
+<productname>PostgreSQL</productname>.
   </para>
 
   <para>
-   The arguments are set as global variables.  Because of the scoping
-   rules of Python, this has the subtle consequence that an argument
-   variable cannot be reassigned inside the function to the value of
-   an expression that involves the variable name itself, unless the
-   variable is redeclared as global in the block.  For example, the
-   following won't work:
+Gli argomenti sono impostati come variabili globali. Considerate le regole di 
+scope di Python, questo ha come conseguenza che una variabile argomento 
+non può essere riassegnata all'interno della funzione al valore di un'espressione
+che coinvolge la variabile stessa, a meno che la variabile non sia 
+ridichiarata come globale nel blocco. Per esempio, il codice seguente
+non funzionerà:
 <programlisting>
 CREATE FUNCTION pystrip(x text)
   RETURNS text
@@ -248,13 +248,12 @@ AS $$
   return x
 $$ LANGUAGE plpythonu;
 </programlisting>
-   because assigning to <varname>x</varname>
-   makes <varname>x</varname> a local variable for the entire block,
-   and so the <varname>x</varname> on the right-hand side of the
-   assignment refers to a not-yet-assigned local
-   variable <varname>x</varname>, not the PL/Python function
-   parameter.  Using the <literal>global</literal> statement, this can
-   be made to work:
+dato che l'assegnamento a <varname>x</varname>
+rende <varname>x</varname> una variabile locale per l'intero blocco,
+e quindi la <varname>x</varname> a destra dell'assegnamento
+si riferisce a una variabile locale <varname>x</varname>  non ancora assegnata, 
+non al parametro della funzione  PL/Python.
+Usando l'istruzione <literal>global</literal>, questo funzionerà:
 <programlisting>
 CREATE FUNCTION pystrip(x text)
   RETURNS text
@@ -264,143 +263,143 @@ AS $$
   return x
 $$ LANGUAGE plpythonu;
 </programlisting>
-   But it is advisable not to rely on this implementation detail of
-   PL/Python.  It is better to treat the function parameters as
-   read-only.
+Ma non è consigliabile basarsi su questo dettaglio di implementazione di
+PL/Python. È meglio trattare i parametri della funzione  come
+a sola lettura.
   </para>
  </sect1>
 
  <sect1 id="plpython-data">
-  <title>Data Values</title>
+  <title>Valori dei dati</title>
   <para>
-   Generally speaking, the aim of PL/Python is to provide
-   a <quote>natural</quote> mapping between the PostgreSQL and the
-   Python worlds.  This informs the data mapping rules described
-   below.
+Parlando in generale, lo scopo di PL/Puthon è di fornire  
+una mappatura <quote>naturale</quote> tra PostgreSQL e il mondo di 
+Python. Questo prevede le seguenti regole di mappatura dei dati.
   </para>
 
   <sect2>
-   <title>Data Type Mapping</title>
+   <title>Mappatura dei tipi di dato</title>
    <para>
-    Function arguments are converted from their PostgreSQL type to a
-    corresponding Python type:
+Gli argomenti della funzione sono convertiti dai loro tipi PostgreSQL 
+a tipi Python corrispondenti:
     <itemizedlist>
      <listitem>
       <para>
-       PostgreSQL <type>boolean</type> is converted to Python <type>bool</type>.
+Il <type>boolean</type> PostgreSQL è convertito in un <type>bool</type> Python.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       PostgreSQL <type>smallint</type> and <type>int</type> are
-       converted to Python <type>int</type>.
-       PostgreSQL <type>bigint</type> is converted
-       to <type>long</type> in Python 2 and to <type>int</type> in
-       Python 3.
+<type>smallint</type> e <type>int</type> di PostgreSQL
+sono convertiti a <type>int</type> Python.
+<type>bigint</type> PostgreSQL è convertito 
+a <type>long</type> in Python 2 e a <type>int</type> in
+Python 3.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       PostgreSQL <type>real</type>, <type>double</type>,
-       and <type>numeric</type> are converted to
-       Python <type>float</type>.  Note that for
-       the <type>numeric</type> this loses information and can lead to
-       incorrect results.  This might be fixed in a future
-       release.
+I <type>real</type>, <type>double</type> e 
+<type>numeric</type> PostgreSQL sono convertiti in 
+<type>float</type> Python. Notare che per 
+il <type>numeric</type> vengono perse informazioni e possono portare a 
+risultati non corretti. Questo potrebbe essere corretto in una versione 
+futura.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       PostgreSQL <type>bytea</type> is converted to
-       Python <type>str</type> in Python 2 and to <type>bytes</type>
-       in Python 3.  In Python 2, the string should be treated as a
-       byte sequence without any character encoding.
+I <type>bytea</type> di PostgreSQL sono convertiti a 
+<type>str</type> Python 2 e a <type>bytes</type>
+in Python 3.  
+In Python 2, la stringa dovrebbe essere trattata come una 
+sequenza di byte senza nessuna codifica dei caratteri.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       All other data types, including the PostgreSQL character string
-       types, are converted to a Python <type>str</type>.  In Python
-       2, this string will be in the PostgreSQL server encoding; in
-       Python 3, it will be a Unicode string like all strings.
+Tutti gli altri tipi di dato, incluso i tipi di stringa di caratteri PostgreSQL,
+vengono convertiti a una <type>str</type> Python. In Python 2,
+questa stringa sarà nella codifica del server PostgreSQL; in 
+Python 3, sarà una stringa Unicode come tutte le stringhe.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       For nonscalar data types, see below.
+Per tipi di dato non scalari, si veda sotto.
       </para>
      </listitem>
     </itemizedlist>
    </para>
 
    <para>
-    Function return values are converted to the declared PostgreSQL
-    return data type as follows:
+I valori di ritorno della funzione sono convertiti ai tipi di ritorno 
+dichiarati da PostgreSQL come segue:
     <itemizedlist>
      <listitem>
       <para>
-       When the PostgreSQL return type is <type>boolean</type>, the
-       return value will be evaluated for truth according to the
-       <emphasis>Python</emphasis> rules.  That is, 0 and empty string
-       are false, but notably <literal>'f'</literal> is true.
+Quando un tipo di ritorno PostgreSQL è <type>boolean</type>, il valore di 
+ritorno sarà valutato per verità in accordo alle regole 
+<emphasis>Python</emphasis>. Cioè, 0 e stringhe vuote sono false, 
+ma in particolare <literal>'f'</literal> è true.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       When the PostgreSQL return type is <type>bytea</type>, the
-       return value will be converted to a string (Python 2) or bytes
-       (Python 3) using the respective Python builtins, with the
-       result being converted <type>bytea</type>.
+Quando il tipo di ritorno di PostgreSQL è <type>bytea</type>, il valore di ritorno 
+sarà convertito a una stringa (Python 2) o byte 
+(Python 3) usando le rispettive builtin, con il risultato   
+convertito a <type>bytea</type>.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       For all other PostgreSQL return types, the returned Python
-       value is converted to a string using the Python
-       builtin <literal>str</literal>, and the result is passed to the
-       input function of the PostgreSQL data type.
+Per tutti gli altri tipi di ritorno di PostgreSQL, il valore Python restituito 
+è convertito a una stringa usando la funzione Python incorporata 
+<literal>str</literal>, e il risultato è passato alla funzione di 
+input del tipo di dato PostgreSQL.
       </para>
 
       <para>
-       Strings in Python 2 are required to be in the PostgreSQL server
-       encoding when they are passed to PostgreSQL.  Strings that are
-       not valid in the current server encoding will raise an error,
-       but not all encoding mismatches can be detected, so garbage
-       data can still result when this is not done correctly.  Unicode
-       strings are converted to the correct encoding automatically, so
-       it can be safer and more convenient to use those.  In Python 3,
-       all strings are Unicode strings.
+Le stringhe in Python 2 sono richieste essere nella codifica del server PostgreSQL 
+quando sono passate a PostgreSQL. Le stringhe che non sono valide 
+nella codifica attuale del server genereranno un errore, 
+ma non tutti gli errori di codifica possono essere trovati, quindi 
+risulteranno comunque dati sporchi quando non è fatto correttamente. Le stringhe
+Unicode vengono convertite alla codifica corretta automaticamente, quindi può
+essere più sicuro è più conveniente usare quelle. In Python 3,
+tutte le stringhe sono stringhe Unicode.
       </para>
      </listitem>
 
      <listitem>
       <para>
-       For nonscalar data types, see below.
+Per tipi di dato non scalari, si veda sotto.
       </para>
      </listitem>
     </itemizedlist>
 
-    Note that logical mismatches between the declared PostgreSQL
-    return type and the Python data type of the actual return object
-    are not flagged; the value will be converted in any case.
+Si noti che le discrepanze tra il tipo di ritorno dichiarato da PostgreSQL
+e il tipo di dato Python dell'effettivo oggetto ritornato non sono 
+segnalate; il valore sarà convertito in ogni caso.
    </para>
 
    <tip>
     <para>
-     <application>PL/Python</application> functions cannot return
-     either type <type>RECORD</type> or <type>SETOF RECORD</type>.  A
-     workaround is to write a <application>PL/pgSQL</application>
-     function that creates a temporary table, have it call the
-     <application>PL/Python</application> function to fill the table,
-     and then have the <application>PL/pgSQL</application> function
-     return the generic <type>RECORD</type> from the temporary table.
+Le funzioni <application>PL/Python</application> non possono ritornare 
+nè  il il tipo  <type>RECORD</type> e nemmeno  <type>SETOF RECORD</type>. Un
+workaround è di scrivere una funzione <application>PL/pgSQL</application>
+che crea una tabella temporanea, fargli chiamare la funzione   
+<application>PL/Python</application> per riempire la tabella, 
+e quindi far si che la funzione <application>PL/pgSQL</application>
+ritorni il generico <type>RECORD</type> dalla tabella temporanea.
     </para>
    </tip>
   </sect2>
@@ -408,15 +407,15 @@ $$ LANGUAGE plpythonu;
   <sect2>
    <title>Null, None</title>
   <para>
-   If an SQL null value<indexterm><primary>null value</primary><secondary
-   sortas="PL/Python">PL/Python</secondary></indexterm> is passed to a
-   function, the argument value will appear as <symbol>None</symbol> in
-   Python. The above function definition will return the wrong answer for null
-   inputs. We could add <literal>STRICT</literal> to the function definition
-   to make <productname>PostgreSQL</productname> do something more reasonable:
-   if a null value is passed, the function will not be called at all,
-   but will just return a null result automatically. Alternatively,
-   we could check for null inputs in the function body:
+Se un valore SQL null <indexterm><primary>null value</primary><secondary
+sortas="PL/Python">PL/Python</secondary></indexterm> viene passato a una funzione, 
+il valore dell'argomento apparirà come <symbol>None</symbol> in Python.
+La definizione della funzione sopra ritornerà la risposta sbagliata per input null.
+Si potrebbe aggiungere <literal>STRICT</literal> alla definizione della funzione
+per far si che <productname>PostgreSQL</productname> faccia qualcosa di più ragionevole:
+se è passato un valore null, la funzione non sarà chiamata per niente,
+ma restituirà automaticamente un risultato null. Alternativamente, 
+si potrebbero controllare input null nel corpo della funzione:
 
 <programlisting>
 CREATE FUNCTION pymax (a integer, b integer)
@@ -430,18 +429,18 @@ AS $$
 $$ LANGUAGE plpythonu;
 </programlisting>
 
-   As shown above, to return an SQL null value from a PL/Python
-   function, return the value <symbol>None</symbol>. This can be done whether the
-   function is strict or not.
+Come mostrato sopra, per ritornare un valore SQL null da una funzione PL/Python,
+ritornare il valore <symbol>None</symbol>. Questo può essere fatto sia che la funzione sia
+strict che non.
   </para>
   </sect2>
 
   <sect2 id="plpython-arrays">
-   <title>Arrays, Lists</title>
+   <title>Array, List</title>
   <para>
-   SQL array values are passed into PL/Python as a Python list.  To
-   return an SQL array value out of a PL/Python function, return a
-   Python sequence, for example a list or tuple:
+I valori di array SQL sono passati in PL/Python come una list Python. Per
+ritornare un valore di array SQL fuori da una funzione PL/Python, restituire 
+una sequenza Python, per esempio una list o una tupla:
 
 <programlisting>
 CREATE FUNCTION return_arr()
@@ -457,8 +456,8 @@ SELECT return_arr();
 (1 row)
 </programlisting>
 
-   Note that in Python, strings are sequences, which can have
-   undesirable effects that might be familiar to Python programmers:
+Notare che in Python, le stringhe sono sequenze, che possono avere effetti indesiderati
+che potrebbero essere familiari ai programmatori Python:
 
 <programlisting>
 CREATE FUNCTION return_str_arr()
@@ -477,12 +476,13 @@ SELECT return_str_arr();
   </sect2>
 
   <sect2>
-   <title>Composite Types</title>
+   <title>Tipi composti</title>
   <para>
    Composite-type arguments are passed to the function as Python mappings. The
    element names of the mapping are the attribute names of the composite type.
    If an attribute in the passed row has the null value, it has the value
-   <symbol>None</symbol> in the mapping. Here is an example:
+Se un attributo nella riga passata ha il valore null, ha il valore 
+<symbol>None</symbol> nella mappatura. Ecco un esempio:
 
 <programlisting>
 CREATE TABLE employee (
@@ -504,8 +504,8 @@ $$ LANGUAGE plpythonu;
   </para>
 
   <para>
-   There are multiple ways to return row or composite types from a Python
-   function. The following examples assume we have:
+Ci sono molti modi di restituire tipi riga o tipi composti da una funzione 
+Python. Gli esempi seguenti assumono che si abbia: 
 
 <programlisting>
 CREATE TYPE named_value AS (
@@ -514,18 +514,17 @@ CREATE TYPE named_value AS (
 );
 </programlisting>
 
-   A composite result can be returned as a:
+Un risultato composto può essere restituito come:
 
    <variablelist>
     <varlistentry>
-     <term>Sequence type (a tuple or list, but not a set because
-     it is not indexable)</term>
+<term>Il tipo della sequenza (una tupla o un elenco, ma non un insieme perchè
+non è indicizzabile)</term>
      <listitem>
       <para>
-       Returned sequence objects must have the same number of items as the
-       composite result type has fields. The item with index 0 is assigned to
-       the first field of the composite type, 1 to the second and so on. For
-       example:
+Gli oggetti della sequenza restituiti devono avere lo stesso numero di elementi dato che
+il risultato composto ha campi. L'elemento con indice 0 è assegnato al 
+primo campo del tipo composto, 1 al secondo e così via. Per esempio:
 
 <programlisting>
 CREATE FUNCTION make_pair (name text, value integer)
@@ -536,18 +535,18 @@ AS $$
 $$ LANGUAGE plpythonu;
 </programlisting>
 
-       To return a SQL null for any column, insert <symbol>None</symbol> at
-       the corresponding position.
+Per restituire un null SQL per qualsiasi colonna, inserire <symbol>None</symbol> 
+alla posizione corrispondente.
       </para>
      </listitem>
     </varlistentry>
 
     <varlistentry>
-     <term>Mapping (dictionary)</term>
+     <term>Mappatura (dizionario)</term>
      <listitem>
       <para>
-       The value for each result type column is retrieved from the mapping
-       with the column name as key. Example:
+Il valore per ogni colonna del tipo del risultato è ricavata dalla mappatura
+con il nome della colonna come chiave. Esempio:
 
 <programlisting>
 CREATE FUNCTION make_pair (name text, value integer)
@@ -557,20 +556,20 @@ AS $$
 $$ LANGUAGE plpythonu;
 </programlisting>
 
-       Any extra dictionary key/value pairs are ignored. Missing keys are
-       treated as errors.
-       To return a SQL null value for any column, insert
-       <symbol>None</symbol> with the corresponding column name as the key.
+Qualsiasi ulteriore  coppia del dizionario chiave/valore è ignorata. Le chiavi mancanti sono
+trattate come errori.
+Per restituire un valore null SQL da qualsiasi colonna, inserire 
+<symbol>None</symbol> con il corrispondente nome della colonna come chiave.
       </para>
      </listitem>
     </varlistentry>
 
     <varlistentry>
-     <term>Object (any object providing method <literal>__getattr__</literal>)</term>
+     <term>Oggetto (qualsiasi oggetto che fornisce il metodo <literal>__getattr__</literal>)</term>
      <listitem>
       <para>
-       This works the same as a mapping.
-       Example:
+Questo funzione allo stesso modo della mappatura.
+Esempio:
 
 <programlisting>
 CREATE FUNCTION make_pair (name text, value integer)
@@ -597,12 +596,12 @@ $$ LANGUAGE plpythonu;
   </sect2>
 
   <sect2>
-   <title>Set-Returning Functions</title>
+   <title>Funzioni che ritornano insiemi</title>
   <para>
-   A <application>PL/Python</application> function can also return sets of
-   scalar or composite types. There are several ways to achieve this because
-   the returned object is internally turned into an iterator. The following
-   examples assume we have composite type:
+Una funzione <application>PL/Python</application> può anche ritornare insiemi di 
+tipi scalari o composti. Ci sono diversi modi di ottenere questo dato che 
+l'oggetto ritornato internamente è convertito a un iteratore. Gli esempi seguenti
+assumono che si abbia il tipo composto:
 
 <programlisting>
 CREATE TYPE greeting AS (
@@ -677,15 +676,15 @@ $$ LANGUAGE plpythonu;
 
        <warning>
         <para>
-         Due to Python
-         <ulink url="http://bugs.python.org/issue1483133">bug #1483133</ulink>,
-         some debug versions of Python 2.4
-         (configured and compiled with option <literal>--with-pydebug</literal>)
-         are known to crash the <productname>PostgreSQL</productname> server
-         when using an iterator to return a set result.
-         Unpatched versions of Fedora 4 contain this bug.
-         It does not happen in production versions of Python or on patched
-         versions of Fedora 4.
+A causa del 
+<ulink url="http://bugs.python.org/issue1483133">bug #1483133</ulink>
+di Python,
+alcune versioni di debug di Python 2.4
+(configurati e compilati con opzione <literal>--with-pydebug</literal>)
+sono conosciute per provocare blocchi del server <productname>PostgreSQL</productname>
+quando si usa un iteratore per restituire un insieme.
+Versioni non patchate di Fedora 4 contengono questo bug.
+Non succede in versioni in produzione di Python o su versioni con patch di Fedora 4.
         </para>
        </warning>
       </para>
@@ -699,29 +698,29 @@ $$ LANGUAGE plpythonu;
  <sect1 id="plpython-sharing">
   <title>Sharing Data</title>
   <para>
-   The global dictionary <varname>SD</varname> is available to store
-   data between function calls.  This variable is private static data.
-   The global dictionary <varname>GD</varname> is public data,
-   available to all Python functions within a session.  Use with
-   care.<indexterm><primary>global data</primary><secondary>in
-   PL/Python</secondary></indexterm>
+Il dizionario globale <varname>SD</varname>  è disponibile per salvare 
+i dati tra le chiamate di funzione. Questa variabile è di tipo private static.
+Il dizionario globale <varname>GD</varname> è public, 
+disponibile per tutte le funzioni Python all'interno di una sessione. Usarlo
+questo con cura. <indexterm><primary>global data</primary><secondary>in
+PL/Python</secondary></indexterm>
   </para>
 
   <para>
-   Each function gets its own execution environment in the
-   Python interpreter, so that global data and function arguments from
-   <function>myfunc</function> are not available to
-   <function>myfunc2</function>.  The exception is the data in the
-   <varname>GD</varname> dictionary, as mentioned above.
+Ogni funzione ha il proprio ambiente di esecuzione nell'interprete
+Python, quindi i dati globali e gli argomenti di funzione di 
+<function>myfunc</function> non sono disponibili a
+<function>myfunc2</function>. L'eccezione sono i dati nel dizionario 
+<varname>GD</varname>, come menzionati sopra.
   </para>
  </sect1>
 
  <sect1 id="plpython-do">
-  <title>Anonymous Code Blocks</title>
+  <title>Blocchi di codice anonimi</title>
 
   <para>
-   PL/Python also supports anonymous code blocks called with the
-   <xref linkend="sql-do"/> statement:
+PL/Python supporta anche blocchi di codice anonimi chiamati con
+l'istruzione <xref linkend="sql-do"/>:
 
 <programlisting>
 DO $$
@@ -729,13 +728,13 @@ DO $$
 $$ LANGUAGE plpythonu;
 </programlisting>
 
-   An anonymous code block receives no arguments, and whatever value it
-   might return is discarded.  Otherwise it behaves just like a function.
+Un blocco di codice anonimo non riceve argomenti, e qualsiasi valore potrebbe
+restituire viene ignorato. Altrimenti si comporta esattamente come una funzione.
   </para>
  </sect1>
 
  <sect1 id="plpython-trigger">
-  <title>Trigger Functions</title>
+  <title>Funzioni Trigger</title>
 
   <indexterm zone="plpython-trigger">
    <primary>trigger</primary>
@@ -743,17 +742,17 @@ $$ LANGUAGE plpythonu;
   </indexterm>
 
   <para>
-   When a function is used as a trigger, the dictionary
-   <literal>TD</literal> contains trigger-related values:
+Quando una funzione è usata come un trigger, il dizionario 
+<literal>TD</literal> contiene valori relativi al trigger:   
    <variablelist>
     <varlistentry>
      <term><literal>TD["event"]</literal></term>
      <listitem>
       <para>
-       contains the event as a string:
-       <literal>INSERT</literal>, <literal>UPDATE</literal>,
-       <literal>DELETE</literal>, <literal>TRUNCATE</literal>,
-       or <literal>UNKNOWN</literal>.
+contiene l'evento come una stringa:
+<literal>INSERT</literal>, <literal>UPDATE</literal>,
+<literal>DELETE</literal>, <literal>TRUNCATE</literal>,
+o <literal>UNKNOWN</literal>.
       </para>
      </listitem>
     </varlistentry>
@@ -762,8 +761,8 @@ $$ LANGUAGE plpythonu;
      <term><literal>TD["when"]</literal></term>
      <listitem>
       <para>
-       contains one of <literal>BEFORE</literal>, <literal>AFTER</literal>,
-       or <literal>UNKNOWN</literal>.
+contiene uno tra <literal>BEFORE</literal>, <literal>AFTER</literal>,
+o <literal>UNKNOWN</literal>.
       </para>
      </listitem>
     </varlistentry>
@@ -772,8 +771,8 @@ $$ LANGUAGE plpythonu;
      <term><literal>TD["level"]</literal></term>
      <listitem>
       <para>
-       contains one of <literal>ROW</literal>,
-       <literal>STATEMENT</literal>, or <literal>UNKNOWN</literal>.
+contiene uno tra <literal>ROW</literal>,
+<literal>STATEMENT</literal>, or <literal>UNKNOWN</literal>.
       </para>
      </listitem>
     </varlistentry>
@@ -783,8 +782,8 @@ $$ LANGUAGE plpythonu;
      <term><literal>TD["old"]</literal></term>
      <listitem>
       <para>
-       For a row-level trigger, one or both of these fields contain
-       the respective trigger rows, depending on the trigger event.
+Per un trigger a livello di riga, uno o entrambi questi valori contengono
+le rispettive righe trigger, dipendentemente dall'evento trigger.
       </para>
      </listitem>
     </varlistentry>
@@ -793,7 +792,7 @@ $$ LANGUAGE plpythonu;
      <term><literal>TD["name"]</literal></term>
      <listitem>
       <para>
-       contains the trigger name.
+contiene il nome del trigger.
       </para>
      </listitem>
     </varlistentry>
@@ -802,7 +801,7 @@ $$ LANGUAGE plpythonu;
      <term><literal>TD["table_name"]</literal></term>
      <listitem>
       <para>
-       contains the name of the table on which the trigger occurred.
+contiene il nome della tabella sulla quale si è verificato il trigger.
       </para>
      </listitem>
     </varlistentry>
@@ -811,7 +810,7 @@ $$ LANGUAGE plpythonu;
      <term><literal>TD["table_schema"]</literal></term>
      <listitem>
       <para>
-       contains the schema of the table on which the trigger occurred.
+contiene lo schema della tabella sulla quale si è verificato il trigger.
       </para>
      </listitem>
     </varlistentry>
@@ -820,7 +819,7 @@ $$ LANGUAGE plpythonu;
      <term><literal>TD["relid"]</literal></term>
      <listitem>
       <para>
-       contains the OID of the table on which the trigger occurred.
+contiene l'OID della tabella sulla quale si è verificato il trigger.
       </para>
      </listitem>
     </varlistentry>
@@ -829,9 +828,9 @@ $$ LANGUAGE plpythonu;
      <term><literal>TD["args"]</literal></term>
      <listitem>
       <para>
-       If the <command>CREATE TRIGGER</command> command
-       included arguments, they are available in <literal>TD["args"][0]</literal> to
-       <literal>TD["args"][<replaceable>n</replaceable>-1]</literal>.
+Se il comando <command>CREATE TRIGGER</command>
+includeva argomenti, sono disponibili in <literal>TD["args"][0]</literal> fino a
+<literal>TD["args"][<replaceable>n</replaceable>-1]</literal>.
       </para>
      </listitem>
     </varlistentry>
@@ -839,94 +838,94 @@ $$ LANGUAGE plpythonu;
   </para>
 
   <para>
-   If <literal>TD["when"]</literal> is <literal>BEFORE</literal> and
-   <literal>TD["level"]</literal> is <literal>ROW</literal>, you can
-   return <literal>None</literal> or <literal>"OK"</literal> from the
-   Python function to indicate the row is unmodified,
-   <literal>"SKIP"</literal> to abort the event, or <literal>"MODIFY"</literal> to
-   indicate you've modified the row.
-   Otherwise the return value is ignored.
+Se <literal>TD["when"]</literal> è <literal>BEFORE</literal> e
+<literal>TD["level"]</literal> è <literal>ROW</literal>, si può ritornare
+<literal>None</literal> o <literal>"OK"</literal> dalla funzione python
+per indicare che la riga non è modificata, 
+<literal>"SKIP"</literal> per annullare l'evento, o <literal>"MODIFY"</literal> per
+indicare che si è modificato la riga.
+Altrimenti il valore di ritorno viene ignorato.
   </para>
  </sect1>
 
  <sect1 id="plpython-database">
-  <title>Database Access</title>
+  <title>Accesso al database</title>
 
   <para>
-   The PL/Python language module automatically imports a Python module
-   called <literal>plpy</literal>.  The functions and constants in
-   this module are available to you in the Python code as
-   <literal>plpy.<replaceable>foo</replaceable></literal>.
+Il modulo del linguaggio PL/Python importa automaticamente un modulo Python
+chiamato <literal>plpy</literal>. Le funzioni e le costanti in questo modulo
+sono disponibili nel codice Python come 
+<literal>plpy.<replaceable>foo</replaceable></literal>.
   </para>
 
   <para>
-   The <literal>plpy</literal> module provides two
-   functions called <function>execute</function> and
-   <function>prepare</function>.  Calling
-   <function>plpy.execute</function> with a query string and an
-   optional limit argument causes that query to be run and the result
-   to be returned in a result object.  The result object emulates a
-   list or dictionary object.  The result object can be accessed by
-   row number and column name.  It has these additional methods:
-   <function>nrows</function> which returns the number of rows
-   returned by the query, and <function>status</function> which is the
-   <function>SPI_execute()</function> return value.  The result object
-   can be modified.
+Il modulo <literal>plpy</literal> fornisce due 
+funzioni chiamate <function>execute</function> e
+<function>prepare</function>.  Chiamare 
+<function>plpy.execute</function> con una query e un argomento limit opzionale
+causa che quella query sia eseguita e il risultato restituito 
+in un oggetto. L'oggetto risultante emula un oggetto list o dizionario.
+L'oggetto risultato può essere acceduto tramite il numero della riga
+e il nome della colonna. Sono disponibili questi metodi aggiuntivi:
+<function>nrows</function> che restituisce il numero di righe 
+ritornate dalla query, e <function>status</function> che è il valore
+di ritorno di <function>SPI_execute()</function>. L'oggetto risultato può 
+essere modificato.
   </para>
 
   <para>
-   For example:
+Per esempio:
 <programlisting>
 rv = plpy.execute("SELECT * FROM my_table", 5)
 </programlisting>
-   returns up to 5 rows from <literal>my_table</literal>.  If
-   <literal>my_table</literal> has a column
-   <literal>my_column</literal>, it would be accessed as:
+restituisce fino a 5 righe da <literal>my_table</literal>. Se
+<literal>my_table</literal> ha una colonna
+<literal>my_column</literal>, ci si accederebbe così:
 <programlisting>
 foo = rv[i]["my_column"]
 </programlisting>
   </para>
 
   <para>
-   <indexterm><primary>preparing a query</primary><secondary>in PL/Python</secondary></indexterm>
-   The second function, <function>plpy.prepare</function>, prepares
-   the execution plan for a query.  It is called with a query string
-   and a list of parameter types, if you have parameter references in
-   the query.  For example:
+<indexterm><primary>preparare una query</primary><secondary>in PL/Python</secondary></indexterm>
+La seconda funzione, <function>plpy.prepare</function>, prepara
+il piano di esecuzione per una query. È chiamata con una query
+e l'elenco dei tipi del parametro, se si hanno riferimenti al parametro nella query.
+Per esempio:
 <programlisting>
 plan = plpy.prepare("SELECT last_name FROM my_users WHERE first_name = $1", [ "text" ])
 </programlisting>
-   <literal>text</literal> is the type of the variable you will be
-   passing for <literal>$1</literal>.  After preparing a statement, you
-   use the function <function>plpy.execute</function> to run it:
+<literal>text</literal> è il tipo della variabile che si sta passando 
+per <literal>$1</literal>. Dopo aver preparato un'istruzione, si usa 
+la funzione <function>plpy.execute</function> per eseguirla:
 <programlisting>
 rv = plpy.execute(plan, [ "name" ], 5)
 </programlisting>
-   The third argument is the limit and is optional.
+Il terzo argomento è il limit ed è opzionale.
   </para>
 
   <para>
-   Query parameters and result row fields are converted between
-   PostgreSQL and Python data types as described
-   in <xref linkend="plpython-data"/>.  The exception is that composite
-   types are currently not supported: They will be rejected as query
-   parameters and are converted to strings when appearing in a query
-   result.  As a workaround for the latter problem, the query can
-   sometimes be rewritten so that the composite type result appears as
-   a result row rather than as a field of the result row.
-   Alternatively, the resulting string could be parsed apart by hand,
-   but this approach is not recommended because it is not
-   future-proof.
+I parametri della query e i campi della riga risultante sono convertiti tra
+i tipi di dato PostgreSQL e Python come descritto in
+<xref linkend="plpython-data"/>. L'eccezione è che i tipi composti non sono  
+attualmente supportati; Saranno rifiutati come parametri di query e sono 
+convertiti in stringhe quando appaiono nel risultato di una query.
+Come workaround per l'ultimo problema, la query può
+a volte essere riscritta così che il tipo composto appare come 
+una riga risultato piuttosto di un campo della riga risultato.
+Alternativamente, si potrebbe fare il parsing della stringa risultante a mano,
+ma questo approccio non è raccomandato dato che non è a prova di futuro.
   </para>
 
   <para>
-   When you prepare a plan using the PL/Python module it is
-   automatically saved.  Read the SPI documentation (<xref
-   linkend="spi"/>) for a description of what this means.
-   In order to make effective use of this across function calls
-   one needs to use one of the persistent storage dictionaries
-   <literal>SD</literal> or <literal>GD</literal> (see
-   <xref linkend="plpython-sharing"/>). For example:
+Quando si prepara un piano usando il modulo PL/Python è 
+automaticamente salvato. Leggere la documentazione SPI (<xref
+linkend="spi"/>) per una descrizione di cosa significa questo.
+Per usare efficacemente questo attraverso le chiamate di funzione 
+si deve usare uno dei dizionari di immagazzinamento persistenti,
+<literal>SD</literal> o <literal>GD</literal> (si veda 
+<xref linkend="plpython-sharing"/>). Per esempio:
+
 <programlisting>
 CREATE FUNCTION usesavedplan() RETURNS trigger AS $$
     if SD.has_key("plan"):
@@ -941,47 +940,49 @@ $$ LANGUAGE plpythonu;
  </sect1>
 
  <sect1 id="plpython-util">
-  <title>Utility Functions</title>
+  <title>Funzioni di utilità</title>
   <para>
-   The <literal>plpy</literal> module also provides the functions
-   <literal>plpy.debug(<replaceable>msg</replaceable>)</literal>,
-   <literal>plpy.log(<replaceable>msg</replaceable>)</literal>,
-   <literal>plpy.info(<replaceable>msg</replaceable>)</literal>,
-   <literal>plpy.notice(<replaceable>msg</replaceable>)</literal>,
-   <literal>plpy.warning(<replaceable>msg</replaceable>)</literal>,
-   <literal>plpy.error(<replaceable>msg</replaceable>)</literal>, and
-   <literal>plpy.fatal(<replaceable>msg</replaceable>)</literal>.<indexterm><primary>elog</primary><secondary>in PL/Python</secondary></indexterm>
-   <function>plpy.error</function> and
-   <function>plpy.fatal</function> actually raise a Python exception
-   which, if uncaught, propagates out to the calling query, causing
-   the current transaction or subtransaction to be aborted.
-   <literal>raise plpy.ERROR(<replaceable>msg</replaceable>)</literal> and
-   <literal>raise plpy.FATAL(<replaceable>msg</replaceable>)</literal> are
-   equivalent to calling
-   <function>plpy.error</function> and
-   <function>plpy.fatal</function>, respectively.
-   The other functions only generate messages of different
-   priority levels.
-   Whether messages of a particular priority are reported to the client,
-   written to the server log, or both is controlled by the
-   <xref linkend="guc-log-min-messages"/> and
-   <xref linkend="guc-client-min-messages"/> configuration
-   variables. See <xref linkend="runtime-config"/> for more information.
+Il modulo <literal>plpy</literal> fornisce anche le funzioni
+<literal>plpy.debug(<replaceable>msg</replaceable>)</literal>,
+<literal>plpy.log(<replaceable>msg</replaceable>)</literal>,
+<literal>plpy.info(<replaceable>msg</replaceable>)</literal>,
+<literal>plpy.notice(<replaceable>msg</replaceable>)</literal>,
+<literal>plpy.warning(<replaceable>msg</replaceable>)</literal>,
+<literal>plpy.error(<replaceable>msg</replaceable>)</literal> e
+<literal>plpy.fatal(<replaceable>msg</replaceable>)</literal>.<indexterm><primary>elog</primary>
+<secondary>in PL/Python</secondary></indexterm>
+<function>plpy.error</function> e
+<function>plpy.fatal</function> attualmente generano un'eccezione Python
+che, se non catturata, si propaga fuori la query chiamante, causando 
+che la transazione corrente o la sottotransazione sia annullata.
+<literal>raise plpy.ERROR(<replaceable>msg</replaceable>)</literal> e
+<literal>raise plpy.FATAL(<replaceable>msg</replaceable>)</literal> sono
+equivalenti a chiamare 
+<function>plpy.error</function> e
+<function>plpy.fatal</function>, rispettivamente.
+Le altre funzioni generano solo i messaggi di diversi 
+livelli di priorità.
+Se i messaggi di una particolare priorità sono riportati al client,
+scritte nel log del server, o entrambe, è controllaro dalle
+variabili di configurazione 
+<xref linkend="guc-log-min-messages"/> e
+<xref linkend="guc-client-min-messages"/>.
+Si veda <xref linkend="runtime-config"/>  per maggiori informazioni.
   </para>
  </sect1>
 
  <sect1 id="plpython-envar">
-  <title>Environment Variables</title>
+  <title>Variabili d'ambiente</title>
 
   <para>
-   Some of the environment variables that are accepted by the Python
-   interpreter can also be used to affect PL/Python behavior.  They
-   would need to be set in the environment of the main PostgreSQL
-   server process, for example in a start script.  The available
-   environment variables depend on the version of Python; see the
-   Python documentation for details.  At the time of this writing, the
-   following environment variables have an affect on PL/Python,
-   assuming an adequate Python version:
+Alcune delle variabili d'ambiente che sono accettate dall'interprete Python
+possono essere usate anche per modificare il comportamento di PL/Python. 
+Dovrebbero essere impostate nell'ambiente del processo server PostgreSQL
+principale, per esempio in uno script d'avvio. Le variabili d'ambiente 
+disponibili dipendono dalla versione di Python; si veda 
+la documentazione di Python per dettagli. Al momento della scrittura di questo paragrafo,
+le seguenti variabili d'ambiente hanno effetti su PL/Python,
+assumendo un'adeguata versione di Python:
    <itemizedlist>
     <listitem>
      <para><envar>PYTHONHOME</envar></para>
@@ -1024,10 +1025,10 @@ $$ LANGUAGE plpythonu;
     </listitem>
    </itemizedlist>
 
-   (It appears to be a Python implementation detail beyond the control
-   of PL/Python that some of the environment variables listed on
-   the <command>python</command> man page are only effective in a
-   command-line interpreter and not an embedded Python interpreter.)
+(Sembra essere un dettaglio di implementazione di Python al di fuori del controllo
+di PL/Python che alcune variabili d'ambiente elencate nella pagina man di 
+<command>python</command> sono efficaci sono in un interprete a linea di comando 
+e non un interprete Python embedded).
   </para>
  </sect1>
 </chapter>

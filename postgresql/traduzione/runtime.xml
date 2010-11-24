@@ -315,7 +315,6 @@ fi
 
     <listitem>
      <para>
-      On <productname>Linux</productname> systems either add
 Su sistemi <productname>Linux</productname> aggiungere 
 <indexterm><primary>Linux</primary><secondary>script d'avvio</secondary></indexterm>
 <programlisting>
@@ -1312,33 +1311,33 @@ riferirsi a loro se necessario.
 
 
  <sect1 id="server-shutdown">
-  <title>Shutting Down the Server</title>
+  <title>Arrestare il server</title>
 
   <indexterm zone="server-shutdown">
-   <primary>shutdown</primary>
+   <primary>arrestare</primary>
   </indexterm>
 
   <para>
-   There are several ways to shut down the database server. You control
-   the type of shutdown by sending different signals to the master
-   <command>postgres</command> process.
+Ci sono diversi modi per arrestare il server database. Si controlla 
+il tipo di arresto mandando differenti segnali al processo principale 
+<command>postgres</command>.
 
    <variablelist>
     <varlistentry>
      <term><systemitem>SIGTERM</systemitem><indexterm><primary>SIGTERM</primary></indexterm></term>
      <listitem>
       <para>
-       This is the <firstterm>Smart Shutdown</firstterm> mode.
-       After receiving <systemitem>SIGTERM</systemitem>, the server
-       disallows new connections, but lets existing sessions end their
-       work normally. It shuts down only after all of the sessions terminate.
-       If the server is in online backup mode, it additionally waits
-       until online backup mode is no longer active.  While backup mode is
-       active, new connections will still be allowed, but only to superusers
-       (this exception allows a superuser to connect to terminate
-       online backup mode).  If the server is in recovery when a smart
-       shutdown is requested, recovery and streaming replication will be
-       stopped only after all regular sessions have terminated.
+Questa è la modalità <firstterm>Smart Shutdown</firstterm>.
+Dopo aver ricevuto <systemitem>SIGTERM</systemitem>, il server 
+non permette nuove connessioni, ma lascia che le sessioni esistenti finiscano 
+il lavoro normalmente. Si arresta solo dopo che tutte le sessioni sono terminate.
+Se il server è in modalità di backup online, aspetta finchè 
+la modalità di backup online non è più attiva. Mentre la modalità backup è 
+attiva, le nuove connessioni saranno comunque permesse, ma solo a superutenti 
+(questa eccezione permette ad un superutente di connettersi per terminare 
+la modalità di backup online). Se il server è in modalità recupero quando 
+viene richiesto l'arresto, il recupero e la replica streaming saranno 
+fermati solo dopo che tutte le regolari sessioni sono terminate.
       </para>
      </listitem>
     </varlistentry>
@@ -1347,13 +1346,13 @@ riferirsi a loro se necessario.
      <term><systemitem>SIginT</systemitem><indexterm><primary>SIginT</primary></indexterm></term>
      <listitem>
       <para>
-       This is the <firstterm>Fast Shutdown</firstterm> mode.
-       The server disallows new connections and sends all existing
-       server processes <systemitem>SIGTERM</systemitem>, which will cause them
-       to abort their current transactions and exit promptly. It then
-       waits for all server processes to exit and finally shuts down.
-       If the server is in online backup mode, backup mode will be
-       terminated, rendering the backup useless.
+Questa è la modalità <firstterm>Fast Shutdown</firstterm>.
+Il server non permette nuove connessioni e manda <systemitem>SIGTERM</systemitem>
+a tutti i processi server esistenti, che causerà la fine delle loro 
+transazioni correnti e l'uscita al prompt. Quindi aspetta che tutti  
+i processi server escano e quindi si arresta.
+Se il server è in modalità backup online, la modalità backup sarà 
+terminata, rendendo il backup inutile.
       </para>
      </listitem>
     </varlistentry>
@@ -1362,14 +1361,13 @@ riferirsi a loro se necessario.
      <term><systemitem>SIGQUIT</systemitem><indexterm><primary>SIGQUIT</primary></indexterm></term>
      <listitem>
       <para>
-      This is the <firstterm>Immediate Shutdown</firstterm> mode.
-      The master <command>postgres</command> process will send a
-      <systemitem>SIGQUIT</systemitem> to all child processes and exit
-      immediately, without properly shutting itself down. The child processes
-      likewise exit immediately upon receiving
-      <systemitem>SIGQUIT</systemitem>. This will lead to recovery (by
-      replaying the WAL log) upon next start-up. This is recommended
-      only in emergencies.
+Questa è la modalità <firstterm>Immediate Shutdown</firstterm>.
+Il processo  <command>postgres</command> principale manderà un 
+<systemitem>SIGQUIT</systemitem> a tutti i processi figli ed uscirà 
+immediatamente, senza arrestarsi correttamente. I processi figlio allo stesso modo
+escono immediatamente quando ricevono <systemitem>SIGQUIT</systemitem>. 
+Questo porterà al recupero (riusando il log WAL) al successivo avvio.
+Questo è raccomandato solo in casi d'emergenza.
       </para>
      </listitem>
     </varlistentry>
@@ -1377,14 +1375,14 @@ riferirsi a loro se necessario.
   </para>
 
   <para>
-   The <xref linkend="app-pg-ctl"/> program provides a convenient
-   interface for sending these signals to shut down the server.
-   Alternatively, you can send the signal directly using <command>kill</command>
-   on non-Windows systems.
-   The <acronym>PID</acronym> of the <command>postgres</command> process can be
-   found using the <command>ps</command> program, or from the file
-   <filename>postmaster.pid</filename> in the data directory. For
-   example, to do a fast shutdown:
+Il programma <xref linkend="app-pg-ctl"/> fornisce un'interfaccia conveniente
+per mandare questi segnali per arrestare il server.
+Alternativamente, si può mandare il segnale direttamente usando <command>kill</command>
+su sistemi non Windows.
+Il <acronym>PID</acronym> dei processi <command>postgres</command> può essere
+trovato usando il programma <command>ps</command>, o dal file 
+<filename>postmaster.pid</filename> nella directory dei dati. Per esempio,
+per fare un arresto veloce:
 <screen>
 $ <userinput>kill -INT `head -1 /usr/local/pgsql/data/postmaster.pid`</userinput>
 </screen>
@@ -1392,219 +1390,213 @@ $ <userinput>kill -INT `head -1 /usr/local/pgsql/data/postmaster.pid`</userinput
 
   <important>
    <para>
-    It is best not to use <systemitem>SIGKILL</systemitem> to shut down
-    the server.  Doing so will prevent the server from releasing
-    shared memory and semaphores, which might then have to be done
-    manually before a new server can be started.  Furthermore,
-    <systemitem>SIGKILL</systemitem> kills the <command>postgres</command>
-    process without letting it relay the signal to its subprocesses,
-    so it will be necessary to kill the individual subprocesses by hand as
-    well.
+È meglio non usare <systemitem>SIGKILL</systemitem> per arrestare il server.
+Fare ciò eviterà che il server rilasci 
+memeoria condivisa e semafori, che quindi potrebbe essere fatto
+manualmente prima che un nuovo server possa essere avviato. Inoltre,
+<systemitem>SIGKILL</systemitem> termina il processo <command>postgres</command>
+senza lasciargli propagare il segnale ai suoi sottoprocessi,
+quindi sarà necessario anche terminare i sottoprocessi individuali a mano. 
    </para>
   </important>
 
   <para>
-   To terminate an individual session while allowing other sessions to
-   continue, use <function>pg_terminate_backend()</function> (see <xref
-   linkend="functions-admin-signal-table"/>) or send a
-   <systemitem>SIGTERM</systemitem> signal to the child process associated with
-   the session.
+Per terminare una sessione individuale permettendo comunque alle altre sessioni di continuare,
+usare <function>pg_terminate_backend()</function> (si veda <xref
+linkend="functions-admin-signal-table"/>) o mandare un segnale
+<systemitem>SIGTERM</systemitem> al processo figlio associato con la sessione.
   </para>
  </sect1>
 
  <sect1 id="preventing-server-spoofing">
-  <title>Preventing Server Spoofing</title>
+  <title>Prevenire lo spoofing del server</title>
 
   <indexterm zone="preventing-server-spoofing">
-   <primary>server spoofing</primary>
+   <primary>spoofing del server</primary>
   </indexterm>
 
   <para>
-   While the server is running, it is not possible for a malicious user
-   to take the place of the normal database server.  However, when the
-   server is down, it is possible for a local user to spoof the normal
-   server by starting their own server.  The spoof server could read
-   passwords and queries sent by clients, but could not return any data
-   because the <varname>PGDATA</varname> directory would still be secure because
-   of directory permissions. Spoofing is possible because any user can
-   start a database server; a client cannot identify an invalid server
-   unless it is specially configured.
+Mentre il server è in esecuzione, non è possibile per un utente malizioso
+prendere il posto del server database normale. Comunque, quando il server 
+non è in esecuzione, è possibile per un utente locale aggirare il server normale
+avviando il proprio server. Il server "spoof" può leggere 
+le password e le query mandate dai client, ma potrebbe non restituire dati 
+dato che la directory <varname>PGDATA</varname> sarebbe comunque sicura a causa dei permessi
+della directory. Lo spoofing è possibile dato che qualsiasi utente può
+avviare un server database; un client non può identificare un server non valido
+a meno che non sia configurato in maniera speciale. 
   </para>
 
   <para>
-   The simplest way to prevent spoofing for <literal>local</literal>
-   connections is to use a Unix domain socket directory (<xref
-   linkend="guc-unix-socket-directory"/>) that has write permission only
-   for a trusted local user.  This prevents a malicious user from creating
-   their own socket file in that directory.  If you are concerned that
-   some applications might still reference <filename>/tmp</filename> for the
-   socket file and hence be vulnerable to spoofing, during operating system
-   startup create a symbolic link <filename>/tmp/.s.PGSQL.5432</filename> that points
-   to the relocated socket file.  You also might need to modify your
-   <filename>/tmp</filename> cleanup script to prevent removal of the symbolic link.
+Il modo più semplice di prevenire lo spoofing per connessioni <literal>locali</literal>
+è di usare una directory di socket di dominio Unix (<xref
+linkend="guc-unix-socket-directory"/>)  che ha permessi di scrittura solo per 
+un utente locale fidato. Questo previene che utenti maliziosi creino 
+i loro file socket in quella directory. Se si è preoccupati che alcune applicazioni 
+potrebbero comunque fare riferimento a <filename>/tmp</filename> per 
+il file socket e quindi essere vulnerabili allo spoofing, creare un link simbolico 
+<filename>/tmp/.s.PGSQL.5432</filename> durante l'avvio del sistema operativo che punta 
+al file socket trasferito. Si potrebbe inoltre aver bisogno di modificare lo script 
+di pulizia di <filename>/tmp</filename> per prevenire la rimozione del link simbolico.
   </para>
 
   <para>
-   To prevent spoofing on TCP connections, the best solution is to use
-   SSL certificates and make sure that clients check the server's certificate.
-   To do that, the server
-   must be configured to accept only <literal>hostssl</literal> connections (<xref
-   linkend="auth-pg-hba-conf"/>) and have SSL
-   <filename>server.key</filename> (key) and
-   <filename>server.crt</filename> (certificate) files (<xref
-   linkend="ssl-tcp"/>). The TCP client must connect using
-   <literal>sslmode=verify-ca</literal> or
-   <literal>verify-full</literal> and have the appropriate root certificate
-   file installed (<xref linkend="libpq-connect"/>).
+Per prevenire lo spoofing su connessioni TCP, la soluzione migliore è di usare
+certificati SSL e assicurarsi che i client controllino il certificato del server.
+Per fare ciò, il server
+deve essere configurato per accettare solo connessioni <literal>hostssl</literal> (<xref
+linkend="auth-pg-hba-conf"/>) ed avere i file SSL (chiave) 
+<filename>server.key</filename> (chiave) e
+<filename>server.crt</filename> (certificato) (<xref
+linkend="ssl-tcp"/>). Il client TCP deve connettersi usando
+<literal>sslmode=verify-ca</literal> o
+<literal>verify-full</literal> ed avere il file certificato root appropriato installato
+(<xref linkend="libpq-connect"/>).
   </para>
  </sect1>
   
  <sect1 id="encryption-options">
-  <title>Encryption Options</title>
+  <title>Opzioni di criptazione</title>
 
   <indexterm zone="encryption-options">
-   <primary>encryption</primary>
+   <primary>criptazione</primary>
   </indexterm>
 
   <para>
-   <productname>PostgreSQL</productname> offers encryption at several
-   levels, and provides flexibility in protecting data from disclosure
-   due to database server theft, unscrupulous administrators, and
-   insecure networks. Encryption might also be required to secure
-   sensitive data such as medical records or financial transactions.
+<productname>PostgreSQL</productname> offre la criptazione a diversi livelli,
+e fornisce flessibilità nel proteggere i dati dalla divulgazione,
+a causa di un furto del server, amministratori non scrupolosi, o 
+reti non sicure. La criptazione potrebbe anche essere richiesta per 
+dati delicati come record medici o transazioni finanziarie.
   </para>
    
   <variablelist>
 
   <varlistentry>
-   <term>Password Storage Encryption</term>
+   <term>Criptazione della memorizzazione delle password</term>
    <listitem>
 
     <para>
-     By default, database user passwords are stored as MD5 hashes, so
-     the administrator cannot determine the actual password assigned
-     to the user. If MD5 encryption is used for client authentication,
-     the unencrypted password is never even temporarily present on the
-     server because the client MD5-encrypts it before being sent
-     across the network.
+In maniera predefinita, le password dell'utente del database vengono salvate
+come hash MD5, quindi l'amministratore non può determinare l'effettiva password 
+assegnata all'utente. Se la criptazione MD5 viene usata per l'autenticazione del 
+client, la password non criptata non è mai nemmeno temporaneamente presente 
+sul server dato che il client la encripta con MD5 prima di mandarla 
+attraverso la rete.
     </para>
    </listitem>
   </varlistentry>
 
   <varlistentry>
-   <term>Encryption For Specific Columns</term>
+   <term>Criptazione per colonne specifiche</term>
 
    <listitem>
     <para>
-     The <filename>contrib</filename> function library
-     <link linkend="pgcrypto"><function>pgcrypto</function></link>
-     allows certain fields to be stored encrypted.
-     This is useful if only some of the data is sensitive.
-     The client supplies the decryption key and the data is decrypted
-     on the server and then sent to the client.
+La libreria di funzioni <filename>contrib</filename> 
+<link linkend="pgcrypto"><function>pgcrypto</function></link>
+permette a certi campi di essere salvati criptati.
+Questo è utile se solo alcuni dei dati sono sensibili.
+Il client fornisce la chiave di decriptazione e il dato viene decriptato
+sul server e quindi mandato al client.
     </para>
      
     <para>
-     The decrypted data and the decryption key are present on the
-     server for a brief time while it is being decrypted and
-     communicated between the client and server. This presents a brief
-     moment where the data and keys can be intercepted by someone with
-     complete access to the database server, such as the system
-     administrator.
+I dati decriptati e la chiave di decriptazione sono presenti sul server 
+per un istante di tempo mentre vengono decriptate e trasmesse
+dal client al server. Questo genera un breve periodo 
+in cui i dati e le chiavi possono essere intercettati da qualcuno con 
+accesso completo al server database,  tipo l'amministratore di sistema.
     </para>
    </listitem>
   </varlistentry>
 
   <varlistentry>
-   <term>Data Partition Encryption</term>
+   <term>Criptazione di una partizione dati</term>
 
    <listitem>
     <para>
-     On Linux, encryption can be layered on top of a file system
-     using a <quote>loopback device</quote>. This allows an entire
-     file system partition to be encrypted on disk, and decrypted by the
-     operating system. On FreeBSD, the equivalent facility is called
-     GEOM Based Disk Encryption (<acronym>gbde</acronym>), and many
-     other operating systems support this functionality, including Windows.
+Su linux, la criptazione può essere stratificata in cima ad un file system
+usando un <quote>apparecchio di loopback</quote>. Questo permette che un'intera
+partizione del file system venga criptata su disco, e decriptata dal 
+sistema operativo. Su FreeBSD, la caratteristica equivalente viene chiamata
+ GEOM Based Disk Encryption  (<acronym>gbde</acronym>), e molti altri 
+sistemi oprativi supportano questa funzionalità, includo Windows.
     </para>
 
     <para>
-     This mechanism prevents unencrypted data from being read from the
-     drives if the drives or the entire computer is stolen. This does
-     not protect against attacks while the file system is mounted,
-     because when mounted, the operating system provides an unencrypted
-     view of the data. However, to mount the file system, you need some
-     way for the encryption key to be passed to the operating system,
-     and sometimes the key is stored somewhere on the host that mounts
-     the disk.
+Questo meccanismo previene il fatto che dati non criptati siano letti dai volumi
+se i volumi o l'intero computer vengono rubati. Questo non protegge
+contro attacchi mentre il file system è montato, dato che quando 
+montato, il sistema oprativo fornisce una vista non criptata dei dati.
+Comunque, per montare il file system, si ha bisogno di qualche modo 
+per passare la chiave di criptazione al sistema operativo, 
+ed a volte la chiave è salvata da qualche parte sull'host che monta il disco.
     </para>
    </listitem>
   </varlistentry>
 
   <varlistentry>
-   <term>Encrypting Passwords Across A Network</term>
+   <term>Criptare le password attraverso la rete</term>
 
    <listitem>
      <para>
-      The <literal>MD5</literal> authentication method double-encrypts the
-      password on the client before sending it to the server. It first
-      MD5-encrypts it based on the user name, and then encrypts it
-      based on a random salt sent by the server when the database
-      connection was made. It is this double-encrypted value that is
-      sent over the network to the server. Double-encryption not only
-      prevents the password from being discovered, it also prevents
-      another connection from using the same encrypted password to
-      connect to the database server at a later time.
+Il metodo di autenticazione <literal>MD5</literal> cripta doppiamente
+le password sul client prima di mandarle al server. Prima la cripta  
+con MD5 in base al nome utente, e quindi la cripta basandosi su un salt casuale 
+mandato dal server quando è stata realizzata la connessione al database. 
+Questo valore doppiamente criptato viene mandato al server attraverso la rete.
+La doppia criptazione non previene solo che venga scoperta la password, 
+previene anche che successivamente altre connessioni usino la stessa password criptata 
+per connettersi al server database.
      </para>
     </listitem>
   </varlistentry>
 
   <varlistentry>
-   <term>Encrypting Data Across A Network</term>
+   <term>Dati criptati attraverso la rete</term>
 
     <listitem>
      <para>
-      SSL connections encrypt all data sent across the network: the
-      password, the queries, and the data returned. The
-      <filename>pg_hba.conf</filename> file allows administrators to specify
-      which hosts can use non-encrypted connections (<literal>host</literal>)
-      and which require SSL-encrypted connections
-      (<literal>hostssl</literal>). Also, clients can specify that they
-      connect to servers only via SSL. <application>Stunnel</application> or
-      <application>SSH</application> can also be used to encrypt transmissions.
+Le connessioni SSL criptano tutti i dati mandati attraverso la rete:
+la password, le query, e i dati restituiti. Il file 
+<filename>pg_hba.conf</filename> permette agli amministratori di specificare
+quali host possono usare connessioni non criptate (<literal>host</literal>)
+e quali richiedono connessioni criptate SSL (<literal>hostssl</literal>).
+Inoltre, i  client possono specificare che si connettono al server solo attraverso
+SSL. Possono anche essere usati <application>Stunnel</application> o
+<application>SSH</application> per criptare le trasmissioni.
      </para>
     </listitem>
   </varlistentry>
 
   <varlistentry>
-   <term>SSL Host Authentication</term>
+   <term>Autenticazione Host SSL</term>
 
    <listitem>
     <para>
-     It is possible for both the client and server to provide SSL
-     certificates to each other. It takes some extra configuration
-     on each side, but this provides stronger verification of identity
-     than the mere use of passwords. It prevents a computer from
-     pretending to be the server just long enough to read the password
-     sent by the client. It also helps prevent <quote>man in the middle</quote>
-     attacks where a computer between the client and server pretends to
-     be the server and reads and passes all data between the client and
-     server.
+È possibile sia per il client che per il server scambiarsi certificati SSL.  
+Richiede qualche configurazione aggiuntiva su ogni lato, ma fornisce 
+una verifica più sicura delle identità rispetto al mero utilizzo delle password.
+Previene che un computer pretenda di essere il server abbastanza a lungo
+da leggere la password mandata al client. Aiuta inoltre a prevenire 
+attacchi di tipo <quote>man in the middle</quote>
+in cui un computer tra il client e il server pretende di essere il server
+e legge e passa tutti i dati tra il client e il server.
     </para>
    </listitem>
   </varlistentry>
 
   <varlistentry>
-   <term>Client-Side Encryption</term>
+   <term>Criptazione lato client</term>
 
    <listitem>
     <para>
-     If the system administrator for the server's machine cannot be trusted,
-     it is necessary
-     for the client to encrypt the data; this way, unencrypted data
-     never appears on the database server. Data is encrypted on the
-     client before being sent to the server, and database results have
-     to be decrypted on the client before being used.
+Se l'amministratore di sistema del server non può essere fidato,
+è necessario 
+che il client cripti i dati; in questo modo, i dati non criptati
+non appaiono mai sul server. I dati vengono criptati sul client 
+prima di essere mandati al server, e i risultati del database 
+devono essere decriptati sul client prima di essere usati.
     </para>
    </listitem>
   </varlistentry>
@@ -1614,33 +1606,32 @@ $ <userinput>kill -INT `head -1 /usr/local/pgsql/data/postmaster.pid`</userinput
  </sect1>
 
  <sect1 id="ssl-tcp">
-  <title>Secure TCP/IP Connections with SSL</title>
+  <title>Connessioni TCP/IP sicure con SSL</title>
 
   <indexterm zone="ssl-tcp">
    <primary>SSL</primary>
   </indexterm>
 
   <para>
-   <productname>PostgreSQL</productname> has native support for using
-   <acronym>SSL</acronym> connections to encrypt client/server communications
-   for increased security. This requires that
-   <productname>OpenSSL</productname> is installed on both client and
-   server systems and that support in <productname>PostgreSQL</productname> is
-   enabled at build time (see <xref linkend="installation"/>).
+<productname>PostgreSQL</productname> ha il supporto nativo per l'utilizzo di 
+connessioni <acronym>SSL</acronym> per criptare le comunicazioni client/server
+aumentando la sicurezza. Questo richiede che 
+<productname>OpenSSL</productname> sia installato sia sul client che sul server
+e che il supporto in <productname>PostgreSQL</productname> sia abilitato 
+al momento della compilazione (si veda <xref linkend="installation"/>).
   </para>
 
   <para>
-   With <acronym>SSL</acronym> support compiled in, the
-   <productname>PostgreSQL</productname> server can be started with
-   <acronym>SSL</acronym> enabled by setting the parameter
-   <xref linkend="guc-ssl"/> to <literal>on</literal> in
-   <filename>postgresql.conf</filename>.  The server will listen for both normal
-   and <acronym>SSL</acronym> connections on the same TCP port, and will negotiate
-   with any connecting client on whether to use <acronym>SSL</acronym>.  By
-   default, this is at the client's option; see <xref
-   linkend="auth-pg-hba-conf"/> about how to set up the server to require
-   use of <acronym>SSL</acronym> for some or all connections.
-  </para>
+Con il supporto <acronym>SSL</acronym> compilato, il server 
+<productname>PostgreSQL</productname> può essere avviato con 
+<acronym>SSL</acronym> abilitato impostando il parametro 
+<xref linkend="guc-ssl"/> a <literal>on</literal> nel 
+<filename>postgresql.conf</filename>. Il server ascolterà sia connessioni normali che 
+<acronym>SSL</acronym> sulla stessa porta TCP, e negozierà con qualsiasi client
+che si connette se usa <acronym>SSL</acronym>. In modo predefinito,
+questa è un'opzione del client; si veda <xref
+linkend="auth-pg-hba-conf"/> per informazioni su come impostare il server per richiedere 
+l'uso di <acronym>SSL</acronym> per alcune o tutte le connessioni.
 
   <para>
    <productname>PostgreSQL</productname> reads the system-wide

@@ -458,11 +458,11 @@ psql: could not connect to server: Connection refused
         Is the server running on host "server.joe.com" and accepting
         TCP/IP connections on port 5432?
 </screen>
-     This is the generic <quote>I couldn't find a server to talk
 Questo è il fallimento  generico <quote>Non riesco a trovare un server con cui comunicare</quote>. 
      It looks like the above when TCP/IP
-     communication is attempted. A common mistake is to forget to
-     configure the server to allow TCP/IP connections.
+     communication is attempted. 
+Un errore comunque è di dimenticare 
+di configurare il server per permettere connessioni TCP/IP.
     </para>
 
     <para>
@@ -516,12 +516,13 @@ continuare a leggere.
    </indexterm>
 
    <para>
-    Shared memory and semaphores are collectively referred to as
-    <acronym>IPC</acronym></quote> (together with message queues, which are not
-    relevant for <productname>PostgreSQL</productname>). Almost all modern
-    operating systems provide these features, but many of them don't have
-    them turned on or sufficiently sized by default, especially as
-    available RAM and the demands of database applications grow.
+Ci si riferisce alla memoria condivisa e i semafori collettivamente come
+<acronym>IPC</acronym></quote> (insieme alle code dei messaggi, che non sono 
+rilevanti per  <productname>PostgreSQL</productname>). 
+Quasi tutti i sistemi operativi moderni 
+forniscono queste caratteristiche, ma molti di loro non le hanno 
+attivate o sufficientemente dimensionate in modo predefinito, specialmente come 
+RAM disponibile quando le richieste delle applicazioni database crescono.
 (Su <systemitem class="osname">Windows</systemitem>,
 <productname>PostgreSQL</productname> fornisce la  propria implementazione come rimpiazzo 
 di queste caratteristiche, quindi la maggior parte di questa sezione
@@ -702,9 +703,9 @@ possono esserci in un insieme, dev'essere almeno 17 per
    </para>
 
    <para>
-    Various other settings related to <quote>semaphore undo</quote>, such as
-    <varname>SEMMNU</varname> and <varname>SEMUME</varname>, do not affect
-    <productname>PostgreSQL</productname>.
+Varie altre impostazioni relative a <quote>semaphore undo</quote>, tipo 
+<varname>SEMMNU</varname> and <varname>SEMUME</varname>, non hanno effetti su
+<productname>PostgreSQL</productname>.
    </para>
 
 
@@ -748,9 +749,9 @@ options "SHMMAX=\(SHMALL*PAGE_SIZE\)"
 <varname>SHMALL</varname> viene misurato in pagine da 4 kB, quindi un valore di 
 1024 rappresenta 4 MB di memoria condivisa. Inoltre l'esempio sopra aumenta 
 l'area di massima memoria condivisa a 32 MB.
-         For those running 4.3 or later, you will probably also need to increase
-         <varname>KERNEL_VIRTUAL_MB</varname> above the default <literal>248</literal>.
-         Once all changes have been made, recompile the kernel, and reboot.
+Per chi utilizza la versione 4.3 o successive, probabilmente dovrà anche incrementare  
+<varname>KERNEL_VIRTUAL_MB</varname>, il valore predefinito è <literal>248</literal>.
+Una volta che tutti i cambiamenti sono stati fatti, ricompilare il kernel, e riavviare.
         </para>
        </formalpara>
 
@@ -814,12 +815,13 @@ di <command>sysctl</command>.
         If running in FreeBSD jails by enabling <application>sysctl</application>'s
         <literal>security.jail.sysvipc_allowed</literal>, <application>postmaster</application>s
         running in different jails should be run by different operating system
-        users.  This improves security because it prevents non-root users
-        from interfering with shared memory or semaphores in different jails,
-        and it allows the PostgreSQL IPC cleanup code to function properly.
-        (In FreeBSD 6.0 and later the IPC cleanup code does not properly detect
-        processes in other jails, preventing the running of postmasters on the
-        same port in different jails.)
+        users.  
+Questo incrementa la sicurezza dato che previene che utenti non root
+interferiscano con la memoria condivisa o i semafori in jail differenti,
+e permette al codice di pulizia IPC di PostgreSQL di funzionare in modo appropriato.
+(In FreeBSD 6.0 e successive il codice di pulizia ICP non trova correttamente 
+i processi nelle altre jail, prevenendo l'esecuzione di postmaster sulla stessa porta in
+jail differenti).
        </para>
 
        <para>
@@ -1296,14 +1298,16 @@ riferirsi a loro se necessario.
     of the 2.6 overcommit <command>sysctl</command> parameter.  However, setting
     <literal>vm.overcommit_memory</literal> to 2
     on a 2.4 kernel that does not have the relevant code will make
-    things worse, not better.  It is recommended that you inspect
-    the actual kernel source code (see the function
-    <function>vm_enough_memory</function> in the file <filename>mm/mmap.c</filename>)
-    to verify what is supported in your kernel before you try this in a 2.4
-    installation.  The presence of the <filename>overcommit-accounting</filename>
-    documentation file should <emphasis>not</emphasis> be taken as evidence that the
-    feature is there.  If in any doubt, consult a kernel expert or your
-    kernel vendor.
+    things worse, not better.  
+Si raccomanda di ispezionare 
+l'effettivo codice sorgente del kernel (si veda la funzione 
+<function>vm_enough_memory</function> nel file  <filename>mm/mmap.c</filename>)
+per verificare cosa è supportato nel proprio kernel prima di provarlo in una installazione
+si 2.4.
+La presenza del file di documentazione <filename>overcommit-accounting</filename> 
+<emphasis>non</emphasis> dovrebbe essere presa come prova che la caratteristica sia presente.
+Se in dubbio, consultare un esperto del kernel o il proprio fornitore
+del kernel.
    </para>
    </note>
   </sect2>
@@ -1634,45 +1638,42 @@ linkend="auth-pg-hba-conf"/> per informazioni su come impostare il server per ri
 l'uso di <acronym>SSL</acronym> per alcune o tutte le connessioni.
 
   <para>
-   <productname>PostgreSQL</productname> reads the system-wide
-   <productname>OpenSSL</productname> configuration file. By default, this
-   file is named <filename>openssl.cnf</filename> and is located in the
-   directory reported by <literal>openssl version -d</literal>.
-   This default can be overridden by setting environment variable
-   <envar>OPENSSL_CONF</envar> to the name of the desired configuration file.
+<productname>PostgreSQL</productname> legge il file di configurazione 
+a levello di sistema di <productname>OpenSSL</productname>. In modo predefinito, questo 
+file si chiama <filename>openssl.cnf</filename> e si trova nella directory 
+riportata da <literal>openssl version -d</literal>.
+Questo comportamento può essere sovrascritto impostando la variabile d'ambiente 
+<envar>OPENSSL_CONF</envar> col nome del file di configurazione desiderato.
   </para>
 
   <para>
-   <productname>OpenSSL</productname> supports a wide range of ciphers
-   and authentication algorithms, of varying strength.  While a list of
-   ciphers can be specified in the <productname>OpenSSL</productname>
-   configuration file, you can specify ciphers specifically for use by
-   the database server by modifying <xref linkend="guc-ssl-ciphers"/> in
-   <filename>postgresql.conf</filename>.
+<productname>OpenSSL</productname> supporta un vasto insieme di algoritmi 
+di cifrazione e autenticazione, di robustezza variabile. Mentre un elenco 
+di cifrazioni può essere specificato nel file di configurazione di <productname>OpenSSL</productname>,
+si possono specificare cifrazioni specifiche da usare dal server database
+modificando <xref linkend="guc-ssl-ciphers"/> in
+<filename>postgresql.conf</filename>.
   </para>
 
   <note>
    <para>
-    It is possible to have authentication without encryption overhead by
-    using <literal>NULL-SHA</literal> or <literal>NULL-MD5</literal> ciphers.  However,
-    a man-in-the-middle could read and pass communications between client
-    and server.  Also, encryption overhead is minimal compared to the
-    overhead of authentication.  For these reasons NULL ciphers are not
-    recommended.
+È possibile avere un'autenticazione senza criptazione usando le cifrazioni
+<literal>NULL-SHA</literal> o <literal>NULL-MD5</literal>. Comunque, 
+un man-in-the-middle potrebbe leggere le comunicazioni tra il client e il server.
+Inoltre, l'overhead di criptazione è minimale se confrontato all'overhead 
+dell'autenticazione. Per queste ragioni le cifrazioni non sono raccomandate.
    </para>
   </note>
 
   <para>
-   To start in <acronym>SSL</acronym> mode, the files <filename>server.crt</filename>
-   and <filename>server.key</filename> must exist in the server's data directory.
-   These files should contain the server certificate and private key,
-   respectively.
-   On Unix systems, the permissions on <filename>server.key</filename> must
-   disallow any access to world or group; achieve this by the command
-   <command>chmod 0600 server.key</command>.
-   If the private key is protected with a passphrase, the
-   server will prompt for the passphrase and will not start until it has
-   been entered.
+Per avviare in modalità <acronym>SSL</acronym>, i file <filename>server.crt</filename>
+e <filename>server.key</filename> devono esistere nella directory dei dati del server.
+Questi file dovrebbero contenere rispettivamente il certificato del server e la chiave privata.
+Su sistemi Unix, i permessi su <filename>server.key</filename> non devono 
+permettere qualsiasi accesso al mondo o al gruppo; si faccia questo con il comando
+<command>chmod 0600 server.key</command>.
+Se la chiave privata è protetta con una passphrase, il server 
+la chiederà di inserirla e non si avvierà finchè non la si fornisce.
   </para>
 
   <para>
@@ -1687,68 +1688,67 @@ l'uso di <acronym>SSL</acronym> per alcune o tutte le connessioni.
   </para>
 
   <sect2 id="ssl-client-certificates">
-   <title>Using client certificates</title>
+   <title>Usare certificati del client</title>
 
    <para>
-   To require the client to supply a trusted certificate, place
-   certificates of the certificate authorities (<acronym>CA</acronym>s)
-   you trust in the file <filename>root.crt</filename> in the data
-   directory, and set the <literal>clientcert</literal> parameter
-   to <literal>1</literal> on the appropriate <literal>hostssl</literal> line(s) in
-   <filename>pg_hba.conf</filename>.
-   A certificate will then be requested from the client during
-   SSL connection startup.  (See <xref linkend="libpq-ssl"/> for a
-   description of how to set up certificates on the client.)  The server will
-   verify that the client's certificate is signed by one of the trusted
-   certificate authorities.  Certificate Revocation List (CRL) entries
-   are also checked if the file <filename>root.crl</filename> exists.
+Per richiedere al client di fornire un certificato fidato, mettere i certificati
+delle autorità (<acronym>CA</acronym>) fidate nel file  <filename>root.crt</filename> 
+nella directory dei dati, ed impostare il parametro <literal>clientcert</literal>
+a <literal>1</literal> nell'appropriata linea/e <literal>hostssl</literal> in
+<filename>pg_hba.conf</filename>.
+Quindi sarà richiesto un certificato dal client durante 
+l'avvio della connessione SSL. (Si veda <xref linkend="libpq-ssl"/> per una 
+descrizione si come impostare i certificati sul client). Il server verificherà 
+che il certificato del client sia firmato da una delle autorità certificato fidate.
+Le voci di Certificate Revocation List (CRL) sono controllate anche se il file 
+<filename>root.crl</filename> esiste.
    <!-- If this URL changes replace it with a URL to www.archive.org. -->
-   (See <ulink
-   url="http://h71000.www7.hp.com/DOC/83final/BA554_90007/ch04s02.html"></ulink>
-   for diagrams showing SSL certificate usage.)
+(Si veda <ulink
+url="http://h71000.www7.hp.com/DOC/83final/BA554_90007/ch04s02.html"></ulink>
+per diagrammi che mostrano l'utilizzo di certificati SSL).
   </para>
 
   <para>
-   The <literal>clientcert</literal> option in <filename>pg_hba.conf</filename> is
-   available for all authentication methods, but only for rows specified as
-   <literal>hostssl</literal>.  When <literal>clientcert</literal> is not specified
-   or is set to <literal>0</literal>, the server will still verify presented client
-   certificates against <filename>root.crt</filename> if that file exists
-   &mdash; but it will not insist that a client certificate be presented.
+L'opzione <literal>clientcert</literal> in <filename>pg_hba.conf</filename> è 
+disponibile per tutti i metodi di autenticazione, ma solo per le righe specificate come
+<literal>hostssl</literal>.  Quando <literal>clientcert</literal> non è specificato 
+o è impostato a <literal>0</literal>, il server verificherà comunque i certificati client 
+presentati con <filename>root.crt</filename> se quel file esiste - 
+ma non esigerà che un certificato di client sia presente.
   </para>
 
   <para>
-   Note that <filename>root.crt</filename> lists the top-level CAs that are
-   considered trusted for signing client certificates.  In principle it need
-   not list the CA that signed the server's certificate, though in most cases
-   that CA would also be trusted for client certificates.
+Si noti che <filename>root.crt</filename> elenca le CA si livello superiore che sono
+considerate fidate per firmare i certificati del client. In principio non avrà bisogno dell'elenco
+delle CA che sono state firmate dal certificato del server, benchè in molti casi
+quella CA sarebbe fidata anche per i certificati client.
   </para>
 
   <para>
-   If you are setting up client certificates, you may wish to use
-   the <literal>cert</literal> authentication method, so that the certificates
-   control user authentication as well as providing connection security.
-   See <xref linkend="auth-cert"/> for details.
+Se si stanno impostando i certificati del client, si può desidare usare 
+il metodo di autenticazione <literal>cert</literal>, in modo che i certificati 
+controllino l'autenticazione dell'utente così come prevedano la sicurezza della connessione.
+Si veda <xref linkend="auth-cert"/> per dettagli.
   </para>
   </sect2>
 
   <sect2 id="ssl-server-files">
-   <title>SSL Server File Usage</title>
+   <title>Utilizzo del file server SSL</title>
   <para>
-   The files <filename>server.key</filename>, <filename>server.crt</filename>,
-   <filename>root.crt</filename>, and <filename>root.crl</filename>
-   are only examined during server start; so you must restart
-   the server for changes in them to take effect.
+I file <filename>server.key</filename>, <filename>server.crt</filename>,
+<filename>root.crt</filename> e <filename>root.crl</filename>
+sono esaminati solo durante l'avvio del server; così si deve riavviare
+il server perchè i cambiamenti in questi file abbiano effetto.
   </para>
 
   <table id="ssl-file-usage">
-   <title>SSL Server File Usage</title>
+   <title>Utilizzo del file server SSL</title>
    <tgroup cols="3">
     <thead>
      <row>
       <entry>File</entry>
-      <entry>Contents</entry>
-      <entry>Effect</entry>
+      <entry>Contenuti</entry>
+      <entry>Effetto</entry>
      </row>
     </thead>
 
@@ -1756,28 +1756,28 @@ l'uso di <acronym>SSL</acronym> per alcune o tutte le connessioni.
 
      <row>
       <entry><filename>server.crt</filename></entry>
-      <entry>server certificate</entry>
-      <entry>sent to client to indicate server's identity</entry>
+      <entry>certificato del server</entry>
+      <entry>mandato al client per indicare l'identità del server</entry>
      </row>
 
      <row>
       <entry><filename>server.key</filename></entry>
-      <entry>server private key</entry>
-      <entry>proves server certificate was sent by the owner; does not indicate
-      certificate owner is trustworthy</entry>
+      <entry>chiave privata del server</entry>
+      <entry>prova che il certificato del server sia stato mandato dal proprietario; non indica
+      che il proprietario del certificato è attendibile</entry>
      </row>
 
      <row>
       <entry><filename>root.crt</filename></entry>
-      <entry>trusted certificate authorities</entry>
-      <entry>checks that client certificate is
-      signed by a trusted certificate authority</entry>
+      <entry>Autorità di certificato fidate</entry>
+      <entry>controlla che il certificato del client sia
+      firmato da un'autorità di certificato fidata</entry>
      </row>
 
      <row>
       <entry><filename>root.crl</filename></entry>
-      <entry>certificates revoked by certificate authorities</entry>
-      <entry>client certificate must not be on this list</entry>
+      <entry>certificati revocati da autorità di certificato</entry>
+      <entry>il certificato del client non deve essere in questo elenco</entry>
      </row>
 
     </tbody>
@@ -1786,47 +1786,46 @@ l'uso di <acronym>SSL</acronym> per alcune o tutte le connessioni.
   </sect2>
 
   <sect2 id="ssl-certificate-creation">
-   <title>Creating a Self-Signed Certificate</title>
+   <title>Creare un certificato auto-firmato</title>
 
    <para>
-    To create a quick self-signed certificate for the server, use the
-    following <productname>OpenSSL</productname> command:
+Per creare un certificato auto-firmato per il server, usare il seguente comando 
+<productname>OpenSSL</productname>:
 <programlisting>
 openssl req -new -text -out server.req
 </programlisting>
-    Fill out the information that <application>openssl</application> asks for. Make sure
-    you enter the local host name as <quote>Common Name</quote>; the challenge
-    password can be left blank. The program will generate a key that is
-    passphrase protected; it will not accept a passphrase that is less
-    than four characters long. To remove the passphrase (as you must if
-    you want automatic start-up of the server), run the commands:
+Fornire le informazioni chieste da <application>openssl</application>. Assicurarsi di 
+inserire il nome del host locale come <quote>Common Name</quote>; la password challenge 
+può essere lasciata vuota. Il programma genererà una chiave protetta da 
+passphrase; essa non accetterà una passphrase lunga meno di 4 caratteri.
+Per rimuovere la passphrase (si deve fare se si vuole 
+l'avvio automatico del server), eseguire i comandi:
 <programlisting>
 openssl rsa -in privkey.pem -out server.key
 rm privkey.pem
 </programlisting>
-    Enter the old passphrase to unlock the existing key. Now do:
+Inserire la vecchia passphrase per sbloccare la chiave esistente. Adesso fare:
 <programlisting>
 openssl req -x509 -in server.req -text -key server.key -out server.crt
 </programlisting>
-    to turn the certificate into a self-signed certificate and to copy
-    the key and certificate to where the server will look for them.
-    Finally do:
+per trasformare il certificato in un certificato auto-firmato e per copiare 
+la chiave e il certificato dove il server li cercherà.
+Infine fare:
 <programlisting>
 chmod og-rwx server.key
 </programlisting>
-    because the server will reject the file if its permissions are more
-    liberal than this.
-    For more details on how to create your server private key and
-    certificate, refer to the <productname>OpenSSL</productname> documentation.
+dato che il server rifiuterà il file se i suoi permessi sono più permissivi di 
+così.
+Per maggiori dettagli si come creare la chiave privata e il certificato per il 
+proprio server, fare riferimento alla documentazione <productname>OpenSSL</productname>.
    </para>
 
    <para>
-    A self-signed certificate can be used for testing, but a certificate
-    signed by a certificate authority (<acronym>CA</acronym>) (either one of the
-    global <acronym>CAs</acronym> or a local one) should be used in production
-    so that clients can verify the server's identity. If all the clients
-    are local to the organization, using a local <acronym>CA</acronym> is
-    recommended.
+Un certificato auto-firmato può essere usato per test, ma un certificato 
+firmato da un'autorità certificata (<acronym>CA</acronym>) (o una delle <acronym>CA</acronym>
+globali o una locale) dovrebbe essere usata in produzione così che i client possano
+verificare l'identità del server. Se tutti i client 
+sono locali all'organizzazione, si raccomanda di usare una <acronym>CA</acronym> locale.
    </para>
 
   </sect2>
@@ -1834,39 +1833,37 @@ chmod og-rwx server.key
  </sect1>
 
  <sect1 id="ssh-tunnels">
-  <title>Secure TCP/IP Connections with <application>SSH</application> Tunnels</title>
+  <title>Connessioni TCP/IP sicure con tunnel <application>SSH</application></title>
 
   <indexterm zone="ssh-tunnels">
    <primary>ssh</primary>
   </indexterm>
 
   <para>
-   It is possible to use <application>SSH</application> to encrypt the network
-   connection between clients and a
-   <productname>PostgreSQL</productname> server. Done properly, this
-   provides an adequately secure network connection, even for non-SSL-capable
-   clients.
+È possibile usare <application>SSH</application> per criptare ka connessione di 
+rete tra i client e un server <productname>PostgreSQL</productname>.  
+Se fatto in modo appropriato, questo 
+fornisce una connessione di rete adeguatamente sicura, anche per client non SSL.
   </para>
 
   <para>
-   First make sure that an <application>SSH</application> server is
-   running properly on the same machine as the
-   <productname>PostgreSQL</productname> server and that you can log in using
-   <command>ssh</command> as some user. Then you can establish a secure
-   tunnel with a command like this from the client machine:
+Prima assicurarsi che un server  <application>SSH</application> sia  
+avviato in modo appropriato sulla stessa macchina del server 
+<productname>PostgreSQL</productname> e che si possa effettuare il login usando 
+<command>ssh</command> come qualche utente. Quindi si può stabilire un tunnel sicuro  
+con un comando come questo dalla macchina client:
 <programlisting>
 ssh -L 63333:localhost:5432 joe@foo.com
 </programlisting>
-   The first number in the <option>-L</option> argument, 63333, is the
-   port number of your end of the tunnel; it can be any unused port.
-   (IANA reserves ports 49152 through 65535 for private use.)  The
-   second number, 5432, is the remote end of the tunnel: the port
-   number your server is using. The name or IP address between the
-   port numbers is the host with the database server you are going to
-   connect to, as seen from the host you are logging in to, which
-   is <literal>foo.com</literal> in this example. In order to connect
-   to the database server using this tunnel, you connect to port 63333
-   on the local machine:
+Il primo numero nell'argomento  <option>-L</option>, 63333, è il numero della porta 
+della fine del tunnel; può essere qualsiasi porta non utilizzata. 
+(IANA riserva le porte dalla 49152 alla 65535 per uso privato). Il secondo numero,
+5432, è laq fine remota del tunnel: il numero della porta che sta usando il proprio server.
+Il nome o l'indirizzo IP tra i numeri delle porte è l'host con il server database 
+a cui ci si connetterà, come visto dall'host in cui si è loggati, che
+in questo esempio è <literal>foo.com</literal>. Per connettersi
+al server database usando questo tunnel, ci si connetta alla porta 63333
+sulla macchina locale:
 <programlisting>
 psql -h localhost -p 63333 postgres
 </programlisting>
@@ -1883,43 +1880,41 @@ psql -h localhost -p 63333 postgres
   </para>
 
   <para>
-   In order for the
-   tunnel setup to succeed you must be allowed to connect via
-   <command>ssh</command> as <literal>joe@foo.com</literal>, just
-   as if you had attempted to use <command>ssh</command> to create a
-   terminal session.
+Perchè l'impostazione del tunnel abbia successo si deve avere il permesso
+di connettersi via <command>ssh</command>  come <literal>joe@foo.com</literal>, 
+proprio come se si avesse tentato di usare  <command>ssh</command> per creare 
+una sessione di terminale.
   </para>
 
   <para>
-   You could also have set up the port forwarding as
+Si potrebbe dover impostare anche il port forwarding come
 <programlisting>
 ssh -L 63333:foo.com:5432 joe@foo.com
 </programlisting>
-   but then the database server will see the connection as coming in
-   on its <literal>foo.com</literal> interface, which is not opened by
-   the default setting <literal>listen_addresses =
-   'localhost'</literal>.  This is usually not what you want.
+ma allora il server database vedrà la connessione come se arrivasse dalla propria 
+interfaccia <literal>foo.com</literal>, che non è aperta 
+dall'impostazione predefinita <literal>listen_addresses =
+'localhost'</literal>. Questo di solito non è quello che si vuole.
   </para>
 
   <para>
-   If you have to <quote>hop</quote> to the database server via some
-   login host, one possible setup could look like this:
+Se si deve  <quote>saltare</quote> al server database attraverso qualche 
+host di login, un possibile modo potrebbe essere simile a questo:
 <programlisting>
 ssh -L 63333:db.foo.com:5432 joe@shell.foo.com
 </programlisting>
-   Note that this way the connection
-   from <literal>shell.foo.com</literal>
-   to <literal>db.foo.com</literal> will not be encrypted by the SSH
-   tunnel.
-   SSH offers quite a few configuration possibilities when the network
-   is restricted in various ways.  Please refer to the SSH
-   documentation for details.
+Si noti che in questo modo la connessione da
+<literal>shell.foo.com</literal>
+a <literal>db.foo.com</literal> non sarà criptata dal tunnel SSH.
+SSH offre alcune possibilità di configurazione quando la rete è ristretta 
+in diversi modi. Per favore si faccia riferimento alla documentazione
+di SSH per dettagli.
   </para>
 
   <tip>
    <para>
-    Several other applications exist that can provide secure tunnels using
-    a procedure similar in concept to the one just described.
+Esistono diverse altre applicazioni che possono fornire tunnel sicuri usando 
+una procedura simile nel concetto a quella appena descritta.
    </para>
   </tip>
 

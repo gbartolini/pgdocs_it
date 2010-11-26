@@ -2,62 +2,62 @@
 <!-- $PostgreSQL$ -->
 
 <chapter id="runtime-config">
-  <title>Server Configuration</title>
+  <title>Configurazione del server</title>
 
   <indexterm>
-   <primary>configuration</primary>
-   <secondary>of the server</secondary>
+   <primary>configurazione</primary>
+   <secondary>del server</secondary>
   </indexterm>
 
   <para>
-   There are many configuration parameters that affect the behavior of
-   the database system. In the first section of this chapter, we
-   describe how to set configuration parameters. The subsequent sections
-   discuss each parameter in detail.
+Ci sono molti parametri di configurazione che hanno effetto sul comportamento 
+del sistema di databasei. Nella prima sezione di questo capitolo, viene descritto
+come impostare i parametri di configurazione. Le sezioni successive
+discutono ogni parametro in dettaglio.
   </para>
 
   <sect1 id="config-setting">
-   <title>Setting Parameters</title>
+   <title>Parametri di impostazione</title>
 
    <para>
-    All parameter names are case-insensitive. Every parameter takes a
-    value of one of five types: Boolean, integer, floating point,
-    string or enum. Boolean values can be written as <literal>on</literal>,
-    <literal>off</literal>, <literal>true</literal>,
-    <literal>false</literal>, <literal>yes</literal>,
-    <literal>no</literal>, <literal>1</literal>, <literal>0</literal>
-    (all case-insensitive) or any unambiguous prefix of these.
+Tutti i nomi dei parametri sono insensibili al case. Ogni parametro prende
+un valore di uno dei cinque tipi: Boolean, integer, floating point,
+string o enum. I valori Boolean possono essere scritti come <literal>on</literal>,
+<literal>off</literal>, <literal>true</literal>,
+<literal>false</literal>, <literal>yes</literal>,
+<literal>no</literal>, <literal>1</literal>, <literal>0</literal>
+(tutti non sensibili alle maiuscole) o qualsiasi prefisso non ambiguo di questi.
    </para>
 
    <para>
-    Some settings specify a memory or time value.  Each of these has an
-    implicit unit, which is either kilobytes, blocks (typically eight
-    kilobytes), milliseconds, seconds, or minutes.  Default units can be
-    found by referencing <structname>pg_settings</structname>.<structfield>unit</structfield>.
-    For convenience,
-    a different unit can also be specified explicitly.  Valid memory units
-    are <literal>kB</literal> (kilobytes), <literal>MB</literal>
-    (megabytes), and <literal>GB</literal> (gigabytes); valid time units
-    are <literal>ms</literal> (milliseconds), <literal>s</literal>
-    (seconds), <literal>min</literal> (minutes), <literal>h</literal>
-    (hours), and <literal>d</literal> (days).  Note that the multiplier
-    for memory units is 1024, not 1000.
+Alcune impostazioni specificano un valore di memoria o tempo. Ognuna di queste 
+ha un'unità implicita, che è uno tra kilobyte, block (tipicamente otto
+kilobyte), millisecondi, secondi o minuti. Le unità predefinite possono essere
+trovate facendo riferimento a <structname>pg_settings</structname>.<structfield>unit</structfield>.
+Per convenienza,
+un'unità diversa può anche essere specificata esplicitamente. Le unità di memoria valide
+sono <literal>kB</literal> (kilobyte), <literal>MB</literal>
+(megabyte) e <literal>GB</literal> (gigabyte); unità di tempo valide
+sono  <literal>ms</literal> (milliseconds), <literal>s</literal>
+(secondi), <literal>min</literal> (minuti), <literal>h</literal>
+(ore) e <literal>d</literal> (giorni).  
+Si noti che il moltiplicatore per le unità di memoria è 1024, non 1000.
    </para>
 
    <para>
-    Parameters of type <quote>enum</quote> are specified in the same way as string
-    parameters, but are restricted to a limited set of values.  The allowed
-    values can be found
-    from <structname>pg_settings</structname>.<structfield>enumvals</structfield>.
-    Enum parameter values are case-insensitive.
+I parametri di tipo <quote>enum</quote> sono specificati nello  stesso modo dei parametri
+string, ma sono limitati a un insieme di possibili valori. I valori permessi possono essere
+trovati 
+con <structname>pg_settings</structname>.<structfield>enumvals</structfield>.
+I valori dei parametri enumo sono insensibili alle maiuscole.
    </para>
 
    <para>
-    One way to set these parameters is to edit the file
-    <filename>postgresql.conf</filename><indexterm><primary>postgresql.conf</primary></indexterm>,
-    which is normally kept in the data directory.  (A default copy is
-    installed there when the database cluster directory is
-    initialized.)  An example of what this file might look like is:
+Un modo di impostare questi parametri è di modificare il file 
+<filename>postgresql.conf</filename><indexterm><primary>postgresql.conf</primary></indexterm>,
+che normalmente è tenuto nella directory dei dati. (Una copia predefinita è 
+installata quando viene inizializzata la directory dei dati del cluster).
+Un esempio di come potrebbe presentarsi il file è:
 <programlisting>
 # This is a comment
 log_connections = yes
@@ -65,145 +65,144 @@ log_destination = 'syslog'
 search_path = '"$user", public'
 shared_buffers = 128MB
 </programlisting>
-    One parameter is specified per line. The equal sign between name and
-    value is optional. Whitespace is insignificant and blank lines are
-    ignored. Hash marks (<literal>#</literal>) designate the rest of the
-    line as a comment.  Parameter values that are not simple identifiers or
-    numbers must be single-quoted.  To embed a single quote in a parameter
-    value, write either two quotes (preferred) or backslash-quote.
+Viene specificato un parametro per linea. Il segno uguale tra il nome e 
+il valore è opzionale. Gli spazi bianchi sono insignificanti e le linee 
+bianche sono ignorate. I segni cancelletto (<literal>#</literal>) indicano che il  
+resto della linea è un commento. I valori dei parametri che non sono semplici identificatori 
+o numeri devono essere tra singoli apici. Per includere un singolo apice nel valore di un parametro,
+scriverlo o tra doppi due apici (preferito) o usando la barra inversa.
    </para>
 
    <para>
     <indexterm>
      <primary><literal>include</literal></primary>
-     <secondary>in configuration file</secondary>
+     <secondary>nel file di configurazione</secondary>
     </indexterm>
-    In addition to parameter settings, the <filename>postgresql.conf</filename>
-    file can contain <firstterm>include directives</firstterm>, which specify
-    another file to read and process as if it were inserted into the
-    configuration file at this point.  Include directives simply look like:
+In aggiunta alle impostazioni di un parametro, il file <filename>postgresql.conf</filename>
+può contenere <firstterm>direttive include</firstterm>, che specificano 
+un altro file da leggere e processare come se fosse inserito nel file di configurazione
+in quel punto. Le direttive include appaiono semplicemente così:
 <programlisting>
 include 'filename'
 </programlisting>
-    If the file name is not an absolute path, it is taken as relative to
-    the directory containing the referencing configuration file.
-    Inclusions can be nested.
+Se il nome del file non è un percorso assoluto, viene preso come relativo alla
+directory contenente il file di configurazione di riferimento.
+Le inclusioni possono essere annidate.
    </para>
 
    <para>
     <indexterm>
      <primary>SIGHUP</primary>
     </indexterm>
-    The configuration file is reread whenever the main server process receives a
-    <systemitem>SIGHUP</systemitem> signal (which is most easily sent by means
-    of <literal>pg_ctl reload</literal>). The main server process
-    also propagates this signal to all currently running server
-    processes so that existing sessions also get the new
-    value. Alternatively, you can send the signal to a single server
-    process directly.  Some parameters can only be set at server start;
-    any changes to their entries in the configuration file will be ignored
-    until the server is restarted.
+Il file di configurazione viene riletto ogni volta che il processo server principale 
+riceve un segnale <systemitem>SIGHUP</systemitem> (che è facilmente mandato con
+<literal>pg_ctl reload</literal>). Il processo server principale inoltre 
+propaga questo segnale a tutti i processi server attualmente in esecuzione
+di modo che anche i le sessioni esistenti otterranno i nuovi valori.
+Alternativamente, si può mandare direttamente  il segnale a un singolo processo server. 
+Alcuni parametri possono essere impostati solo all'avvio del server;
+qualsiasi cambiamento alle loro voci nel file di configurazione verrà ignorato fino al 
+riavvio del server.
    </para>
 
    <para>
-    A second way to set these configuration parameters is to give them
-    as a command-line option to the <command>postgres</command> command, such as:
+Un secondo modo di impostare i parametri di configurazione è di fornirli come 
+opzione a linea di comando al comando <command>postgres</command>, tipo:
 <programlisting>
 postgres -c log_connections=yes -c log_destination='syslog'
 </programlisting>
-    Command-line options override any conflicting settings in
-    <filename>postgresql.conf</filename>.  Note that this means you won't
-    be able to change the value on-the-fly by editing
-    <filename>postgresql.conf</filename>, so while the command-line
-    method might be convenient, it can cost you flexibility later.
+Le opzioni a linea di comando sovrascrivono qualsiasi impostazione del 
+<filename>postgresql.conf</filename>.  
+Notare che questo significa che non si potrà
+cambiare il valore al volo modificando 
+<filename>postgresql.conf</filename>, quindi mentre il metodo della line di comando
+potrebbe essere conveniente, può costare in flessibilità successivamente.
    </para>
 
    <para>
-    Occasionally it is useful to give a command line option to
-    one particular session only. The environment variable
-    <envar>PGOPTIONS</envar> can be used for this purpose on the
-    client side:
+Occasionalmente è utile dare un opzione a linea di comando solo a 
+una particolare sessione. La variabile d'ambiente 
+<envar>PGOPTIONS</envar> può essere usata per questo scopo lato client:
 <programlisting>
 env PGOPTIONS='-c geqo=off' psql
 </programlisting>
-    (This works for any <application>libpq</application>-based client application, not
-    just <application>psql</application>.) Note that this won't work for
-    parameters that are fixed when the server is started or that must be
-    specified in <filename>postgresql.conf</filename>.
+(Questo funziona per qualsiasi applicazione client basata su <application>libpq</application>,  
+non solo <application>psql</application>). Si noti che questo non funzionerà 
+per parametri che sono fissati quando il server è avviato 
+o che devono essere specificati in <filename>postgresql.conf</filename>.
    </para>
 
    <para>
-    Furthermore, it is possible to assign a set of parameter settings to
-    a user or a database.  Whenever a session is started, the default
-    settings for the user and database involved are loaded.  The
-    commands <xref linkend="sql-alteruser"/>
-    and <xref linkend="sql-alterdatabase"/>,
-    respectively, are used to configure these settings.  Per-database
-    settings override anything received from the
-    <command>postgres</command> command-line or the configuration
-    file, and in turn are overridden by per-user settings; both are
-    overridden by per-session settings.
+Inoltre, è possibile assegnare un insieme di impostazioni di parametri ad un 
+utente o un database. Ogni volta che una sessione è avviata, 
+vengono caricate le impostazioni predefinite 
+per l'utente e il database coinvolti. I 
+comandi <xref linkend="sql-alteruser"/>
+e <xref linkend="sql-alterdatabase"/>,
+vengono usati rispettivamente per configurare queste impostazioni. 
+Le impostazioni per database sovrascrivono qualsiasi cosa 
+ricevuta dalla linea di comando di <command>postgres</command> o 
+dal file di configurazione, e a turno sono sovrascritte da impostazioni 
+per utente; entrambre sono sovrascritte da impostazioni per sessione.
    </para>
 
    <para>
-    Some parameters can be changed in individual <acronym>SQL</acronym>
-    sessions with the <xref linkend="sql-set"/>
-    command, for example:
+Alcuni parametri possono essere cambiati in sessioni <acronym>SQL</acronym>
+individuali con il comando <xref linkend="sql-set"/>,
+per esempio:
 <screen>
 SET ENABLE_SEQSCAN TO OFF;
 </screen>
-    If <command>SET</command> is allowed, it overrides all other sources of
-    values for the parameter. Some parameters cannot be changed via
-    <command>SET</command>: for example, if they control behavior that
-    cannot be changed without restarting the entire
-    <productname>PostgreSQL</productname> server.  Also,
-    some <command>SET</command> or <command>ALTER</command> parameter modifications
-    require superuser permission.
+Se <command>SET</command> è permesso, sovrascrive tutte le altre sorgenti di valori
+per il parametro. Alcuni parametri non possono essere cambiati con 
+<command>SET</command>: per esempio, se controllano un comportamento che 
+non può essere cambiato senza riavviare l'intero server <productname>PostgreSQL</productname>.
+Inoltre, alcune modifiche di parametro con <command>SET</command> o <command>ALTER</command>
+richiedono permessi di superutente.
    </para>
 
    <para>
-    The <xref linkend="sql-show"/>
-    command allows inspection of the current values of all parameters.
+Il comando <xref linkend="sql-show"/>
+permette di ispezionare i valori correnti di tutti i parametri.
    </para>
 
    <para>
-    The virtual table <structname>pg_settings</structname>
-    (described in <xref linkend="view-pg-settings"/>) also allows
-    displaying and updating session run-time parameters.  It is equivalent
-    to <command>SHOW</command> and <command>SET</command>, but can be more convenient
-    to use because it can be joined with other tables, or selected from using
-    any desired selection condition. It also contains more information about
-    what values are allowed for the parameters.
+La tabella virtuale <structname>pg_settings</structname>
+(descritta in <xref linkend="view-pg-settings"/>) permette anche di visualizzare
+e aggiornare parametri di sessione in fase di esecuzione. È equivalente 
+a <command>SHOW</command> e <command>SET</command>, ma può essere maggiormente conveniente
+da usare dato che può essere sottoposto a join con altre tabella, o selezionate da usare
+qualsiasi condizione di selezione desiderata. Contiene anche maggiori informazioni 
+su qualsi valori sono permessi per i parametri.
    </para>
   </sect1>
 
    <sect1 id="runtime-config-file-locations">
-    <title>File Locations</title>
+    <title>Posizioni dei file</title>
 
      <para>
-      In addition to the <filename>postgresql.conf</filename> file
-      already mentioned, <productname>PostgreSQL</productname> uses
-      two other manually-edited configuration files, which control
-      client authentication (their use is discussed in <xref
-      linkend="client-authentication"/>).  By default, all three
-      configuration files are stored in the database cluster's data
-      directory.  The parameters described in this section allow the
-      configuration files to be placed elsewhere.  (Doing so can ease
-      administration.  In particular it is often easier to ensure that
-      the configuration files are properly backed-up when they are
-      kept separate.)
+In aggiunta al file <filename>postgresql.conf</filename> già menzionato,
+<productname>PostgreSQL</productname> usa altri due file
+di configurazione modificati manualmente, che controllano
+l'autenticazione dei client (il loro uso è discusso in <xref
+linkend="client-authentication"/>).  In maniera predefinita, tutti e tre 
+i file di configurazione sono salvati nella directory dei dati del cluster.
+I parametri descritti in questa sezione permettono ai file di configurazione 
+di essere posizionati ovunque. (Fare ciò può facilitare l'amministrazione.
+In particolare spesso è più facile assicurare che i file di configurazione 
+siano sottoposti a backup quando sono mantenuti separati).
      </para>
 
      <variablelist>
      <varlistentry id="guc-data-directory" xreflabel="data_directory">
       <term><varname>data_directory</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>data_directory</varname> configuration parameter</primary>
+       <primary>parametro di configurazione <varname>data_directory</varname> </primary>
       </indexterm>
       <listitem>
        <para>
-         Specifies the directory to use for data storage.
-         This parameter can only be set at server start.
+Specifica la directory da usare per l'immagazzinamento dei dati.
+Questo parametro può essere impostato solo all'avvio del server.
        </para>
       </listitem>
      </varlistentry>
@@ -211,13 +210,13 @@ SET ENABLE_SEQSCAN TO OFF;
      <varlistentry id="guc-config-file" xreflabel="config_file">
       <term><varname>config_file</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>config_file</varname> configuration parameter</primary>
+       <primary>parametro di configurazione <varname>config_file</varname> </primary>
       </indexterm>
       <listitem>
        <para>
-         Specifies the main server configuration file
-         (customarily called <filename>postgresql.conf</filename>).
-         This parameter can only be set on the <command>postgres</command> command line.
+Specifica il file di configurazione del server principale
+(di norma chiamato <filename>postgresql.conf</filename>).
+Questo parametro può essere impostato solo nella linea di comando di <command>postgres</command>.
        </para>
       </listitem>
      </varlistentry>
@@ -225,13 +224,13 @@ SET ENABLE_SEQSCAN TO OFF;
      <varlistentry id="guc-hba-file" xreflabel="hba_file">
       <term><varname>hba_file</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>hba_file</varname> configuration parameter</primary>
+       <primary>parametro di configurazione <varname>hba_file</varname> </primary>
       </indexterm>
       <listitem>
        <para>
-         Specifies the configuration file for host-based authentication
-         (customarily called <filename>pg_hba.conf</filename>).
-         This parameter can only be set at server start.
+Specifica il di configurazione per autenticazione basata sul host
+(di norma chiamato <filename>pg_hba.conf</filename>).
+Questo parametro può esssere impostato solo all'avvio del server.
        </para>
       </listitem>
      </varlistentry>
@@ -239,14 +238,14 @@ SET ENABLE_SEQSCAN TO OFF;
      <varlistentry id="guc-ident-file" xreflabel="ident_file">
       <term><varname>ident_file</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>ident_file</varname> configuration parameter</primary>
+       <primary>parametro di configurazione <varname>ident_file</varname> </primary>
       </indexterm>
       <listitem>
        <para>
-         Specifies the configuration file for
-         <xref linkend="auth-username-maps"/> user name mapping
-         (customarily called <filename>pg_ident.conf</filename>).
-         This parameter can only be set at server start.
+Specifica il file di configurazione per 
+la mappatura del nome utente <xref linkend="auth-username-maps"/>
+(di solito chiamato <filename>pg_ident.conf</filename>).
+Questo parametro può essere impostato solo all'avvio del server. 
        </para>
       </listitem>
      </varlistentry>
@@ -254,63 +253,62 @@ SET ENABLE_SEQSCAN TO OFF;
      <varlistentry id="guc-external-pid-file" xreflabel="external_pid_file">
       <term><varname>external_pid_file</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>external_pid_file</varname> configuration parameter</primary>
+       <primary>parametro di configurazione <varname>external_pid_file</varname> </primary>
       </indexterm>
       <listitem>
        <para>
-        Specifies the name of an additional process-id (PID) file that the
-        server should create for use by server administration programs.
-        This parameter can only be set at server start.
+Specifica il nome di un file id di processo (PID) aggiuntivo che il server dovrebbe creare 
+per essere usato da programmi di amministrazione del server.
+Questo parametro può essere impostato solo all'avvio del server.
        </para>
       </listitem>
      </varlistentry>
      </variablelist>
 
      <para>
-      In a default installation, none of the above parameters are set
-      explicitly.  Instead, the
-      data directory is specified by the <option>-D</option> command-line
-      option or the <envar>PGDATA</envar> environment variable, and the
-      configuration files are all found within the data directory.
+In un'installazione predefinita, nessuno dei parametri sopra è impostato
+esplicitamente. Invece, la directory dai dati
+viene specificata con l'opzione a linea di comando <option>-D</option>
+o la variabile d'ambiente <envar>PGDATA</envar>, e i file di configurazione
+si trovano tutti all'interno della directory dei dati. 
      </para>
 
      <para>
-      If you wish to keep the configuration files elsewhere than the
-      data directory, the <command>postgres</command> <option>-D</option>
-      command-line option or <envar>PGDATA</envar> environment variable
-      must point to the directory containing the configuration files,
-      and the <varname>data_directory</varname> parameter must be set in
-      <filename>postgresql.conf</filename> (or on the command line) to show
-      where the data directory is actually located.  Notice that
-      <varname>data_directory</varname> overrides <option>-D</option> and
-      <envar>PGDATA</envar> for the location
-      of the data directory, but not for the location of the configuration
-      files.
+Se si desidera mantenere i file di  configurazione altrove rispetto alla 
+directory dei dati, l'opzione  <option>-D</option> di  <command>postgres</command> 
+o la variabile d'ambiente <envar>PGDATA</envar> deve puntare 
+alla directory contenente i file di configurazione, 
+e il parametro <varname>data_directory</varname> deve essere impostato nel 
+<filename>postgresql.conf</filename> (o sulla linea di comando) per mostrare 
+dove è effettivamente situata la directory dei dati. Notare che 
+<varname>data_directory</varname> sovrascrive <option>-D</option> e
+<envar>PGDATA</envar> per la posizione della 
+directory dei dati, ma non per la posizione dei file di configurazione.
      </para>
 
      <para>
-      If you wish, you can specify the configuration file names and locations
-      individually using the parameters <varname>config_file</varname>,
-      <varname>hba_file</varname> and/or <varname>ident_file</varname>.
-      <varname>config_file</varname> can only be specified on the
-      <command>postgres</command> command line, but the others can be
-      set within the main configuration file.  If all three parameters plus
-      <varname>data_directory</varname> are explicitly set, then it is not necessary
-      to specify <option>-D</option> or <envar>PGDATA</envar>.
+Se lo si desidera, si possono specificare  i nomi e le posizioni dei file di configurazione
+individualmente usando i parametri <varname>config_file</varname>,
+<varname>hba_file</varname> e/o <varname>ident_file</varname>.
+<varname>config_file</varname> può essere specificato solo dalla linea di comando di 
+<command>postgres</command>, ma gli altri possono essere 
+impostati all'interno del file di configurazione principale. Se tutti e tre i parametri più
+<varname>data_directory</varname> sono impostati esplicitamente, allora non è necessario
+specificare <option>-D</option> o <envar>PGDATA</envar>.
      </para>
 
      <para>
-      When setting any of these parameters, a relative path will be interpreted
-      with respect to the directory in which <command>postgres</command>
-      is started.
+Quando si imposta uno qualsiasi di questi parametri, un percorso relativo sarò interpretato
+rispetto alla directory in cui <command>postgres</command>
+è avviato.
      </para>
    </sect1>
 
    <sect1 id="runtime-config-connection">
-    <title>Connections and Authentication</title>
+    <title>Connessioni e autenticazione</title>
 
     <sect2 id="runtime-config-connection-settings">
-     <title>Connection Settings</title>
+     <title>Impostazioni di connessione</title>
 
      <variablelist>
 
@@ -321,23 +319,22 @@ SET ENABLE_SEQSCAN TO OFF;
       </indexterm>
       <listitem>
        <para>
-         Specifies the TCP/IP address(es) on which the server is
-         to listen for connections from client applications.
-         The value takes the form of a comma-separated list of host names
-         and/or numeric IP addresses.  The special entry <literal>*</literal>
-         corresponds to all available IP interfaces.
-         If the list is empty, the server does not listen on any IP interface
-         at all, in which case only Unix-domain sockets can be used to connect
-         to it.
-         The default value is <systemitem class="systemname">localhost</systemitem>,
-         which allows only local TCP/IP <quote>loopback</quote> connections to be
-         made.  While client authentication (<xref
-         linkend="client-authentication"/>) allows fine-grained control
-         over who can access the server, <varname>listen_addresses</varname>
-         controls which interfaces accept connection attempts, which
-         can help prevent repeated malicious connection requests on
-         insecure network interfaces.  This parameter can only be set
-         at server start.
+Specifica gli indirizzi TCP/IP su cui il server è in ascolto di connessioni
+dalle applicazioni client. 
+Il valore ha la forma di un elenco di nomi di host separati da virgole e/o
+indirizzi IP numerici. La voce speciale <literal>*</literal>
+corrisponde a tutte le interfaccie IP disponibili.
+Se l'elenco è vuoto, il server non ascolta nessuna interfaccia IP, 
+nel qual caso solo i socket di dominio Unix possono essere usati per connettersi 
+ad esso.
+Il valore predefinito è  <systemitem class="systemname">localhost</systemitem>,
+che consente che vengano effettuate solo connessioni locali TCP/IP di <quote>loopback</quote>.
+Mentre l'autenticazione del client (<xref
+linkend="client-authentication"/>) permette il controllo fine su chi può aavere accesso al server,
+<varname>listen_addresses</varname> controlla quali interfaccie accettano 
+tentativi di connessione, che può aiutare a prevenire richieste maliziose ripetute 
+su interfaccie di rete non sicure. Questo parametro può essere impostato solo
+all'avvio del server.
        </para>
       </listitem>
      </varlistentry>
@@ -345,13 +342,13 @@ SET ENABLE_SEQSCAN TO OFF;
      <varlistentry id="guc-port" xreflabel="port">
       <term><varname>port</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>port</varname> configuration parameter</primary>
+       <primary>parametro di configurazione <varname>port</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        The TCP port the server listens on; 5432 by default.  Note that the
-        same port number is used for all IP addresses the server listens on.
-        This parameter can only be set at server start.
+La porta TCP su cui il server è in ascolto; la predefinita è 5432. Si noti che 
+lo stesso numero di porta è usato per tutti gli indirizzi IP su cui il server ascolta.
+Questo parametro può essere impostato solo all'avvio del server.
        </para>
       </listitem>
      </varlistentry>
@@ -359,29 +356,29 @@ SET ENABLE_SEQSCAN TO OFF;
      <varlistentry id="guc-max-connections" xreflabel="max_connections">
       <term><varname>max_connections</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>max_connections</varname> configuration parameter</primary>
+       <primary>parametro di configurazione <varname>max_connections</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Determines the maximum number of concurrent connections to the
-        database server. The default is typically 100 connections, but
-        might be less if your kernel settings will not support it (as
-        determined during <application>initdb</application>).  This parameter can
-        only be set at server start.
+Determina il massimo numero di connessioni concorrenti al server database.
+Il valore predefinito tipicamente è 100 connessioni, ma potrebbe essere 
+minore se le impostazioni del proprio kernel non lo supportano (come determinato durante
+<application>initdb</application>).  Questo parametro può essere impostato solo
+all'avvio del server.
        </para>
 
        <para>
-        Increasing this parameter might cause <productname>PostgreSQL</productname>
-        to request more <systemitem class="osname">System V</systemitem> shared
-        memory or semaphores than your operating system's default configuration
-        allows. See <xref linkend="sysvipc"/> for information on how to
-        adjust those parameters, if necessary.
+Incrementare questo parametro potrebbe causare che <productname>PostgreSQL</productname>
+richieda più memoria condivisa <systemitem class="osname">System V</systemitem> o semafori 
+rispetto a quello che permette la configurazione predefinita del sistema operativo.
+Si veda <xref linkend="sysvipc"/> per informazioni su come aggiustare 
+questi parametri, se necessario. 
        </para>
 
        <para>
-        When running a standby server, you must set this parameter to the
-        same or higher value than on the master server. Otherwise, queries
-        will not be allowed in the standby server.
+Quando si esegue un server di standby, si deve impostare questo parametro allo 
+stesso valore o ad un valore più altro rispetto al server master. Altrimenti, le query non  
+saranno permesse nel server standby.
        </para>
       </listitem>
      </varlistentry>
@@ -391,25 +388,23 @@ SET ENABLE_SEQSCAN TO OFF;
       <term><varname>superuser_reserved_connections</varname>
       (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>superuser_reserved_connections</varname> configuration parameter</primary>
+       <primary>parametro di configurazione <varname>superuser_reserved_connections</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Determines the number of connection <quote>slots</quote> that
-        are reserved for connections by <productname>PostgreSQL</productname>
-        superusers.  At most <xref linkend="guc-max-connections"/>
-        connections can ever be active simultaneously.  Whenever the
-        number of active concurrent connections is at least
-        <varname>max_connections</varname> minus
-        <varname>superuser_reserved_connections</varname>, new
-        connections will be accepted only for superusers, and no
-        new replication connections will be accepted.
+Determina il numero di <quote>slot</quote> di connessione che sono riservati
+per connessioni di superutenti di <productname>PostgreSQL</productname>.
+Al massimo <xref linkend="guc-max-connections"/> connessioni possono comunque essere attive simultaneamente.
+Se il numero di connessioni concorrenti attive è almeno 
+<varname>max_connections</varname> meno 
+<varname>superuser_reserved_connections</varname>, le nuove connessioni
+sarannno accettate solo per superutenti,  e nessuna connessione di replica sarà accettata.
        </para>
 
        <para>
-        The default value is three connections. The value must be less
-        than the value of <varname>max_connections</varname>. This
-        parameter can only be set at server start.
+Il valore predefinito è di tre connessioni. Il valore deve essere minore rispetto al 
+valore di <varname>max_connections</varname>. Questo 
+parametro può essere impostato solo all'avvio del server.
        </para>
       </listitem>
      </varlistentry>
@@ -417,29 +412,29 @@ SET ENABLE_SEQSCAN TO OFF;
      <varlistentry id="guc-unix-socket-directory" xreflabel="unix_socket_directory">
       <term><varname>unix_socket_directory</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>unix_socket_directory</varname> configuration parameter</primary>
+       <primary>parametro di configurazione <varname>unix_socket_directory</varname></primary>
       </indexterm>
       <listitem>
        <para>
         Specifies the directory of the Unix-domain socket on which the
         server is to listen for
-        connections from client applications.  The default is normally
+        connections from client applications.  
+        The default is normally
         <filename>/tmp</filename>, but can be changed at build time.
         This parameter can only be set at server start.
        </para>
 
        <para>
-        In addition to the socket file itself, which is named
-        <literal>.s.PGSQL.<replaceable>nnnn</replaceable></literal> where
-        <replaceable>nnnn</replaceable> is the server's port number, an ordinary file
-        named <literal>.s.PGSQL.<replaceable>nnnn</replaceable>.lock</literal> will be
-        created in the <varname>unix_socket_directory</varname> directory.  Neither
-        file should ever be removed manually.
+In aggiunta al file socket stesso, che è chiamato 
+<literal>.s.PGSQL.<replaceable>nnnn</replaceable></literal> dove 
+<replaceable>nnnn</replaceable> è il numero della porta del server, un file 
+chiamato  <literal>.s.PGSQL.<replaceable>nnnn</replaceable>.lock</literal> verrà
+creato nella directory <varname>unix_socket_directory</varname>. Nessuno dei due file 
+dovrebbe mai essere rimosso manualmente.
        </para>
 
        <para>
-        This parameter is irrelevant on Windows, which does not have
-        Unix-domain sockets.
+Questo parametro è irrilevante su Windows, che non ha i socket di dominio Unix.
        </para>
       </listitem>
      </varlistentry>
@@ -447,23 +442,21 @@ SET ENABLE_SEQSCAN TO OFF;
      <varlistentry id="guc-unix-socket-group" xreflabel="unix_socket_group">
       <term><varname>unix_socket_group</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>unix_socket_group</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>unix_socket_group</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets the owning group of the Unix-domain socket.  (The owning
-        user of the socket is always the user that starts the
-        server.)  In combination with the parameter
-        <varname>unix_socket_permissions</varname> this can be used as
-        an additional access control mechanism for Unix-domain connections.
-        By default this is the empty string, which uses the default
-        group of the server user.  This parameter can only be set at
-        server start.
+Imposta il gruppo proprietario del socket di dominio Unix. (L'utente proprietario
+del socket è sempre l'utente che avvia il server).
+In combinazione con il parametro
+<varname>unix_socket_permissions</varname> questo può essere usato come 
+un meccanismo di controllo aggiuntivo per connessioni di dominio Unix.
+Il valore predefinito è la stringa vuota, che usa il gruppo predefinito 
+dell'utente del server. Questo parametro può essere impostato solo all'avvio del server.
        </para>
 
        <para>
-        This parameter is irrelevant on Windows, which does not have
-        Unix-domain sockets.
+Questo parametro è irrilevante su Windows, che non ha i socket di dominio Unix.
        </para>
       </listitem>
      </varlistentry>
@@ -471,41 +464,40 @@ SET ENABLE_SEQSCAN TO OFF;
      <varlistentry id="guc-unix-socket-permissions" xreflabel="unix_socket_permissions">
       <term><varname>unix_socket_permissions</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>unix_socket_permissions</varname> configuration parameter</primary>
+       <primary>parametro di configurazione <varname>unix_socket_permissions</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets the access permissions of the Unix-domain socket.  Unix-domain
-        sockets use the usual Unix file system permission set.
-        The parameter value is expected to be a numeric mode
-        specified in the format accepted by the
-        <function>chmod</function> and <function>umask</function>
-        system calls.  (To use the customary octal format the number
-        must start with a <literal>0</literal> (zero).)
+Imposta i permessi di accesso del socket di dominio Unix. I socket di dominio Unix
+usano il sistema dei permessi usuale di Unix.
+Il valore del parametro sarà una modalità numerica specificata nel formato
+accettato dalle chiamate di sistema 
+<function>chmod</function> e <function>umask</function>.
+(Per usare l'usuale formato ottale il numero deve cominciare con uno
+<literal>0</literal> (zero)).
        </para>
 
        <para>
-        The default permissions are <literal>0777</literal>, meaning
-        anyone can connect. Reasonable alternatives are
-        <literal>0770</literal> (only user and group, see also
-        <varname>unix_socket_group</varname>) and <literal>0700</literal>
-        (only user). (Note that for a Unix-domain socket, only write
-        permission matters, so there is no point in setting or revoking
-        read or execute permissions.)
+I permessi predefiniti sono <literal>0777</literal>, che significa che chiunque può
+connettersi. Alternative ragionevoli sono 
+<literal>0770</literal> (solo l'utente e il gruppo, vedere anche 
+<varname>unix_socket_group</varname>) e <literal>0700</literal>
+(solo l'utente). (Si noti che per un socket di dominio Unix, solo i permessi 
+di scrittura contano, quindi non c'è bisogno di impostare o revocare i permessi di 
+lettura o esecuzione).
        </para>
 
        <para>
-        This access control mechanism is independent of the one
-        described in <xref linkend="client-authentication"/>.
+Questo meccanismo di controllo degli accessi è indipendente da quello descritto
+in  <xref linkend="client-authentication"/>.
        </para>
 
        <para>
-        This parameter can only be set at server start.
+Questo parametro può essere impostato solo all'avvio del server.
        </para>
 
        <para>
-        This parameter is irrelevant on Windows, which does not have
-        Unix-domain sockets.
+Questo parametro è irrilevante su Windows, che non ha i socket di dominio Unix.
        </para>
       </listitem>
      </varlistentry>

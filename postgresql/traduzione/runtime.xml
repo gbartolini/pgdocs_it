@@ -517,7 +517,7 @@ continuare a leggere.
 
    <para>
 Ci si riferisce alla memoria condivisa e i semafori collettivamente come
-<acronym>IPC</acronym></quote> (insieme alle code dei messaggi, che non sono 
+<acronym>IPC</acronym> (insieme alle code dei messaggi, che non sono 
 rilevanti per  <productname>PostgreSQL</productname>). 
 Quasi tutti i sistemi operativi moderni 
 forniscono queste caratteristiche, ma molti di loro non le hanno 
@@ -1636,6 +1636,7 @@ che si connette se usa <acronym>SSL</acronym>. In modo predefinito,
 questa è un'opzione del client; si veda <xref
 linkend="auth-pg-hba-conf"/> per informazioni su come impostare il server per richiedere 
 l'uso di <acronym>SSL</acronym> per alcune o tutte le connessioni.
+    </para>
 
   <para>
 <productname>PostgreSQL</productname> legge il file di configurazione 

@@ -505,13 +505,13 @@ Questo parametro è irrilevante su Windows, che non ha i socket di dominio Unix.
      <varlistentry id="guc-bonjour" xreflabel="bonjour">
       <term><varname>bonjour</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>bonjour</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>bonjour</varname></primary>
       </indexterm>
       <listitem>
        <para>
         Enables advertising the server's existence via
         <productname>Bonjour</productname>.  The default is off.
-        This parameter can only be set at server start.
+Questo parametro può essere impostato solo all'avvio del server.   
        </para>
       </listitem>
      </varlistentry>
@@ -519,16 +519,16 @@ Questo parametro è irrilevante su Windows, che non ha i socket di dominio Unix.
      <varlistentry id="guc-bonjour-name" xreflabel="bonjour_name">
       <term><varname>bonjour_name</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>bonjour_name</varname> configuration parameter</primary>
+       <primary>parametro di configurazione <varname>bonjour_name</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Specifies the <productname>Bonjour</productname> service
-        name.  The computer name is used if this parameter is set to the
-        empty string <literal>''</literal> (which is the default).  This parameter is
-        ignored if the server was not compiled with
-        <productname>Bonjour</productname> support.
-        This parameter can only be set at server start.
+Specifica il nome del servizio <productname>Bonjour</productname>.
+Se questo parametro è impostato alla stringa vuota <literal>''</literal> (che è il valore predefinito), 
+viene usato il nome del computer. 
+Questo parametro viene ignorato se il server
+non è stato compilato con il supporto <productname>Bonjour</productname>.
+Questo parametro può essere impostato soltanto all'avvio del server.
        </para>
       </listitem>
      </varlistentry>
@@ -536,21 +536,21 @@ Questo parametro è irrilevante su Windows, che non ha i socket di dominio Unix.
      <varlistentry id="guc-tcp-keepalives-idle" xreflabel="tcp_keepalives_idle">
       <term><varname>tcp_keepalives_idle</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>tcp_keepalives_idle</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>tcp_keepalives_idle</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Specifies the number of seconds before sending a keepalive packet on
-        an otherwise idle connection.  A value of 0 uses the system default.
-        This parameter is supported only on systems that support the
-        <symbol>TCP_KEEPIDLE</symbol> or <symbol>TCP_KEEPALIVE</symbol> symbols, and on
-        Windows; on other systems, it must be zero. This parameter is ignored
-        for connections made via a Unix-domain socket.
+Specifica il numero di secondi prima di mandare un pacchetto keepalive su
+un altra connessione idle. Un valore 0 usa  il valore predefinito di sistema.
+Questo parametro è supportato solo su sistemi che supportano i simboli 
+<symbol>TCP_KEEPIDLE</symbol> or <symbol>TCP_KEEPALIVE</symbol>, e su 
+Windows; su altri sistemi, deve essere zero. Questo parametro è ignorato
+per connessioni fatte attravero un socket di dominio Unix. 
        </para>
        <note>
         <para>
-         On Windows, a value of 0 will set this parameter to 2 hours,
-         since Windows does not provide a way to read the system default value.
+Su Windows, un valore 0 imposterà questo parametro a 2 ore, 
+dato che Windows non fornisce un modo per leggere il valore predefinito del sistema. 
         </para>
        </note>
       </listitem>
@@ -559,21 +559,20 @@ Questo parametro è irrilevante su Windows, che non ha i socket di dominio Unix.
      <varlistentry id="guc-tcp-keepalives-interval" xreflabel="tcp_keepalives_interval">
       <term><varname>tcp_keepalives_interval</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>tcp_keepalives_interval</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>tcp_keepalives_interval</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Specifies the number of seconds between sending keepalives on an
-        otherwise idle connection.  A value of 0 uses the system default.
-        This parameter is supported only on systems that support the
-        <symbol>TCP_KEEPINTVL</symbol> symbol, and on Windows; on other systems, it
-        must be zero. This parameter is ignored for connections made via a
-        Unix-domain socket.
+Specifica il numero di secondi tra le 'mandate' dei keepalive a un'altra connessione 
+idle. Un valore 0 usa il valore predefinito di sistema. 
+Questo parametro è supportato solo su sistemi che supportano il simbolo
+<symbol>TCP_KEEPINTVL</symbol>,  e su Windows; su altri sistemi, deve essere zero.
+Questo parametro viene ignorato per connessioni fatte attraverso un socket di dominio Unix.
        </para>
        <note>
         <para>
-         On Windows, a value of 0 will set this parameter to 1 second,
-         since Windows does not provide a way to read the system default value.
+Su Windows, il valore 0 imposterà questo parametro a 1 secondo,
+dato che Windows non prevede un modo per leggere il valore predefinito del sistema.
         </para>
        </note>
       </listitem>
@@ -582,19 +581,19 @@ Questo parametro è irrilevante su Windows, che non ha i socket di dominio Unix.
      <varlistentry id="guc-tcp-keepalives-count" xreflabel="tcp_keepalives_count">
       <term><varname>tcp_keepalives_count</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>tcp_keepalives_count</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>tcp_keepalives_count</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Specifies the number of keepalive packets to send on an otherwise idle
-        connection.  A value of 0 uses the system default.  This parameter is
-        supported only on systems that support the <symbol>TCP_KEEPCNT</symbol>
-        symbol; on other systems, it must be zero. This parameter is ignored
-        for connections made via a Unix-domain socket.
+Specifica il numero di pacchetti da mandare ad un'altra connessione idle. 
+Un valore 0 usa il valore predefinito del sistema. Questo parametro è supportato solo su
+sistemi che supportano il simbolo <symbol>TCP_KEEPCNT</symbol>; su altri sistemi,
+deve essere zero. Questo parametro viene ignorato 
+per connessioni fatte attraverso un socket di dominio Unix.
        </para>
        <note>
         <para>
-         This parameter is not supported on Windows, and must be zero.
+Questo parametro non è supportato su Windows, e deve essere zero.
         </para>
        </note>
       </listitem>
@@ -603,15 +602,15 @@ Questo parametro è irrilevante su Windows, che non ha i socket di dominio Unix.
      </variablelist>
      </sect2>
      <sect2 id="runtime-config-connection-security">
-     <title>Security and Authentication</title>
+     <title>Sicurezza e autenticazione</title>
 
      <variablelist>
      <varlistentry id="guc-authentication-timeout" xreflabel="authentication_timeout">
       <term><varname>authentication_timeout</varname> (<type>integer</type>)</term>
-      <indexterm><primary>timeout</primary><secondary>client authentication</secondary></indexterm>
-      <indexterm><primary>client authentication</primary><secondary>timeout during</secondary></indexterm>
+      <indexterm><primary>timeout</primary><secondary>autenticazione del client</secondary></indexterm>
+      <indexterm><primary>client authentication</primary><secondary>durante il timeout</secondary></indexterm>
       <indexterm>
-       <primary><varname>authentication_timeout</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>authentication_timeout</varname></primary>
       </indexterm>
 
       <listitem>

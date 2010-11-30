@@ -615,13 +615,13 @@ Questo parametro non è supportato su Windows, e deve essere zero.
 
       <listitem>
        <para>
-        Maximum time to complete client authentication, in seconds. If a
-        would-be client has not completed the authentication protocol in
-        this much time, the server closes the connection. This prevents
-        hung clients from occupying a connection indefinitely.
-        The default is one minute (<literal>1m</literal>).
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Il tempo massimo per completare l'autenticazione del client, in secondi. Se un possibile client
+non ha completato il protocollo di autenticazione in questo tempo, 
+il server chiude la connessione. Questo previene che client in attessa occupino 
+una connessione all'infinito.
+Il valore predefinito è un minuto (<literal>1m</literal>).
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
        </para>
       </listitem>
      </varlistentry>
@@ -629,15 +629,15 @@ Questo parametro non è supportato su Windows, e deve essere zero.
      <varlistentry id="guc-ssl" xreflabel="ssl">
       <term><varname>ssl</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>ssl</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>ssl</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Enables <acronym>SSL</acronym> connections. Please read
-        <xref linkend="ssl-tcp"/> before using this. The default
-        is <literal>off</literal>. This parameter can only be set at server
-        start.  <acronym>SSL</acronym> communication is only possible with
-        TCP/IP connections.
+Abilita le connessioni <acronym>SSL</acronym>. Si prega di leggere 
+<xref linkend="ssl-tcp"/> prima di usarlo. Il valore predefinito
+è <literal>off</literal>. Questo parametro può essere impostato solo all'avvio 
+del server. La comunicazione <acronym>SSL</acronym> è possibile solo con
+connessioni TCP/IP.
        </para>
       </listitem>
      </varlistentry>
@@ -645,7 +645,7 @@ Questo parametro non è supportato su Windows, e deve essere zero.
      <varlistentry id="guc-ssl-renegotiation-limit" xreflabel="ssl_renegotiation_limit">
       <term><varname>ssl_renegotiation_limit</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>ssl_renegotiation_limit</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>ssl_renegotiation_limit</varname></primary>
       </indexterm>
       <listitem>
        <para>
@@ -659,12 +659,11 @@ Questo parametro non è supportato su Windows, e deve essere zero.
        </para>
        <note>
         <para>
-         SSL libraries from before November 2009 are insecure when using SSL
-         renegotiation, due to a vulnerability in the SSL protocol. As a
-         stop-gap fix for this vulnerability, some vendors shipped SSL
-         libraries incapable of doing renegotiation. If any such libraries
-         are in use on the client or server, SSL renegotiation should be
-         disabled.
+Le librerie SSL precedenti a Novembre 2009 sono insicure quando si usa la rinegoziazione 
+SSL, a causa di una vulnerabilità nel protocollo SSL. Come correzione per questa 
+vulnerabilità, alcuni produttori distribuiscono le librerie SSL incapaci di eseguire 
+la rinegoziazione. Se una qualsiasi di queste librerie è in uso 
+sul client o sul server, la rinegoziazione SSL dovrebbe essere disabilitata. 
         </para>
        </note>
       </listitem>
@@ -673,13 +672,13 @@ Questo parametro non è supportato su Windows, e deve essere zero.
      <varlistentry id="guc-ssl-ciphers" xreflabel="ssl_ciphers">
       <term><varname>ssl_ciphers</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>ssl_ciphers</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>ssl_ciphers</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Specifies a list of <acronym>SSL</acronym> ciphers that are allowed to be
-        used on secure connections. See the <application>openssl</application>
-        manual page for a list of supported ciphers.
+Specifica un elenco di cipher <acronym>SSL</acronym> che è possibile usare in connessioni 
+sicure. Si veda la pagina di mauale di <application>openssl</application>
+per un elenco di cifre supportate. 
        </para>
       </listitem>
      </varlistentry>
@@ -687,17 +686,17 @@ Questo parametro non è supportato su Windows, e deve essere zero.
      <varlistentry id="guc-password-encryption" xreflabel="password_encryption">
       <term><varname>password_encryption</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>password_encryption</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>password_encryption</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        When a password is specified in <xref
-        linkend="sql-createuser"/> or
-        <xref linkend="sql-alteruser"/>
-        without writing either <literal>ENCRYPTED</literal> or
-        <literal>UNENCRYPTED</literal>, this parameter determines whether the
-        password is to be encrypted. The default is <literal>on</literal>
-        (encrypt the password).
+Quando una password viene specificata in <xref
+linkend="sql-createuser"/> o
+<xref linkend="sql-alteruser"/>
+senza scrivere nè <literal>ENCRYPTED</literal> nè 
+<literal>UNENCRYPTED</literal>, questo parametro determina se la password è stata criptata.
+Il valore predefinito è <literal>on</literal>
+(cripta la password).
        </para>
       </listitem>
      </varlistentry>
@@ -705,14 +704,14 @@ Questo parametro non è supportato su Windows, e deve essere zero.
      <varlistentry id="guc-krb-server-keyfile" xreflabel="krb_server_keyfile">
       <term><varname>krb_server_keyfile</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>krb_server_keyfile</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>krb_server_keyfile</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets the location of the Kerberos server key file. See
-        <xref linkend="kerberos-auth"/> or <xref linkend="gssapi-auth"/> 
-        for details. This parameter can only be set in the
-        <filename>postgresql.conf</filename> file or on the server command line.
+Imposta la posizione del file Kerberos di chiave del server. Si veda 
+<xref linkend="kerberos-auth"/> o <xref linkend="gssapi-auth"/> 
+per dettagli. Questo parametro può essere impostato nel file 
+<filename>postgresql.conf</filename> o dalla linea di comando del server.
        </para>
       </listitem>
      </varlistentry>
@@ -720,13 +719,13 @@ Questo parametro non è supportato su Windows, e deve essere zero.
      <varlistentry id="guc-krb-srvname" xreflabel="krb_srvname">
       <term><varname>krb_srvname</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>krb_srvname</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>krb_srvname</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets the Kerberos service name. See <xref linkend="kerberos-auth"/>
-        for details. This parameter can only be set in the
-        <filename>postgresql.conf</filename> file or on the server command line.
+Impostare il nome del servizio Kerberos. Si veda <xref linkend="kerberos-auth"/>
+per dettagli. Questo parametro può essere impostato solo nel file 
+<filename>postgresql.conf</filename> o dalla linea di comando del server.
        </para>
       </listitem>
      </varlistentry>
@@ -734,14 +733,14 @@ Questo parametro non è supportato su Windows, e deve essere zero.
      <varlistentry id="guc-krb-caseins-users" xreflabel="krb_caseins_users">
       <term><varname>krb_caseins_users</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>krb_caseins_users</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>krb_caseins_users</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets whether Kerberos and GSSAPI user names should be treated
-        case-insensitively.
-        The default is <literal>off</literal> (case sensitive). This parameter can only be 
-        set in the <filename>postgresql.conf</filename> file or on the server command line.
+Imposta se i nomi utente Kerberos e GSSAPI dovrebbero essere trattati senza 
+considerare il case. 
+Il valore predefinito è <literal>off</literal> (non considera il case). Questo parametro può essere
+impostato solo nel file  <filename>postgresql.conf</filename> o dalla linea di comando del server. 
        </para>
       </listitem>
      </varlistentry>
@@ -749,49 +748,47 @@ Questo parametro non è supportato su Windows, e deve essere zero.
      <varlistentry id="guc-db-user-namespace" xreflabel="db_user_namespace">
       <term><varname>db_user_namespace</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>db_user_namespace</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>db_user_namespace</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        This parameter enables per-database user names.  It is off by default.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Questo parametro abilita i nomi utente per database. Il valore predefinito è off.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
        </para>
 
        <para>
-        If this is on, you should create users as <literal>username@dbname</literal>.
-        When <literal>username</literal> is passed by a connecting client,
-        <literal>@</literal> and the database name are appended to the user
-        name and that database-specific user name is looked up by the
-        server. Note that when you create users with names containing
-        <literal>@</literal> within the SQL environment, you will need to
-        quote the user name.
+Se è impostato ad on, di dovrebbe creare utenti tipo <literal>username@dbname</literal>.
+Quando <literal>username</literal> viene passato da un client che si sta connettendo, 
+<literal>@</literal> e il nome del database sono aggiunti in coda al nome utente  
+e quel nome utente specifico del database è cercato dal server.
+Si noti che quando si creano utenti con nomi contenenti 
+<literal>@</literal> all'interno dell'ambiente SQL, si avrà bisogno di 
+quotare il nome utente.
        </para>
 
        <para>
-        With this parameter enabled, you can still create ordinary global
-        users.  Simply append <literal>@</literal> when specifying the user
-        name in the client, e.g. <literal>joe@</literal>.  The <literal>@</literal>
-        will be stripped off before the user name is looked up by the
-        server.
+Con questo parametro abilitato, è possibile comunque creare utenti globali ordinari.
+Aggiungere semplicemente <literal>@</literal> quando si specifica il nome utente nel client, 
+per esempio <literal>joe@</literal>. La <literal>@</literal>
+sarà tolta prima che il nome utente venga cercatp daò server.
        </para>
 
        <para>
-        <varname>db_user_namespace</varname> causes the client's and
-        server's user name representation to differ.
-        Authentication checks are always done with the server's user name
-        so authentication methods must be configured for the
-        server's user name, not the client's.  Because
-        <literal>md5</literal> uses the user name as salt on both the
-        client and server, <literal>md5</literal> cannot be used with
-        <varname>db_user_namespace</varname>.
+<varname>db_user_namespace</varname> causa che le rappresentazioni del nome utente 
+da parte del client e del server differiscano.
+I controlli di autenticazione sono fatti sempre con il nome utente del server
+quindi i metodi di autenticazione devono essere configurati per
+il nome utente del server, non del client. Dato che 
+<literal>md5</literal> usa il nome utente come salt(?) sia sul client che il server,
+<literal>md5</literal> non può essere usato con
+<varname>db_user_namespace</varname>.
        </para>
 
        <note>
         <para>
-         This feature is intended as a temporary measure until a
-         complete solution is found.  At that time, this option will
-         be removed.
+Questa caratteristica viene intesa come misura temporanea finchè non viene 
+trovata una soluzione completa. In quel momento, questa opzione sarà rimossa.
         </para>
        </note>
       </listitem>
@@ -802,60 +799,57 @@ Questo parametro non è supportato su Windows, e deve essere zero.
    </sect1>
 
    <sect1 id="runtime-config-resource">
-    <title>Resource Consumption</title>
+    <title>Consumo di risorse</title>
 
     <sect2 id="runtime-config-resource-memory">
-     <title>Memory</title>
+     <title>Memoria</title>
 
      <variablelist>
      <varlistentry id="guc-shared-buffers" xreflabel="shared_buffers">
       <term><varname>shared_buffers</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>shared_buffers</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>shared_buffers</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets the amount of memory the database server uses for shared
-        memory buffers.  The default is typically 32 megabytes
-        (<literal>32MB</literal>), but might be less if your kernel settings will
-        not support it (as determined during <application>initdb</application>).
-        This setting must be at least 128 kilobytes.  (Non-default
-        values of <symbol>BLCKSZ</symbol> change the minimum.)  However,
-        settings significantly higher than the minimum are usually needed
-        for good performance.  This parameter can only be set at server start.
+Imposta l'ammontare di memoria che il server database usa per i buffer 
+di memoria condivisa. Il valore predefinito è tipicamente 32 megabyte
+(<literal>32MB</literal>), ma potrebbe essere meno se le impostazioni del kernel 
+non lo supportano (come determinato durante l'<application>initdb</application>).
+Questa impostazione deve essere almeno 128 kilobytes. (Valori non predefiniti 
+di <symbol>BLCKSZ</symbol> cambiano il minimo). Comunque, 
+impostazioni significativamente maggiori rispetto al minimo sono di solito necessarie 
+per buone prestazioni. Questo parametro può essere impostato solo all'avvio del server.
        </para>
 
        <para>
-        If you have a dedicated database server with 1GB or more of RAM, a
-        reasonable starting value for <varname>shared_buffers</varname> is 25%
-        of the memory in your system.  There are some workloads where even
-        large settings for <varname>shared_buffers</varname> are effective, but
-        because <productname>PostgreSQL</productname> also relies on the
-        operating system cache, it is unlikely that an allocation of more than
-        40% of RAM to <varname>shared_buffers</varname> will work better than a
-        smaller amount.  Larger settings for <varname>shared_buffers</varname>
-        usually require a corresponding increase in
-        <varname>checkpoint_segments</varname>, in order to spread out the
-        process of writing large quantities of new or changed data over a
-        longer period of time.
+Se si ha un server database dedicato con 1GB o più di RAM, un valore di partenza ragionevole
+per <varname>shared_buffers</varname> è il 25% della memoria del sistema.
+Ci sono molti carichi di lavoro anche dove sono in vigore grandi valori per
+<varname>shared_buffers</varname>, ma dato che <productname>PostgreSQL</productname>
+fa affidamento anche sulla cache del sistema operativo, è improbabile che un'allocazione
+di più del 40% della RAM per <varname>shared_buffers</varname> funzionerà meglio rispetto
+a un quantitativo minore. Impostazioni più grandi per  <varname>shared_buffers</varname>
+di solito richiedono un incremento corrispondente in
+<varname>checkpoint_segments</varname>, per diffondere il processo  
+di scrittura di grandi quantità di dati nuovi o cambiati in un periodo di tempo più lungo.
        </para>
 
        <para>
-        On systems with less than 1GB of RAM, a smaller percentage of RAM is
-        appropriate, so as to leave adequate space for the operating system.
-        Also, on Windows, large values for <varname>shared_buffers</varname>
-        aren't as effective.  You may find better results keeping the setting
-        relatively low and using the operating system cache more instead.  The
-        useful range for <varname>shared_buffers</varname> on Windows systems
-        is generally from 64MB to 512MB.
+Su sistemi con meno di 1GB di RAM, una percentuale di RAM più piccola è appropriata,
+quindi da lasciare spazio adeguato per il sistema operativo.
+Inoltre, su Windows, valori grandi per  <varname>shared_buffers</varname>
+non sono così efficaci. Si potrebbero  avere risultati migliori mantenendo il valore 
+relativamente basso e usando maggiormente la cache del sistema operativo. L'intervallo  
+utile per <varname>shared_buffers</varname> su sistemi Windows è generalmente 
+da 64MB a 512MB.
        </para>
 
        <para>
-        Increasing this parameter might cause <productname>PostgreSQL</productname>
-        to request more <systemitem class="osname">System V</systemitem> shared
-        memory than your operating system's default configuration
-        allows. See <xref linkend="sysvipc"/> for information on how to
-        adjust those parameters, if necessary.
+Incrementare questo parametro potrebbe causare che <productname>PostgreSQL</productname>
+richieda più memoria <systemitem class="osname">System V</systemitem> condivisa
+rispetto a quello che permette il valore predefinito del sistema operativo.
+Si veda  <xref linkend="sysvipc"/> per informazioni su come aggiustare questi parametri, se necessario. 
        </para>
       </listitem>
      </varlistentry>
@@ -863,27 +857,26 @@ Questo parametro non è supportato su Windows, e deve essere zero.
      <varlistentry id="guc-temp-buffers" xreflabel="temp_buffers">
       <term><varname>temp_buffers</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>temp_buffers</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>temp_buffers</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets the maximum number of temporary buffers used by each database
-        session.  These are session-local buffers used only for access to
-        temporary tables.  The default is eight megabytes
-        (<literal>8MB</literal>).  The setting can be changed within individual
-        sessions, but only before the first use of temporary tables
-        within the session; subsequent attempts to change the value will
-        have no effect on that session.
+Imposta il massimo numero di butter temporanei usati da ogni sessione di database.
+Questi sono buffer locali alla sessione usati solo per accedere a 
+tabelle temporanee. Il valore predefinito è otto megabyte 
+(<literal>8MB</literal>). L'impostazione può essere cambiata all'interno di sessioni individuali, 
+ma solo prima del primo utilizzo di tabelle temporanee all'interno della sessione;
+tentativi successivi di cambiare il valore non avranno effetto su quella sessione.
        </para>
 
        <para>
-        A session will allocate temporary buffers as needed up to the limit
-        given by <varname>temp_buffers</varname>.  The cost of setting a large
-        value in sessions that do not actually need many temporary
-        buffers is only a buffer descriptor, or about 64 bytes, per
-        increment in <varname>temp_buffers</varname>.  However if a buffer is
-        actually used an additional 8192 bytes will be consumed for it
-        (or in general, <symbol>BLCKSZ</symbol> bytes).
+Una sessione allocherà buffer temporanei come richiesto dal limite 
+fornito da <varname>temp_buffers</varname>. Il costo di impostare un valore grande 
+in sessioni che effettivamente non necessitano di molti buffer temporanei
+è solo quello di un destrittore di buffer, o circa 64 byte per 
+incremento in <varname>temp_buffers</varname>.  Comunque se un buffer è 
+effettivamente usato, 8192 byte aggiuntivi saranno consumati (o 
+in generale,  <symbol>BLCKSZ</symbol> byte).
        </para>
       </listitem>
      </varlistentry>
@@ -891,39 +884,39 @@ Questo parametro non è supportato su Windows, e deve essere zero.
      <varlistentry id="guc-max-prepared-transactions" xreflabel="max_prepared_transactions">
       <term><varname>max_prepared_transactions</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>max_prepared_transactions</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>max_prepared_transactions</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets the maximum number of transactions that can be in the
-        <quote>prepared</quote> state simultaneously (see <xref
-        linkend="sql-prepare-transaction"/>).
-        Setting this parameter to zero (which is the default)
-        disables the prepared-transaction feature.
-        This parameter can only be set at server start.
+Imposta il numero massimo di transazioni che possono essere in stato 
+<quote>prepared</quote> simultaneamente (si veda <xref
+linkend="sql-prepare-transaction"/>).
+Impostare questo parametro a zero (che è il valore predefinito)
+disabilita la caratteristica delle transazioni preparate.
+Questo parametro può essere impostato solo all'avvio del server.
        </para>
 
        <para>
-        If you are not planning to use prepared transactions, this parameter
-        should be set to zero to prevent accidental creation of prepared
-        transactions.  If you are using prepared transactions, you will
-        probably want <varname>max_prepared_transactions</varname> to be at
-        least as large as <xref linkend="guc-max-connections"/>, so that every
-        session can have a prepared transaction pending.
+Se non si pensa di dover usare le transazioni preparate, questo parametro
+dovrebbe essere impostato a zero per prevenire la creazione accidentale di 
+transazioni preparate. Se si sta usando le transazioni preparate, probabilmente
+si vorrà che  <varname>max_prepared_transactions</varname> sia grande almeno  
+quanto  <xref linkend="guc-max-connections"/>, così che ogni  
+sessione possa avere una transazione preparata in sospeso.
        </para>
 
        <para>
-        Increasing this parameter might cause <productname>PostgreSQL</productname>
-        to request more <systemitem class="osname">System V</systemitem> shared
-        memory than your operating system's default configuration
-        allows. See <xref linkend="sysvipc"/> for information on how to
-        adjust those parameters, if necessary.
+Incrementare questo parametro potrebbe causare che  <productname>PostgreSQL</productname>
+richieda maggiore memoria  <systemitem class="osname">System V</systemitem> condivisa  
+rispetto a quello che permette la configurazione predefinita del sistema operativo.
+Si veda  <xref linkend="sysvipc"/> per informazioni su come aggiustare  
+questi parametri, se necessario.
        </para>
 
        <para>
-        When running a standby server, you must set this parameter to the
-        same or higher value than on the master server. Otherwise, queries
-        will not be allowed in the standby server.
+Quando si esegue un server standby, si deve impostare questo parametro allo 
+stesso o a un valore maggiore rispetto al server master. Altrimenti, le query 
+non saranno permesse nel server standby.
        </para>
       </listitem>
      </varlistentry>
@@ -931,22 +924,22 @@ Questo parametro non è supportato su Windows, e deve essere zero.
      <varlistentry id="guc-work-mem" xreflabel="work_mem">
       <term><varname>work_mem</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>work_mem</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>work_mem</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Specifies the amount of memory to be used by internal sort operations
-        and hash tables before writing to temporary disk files. The value
-        defaults to one megabyte (<literal>1MB</literal>).
-        Note that for a complex query, several sort or hash operations might be
-        running in parallel; each operation will be allowed to use as much memory
-        as this value specifies before it starts to write data into temporary
-        files. Also, several running sessions could be doing such operations
-        concurrently.  Therefore, the total memory used could be many
-        times the value of <varname>work_mem</varname>; it is necessary to
-        keep this fact in mind when choosing the value. Sort operations are
-        used for <literal>ORDER BY</literal>, <literal>DISTINCT</literal>, and
-        merge joins.
+Specifica l'ammontare di memoria che deve essere usata da operazioni di ordinamento interne 
+e dalle tabelle hash prima di scrivere in file disco temporanei. Il valore
+predefinito è un megabyte (<literal>1MB</literal>).
+Si noti che per una query complessa, diverse operazioni di ordinamento o hash potrebbero essere
+eseguite in parallelo; ogni operazione potrà usare tanta memoria quanto specificato 
+da questo valore prima che cominci a scrivere dati in file temporanei. 
+Inoltre, diverse sessioni in esecuzione potrebbero fare tali operazioni 
+concorrentemente. Perciò, la memoria totale usata potrebbe essere molte volte
+più grande di <varname>work_mem</varname>;  è necessario tenerlo a mente
+quando si sceglie il valore. Operazioni di ordinamento sono 
+usate per <literal>ORDER BY</literal>, <literal>DISTINCT</literal> e
+join merge.
         Hash tables are used in hash joins, hash-based aggregation, and
         hash-based processing of <literal>IN</literal> subqueries.
        </para>
@@ -956,24 +949,24 @@ Questo parametro non è supportato su Windows, e deve essere zero.
      <varlistentry id="guc-maintenance-work-mem" xreflabel="maintenance_work_mem">
       <term><varname>maintenance_work_mem</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>maintenance_work_mem</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>maintenance_work_mem</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Specifies the maximum amount of memory to be used by maintenance
-        operations, such as <command>VACUUM</command>, <command>CREATE
-        INDEX</command>, and <command>ALTER TABLE ADD FOREIGN KEY</command>.  It defaults
-        to 16 megabytes (<literal>16MB</literal>).  Since only one of these
-        operations can be executed at a time by a database session, and
-        an installation normally doesn't have many of them running
-        concurrently, it's safe to set this value significantly larger
-        than <varname>work_mem</varname>.  Larger settings might improve
-        performance for vacuuming and for restoring database dumps.
+Specifica l'ammontare di mamoria massimo da usare per operazioni di manutenzione, 
+tipo <command>VACUUM</command>, <command>CREATE
+INDEX</command> e <command>ALTER TABLE ADD FOREIGN KEY</command>. Il valore predefinito è
+16 megabyte (<literal>16MB</literal>). Dato che solo una di queste
+operazioni può essere eseguita alla volta da una sessione di database, e
+normalmente un'installazione non ne ha molte in esecuzione 
+consorrentememte, è sicuro impostare questo valore significativamente maggiore rispetto a
+<varname>work_mem</varname>. Valori maggiori potrebbero aumentare le prestazioni 
+del vacuum e del ripristino dei dump del database.
        </para>
        <para>
-        Note that when autovacuum runs, up to
-        <xref linkend="guc-autovacuum-max-workers"/> times this memory may be
-        allocated, so be careful not to set the default value too high.
+Si noti che quando autovacuum è in esecuzione, questa memoria potrebbe essere allocata 
+<xref linkend="guc-autovacuum-max-workers"/> volte, quindi fare attenzione 
+a non impostare un valore predefinito troppo alto.
        </para>
       </listitem>
      </varlistentry>
@@ -981,31 +974,30 @@ Questo parametro non è supportato su Windows, e deve essere zero.
      <varlistentry id="guc-max-stack-depth" xreflabel="max_stack_depth">
       <term><varname>max_stack_depth</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>max_stack_depth</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>max_stack_depth</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Specifies the maximum safe depth of the server's execution stack.
-        The ideal setting for this parameter is the actual stack size limit
-        enforced by the kernel (as set by <literal>ulimit -s</literal> or local
-        equivalent), less a safety margin of a megabyte or so.  The safety
-        margin is needed because the stack depth is not checked in every
-        routine in the server, but only in key potentially-recursive routines
-        such as expression evaluation.  The default setting is two
-        megabytes (<literal>2MB</literal>), which is conservatively small and
-        unlikely to risk crashes.  However, it might be too small to allow
-        execution of complex functions.  Only superusers can change this
-        setting.
+Specifica la profondità massima sicura dello stack di esecuzione del server.
+L'impostazione ideale per questo parametro è l'effettivo limite della dimensione dello 
+stack forzato dal kernel (come impostato da <literal>ulimit -s</literal> o un equivalente locale),
+meno un margine di sicurezza di un megabyte o più. Il margine di sicurezza 
+è necessario perchè la profondità dello stack non viene controllata in ogni routine del 
+server, ma solo in routine chiave potenzialmente ricorsive tipo valutazioni di espressione.
+L'impostazione predefinita è due megabyte (<literal>2MB</literal>), che è 
+prudentemente piccola e non a rischio di crash. Comunque, potrebbe essere troppo piccolo
+per permettere l'esecuzione di funzioni complesse. Solo i superutenti 
+possono cambiare questa impostazione.
        </para>
 
        <para>
-        Setting <varname>max_stack_depth</varname> higher than
-        the actual kernel limit will mean that a runaway recursive function
-        can crash an individual backend process.  On platforms where
-        <productname>PostgreSQL</productname> can determine the kernel limit,
-        the server will not allow this variable to be set to an unsafe
-        value.  However, not all platforms provide the information,
-        so caution is recommended in selecting a value.
+Impostare <varname>max_stack_depth</varname> a un valore maggiore rispetto al 
+limite effettivo del kernel significherà che una funzione ricorsiva incontrollata
+possa bloccare un processo di backend individuale. Su piattaforme dove
+<productname>PostgreSQL</productname> può determinare il limite del kernel,
+il server non permetterà che questa variabile sia impostata a un valore non sicuro.
+Comunque, non tutte le piattaforme forniscono questa informazione, 
+quindi si raccomanda cautela quando si sceglie un valore.
        </para>
       </listitem>
      </varlistentry>
@@ -1014,25 +1006,25 @@ Questo parametro non è supportato su Windows, e deve essere zero.
      </sect2>
 
      <sect2 id="runtime-config-resource-kernel">
-     <title>Kernel Resource Usage</title>
+     <title>Utilizzo delle risorse del kernel</title>
      <variablelist>
 
      <varlistentry id="guc-max-files-per-process" xreflabel="max_files_per_process">
       <term><varname>max_files_per_process</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>max_files_per_process</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>max_files_per_process</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets the maximum number of simultaneously open files allowed to each
-        server subprocess. The default is one thousand files. If the kernel is enforcing
-        a safe per-process limit, you don't need to worry about this setting.
-        But on some platforms (notably, most BSD systems), the kernel will
-        allow individual processes to open many more files than the system
-        can actually support if many processes all try to open
-        that many files. If you find yourself seeing <quote>Too many open
-        files</quote> failures, try reducing this setting.
-        This parameter can only be set at server start.
+Imposta il massimo numero di file aperti simultaneamente permessi ad ogni sottoprocesso del server.
+Il valore predefinito è mille file. Se il kernel sta forzando 
+un limite sicuro per processo, non ci si deve preoccupare di questa impostazione. 
+Ma su alcune piattaforme (specialmente la maggior parte dei sistemi BSD), il kernel 
+permetterà a processi individuali di aprire molti più file rispetto a quello 
+che il sistema supporta effettivamente se molti processi provano ad aprire 
+così tanti file. Se si trovano fallimenti di tipo <quote>Too many open
+files</quote>, provare a ridurre questa impostazione. 
+Questo parametro può essere impostato solo all'avvio del server.
        </para>
       </listitem>
      </varlistentry>
@@ -1040,58 +1032,57 @@ Questo parametro non è supportato su Windows, e deve essere zero.
      <varlistentry id="guc-shared-preload-libraries" xreflabel="shared_preload_libraries">
       <term><varname>shared_preload_libraries</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>shared_preload_libraries</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>shared_preload_libraries</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        This variable specifies one or more shared libraries
-        to be preloaded at server start. For example,
-        <literal>'$libdir/mylib'</literal> would cause
-        <literal>mylib.so</literal> (or on some platforms,
-        <literal>mylib.sl</literal>) to be preloaded from the installation's
-        standard library directory.
-        All library names are converted to lower case unless double-quoted.
-        If more than one library is to be loaded, separate their names
-        with commas.  This parameter can only be set at server start.
+Questa variabile specifica una o più librerie condivise da essere 
+precaricata all'avvio del server. Per esempio, 
+<literal>'$libdir/mylib'</literal>  causerebbe che 
+<literal>mylib.so</literal> (o <literal>mylib.sl</literal>
+su alcune piattaforme) sia precaricata dalla directory predefinita  delle librerie.
+Tutti i nomi delle librerie sono convertiti in minuscolo a meno che non siano tra doppi apici.
+Se più di una libreria deve essere caricata, separare i loro nomi con virgole. 
+Questo parametro può essere impostato solo all'avvio del server.
        </para>
 
        <para>
-        <productname>PostgreSQL</productname> procedural language
-        libraries can be preloaded in this way, typically by using the
-        syntax <literal>'$libdir/plXXX'</literal> where
-        <literal>XXX</literal> is <literal>pgsql</literal>, <literal>perl</literal>,
-        <literal>tcl</literal>, or <literal>python</literal>.
+Le librerie dei linguaggi procedurali di <productname>PostgreSQL</productname> possono  
+essere precaricate  in questo modo, tipicamente usando la sintassi
+<literal>'$libdir/plXXX'</literal> dove  
+<literal>XXX</literal> è <literal>pgsql</literal>, <literal>perl</literal>,
+<literal>tcl</literal> o <literal>python</literal>.
        </para>
 
        <para>
-        By preloading a shared library, the library startup time is avoided
-        when the library is first used.  However, the time to start each new
-        server process might increase slightly, even if that process never
-        uses the library.  So this parameter is recommended only for
-        libraries that will be used in most sessions. 
+Precaricando una libreria condivisa, viene evitato il tempo di avvio della libreria
+quando la libreria viene usata per la prima volta. Comunque, il tempo per l'avvio 
+di ogni processo server potrebbe incrementare sensibilmente, anche se quel processo 
+non usa mai la libreria. Quindi questo parametro è raccomandato solo per
+librerie che saranno usate nella maggior delle sessioni.
        </para>
 
      <note>
       <para>
-        On Windows hosts, preloading a library at server start will not reduce
-        the time required to start each new server process; each server process
-        will re-load all preload libraries.  However, <varname>shared_preload_libraries
-        </varname> is still useful on Windows hosts because some shared libraries may 
-        need to perform certain operations that only take place at postmaster start
-        (for example, a shared library may need to reserve lightweight locks
-        or shared memory and you can't do that after the postmaster has started).
+Su host Windows, precaricare una libreria all'avvio del server non ridurrà
+il tempo richiesto per l'avvio di ogni nuovo processo server; ogni processo server
+ricaricherà ogni libreria precaricata. Comunque, <varname>shared_preload_libraries</varname>
+è utile su host Windows perchè alcune librerie condivise potrebbero aver bisogno di 
+eseguire certe operazioni che si verificano solo all'avvio di postmaster
+(per esempio, una libreria condivisa potrebbe voler riservare lock leggeri 
+o memoria condivisa e non si può fare ciò dopo che il postmaster è partito).
        </para>
       </note>
        <para>
-        If a specified library is not found,
-        the server will fail to start.
+Se una libreria specificata non viene trovata,
+il server non fallirà nel tentativo di avviarsi.
        </para>
 
        <para>
-        Every  PostgreSQL-supported library has a <quote>magic
-        block</quote> that is checked to guarantee compatibility.  
-        For this reason, non-PostgreSQL libraries cannot be 
-        loaded in this way.
+Ogni libreria supportata da PostgreSQL ha un <quote>blocco magico</quote>
+che viene controllato per garantire la compatibilità.
+Per questa ragione, le librerie non PostgreSQL non possono essere caricate 
+in questa maniera.
        </para>
       </listitem>
      </varlistentry>
@@ -1100,64 +1091,61 @@ Questo parametro non è supportato su Windows, e deve essere zero.
     </sect2>
 
     <sect2 id="runtime-config-resource-vacuum-cost">
-     <title>Cost-Based Vacuum Delay</title>
+     <title>Ritardo del vacuum basato sul costo</title>
 
      <para>
-      During the execution of <xref linkend="sql-vacuum"/>
-      and <xref linkend="sql-analyze"/>
-      commands, the system maintains an
-      internal counter that keeps track of the estimated cost of the
-      various I/O operations that are performed.  When the accumulated
-      cost reaches a limit (specified by
-      <varname>vacuum_cost_limit</varname>), the process performing
-      the operation will sleep for a short period of time, as specified by
-      <varname>vacuum_cost_delay</varname>. Then it will reset the
-      counter and continue execution.
+Durante l'esecuzione dei comandi <xref linkend="sql-vacuum"/> 
+e <xref linkend="sql-analyze"/>, il sistema mantiene 
+un contatore interno che tiene traccia del costo stimato delle 
+varie operazioni di I/O che vengono svolte. Quando il costo accumulato
+raggiunge un limite (specificato da 
+<varname>vacuum_cost_limit</varname>), il processo che esegue 
+l'operazione attenderà per un breve periodo di tempo, come specificato da
+<varname>vacuum_cost_delay</varname>. Quindi azzererà il contatore e 
+continuerà l'esecuzione.
      </para>
 
      <para>
-      The intent of this feature is to allow administrators to reduce
-      the I/O impact of these commands on concurrent database
-      activity. There are many situations where it is not
-      important that maintenance commands like
-      <command>VACUUM</command> and <command>ANALYZE</command> finish
-      quickly; however, it is usually very important that these
-      commands do not significantly interfere with the ability of the
-      system to perform other database operations. Cost-based vacuum
-      delay provides a way for administrators to achieve this.
+L'intento di questa caratteristica è di permettere agli amministratori di 
+ridurre l'impatto di questi comandi di I/O sull'attività di database concorrenti. 
+Ci sono molte situazioni dove non è importante 
+che comandi di manutenzione tipo <command>VACUUM</command> e <command>ANALYZE</command>
+finiscano velocemente; comunque, di solito è molto importante che questi
+comandi non interferiscano significativamente con l'abilità del sistema 
+di eseguire altre operazioni del database. Il ritardo del vacuum basato sul costo
+fornisce agli amministratori  un modo di evitare ciò.
      </para>
 
      <para>
-      This feature is disabled by default for manually issued
-      <command>VACUUM</command> commands. To enable it, set the
-      <varname>vacuum_cost_delay</varname> variable to a nonzero
-      value.
+Questa caratteristica è disabilitata in modo predefinito per comandi 
+<command>VACUUM</command> manuali. Per abilitarla, impostare la variabile 
+<varname>vacuum_cost_delay</varname> a un valore diverso da zero.
      </para>
 
      <variablelist>
       <varlistentry id="guc-vacuum-cost-delay" xreflabel="vacuum_cost_delay">
        <term><varname>vacuum_cost_delay</varname> (<type>integer</type>)</term>
        <indexterm>
-        <primary><varname>vacuum_cost_delay</varname> configuration parameter</primary>
+        <primary>Parametro di configurazione <varname>vacuum_cost_delay</varname></primary>
        </indexterm>
        <listitem>
         <para>
-         The length of time, in milliseconds, that the process will sleep
-         when the cost limit has been exceeded.
-         The default value is zero, which disables the cost-based vacuum
-         delay feature.  Positive values enable cost-based vacuuming.
-         Note that on many systems, the effective resolution
-         of sleep delays is 10 milliseconds; setting
-         <varname>vacuum_cost_delay</varname> to a value that is
-         not a multiple of 10 might have the same results as setting it
-         to the next higher multiple of 10.
+La lunghezza del tempo, in millisecondi, che il processo aspetterà
+quando è stato ecceduto il limite di costo.
+Il valore predefinito è zero, che disabilita la caratteristica di ritardo del vacuum 
+basata sul costo. Valori positivi abilitano il vacuum basato sul costo.
+Si noti che su molti sistemi, la risoluzione effettiva 
+dei ritardi di attesa è 10 millisecondi; impostare 
+<varname>vacuum_cost_delay</varname> a un valore che non è multiplo di 
+10 potrebbe avere gli stessi risultati di impostarlo al
+successivo multiplo di 10.
         </para>
 
         <para>
-         When using cost-based vacuuming, appropriate values for
-         <varname>vacuum_cost_delay</varname> are usually quite small, perhaps
-         10 or 20 milliseconds.  Adjusting vacuum's resource consumption
-         is best done by changing the other vacuum cost parameters.
+Quando si usa il vacuum basato sul costo, valori appropriati per 
+<varname>vacuum_cost_delay</varname> di solito sono abbastanza piccoli, forse 
+10 o 20 millisecondi. Aggiustare il consumo delle risorse di vacuum
+è fatto meglio cambiando gli altri parametri di costo del vacuum.
         </para>
        </listitem>
       </varlistentry>
@@ -1165,14 +1153,13 @@ Questo parametro non è supportato su Windows, e deve essere zero.
       <varlistentry id="guc-vacuum-cost-page-hit" xreflabel="vacuum_cost_page_hit">
        <term><varname>vacuum_cost_page_hit</varname> (<type>integer</type>)</term>
        <indexterm>
-        <primary><varname>vacuum_cost_page_hit</varname> configuration parameter</primary>
+        <primary>Parametro di configurazione <varname>vacuum_cost_page_hit</varname></primary>
        </indexterm>
        <listitem>
         <para>
-         The estimated cost for vacuuming a buffer found in the shared buffer
-         cache. It represents the cost to lock the buffer pool, lookup
-         the shared hash table and scan the content of the page. The
-         default value is one.
+Il costo stimato per sottoporre a vacuum un buffer trovato nel buffer di cache condiviso.
+Rappresenta il costo per sottoporre a lock il pool del buffer, trovare la 
+tabella hash condivisa e scansionare il contenuto della pagina. Il valore predefinito è uno.
         </para>
        </listitem>
       </varlistentry>
@@ -1180,14 +1167,14 @@ Questo parametro non è supportato su Windows, e deve essere zero.
       <varlistentry id="guc-vacuum-cost-page-miss" xreflabel="vacuum_cost_page_miss">
        <term><varname>vacuum_cost_page_miss</varname> (<type>integer</type>)</term>
        <indexterm>
-        <primary><varname>vacuum_cost_page_miss</varname> configuration parameter</primary>
+        <primary>Parametro di configurazione <varname>vacuum_cost_page_miss</varname></primary>
        </indexterm>
        <listitem>
         <para>
-         The estimated cost for vacuuming a buffer that has to be read from
-         disk.  This represents the effort to lock the buffer pool,
-         lookup the shared hash table, read the desired block in from
-         the disk and scan its content. The default value is 10.
+Il costo stimato per fare il vacuum di un buffer che deve essere letto da disco.
+Questo rappresenta lo sforzo di sottoporre a lock il pool di buffer, 
+trovare la tabella hash condivisa, leggere da disco  il blocco desiderato
+e scansionare il suo contenuto. Il valore predefinito è 10.
         </para>
        </listitem>
       </varlistentry>
@@ -1195,14 +1182,13 @@ Questo parametro non è supportato su Windows, e deve essere zero.
       <varlistentry id="guc-vacuum-cost-page-dirty" xreflabel="vacuum_cost_page_dirty">
        <term><varname>vacuum_cost_page_dirty</varname> (<type>integer</type>)</term>
        <indexterm>
-        <primary><varname>vacuum_cost_page_dirty</varname> configuration parameter</primary>
+        <primary>Parametro di configurazione <varname>vacuum_cost_page_dirty</varname></primary>
        </indexterm>
        <listitem>
         <para>
-         The estimated cost charged when vacuum modifies a block that was
-         previously clean. It represents the extra I/O required to
-         flush the dirty block out to disk again. The default value is
-         20.
+Il costo stimato speso quando il vacuum modifica un blocco che è stato pulito  
+precedentemente. Esso rappresenta l'I/O aggiuntivo richiesto per 
+eliminare i blocchi sporchi dal disco. Il valore predefinito è 20.
         </para>
        </listitem>
       </varlistentry>
@@ -1210,12 +1196,12 @@ Questo parametro non è supportato su Windows, e deve essere zero.
       <varlistentry id="guc-vacuum-cost-limit" xreflabel="vacuum_cost_limit">
        <term><varname>vacuum_cost_limit</varname> (<type>integer</type>)</term>
        <indexterm>
-        <primary><varname>vacuum_cost_limit</varname> configuration parameter</primary>
+        <primary>Parametro di configurazione <varname>vacuum_cost_limit</varname></primary>
        </indexterm>
        <listitem>
         <para>
-         The accumulated cost that will cause the vacuuming process to sleep.
-         The default value is 200.
+Il costo accumulato che causerà il ritardo del processo di vacuum. 
+Il valore predefinito è 20.
         </para>
        </listitem>
       </varlistentry>

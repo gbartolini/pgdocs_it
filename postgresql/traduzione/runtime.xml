@@ -1876,8 +1876,9 @@ psql -h localhost -p 63333 postgres
    think the connection is SSL-encrypted, since in fact it is not
    encrypted between the
    <application>SSH</application> server and the
-   <productname>PostgreSQL</productname> server.  This should not pose any
-   extra security risk as long as they are on the same machine.
+   <productname>PostgreSQL</productname> server.  
+Questo non dovrebbe portare rischi di sicurezza aggiuntivi
+dato che sono sulla stessa macchina. 
   </para>
 
   <para>

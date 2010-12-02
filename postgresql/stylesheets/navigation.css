@@ -1,0 +1,23 @@
+div.upper_navigation
+{
+    border-bottom:1px solid #CCC;
+}
+div.lower_navigation
+{
+    border-top:1px solid #CCC;
+}
+div.lower_navigation table a img, 
+div.upper_navigation table a img 
+{
+    vertical-align:middle;
+}
+div.lower_navigation table a, 
+div.upper_navigation table a
+{
+    text-decoration:none;
+}
+div.lower_navigation table td.dx, 
+div.upper_navigation table td.dx
+{
+    text-align:right;
+}

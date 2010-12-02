@@ -1209,15 +1209,15 @@ Il valore predefinito è 20.
 
      <note>
       <para>
-       There are certain operations that hold critical locks and should
-       therefore complete as quickly as possible.  Cost-based vacuum
-       delays do not occur during such operations.  Therefore it is
-       possible that the cost accumulates far higher than the specified
-       limit.  To avoid uselessly long delays in such cases, the actual
-       delay is calculated as <varname>vacuum_cost_delay</varname> *
-       <varname>accumulated_balance</varname> /
-       <varname>vacuum_cost_limit</varname> with a maximum of
-       <varname>vacuum_cost_delay</varname> * 4.
+Ci sono certe operazioni che trattengono lock critici e dovrebbero
+quindi completarsi il più velocemente possibile. I ritardi del vacuum basati sul 
+costo non avvengono durante tali operazioni. Perciò è possibile 
+che il costo aumenti rispetto al limite specificato. Per evitare 
+ritardi inutilmente lunghi in questi casi, l'effettivo ritardo è 
+calcolato come <varname>vacuum_cost_delay</varname> *
+<varname>accumulated_balance</varname> /
+<varname>vacuum_cost_limit</varname> con un massimo di
+<varname>vacuum_cost_delay</varname> * 4.
       </para>
      </note>
     </sect2>
@@ -1226,38 +1226,38 @@ Il valore predefinito è 20.
      <title>Background Writer</title>
 
      <para>
-      There is a separate server
-      process called the <firstterm>background writer</firstterm>, whose function
-      is to issue writes of <quote>dirty</quote> (new or modified) shared
-      buffers.  It writes shared buffers so server processes handling
-      user queries seldom or never need to wait for a write to occur.
-      However, the background writer does cause a net overall
-      increase in I/O load, because while a repeatedly-dirtied page might
-      otherwise be written only once per checkpoint interval, the
-      background writer might write it several times as it is dirtied
-      in the same interval.  The parameters discussed in this subsection
-      can be used to tune the behavior for local needs.
+C'è un processo server separato chiamato
+<firstterm>background writer</firstterm>, la cui funzione è 
+di fornire scritture di buffer condividi <quote>sporchi</quote> (nuovi o modificati).
+Esso scrive i buffer condivisi così che i processi server che gestiscono 
+le query dell'utente non hanno mai (o raramente) bisogno di aspettare che avvenga una scrittura.
+Comunque, il background writer non causa un incremento generale 
+del carico di I/O della rete, dato che mentre una pagina sporcata ripetutamente 
+potrebbe altrimenti essere scritta solo una volta per intervallo di checkpoint,
+il background writer potrebbe scriverla diverse volte dato che viene sporcata 
+nello stesso intervallo. I parametri discussi in questa sottosezione 
+possono essere usati per mettere a punto il comportamento per necessità locali.
      </para>
 
      <variablelist>
       <varlistentry id="guc-bgwriter-delay" xreflabel="bgwriter_delay">
        <term><varname>bgwriter_delay</varname> (<type>integer</type>)</term>
        <indexterm>
-        <primary><varname>bgwriter_delay</varname> configuration parameter</primary>
+        <primary>Parametro di configurazione <varname>bgwriter_delay</varname></primary>
        </indexterm>
        <listitem>
         <para>
-         Specifies the delay between activity rounds for the
-         background writer.  In each round the writer issues writes
-         for some number of dirty buffers (controllable by the
-         following parameters).  It then sleeps for <varname>bgwriter_delay</varname>
-         milliseconds, and repeats.  The default value is 200 milliseconds
-         (<literal>200ms</literal>). Note that on many systems, the effective
-         resolution of sleep delays is 10 milliseconds; setting
-         <varname>bgwriter_delay</varname> to a value that is not a multiple of
-         10 might have the same results as setting it to the next higher
-         multiple of 10.  This parameter can only be set in the
-         <filename>postgresql.conf</filename> file or on the server command line.
+Specifica il ritardo tra i turni di attività per il background writer.
+Ad ogni turno il writer esegue scritture per un certo numero di buffer 
+sporchi (controllabili dai seguenti parametri).
+Quindi aspetta per <varname>bgwriter_delay</varname> millisecondi,
+e ricomincia. Il valore predefinito è 200 millisecondi 
+(<literal>200ms</literal>). Si noti che su molti sistemi, la reale risoluzione dei 
+ritardi di attesa è 10 millisendi; specificare
+<varname>bgwriter_delay</varname> a un valore che non è multiplo di 
+10 potrebbe avere gli stessi risultati di impostarlo al successivo multiplo di 10. 
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
         </para>
        </listitem>
       </varlistentry>
@@ -1265,16 +1265,16 @@ Il valore predefinito è 20.
       <varlistentry id="guc-bgwriter-lru-maxpages" xreflabel="bgwriter_lru_maxpages">
        <term><varname>bgwriter_lru_maxpages</varname> (<type>integer</type>)</term>
        <indexterm>
-        <primary><varname>bgwriter_lru_maxpages</varname> configuration parameter</primary>
+        <primary>Parametro di configurazione <varname>bgwriter_lru_maxpages</varname></primary>
        </indexterm>
        <listitem>
         <para>
-         In each round, no more than this many buffers will be written
-         by the background writer.  Setting this to zero disables
-         background writing (except for checkpoint activity).
-         The default value is 100 buffers.
-         This parameter can only be set in the <filename>postgresql.conf</filename>
-         file or on the server command line.
+Ad ogni turno, non più di questo numero di buffer sarà scritto 
+dal background writer. Impostarlo a zero disabilita 
+le scritture in background (ad eccezione dell'attività per i checkpoint).
+Il valore predefinito è 100 buffer.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o nella linea di comando del server.
         </para>
        </listitem>
       </varlistentry>
@@ -1282,57 +1282,56 @@ Il valore predefinito è 20.
       <varlistentry id="guc-bgwriter-lru-multiplier" xreflabel="bgwriter_lru_multiplier">
        <term><varname>bgwriter_lru_multiplier</varname> (<type>floating point</type>)</term>
        <indexterm>
-        <primary><varname>bgwriter_lru_multiplier</varname> configuration parameter</primary>
+        <primary>Parametro di configurazione <varname>bgwriter_lru_multiplier</varname></primary>
        </indexterm>
        <listitem>
         <para>
-         The number of dirty buffers written in each round is based on the
-         number of new buffers that have been needed by server processes
-         during recent rounds.  The average recent need is multiplied by
-         <varname>bgwriter_lru_multiplier</varname> to arrive at an estimate of the
-         number of buffers that will be needed during the next round.  Dirty
-         buffers are written until there are that many clean, reusable buffers
-         available.  (However, no more than <varname>bgwriter_lru_maxpages</varname>
-         buffers will be written per round.)
-         Thus, a setting of 1.0 represents a <quote>just in time</quote> policy
-         of writing exactly the number of buffers predicted to be needed.
-         Larger values provide some cushion against spikes in demand,
-         while smaller values intentionally leave writes to be done by
-         server processes.
-         The default is 2.0.
-         This parameter can only be set in the <filename>postgresql.conf</filename>
-         file or on the server command line.
+Il numero di buffer sporchi scritti ad ogni giro è basato sul numero di 
+nuovi buffer che sono stati necessari ai processi server durante 
+i turni recenti. Il bisogno medio recente viene moltiplicato per 
+<varname>bgwriter_lru_multiplier</varname> per arrivare a una stima del numero di buffer
+che saranno necessari durante il prossimo giro. I buffer sporchi 
+vengono scritti finchè ci sono molti buffer puliti e riusabili disponibili.
+(Comunque, non più di <varname>bgwriter_lru_maxpages</varname> buffer 
+saranno scritti ad ogni giro).
+Così, il valore 1.0 rappresenta una politica di scrittura <quote>in tempo reale</quote>
+di esattamente il numero di buffer necessari previsti.
+Valori maggiori forniscono protezione rispetto a picchi di domande, 
+mentre valori inferiori lasciano intenzionalmente che le scritture siano fatte
+dai processi server.
+Il valore predefinito è 2.0.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o nella linea di comando del server.
         </para>
        </listitem>
       </varlistentry>
      </variablelist>
 
      <para>
-      Smaller values of <varname>bgwriter_lru_maxpages</varname> and
-      <varname>bgwriter_lru_multiplier</varname> reduce the extra I/O load
-      caused by the background writer, but make it more likely that server
-      processes will have to issue writes for themselves, delaying interactive
-      queries.
+Valori più piccoli di <varname>bgwriter_lru_maxpages</varname> e
+<varname>bgwriter_lru_multiplier</varname> riducono il carico aggiuntivo di I/O 
+causato dal background writer, ma rendono più probabile che i processi server
+dovranno eseguire le scritture loro stessi, ritardando le query interattive.
      </para>
     </sect2>
 
     <sect2 id="runtime-config-resource-async-behavior">
-     <title>Asynchronous Behavior</title>
+     <title>Comportamento asincrono</title>
 
      <variablelist>
       <varlistentry id="guc-effective-io-concurrency" xreflabel="effective_io_concurrency">
        <term><varname>effective_io_concurrency</varname> (<type>integer</type>)</term>
        <indexterm>
-        <primary><varname>effective_io_concurrency</varname> configuration parameter</primary>
+        <primary>Parametro di configurazione <varname>effective_io_concurrency</varname></primary>
        </indexterm>
        <listitem>
         <para>
-         Sets the number of concurrent disk I/O operations that
-         <productname>PostgreSQL</productname> expects can be executed
-         simultaneously.  Raising this value will increase the number of I/O
-         operations that any individual <productname>PostgreSQL</productname> session
-         attempts to initiate in parallel.  The allowed range is 1 to 1000,
-         or zero to disable issuance of asynchronous I/O requests.
+Imposta il numero di operazioni I/O su disco che <productname>PostgreSQL</productname>
+si aspetta possano essere eseguite simultaneamente.
+Aumentare questo valore incrementerà il numero di operazioni di I/O
+che qualsiasi sessione individuale di <productname>PostgreSQL</productname>
+tenta di iniziare in parallelo. L'intervallo permesso è da 1 a 1000,
+o zero per disabilitare l'emissione di richieste di I/O asincrone.
         </para>
 
         <para>
@@ -1353,11 +1352,11 @@ Il valore predefinito è 20.
         </para>
 
         <para>
-         Asynchronous I/O depends on an effective <function>posix_fadvise</function>
-         function, which some operating systems lack.  If the function is not
-         present then setting this parameter to anything but zero will result
-         in an error.  On some operating systems (e.g., Solaris), the function
-         is present but does not actually do anything.
+L'I/O asincrono dipende dalla reale funzione <function>posix_fadvise</function>,
+che manca in alcuni sistemi operativi. Se la funzione non è presente 
+allora impostare questo parametro a qualsiasi valore eccetto zero causerà un 
+errore. Su alcuni sistemi operativi (per es., Solaris), la funzione 
+è presente ma in realtà non fa niente.
         </para>
        </listitem>
       </varlistentry>

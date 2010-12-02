@@ -13,7 +13,7 @@ include ../Makefile.config
 
 HTM_OUTPUT := pgsql-$(VER)-it
 WEB_OUTPUT := web-$(VER)-it
-WEBTEST_OUTPUT := web-$(VER)-it-TEST 
+WEBTEST_OUTPUT := web-$(VER)-it-TEST
 TGZ_OUTPUT := pg$(MAJORVER).tar.gz
 ZIP_OUTPUT := pg$(MAJORVER).zip
 PDF_OUTPUT := pg$(MAJORVER).pdf

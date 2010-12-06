@@ -1368,103 +1368,101 @@ errore. Su alcuni sistemi operativi (per es., Solaris), la funzione
     <title>Write Ahead Log</title>
 
    <para>
-    See also <xref linkend="wal-configuration"/> for details on WAL
-    and checkpoint tuning.
+Si veda anche  <xref linkend="wal-configuration"/> per dettagli sulla
+messa a punto sul WAL e i checkpoint.
    </para>
 
     <sect2 id="runtime-config-wal-settings">
-     <title>Settings</title>
+     <title>Impostazioni</title>
      <variablelist>
 
      <varlistentry id="guc-wal-level" xreflabel="wal_level">
       <term><varname>wal_level</varname> (<type>enum</type>)</term>
       <indexterm>
-       <primary><varname>wal_level</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>wal_level</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        <varname>wal_level</varname> determines how much information is written
-        to the WAL. The default value is <literal>minimal</literal>, which writes
-        only the information needed to recover from a crash or immediate
-        shutdown. <literal>archive</literal> adds logging required for WAL archiving,
-        and <literal>hot_standby</literal> further adds information required to run
-        read-only queries on a standby server.
-        This parameter can only be set at server start.
+<varname>wal_level</varname> determina quante informazioni sono scritte
+nel WAL. Il valore predefinito è <literal>minimal</literal>, che scrive
+solo le informazione necessarie a recuperare da un crash o un arresto immediato.
+<literal>archive</literal> aggiunge i log richiesti per l'archiviazione WAL,
+e <literal>hot_standby</literal> aggiunge ulteriormente informazioni richieste per eseguire 
+query in sola lettura su un server standby.  
+Questo parametro può essere impostato solo all'avvio del server.
        </para>
        <para>
-        In <literal>minimal</literal> level, WAL-logging of some bulk operations, like
-        <command>CREATE INDEX</command>, <command>CLUSTER</command> and <command>COPY</command> on
-        a table that was created or truncated in the same transaction can be
-        safely skipped, which can make those operations much faster (see
-        <xref linkend="populate-pitr"/>). But minimal WAL does not contain
-        enough information to reconstruct the data from a base backup and the
-        WAL logs, so either <literal>archive</literal> or <literal>hot_standby</literal>
-        level must be used to enable
-        WAL archiving (<xref linkend="guc-archive-mode"/>) and streaming
-        replication.
+Nel livello  <literal>minimal</literal>, il log WAL di alcune operazioni di massa, come
+<command>CREATE INDEX</command>, <command>CLUSTER</command> e <command>COPY</command> su
+una tabella che è stata creata o troncata nella stessa transazione può essere saltato 
+in maniera sicura, il che può rendere queste operazioni molto più veloci (si veda
+<xref linkend="populate-pitr"/>). Ma WAL minimali non contengono
+abbastanza informazioni per ricostruire i dati a partire da un backup di base e dai
+log WAL, quindi i livelli <literal>archive</literal> o  <literal>hot_standby</literal>
+devono essere usati per abilitare 
+l'archiviazione WAL (<xref linkend="guc-archive-mode"/>) e la replica streaming.
        </para>
        <para>
-        In <literal>hot_standby</literal> level, the same information is logged as
-        with <literal>archive</literal>, plus information needed to reconstruct
-        the status of running transactions from the WAL. To enable read-only
-        queries on a standby server, <varname>wal_level</varname> must be set to
-        <literal>hot_standby</literal> on the primary, and
-        <xref linkend="guc-hot-standby"/> must be enabled in the standby. It is
-        thought that there is
-        little measurable difference in performance between using
-        <literal>hot_standby</literal> and <literal>archive</literal> levels, so feedback
-        is welcome if any production impacts are noticeable.
+Nel livello <literal>hot_standby</literal>, le stesse informazioni sono salvate nel log come
+con <literal>archive</literal>, più informazioni necessarie a ricostruire 
+lo stato di transazioni in esecuzione dallo WAL. Per abilitare query in sola lettura
+su un server standby, <varname>wal_level</varname> deve essere impostato a 
+<literal>hot_standby</literal>  sul primario, e
+<xref linkend="guc-hot-standby"/> deve essere abilitato nello standby. È
+sensato che ci sia 
+una piccola differenza misurabile nelle prestazioni tra usare 
+i livelli <literal>hot_standby</literal> e <literal>archive</literal>, quindi sono 
+benvenuti riscontri da parte vostra se avvengono impatti evidenti in produzione.
        </para>
       </listitem>
      </varlistentry>
 
      <varlistentry id="guc-fsync" xreflabel="fsync">
       <indexterm>
-       <primary><varname>fsync</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>fsync</varname></primary>
       </indexterm>
       <term><varname>fsync</varname> (<type>boolean</type>)</term>
       <listitem>
        <para>
-        If this parameter is on, the <productname>PostgreSQL</productname> server
-        will try to make sure that updates are physically written to
-        disk, by issuing <function>fsync()</function> system calls or various
-        equivalent methods (see <xref linkend="guc-wal-sync-method"/>).
-        This ensures that the database cluster can recover to a
-        consistent state after an operating system or hardware crash.
+Se questo parametro è attivo, il server <productname>PostgreSQL</productname>
+proverà ad assicurarsi che gli aggiornamenti siano scritti fisicamente su disco,
+eseguendo chiamate di sistema <function>fsync()</function> o vari metodi equivalenti
+(si veda <xref linkend="guc-wal-sync-method"/>).
+Questo assicura che il cluster database possa recuperare a uno stato consistente
+dopo un blocco del sistema operativo o dell'hardware.
        </para>
 
        <para>
-        While turning off <varname>fsync</varname> is often a performance
-        benefit, this can result in unrecoverable data corruption in
-        the event of an unexpected system shutdown or crash.  Thus it
-        is only advisable to turn off  <varname>fsync</varname> if
-        you can easily recreate your entire database from external
-        data.
+Mentre disabilitare <varname>fsync</varname> spesso è un beneficio in termini di 
+prestazioni, questo può risultare in corruzione irrecuperabile dei dati 
+in caso di blocco o arresto inaspettato del sistema. Così
+è consigliabile disabilitare <varname>fsync</varname> se 
+è possibile ricreare facilmente l'intero database a partire da dati esterni.
        </para>
 
        <para>
-        Examples of safe circumstances for turning off
-        <varname>fsync</varname> include the initial loading a new
-        database cluster from a backup file, using a database cluster
-        for processing statistics on an hourly basis which is then
-        recreated, or for a reporting read-only database clone which
-        gets recreated frequently and is not used for failover.  High
-        quality hardware alone is not a sufficient justification for
-        turning off <varname>fsync</varname>.
+Esempi di circostanze sicure per disabilitare 
+<varname>fsync</varname> includono il caricamento iniziale di un 
+nuovo cluster di database a partire da un file di backup, l'uso di un cluster 
+per l'elaborazione di statistiche all'ora che vengono quindi ricreate,
+o per un clone in sola lettura del database che viene ricreato frequentemente
+e non viene usato per il failover. Hardware di alta qualità da solo non è  
+sufficiente a giustificare la disabilitazione di 
+<varname>fsync</varname>.
        </para>
 
        <para>
-        In many situations, turning off <xref linkend="guc-synchronous-commit"/>
-        for noncritical transactions can provide much of the potential
-        performance benefit of turning off <varname>fsync</varname>, without
-        the attendant risks of data corruption.
+In molte situazioni, disabilitare <xref linkend="guc-synchronous-commit"/>
+per le transazioni non critiche può fornire molti dei potenziali benefici 
+equivalenti a disattivare <varname>fsync</varname>, senza
+i rischi collegati di corruzione di dati.
        </para>
 
        <para>
-        <varname>fsync</varname> can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
-        If you turn this parameter off, also consider turning off 
-        <xref linkend="guc-full-page-writes"/>.
+<varname>fsync</varname> può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
+Se di disabilita questo parametro, considerare anche la disabilitazione di 
+<xref linkend="guc-full-page-writes"/>.
        </para>
       </listitem>
      </varlistentry>
@@ -1472,26 +1470,27 @@ errore. Su alcuni sistemi operativi (per es., Solaris), la funzione
      <varlistentry id="guc-synchronous-commit" xreflabel="synchronous_commit">
       <term><varname>synchronous_commit</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>synchronous_commit</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>synchronous_commit</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Specifies whether transaction commit will wait for WAL records
-        to be written to disk before the command returns a <quote>success</quote>
-        indication to the client.  The default, and safe, setting is
-        <literal>on</literal>.  When <literal>off</literal>, there can be a delay between
-        when success is reported to the client and when the transaction is
-        really guaranteed to be safe against a server crash.  (The maximum
-        delay is three times <xref linkend="guc-wal-writer-delay"/>.)  Unlike
-        <xref linkend="guc-fsync"/>, setting this parameter to <literal>off</literal>
-        does not create any risk of database inconsistency: an operating
-        system or database crash might
-        result in some recent allegedly-committed transactions being lost, but
-        the database state will be just the same as if those transactions had
-        been aborted cleanly.  So, turning <varname>synchronous_commit</varname> off
-        can be a useful alternative when performance is more important than
-        exact certainty about the durability of a transaction.  For more
-        discussion see <xref linkend="wal-async-commit"/>.
+Specifica se il commit della transazione aspetterà che i record WAL siano scritti
+su disco prima che il comando restituisca un indicazione di <quote>successo</quote>
+al client. L'impostazione predefinita, e sicura, è 
+<literal>on</literal>. Quando impostato a <literal>off</literal>, ci può essere un ritardo 
+tra quando viene riportato il successo al client e quando la transazione è
+veramente garantita essere sicura rispetto a un blocco del server. (Il massimo
+ritardo è tre volte <xref linkend="guc-wal-writer-delay"/>). Diversamente da 
+<xref linkend="guc-fsync"/>, impostare questo parametro a <literal>off</literal>
+non crea nessun rischio di inconsistenza del database: un blocco del sistema operativo
+o del database potrebbe risultare 
+nella perdita di alcune transazioni presumibilmente sottoposte a commit, ma 
+lo stato del database sarà comunque lo stesso come se quelle transazioni 
+fossero state annullate di recente.
+Quindi, disabilitare <varname>synchronous_commit</varname> 
+può essere un'alternativa utile quando le prestazioni sono più importanti rispetto 
+alla certezza assoluta sulla durabilità di una transazione. Per maggiori 
+discussioni si veda <xref linkend="wal-async-commit"/>.
        </para>
        <para>
         This parameter can be changed at any time; the behavior for any
@@ -1508,19 +1507,20 @@ errore. Su alcuni sistemi operativi (per es., Solaris), la funzione
      <varlistentry id="guc-wal-sync-method" xreflabel="wal_sync_method">
       <term><varname>wal_sync_method</varname> (<type>enum</type>)</term>
       <indexterm>
-       <primary><varname>wal_sync_method</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>wal_sync_method</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Method used for forcing WAL updates out to disk.
-        If <varname>fsync</varname> is off then this setting is irrelevant,
-        since WAL file updates will not be forced out at all.
-        Possible values are:
+Metodo usato per forzare aggiornamenti WAL fuori dal disco.
+Se <varname>fsync</varname> è disabilitato allora quest'impostazione è irrilevante,
+dato che aggiornamenti dei file WAL non saranno forzati per nulla.
+Possibili valori sono:
        </para>
        <itemizedlist>
         <listitem>
         <para>
-         <literal>open_datasync</literal> (write WAL files with <function>open()</function> option <symbol>O_DSYNC</symbol>)
+         <literal>open_datasync</literal> 
+          (write WAL files with <function>open()</function> option <symbol>O_DSYNC</symbol>)
         </para>
         </listitem>
         <listitem>
@@ -1545,32 +1545,33 @@ errore. Su alcuni sistemi operativi (per es., Solaris), la funzione
         </listitem>
        </itemizedlist>
        <para>
-        Not all of these choices are available on all platforms.
-        The default is the first method in the above list that is supported
-        by the platform.
-        The <literal>open_</literal>* options also use <literal>O_DIRECT</literal> if available.
-        The utility <filename>src/tools/fsync</filename> in the PostgreSQL source tree
-        can do performance testing of various fsync methods.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Non tutte queste scelte soono disponibili su tutte le piattaforme.
+Il valore predefinito è il primo metodo nell'elenco sopra che è supportato dalla 
+piattaforma. 
+L'opzione <literal>open_</literal>* usa anche <literal>O_DIRECT</literal> se disponibile.
+L'utilità <filename>src/tools/fsync</filename> nell'albero delle directory del sorgente  di PostgreSQL 
+può fare dei test di prestazioni di vari metodi fsync.
+Questo parametro può essere impostato solo nel file  <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
        </para>
       </listitem>
      </varlistentry>
      
      <varlistentry id="guc-full-page-writes" xreflabel="full_page_writes">
       <indexterm>
-       <primary><varname>full_page_writes</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>full_page_writes</varname></primary>
       </indexterm>
       <term><varname>full_page_writes</varname> (<type>boolean</type>)</term>
       <listitem>
        <para>
-        When this parameter is on, the <productname>PostgreSQL</productname> server
-        writes the entire content of each disk page to WAL during the
-        first modification of that page after a checkpoint.
-        This is needed because
-        a page write that is in process during an operating system crash might
-        be only partially completed, leading to an on-disk page
-        that contains a mix of old and new data.  The row-level change data
+Quando questo parametro è attivo, il server <productname>PostgreSQL</productname>
+scrive l'intero contenuto di ogni pagina disco nel WAL durante la prima modifica 
+di quella pagina dopo un checkpoint.
+Questo è necessario perchè la scrittura di una pagina che 
+è in elaborazione durante un blocco del sistema operativo potrebbe essere 
+completata solo parzialmente, portando a una pagina su disco 
+che contiene un insieme di dati vecchi e nuovi. 
+        The row-level change data
         normally stored in WAL will not be enough to completely restore
         such a page during post-crash recovery.  Storing the full page image
         guarantees that the page can be correctly restored, but at the price
@@ -1582,23 +1583,23 @@ errore. Su alcuni sistemi operativi (per es., Solaris), la funzione
        </para>
 
        <para>
-        Turning this parameter off speeds normal operation, but
-        might lead to either unrecoverable data corruption, or silent
-        data corruption, after a system failure. The risks are similar to turning off
-        <varname>fsync</varname>, though smaller, and it should be turned off
-        only based on the same circumstances recommended for that parameter.
+Disabilitare questo parametro velocizza le operazioni normali, ma
+potrebbe portare o a una corruzione non recuperabile dei dati, o a una corruzione 
+dei dati silenziosa, dopo un fallimento del sistema. I rischi solo simili a disabilitare
+<varname>fsync</varname>, sebbene minori, e dovrebbe essere disabilitato 
+solo nelle stesse circostanze raccomandate per quel parametro.
        </para>
 
        <para>
-        Turning off this parameter does not affect use of
-        WAL archiving for point-in-time recovery (PITR)
-        (see <xref linkend="continuous-archiving"/>).
+Disabilitare questo parametro non ha effetto sull'utilizzo 
+dell'archiviazione WAL per il point-in-time recovery (PITR)
+(si veda  <xref linkend="continuous-archiving"/>).
        </para>
 
        <para>
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
-        The default is <literal>on</literal>.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
+Il valore predefinito è <literal>on</literal>.
        </para>
       </listitem>
      </varlistentry>
@@ -1606,24 +1607,23 @@ errore. Su alcuni sistemi operativi (per es., Solaris), la funzione
      <varlistentry id="guc-wal-buffers" xreflabel="wal_buffers">
       <term><varname>wal_buffers</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>wal_buffers</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>wal_buffers</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        The amount of memory used in shared memory for WAL data.  The
-        default is 64 kilobytes (<literal>64kB</literal>).  The setting need only
-        be large enough to hold the amount of WAL data generated by one
-        typical transaction, since the data is written out to disk at
-        every transaction commit.  This parameter can only be set at server
-        start.
+L'ammontare di memoria usata nella memoria condivisa per dati WAL. Il valore predefinito 
+è 64 kilobyte (<literal>64kB</literal>). L'impostazione necessita solo di essere 
+larga abbastanza per contenere l'ammontare di dati WAL generati da una transazione 
+tipica, dato che i dati sono scritto fuori dal disco ad ogni commit di transazione.
+Questo parametro può essere impostato solo all'avvio del server.
        </para>
 
        <para>
-        Increasing this parameter might cause <productname>PostgreSQL</productname>
-        to request more <systemitem class="osname">System V</systemitem> shared
-        memory than your operating system's default configuration
-        allows. See <xref linkend="sysvipc"/> for information on how to
-        adjust those parameters, if necessary.
+Incrementare questo parametro potrebbe causare che <productname>PostgreSQL</productname>
+richieda più memoria condivisa <systemitem class="osname">System V</systemitem> 
+rispetto a quello che permette la configurazione predefinita del sistema operativo. 
+Si veda <xref linkend="sysvipc"/> per informazioni su come aggiustare 
+questi parametri, se necessario.
        </para>
       </listitem>
      </varlistentry>
@@ -1631,19 +1631,19 @@ errore. Su alcuni sistemi operativi (per es., Solaris), la funzione
      <varlistentry id="guc-wal-writer-delay" xreflabel="wal_writer_delay">
       <term><varname>wal_writer_delay</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>wal_writer_delay</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>wal_writer_delay</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Specifies the delay between activity rounds for the WAL writer.
-        In each round the writer will flush WAL to disk. It then sleeps for
-        <varname>wal_writer_delay</varname> milliseconds, and repeats.  The default
-        value is 200 milliseconds (<literal>200ms</literal>).  Note that on many
-        systems, the effective resolution of sleep delays is 10 milliseconds;
-        setting <varname>wal_writer_delay</varname> to a value that is not a multiple
-        of 10 might have the same results as setting it to the next higher
-        multiple of 10. This parameter can only be set in the
-        <filename>postgresql.conf</filename> file or on the server command line.
+Specifica il ritardo tra i turni di attività per il writer WAL.
+Ad ogni turno il writer pulirà i WAL su disco. Quindi aspetterà per 
+<varname>wal_writer_delay</varname> millisecondi, e quindi si ripete. Il valore predefinito
+è 200 millisecondi, (<literal>200ms</literal>). Si noti che su molti 
+sistemi, la risoluzione reale dei ritardi di attesa è 10 millisecondi;
+impostare <varname>wal_writer_delay</varname> ad un valore che non è un multiplo di 
+10 potrebbe avere gli stessi risultati di impostarlo al successivo multiplo di 10.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
        </para>
       </listitem>
      </varlistentry>
@@ -1651,7 +1651,7 @@ errore. Su alcuni sistemi operativi (per es., Solaris), la funzione
      <varlistentry id="guc-commit-delay" xreflabel="commit_delay">
       <term><varname>commit_delay</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>commit_delay</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>commit_delay</varname></primary>
       </indexterm>
       <listitem>
        <para>

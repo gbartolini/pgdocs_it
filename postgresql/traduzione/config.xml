@@ -1673,15 +1673,15 @@ o dalla linea di comando del server.
      <varlistentry id="guc-commit-siblings" xreflabel="commit_siblings">
       <term><varname>commit_siblings</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>commit_siblings</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>commit_siblings</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Minimum number of concurrent open transactions to require
-        before performing the <varname>commit_delay</varname> delay. A larger
-        value makes it more probable that at least one other
-        transaction will become ready to commit during the delay
-        interval. The default is five transactions.
+Il numero minimo di transazioni concorrenti aperte da richiedere 
+prima di eseguire il ritardo <varname>commit_delay</varname>. Un valore  
+maggiore rende più probabile che almeno un'altra transazione diventi  
+pronta al commit durante l'intervallo di ritardo.
+Il valore predefinito è cinque transazioni.
        </para>
       </listitem>
      </varlistentry>
@@ -1689,22 +1689,22 @@ o dalla linea di comando del server.
      </variablelist>
      </sect2>
      <sect2 id="runtime-config-wal-checkpoints">
-     <title>Checkpoints</title>
+     <title>Checkpoint</title>
 
     <variablelist>
      <varlistentry id="guc-checkpoint-segments" xreflabel="checkpoint_segments">
       <term><varname>checkpoint_segments</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>checkpoint_segments</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>checkpoint_segments</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Maximum number of log file segments between automatic WAL
-        checkpoints (each segment is normally 16 megabytes). The default
-        is three segments.  Increasing this parameter can increase the
-        amount of time needed for crash recovery.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Il massimo numero di segmenti di file di log tra i checkpoint WAL automatici
+(ogni segmento normalmente è 16 megabyte). Il valore predefinito è 
+tre segmenti. Incrementare questo parametro può aumentare la quantità di 
+tempo necessaria al recupero da un crash.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
        </para>
       </listitem>
      </varlistentry>
@@ -1712,16 +1712,16 @@ o dalla linea di comando del server.
      <varlistentry id="guc-checkpoint-timeout" xreflabel="checkpoint_timeout">
       <term><varname>checkpoint_timeout</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>checkpoint_timeout</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>checkpoint_timeout</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Maximum time between automatic WAL checkpoints, in
-        seconds. The default is five minutes (<literal>5min</literal>).
-        Increasing this parameter can increase the amount of time needed
-        for crash recovery.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Il tempo massimo tra i checkpoint WAL automatici, in secondi.
+Il valore predefinito è cinque minuti (<literal>5min</literal>).
+Aumentare questo parametro può incrementare la quantità di tempo necessaria 
+al recupero da crash.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
        </para>
       </listitem>
      </varlistentry>
@@ -1729,15 +1729,15 @@ o dalla linea di comando del server.
      <varlistentry id="guc-checkpoint-completion-target" xreflabel="checkpoint_completion_target">
       <term><varname>checkpoint_completion_target</varname> (<type>floating point</type>)</term>
       <indexterm>
-       <primary><varname>checkpoint_completion_target</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>checkpoint_completion_target</varname></primary>
       </indexterm>
       <listitem>
        <para>
         Specifies the target of checkpoint completion, as a fraction of
         total time between checkpoints. The default is 0.5.
 
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
        </para>
       </listitem>
      </varlistentry>
@@ -1745,17 +1745,17 @@ o dalla linea di comando del server.
      <varlistentry id="guc-checkpoint-warning" xreflabel="checkpoint_warning">
       <term><varname>checkpoint_warning</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>checkpoint_warning</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>checkpoint_warning</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Write a message to the server log if checkpoints caused by
-        the filling of checkpoint segment files happen closer together
-        than this many seconds (which suggests that
-        <varname>checkpoint_segments</varname> ought to be raised).  The default is
-        30 seconds (<literal>30s</literal>).  Zero disables the warning.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Scrive un messaggio al log del server se checkpoint causati dal riempimento 
+dei file di segmento avvengono più ravvicinati rispetto 
+a questi secondi (che suggerisce che 
+<varname>checkpoint_segments</varname> dovrebbe essere alzato). Il valore predefinito è 
+30 secondi (<literal>30s</literal>).  Zero disabilita il warning.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
        </para>
       </listitem>
      </varlistentry>
@@ -1763,25 +1763,25 @@ o dalla linea di comando del server.
      </variablelist>
      </sect2>
      <sect2 id="runtime-config-wal-archiving">
-     <title>Archiving</title>
+     <title>Archiviazione</title>
 
     <variablelist>
      <varlistentry id="guc-archive-mode" xreflabel="archive_mode">
       <term><varname>archive_mode</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>archive_mode</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>archive_mode</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        When <varname>archive_mode</varname> is enabled, completed WAL segments
-        are sent to archive storage by setting
-        <xref linkend="guc-archive-command"/>.
-        <varname>archive_mode</varname> and <varname>archive_command</varname> are
-        separate variables so that <varname>archive_command</varname> can be
-        changed without leaving archiving mode.
-        This parameter can only be set at server start. <varname>wal_level</varname>
-        must be set to <literal>archive</literal> or <literal>hot_standby</literal> to
-        enable <varname>archive_mode</varname>.
+Quando <varname>archive_mode</varname> è attivo, i segmenti WAL completi 
+vengono archiviati impostando  
+<xref linkend="guc-archive-command"/>.
+<varname>archive_mode</varname> e <varname>archive_command</varname> sono
+variabili separate così <varname>archive_command</varname> può essere cambiato 
+senza cambiare modalità di archiviazione.
+Questo parametro può essere impostato solo all'avvio del server. <varname>wal_level</varname>
+deve essere impostato a <literal>archive</literal> o <literal>hot_standby</literal> per
+abilitare <varname>archive_mode</varname>.
        </para>
       </listitem>
      </varlistentry>
@@ -1789,34 +1789,33 @@ o dalla linea di comando del server.
      <varlistentry id="guc-archive-command" xreflabel="archive_command">
       <term><varname>archive_command</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>archive_command</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>archive_command</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        The shell command to execute to archive a completed WAL file
-        segment.  Any <literal>%p</literal> in the string is
-        replaced by the path name of the file to archive, and any
-        <literal>%f</literal> is replaced by only the file name.
-        (The path name is relative to the working directory of the server,
-        i.e., the cluster's data directory.)
-        Use <literal>%%</literal> to embed an actual <literal>%</literal> character in the
-        command.  It is important for the command to return a zero
-        exit status only if it succeeds. For more information see
-        <xref linkend="backup-archiving-wal"/>.
+Il comando shell da eseguire per archiviare un file di segmento WAL completato.
+Qualsiasi <literal>%p</literal> nella stringa viene sostituita dal percorso del 
+file da archiviare, e ogni <literal>%f</literal> viene sostiuito 
+da solo il nome del file. (Il percorso è relativo alla directory di lavoro del  
+server, per es., la directory dei dati del cluster).
+Usare <literal>%%</literal> per includere un effettivo carattere <literal>%</literal> nel comando. 
+È importante per il comando restiruire uno stato d'uscita zero 
+solo in caso di successo. Per maggiori informazioni si veda 
+<xref linkend="backup-archiving-wal"/>.
        </para>
        <para>
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.  It is ignored unless
-        <varname>archive_mode</varname> was enabled at server start.
-        If <varname>archive_command</varname> is an empty string (the default) while
-        <varname>archive_mode</varname> is enabled, WAL archiving is temporarily
-        disabled, but the server continues to accumulate WAL segment files in
-        the expectation that a command will soon be provided.  Setting
-        <varname>archive_command</varname> to a command that does nothing but
-        return true, e.g. <literal>/bin/true</literal> (<literal>REM</literal> on
-        Windows), effectively disables
-        archiving, but also breaks the chain of WAL files needed for
-        archive recovery, so it should only be used in unusual circumstances.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server. Viene ignorato a meno che 
+<varname>archive_mode</varname> non sia stato abilitato all'avvio del server.
+Se <varname>archive_command</varname> è una stringa vuota (predefinito) mentre 
+<varname>archive_mode</varname> è abilitato, l'archiviazione WAL viene temporaneamente
+disabilitata, ma il server continua ad accumulare file di segmento WAL nell'aspettativa 
+che un comando sia fornito presto. Impostare 
+<varname>archive_command</varname> a un comando che non fa niente ma restituisce
+true, per es. <literal>/bin/true</literal> (<literal>REM</literal> su
+Windows), in pratica disabilita l'archiviazione, 
+ma rompe anche la catena di file WAL necessari per recuperare l'archivio, 
+quindi dovrebbe essere usato solo in circostanze non usuali.
        </para>
       </listitem>
      </varlistentry>
@@ -1824,30 +1823,30 @@ o dalla linea di comando del server.
      <varlistentry id="guc-archive-timeout" xreflabel="archive_timeout">
       <term><varname>archive_timeout</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>archive_timeout</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>archive_timeout</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        The <xref linkend="guc-archive-command"/> is only invoked for
-        completed WAL segments. Hence, if your server generates little WAL
-        traffic (or has slack periods where it does so), there could be a
-        long delay between the completion of a transaction and its safe
-        recording in archive storage.  To limit how old unarchived
-        data can be, you can set <varname>archive_timeout</varname> to force the
-        server to switch to a new WAL segment file periodically.  When this
-        parameter is greater than zero, the server will switch to a new
-        segment file whenever this many seconds have elapsed since the last
-        segment file switch, and there has been any database activity,
-        including a single checkpoint.  (Increasing
-        <varname>checkpoint_timeout</varname> will reduce unnecessary
-        checkpoints on an idle system.)
-        Note that archived files that are closed early
-        due to a forced switch are still the same length as completely full
-        files.  Therefore, it is unwise to use a very short
-        <varname>archive_timeout</varname> &mdash; it will bloat your archive
-        storage.  <varname>archive_timeout</varname> settings of a minute or so are
-        usually reasonable.  This parameter can only be set in the
-        <filename>postgresql.conf</filename> file or on the server command line.
+Il  <xref linkend="guc-archive-command"/> viene invocato solo per segmenti
+WAL completati. Da ora, se il server genera poco traffico WAL (o ha 
+tempi morti dove lo fa), ci potrebbe essere un lungo ritardo 
+tra il completamento di una transazione e la sua registrazione sicura 
+nell'archivio di immagazzinamento. Per limitare quanto vecchi possano essere
+dati non archiviati, è possibile impostare  <varname>archive_timeout</varname> per forzare
+il server a usare un nuovo file di  segmento WAL periodicamente. Quando 
+questo parametro è maggiore di zero, il server prenderà un file di segmento nuovo 
+ogni volta che questi secondi sono passati dall'ultimo cambiamento  
+di file di segmento, e c'è stata qualsiasi attività del database,
+incluso un singolo checkpoint. (Incrementare 
+<varname>checkpoint_timeout</varname> ridurrà
+checkpoint non necessari su un sistema in stato idle). 
+Si noti che file archiviati che sono chiusi in anticipo 
+a causa di un cambiamento forzato hanno comunque la stessa lunghezza di file 
+completamente pieni. Perciò, non è saggio usare un 
+<varname>archive_timeout</varname> molto piccolo - esso gonfierà il deposito di  
+archiviazione. valori di  <varname>archive_timeout</varname> di un minuto o più sono 
+di solito ragionevoli. Questo parametro può essere impostato solo nel file
+<filename>postgresql.conf</filename> o dalla linea di comando del server.
        </para>
       </listitem>
      </varlistentry>
@@ -1856,11 +1855,11 @@ o dalla linea di comando del server.
     </sect2>
 
     <sect2 id="runtime-config-replication">
-     <title>Streaming Replication</title>
+     <title>Replica Streaming</title>
 
      <para>
-      These settings control the behavior of the built-in
-      <firstterm>streaming replication</firstterm> feature.
+Queste impostazioni controllano il comportamento della caratteristica di 
+<firstterm>streaming replication</firstterm> inclusa.
       These parameters would be set on the primary server that is
       to send replication data to one or more standby servers.
      </para>
@@ -1869,35 +1868,36 @@ o dalla linea di comando del server.
       <varlistentry id="guc-max-wal-senders" xreflabel="max_wal_senders">
        <term><varname>max_wal_senders</varname> (<type>integer</type>)</term>
        <indexterm>
-        <primary><varname>max_wal_senders</varname> configuration parameter</primary>
+        <primary>Parametro di configurazione <varname>max_wal_senders</varname></primary>
        </indexterm>
        <listitem>
        <para>
-        Specifies the maximum number of concurrent connections from standby
-        servers (i.e., the maximum number of simultaneously running WAL sender
-        processes). The default is zero. This parameter can only be set at
-        server start. <varname>wal_level</varname> must be set to <literal>archive</literal>
-        or <literal>hot_standby</literal> to allow connections from standby servers.
+Specifica il numero massimo di connessioni concorrenti da server standby (per es., 
+il numero massimo di processi sender WAL in esecuzione simultaneamente).
+Il valore predefinito è zero. Questo parametro può essere impostato solo all'avvio del server.
+<varname>wal_level</varname> deve essere impostato a <literal>archive</literal>
+o <literal>hot_standby</literal> per permettere connessioni dai server standby.
        </para>
        </listitem>
       </varlistentry>
       <varlistentry id="guc-wal-sender-delay" xreflabel="wal_sender_delay">
        <term><varname>wal_sender_delay</varname> (<type>integer</type>)</term>
        <indexterm>
-        <primary><varname>wal_sender_delay</varname> configuration parameter</primary>
+        <primary>Parametro di configurazione <varname>wal_sender_delay</varname></primary>
        </indexterm>
        <listitem>
        <para>
-        Specifies the delay between activity rounds for WAL sender processes.
-        In each round the WAL sender sends any WAL accumulated since the last
-        round to the standby server. It then sleeps for
-        <varname>wal_sender_delay</varname> milliseconds, and repeats. The default
-        value is 200 milliseconds (<literal>200ms</literal>).
-        Note that on many systems, the effective resolution of sleep delays is
-        10 milliseconds; setting <varname>wal_sender_delay</varname> to a value that
-        is not a multiple of 10 might have the same results as setting it to
-        the next higher multiple of 10. This parameter can only be set in the
-        <filename>postgresql.conf</filename> file or on the server command line.
+Specifica il ritardo tra i turni di attività per i processi sender WAL.
+Ad ogni turno il sender WAL manda qualsiasi WAL accumulato dall'ultimo turno 
+al server standby. Quindi aspetta 
+<varname>wal_sender_delay</varname> millisecondi, e ripete. Il valore predefinito 
+è 200 millisecondi (<literal>200ms</literal>).
+Si noti che su molti sistemi, la risoluzione effettiva dei ritardi di attesa è 
+10 millisecondi; impostare <varname>wal_sender_delay</varname> a un valore che non è 
+un multiplo di 10 potrebbe avere gli stessi risultati di impostarlo al successivo multiplo 
+di 10. 
+Questo parametro può essere impostato solo nel file 
+<filename>postgresql.conf</filename> o dalla linea di comando del server.
        </para>
        </listitem>
       </varlistentry>
@@ -1905,33 +1905,32 @@ o dalla linea di comando del server.
       <varlistentry id="guc-wal-keep-segments" xreflabel="wal_keep_segments">
        <term><varname>wal_keep_segments</varname> (<type>integer</type>)</term>
        <indexterm>
-        <primary><varname>wal_keep_segments</varname> configuration parameter</primary>
+        <primary>Parametro di configurazione  <varname>wal_keep_segments</varname></primary>
        </indexterm>
        <listitem>
        <para>
-        Specifies the minimum number of past log file segments kept in the
-        <filename>pg_xlog</filename>
-        directory, in case a standby server needs to fetch them for streaming
-        replication. Each segment is normally 16 megabytes. If a standby
-        server connected to the primary falls behind by more than
-        <varname>wal_keep_segments</varname> segments, the primary might remove
-        a WAL segment still needed by the standby, in which case the
-        replication connection will be terminated.  (However, the standby
-        server can recover by fetching the segment from archive, if WAL
-        archiving is in use.)
+Specifica il numero minimo di segmenti di file di log passati tenuti nella directory
+<filename>pg_xlog</filename>,
+nel caso in cui un server standby abbia bisogno di ottenerli per la replica streaming.
+Ogni segmento è normalmente 16 megabyte.
+Se un server standby connesso al primario rimane indietro di più di  
+<varname>wal_keep_segments</varname> segmenti, il primario potrebbe rimuovere 
+un segmento WAL ancora necessario allo standby, nel qual caso la connessione
+di replica sarà terminata. (Comunque, il server standby può ripristinarsi
+ottenendo il segmento dall'archivio, se l'archiviazione WAL è in uso).
        </para>
 
        <para>
-        This sets only the minimum number of segments retained in
-        <filename>pg_xlog</filename>; the system might need to retain more segments
-        for WAL archival or to recover from a checkpoint. If
-        <varname>wal_keep_segments</varname> is zero (the default), the system
-        doesn't keep any extra segments for standby purposes, and the number
-        of old WAL segments available to standby servers is a function of
-        the location of the previous checkpoint and status of WAL
-        archiving.  This parameter has no effect on restartpoints.
-        This parameter can only be set in the
-        <filename>postgresql.conf</filename> file or on the server command line.
+Questo imposta solo il numero minimo di segmenti mantenuti in <filename>pg_xlog</filename>;
+il sistema potrebbe aver bisogno di ottenere più segmenti
+per l'archiviazione WAL o per recuperare da un checkpoint. Se 
+<varname>wal_keep_segments</varname> è zero (il valore predefinito), il sistema
+non mantiene nessun segmento aggiuntivo per scopi di standby, e il numero
+di vecchi segmenti WAL disponibili per i server standby è una funzione della 
+posizione del precedente checkpoint e stato dell'archiviazione WAL.
+Questo parametro non ha effetto sui punti di restart.
+Questo parametro può essere impostato solo nel file 
+<filename>postgresql.conf</filename> o dalla linea di comando del server.
        </para>
        </listitem>
       </varlistentry>
@@ -1939,7 +1938,7 @@ o dalla linea di comando del server.
      <varlistentry id="guc-vacuum-defer-cleanup-age" xreflabel="vacuum_defer_cleanup_age">
       <term><varname>vacuum_defer_cleanup_age</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>vacuum_defer_cleanup_age</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>vacuum_defer_cleanup_age</varname></primary>
       </indexterm>
       <listitem>
        <para>
@@ -1955,8 +1954,8 @@ o dalla linea di comando del server.
         is measured in terms of number of write transactions occurring on the
         primary server, it is difficult to predict just how much additional
         grace time will be made available to standby queries.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Questo parametro può essere impostato solo nel file 
+<filename>postgresql.conf</filename> o dalla linea di comando del server.
        </para>
       </listitem>
      </varlistentry>
@@ -1964,11 +1963,11 @@ o dalla linea di comando del server.
     </sect2>
 
     <sect2 id="runtime-config-standby">
-    <title>Standby Servers</title>
+    <title>Server Standby</title>
 
      <para>
-      These settings control the behavior of a standby server that is
-      to receive replication data.
+Queste impostazioni controllano il comportamento di un server standby che 
+riceve dati replicati.
      </para>
 
     <variablelist>
@@ -1976,15 +1975,15 @@ o dalla linea di comando del server.
      <varlistentry id="guc-hot-standby" xreflabel="hot_standby">
       <term><varname>hot_standby</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>hot_standby</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>hot_standby</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Specifies whether or not you can connect and run queries during
-        recovery, as described in <xref linkend="hot-standby"/>.
-        The default value is <literal>off</literal>.
-        This parameter can only be set at server start. It only has effect
-        during archive recovery or in standby mode.
+Specifica se ci si può connettere ed eseguire query durante il recupero,
+come descritto in <xref linkend="hot-standby"/>.
+Il valore predefinito è <literal>off</literal>.
+Questo parametro può essere impostato solo all'avvio del server. Ha effetto solo 
+durante il recupero dell'archivio  o in modalità standby. 
        </para>
       </listitem>
      </varlistentry>
@@ -1992,29 +1991,28 @@ o dalla linea di comando del server.
      <varlistentry id="guc-max-standby-archive-delay" xreflabel="max_standby_archive_delay">
       <term><varname>max_standby_archive_delay</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>max_standby_archive_delay</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>max_standby_archive_delay</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        When Hot Standby is active, this parameter determines how long the
-        standby server should wait before canceling standby queries that
-        conflict with about-to-be-applied WAL entries, as described in
-        <xref linkend="hot-standby-conflict"/>.
+Quando Hot Standby è attivo, questo parametro determina quanto a lungo il 
+server standby dovrebbe aspettare prima di cancellare le query che 
+vanno in conflitto con voci WAL che devono essere applicate, come descritto in
+<xref linkend="hot-standby-conflict"/>.
         <varname>max_standby_archive_delay</varname> applies when WAL data is
         being read from WAL archive (and is therefore not current).
         The default is 30 seconds. Units are milliseconds if not specified.
         A value of -1 allows the standby to wait forever for conflicting
         queries to complete.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
        </para>
        <para>
-        Note that <varname>max_standby_archive_delay</varname> is not the same as the
-        maximum length of time a query can run before cancellation; rather it
-        is the maximum total time allowed to apply any one WAL segment's data.
-        Thus, if one query has resulted in significant delay earlier in the
-        WAL segment, subsequent conflicting queries will have much less grace
-        time.
+Si noti che <varname>max_standby_archive_delay</varname> non è lo stesso del 
+tempo massimo in cui una query può stare in esecuzione; piuttosto è il tempo massimo
+totale permesso per applicare qualsiasi dato di segmento WAL. 
+Cioè, se una query è risultata in un ritardo significativo precedentemente nel segmento 
+WAL, successive query in conflitto avranno molta meno bellezza.
        </para>
       </listitem>
      </varlistentry>
@@ -2022,27 +2020,28 @@ o dalla linea di comando del server.
      <varlistentry id="guc-max-standby-streaming-delay" xreflabel="max_standby_streaming_delay">
       <term><varname>max_standby_streaming_delay</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>max_standby_streaming_delay</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>max_standby_streaming_delay</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        When Hot Standby is active, this parameter determines how long the
-        standby server should wait before canceling standby queries that
-        conflict with about-to-be-applied WAL entries, as described in
-        <xref linkend="hot-standby-conflict"/>.
-        <varname>max_standby_streaming_delay</varname> applies when WAL data is
-        being received via streaming replication.
-        The default is 30 seconds. Units are milliseconds if not specified.
-        A value of -1 allows the standby to wait forever for conflicting
-        queries to complete.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Quando Hot Standby è attivo, questo parametro determina quanto a lungo il server
+standby dovrebbe aspettare prima di cancellare le query standby che 
+sono in conflitto con voci WAL che stanno per essere applicate, come descritto in
+<xref linkend="hot-standby-conflict"/>.
+<varname>max_standby_streaming_delay</varname> si applica quando i dati WAL vengono ricevuti
+attraverso la replica streaming.
+Il valore predefinito è 30 secondi. L'unità è millisecondi se non specificato.
+Un valore di -1 permette allo standby di aspettare per sempre che le query in conflitto 
+si completino.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
        </para>
        <para>
-        Note that <varname>max_standby_streaming_delay</varname> is not the same as
-        the maximum length of time a query can run before cancellation; rather
-        it is the maximum total time allowed to apply WAL data once it has
-        been received from the primary server.  Thus, if one query has
+Si noti che <varname>max_standby_streaming_delay</varname> non è lo stesso della 
+lunghezza massima di tempo in cui una query può stare in esecuzione prima della cancellazione;
+piuttosto è il tempo totale massimo permesso per applicare dati WAL una volta che 
+sono stati ricevuti dal server primario.   
+        Thus, if one query has
         resulted in significant delay, subsequent conflicting queries will
         have much less grace time until the standby server has caught up
         again.
@@ -2061,21 +2060,23 @@ o dalla linea di comando del server.
      <title>Planner Method Configuration</title>
 
       <para>
-       These configuration parameters provide a crude method of
-       influencing the query plans chosen by the query optimizer. If
-       the default plan chosen by the optimizer for a particular query
-       is not optimal, a <emphasis>temporary</emphasis> solution is to use one
-       of these configuration parameters to force the optimizer to
-       choose a different plan.
-       Better ways to improve the quality of the
-       plans chosen by the optimizer include adjusting the planer cost
-       constants (see <xref linkend="runtime-config-query-constants"/>),
-       running <xref linkend="sql-analyze"/> manually, increasing
-       the value of the <xref
-       linkend="guc-default-statistics-target"/> configuration parameter,
-       and increasing the amount of statistics collected for
-       specific columns using <command>ALTER TABLE SET
-       STATISTICS</command>.
+Questi parametri di configurazione forniscono un metodo rudimentale per
+influenzare i piani delle query scelti dall'ottimizzatore. Se  
+il piano predefinito scelto dall'ottimizzatore per una particolare query non è
+ottimale, una soluzione <emphasis>temporanea</emphasis> è di usare uno
+di questi parametri di configurazione per forzare l'ottimizzatore 
+a scegliere un piano differente.
+Modi preferibili di migliorare la qualità dei piani scelti
+dall'ottimizzatore includono l'aggiustare le costanti di costo del pianificatore
+(si veda <xref linkend="runtime-config-query-constants"/>),
+eseguendo <xref linkend="sql-analyze"/>
+manualmente,
+aumentando 
+il valore del parametro di configurazione <xref
+linkend="guc-default-statistics-target"/>,
+e incrementando l'ammontare di statistiche raccolte per 
+colonne specifiche usando <command>ALTER TABLE SET
+STATISTICS</command>.
       </para>
 
      <variablelist>
@@ -2085,12 +2086,13 @@ o dalla linea di comando del server.
        <primary>bitmap scan</primary>
       </indexterm>
       <indexterm>
-       <primary><varname>enable_bitmapscan</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>enable_bitmapscan</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Enables or disables the query planner's use of bitmap-scan plan
-        types. The default is <literal>on</literal>.
+Abilita o disabilita l'utilizzo dal parte del pianificatore di query di piani
+bitmap scan. Il valore predefinito è <literal>on</literal>.
+
        </para>
       </listitem>
      </varlistentry>
@@ -2098,12 +2100,12 @@ o dalla linea di comando del server.
      <varlistentry id="guc-enable-hashagg" xreflabel="enable_hashagg">
       <term><varname>enable_hashagg</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>enable_hashagg</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>enable_hashagg</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Enables or disables the query planner's use of hashed
-        aggregation plan types. The default is <literal>on</literal>.
+Abilita o disabilita l'utilizzo da parte del pianificatore di query di 
+piani di aggregazione hash. Il valore predefinito è <literal>on</literal>.
        </para>
       </listitem>
      </varlistentry>
@@ -2111,12 +2113,12 @@ o dalla linea di comando del server.
      <varlistentry id="guc-enable-hashjoin" xreflabel="enable_hashjoin">
       <term><varname>enable_hashjoin</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>enable_hashjoin</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>enable_hashjoin</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Enables or disables the query planner's use of hash-join plan
-        types. The default is <literal>on</literal>.
+Abilita o disabilita l'utilizzo da parte del pianificatore di query di piani 
+hash-join. Il valore predefinito è <literal>on</literal>.
        </para>
       </listitem>
      </varlistentry>
@@ -2127,12 +2129,12 @@ o dalla linea di comando del server.
        <primary>index scan</primary>
       </indexterm>
       <indexterm>
-       <primary><varname>enable_indexscan</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>enable_indexscan</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Enables or disables the query planner's use of index-scan plan
-        types. The default is <literal>on</literal>.
+Abilita o disabilita l'utilizzo da parte del pianificatore di query di piani 
+index-scan. Il valore predefinito è <literal>on</literal>.
        </para>
       </listitem>
      </varlistentry>
@@ -2140,15 +2142,15 @@ o dalla linea di comando del server.
      <varlistentry id="guc-enable-material" xreflabel="enable_material">
       <term><varname>enable_material</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>enable_material</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>enable_material</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Enables or disables the query planner's use of materialization.
-        It is impossible to suppress materialization entirely,
-        but turning this variable off prevents the planner from inserting
-        materialize nodes except in cases where it is required for correctness.
-        The default is <literal>on</literal>.
+Abilita o disabilita l'utilizzo da parte del pianificatore di query della materializzazione.
+È impossibile sopprimere interamente la materializzazione,
+ma impostare questa variabile a off, previene che il pianificatore inserisca 
+nodi materializzati ad eccezione di casi dove è richiesto per correttezza.
+Il valore predefinito è <literal>on</literal>.
        </para>
       </listitem>
      </varlistentry>
@@ -2156,12 +2158,12 @@ o dalla linea di comando del server.
      <varlistentry id="guc-enable-mergejoin" xreflabel="enable_mergejoin">
       <term><varname>enable_mergejoin</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>enable_mergejoin</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>enable_mergejoin</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Enables or disables the query planner's use of merge-join plan
-        types. The default is <literal>on</literal>.
+Abilita o disabilita l'utilizzo da parte del pianificatore di query dei tipi 
+di piano merge-join. Il valore predefinito è <literal>on</literal>.
        </para>
       </listitem>
      </varlistentry>
@@ -2169,15 +2171,15 @@ o dalla linea di comando del server.
      <varlistentry id="guc-enable-nestloop" xreflabel="enable_nestloop">
       <term><varname>enable_nestloop</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>enable_nestloop</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>enable_nestloop</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Enables or disables the query planner's use of nested-loop join
-        plans. It is impossible to suppress nested-loop joins entirely,
-        but turning this variable off discourages the planner from using
-        one if there are other methods available. The default is
-        <literal>on</literal>.
+Abilita o disabilita l'utilizzo da parte del pianificatore di query di piani 
+join nested loop. È impossibile sopprimere interamente le join nested loop,
+ma impostare questa variabile a off scoraggia il pianificatore dall'usarlo
+se ci sono altri metodi disponibili. Il valore predefinito è 
+<literal>on</literal>.
        </para>
       </listitem>
      </varlistentry>
@@ -2188,15 +2190,14 @@ o dalla linea di comando del server.
        <primary>sequential scan</primary>
       </indexterm>
       <indexterm>
-       <primary><varname>enable_seqscan</varname> configuration parameter</primary>
+       <primary>Parametro di condigurazione <varname>enable_seqscan</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Enables or disables the query planner's use of sequential scan
-        plan types. It is impossible to suppress sequential scans
-        entirely, but turning this variable off discourages the planner
-        from using one if there are other methods available. The
-        default is <literal>on</literal>.
+Abilita o disabilita l'utilizzo da parte del pianificatore di query di piani
+scan sequenziale. È impossibile sopprimere interamente gli scan sequenziali, 
+ma impostare questa variabile a off scoraggia il pianificatore dall'usarli
+se ci sono altri metodi disponibili. Il valore predefinito è <literal>on</literal>.
        </para>
       </listitem>
      </varlistentry>
@@ -2204,15 +2205,15 @@ o dalla linea di comando del server.
      <varlistentry id="guc-enable-sort" xreflabel="enable_sort">
       <term><varname>enable_sort</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>enable_sort</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>enable_sort</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Enables or disables the query planner's use of explicit sort
-        steps. It is impossible to suppress explicit sorts entirely,
-        but turning this variable off discourages the planner from
-        using one if there are other methods available. The default
-        is <literal>on</literal>.
+Abilita o disabilita l'utilizzo da parte del pianificatore di query di passi 
+di ordinamento espliciti. È impossibile sopprimere interamente gli ordinamenti espliciti,
+ma impostare questa variabile a off scoraggia il pianificatore dall'usarlo
+se ci sono altri metodi disponibili. Il valore predefinito è
+<literal>on</literal>.
        </para>
       </listitem>
      </varlistentry>
@@ -2220,12 +2221,12 @@ o dalla linea di comando del server.
      <varlistentry id="guc-enable-tidscan" xreflabel="enable_tidscan">
       <term><varname>enable_tidscan</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>enable_tidscan</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>enable_tidscan</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Enables or disables the query planner's use of <acronym>TID</acronym>
-        scan plan types. The default is <literal>on</literal>.
+Abilita o disabilita l'utilizzo da parte del pianificatore di query di piani 
+scan <acronym>TID</acronym>. Il valore predefinito è  <literal>on</literal>.
        </para>
       </listitem>
      </varlistentry>
@@ -2233,27 +2234,26 @@ o dalla linea di comando del server.
      </variablelist>
      </sect2>
      <sect2 id="runtime-config-query-constants">
-     <title>Planner Cost Constants</title>
+     <title>Costanti di costo del planner</title>
 
     <para>
-     The <firstterm>cost</firstterm> variables described in this section are measured
-     on an arbitrary scale.  Only their relative values matter, hence
-     scaling them all up or down by the same factor will result in no change
-     in the planner's choices.  By default, these cost variables are based on
-     the cost of sequential page fetches; that is,
-     <varname>seq_page_cost</varname> is conventionally set to <literal>1.0</literal>
-     and the other cost variables are set with reference to that.  But
-     you can use a different scale if you prefer, such as actual execution
-     times in milliseconds on a particular machine.
+Le variabili  <firstterm>cost</firstterm> descritte in questa sezione sono misurate
+su una scala arbitraria. Solo i loro valori relativi hanno importanza, quindi 
+scalarli tutti su o giù dello stesso fattore risulterà in nessun cambiamento 
+delle scelte del pianificatore. In maniera predefinita, queste variabili di costo sono basate
+sul costo dell'ottenimento sequenziale delle pagine; cioè,
+<varname>seq_page_cost</varname> è convenzionalmente impostato a <literal>1.0</literal>
+e le altre variabili di costo sono impostate facendo riferimento a questo. Ma si può
+usare una scala diversa se si preferisce, tipo i tempi effettivi di esecuzione 
+in millisecondi su una macchina particolare.
     </para>
 
    <note>
     <para>
-     Unfortunately, there is no well-defined method for determining ideal
-     values for the cost variables.  They are best treated as averages over
-     the entire mix of queries that a particular installation will receive.  This
-     means that changing them on the basis of just a few experiments is very
-     risky.
+Sfortunatamente, non c'è un metodo ben definito per determinare i valori ideali
+per le variabili di costo. Esse sono trattate meglio come medie sull'intero 
+insieme di query che una particolare installazione riceverà. Questo significa 
+che cambiarle sulla base di pochi esperimenti è molto rischioso.
     </para>
    </note>
 
@@ -2262,15 +2262,15 @@ o dalla linea di comando del server.
      <varlistentry id="guc-seq-page-cost" xreflabel="seq_page_cost">
       <term><varname>seq_page_cost</varname> (<type>floating point</type>)</term>
       <indexterm>
-       <primary><varname>seq_page_cost</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>seq_page_cost</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets the planner's estimate of the cost of a disk page fetch
-        that is part of a series of sequential fetches.  The default is 1.0.
-        This value can be overridden for a particular tablespace by setting
-        the tablespace parameter of the same name
-        (see <xref linkend="sql-altertablespace"/>).
+Imposta la stima del pianificatore relativa al costo di ottenere una pagina disco 
+che è parte di una serie di fetch sequenziali. Il valore predefinito è 1.0.
+Questo valore può essere sovrascritto per un particolare tablespace impostando
+il parametro tablespace dello stesso nome
+(si veda <xref linkend="sql-altertablespace"/>).
        </para>
       </listitem>
      </varlistentry>
@@ -2278,36 +2278,36 @@ o dalla linea di comando del server.
      <varlistentry id="guc-random-page-cost" xreflabel="random_page_cost">
       <term><varname>random_page_cost</varname> (<type>floating point</type>)</term>
       <indexterm>
-       <primary><varname>random_page_cost</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>random_page_cost</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets the planner's estimate of the cost of a
-        non-sequentially-fetched disk page.  The default is 4.0.
-        This value can be overridden for a particular tablespace by setting
-        the tablespace parameter of the same name
-        (see <xref linkend="sql-altertablespace"/>).
+Imposta la stima di costo del pianificatore per una
+pagina disco ottenuta in modo non sequenziale. Il valore predefinito è 4.0.
+Questo valore può essere sovrascritto per un tablespace particolare impostando 
+il parametro tablespace dello stesso nome
+(si veda <xref linkend="sql-altertablespace"/>).
        </para>
 
        <para>
-        Reducing this value relative to <varname>seq_page_cost</varname>
-        will cause the system to prefer index scans; raising it will
-        make index scans look relatively more expensive.  You can raise
-        or lower both values together to change the importance of disk I/O
-        costs relative to CPU costs, which are described by the following
-        parameters.
+Ridurre questo valore relativo a <varname>seq_page_cost</varname>
+causerà che il sistema preferisca le gli index scan; incrementarlo farà
+sembrare gli index scan relativamente più costosi. È possibile incrementare o abbassare
+entrambi i valori insieme per cambiare l'importanza dei costi di I/O di disco
+relativi ai costi di CPU, che sono descritti dai seguenti parametri.
        </para>
 
        <tip>
         <para>
-         Although the system will let you set <varname>random_page_cost</varname> to
-         less than <varname>seq_page_cost</varname>, it is not physically sensible
-         to do so.  However, setting them equal makes sense if the database
-         is entirely cached in RAM, since in that case there is no penalty
-         for touching pages out of sequence.  Also, in a heavily-cached
-         database you should lower both values relative to the CPU parameters,
-         since the cost of fetching a page already in RAM is much smaller
-         than it would normally be.
+Sebbene il sistema permetterà di impostare <varname>random_page_cost</varname> a
+meno di <varname>seq_page_cost</varname>, non è fisicamente sensato farlo. 
+Comunque, impostarli allo stesso valore ha senso se il database è interamente   
+salvato in cache in RAM, dato che in quel caso non c'è penalizzazione 
+per toccare pagine fuori dalla sequenza.
+Inoltre, in un database fortemente sottoposto a cache si dovrebbero
+abbassare entrambi i valori relativi ai parametri CPU,
+dato che il costo di ottenere una pagina già in RAM è molto più piccolo
+rispetto a quello che sarebbe normalmente.
         </para>
        </tip>
       </listitem>
@@ -2316,13 +2316,13 @@ o dalla linea di comando del server.
      <varlistentry id="guc-cpu-tuple-cost" xreflabel="cpu_tuple_cost">
       <term><varname>cpu_tuple_cost</varname> (<type>floating point</type>)</term>
       <indexterm>
-       <primary><varname>cpu_tuple_cost</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>cpu_tuple_cost</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets the planner's estimate of the cost of processing
-        each row during a query.
-        The default is 0.01.
+Imposta la stima del pianificatore per il costo dell'elaborazione 
+di ogni riga durante una query.
+Il valore predefinito è 0.01.
        </para>
       </listitem>
      </varlistentry>
@@ -2330,13 +2330,13 @@ o dalla linea di comando del server.
      <varlistentry id="guc-cpu-index-tuple-cost" xreflabel="cpu_index_tuple_cost">
       <term><varname>cpu_index_tuple_cost</varname> (<type>floating point</type>)</term>
       <indexterm>
-       <primary><varname>cpu_index_tuple_cost</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>cpu_index_tuple_cost</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets the planner's estimate of the cost of processing
-        each index entry during an index scan.
-        The default is 0.005.
+Imposta la stima del pianificatore per il costo dell'elaborazione
+di ogni voce di indice durante una scansione di indice. 
+Il valore predefinito è 0.005.
        </para>
       </listitem>
      </varlistentry>
@@ -2344,13 +2344,13 @@ o dalla linea di comando del server.
      <varlistentry id="guc-cpu-operator-cost" xreflabel="cpu_operator_cost">
       <term><varname>cpu_operator_cost</varname> (<type>floating point</type>)</term>
       <indexterm>
-       <primary><varname>cpu_operator_cost</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>cpu_operator_cost</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets the planner's estimate of the cost of processing each
-        operator or function executed during a query.
-        The default is 0.0025.
+Imposta la stima del pianificatore sul costo dell'elaborazione di ogni operatore o 
+funzione eseguita durante una query.
+Il valore predefinito è 0.0025.
        </para>
       </listitem>
      </varlistentry>
@@ -2358,7 +2358,7 @@ o dalla linea di comando del server.
      <varlistentry id="guc-effective-cache-size" xreflabel="effective_cache_size">
       <term><varname>effective_cache_size</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>effective_cache_size</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>effective_cache_size</varname></primary>
       </indexterm>
       <listitem>
        <para>
@@ -2373,7 +2373,8 @@ o dalla linea di comando del server.
         <productname>PostgreSQL</productname> data files.  Also, take
         into account the expected number of concurrent queries on different
         tables, since they will have to share the available
-        space.  This parameter has no effect on the size of shared
+        space.  
+        This parameter has no effect on the size of shared
         memory allocated by <productname>PostgreSQL</productname>, nor
         does it reserve kernel disk cache; it is used only for estimation
         purposes.  The default is 128 megabytes (<literal>128MB</literal>).
@@ -2385,16 +2386,16 @@ o dalla linea di comando del server.
 
     </sect2>
      <sect2 id="runtime-config-query-geqo">
-     <title>Genetic Query Optimizer</title>
+     <title>Ottimizzatore di query genetico</title>
 
      <para>
-      The genetic query optimizer (GEQO) is an algorithm that does query
-      planning using heuristic searching.  This reduces planning time for
-      complex queries (those joining many relations), at the cost of producing
-      plans that are sometimes inferior to those found by the normal
-      exhaustive-search algorithm.  Also, GEQO's searching is randomized and
-      therefore its plans may vary nondeterministically.
-      For more information see <xref linkend="geqo"/>.
+L'ottimizzatore di query genetico (GEQO) è un algoritmo che realizza la pianificazione delle query
+usando la ricerca euristica. Questo riduce il tempo di pianificazione per 
+query complesse (quelle che fanno il join tra molte relazioni), al costo di produrre 
+piani che a volte sono inferiori a quelli trovati dal normale algoritmo  
+si ricerca esaustiva. Inoltre, la ricerca GEQO è randomized e quindi
+i suoi piani possono variare in maniera non deterministica.
+Per maggiori informazioni si veda  <xref linkend="geqo"/>.
      </para>
 
      <variablelist>
@@ -2413,10 +2414,10 @@ o dalla linea di comando del server.
       <term><varname>geqo</varname> (<type>boolean</type>)</term>
       <listitem>
        <para>
-        Enables or disables genetic query optimization.
-        This is on by default.  It is usually best not to turn it off in
-        production; the <varname>geqo_threshold</varname> variable provides
-        more granular control of GEQO.
+Abilita o disabilita l'ottimizzazione genetica della query.
+Questo è attivo in maniera predefinita. Di solito è meglio non impostarla a off
+in produzione; la variabile <varname>geqo_threshold</varname> fornisce 
+più controllo granulare di GEQO.
        </para>
       </listitem>
      </varlistentry>
@@ -2424,7 +2425,7 @@ o dalla linea di comando del server.
      <varlistentry id="guc-geqo-threshold" xreflabel="geqo_threshold">
       <term><varname>geqo_threshold</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>geqo_threshold</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>geqo_threshold</varname></primary>
       </indexterm>
       <listitem>
        <para>
@@ -2443,24 +2444,22 @@ o dalla linea di comando del server.
       <term><varname>geqo_effort</varname>
       (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>geqo_effort</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>geqo_effort</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Controls the trade-off between planning time and query plan
-        quality in GEQO. This variable must be an integer in the
-        range from 1 to 10. The default value is five. Larger values
-        increase the time spent doing query planning, but also
-        increase the likelihood that an efficient query plan will be
-        chosen.
+Controlla il bilanciamento tra il tempo di pianificazione e la qualità 
+del piano in GEQO. Questa variabile deve essere un intero nell'intervallo
+da 1 a 10. Il valore predefinito è cinque. Valori maggiori 
+incrementano il tempo speso pianificando la query, ma incrementa anche 
+la probabilità che un piano di query efficiente sarà scelto. 
        </para>
 
        <para>
-        <varname>geqo_effort</varname> doesn't actually do anything
-        directly; it is only used to compute the default values for
-        the other variables that influence GEQO behavior (described
-        below). If you prefer, you can set the other parameters by
-        hand instead.
+<varname>geqo_effort</varname> effettivamente non fa niente direttamente; 
+è usata solo per calcolare i valori predefiniti per le altre variabili 
+che influenzano il comportamento di GEQO (descritto sotto).
+Se lo si preferisce, si può invece impostare gli altri parametri a mano. 
        </para>
       </listitem>
      </varlistentry>
@@ -2468,16 +2467,16 @@ o dalla linea di comando del server.
      <varlistentry id="guc-geqo-pool-size" xreflabel="geqo_pool_size">
       <term><varname>geqo_pool_size</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>geqo_pool_size</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>geqo_pool_size</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Controls the pool size used by GEQO, that is the
-        number of individuals in the genetic population.  It must be
-        at least two, and useful values are typically 100 to 1000.  If
-        it is set to zero (the default setting) then a suitable
-        value is chosen based on <varname>geqo_effort</varname> and
-        the number of tables in the query.
+Controlla la dimensione del pool usato da GEQO, che è il numero 
+di individui nella popolazione genetica. Deve essere almeno due, 
+e valori utili tipicamente vanno da 100 a 1000. Se 
+è impostato a zero (il valore predefinito) allora un valore appropriato
+è scelto in base a <varname>geqo_effort</varname> e il numero
+di tabelle nella query.
        </para>
       </listitem>
      </varlistentry>

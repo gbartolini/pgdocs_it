@@ -10751,39 +10751,39 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
  </sect1>
 
  <sect1 id="functions-window">
-  <title>Funzioni finestra</title>
+  <title>Funzioni window</title>
 
   <indexterm zone="functions-window">
-   <primary>funzione finestra</primary>
+   <primary>funzione window</primary>
    <secondary>incorporata</secondary>
   </indexterm>
 
   <para>
-        Le <firstterm>funzioni finestra</firstterm> hanno l'abilità di eseguire
-        calcoli su insiemi di righe che sono correlate alla riga interrogata correntement.
-        Vedere  <xref linkend="tutorial-window"/> per un'introduzione a questa caratteristica.
+Le <firstterm>funzioni window</firstterm> hanno l'abilità di eseguire
+calcoli su insiemi di righe che sono correlate alla riga interrogata correntemente.
+Vedere  <xref linkend="tutorial-window"/> per un'introduzione a questa caratteristica.
   </para>
 
   <para>
-        Le funzioni finestra incorporate sono elencate in 
-        <xref linkend="functions-window-table"/>. Notare che queste funzioni
-        <emphasis>devono</emphasis> essere invocate usando la sintassi 
-        della funzione finestra; Dove cioè
-        è richiesta una clausola <literal>OVER</literal>.
+Le funzioni window incorporate sono elencate in 
+<xref linkend="functions-window-table"/>. Notare che queste funzioni
+<emphasis>devono</emphasis> essere invocate usando la sintassi 
+delle funzioni window; dove cioè
+è richiesta una clausola <literal>OVER</literal>.
   </para>
 
   <para>
-        In aggiunta a queste funzioni, qualsiasi funzione aggregata 
-        incorporata o definita dall'utente
-        può essere usata come una funzione finestra (vedere
-        <xref linkend="functions-aggregate"/> per un elenco delle aggretate incorporate).
-        Le funzioni aggregate agiscono come funzioni finestra 
-        solo quando una clausola <literal>OVER</literal>
-        segue la chiamata; Altrimenti si comportano come funzioni aggregate normali.
+In aggiunta a queste funzioni, qualsiasi funzione aggregata 
+incorporata o definita dall'utente
+può essere usata come una funzione window (vedere
+<xref linkend="functions-aggregate"/> per un elenco delle aggretate incorporate).
+Le funzioni aggregate agiscono come funzioni window 
+solo quando una clausola <literal>OVER</literal>
+segue la chiamata; altrimenti si comportano come funzioni aggregate normali.
   </para>
 
   <table id="functions-window-table">
-   <title>Funzioni finestra di utilizzo generale</title>
+   <title>Funzioni window di utilizzo generale</title>
 
    <tgroup cols="3">
     <thead>
@@ -10806,8 +10806,8 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
        <type>bigint</type>
       </entry>
       <entry>
-        numero della riga corrente all'interno della sua partizione, 
-        partendo da 1</entry>
+numero della riga corrente all'interno della sua partizione, 
+partendo da 1</entry>
      </row>
 
      <row>
@@ -10820,7 +10820,9 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>bigint</type>
       </entry>
-      <entry><note><para>Nota per il revisore: TODO</para></note> rank of the current row with gaps; same as <function>row_number</function> of its first peer</entry>
+      <entry>
+        Rank of the current row with gaps; same as <function>row_number</function> of its first peer
+      </entry>
      </row>
 
      <row>
@@ -10859,7 +10861,9 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>double precision</type>
       </entry>
-      <entry>grado relativo della riga corrente: (numero di righe che precedono la riga corrente) / (righe totali)</entry>
+      <entry>
+        grado relativo della riga corrente: (numero di righe che precedono la riga corrente) / (righe totali)
+      </entry>
      </row>
 
      <row>
@@ -10872,8 +10876,10 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
       <entry>
        <type>integer</type>
       </entry>
-      <entry>integer ranging from 1 to the argument value, dividing the
-       partition as equally as possible</entry>
+      <entry>
+intero che va da 1 al valore dell'argomento, che divide la partizione 
+più equamente possibile.
+      </entry>
      </row>
 
 
@@ -10893,15 +10899,15 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
        <type>stesso tipo di <replaceable class="parameter">value</replaceable></type>
       </entry>
       <entry>
-            ritorna <replaceable class="parameter">value</replaceable> valutato 
-            alla riga che è scostato di <replaceable class="parameter">offset</replaceable>
-            righe prima la riga corrente all'interno della partizione; Se non c'è quella 
-            riga, invece di restituire <replaceable class="parameter">default</replaceable>.
-            Sia <replaceable class="parameter">offset</replaceable> che
-            <replaceable class="parameter">default</replaceable> sono valutati
-            con rispetto alla riga corrente. Se omesso,
-            <replaceable class="parameter">offset</replaceable> diventa 1 e  
-            <replaceable class="parameter">default</replaceable> diventa null.
+ritorna <replaceable class="parameter">value</replaceable> valutato 
+alla riga che è scostato di <replaceable class="parameter">offset</replaceable>
+righe prima la riga corrente all'interno della partizione; se non c'è quella 
+riga, invece di restituire <replaceable class="parameter">default</replaceable>.
+Sia <replaceable class="parameter">offset</replaceable> che
+<replaceable class="parameter">default</replaceable> sono valutati
+con rispetto alla riga corrente. Se omesso,
+<replaceable class="parameter">offset</replaceable> diventa 1 e  
+<replaceable class="parameter">default</replaceable> diventa null.
       </entry>
      </row>
 
@@ -10920,15 +10926,15 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
        <type>stesso tipo di <replaceable class="parameter">value</replaceable></type>
       </entry>
       <entry>
-            ritorna <replaceable class="parameter">value</replaceable> valutato 
-            alla riga che è scostato di <replaceable class="parameter">offset</replaceable>
-            righe dopo la riga corrente all'interno della partizione; Se non c'è quella 
-            riga, invece di restituire <replaceable class="parameter">default</replaceable>.
-            Sia <replaceable class="parameter">offset</replaceable> che
-            <replaceable class="parameter">default</replaceable> sono valutati
-            con rispetto alla riga corrente. Se omesso,
-            <replaceable class="parameter">offset</replaceable> diventa 1 e  
-            <replaceable class="parameter">default</replaceable> diventa null.
+ritorna <replaceable class="parameter">value</replaceable> valutato 
+alla riga che è scostato di <replaceable class="parameter">offset</replaceable>
+righe dopo la riga corrente all'interno della partizione; se non c'è quella 
+riga, invece di restituire <replaceable class="parameter">default</replaceable>.
+Sia <replaceable class="parameter">offset</replaceable> che
+<replaceable class="parameter">default</replaceable> sono valutati
+con rispetto alla riga corrente. Se omesso,
+<replaceable class="parameter">offset</replaceable> diventa 1 e  
+<replaceable class="parameter">default</replaceable> diventa null.
       </entry>
      </row>
 
@@ -10943,9 +10949,8 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
        <type>stesso tipo di <replaceable class="parameter">value</replaceable></type>
       </entry>
       <entry>
-       ritorna  <replaceable class="parameter">value</replaceable> valutato
-        alla riga che è la prima
-        della cornice di finestra
+ritorna  <replaceable class="parameter">value</replaceable> valutato
+alla riga che è la prima del window frame
       </entry>
      </row>
 
@@ -10960,9 +10965,8 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
        <type>stesso tipo di <replaceable class="parameter">value</replaceable></type>
       </entry>
       <entry>
-       ritorna  <replaceable class="parameter">value</replaceable> valutato
-        alla riga che è l'ultima
-        della cornice di finestra
+ritorna  <replaceable class="parameter">value</replaceable> valutato
+alla riga che è l'ultima del window frame
        
       </entry>
      </row>
@@ -10982,9 +10986,9 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
        <type>stesso tipo di <replaceable class="parameter">value</replaceable></type>
       </entry>
       <entry>
-        ritorna <replaceable class="parameter">value</replaceable> valutato
-        alla riga che è la <replaceable class="parameter">nth</replaceable>-sima
-        della cornice di finestra (contando da 1); null se non esiste
+ritorna <replaceable class="parameter">value</replaceable> valutato
+alla riga che è la <replaceable class="parameter">nth</replaceable>-sima
+del window frame (contando da 1); null se non esiste
       </entry>
      </row>
     </tbody>
@@ -10992,49 +10996,49 @@ SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
   </table>
 
   <para>
-        Tutte le funzioni elencate in 
-        <xref linkend="functions-window-table"/> dipendono dal tipo di ordinamento
-        specificato dalla clausola <literal>ORDER BY</literal> della definizione di finestra associata.
-        Righe che non sono distinte nell'ordinamento <literal>ORDER BY</literal>
-        sono chiamate <firstterm>peer</firstterm>; Le quattro funzioni di classificazione
-        sono definite per dare la stessa risposta per ogni due righe peer.
+Tutte le funzioni elencate in 
+<xref linkend="functions-window-table"/> dipendono dal tipo di ordinamento
+specificato dalla clausola <literal>ORDER BY</literal> della definizione di window associata.
+Righe che non sono distinte nell'ordinamento <literal>ORDER BY</literal>
+sono chiamate <firstterm>peer</firstterm>; Le quattro funzioni di classificazione
+sono definite per dare la stessa risposta per ogni due righe peer.
   </para>
 
   <para>
-        Notare che <function>first_value</function>, <function>last_value</function> e
-        <function>nth_value</function> considerano solo le righe all'interno della <quote>cornice di
-        finestra</quote>, che per default contiene le righe dall'inizio della partizione
-        all'ultimo peer della riga corrente. Queso, probabilmente,
-        darà risultati non autili per <function>last_value</function> e
-        a volte anche <function>nth_value</function>. È possibile ridefinire la cornice
-        aggiungendo una specificazione di finestra adatta (<literal>RANGE</literal> o 
-        <literal>ROWS</literal>) alla clausola  <literal>OVER</literal>.
-        Vedere <xref linkend="syntax-window-functions"/> per maggiori informazioni 
-        sulle specificazioni di cornice.
+Notare che <function>first_value</function>, <function>last_value</function> e
+<function>nth_value</function> considerano solo le righe all'interno del <quote>window
+frame</quote>, che in maniera predefinita contiene le righe dall'inizio della partizione
+all'ultimo peer della riga corrente. Queso, probabilmente,
+darà risultati non autili per <function>last_value</function> e
+a volte anche <function>nth_value</function>. È possibile ridefinire il frame
+aggiungendo una specificazione di window adatta (<literal>RANGE</literal> o 
+<literal>ROWS</literal>) alla clausola  <literal>OVER</literal>.
+Vedere <xref linkend="syntax-window-functions"/> per maggiori informazioni 
+sulle specificazioni del frame.
   </para>
 
   <para>
-        Quando una funziona aggregata è usata come una funzione finestra, essa aggrega
-        le righe all'interno la cornice di finestra corrente.
-        Un'aggregata usata con <literal>ORDER BY</literal> e la definizione di cornice di finestra predefinita,
-        produce un tipo di comportamento "<quote>running sum</quote>", che potrebbe essere voluto 
-        o no. Per ottenere aggregazione sull'intera partizione, omettere <literal>ORDER BY</literal> o usare
-        <literal>ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING</literal>.
-        Altre specificazioni di cornice possono essere usate per ottenere altri effetti.
+Quando una funziona aggregata è usata come una funzione window, essa aggrega
+le righe all'interno del window frame corrente.
+Un'aggregata usata con <literal>ORDER BY</literal> e la definizione di window frame predefinita,
+produce un tipo di comportamento "<quote>running sum</quote>", che potrebbe essere voluto 
+o no. Per ottenere aggregazione sull'intera partizione, omettere <literal>ORDER BY</literal> o usare
+<literal>ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING</literal>.
+Altre specificazioni di frame possono essere usate per ottenere altri effetti.
   </para>
 
   <note>
    <para>
-        Lo standard SQL definisce un'opzione <literal>RESPECT NULLS</literal> o 
-        <literal>IGNORE NULLS</literal> per <function>lead</function>, <function>lag</function>,
-        <function>first_value</function>, <function>last_value</function> e
-        <function>nth_value</function>.  Questo non è implementato in 
-        <productname>PostgreSQL</productname>: il comportamento è sempre lo
-        stesso di quello predefinito dello standard, cioè <literal>RESPECT NULLS</literal>.
-        Ugualmente, l'opzione standard <literal>FROM FIRST</literal> o <literal>FROM LAST</literal>
-        per <function>nth_value</function> non è implementata: solo il comportamento
-        <literal>FROM FIRST</literal> è supportato. (Puoi ottenere il risultato
-        di <literal>FROM LAST</literal> invertendo l'ordine con <literal>ORDER BY</literal>).
+Lo standard SQL definisce un'opzione <literal>RESPECT NULLS</literal> o 
+<literal>IGNORE NULLS</literal> per <function>lead</function>, <function>lag</function>,
+<function>first_value</function>, <function>last_value</function> e
+<function>nth_value</function>.  Questo non è implementato in 
+<productname>PostgreSQL</productname>: il comportamento è sempre lo
+stesso di quello predefinito dello standard, cioè <literal>RESPECT NULLS</literal>.
+Ugualmente, l'opzione standard <literal>FROM FIRST</literal> o <literal>FROM LAST</literal>
+per <function>nth_value</function> non è implementata: solo il comportamento
+<literal>FROM FIRST</literal> è supportato. (Puoi ottenere il risultato
+di <literal>FROM LAST</literal> invertendo l'ordine con <literal>ORDER BY</literal>).
    </para>
   </note>
 

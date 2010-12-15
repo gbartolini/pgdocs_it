@@ -2429,13 +2429,13 @@ più controllo granulare di GEQO.
       </indexterm>
       <listitem>
        <para>
-        Use genetic query optimization to plan queries with at least
-        this many <literal>FROM</literal> items involved. (Note that a
-        <literal>FULL OUTER JOIN</literal> construct counts as only one <literal>FROM</literal>
-        item.) The default is 12. For simpler queries it is usually best
-        to use the deterministic, exhaustive planner, but for queries with
-        many tables the deterministic planner takes too long, often
-        longer than the penalty of executing a suboptimal plan.
+Usa l'ottimizzazione genetica delle query per pianificare query con almeno questo numero 
+di elementi <literal>FROM</literal> coinvolti. (Si noti che un costrutto  
+<literal>FULL OUTER JOIN</literal> conta come un solo elemento <literal>FROM</literal>).
+Il valore predefinito è 12. Per query più semplici di solito è meglio 
+usare il planner deterministico, esaustivo, ma per query con molte tabelle
+il pianificatore deterministico ci mette troppo tempo, spesso più tempo rispetto
+allo svantaggio di eseguire un piano non ottimale. 
        </para>
       </listitem>
      </varlistentry>
@@ -2484,16 +2484,16 @@ di tabelle nella query.
      <varlistentry id="guc-geqo-generations" xreflabel="geqo_generations">
       <term><varname>geqo_generations</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>geqo_generations</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>geqo_generations</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Controls the number of generations used by GEQO, that is
-        the number of iterations of the algorithm.  It must
-        be at least one, and useful values are in the same range as
-        the pool size.  If it is set to zero (the default setting)
-        then a suitable value is chosen based on
-        <varname>geqo_pool_size</varname>.
+Controlla il numero di generazioni usate da GEQO, che è il numero 
+di iterazioni dell'algoritmo. Deve essere almeno uno, 
+e valori utili sono nello stesso intervallo della dimensione del pool.
+Se è impostato a zero (il valore predefinito) allora un valore appropriato 
+viene scelto basandosi su 
+<varname>geqo_pool_size</varname>.
        </para>
       </listitem>
      </varlistentry>
@@ -2501,13 +2501,13 @@ di tabelle nella query.
      <varlistentry id="guc-geqo-selection-bias" xreflabel="geqo_selection_bias">
       <term><varname>geqo_selection_bias</varname> (<type>floating point</type>)</term>
       <indexterm>
-       <primary><varname>geqo_selection_bias</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>geqo_selection_bias</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Controls the selection bias used by GEQO. The selection bias
-        is the selective pressure within the population. Values can be
-        from 1.50 to 2.00; the latter is the default.
+Controlla l'errore di selezione usato dal GEQO. L'errore di selezione 
+è la pressione selettiva all'interno della popolazione. I valori possono  
+essere da 1.50 a 2.00; l'ultimo è quello predefinito.
        </para>
       </listitem>
      </varlistentry>
@@ -2515,15 +2515,15 @@ di tabelle nella query.
      <varlistentry id="guc-geqo-seed" xreflabel="geqo_seed">
       <term><varname>geqo_seed</varname> (<type>floating point</type>)</term>
       <indexterm>
-       <primary><varname>geqo_seed</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>geqo_seed</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Controls the initial value of the random number generator used
-        by GEQO to select random paths through the join order search space.
-        The value can range from zero (the default) to one.  Varying the
-        value changes the set of join paths explored, and may result in a
-        better or worse best path being found.
+Controlla il valore iniziale del generatore di numeri casuali usato 
+da GEQO per selezionare percorsi casuali attraverso lo spazio di ricerca dell'ordine di join.
+Il valore può andare da zero (il predefinito) a uno. Cambiare il valore
+cambia l'insieme di percorsi di join esplorati, e può risultare che il miglior percorso trovato 
+sia meglio o peggio.
        </para>
       </listitem>
      </varlistentry>
@@ -2531,24 +2531,24 @@ di tabelle nella query.
      </variablelist>
     </sect2>
      <sect2 id="runtime-config-query-other">
-     <title>Other Planner Options</title>
+     <title>Altre opzioni del pianificatore</title>
 
      <variablelist>
 
      <varlistentry id="guc-default-statistics-target" xreflabel="default_statistics_target">
       <term><varname>default_statistics_target</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>default_statistics_target</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>default_statistics_target</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets the default statistics target for table columns without
-        a column-specific target set via <command>ALTER TABLE
-        SET STATISTICS</command>.  Larger values increase the time needed to
-        do <command>ANALYZE</command>, but might improve the quality of the
-        planner's estimates. The default is 100. For more information
-        on the use of statistics by the <productname>PostgreSQL</productname>
-        query planner, refer to <xref linkend="planner-stats"/>.
+Imposta il target predefinito per le colonne della tabella senza 
+un target specifico alla colonna impostato via <command>ALTER TABLE
+SET STATISTICS</command>.  Valori più grandi incrementano il tempo necessario per 
+fare <command>ANALYZE</command>, ma potrebbe aumentare la qualità delle stime del pianificatore.
+Il valore predefinito è 100. Per maggiori informazioni 
+sull'uso delle statistiche da parte del pianificatore di query di  <productname>PostgreSQL</productname>,
+ci si riderisca a <xref linkend="planner-stats"/>.
        </para>
       </listitem>
      </varlistentry>
@@ -2556,30 +2556,29 @@ di tabelle nella query.
      <varlistentry id="guc-constraint-exclusion" xreflabel="constraint_exclusion">
       <term><varname>constraint_exclusion</varname> (<type>enum</type>)</term>
       <indexterm>
-       <primary>constraint exclusion</primary>
+       <primary>vincolo exclusion</primary>
       </indexterm>
       <indexterm>
-       <primary><varname>constraint_exclusion</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>constraint_exclusion</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Controls the query planner's use of table constraints to
-        optimize queries.
-        The allowed values of <varname>constraint_exclusion</varname> are
-        <literal>on</literal> (examine constraints for all tables),
-        <literal>off</literal> (never examine constraints), and
-        <literal>partition</literal> (examine constraints only for inheritance child
-        tables and <literal>UNION ALL</literal> subqueries).
-        <literal>partition</literal> is the default setting.
-        It is often used with inheritance and partitioned tables to
-        improve performance.
+Controlla l'utilizzo del pianificatore di query di vincoli di tabella per 
+ottimizzare le query.
+I valori permessi di <varname>constraint_exclusion</varname> sono 
+<literal>on</literal> (esaminare vincoli per tutte le tabelle),
+<literal>off</literal> (non esamina mai i voncoli), e
+<literal>partition</literal> (esamina i vincoli solo per tabelle figlie 
+e le sottoquery <literal>UNION ALL</literal>).
+<literal>partition</literal> è l'impostazione predefinita.
+Spesso è usato con tabelle eseridate e partizionate per aumentare le prestazioni.
       </para>
 
        <para>
-        When this parameter allows it for a particular table, the planner
-        compares query conditions with the table's <literal>CHECK</literal>
-        constraints, and omits scanning tables for which the conditions
-        contradict the constraints.  For example:
+Quando questo parametro lo permette per una particolare tabella, il pianificatore
+confronta le condizioni delle query che i vincoli <literal>CHECK</literal>
+della tabella, e omette la scansione delle tabelle per le quali le condizioni 
+contraddicono i vincoli. Per esempio:
 
 <programlisting>
 CREATE TABLE parent(key integer, ...);
@@ -2589,22 +2588,22 @@ CREATE TABLE child2000(check (key between 2000 and 2999)) INHERITS(parent);
 SELECT * FROM parent WHERE key = 2400;
 </programlisting>
 
-        With constraint exclusion enabled, this <command>SELECT</command>
-        will not scan <structname>child1000</structname> at all, improving performance.
+Con il vincolo exclusion abilitato, questa <command>SELECT</command>
+non scansionerà per niente <structname>child1000</structname>, aumentando le prestazioni.
        </para>
 
        <para>
-        Currently, constraint exclusion is enabled by default
-        only for cases that are often used to implement table partitioning.
-        Turning it on for all tables imposes extra planning overhead that is
-        quite noticeable on simple queries, and most often will yield no
-        benefit for simple queries.  If you have no partitioned tables
-        you might prefer to turn it off entirely.
+Attualmente, il vincolo exclusion è abilitato in maniera predefinita
+solo per casi che sono usati spesso per implementare il partizionamento.
+Abilitarlo per tutte le tabelle impone overhead aggiuntivo per la pianificazione 
+che è abbastanza distinguibile per query semplici, e molto spesso non porteranno 
+benefici per query semplici. Se non si hanno tabelle partizionate 
+si potrebbe preferire disabilitarla interamente.
        </para>
 
        <para>
-        Refer to <xref linkend="ddl-partitioning-constraint-exclusion"/> for
-        more information on using constraint exclusion and partitioning.
+Ci si riferisca a <xref linkend="ddl-partitioning-constraint-exclusion"/> per 
+maggiori informazioni sull'utilizzo di vincoli exclusion e partizionamento.
        </para>
       </listitem>
      </varlistentry>
@@ -2612,7 +2611,7 @@ SELECT * FROM parent WHERE key = 2400;
      <varlistentry id="guc-cursor-tuple-fraction" xreflabel="cursor_tuple_fraction">
       <term><varname>cursor_tuple_fraction</varname> (<type>floating point</type>)</term>
       <indexterm>
-       <primary><varname>cursor_tuple_fraction</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>cursor_tuple_fraction</varname></primary>
       </indexterm>
       <listitem>
        <para>
@@ -2636,11 +2635,11 @@ SELECT * FROM parent WHERE key = 2400;
       </indexterm>
       <listitem>
        <para>
-        The planner will merge sub-queries into upper queries if the
-        resulting <literal>FROM</literal> list would have no more than
-        this many items.  Smaller values reduce planning time but might
-        yield inferior query plans.  The default is eight.
-        For more information see <xref linkend="explicit-joins"/>.
+Il pianificatore unirà le sottoquery in query superiori se l'elenco 
+<literal>FROM</literal> risultante non avrebbe più di questo numero di elementi.
+Valori più piccoli riducono il tempo di pianificazione ma potrebbero
+generare piani di query inferiori. Il valore predefinito è otto.
+Per maggiori informazioni si veda  <xref linkend="explicit-joins"/>.
        </para>
 
        <para>
@@ -2654,15 +2653,15 @@ SELECT * FROM parent WHERE key = 2400;
      <varlistentry id="guc-join-collapse-limit" xreflabel="join_collapse_limit">
       <term><varname>join_collapse_limit</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>join_collapse_limit</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>join_collapse_limit</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        The planner will rewrite explicit <literal>JOIN</literal>
-        constructs (except <literal>FULL JOIN</literal>s) into lists of
-        <literal>FROM</literal> items whenever a list of no more than this many items
-        would result.  Smaller values reduce planning time but might
-        yield inferior query plans.
+Il pianificatore riscriverà costrutti <literal>JOIN</literal> espliciti
+(eccetto <literal>FULL JOIN</literal>) in elenchi di elementi 
+<literal>FROM</literal> ogni volta che un elenco di non più di questo numero di elementi
+risulterebbe. Valori più piccoli riducono il tempo di pianificazione ma potrebbero 
+genrare piani di query inferiori.
        </para>
 
        <para>

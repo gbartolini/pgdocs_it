@@ -2665,16 +2665,16 @@ genrare piani di query inferiori.
        </para>
 
        <para>
-        By default, this variable is set the same as
-        <varname>from_collapse_limit</varname>, which is appropriate
-        for most uses. Setting it to 1 prevents any reordering of
-        explicit <literal>JOIN</literal>s. Thus, the explicit join order
-        specified in the query will be the actual order in which the
-        relations are joined. Because the query planner does not always choose
-        the optimal join order, advanced users can elect to
-        temporarily set this variable to 1, and then specify the join
-        order they desire explicitly.
-        For more information see <xref linkend="explicit-joins"/>.
+In maniera predefinita, questa variabile è impostata a un valore uguale a
+<varname>from_collapse_limit</varname>, che è appropriato per la maggior parte dei casi.
+Impostarlo a 1 previene qualsiasi reordinamento di <literal>JOIN</literal>  
+escplicite. Così, l'ordine di join esplicito specificato nella query
+sarà l'effettivo ordine in cui le relazioni sono sottoposte a join. 
+Dato che il pianificatore delle query non sempre sceglie
+l'ordine di join ottimale, gli utenti avanzati possono impostare
+temporaneamente questa variabile a 1, e quindi specificare
+esplicitamente l'ordine di join  desiderato.
+Per maggiori informazioni si veda <xref linkend="explicit-joins"/>.
        </para>
 
        <para>

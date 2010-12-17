@@ -1943,17 +1943,19 @@ Questo parametro può essere impostato solo nel file
       <listitem>
        <para>
         Specifies the number of transactions by which <command>VACUUM</command> and
-        <acronym>HOT</acronym> updates will defer cleanup of dead row versions. The
-        default is zero transactions, meaning that dead row versions can be
-        removed as soon as possible, that is, as soon as they are no longer
-        visible to any open transaction.  You may wish to set this to a
-        non-zero value on a primary server that is supporting hot standby
-        servers, as described in <xref linkend="hot-standby"/>.  This allows
-        more time for queries on the standby to complete without incurring
-        conflicts due to early cleanup of rows.  However, since the value
-        is measured in terms of number of write transactions occurring on the
-        primary server, it is difficult to predict just how much additional
-        grace time will be made available to standby queries.
+        <acronym>HOT</acronym> updates will defer cleanup of dead row versions. 
+Il valore predefinito è zero transazioni, che significa che le
+versioni delle righe morte possono essere rimosse prima possibile,
+cioè, appena non sono più visibili a nessuna transazione aperta. 
+Si potrebbe voler impostare questo a 
+un valore diverso da zero su un server primario che sta supportando
+server hot standby, come descritto in <xref linkend="hot-standby"/>.
+Questo consente più tempo per query sullo standby per completarsi
+senza incorrere in conflitti per una precedente pulitura delle righe.
+Comunque, dato che il valore viene misurato in termini di numero di
+transazioni di scrittura che avvengono sul server primario, è
+difficile predirre quanto tempo utile addizionale sarà reso
+disponibile alle query standby.
 Questo parametro può essere impostato solo nel file 
 <filename>postgresql.conf</filename> o dalla linea di comando del server.
        </para>
@@ -2678,9 +2680,9 @@ Per maggiori informazioni si veda <xref linkend="explicit-joins"/>.
        </para>
 
        <para>
-        Setting this value to <xref linkend="guc-geqo-threshold"/> or more
-        may trigger use of the GEQO planner, resulting in nondeterministic
-        plans.  See <xref linkend="runtime-config-query-geqo"/>.
+Impostare questo valore a <xref linkend="guc-geqo-threshold"/> o più
+potrebbe portare all'uso del pianificatore GEQO, causando piani non
+deterministici. Si veda <xref linkend="runtime-config-query-geqo"/>.
        </para>
       </listitem>
      </varlistentry>
@@ -2690,7 +2692,7 @@ Per maggiori informazioni si veda <xref linkend="explicit-joins"/>.
    </sect1>
 
    <sect1 id="runtime-config-logging">
-    <title>Error Reporting and Logging</title>
+    <title>Log e presentazione degli errori</title>
 
     <indexterm zone="runtime-config-logging">
      <primary>server log</primary>
@@ -2712,16 +2714,16 @@ Per maggiori informazioni si veda <xref linkend="explicit-joins"/>.
       </indexterm>
       <listitem>
        <para>
-        <productname>PostgreSQL</productname> supports several methods
-         for logging server messages, including
-         <systemitem>stderr</systemitem>, <systemitem>csvlog</systemitem> and
-         <systemitem>syslog</systemitem>. On Windows, 
-         <systemitem>eventlog</systemitem> is also supported. Set this
-         parameter to a list of desired log destinations separated by
-         commas. The default is to log to <systemitem>stderr</systemitem> 
-         only.
-         This parameter can only be set in the <filename>postgresql.conf</filename>
-         file or on the server command line.
+<productname>PostgreSQL</productname> supporta diversi metodi per fare
+il log dei messaggi sel server, incluso
+<systemitem>stderr</systemitem>, <systemitem>csvlog</systemitem> e
+<systemitem>syslog</systemitem>. Su windows, è supportato anche 
+<systemitem>eventlog</systemitem>. Impostare questo parametro a un
+elenco di destinazioni di log desiderate seprate da virgole. Il metodo
+predefinito è di fare il log solamente su
+<systemitem>stderr</systemitem>. Questo parametro può essere impostato
+solo nel file <filename>postgresql.conf</filename> o dalla linea di
+comando del server. 
        </para>
        <para>
         If <systemitem>csvlog</systemitem> is included in <varname>log_destination</varname>,

@@ -416,12 +416,11 @@ parametro può essere impostato solo all'avvio del server.
       </indexterm>
       <listitem>
        <para>
-        Specifies the directory of the Unix-domain socket on which the
-        server is to listen for
-        connections from client applications.  
-        The default is normally
-        <filename>/tmp</filename>, but can be changed at build time.
-        This parameter can only be set at server start.
+Specifica la directory del socket di dominio Unix sulla quale il server 
+ascolta per connessioni da applicazioni client.
+Il valore predefinito normalmente è 
+<filename>/tmp</filename>, ma può essere cambiato al momento della compilazione.
+Questo parametro può essere impostato solo all'avvio del server.
        </para>
 
        <para>
@@ -607,8 +606,14 @@ Questo parametro non è supportato su Windows, e deve essere zero.
      <variablelist>
      <varlistentry id="guc-authentication-timeout" xreflabel="authentication_timeout">
       <term><varname>authentication_timeout</varname> (<type>integer</type>)</term>
-      <indexterm><primary>timeout</primary><secondary>autenticazione del client</secondary></indexterm>
-      <indexterm><primary>client authentication</primary><secondary>durante il timeout</secondary></indexterm>
+        <indexterm>
+            <primary>timeout</primary>
+            <secondary>autenticazione del client</secondary>
+        </indexterm>
+        <indexterm>
+            <primary>client authentication</primary>
+            <secondary>durante il timeout</secondary>
+        </indexterm>
       <indexterm>
        <primary>Parametro di configurazione <varname>authentication_timeout</varname></primary>
       </indexterm>
@@ -649,13 +654,14 @@ connessioni TCP/IP.
       </indexterm>
       <listitem>
        <para>
-        Specifies how much data can flow over an <acronym>SSL</acronym>-encrypted
-        connection before renegotiation of the session keys will take
-        place. Renegotiation decreases an attacker's chances of doing
+Specifica quanti dati possono passare su una connessione criptata <acronym>SSL</acronym>
+prima che avvenga la rinegoziazione delle chiavi della sessione. 
+        Renegotiation decreases an attacker's chances of doing
         cryptanalysis when large amounts of traffic can be examined, but it
-        also carries a large performance penalty. The sum of sent and received
-        traffic is used to check the limit. If this parameter is set to 0,
-        renegotiation is disabled. The default is <literal>512MB</literal>.
+        also carries a large performance penalty. 
+La somma del traffico mandato e ricevuto 
+viene usato per controllare il limite. Se questo0 parametro è impostato a 0,
+la rinegoziazione è disabilitata. Il valore poredefinito è <literal>512MB</literal>.
        </para>
        <note>
         <para>
@@ -1337,18 +1343,19 @@ o zero per disabilitare l'emissione di richieste di I/O asincrone.
         <para>
          A good starting point for this setting is the number of separate
          drives comprising a RAID 0 stripe or RAID 1 mirror being used for the
-         database.  (For RAID 5 the parity drive should not be counted.)
-         However, if the database is often busy with multiple queries issued in
-         concurrent sessions, lower values may be sufficient to keep the disk
-         array busy.  A value higher than needed to keep the disks busy will
-         only result in extra CPU overhead.
+         database.  
+(Per il RAID 5 il drive di parità non dovrebbe essere contato).
+Comunque, se il database è spesso occupato da molteplici query mandate in sessioni concorrenti,
+valori più bassi potrebbero essere sufficienti a mantenere l'array di dischi occupato.
+Un valore più alto del necessario a mantenere i dischi occupati 
+avrà come conseguenza solo overhead di CPU aggiuntivo.
         </para>
 
         <para>
-         For more exotic systems, such as memory-based storage or a RAID array
-         that is limited by bus bandwidth, the correct value might be the
-         number of I/O paths available.  Some experimentation may be needed
-         to find the best value.
+Per sistemi esotici, tipo storage basati sulla memoria o un array RAID che 
+è limitato dalla larghezza di banda del bus, il valore corretto potrebbe essere
+il numero di percorsi di I/O disponibili. Potrebbe essere necessario sperimentare
+per trovare il valore migliore.
         </para>
 
         <para>
@@ -2645,9 +2652,9 @@ Per maggiori informazioni si veda  <xref linkend="explicit-joins"/>.
        </para>
 
        <para>
-        Setting this value to <xref linkend="guc-geqo-threshold"/> or more
-        may trigger use of the GEQO planner, resulting in nondeterministic
-        plans.  See <xref linkend="runtime-config-query-geqo"/>.
+Impostare questo valore a <xref linkend="guc-geqo-threshold"/> o più 
+potrebbe portare all'uso del pianificatore GEQO, risultando in piani non 
+deterministici. Si veda <xref linkend="runtime-config-query-geqo"/>.
        </para>
       </listitem>
      </varlistentry>
@@ -2699,7 +2706,7 @@ deterministici. Si veda <xref linkend="runtime-config-query-geqo"/>.
     </indexterm>
 
     <sect2 id="runtime-config-logging-where">
-     <title>Where To Log</title>
+     <title>Dove fare il log</title>
 
      <indexterm zone="runtime-config-logging-where">
       <primary>where to log</primary>
@@ -2710,7 +2717,7 @@ deterministici. Si veda <xref linkend="runtime-config-query-geqo"/>.
      <varlistentry id="guc-log-destination" xreflabel="log_destination">
       <term><varname>log_destination</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>log_destination</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_destination</varname></primary>
       </indexterm>
       <listitem>
        <para>
@@ -2726,21 +2733,22 @@ solo nel file <filename>postgresql.conf</filename> o dalla linea di
 comando del server. 
        </para>
        <para>
-        If <systemitem>csvlog</systemitem> is included in <varname>log_destination</varname>,
-        log entries are output in <quote>comma separated
-        value</quote> (<acronym>CSV</acronym>) format, which is convenient for
-        loading logs into programs.
-        See <xref linkend="runtime-config-logging-csvlog"/> for details.
-        <varname>logging_collector</varname> must be enabled to generate 
-        CSV-format log output.
+Se <systemitem>csvlog</systemitem> è incluso in <varname>log_destination</varname>,
+le voci di log sono0 mandate in output nel formato (<acronym>CSV</acronym>)
+<quote>separato da virgole</quote>, che è utile per il caricamento dei log 
+nei programmi.
+Si veda <xref linkend="runtime-config-logging-csvlog"/> per dettagli.
+<varname>logging_collector</varname> deve essere abilitato per generare 
+output di log in formato CSV.
        </para>
 
        <note>
         <para>
-         On most Unix systems, you will need to alter the configuration of
-         your system's <application>syslog</application> daemon in order
-         to make use of the <systemitem>syslog</systemitem> option for
-         <varname>log_destination</varname>.  <productname>PostgreSQL</productname>
+Sulla maggior parte dei sistemi Unix, si dovrà cambiare la configurazione del 
+proprio demone <application>syslog</application> di sistema per 
+poter usare l'opzione <systemitem>syslog</systemitem> per 
+<varname>log_destination</varname>.  
+        <productname>PostgreSQL</productname>
          can log to <application>syslog</application> facilities
          <literal>LOCAL0</literal> through <literal>LOCAL7</literal> (see <xref
          linkend="guc-syslog-facility"/>), but the default
@@ -2749,8 +2757,8 @@ comando del server.
 <programlisting>
 local0.*    /var/log/postgresql
 </programlisting>
-         to the  <application>syslog</application> daemon's configuration file
-         to make it work.
+nel file di configurazione del demone  <application>syslog</application> per 
+farlo funzionare.
         </para>
        </note>
       </listitem>
@@ -2763,24 +2771,25 @@ local0.*    /var/log/postgresql
       </indexterm>
       <listitem>
        <para>
-         This parameter captures plain and CSV-format log messages
-         sent to <application>stderr</application> and redirects them into log files.
-         This approach is often more useful than
-         logging to <application>syslog</application>, since some types of messages
-         might not appear in <application>syslog</application> output (a common example
-         is dynamic-linker failure messages).
-         This parameter can only be set at server start.
+Questo parametro cattura i messaggi di log normali e in formato CSV
+mandati a <application>stderr</application> e li redirige in file di
+log. Questo approccio è spesso più utile rispetto a eseguire il log su
+<application>syslog</application>, dato che alcuni tipi di messaggi
+potrebbero non apparire nell'output di
+<application>syslog</application> (un esempio tipico sono i messaggi
+di fallimento del linker dinamico). Questo parametro può essere
+impostato solo all'avvio del server.
        </para>
 
        <note>
         <para>
-          The logging collector is designed to never lose messages.  This means
-          that in case of extremely high load, server processes could be
-          blocked due to trying to send additional log messages when the
-          collector has fallen behind.  In contrast, <application>syslog</application>
-          prefers to drop messages if it cannot write them, which means it's
-          less reliable in those cases but it will not block the rest of the
-          system.
+Il collettore di log è disegnato per non perdere mai messaggi. Questo
+signigfica che in caso di carico estremamente alto, i processi server
+potrebbero essere bloccati per provare a mandare messaggi di log
+aggiuntivi quando il collettore è rimasto indietro. Per contro,
+<application>syslog</application> preferisce eliminare i messaggi se
+non può scriverli, che significa che è meno attendibilein quei casi ma
+non bloccherà il resto del sistema.
         </para>
        </note>
 
@@ -2794,12 +2803,13 @@ local0.*    /var/log/postgresql
       </indexterm>
       <listitem>
        <para>
-        When <varname>logging_collector</varname> is enabled, 
-        this parameter determines the directory in which log files will be created.
-        It can be specified as an absolute path, or relative to the
-        cluster data directory.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Quando è abilitato <varname>logging_collector</varname>, questo
+parametro determina la directory in cui i file di log saranno creati. 
+Può essere scpecificato come percorsco assoluto, o relativo alla
+directory dei dati del cluster.
+Questo parametro può essere impostato solo nel file
+<filename>postgresql.conf</filename> o dalla linea di comando del
+server.
        </para>
       </listitem>
      </varlistentry>
@@ -2807,42 +2817,41 @@ local0.*    /var/log/postgresql
      <varlistentry id="guc-log-filename" xreflabel="log_filename">
       <term><varname>log_filename</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>log_filename</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_filename</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        When <varname>logging_collector</varname> is enabled,
-        this parameter sets the file names of the created log files.  The value
-        is treated as a <systemitem>strftime</systemitem> pattern,
-        so <literal>%</literal>-escapes can be used to specify time-varying
-        file names.  (Note that if there are
-        any time-zone-dependent <literal>%</literal>-escapes, the computation
-        is done in the zone specified
-        by <xref linkend="guc-log-timezone"/>.)
-        Note that the system's <systemitem>strftime</systemitem> is not used
-        directly, so platform-specific (nonstandard) extensions do not work.
+Quando <varname>logging_collector</varname> è abilitato, 
+questo paramentro imposta i nomi dei file dei file di log creati. Il
+valore è trattato come un modello <systemitem>strftime</systemitem>,
+quindi gli escape con <literal>%</literal> possono essere usati per
+specificare nomi di file che variano col tempo. (Si noti che se ci
+sono escape con <literal>%</literal> che dipendono dal fuso orario, il
+calcolo viene eseguito nel fuso specificato da <xref
+linkend="guc-log-timezone"/>).
+Si noti che il <systemitem>strftime</systemitem> del sistema non viene
+usato direttamente, quindi estensioni specifiche alla piattaforma (non
+standard) non funzioneranno. 
        </para>
        <para>
-        If you specify a file name without escapes, you should plan to
-        use a log rotation utility to avoid eventually filling the
-        entire disk.  In releases prior to 8.4, if
-        no <literal>%</literal> escapes were
-        present, <productname>PostgreSQL</productname> would append
-        the epoch of the new log file's creation time, but this is no
-        longer the case.
+Se si specifica un nome di file senza escape, si dovrebbe pianificare l'utilizzo
+di un'utilità di rotazione di log per evitare di riempire il disco.  
+In versioni precedenti la 8.4, se non sono presenti escape <literal>%</literal>,
+<productname>PostgreSQL</productname> aggiungerà l'epoch del momento di creazione 
+del nuovo file di log, ma questo non avviene più.
        </para>
        <para>
-        If CSV-format output is enabled in <varname>log_destination</varname>,
-        <literal>.csv</literal> will be appended to the timestamped 
-        log file name to create the file name for CSV-format output.
+Se l'output in formato CSV è abilitati in  <varname>log_destination</varname>,
+<literal>.csv</literal> sarà aggiunto al nome del file di log per creare 
+il nome del file per output in formato CSV.
         (If <varname>log_filename</varname> ends in <literal>.log</literal>, the suffix is
         replaced instead.)
-        In the case of the example above, the CSV
-        file name will be <literal>server_log.1093827753.csv</literal>.
+Nel caso dell'esempio sopra, il nome del file CSV
+sarà  <literal>server_log.1093827753.csv</literal>.
        </para>
        <para>
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
        </para>
       </listitem>
      </varlistentry>
@@ -3005,24 +3014,26 @@ local0.*    /var/log/postgresql
       </indexterm>
       <listitem>
        <para>
-        Runs the server silently. If this parameter is set, the server
-        will automatically run in background and disassociate from the
-        controlling terminal.
-        This parameter can only be set at server start.
+Avvia il server silenziosamente. Se questo parametro è impostato, il server
+andrà in esecuzione automaticamente in background è non associato al terminale
+di controllo.
+Questo parametro può essere impostato solo all'avvio del server.
        </para>
 
        <caution>
        <para>
-        When this parameter is set,
-        the server's standard output and standard error are redirected
-        to the file <filename>postmaster.log</filename> within the data directory.
+Quando questo parametro è impostato, 
+lo standard output e lo standard error del server sono mandati al file 
+<filename>postmaster.log</filename> senza la directory dei dati.
         There is no provision for rotating this file, so it will grow
         indefinitely unless server log output is redirected elsewhere
-        by other settings.  It is recommended that <varname>log_destination</varname>
+        by other settings.  
+        It is recommended that <varname>log_destination</varname>
         be set to <literal>syslog</literal> or that <varname>logging_collector</varname> be
-        enabled when using this option.  Even with those measures, errors
-        reported early during startup may appear in
-        <filename>postmaster.log</filename> rather than the normal log destination.
+        enabled when using this option.  
+Anche con queste misure, errori riportati 
+precedentemente durante l'avvio potrebbero apparire in 
+<filename>postmaster.log</filename> piuttosto che le normale destinazione di log. 
        </para>
        </caution>
       </listitem>

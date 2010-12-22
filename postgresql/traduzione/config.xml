@@ -2859,13 +2859,16 @@ o dalla linea di comando del server.
      <varlistentry id="guc-log-file-mode" xreflabel="log_file_mode">
       <term><varname>log_file_mode</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>log_file_mode</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_file_mode</varname></primary>
       </indexterm>
       <listitem>
        <para>
         On Unix systems this parameter sets the permissions for log files
+Su sistemi Unix questo parametro imposta i permessi per i file di log
         when <varname>logging_collector</varname> is enabled. (On Microsoft
+quando è abilitato <varname>logging_collector</varname>. (Su Microsoft 
         Windows this parameter is ignored.)
+Windows questo parametro viene ignorato). 
         The parameter value is expected to be a numeric mode
         specified in the format accepted by the
         <function>chmod</function> and <function>umask</function>

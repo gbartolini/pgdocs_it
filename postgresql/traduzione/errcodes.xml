@@ -2,56 +2,61 @@
 <!-- $PostgreSQL$ -->
 
 <appendix id="errcodes-appendix">
- <title><productname>PostgreSQL</productname> Error Codes</title>
+ <title>Codici di errore di <productname>PostgreSQL</productname></title>
 
  <indexterm zone="errcodes-appendix">
-  <primary>error codes</primary>
-  <secondary>list of</secondary>
+  <primary>codici di errore</primary>
+  <secondary>elenco</secondary>
  </indexterm>
 
  <para>
-  All messages emitted by the <productname>PostgreSQL</productname>
-  server are assigned five-character error codes that follow the SQL
-  standard's conventions for <quote>SQLSTATE</quote> codes.  Applications
-  that need to know which error condition has occurred should usually
-  test the error code, rather than looking at the textual error
-  message.  The error codes are less likely to change across
-  <productname>PostgreSQL</productname> releases, and also are not subject to
-  change due to localization of error messages. Note that some, but
-  not all, of the error codes produced by <productname>PostgreSQL</productname>
-  are defined by the SQL standard; some additional error codes for
-  conditions not defined by the standard have been invented or
-  borrowed from other databases.
+  A tutti i messaggi emessi dal server <productname>PostgreSQL</productname>
+  vengono assegnati codici di errore di cinque caratteri che seguono le
+  convenzioni standard SQL per i codici <quote>SQLSTATE</quote>.
+  Applicazioni che hanno la necessità di sapere quale condizione 
+  di errore si sia verificata dovrebbero solitamente verificare il
+  codice di errore, piuttosto che guardare il testo del messaggio di
+  errore. I codici di errore non cambiano di aspetto tra un rilascio e
+  l'altro di <productname>PostgreSQL</productname>, e non sono nemmeno
+  soggetti a modifiche durante la localizzazione dei messaggi di errore.
+  Si noti che alcuni, ma non tutti i codici di errore prodotti da
+  <productname>PostgreSQL</productname> sono definiti dallo standard SQL;
+  alcuni codici di errore addizionali per condizioni non definite dallo
+  standard sono stati inventati o presi in prestito da altri database.
  </para>
 
  <para>
-  According to the standard, the first two characters of an error code
-  denote a class of errors, while the last three characters indicate
-  a specific condition within that class.  Thus, an application that
-  does not recognize the specific error code can still be able to infer
-  what to do from the error class.
+  Conformemente allo standard, i primi due caratteri di un codice di
+  errore indicano una classe di errori, mentre gli ultimi tre caratteri
+  indicano una specifica condizione (di errore) all'interno di quella
+  classe. Così una applicazione che non riconosce il codice di
+  errore specifico può ancora riuscire a dedurre cosa fare in 
+  base alla classe di errore.
  </para>
 
  <para>
-  <xref linkend="errcodes-table"/> lists all the error codes defined in
-  <productname>PostgreSQL</productname> &version;.  (Some are not actually
-  used at present, but are defined by the SQL standard.)
-  The error classes are also shown.  For each error class there is a
-  <quote>standard</quote> error code having the last three characters
-  <literal>000</literal>.  This code is used only for error conditions that fall
-  within the class but do not have any more-specific code assigned.
+  La tabella <xref linkend="errcodes-table"/> elenca tutti i codici di 
+  errore definiti in <productname>PostgreSQL</productname> &version;
+  (alcuni attualmente non sono utilizzati per il momento, ma sono 
+  definiti dallo standard SQL). Vengono anche mostrate le classi di 
+  errore. Per ogni classe di errore c'è un codice di errore
+  <quote>standard</quote> che ha gli ultimi tre caratteri
+  <literal>000</literal>. Questo codice è utilizzato solo per
+  condizioni di errore che ricadono all'interno della classe ma che non
+  hanno un codice maggiormente specifico assegnato.
  </para>
 
  <para>
-  The <application>PL/pgSQL</application> condition name for each error code is the
-  same as the phrase shown in the table, with underscores substituted
-  for spaces.  For example, code <literal>22012</literal>, DIVISION BY ZERO,
-  has condition name <literal>DIVISION_BY_ZERO</literal>.  Condition names can
-  be written in either upper or lower case.  (Note that
-  <application>PL/pgSQL</application> does not recognize warning, as opposed to error,
-  condition names; those are classes 00, 01, and 02.)
+  Il nome di condizione <application>PL/pgSQL</application> per ciascun
+  codice di errore è il medesimo della frase mostrata nella
+  tabella, con gli spazi sostituiti dal segno di sottolineatura. Per
+  esempio, il codice <literal>22012</literal>, DIVISION BY ZERO, ha come
+  nome di condizione <literal>DIVISION_BY_ZERO</literal>. I nomi di
+  condizione possono essere scritti sia in caratteri maiuscoli che
+  minuscoli (si noti che <application>PL/pgSQL</application> non
+  riconosce gli avvertimenti, al contrario degli errori, nomi di 
+  condizione; questi appartengono alle classi 00, 01 e 02).
  </para>
-
 
 <!--
  The following table should correspond to the contents of
@@ -59,7 +64,7 @@
 -->
 
 <table id="errcodes-table">
- <title><productname>PostgreSQL</productname> Error Codes</title>
+ <title>Codici di errore <productname>PostgreSQL</productname></title>
 
  <tgroup cols="3">
   <colspec colnum="1" colname="errorcode"/>
@@ -68,16 +73,16 @@
 
   <thead>
    <row>
-    <entry>Error Code</entry>
-    <entry>Meaning</entry>
-    <entry>Condition Name</entry>
+    <entry>Codice errore</entry>
+    <entry>Significato</entry>
+    <entry>Nome condizione</entry>
    </row>
   </thead>
 
   <tbody>
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 00 &mdash; Successful Completion</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 00 - Successful Completion</emphasis></entry>
 </row>
 
 <row>
@@ -88,7 +93,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 01 &mdash; Warning</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 01 - Warning</emphasis></entry>
 </row>
 
 <row>
@@ -120,7 +125,7 @@
 <entry>PRIVILEGE NOT GRANTED</entry>
 <entry>privilege_not_granted</entry>
 </row>
-
+Successful Completion
 <row>
 <entry><literal>01006</literal></entry>
 <entry>PRIVILEGE NOT REVOKED</entry>
@@ -141,7 +146,9 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 02 &mdash; No Data (this is also a warning class per the SQL standard)</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 02 - No Data
+(questa è anche una classe di avvertimento per lo standard 
+SQL)</emphasis></entry>
 </row>
 
 <row>
@@ -158,7 +165,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 03 &mdash; SQL Statement Not Yet Complete</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 03 - SQL Statement Not Yet Complete</emphasis></entry>
 </row>
 
 <row>
@@ -169,7 +176,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 08 &mdash; Connection Exception</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 08 - Connection Exception</emphasis></entry>
 </row>
 
 <row>
@@ -216,7 +223,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 09 &mdash; Triggered Action Exception</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 09 - Triggered Action Exception</emphasis></entry>
 </row>
 
 <row>
@@ -227,7 +234,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 0A &mdash; Feature Not Supported</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 0A - Feature Not Supported</emphasis></entry>
 </row>
 
 <row>
@@ -238,7 +245,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 0B &mdash; Invalid Transaction Initiation</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 0B - Invalid Transaction Initiation</emphasis></entry>
 </row>
 
 <row>
@@ -249,7 +256,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 0F &mdash; Locator Exception</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 0F - Locator Exception</emphasis></entry>
 </row>
 
 <row>
@@ -266,7 +273,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 0L &mdash; Invalid Grantor</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 0L - Invalid Grantor</emphasis></entry>
 </row>
 
 <row>
@@ -283,7 +290,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 0P &mdash; Invalid Role Specification</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 0P - Invalid Role Specification</emphasis></entry>
 </row>
 
 <row>
@@ -294,7 +301,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 20 &mdash; Case Not Found</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 20 - Case Not Found</emphasis></entry>
 </row>
 
 <row>
@@ -305,7 +312,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 21 &mdash; Cardinality Violation</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 21 - Cardinality Violation</emphasis></entry>
 </row>
 
 <row>
@@ -316,7 +323,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 22 &mdash; Data Exception</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 22 - Data Exception</emphasis></entry>
 </row>
 
 <row>
@@ -602,7 +609,7 @@
 </row>
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 23 &mdash; Integrity Constraint Violation</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 23 - Integrity Constraint Violation</emphasis></entry>
 </row>
 
 <row>
@@ -649,7 +656,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 24 &mdash; Invalid Cursor State</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 24 - Invalid Cursor State</emphasis></entry>
 </row>
 
 <row>
@@ -660,7 +667,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 25 &mdash; Invalid Transaction State</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 25 - Invalid Transaction State</emphasis></entry>
 </row>
 
 <row>
@@ -731,7 +738,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 26 &mdash; Invalid SQL Statement Name</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 26 - Invalid SQL Statement Name</emphasis></entry>
 </row>
 
 <row>
@@ -742,7 +749,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 27 &mdash; Triggered Data Change Violation</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 27 - Triggered Data Change Violation</emphasis></entry>
 </row>
 
 <row>
@@ -753,7 +760,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 28 &mdash; Invalid Authorization Specification</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 28 - Invalid Authorization Specification</emphasis></entry>
 </row>
 
 <row>
@@ -770,7 +777,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 2B &mdash; Dependent Privilege Descriptors Still Exist</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 2B - Dependent Privilege Descriptors Still Exist</emphasis></entry>
 </row>
 
 <row>
@@ -787,7 +794,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 2D &mdash; Invalid Transaction Termination</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 2D - Invalid Transaction Termination</emphasis></entry>
 </row>
 
 <row>
@@ -798,7 +805,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 2F &mdash; SQL Routine Exception</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 2F - SQL Routine Exception</emphasis></entry>
 </row>
 
 <row>
@@ -833,7 +840,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 34 &mdash; Invalid Cursor Name</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 34 - Invalid Cursor Name</emphasis></entry>
 </row>
 
 <row>
@@ -844,7 +851,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 38 &mdash; External Routine Exception</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 38 - External Routine Exception</emphasis></entry>
 </row>
 
 <row>
@@ -879,7 +886,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 39 &mdash; External Routine Invocation Exception</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 39 - External Routine Invocation Exception</emphasis></entry>
 </row>
 
 <row>
@@ -914,7 +921,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 3B &mdash; Savepoint Exception</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 3B - Savepoint Exception</emphasis></entry>
 </row>
 
 <row>
@@ -931,7 +938,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 3D &mdash; Invalid Catalog Name</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 3D - Invalid Catalog Name</emphasis></entry>
 </row>
 
 <row>
@@ -942,7 +949,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 3F &mdash; Invalid Schema Name</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 3F - Invalid Schema Name</emphasis></entry>
 </row>
 
 <row>
@@ -953,7 +960,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 40 &mdash; Transaction Rollback</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 40 - Transaction Rollback</emphasis></entry>
 </row>
 
 <row>
@@ -988,7 +995,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 42 &mdash; Syntax Error or Access Rule Violation</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 42 - Syntax Error or Access Rule Violation</emphasis></entry>
 </row>
 
 <row>
@@ -1239,7 +1246,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 44 &mdash; WITH CHECK OPTION Violation</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 44 - WITH CHECK OPTION Violation</emphasis></entry>
 </row>
 
 <row>
@@ -1250,7 +1257,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 53 &mdash; Insufficient Resources</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 53 - Insufficient Resources</emphasis></entry>
 </row>
 
 <row>
@@ -1279,7 +1286,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 54 &mdash; Program Limit Exceeded</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 54 - Program Limit Exceeded</emphasis></entry>
 </row>
 
 <row>
@@ -1308,7 +1315,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 55 &mdash; Object Not In Prerequisite State</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 55 - Object Not In Prerequisite State</emphasis></entry>
 </row>
 
 <row>
@@ -1337,7 +1344,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 57 &mdash; Operator Intervention</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 57 - Operator Intervention</emphasis></entry>
 </row>
 
 <row>
@@ -1372,7 +1379,8 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class 58 &mdash; System Error (errors external to <productname>PostgreSQL</productname> itself)</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe 58 - System 
+Error (errori esterni a <productname>PostgreSQL</productname> stesso)</emphasis></entry>
 </row>
 
 <row>
@@ -1395,7 +1403,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class F0 &mdash; Configuration File Error</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe F0 - Configuration File Error</emphasis></entry>
 </row>
 
 <row>
@@ -1412,7 +1420,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class P0 &mdash; PL/pgSQL Error</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe P0 - PL/pgSQL Error</emphasis></entry>
 </row>
 
 <row>
@@ -1441,7 +1449,7 @@
 
 
 <row>
-<entry spanname="span13"><emphasis role="bold">Class XX &mdash; Internal Error</emphasis></entry>
+<entry spanname="span13"><emphasis role="bold">Classe XX - Internal Error</emphasis></entry>
 </row>
 
 <row>

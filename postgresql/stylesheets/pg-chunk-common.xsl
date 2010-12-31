@@ -66,7 +66,7 @@
             <img src="images/2ndQuadrant-logo.png" 
                 alt="2ndQuadrant" 
                 width="256" 
-                height="52" />
+                height="54" />
             </a>
         </p>
         <br style="clear:both;" />

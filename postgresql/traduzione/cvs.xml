@@ -24,39 +24,45 @@
   <date>1999-05-20</date>
  </appendixinfo>
 
- <title>The Source Code Repository</title>
+ <title>Il repository del codice sorgente</title>
 
  <para>
-  The <productname>PostgreSQL</productname> source code is stored and managed using the
-  <productname>CVS</productname> version control system. An official mirror using
-  <productname>Git</productname> is also available, for those who wish to use a
-  distributed version control system. This mirror is automatically
-  updated whenever the main repository changes, so it always contains the latest
-  versions of all branches.
+  Il codice sorgente di <productname>PostgreSQL</productname> è
+  conservato e gestito utilizzando il sistema di controllo versione
+  <productname>CVS</productname>. È anche disponibile un mirror 
+  ufficiale che utilizza <productname>Git</productname> per coloro che
+  desiderano utilizzare un sistema di controllo versione distribuito.
+  Questo mirror viene automaticamente aggiornato ogni qual volta il
+  repository principale cambia, così che contiene sempre l'ultima
+  versione di tutte le branche.
  </para>
 
  <para>
-  Using <productname>Git</productname> is the most flexible way to work with the source, and it
-  allows you to work offline without having constant access to the project servers.
-  <productname>rsync</productname> based <productname>CVS</productname> also lets you work offline, but
-  lacks many of the other advantages of <productname>Git</productname>.
+  Utilizzare <productname>Git</productname> è il modo più flessibile di
+  lavorare con il sorgente, e permette di lavorare off line senza avere
+  necessità di accesso costante ai server del progetto.
+  Anche <productname>CVS</productname> basato su 
+  <productname>rsync</productname> permette di lavorare off line ma è 
+  carente di alcuni degli altri vantaggi ripetto a
+  <productname>Git</productname>.
  </para>
 
  <para>
-  Our wiki, <ulink
-  url="http://wiki.postgresql.org/wiki/Working_with_CVS"></ulink> and
+  I nostri wiki, <ulink
+  url="http://wiki.postgresql.org/wiki/Working_with_CVS"></ulink> e
   <ulink url="http://wiki.postgresql.org/wiki/Working_with_Git"></ulink>,
-  has additional details on working with CVS and Git.
+  contengono dettagli ulteriori riguardo la possibilità di lavorare con 
+  CVS e Git.
  </para>
 
  <sect1 id="git">
-  <title>Getting The Source Via <productname>Git</productname></title>
+  <title>Ottenere il sorgente mediante <productname>Git</productname></title>
 
   <para>
-   With <productname>Git</productname> you will make a copy of the entire code repository
-   to your local machine, so you will have access to all history and branches
-   offline. This is the fastest and most flexible way to develop or test
-   patches.
+   Mediante <productname>Git</productname> si otterrà una copia
+   dell'intero repository di codice sulla propria macchian locale, così
+   da avere accesso a tutta la storia e branche off line. Questo è il
+   modo più veloce e più flessibile per sviluppare e testare le patche.
   </para>
 
   <procedure>
@@ -64,209 +70,239 @@
 
    <step>
     <para>
-     You will need an installed version of <productname>Git</productname>, which you can get
-     from <ulink url="http://git-scm.com"></ulink>. Many systems also have a recent
-     version of <application>Git</application> installed by default, or available in their
-     package repository system.
+     Si avrà la necessità di una versione di
+     <productname>Git</productname> installata, che si può ottenere da
+     <ulink url="http://git-scm.com"></ulink>. Alcuni sistemi hanno
+     anche una recente versione di <application>Git</application>
+     installata in maniera predefinita, o disponibile nel proprio 
+     sistema  di repository dei pacchetti.
     </para>
    </step>
 
    <step>
     <para>
-     To being using the Git repository, make a clone of the official mirror:
+     Per utilizzare il repository Git, clonare il mirror ufficiale:
 
 <programlisting>
 git clone git://git.postgresql.org/git/postgresql.git
 </programlisting>
 
-     This will copy the full repository to your local machine, so it may take
-     a while to complete, especially if you have a slow Internet connection.
+     Questo comando copierà l'intero repository sulla propria macchina 
+     locale, così ci vorrà un po' di tempo per completarlo, specialmente 
+     se si possiede una connessione Internet lenta.
     </para>
 
     <para>
-     The Git mirror can also be reached via the HTTP protocol in case for example
-     a firewall is blocking access to the Git protocol. Just replace the URL
-     like:
+     Il mirror Git può anche essere raggiunto tramite il protocollo http
+     nel caso in cui per esempio un firewall stia bloccando il 
+     protocollo Git. Semplicemente rimpiazzare l'indirizzo con uno del
+     tipo:
 
 <programlisting>
 git clone http://git.postgresql.org/git/postgresql.git
 </programlisting>
 
-     The HTTP protocol is less efficient than the Git protocol, so it will be
-     slightly slower to use.
+     Il protocotto HTTP è meno efficiente del protocollo Git, così sarà
+     leggermente più lento da utilizzare.
     </para>
    </step>
 
    <step>
     <para>
-     Whenever you want to get the latest updates in the system, <command>cd</command>
-     into the repository, and run:
+     Ogni qual volta si desidere ottenere gli utlimi aggiornamenti nel
+     sistema, <command>cd</command> all'interno del repository e
+     avviare il comando:
 
 <programlisting>
 git fetch
 </programlisting>
+
     </para>
    </step>
   </procedure>
+  
   <para>
-   <productname>Git</productname> can do a lot more things than just fetch the source. For
-   more information, consult the man pages for the product, or the website at
+   <productname>Git</productname> può fare molte più cose oltre che
+   recuperare il sorgente. Per maggiori informazioni, consultare la 
+   pagina man del prodotto, o il sito web all'indirizzo
    <ulink url="http://git-scm.com"></ulink>.
   </para>
  </sect1>
 
  <sect1 id="anoncvs">
-  <title>Getting The Source Via Anonymous <productname>CVS</productname></title>
+  <title>Recuperare il sorgente mediante<productname>CVS</productname> anonimo</title>
 
   <para>
-   If you would like to keep up with the current sources on a regular
-   basis, you can fetch them from our <productname>CVS</productname> server
-   and then use <productname>CVS</productname> to
-   retrieve updates from time to time.
+   Se si desidera restare al passo con il sorgente attuale su base
+   regolare, si può recuperarlo da un server
+   <productname>CVS</productname> e poi utilizzare
+   <productname>CVS</productname> per recuperare gli aggiornamenti di
+   volta in volta.
   </para>
 
   <procedure>
-   <title>Anonymous CVS</title>
+   <title>CVS anonimo</title>
 
    <step>
     <para>
-     You will need a local copy of <productname>CVS</productname>
-     (Concurrent Version Control System), which you can get from
-     <ulink url="http://www.nongnu.org/cvs/"></ulink> (the official
-     site with the latest version) or any GNU software archive site
-     (often somewhat outdated). Many systems have a recent version of
-     <application>cvs</application> installed by default.
+     Sarà necessaria una copia locale di <productname>CVS</productname>
+     (Concurrent Version Control System), che può essere recuperata da
+     <ulink url="http://www.nongnu.org/cvs/"></ulink> (il sito ufficiale
+     con l'ultima versione) o da qualsiasi archivio di software GNU
+     (spesso un po' obsoleto). Alcuni sistemi posseggono una versione
+     recente di <application>cvs</application> installata in maniera
+     predefinita.
     </para>
    </step>
 
    <step>
     <para>
-     Do an initial login to the <productname>CVS</productname> server:
+     Effettuare un login iniziale al server
+     <application>CVS</application>:
 
 <programlisting>
 cvs -d :pserver:anoncvs@anoncvs.postgresql.org:/projects/cvsroot login
 </programlisting>
 
-     You will be prompted for a password; you can enter anything except
-     an empty string.
+     Verrà richiesta una password; si può introdurre qualsiasi cosa 
+     tranne una stringa vuota.
     </para>
 
     <para>
-     You should only need to do this once, since the password will be
-     saved in <filename>.cvspass</filename> in your home directory.
+     Si avrà la necessità di farlo solo una volta, siccome la
+     password sarà salvata nel file <filename>.cvspass</filename> nella
+     propria directory home.
     </para>
    </step>
 
    <step>
     <para>
-     Fetch the <productname>PostgreSQL</productname> sources:
+     Recuperare i sorgenti <productname>PostgreSQL</productname>:
+     
 <programlisting>
 cvs -z3 -d :pserver:anoncvs@anoncvs.postgresql.org:/projects/cvsroot co -P pgsql
 </programlisting>
 
-     This installs the <productname>PostgreSQL</productname> sources into a
-     subdirectory <filename>pgsql</filename>
-     of the directory you are currently in.
+     Il comando installa i sorgenti
+     <productname>PostgreSQL</productname> in una subdirectory
+     <filename>pgsql</filename> della directory nella quale ci si trova 
+     al momento.
     </para>
 
     <para>
-     This initial checkout is a little slower than simply downloading
-     a <filename>tar.gz</filename> file. The advantage of <productname>CVS</productname>
-     doesn't show up until you want to update the file set later on.
+     Questa verifica iniziale è leggermente lenta ripetto al semplice
+     download di un file <filename>tar.gz</filename>. Il vantaggio di
+     <productname>CVS</productname> non sarà evidente finché si vorrà
+     aggiornare l'insieme di file più tardi.
     </para>
    </step>
 
    <step>
     <para>
-     Whenever you want to update to the latest <productname>CVS</productname> sources,
-     <command>cd</command> into
-     the <filename>pgsql</filename> subdirectory, and issue:
+     Ogni volta che si desidera aggiornare agli ultimi sorgenti
+     <productname>CVS</productname>, <command>cd</command> all'interno
+     della subdirectory <filename>pgsql</filename> e dare il comando:
+     
 <programlisting>
 cvs -z3 update -d -P
 </programlisting>
 
-     This will fetch only the changes since the last time you updated.
-     You can update in just a couple of minutes, typically, even over
-     a modem-speed line.
+     Verranno recuperate solo le modifiche siccome l'ultima volta si è
+     aggiornato.
+     Si può aggiornare in appena un paio di minuti, solitamente, anche
+     mediante una linea a velocità di modem.
     </para>
    </step>
 
    <step>
     <para>
-     You can save yourself some typing by making a file <filename>.cvsrc</filename>
-     in your home directory that contains:
+     &Egrave; possibile risparmiare un po' di battiture creando un file
+     <filename>.cvsrc</filename> all'interno della propria directory 
+     home che contenga:
 
 <programlisting>
 cvs -z3
 update -d -P
 </programlisting>
 
-     This supplies the <option>-z3</option> option to all <command>cvs</command> commands, and the
-     <option>-d</option> and <option>-P</option> options to <command>cvs update</command>.  Then you just have
-     to say:
+     Questo fornisce l'opzione' <option>-z3</option> a tutti i comandi
+     <command>cvs</command>, e le opzioni <option>-d</option> e
+     <option>-P</option> a <command>cvs update</command>.   Poi basta 
+     dare il comando:
+     
 <programlisting>
 cvs update
 </programlisting>
 
-     to update your files.
+     per aggiornare i propri file.
     </para>
    </step>
   </procedure>
 
   <para>
-   <productname>CVS</productname> can do a lot of other things, such
-   as fetching prior revisions of the
-   <productname>PostgreSQL</productname> sources rather than the
-   latest development version.  For more info consult the manual that
-   comes with <productname>CVS</productname>, or see the online
-   documentation at <ulink url="http://www.nongnu.org/cvs/"></ulink>.
+   <productname>CVS</productname> può fare un mucchio di altre cosa, 
+   tipo recuperare precedenti versioni dei sorgenti di
+   <productname>PostgreSQL</productname> piuttosto che l'ultima versione
+   di sviluppo. Per maggiori informazioni consultare il manuale fornito
+   con <productname>CVS</productname>, o consultare la documentazione
+   online su <ulink url="http://www.nongnu.org/cvs/"></ulink>.
   </para>
+  
   <para>
-   <productname>CVS</productname> has deficiencies.  For example,
-   generating diffs that add or remove files requires write access to the
-   CVS repository.  To work around that deficiency, use
-   <productname>cvsutils</productname>, which is packaged in several
-   operating systems, and is available in source form at <ulink
-   url="http://www.red-bean.com/cvsutils/"></ulink>, or use <productname>Git</productname>
-   or another system designed to work offline.
+   <productname>CVS</productname> ha dei difetti. Per esempio, generare
+   differenze che aggiungono o rimuovono file richiede l'accesso in
+   scrittura al repository CVS. Per rimediare a questo difetto, usare
+   <productname>cvsutils</productname>, che è pacchettizzato in
+   numerosi sistemi operativi, ed è disponibile in formato sorgente su
+   <ulink url="http://www.red-bean.com/cvsutils/"></ulink>, oppure
+   utilizzare <productname>Git</productname> o un altro sistema 
+   progettato per lavorare offline.
   </para>
 
   <para>
-   Note that building <productname>PostgreSQL</productname> from a CVS
-   pull requires reasonably up-to-date versions of <application>bison</application>
-   and <application>flex</application>, which are not needed to build from a distribution
-   tarball because the files made with them are pre-built in a tarball.
-   You will need Perl as well.
-   Otherwise the tool requirements are the same as building from source.
+   Si noti che compilare <productname>PostgreSQL</productname> da un
+   insieme CVS richiede una versione ragionevolmente aggiornata di
+   <application>bison</application> e <application>flex</application>,
+   che non sono necessari per compilare da una distribuzione tarball
+   perché i file creati con essa sono precompilati in un file tarball.
+   Sarà anche necessario Perl.
+   In caso contrario, i requisiti strumentali sono gli stessi necessari
+   per compilare da sorgente.
   </para>
  </sect1>
 
  <sect1 id="rsync">
-  <title>Getting The Source Via <productname>rsync</productname></title>
+  <title>Ottenere il sorgente tramite <productname>rsync</productname></title>
 
   <para>
-   An alternative to using anonymous CVS for retrieving the
-   <productname>PostgreSQL</productname> source tree is
-   <productname>rsync</productname>, an incremental file transfer tool.
-   A major advantage to using <productname>rsync</productname> instead of
-   plain <productname>cvs</productname> is that it
-   can reliably replicate the <emphasis>entire</emphasis> CVS repository
-   on your local system, allowing fast local access to <command>cvs</command>
-   operations such as <option>log</option> and <option>diff</option>.
-   Other advantages include fast synchronization to the
-   <productname>PostgreSQL</productname> server due to an efficient
-   streaming transfer protocol which only sends the changes since the last
-   update.
+   Un'alternativa all'utilizzo di CVS anonimo per recuperare l'albero
+   del sorgente di <productname>PostgreSQL</productname> è
+   <productname>rsync</productname>, uno strumento di trasferimento file
+   di tipo incrementale. Il principale vantaggio ad utilizzare
+   <productname>rsync</productname> al posto di
+   <productname>cvs</productname> nudo e crudo, e che esso può replicare
+   in modo affidabile l'<emphasis>intero</emphasis> repository CVS sul
+   proprio sistema locale, permettendo un accesso locale veloce alle
+   operazioni <command>cvs</command> tipo <option>log</option> e
+   <option>diff</option>.
+   Altri vantaggi comprendono la sincronizzazione rapida al server
+   <productname>PostgreSQL</productname> a causa di un efficiente
+   protocollo di trasferimento che trasmette solo le modifiche apportate 
+   dopo l'ultimo aggiornamento.
   </para>
 
   <para>
-   You can download the CVS repository using this command:
+   Si può scaricare il repository CVS usando questo comando:
+   
 <programlisting>
 rsync -avzH --delete anoncvs.postgresql.org::pgsql-cvs cvsroot/
 </programlisting>
-   For full instructions, see the "rsync" section in the 
+
+   Per le istruzioni complete, vedere la sezione "rsync" nella
    <ulink url="http://pgfoundry.org/docman/view.php/1000040/4/PGBuildFarm-HOWTO.txt">
    PostgreSQL Build Farm instructions</ulink>.
   </para>
+  
  </sect1>
+ 
 </appendix>

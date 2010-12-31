@@ -2,71 +2,75 @@
 <!-- $PostgreSQL$ -->
 
  <appendix id="datetime-appendix">
-  <title>Date/Time Support</title>
+  <title>Supporto di data e orario</title>
 
   <para>
-   <productname>PostgreSQL</productname> uses an internal heuristic
-   parser for all date/time input support. Dates and times are input as
-   strings, and are broken up into distinct fields with a preliminary
-   determination of what kind of information can be in the
-   field. Each field is interpreted and either assigned a numeric
-   value, ignored, or rejected.
-   The parser contains internal lookup tables for all textual fields,
-   including months, days of the week, and time zones.
+   <productname>PostgreSQL</productname> utilizza un trasformatore 
+   interno di tipo euristico per il supporto in input della data e
+   dell'orario. Date e ore sono introdotte come stringhe, e vengono 
+   spezzate in campi distinti con una determinazione preliminare di
+   quale tipo di informazione possa trovarsi nel campo. Ogni campo
+   viene interpretato e gli viene anche assegnato un valore numerico,
+   ovvero viene ignorato o rifiutato. Il trasformatore contiene tabelle
+   interne di riferimento per tutti i campi testuali, comprendenti mesi,
+   giorni della settimana, e fusi orari.
   </para>
 
   <para>
-   This appendix includes information on the content of these
-   lookup tables and describes the steps used by the parser to decode
-   dates and times.
+   Questa appendice contiene informazioni riguardo il contenuto di
+   queste tabelle di riferimento e descrive i passi utilizzati dal
+   trasformatore per decodificare date e orari.
   </para>
 
   <sect1 id="datetime-input-rules">
-   <title>Date/Time Input Interpretation</title>
+   <title>Interpretazione dell'input di data e orario</title>
 
    <para>
-    The date/time type inputs are all decoded using the following procedure.
+    I tipi di data e ora in input sono tutti decodificati utilizzando la
+    seguente procedura.
    </para>
 
    <procedure>
     <step>
      <para>
-      Break the input string into tokens and categorize each token as
-      a string, time, time zone, or number.
+      La stringa in input viene spezzata in parti ognuna delle quali 
+      viene catalogata come ora, fuso orario o numero.
      </para>
 
      <substeps>
       <step>
        <para>
-        If the numeric token contains a colon (<literal>:</literal>), this is
-        a time string. Include all subsequent digits and colons.
+        Se il blocco numerico contiene i due punti (<literal>:</literal>),
+        esso è una stringa orario. Vengono comprese tutte le cifre e due
+        punti che seguono.
        </para>
       </step>
 
       <step>
        <para>
-        If the numeric token contains a dash (<literal>-</literal>), slash
-        (<literal>/</literal>), or two or more dots (<literal>.</literal>), this is
-        a date string which might have a text month.  If a date token has
-        already been seen, it is instead interpreted as a time zone
-        name (e.g., <literal>America/New_York</literal>).
+        Se il blocco numerico contiene un trattino 
+        (<literal>-</literal>), una barra (<literal>/</literal>), o due 
+        o più punti (<literal>.</literal>), esso è una stringa data che 
+        potrebbe contenere un mese testuale. Se una blocco data è già 
+        stato identificato, esso viene invece interpretato come nome di 
+        fuso orario (ad esempio, <literal>America/New_York</literal>).
        </para>
       </step>
 
       <step>
        <para>
-        If the token is numeric only, then it is either a single field
-        or an ISO 8601 concatenated date (e.g.,
-        <literal>19990113</literal> for January 13, 1999) or time
-        (e.g., <literal>141516</literal> for 14:15:16).
+        Se il blocco di testo è solo numerico, allora esso è un singolo 
+        campo o una data concatenata secondo ISO 8601 (ad esempio 
+        <literal>19990113</literal> per January 13, 1999) o ora
+        (ad esempio, <literal>141516</literal> per 14:15:16).
        </para>
       </step>
 
       <step>
        <para>
-        If the token starts with a plus (<literal>+</literal>) or minus
-        (<literal>-</literal>), then it is either a numeric time zone or a special
-        field.
+        Se il blocco di testo inizia con un più (<literal>+</literal>) o 
+        un meno (<literal>-</literal>), allora è un fuso orario numerico 
+        o un campo speciale.
        </para>
       </step>
      </substeps>
@@ -74,30 +78,33 @@
 
     <step>
      <para>
-      If the token is a text string, match up with possible strings:
+      Se il blocco è una stringa di testo, viene confrontata con 
+      stringhe possibili:
      </para>
      
      <substeps>
       <step>
        <para>
-        Do a binary-search table lookup for the token as a time zone
-        abbreviation.
+        Effettua una ricerca del blocco come abbreviazione di fuso 
+        orario da una tabella binaria.
        </para>
       </step>
       
       <step>
        <para>
-        If not found, do a similar binary-search table lookup to match
-        the token as either a special string (e.g., <literal>today</literal>),
-        day (e.g., <literal>Thursday</literal>),
-        month (e.g., <literal>January</literal>),
-        or noise word (e.g., <literal>at</literal>, <literal>on</literal>).
+        Se non ha trovato nulla, analizza una 
+        tabella binaria alla ricerca di corrispondenze del blocco sia
+        come stringa speciale (per esempio <literal>today</literal>), o
+        come giorno della settimana (per esempio 
+        <literal>Thursday</literal>), mese dell'anno (per esempio
+        <literal>January</literal>), o ancora parola disturbante
+        (per esempio <literal>at</literal>, <literal>on</literal>).
        </para>
       </step>
 
       <step>
        <para>
-        If still not found, throw an error.
+        Se non ha trovato nulla, restituisce un errore.
        </para>
       </step>
      </substeps>
@@ -105,47 +112,50 @@
     
     <step>
      <para>
-      When the token is a number or number field:
+      Quando il blocco è un numero o un campo numerico:
      </para>
 
      <substeps>
       <step>
        <para>
-        If there are eight or six digits,
-        and if no other date fields have been previously read, then interpret 
-        as a <quote>concatenated date</quote> (e.g.,
-        <literal>19990118</literal> or <literal>990118</literal>).
-        The interpretation is <literal>YYYYMMDD</literal> or <literal>YYMMDD</literal>.
+        Se ci sono otto o sei cifre, e se nessun altro campo data sia
+        stato precedentemente letto, allora lo interpreta come una
+        <quote>data concatenata</quote> (per esempio
+        <literal>19990118</literal> o <literal>990118</literal>).
+        L'interpretazione è <literal>YYYYMMDD</literal> o 
+        <literal>YYMMDD</literal>.
        </para>
       </step>
 
       <step>
        <para>
-        If the token is three digits
-        and a year has already been read, then interpret as day of year.
+        Se il blocco è di tre cifre e un anno è già stato letto, allora
+        lo interpreta come giorno dell'anno.
        </para>
       </step>
       
       <step>
        <para>
-        If four or six digits and a year has already been read, then
-        interpret as a time (<literal>HHMM</literal> or <literal>HHMMSS</literal>).
+        Se di quattro o sei cifre e un anno è già stato letto, allora lo
+        interpreta come orario (<literal>HHMM</literal> o
+        <literal>HHMMSS</literal>).
        </para>
       </step>
 
       <step>
        <para>
-        If three or more digits and no date fields have yet been found,
-        interpret as a year (this forces yy-mm-dd ordering of the remaining
-        date fields).
+        Se di tre o più cifre e non sono stati ancora trovati campi 
+        data, lo interpreta come un anno (questo forza l'ordinamento
+        yy-mm-dd dei restanti campi data).
        </para>
       </step>
 
       <step>
        <para>
-        Otherwise the date field ordering is assumed to follow the
-        <varname>DateStyle</varname> setting: mm-dd-yy, dd-mm-yy, or yy-mm-dd.
-        Throw an error if a month or day field is found to be out of range.
+        Altrimenti l'ordinamento del campo data si presume che segua
+        l'impostazione di <varname>DateStyle</varname>: mm-dd-yy,
+        dd-mm-yy o yy-mm-dd. Restituisce un errore se viene trovato un 
+        campo mese o giorno fuori dall'intervallo consentito.
        </para>
       </step>
      </substeps>
@@ -153,22 +163,25 @@
 
     <step>
      <para>
-      If BC has been specified, negate the year and add one for
-      internal storage.  (There is no year zero in the Gregorian
-      calendar, so numerically 1 BC becomes year zero.)
+      Se è stato specificato BC (Avanti Cristo - A.C.), l'anno viene reso 
+      negativo e ne viene aggiunto uno per la conservazione interna 
+      (non esiste l'anno zero nel calendario Gregoriano, così
+      numericamente, l'anno 1 BC diventa l'anno zero).
      </para>
     </step>
 
     <step>
      <para>
-      If BC was not specified, and if the year field was two digits in length,
-      then adjust the year to four digits. If the field is less than 70, then
-      add 2000, otherwise add 1900.
+      Se non è stato specificato BC, e se il campo anno era della
+      lunghezza di due cifre, allora l'anno viene adattato a quattro 
+      cifre. Se il campo è minore di 70, allora viene aggiunto 2000,
+      altrimenti viene aggiutno 1900.
 
       <tip>
        <para>
-        Gregorian years AD 1-99 can be entered by using 4 digits with leading
-        zeros (e.g., <literal>0099</literal> is AD 99).
+        Gli anni gregoriano AD 1-99 possono essere introdotti 
+        utilizzando 4 cifre con zeri precedenti (ad esempio
+        <literal>0099</literal> è l'AD 99).
        </para>
       </tip>
      </para>
@@ -178,69 +191,69 @@
 
 
   <sect1 id="datetime-keywords">
-   <title>Date/Time Key Words</title>
+   <title>Parole chiave di data e orario</title>
 
    <para>
-    <xref linkend="datetime-month-table"/> shows the tokens that are
-    recognized as names of months.
+    <xref linkend="datetime-month-table"/> mostra le stringhe codificate
+    che sono riconosciute come nomi di mese.
    </para>
 
     <table id="datetime-month-table">
-     <title>Month Names</title>
+     <title>Nomi di mese</title>
      <tgroup cols="2">
       <thead>
        <row>
-        <entry>Month</entry>
-        <entry>Abbreviations</entry>
+        <entry>Mese</entry>
+        <entry>Abbreviazione</entry>
        </row>
       </thead>
       <tbody>
        <row>
-        <entry>January</entry>
+        <entry>January (gennaio)</entry>
         <entry>Jan</entry>
        </row>
        <row>
-        <entry>February</entry>
+        <entry>February (febbraio)</entry>
         <entry>Feb</entry>
        </row>
        <row>
-        <entry>March</entry>
+        <entry>March (marzo)</entry>
         <entry>Mar</entry>
        </row>
        <row>
-        <entry>April</entry>
+        <entry>April (aprile)</entry>
         <entry>Apr</entry>
        </row>
        <row>
-        <entry>May</entry>
+        <entry>May (maggio)</entry>
         <entry></entry>
        </row>
        <row>
-        <entry>June</entry>
+        <entry>June (giugno)</entry>
         <entry>Jun</entry>
        </row>
        <row>
-        <entry>July</entry>
+        <entry>July (luglio)</entry>
         <entry>Jul</entry>
        </row>
        <row>
-        <entry>August</entry>
+        <entry>August (agosto)</entry>
         <entry>Aug</entry>
        </row>
        <row>
-        <entry>September</entry>
+        <entry>September (settembre)</entry>
         <entry>Sep, Sept</entry>
        </row>
        <row>
-        <entry>October</entry>
+        <entry>October (ottobre)</entry>
         <entry>Oct</entry>
        </row>
        <row>
-        <entry>November</entry>
+        <entry>November (novembre)</entry>
         <entry>Nov</entry>
        </row>
        <row>
-        <entry>December</entry>
+        <entry>December (dicembre)</entry>
         <entry>Dec</entry>
        </row>
       </tbody>
@@ -248,46 +261,46 @@
     </table>
 
     <para>
-     <xref linkend="datetime-dow-table"/> shows the tokens that are
-     recognized as names of days of the week.
+     <xref linkend="datetime-dow-table"/> mostra le stringhe codificate 
+     che sono riconosciute come nomi di giorni della settimana.
     </para>
 
      <table id="datetime-dow-table">
-      <title>Day of the Week Names</title>
+      <title>Nomi dei giorni della settimana</title>
       <tgroup cols="2">
        <thead>
         <row>
-         <entry>Day</entry>
-         <entry>Abbreviations</entry>
+         <entry>Giorno</entry>
+         <entry>Abbreviazione</entry>
         </row>
        </thead>
        <tbody>
         <row>
-         <entry>Sunday</entry>
+         <entry>Sunday (Domenica)</entry>
          <entry>Sun</entry>
         </row>
         <row>
-         <entry>Monday</entry>
+         <entry>Monday (lunedì)</entry>
          <entry>Mon</entry>
         </row>
         <row>
-         <entry>Tuesday</entry>
+         <entry>Tuesday (martedì)</entry>
          <entry>Tue, Tues</entry>
         </row>
         <row>
-         <entry>Wednesday</entry>
+         <entry>Wednesday (mercoledì)</entry>
          <entry>Wed, Weds</entry>
         </row>
         <row>
-         <entry>Thursday</entry>
+         <entry>Thursday (giovedì)</entry>
          <entry>Thu, Thur, Thurs</entry>
         </row>
         <row>
-         <entry>Friday</entry>
+         <entry>Friday (venerdì)</entry>
          <entry>Fri</entry>
         </row>
         <row>
-         <entry>Saturday</entry>
+         <entry>Saturday (sabato)</entry>
          <entry>Sat</entry>
         </row>
        </tbody>
@@ -295,43 +308,43 @@
      </table>
 
    <para>
-    <xref linkend="datetime-mod-table"/> shows the tokens that serve
-    various modifier purposes.
+    <xref linkend="datetime-mod-table"/> mostra le stringhe codificate
+    che servono come modificatori per scopi diversi.
    </para>
 
     <table id="datetime-mod-table">
-     <title>Date/Time Field Modifiers</title>
+     <title>Modificatori di campo data e orario</title>
      <tgroup cols="2">
       <thead>
        <row>
-        <entry>Identifier</entry>
-        <entry>Description</entry>
+        <entry>Identificatore</entry>
+        <entry>Descrizione</entry>
        </row>
       </thead>
       <tbody>
        <row>
         <entry><literal>AM</literal></entry>
-        <entry>Time is before 12:00</entry>
+        <entry>L'orario è prima delle 12:00</entry>
        </row>
        <row>
         <entry><literal>AT</literal></entry>
-        <entry>Ignored</entry>
+        <entry>Ignorato</entry>
        </row>
        <row>
         <entry><literal>JULIAN</literal>, <literal>JD</literal>, <literal>J</literal></entry>
-        <entry>Next field is Julian Day</entry>
+        <entry>Il campo successivo è un giorno Juliano</entry>
        </row>
        <row>
         <entry><literal>ON</literal></entry>
-        <entry>Ignored</entry>
+        <entry>Ignorato</entry>
        </row>
        <row>
         <entry><literal>PM</literal></entry>
-        <entry>Time is on or after 12:00</entry>
+        <entry>L'orario corrisponde o è successivo alle 12:00</entry>
        </row>
        <row>
         <entry><literal>T</literal></entry>
-        <entry>Next field is time</entry>
+        <entry>Il campo successivo è un orario</entry>
        </row>
       </tbody>
      </tgroup>
@@ -339,40 +352,43 @@
   </sect1>
 
   <sect1 id="datetime-config-files">
-  <title>Date/Time Configuration Files</title>
+  <title>File di configurazione di data e orario</title>
 
    <indexterm>
-    <primary>time zone</primary>
-    <secondary>input abbreviations</secondary>
+    <primary>fuso orario</primary>
+    <secondary>abbreviazioni input</secondary>
    </indexterm>
 
    <para>
-    Since timezone abbreviations are not well standardized,
-    <productname>PostgreSQL</productname> provides a means to customize
-    the set of abbreviations accepted by the server.  The
-    <xref linkend="guc-timezone-abbreviations"/> run-time parameter
-    determines the active set of abbreviations.  While this parameter
-    can be altered by any database user, the possible values for it
-    are under the control of the database administrator &mdash; they
-    are in fact names of configuration files stored in
-    <filename>.../share/timezonesets/</filename> of the installation directory.
-    By adding or altering files in that directory, the administrator
-    can set local policy for timezone abbreviations.
+    Siccome le abbreviazioni di fuso orario non sono ben standardizzate,
+    <productname>PostgreSQL</productname> fornisce un metodo per
+    personalizzare l'insieme di abbreviazioni accettate dal server. Il
+    parametro run-time <xref linkend="guc-timezone-abbreviations"/>
+    determina l'insieme attivo di abbreviazioni. Mentre questo parametro
+    può essere modificato da qualsiasi utente del database, i valori
+    possibili per lo stesso sono sotto il controllo dell'amministratore
+    del database &mdash; essi infatti sono nomi di file di 
+    configurazione conservati nel percorso
+    <filename>.../share/timezonesets/</filename> della directory di
+    installazione.Aggiungendo o modificando i file in quella directory,
+    l'amministratore può impostarepolitiche locali per le abbreviazioni
+    di fuso orario.
    </para>
 
    <para>
-    <literal>timezone_abbreviations</literal> can be set to any file name
-    found in <filename>.../share/timezonesets/</filename>, if the file's name
-    is entirely alphabetic.  (The prohibition against non-alphabetic
-    characters in <literal>timezone_abbreviations</literal> prevents reading
-    files outside the intended directory, as well as reading editor
-    backup files and other extraneous files.)
+    <literal>timezone_abbreviations</literal> può essere impostato a 
+    qualsiasi file che si trovi in 
+    <filename>.../share/timezonesets/</filename>, se il nome di file è
+    completamente alfabetico (la proibizione riguardo i caratteri non
+    alfabetici in <literal>timezone_abbreviations</literal> previene la
+    lettura di file fuori dalla directory predefinita, così come la
+    lettura di file di backup dell'editor e altri file estranei).
    </para>
 
    <para>
-    A timezone abbreviation file can contain blank lines and comments
-    beginning with <literal>#</literal>.  Non-comment lines must have one of
-    these formats:
+    Un file di abbreviazioni di fuso orario può contenere righe vuote e
+    commenti che iniziano con <literal>#</literal>. Righe che non sono
+    un commento devono possedere uno di questi formati:
 
 <synopsis>
 <replaceable>time_zone_name</replaceable> <replaceable>offset</replaceable>
@@ -383,137 +399,150 @@
    </para>
 
    <para>
-    A <replaceable>time_zone_name</replaceable> is just the abbreviation
-    being defined.  The <replaceable>offset</replaceable> is the zone's
-    offset in seconds from UTC, positive being east from Greenwich and
-    negative being west.  For example, -18000 would be five hours west
-    of Greenwich, or North American east coast standard time.  <literal>D</literal>
-    indicates that the zone name represents local daylight-savings time
-    rather than standard time. Since all known time zone offsets are on
-    15 minute boundaries, the number of seconds has to be a multiple of 900.
+    Un <replaceable>time_zone_name</replaceable> è semplicemente
+    l'abbreviazione che viene definita.
+    <replaceable>offset</replaceable> è la deviazione di zona in secondi
+    rispetto a UTC, positiva se posizionata a est di Greenwich e 
+    negativa se posizionata a ovest. Per esempio, -18000 
+    corrisponderebbe a cinque ore a ovest di Greenwich, ovvero all'ora
+    standard della costa orientale del Nord America.
+    <literal>D</literal> indica che il nome di zona rappresenta un'ora
+    legale locale piuttosto che l'ora standard. Siccome tutte le 
+    deviazioni note di fuso orario sono ad intervalli di 15 minuti 
+    primi, il numero di secondi deve essere uguale a multipli di 900.
    </para>
 
    <para>
-    The <literal>@INCLUDE</literal> syntax allows inclusion of another file in the
-    <filename>.../share/timezonesets/</filename> directory.  Inclusion can be nested,
-    to a limited depth.
+    La sintassi <literal>@INCLUDE</literal> permette l'inclusione di un
+    altro file presente nella directory 
+    <filename>.../share/timezonesets/</filename>. L'inclusione può
+    essere nidificata, a profondità limitata.
    </para>
 
    <para>
-    The <literal>@OVERRIDE</literal> syntax indicates that subsequent entries in the
-    file can override previous entries (i.e., entries obtained from included
-    files).  Without this, conflicting definitions of the same timezone
-    abbreviation are considered an error.
+    La sintassi <literal>@OVERRIDE</literal> indica che le voci 
+    successive nel file possono sovrascrivere quelle precedenti (ad
+    esempio voci ottenute da file inclusi). Senza di essa, definizioni
+    in conflitto della stessa abbreviazione di fuso orario sono 
+    considerate un errore.
    </para>
 
    <para>
-    In an unmodified installation, the file <filename>Default</filename> contains
-    all the non-conflicting time zone abbreviations for most of the world.
-    Additional files <filename>Australia</filename> and <filename>India</filename> are
-    provided for those regions: these files first include the
-    <literal>Default</literal> file and then add or modify timezones as needed.
+    Su una installazione non modificata, il file
+    <filename>Default</filename> contiene tutte le abbreviazioni di fuso 
+    orario  non conflittuali per la maggior parte del mondo. File
+    aggiuntivi <filename>Australia</filename> e
+    <filename>India</filename> sono forniti per quelle regioni: questi 
+    file prima includono il file <literal>Default</literal> e poi
+    aggiungono o modificano i fusi orari se necessario.
    </para>
 
    <para>
-    For reference purposes, a standard installation also contains files
-    <filename>Africa.txt</filename>, <filename>America.txt</filename>, etc, containing
-    information about every time zone abbreviation known to be in use
-    according to the <literal>zoneinfo</literal> timezone database.  The zone name
-    definitions found in these files can be copied and pasted into a custom
-    configuration file as needed.  Note that these files cannot be directly
-    referenced as <literal>timezone_abbreviations</literal> settings, because of
-    the dot embedded in their names.
+    Per fini di riferimento, una installazione standard contiene anche i
+    file <filename>Africa.txt</filename>,
+    <filename>America.txt</filename>, eccetera, che contengono
+    informazioni riguardo ogni abbreviazione di fuso orario nota che sia
+    in uso concordemente al database di fuso orario 
+    <literal>zoneinfo</literal>. Le definizioni di nome di zona che si
+    trovano in questi file possono essere copiate e incollate in un file
+    di configurazione personalizzato se necessario. Notare che questi 
+    file non possono essere direttamente referenziati come impostazioni
+    di <literal>timezone_abbreviations</literal> a causa del punto
+    contenuto nei loro nomi.
    </para>
 
    <note>
     <para>
-     If an error occurs while reading the time zone data sets, no new value is
-     applied but the old set is kept. If the error occurs while starting the
-     database, startup fails.
+     Se si verifica un errore mentre vengono letti gli insiemi di dati
+     di fuso orario, non viene applicato il nuovo valore ma viene
+     mantenuto il vecchio insieme. Se l'errore si verifica mentre si
+     avvia il database, l'avvio fallisce.
     </para>
    </note>
 
    <caution>
     <para>
-     Time zone abbreviations defined in the configuration file override
-     non-timezone meanings built into <productname>PostgreSQL</productname>.
-     For example, the <filename>Australia</filename> configuration file defines
-     <literal>SAT</literal> (for South Australian Standard Time).  When this
-     file is active, <literal>SAT</literal> will not be recognized as an abbreviation
-     for Saturday.
+     Le abbreviazioni di fuso orario definite nel file di configurazione
+     sovrascrivono significati non di fuso orario presenti all'interno
+     di <productname>PostgreSQL</productname>. Per esempio il file di
+     configurazione <filename>Australia</filename> definisce
+     <literal>SAT</literal> per South Australian Standard Time (ora
+     standard del Sud dell'Australia). Quando questo file è attivo,
+     <literal>SAT</literal> non sarà riconosciuto come una abbreviazione
+     per Saturday (sabato).
     </para>
    </caution>
 
    <caution>
     <para>
-     If you modify files in <filename>.../share/timezonesets/</filename>,
-     it is up to you to make backups &mdash; a normal database dump
-     will not include this directory.
+     Se si modificano file in
+     <filename>.../share/timezonesets/</filename>, è necessario fare i
+     backup per proprio conto; un normale dump del database non
+     comprenderà questa directory.
     </para>
    </caution>
 
   </sect1>
 
   <sect1 id="datetime-units-history">
-  <title>History of Units</title>
+  <title>Storia delle unità</title>
 
   <para>
-   The Julian calendar was introduced by Julius Caesar in 45 BC.
-   It was in common use in the Western world
-   until the year 1582, when countries started changing to the Gregorian
-   calendar.  In the Julian calendar, the tropical year is
-   approximated as 365 1/4 days = 365.25 days. This gives an error of
-   about 1 day in 128 years.
-  </para>
-
-  <para>   
-   The accumulating calendar error prompted
-   Pope Gregory XIII to reform the calendar in accordance with
-   instructions from the Council of Trent.
-   In the Gregorian calendar, the tropical year is approximated as
-   365 + 97 / 400 days = 365.2425 days. Thus it takes approximately 3300
-   years for the tropical year to shift one day with respect to the
-   Gregorian calendar.
+   Il calendario Juliano fu introdotto da Giulio Cesare nel 45 AC. Fu di
+   uso comune nel mondo occidentale fino all'anno 1582, quando i paesi
+   iniziarono a passare al calendario Gregoriano. Nel calendario 
+   Juliano, l'anno solare è pari approssimativamente a 365 1/4 di 
+   giorni, ovvero 365,25 giorni. Questo provoca un errore di circa un
+   giorno in 128 anni.
   </para>
 
   <para>
-   The approximation 365+97/400 is achieved by having 97 leap years
-   every 400 years, using the following rules:
+   L'errore di calendario accumulato richiese a Papa Gregorio XIII di
+   riformare il calendario concordemente alle istruzioni del Concilio di
+   Trento. Nel calendario Gregoriano, l'anno solare è pari
+   approssimativamente a 365 + 97/400 giorni, ovvero a 365,2425 giorni.
+   In questo modo sono necessari circa 3300 anni affinchè l'anno solare
+   si discosti di un giorno rispetto al Calendario Gregoriano.
+  </para>
+
+  <para>
+   L'approssimazione 365+97/400 si ottiene con 97 anni bisestili ogni 
+   400 anni, utilizzando le seguenti regole:
 
    <simplelist>
     <member>
-     Every year divisible by 4 is a leap year.
+     Ogni anno divisibile per 4 è un anno bisestile.
     </member>
     <member>
-     However, every year divisible by 100 is not a leap year.
+     Tuttavia, ogni anno divisibile per 100 non è un anno bisestile.
     </member>
     <member>
-     However, every year divisible by 400 is a leap year after all.
+     Tuttavia, ogni anno divisibile per 400 è un anno bisestile dopo
+     tutto.
     </member>
    </simplelist>
 
-   So, 1700, 1800, 1900, 2100, and 2200 are not leap years. But 1600,
-   2000, and 2400 are leap years.
+   Così, il 1700, 1800, 1900, 2100, e 2200 non sono anni bisestili. Ma 
+   il 1600, 2000, e 2400 sono anni bisestili.
 
-   By contrast, in the older Julian calendar all years divisible by 4 are leap
-   years.
+   Al contrario, nel vecchio calendario Juliano, tutti gli anni
+   divisibili per 4 sono anni bisestili.
   </para>
 
   <para>
-   The papal bull of February 1582 decreed that 10 days should be dropped
-   from October 1582 so that 15 October should follow immediately after
-   4 October.
-   This was observed in Italy, Poland, Portugal, and Spain. Other Catholic
-   countries followed shortly after, but Protestant countries were
-   reluctant to change, and the Greek Orthodox countries didn't change
-   until the start of the 20th century.
-
-   The reform was observed by Great Britain and Dominions (including what is
-   now the USA) in 1752.
-   Thus 2 September 1752 was followed by 14 September 1752.
-
-   This is why Unix systems have the <command>cal</command> program
-   produce the following:
+   La bolla papale del febbraio 1582 decretò che 10 giorni sarebbero 
+   stati tolti dal mese di ottobre 1582 in modo tale che il 18 ottobre
+   sarebbe venuto immediatamente dopo il 4 ottobre.
+   Questo avvenne in Italia, Polonia, Portogallo e Spagna. Altri paesi
+   Cattolici seguirono subito dopo e i paesi Greco Ortodossi non
+   cambiarono fino all'inizio del ventesimo secolo.
+   
+   La riforma venne osservata dalla Gran Bretagna e relativi dominii
+   (compreso quello che sono oggi gli USA) nel 1752.
+   Cioè, il 2 settembre 1752 fu seguito dal 14 settembre 1752.
+   
+   Questo è il motivo per cui i sistemi Unix posseggono il programma
+   <command>cal</command> che produce quanto segue:
 
 <screen>
 $ <userinput>cal 9 1752</userinput>
@@ -526,54 +555,57 @@ $ <userinput>cal 9 1752</userinput>
   </para>
 
   <para>
-   The SQL standard states that <quote>Within the definition of a
-   <quote>datetime literal</quote>, the <quote>datetime
-   value</quote>s are constrained by the natural rules for dates and
-   times according to the Gregorian calendar</quote>.  Dates between
-   1582-10-05 and 1582-10-14, although eliminated in some countries
-   by Papal fiat, conform to <quote>natural rules</quote> and are
-   hence valid dates.  <productname>PostgreSQL</productname> follows the SQL
-   standard's lead by counting dates exclusively in the Gregorian
-   calendar, even for years before that calendar was in use.
+   Lo standard SQL definisce che <quote>Nell'ambito della definizione di
+   <quote>datetime letterale</quote>, i <quote>valori di 
+   datetime</quote> sono vincolati alle regole naturali per date e orari
+   in accordo al calendario Gregoriano</quote>. Date tra il 5 ottobre
+   1582 e il 14 ottobre 1582 sono tuttavia eliminate in alcuni paesi
+   per volontà Papale, conformemente alle <quote>regole naturali</quote>
+   e sono quindi date valide. <productname>PostgreSQL</productname>
+   segue a pennello lo standard SQL di contare le date esclusivamente
+   nel calendario Gregoriano, anche per gli anni precedenti all'utilizzo
+   del calendario.
   </para>
 
   <para>
-   Different calendars have been developed in various parts of the
-   world, many predating the Gregorian system.
-
-   For example,
-   the beginnings of the Chinese calendar can be traced back to the 14th
-   century BC. Legend has it that the Emperor Huangdi invented that
-   calendar in 2637 BC.
+   Differenti calendari sono stati sviluppati in varie parti del mondo,
+   molti precedenti il sistema Gregoriano.
    
-   The People's Republic of China uses the Gregorian calendar
-   for civil purposes. The Chinese calendar is used for determining
-   festivals.
+   Per esempio, gli inizi del calendario Cinese possono essere rinvenuti
+   fin dal quattordicesimi secolo AC. La leggenda narra che l'imperatore
+   Huangdi inventò quel calendario nel 2637 AC.
+   
+   La Repubblica Popolare Cinese utilizza il calendario Gregoriano per
+   scopi civili. Il calendario Cinese è utilizzato per determinare le
+   festività.
   </para>
 
   <para>
-   The <quote>Julian Date</quote> is unrelated to the <quote>Julian
-   calendar</quote>.  
-   The Julian Date system was invented by the French scholar
-   Joseph Justus Scaliger (1540-1609)
-   and probably takes its name from Scaliger's father,
-   the Italian scholar Julius Caesar Scaliger (1484-1558).
-   In the Julian Date system, each day has a sequential number, starting
-   from JD 0 (which is sometimes called <emphasis>the</emphasis> Julian Date).
-   JD 0 corresponds to 1 January 4713 BC in the Julian calendar, or
-   24 November 4714 BC in the Gregorian calendar.  Julian Date counting
-   is most often used by astronomers for labeling their nightly observations,
-   and therefore a date runs from noon UTC to the next noon UTC, rather than
-   from midnight to midnight: JD 0 designates the 24 hours from noon UTC on
-   1 January 4713 BC to noon UTC on 2 January 4713 BC.
+   La <quote>data Juliana</quote> non è correlata con il 
+   <quote>calendario Juliano</quote>.
+   Il sistema della data Juliana fu inventato dallo studioso Francese
+   Joseph Justus Scaliger (1540-1609) e probabilmente prende il suo nome
+   dal padre di Scaliger, lo studioso Italiano Julius Caesar Scaliger 
+   (1484-1558).
+   Ne sistema di data Juliana, ciascun giorno ha un numero consecutivo,
+   iniziando da JD 0 (che viene qualche volta chiamato
+   <emphasis>la</emphasis> data Juliana).
+   JD 0 corrisponda al 1 gennaio 4713 AC nel calendario Juliano, o al
+   24 novembre 4714 AC nel calendario Gregoriano. Il conteggio della
+   data Juliana è molto spesso utilizzato dagli astronomi per
+   identificare le loro osservazioni notturne e pertanto una data parte
+   dal mezzogiorno UTC al successivo, piuttosto che da mezzanotte a 
+   mezzanotte: JD 0 designa le 24 ore da mezzogiorno UTC del 1 gennaio 
+   4713 AC al mezzogiorno UTC del 2 gennaio 4713 AC.
   </para>
 
   <para>
-   Although <productname>PostgreSQL</productname> supports Julian Date notation for
-   input and output of dates (and also uses them for some internal datetime
-   calculations), it does not observe the nicety of having dates run from
-   noon to noon.  <productname>PostgreSQL</productname> treats a Julian Date as running
-   from midnight to midnight.
+   Sebbene <productname>PostgreSQL</productname> supporti la notazione
+   di data Juliana per l'input e l'output delle date (e la utilizzi 
+   anche per alcuni calcoli interni di data e ora), esso non osserva la
+   raffinatezza dell'avere le date che iniziano dal mezzogiorno al
+   successivo.  <productname>PostgreSQL</productname> tratta una data
+   Juliana come decorrente dalla mezzanotte alla successiva.
   </para>
 
  </sect1>

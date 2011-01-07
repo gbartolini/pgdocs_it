@@ -8,9 +8,9 @@
    <primary>configurazione</primary>
    <secondary>del server</secondary>
   </indexterm>
-
-  <para>
-Ci sono molti parametri di configurazione che hanno effetto sul comportamento 
+  
+    <para>
+Ci sono molti parametri di configurazione che hanno effetto sul comportamento
 del sistema di databasei. Nella prima sezione di questo capitolo, viene descritto
 come impostare i parametri di configurazione. Le sezioni successive
 discutono ogni parametro in dettaglio.
@@ -307,6 +307,8 @@ rispetto alla directory in cui <command>postgres</command>
    <sect1 id="runtime-config-connection">
     <title>Connessioni e autenticazione</title>
 
+
+
     <sect2 id="runtime-config-connection-settings">
      <title>Impostazioni di connessione</title>
 
@@ -333,7 +335,7 @@ Mentre l'autenticazione del client (<xref
 linkend="client-authentication"/>) permette il controllo fine su chi può aavere accesso al server,
 <varname>listen_addresses</varname> controlla quali interfaccie accettano 
 tentativi di connessione, che può aiutare a prevenire richieste maliziose ripetute 
-su interfaccie di rete non sicure. Questo parametro può essere impostato solo
+su interfacce di rete non sicure. Questo parametro può essere impostato solo
 all'avvio del server.
        </para>
       </listitem>
@@ -611,7 +613,7 @@ Questo parametro non è supportato su Windows, e deve essere zero.
             <secondary>autenticazione del client</secondary>
         </indexterm>
         <indexterm>
-            <primary>client authentication</primary>
+            <primary>autenticazione del client</primary>
             <secondary>durante il timeout</secondary>
         </indexterm>
       <indexterm>
@@ -622,7 +624,7 @@ Questo parametro non è supportato su Windows, e deve essere zero.
        <para>
 Il tempo massimo per completare l'autenticazione del client, in secondi. Se un possibile client
 non ha completato il protocollo di autenticazione in questo tempo, 
-il server chiude la connessione. Questo previene che client in attessa occupino 
+il server chiude la connessione. Questo previene che client in attesa occupino 
 una connessione all'infinito.
 Il valore predefinito è un minuto (<literal>1m</literal>).
 Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
@@ -660,8 +662,8 @@ prima che avvenga la rinegoziazione delle chiavi della sessione.
         cryptanalysis when large amounts of traffic can be examined, but it
         also carries a large performance penalty. 
 La somma del traffico mandato e ricevuto 
-viene usato per controllare il limite. Se questo0 parametro è impostato a 0,
-la rinegoziazione è disabilitata. Il valore poredefinito è <literal>512MB</literal>.
+viene usato per controllare il limite. Se questo parametro è impostato a 0,
+la rinegoziazione è disabilitata. Il valore predefinito è <literal>512MB</literal>.
        </para>
        <note>
         <para>
@@ -1501,8 +1503,11 @@ discussioni si veda <xref linkend="wal-async-commit"/>.
        </para>
        <para>
         This parameter can be changed at any time; the behavior for any
+Questo parametro può essere cambiato in qualsiasi momento; il comportamento per 
         one transaction is determined by the setting in effect when it
+qualsiasi transazione è determinato dall'impostazione effettiva quando viene effettuato il  
         commits.  It is therefore possible, and useful, to have some
+commit. È inoltre possibile, 
         transactions commit synchronously and others asynchronously.
         For example, to make a single multistatement transaction commit
         asynchronously when the default is the opposite, issue <command>SET
@@ -2371,22 +2376,24 @@ Il valore predefinito è 0.0025.
       </indexterm>
       <listitem>
        <para>
-        Sets the planner's assumption about the effective size of the
-        disk cache that is available to a single query.  This is
+Imposta l'assunzione del pianificatore circa l'effettiva dimensione della cache 
+del disco che è disponibile per una singola query.
+        This is
         factored into estimates of the cost of using an index; a
         higher value makes it more likely index scans will be used, a
         lower value makes it more likely sequential scans will be
-        used. When setting this parameter you should consider both
-        <productname>PostgreSQL</productname>'s shared buffers and the
-        portion of the kernel's disk cache that will be used for
-        <productname>PostgreSQL</productname> data files.  Also, take
-        into account the expected number of concurrent queries on different
-        tables, since they will have to share the available
-        space.  
-        This parameter has no effect on the size of shared
-        memory allocated by <productname>PostgreSQL</productname>, nor
-        does it reserve kernel disk cache; it is used only for estimation
-        purposes.  The default is 128 megabytes (<literal>128MB</literal>).
+        used. 
+Quando si imposta questo parametro di dovrebbero considerare sia
+i buffer condivisi di  <productname>PostgreSQL</productname> sia la porzione
+della cache di disco del kernel che sarà usata per i file dei dati di 
+<productname>PostgreSQL</productname>. 
+Inoltre, tiene di conto 
+del numero atteso di query concorrenti su differenti tabelle, 
+dato che esse dovranno condividere lo spazio disponibile. 
+Questo parametro non ha effetti sulla dimensione della memoria condivisa
+allocata da <productname>PostgreSQL</productname>, e non riserva
+cache disco del server; è usato solo per scopi di stima. Il valore 
+predefinito è 128 megabyte  (<literal>128MB</literal>).
        </para>
       </listitem>
      </varlistentry>
@@ -2411,14 +2418,14 @@ Per maggiori informazioni si veda  <xref linkend="geqo"/>.
 
      <varlistentry id="guc-geqo" xreflabel="geqo">
       <indexterm>
-       <primary>genetic query optimization</primary>
+       <primary>ottimizzazione genetica della query</primary>
       </indexterm>
       <indexterm>
        <primary>GEQO</primary>
-       <see>genetic query optimization</see>
+       <see>ottimizzazione genetica della query</see>
       </indexterm>
       <indexterm>
-       <primary><varname>geqo</varname> configuration parameter</primary>
+       <primary>Parametro della configurazione <varname>geqo</varname></primary>
       </indexterm>
       <term><varname>geqo</varname> (<type>boolean</type>)</term>
       <listitem>
@@ -2628,8 +2635,10 @@ maggiori informazioni sull'utilizzo di vincoli exclusion e partizionamento.
         will be retrieved.  The default is 0.1.  Smaller values of this
         setting bias the planner towards using <quote>fast start</quote> plans
         for cursors, which will retrieve the first few rows quickly while
-        perhaps taking a long time to fetch all rows.  Larger values
-        put more emphasis on the total estimated time.  At the maximum
+        perhaps taking a long time to fetch all rows.  
+        Larger values
+        put more emphasis on the total estimated time.  
+        At the maximum
         setting of 1.0, cursors are planned exactly like regular queries,
         considering only the total estimated time and not how soon the
         first rows might be delivered.
@@ -2640,7 +2649,7 @@ maggiori informazioni sull'utilizzo di vincoli exclusion e partizionamento.
      <varlistentry id="guc-from-collapse-limit" xreflabel="from_collapse_limit">
       <term><varname>from_collapse_limit</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>from_collapse_limit</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>from_collapse_limit</varname></primary>
       </indexterm>
       <listitem>
        <para>
@@ -2670,7 +2679,7 @@ Il pianificatore riscriverà costrutti <literal>JOIN</literal> espliciti
 (eccetto <literal>FULL JOIN</literal>) in elenchi di elementi 
 <literal>FROM</literal> ogni volta che un elenco di non più di questo numero di elementi
 risulterebbe. Valori più piccoli riducono il tempo di pianificazione ma potrebbero 
-genrare piani di query inferiori.
+generare piani di query inferiori.
        </para>
 
        <para>
@@ -2702,14 +2711,14 @@ deterministici. Si veda <xref linkend="runtime-config-query-geqo"/>.
     <title>Log e presentazione degli errori</title>
 
     <indexterm zone="runtime-config-logging">
-     <primary>server log</primary>
+     <primary>log del server</primary>
     </indexterm>
 
     <sect2 id="runtime-config-logging-where">
      <title>Dove fare il log</title>
 
      <indexterm zone="runtime-config-logging-where">
-      <primary>where to log</primary>
+      <primary>dove fare il log</primary>
      </indexterm>
 
      <variablelist>
@@ -2753,7 +2762,8 @@ poter usare l'opzione <systemitem>syslog</systemitem> per
          <literal>LOCAL0</literal> through <literal>LOCAL7</literal> (see <xref
          linkend="guc-syslog-facility"/>), but the default
          <application>syslog</application> configuration on most platforms
-         will discard all such messages.  You will need to add something like:
+         will discard all such messages.  
+Si dovrà aggiungere qualcosa come:
 <programlisting>
 local0.*    /var/log/postgresql
 </programlisting>
@@ -2767,7 +2777,7 @@ farlo funzionare.
      <varlistentry id="guc-logging-collector" xreflabel="logging_collector">
       <term><varname>logging_collector</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>logging_collector</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>logging_collector</varname></primary>
       </indexterm>
       <listitem>
        <para>
@@ -2799,7 +2809,7 @@ non bloccherà il resto del sistema.
      <varlistentry id="guc-log-directory" xreflabel="log_directory">
       <term><varname>log_directory</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>log_directory</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_directory</varname></primary>
       </indexterm>
       <listitem>
        <para>
@@ -2844,8 +2854,8 @@ del nuovo file di log, ma questo non avviene più.
 Se l'output in formato CSV è abilitati in  <varname>log_destination</varname>,
 <literal>.csv</literal> sarà aggiunto al nome del file di log per creare 
 il nome del file per output in formato CSV.
-        (If <varname>log_filename</varname> ends in <literal>.log</literal>, the suffix is
-        replaced instead.)
+(Se  <varname>log_filename</varname> finisce in <literal>.log</literal>, 
+il suffisso invece è sostituito).
 Nel caso dell'esempio sopra, il nome del file CSV
 sarà  <literal>server_log.1093827753.csv</literal>.
        </para>
@@ -2863,31 +2873,32 @@ o dalla linea di comando del server.
       </indexterm>
       <listitem>
        <para>
-        On Unix systems this parameter sets the permissions for log files
 Su sistemi Unix questo parametro imposta i permessi per i file di log
-        when <varname>logging_collector</varname> is enabled. (On Microsoft
 quando è abilitato <varname>logging_collector</varname>. (Su Microsoft 
-        Windows this parameter is ignored.)
 Windows questo parametro viene ignorato). 
         The parameter value is expected to be a numeric mode
+Il valore del parametro ci si aspetta sia un modo numerico 
         specified in the format accepted by the
+specificato
         <function>chmod</function> and <function>umask</function>
-        system calls.  (To use the customary octal format the number
+        system calls.  
+        (To use the customary octal format the number
+(Per usare 
         must start with a <literal>0</literal> (zero).)
        </para>
        <para>
-        The default permissions are <literal>0600</literal>, meaning only the
-        server owner can read or write the log files.  The other commonly
-        useful setting is <literal>0640</literal>, allowing members of the owner's
-        group to read the files.  Note however that to make use of such a
-        setting, you'll need to alter <xref linkend="guc-log-directory"/> to
-        store the files somewhere outside the cluster data directory.  In
-        any case, it's unwise to make the log files world-readable, since
-        they might contain sensitive data.
+I permessi predefiniti sono  <literal>0600</literal>, che significa che solo  
+il proprietario del server può leggere o scrivere i file di log. L'altra impostazione
+utile è <literal>0640</literal>, che permette ai membri del gruppo del proprietario 
+di leggere i file. Notare comunque che per usare quest'impostazione,
+si dovrà modificare <xref linkend="guc-log-directory"/> per immagazzinare 
+i file da qualche parte fuori dalla directory dei dati del cluster. In ogni  
+caso, non è saggio rendere i file di log leggibili da tutti, dato che potrebbero  
+contenere dati sensibili.
        </para>
        <para>
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Questo parametro può essere impostato solo nel file  <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
        </para>
       </listitem>
      </varlistentry>
@@ -2895,17 +2906,17 @@ Windows questo parametro viene ignorato).
      <varlistentry id="guc-log-rotation-age" xreflabel="log_rotation_age">
       <term><varname>log_rotation_age</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>log_rotation_age</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_rotation_age</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        When <varname>logging_collector</varname> is enabled,
-        this parameter determines the maximum lifetime of an individual log file.
-        After this many minutes have elapsed, a new log file will
-        be created.  Set to zero to disable time-based creation of
-        new log files.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Quando è abilitato <varname>logging_collector</varname>,
+questo parametro determina il periodo di vita massimo di un file di log individuale.
+Dopo che questi minuti sono passati, un nuovo file di log sarà creato.   
+Si imposti a zero per disabilitare la creazione basata sul tempo di
+nuovi file di log.
+Questo parametro può essere impostato nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
        </para>
       </listitem>
      </varlistentry>
@@ -2917,13 +2928,13 @@ Windows questo parametro viene ignorato).
       </indexterm>
       <listitem>
        <para>
-        When <varname>logging_collector</varname> is enabled,
-        this parameter determines the maximum size of an individual log file.
-        After this many kilobytes have been emitted into a log file,
-        a new log file will be created.  Set to zero to disable size-based
-        creation of new log files.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Quando è abilitato il  <varname>logging_collector</varname>,
+questo parametro determina la dimensione massima di un file di log individuale.
+Dopo che questo numero di kilobyte è stato emesso nel file di log, 
+verrà creato un nuovo file di log. Impostarlo a zero per disabilitare la creazione 
+basata sulla dimensione di nuovi file di log.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
        </para>
       </listitem>
      </varlistentry>
@@ -2931,41 +2942,42 @@ Windows questo parametro viene ignorato).
      <varlistentry id="guc-log-truncate-on-rotation" xreflabel="log_truncate_on_rotation">
       <term><varname>log_truncate_on_rotation</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>log_truncate_on_rotation</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_truncate_on_rotation</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        When <varname>logging_collector</varname> is enabled,
-        this parameter will cause <productname>PostgreSQL</productname> to truncate (overwrite),
-        rather than append to, any existing log file of the same name.
-        However, truncation will occur only when a new file is being opened
-        due to time-based rotation, not during server startup or size-based
-        rotation.  When off, pre-existing files will be appended to in
-        all cases.  For example, using this setting in combination with
-        a <varname>log_filename</varname> like <literal>postgresql-%H.log</literal>
-        would result in generating twenty-four hourly log files and then
-        cyclically overwriting them.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Quando è abilitato <varname>logging_collector</varname>, 
+questo causerà che <productname>PostgreSQL</productname> tronchi (sovrascriva),
+piuttosto che aggiungerli in coda, qualsiasi file di log esistente con lo stesso nome. 
+Comunque, il troncamento avverrà solo quando un nuovo file sarà aperto
+per la rotazione basata ul tempo, non durante l'avvio del server o rotazioni basate  
+sulla dimensione. Quando spento, i file pre esistenti saranno messi in coda in 
+ogni caso.
+Per esempio, usare questa impostazione in combinazione con 
+un <varname>log_filename</varname> simile a <literal>postgresql-%H.log</literal>
+risulterebbe nella generazione di ventiquattro file di log e quindi 
+sovrascriverli ciclicamente.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
        </para>
        <para>
-        Example:  To keep 7 days of logs, one log file per day named
-        <literal>server_log.Mon</literal>, <literal>server_log.Tue</literal>, 
-        etc, and automatically overwrite last week's log with this week's log,
-        set <varname>log_filename</varname> to <literal>server_log.%a</literal>, 
-        <varname>log_truncate_on_rotation</varname> to <literal>on</literal>, and 
-        <varname>log_rotation_age</varname> to <literal>1440</literal>.
+Esempio: per tenere 7 giorni di log, un file di log per giorno chiamato 
+<literal>server_log.Mon</literal>, <literal>server_log.Tue</literal>, ecc.,
+e sovrascrivere automaticamente il log dell'ultima swettimana con quello di questa settimana,
+impostare <varname>log_filename</varname> a  <literal>server_log.%a</literal>,
+<varname>log_truncate_on_rotation</varname> a <literal>on</literal> e 
+<varname>log_rotation_age</varname> a <literal>1440</literal>.
        </para>
        <para>
-        Example: To keep 24 hours of logs, one log file per hour, but 
-        also rotate sooner if the log file size exceeds 1GB, set 
-        <varname>log_filename</varname> to <literal>server_log.%H%M</literal>, 
-        <varname>log_truncate_on_rotation</varname> to <literal>on</literal>, 
-        <varname>log_rotation_age</varname> to <literal>60</literal>, and 
-        <varname>log_rotation_size</varname> to <literal>1000000</literal>.
-        Including <literal>%M</literal> in <varname>log_filename</varname> allows
-        any size-driven rotations that might occur to select a file name
-        different from the hour's initial file name.
+Esempio: per tenere 24 ore di log, un file di log per ora, ma anche 
+ruotare prima se la dimensione del file di log eccede 1GB, impostare
+<varname>log_filename</varname> a <literal>server_log.%H%M</literal>, 
+<varname>log_truncate_on_rotation</varname> a <literal>on</literal>, 
+<varname>log_rotation_age</varname> a <literal>60</literal> e
+<varname>log_rotation_size</varname> a <literal>1000000</literal>.
+Includere <literal>%M</literal> in <varname>log_filename</varname> permette
+qualsiasi rotazione guidata dalla dimensione che potrebbe accadere per selezionare 
+un nome di file diverso dal nome del file iniziale dell'ora.
        </para>
       </listitem>
      </varlistentry>
@@ -2973,21 +2985,21 @@ Windows questo parametro viene ignorato).
      <varlistentry id="guc-syslog-facility" xreflabel="syslog_facility">
       <term><varname>syslog_facility</varname> (<type>enum</type>)</term>
       <indexterm>
-       <primary><varname>syslog_facility</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>syslog_facility</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        When logging to <application>syslog</application> is enabled, this parameter
-        determines the <application>syslog</application>
-        <quote>facility</quote> to be used.  You can choose
-        from <literal>LOCAL0</literal>, <literal>LOCAL1</literal>,
-        <literal>LOCAL2</literal>, <literal>LOCAL3</literal>, <literal>LOCAL4</literal>,
-        <literal>LOCAL5</literal>, <literal>LOCAL6</literal>, <literal>LOCAL7</literal>;
-        the default is <literal>LOCAL0</literal>. See also the
-        documentation of your system's
-        <application>syslog</application> daemon.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Quando è abilitato  il log su  <application>syslog</application>, questo parametro 
+determina la <quote>facility</quote> di   <application>syslog</application>
+da usare.
+Si può scegliere tra <literal>LOCAL0</literal>, <literal>LOCAL1</literal>,
+<literal>LOCAL2</literal>, <literal>LOCAL3</literal>, <literal>LOCAL4</literal>,
+<literal>LOCAL5</literal>, <literal>LOCAL6</literal>, <literal>LOCAL7</literal>;
+il valore predefinito è  <literal>LOCAL0</literal>. Si veda inoltre 
+la documentazione del demone  <application>syslog</application> 
+del proprio sistema.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
        </para>
       </listitem>
      </varlistentry>
@@ -3045,27 +3057,27 @@ precedentemente durante l'avvio potrebbero apparire in
       </variablelist>
     </sect2>
      <sect2 id="runtime-config-logging-when">
-     <title>When To Log</title>
+     <title>Quando fare il log</title>
 
      <variablelist>
 
      <varlistentry id="guc-client-min-messages" xreflabel="client_min_messages">
       <term><varname>client_min_messages</varname> (<type>enum</type>)</term>
       <indexterm>
-       <primary><varname>client_min_messages</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>client_min_messages</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Controls which message levels are sent to the client.
-        Valid values are <literal>DEBUG5</literal>,
-        <literal>DEBUG4</literal>, <literal>DEBUG3</literal>, <literal>DEBUG2</literal>,
-        <literal>DEBUG1</literal>, <literal>LOG</literal>, <literal>NOTICE</literal>,
-        <literal>WARNING</literal>, <literal>ERROR</literal>, <literal>FATAL</literal>,
-        and <literal>PANIC</literal>.  Each level
-        includes all the levels that follow it.  The later the level,
-        the fewer messages are sent.  The default is
-        <literal>NOTICE</literal>.  Note that <literal>LOG</literal> has a different
-        rank here than in <varname>log_min_messages</varname>.
+Controlla quali livelli di messaggio sono mandati al client.
+Valori validi sono <literal>DEBUG5</literal>,
+<literal>DEBUG4</literal>, <literal>DEBUG3</literal>, <literal>DEBUG2</literal>,
+<literal>DEBUG1</literal>, <literal>LOG</literal>, <literal>NOTICE</literal>,
+<literal>WARNING</literal>, <literal>ERROR</literal>, <literal>FATAL</literal>,
+e <literal>PANIC</literal>. Ogni livello
+include tutti i livelli che seguono. Maggiore è il livello, 
+minore è il numero di messaggi mandati. Il valore predefinito è 
+<literal>NOTICE</literal>. Notare che <literal>LOG</literal> ha un livello differente
+qui rispetto a  <varname>log_min_messages</varname>.
        </para>
       </listitem>
      </varlistentry>
@@ -3073,21 +3085,22 @@ precedentemente durante l'avvio potrebbero apparire in
      <varlistentry id="guc-log-min-messages" xreflabel="log_min_messages">
       <term><varname>log_min_messages</varname> (<type>enum</type>)</term>
       <indexterm>
-       <primary><varname>log_min_messages</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_min_messages</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Controls which message levels are written to the server log.
-        Valid values are <literal>DEBUG5</literal>, <literal>DEBUG4</literal>,
-        <literal>DEBUG3</literal>, <literal>DEBUG2</literal>, <literal>DEBUG1</literal>,
-        <literal>INFO</literal>, <literal>NOTICE</literal>, <literal>WARNING</literal>,
-        <literal>ERROR</literal>, <literal>LOG</literal>, <literal>FATAL</literal>, and
-        <literal>PANIC</literal>.  Each level includes all the levels that
-        follow it.  The later the level, the fewer messages are sent
-        to the log.  The default is <literal>WARNING</literal>.  Note that
-        <literal>LOG</literal> has a different rank here than in
-        <varname>client_min_messages</varname>.
-        Only superusers can change this setting.
+Controlla quali livelli di messaggio sono scritti al log del server.
+Valori validi sono <literal>DEBUG5</literal>, <literal>DEBUG4</literal>,
+<literal>DEBUG3</literal>, <literal>DEBUG2</literal>, <literal>DEBUG1</literal>,
+<literal>INFO</literal>, <literal>NOTICE</literal>, <literal>WARNING</literal>,
+<literal>ERROR</literal>, <literal>LOG</literal>, <literal>FATAL</literal>, e
+<literal>PANIC</literal>.  
+Ogni livello include tutti i livelli che lo seguono.
+Maggiore è il livello, meno messaggi sono mandati al log.
+Il valore predefinito è <literal>WARNING</literal>. Si noti che 
+<literal>LOG</literal> ha un livello differente qui rispetto a
+<varname>client_min_messages</varname>.
+Solo i superutenti posso cambiare quest'impostazione.
        </para>
       </listitem>
      </varlistentry>

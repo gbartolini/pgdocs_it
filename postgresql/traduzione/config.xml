@@ -1502,13 +1502,10 @@ alla certezza assoluta sulla durabilità di una transazione. Per maggiori
 discussioni si veda <xref linkend="wal-async-commit"/>.
        </para>
        <para>
-        This parameter can be changed at any time; the behavior for any
 Questo parametro può essere cambiato in qualsiasi momento; il comportamento per 
-        one transaction is determined by the setting in effect when it
 qualsiasi transazione è determinato dall'impostazione effettiva quando viene effettuato il  
-        commits.  It is therefore possible, and useful, to have some
-commit. È inoltre possibile, 
-        transactions commit synchronously and others asynchronously.
+commit. È inoltre possibile, e utile, avere alcune transazione che fanno il commit in modo 
+sincrono e altre che lo fanno in modo asincrono.
         For example, to make a single multistatement transaction commit
         asynchronously when the default is the opposite, issue <command>SET
         LOCAL synchronous_commit TO OFF</command> within the transaction.
@@ -1532,27 +1529,27 @@ Possibili valori sono:
         <listitem>
         <para>
          <literal>open_datasync</literal> 
-          (write WAL files with <function>open()</function> option <symbol>O_DSYNC</symbol>)
+          (scrive i file  WAL con l'opzione <symbol>O_DSYNC</symbol> di <function>open()</function>)
         </para>
         </listitem>
         <listitem>
         <para>
-         <literal>fdatasync</literal> (call <function>fdatasync()</function> at each commit)
+         <literal>fdatasync</literal> (chiama <function>fdatasync()</function> ad ogni commit)
         </para>
         </listitem>
         <listitem>
         <para>
-         <literal>fsync_writethrough</literal> (call <function>fsync()</function> at each commit, forcing write-through of any disk write cache)
+         <literal>fsync_writethrough</literal> (chiama <function>fsync()</function> ad ogni commit,  forzando la scrittura attraverso   qualsiasi cache di scrittura del disco)
         </para>
         </listitem>
         <listitem>
         <para>
-         <literal>fsync</literal> (call <function>fsync()</function> at each commit)
+         <literal>fsync</literal> (chiama <function>fsync()</function> ad ogni commit)
         </para>
         </listitem>
         <listitem>
         <para>
-         <literal>open_sync</literal> (write WAL files with <function>open()</function> option <symbol>O_SYNC</symbol>)
+         <literal>open_sync</literal> (scrive i file WAL con l'opzione <symbol>O_SYNC</symbol> di <function>open()</function>)
         </para>
         </listitem>
        </itemizedlist>
@@ -1745,9 +1742,8 @@ o dalla linea di comando del server.
       </indexterm>
       <listitem>
        <para>
-        Specifies the target of checkpoint completion, as a fraction of
-        total time between checkpoints. The default is 0.5.
-
+Specifica l'obiettivo del completamento dei checkpoint, come frazione del tempo
+totale tra i checkpoint. Il valore predefinito è 0.5.
 Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
 o dalla linea di comando del server.
        </para>
@@ -2876,15 +2872,11 @@ o dalla linea di comando del server.
 Su sistemi Unix questo parametro imposta i permessi per i file di log
 quando è abilitato <varname>logging_collector</varname>. (Su Microsoft 
 Windows questo parametro viene ignorato). 
-        The parameter value is expected to be a numeric mode
 Il valore del parametro ci si aspetta sia un modo numerico 
-        specified in the format accepted by the
-specificato
-        <function>chmod</function> and <function>umask</function>
-        system calls.  
-        (To use the customary octal format the number
-(Per usare 
-        must start with a <literal>0</literal> (zero).)
+specificato nel formato accettato dalle chiamate di sistema
+<function>chmod</function> e <function>umask</function>.  
+(Per usare il formato ottale consueto il numero deve iniziare  
+con uno <literal>0</literal> (zero)).
        </para>
        <para>
 I permessi predefiniti sono  <literal>0600</literal>, che significa che solo  
@@ -2924,7 +2916,7 @@ o dalla linea di comando del server.
      <varlistentry id="guc-log-rotation-size" xreflabel="log_rotation_size">
       <term><varname>log_rotation_size</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>log_rotation_size</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_rotation_size</varname></primary>
       </indexterm>
       <listitem>
        <para>
@@ -3007,17 +2999,18 @@ o dalla linea di comando del server.
      <varlistentry id="guc-syslog-ident" xreflabel="syslog_ident">
       <term><varname>syslog_ident</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>syslog_identity</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>syslog_identity</varname></primary>
       </indexterm>
        <listitem>
         <para>
-         When logging to <application>syslog</application> is enabled, this parameter
-         determines the program name used to identify
-         <productname>PostgreSQL</productname> messages in
-         <application>syslog</application> logs. The default is
-         <literal>postgres</literal>.
-         This parameter can only be set in the <filename>postgresql.conf</filename>
-         file or on the server command line.
+Quando è abilitato il log verso <application>syslog</application>, questo parametro 
+determina il nome del programma usato per identificare
+i messaggi di <productname>PostgreSQL</productname> nei log di
+<application>syslog</application>. 
+Il valore predefinto è 
+<literal>postgres</literal>.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
         </para>
        </listitem>
       </varlistentry>
@@ -3043,9 +3036,9 @@ lo standard output e lo standard error del server sono mandati al file
         There is no provision for rotating this file, so it will grow
         indefinitely unless server log output is redirected elsewhere
         by other settings.  
-        It is recommended that <varname>log_destination</varname>
-        be set to <literal>syslog</literal> or that <varname>logging_collector</varname> be
-        enabled when using this option.  
+Si raccomanda che  <varname>log_destination</varname>
+sia impostato a <literal>syslog</literal> o che <varname>logging_collector</varname> sia
+abilitato quando si usa quest'opzione.
 Anche con queste misure, errori riportati 
 precedentemente durante l'avvio potrebbero apparire in 
 <filename>postmaster.log</filename> piuttosto che le normale destinazione di log. 
@@ -3108,26 +3101,27 @@ Solo i superutenti posso cambiare quest'impostazione.
      <varlistentry id="guc-log-min-error-statement" xreflabel="log_min_error_statement">
       <term><varname>log_min_error_statement</varname> (<type>enum</type>)</term>
       <indexterm>
-       <primary><varname>log_min_error_statement</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_min_error_statement</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Controls which SQL statements that cause an error
-        condition are recorded in the server log.  The current
-        SQL statement is included in the log entry for any message of
-        the specified severity or higher.
-        Valid values are <literal>DEBUG5</literal>,
-        <literal>DEBUG4</literal>, <literal>DEBUG3</literal>,
-        <literal>DEBUG2</literal>, <literal>DEBUG1</literal>,
-        <literal>INFO</literal>, <literal>NOTICE</literal>,
-        <literal>WARNING</literal>, <literal>ERROR</literal>,
-        <literal>LOG</literal>,
-        <literal>FATAL</literal>, and <literal>PANIC</literal>.
-        The default is <literal>ERROR</literal>, which means statements
-        causing errors, log messages, fatal errors, or panics will be logged.
-        To effectively turn off logging of failing statements,
-        set this parameter to <literal>PANIC</literal>.
-        Only superusers can change this setting.
+Controlla quali istruzioni SQL che causano una condizione di errore
+sono registrati nel log del server. L'istruzione SQL corrente
+è inclusa nella voce di log per qualsiasi messaggio della 
+severità specificata o maggiore. 
+Valori validi sono <literal>DEBUG5</literal>,
+<literal>DEBUG4</literal>, <literal>DEBUG3</literal>,
+<literal>DEBUG2</literal>, <literal>DEBUG1</literal>,
+<literal>INFO</literal>, <literal>NOTICE</literal>,
+<literal>WARNING</literal>, <literal>ERROR</literal>,
+<literal>LOG</literal>,
+<literal>FATAL</literal>, e <literal>PANIC</literal>.
+Il valore predefinito è <literal>ERROR</literal>, che significa che saranno 
+sottoposte a log le istruzioni 
+che causano errori, messaggi di log, errori fatali, o panic. 
+Per disabilitare effettivamente il log delle istruzioni che falliscono,
+impostare questo parametro a <literal>PANIC</literal>.
+Solo i superutenti possono cambiare questa impostazione.
        </para>
       </listitem>
      </varlistentry>
@@ -3135,38 +3129,39 @@ Solo i superutenti posso cambiare quest'impostazione.
      <varlistentry id="guc-log-min-duration-statement" xreflabel="log_min_duration_statement">
       <term><varname>log_min_duration_statement</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>log_min_duration_statement</varname> configuration parameter</primary>
+       <primary>Parametro si configurazione <varname>log_min_duration_statement</varname></primary>
       </indexterm>
        <listitem>
         <para>
-         Causes the duration of each completed statement to be logged
-         if the statement ran for at least the specified number of
-         milliseconds.  Setting this to zero prints all statement durations.
-         Minus-one (the default) disables logging statement durations.
-         For example, if you set it to <literal>250ms</literal>
-         then all SQL statements that run 250ms or longer will be
-         logged.  Enabling this parameter can be helpful in tracking down
-         unoptimized queries in your applications.
-         Only superusers can change this setting.
+Fa sì che la durata di ogni istruzione completata sia sottoposta a log
+se l'istruzion è durata almeno il numero di specificato di millisecondi.
+Impostare questo a zero stampa tutte le durate delle istruzioni. 
+Meno-uno (il valore predefinito) disabilita il log delle durate delle 
+istruzioni.   
+Per esempio, se lo si imposta a  <literal>250ms</literal> allora  
+tutte le istruzioni SQL che girano per 250ms o più a lungo saranno sottoposte
+a log. Abilitare questo parametro può essere utile per tenere d'occhio
+query non ottimizzate nelle proprie applicazioni.
+Solo i superutenti possono cambiare questa impostazione.
         </para>
 
         <para>
-         For clients using extended query protocol, durations of the Parse,
-         Bind, and Execute steps are logged independently.
+Per client che usano il protocollo di query esteso, le durate dei passi Parse,
+Bind e Execute sono sottoposte a log indipendentemente.
         </para>
 
        <note>
         <para>
-         When using this option together with
-         <xref linkend="guc-log-statement"/>,
-         the text of statements that are logged because of
-         <varname>log_statement</varname> will not be repeated in the
-         duration log message.
-         If you are not using <application>syslog</application>, it is recommended 
-         that you log the PID or session ID using
-         <xref linkend="guc-log-line-prefix"/>
-         so that you can link the statement message to the later
-         duration message using the process ID or session ID.
+Quando si usa questa opzione insieme a
+<xref linkend="guc-log-statement"/>,
+il testo di istruzioni che sono sottoposte a log per via di       
+<varname>log_statement</varname> non saranno ripetute nel messaggio di log 
+relativo alla durata.
+Se non si sta usando <application>syslog</application>, si raccomanda
+di tenere i log del PID o dell'ID di sessione usando
+<xref linkend="guc-log-line-prefix"/>
+così che si possa collegare il messaggio di istruzione al messaggio di 
+durata usando l'ID del processo o l'ID della sessione.
         </para>
        </note>
        </listitem>
@@ -3175,20 +3170,20 @@ Solo i superutenti posso cambiare quest'impostazione.
      </variablelist>
 
     <para>
-     <xref linkend="runtime-config-severity-levels"/> explains the message
-     severity levels used by <productname>PostgreSQL</productname>.  If logging output
-     is sent to <systemitem>syslog</systemitem> or Windows'
-     <systemitem>eventlog</systemitem>, the severity levels are translated
-     as shown in the table.
+<xref linkend="runtime-config-severity-levels"/> spiega i livelli di severità
+del messaggio usati da <productname>PostgreSQL</productname>. Se l'output di log
+viene mandato a <systemitem>syslog</systemitem> o all'<systemitem>eventlog</systemitem>
+di Windows, i livelli di severità sono tradotti come mostrato
+nella tabella.
     </para>
 
     <table id="runtime-config-severity-levels">
-     <title>Message severity levels</title>
+     <title>Livelli di severità del messaggio</title>
      <tgroup cols="4">
       <thead>
        <row>
-        <entry>Severity</entry>
-        <entry>Usage</entry>
+        <entry>Severità</entry>
+        <entry>Utilizzo</entry>
         <entry><systemitem>syslog</systemitem></entry>
         <entry><systemitem>eventlog</systemitem></entry>
        </row>
@@ -3197,63 +3192,69 @@ Solo i superutenti posso cambiare quest'impostazione.
       <tbody>
        <row>
         <entry><literal>DEBUG1..DEBUG5</literal></entry>
-        <entry>Provides successively-more-detailed information for use by
-         developers.</entry>
+        <entry>
+Fornisce informazioni progressivamente maggiormente dettagliate per gli sviluppatori.
+         </entry>
         <entry><literal>DEBUG</literal></entry>
         <entry><literal>INFORMATION</literal></entry>
        </row>
 
        <row>
         <entry><literal>INFO</literal></entry>
-        <entry>Provides information implicitly requested by the user,
-         e.g., output from <command>VACUUM VERBOSE</command>.</entry>
+        <entry>
+Fornisce informazioni richieste implicitamente dall'utente,
+per es., l'output proveniente da <command>VACUUM VERBOSE</command>.</entry>
         <entry><literal>INFO</literal></entry>
         <entry><literal>INFORMATION</literal></entry>
        </row>
 
        <row>
         <entry><literal>NOTICE</literal></entry>
-        <entry>Provides information that might be helpful to users, e.g.,
-         notice of truncation of long identifiers.</entry>
+        <entry>
+Fornisce informazioni che potrebbero essere utili per gli utenti, per es.,
+si noti il troncamento di identificatori lunghi.</entry>
         <entry><literal>NOTICE</literal></entry>
         <entry><literal>INFORMATION</literal></entry>
        </row>
 
        <row>
         <entry><literal>WARNING</literal></entry>
-        <entry>Provides warnings of likely problems, e.g., <command>COMMIT</command>
-         outside a transaction block.</entry>
+        <entry>
+Fornisce warning per i probabili problemi, per es., <command>COMMIT</command>
+fuori da un blocco di transazion.</entry>
         <entry><literal>NOTICE</literal></entry>
         <entry><literal>WARNING</literal></entry>
        </row>
 
        <row>
         <entry><literal>ERROR</literal></entry>
-        <entry>Reports an error that caused the current command to
-         abort.</entry>
+        <entry>
+Riporta un errore che ha causato l'annullamento del comando corrente.
+        </entry>
         <entry><literal>WARNING</literal></entry>
         <entry><literal>ERROR</literal></entry>
        </row>
 
        <row>
         <entry><literal>LOG</literal></entry>
-        <entry>Reports information of interest to administrators, e.g.,
-         checkpoint activity.</entry>
+        <entry>
+Riporta informazioni di interesse per amministratori, per es.,
+l'attività di checkpoint. </entry>
         <entry><literal>INFO</literal></entry>
         <entry><literal>INFORMATION</literal></entry>
        </row>
 
        <row>
         <entry><literal>FATAL</literal></entry>
-        <entry>Reports an error that caused the current session to
-         abort.</entry>
+<entry>Riporta un errore che ha causato l'annullamento della sessione
+corrente.</entry>
         <entry><literal>ERR</literal></entry>
         <entry><literal>ERROR</literal></entry>
        </row>
 
        <row>
         <entry><literal>PANIC</literal></entry>
-        <entry>Reports an error that caused all database sessions to abort.</entry>
+<entry>Riporta un errore che ha causato l'annullamento delle sessioni di database.</entry>
         <entry><literal>CRIT</literal></entry>
         <entry><literal>ERROR</literal></entry>
        </row>
@@ -3263,26 +3264,26 @@ Solo i superutenti posso cambiare quest'impostazione.
 
     </sect2>
      <sect2 id="runtime-config-logging-what">
-     <title>What To Log</title>
+     <title>Cosa sottoporre a log</title>
 
      <variablelist>
 
      <varlistentry id="guc-application-name" xreflabel="application_name">
       <term><varname>application_name</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>application_name</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>application_name</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        The <varname>application_name</varname> can be any string of less than
-        <symbol>NAMEDATALEN</symbol> characters (64 characters in a standard build).
-        It is typically set by an application upon connection to the server.
-        The name will be displayed in the <structname>pg_stat_activity</structname> view
-        and included in CSV log entries.  It can also be included in regular
-        log entries via the <xref linkend="guc-log-line-prefix"/> parameter.
-        Only printable ASCII characters may be used in the
-        <varname>application_name</varname> value. Other characters will be
-        replaced with question marks (<literal>?</literal>).
+L'<varname>application_name</varname> può essere qualsiasi stringa di meno che 
+<symbol>NAMEDATALEN</symbol> caratteri (64 caratteri in una compilazione standard).
+Tipicamente è impostato da un'applicazione al momento della connessione al server.
+Il nome sarà visualizzato nella vista <structname>pg_stat_activity</structname>
+e inclusa nelle voci di log CSV. Può anche essere incluso in voci di log regolari
+attraverso il parametro <xref linkend="guc-log-line-prefix"/>.
+Solo i caratteri ASCII stampabili possono essere usati nel valore 
+<varname>application_name</varname>. Altri caratteri saranno
+sostituiti con punti interrogativi (<literal>?</literal>).
        </para>
       </listitem>
      </varlistentry>
@@ -3292,25 +3293,25 @@ Solo i superutenti posso cambiare quest'impostazione.
       <term><varname>debug_print_rewritten</varname> (<type>boolean</type>)</term>
       <term><varname>debug_print_plan</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>debug_print_parse</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>debug_print_parse</varname></primary>
       </indexterm>
       <indexterm>
-       <primary><varname>debug_print_rewritten</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>debug_print_rewritten</varname></primary>
       </indexterm>
       <indexterm>
-       <primary><varname>debug_print_plan</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>debug_print_plan</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        These parameters enable various debugging output to be emitted.
         When set, they print the resulting parse tree, the query rewriter
         output, or the execution plan for each executed query.
         These messages are emitted at <literal>LOG</literal> message level, so by
         default they will appear in the server log but will not be sent to the
-        client.  You can change that by adjusting
-        <xref linkend="guc-client-min-messages"/> and/or
-        <xref linkend="guc-log-min-messages"/>.
-        These parameters are off by default.
+        client.  
+È possibile cambiarlo aggiustando 
+<xref linkend="guc-client-min-messages"/> e/o
+<xref linkend="guc-log-min-messages"/>.
+Questi parametri sono impostati a off in maniera predefinita.
        </para>
       </listitem>
      </varlistentry>
@@ -3318,16 +3319,17 @@ Solo i superutenti posso cambiare quest'impostazione.
      <varlistentry>
       <term><varname>debug_pretty_print</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>debug_pretty_print</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>debug_pretty_print</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        When set, <varname>debug_pretty_print</varname> indents the messages
-        produced by <varname>debug_print_parse</varname>,
-        <varname>debug_print_rewritten</varname>, or
-        <varname>debug_print_plan</varname>.  This results in more readable
-        but much longer output than the <quote>compact</quote> format used when
-        it is off.  It is on by default.
+Quando impostato, <varname>debug_pretty_print</varname> indenta i messaggi
+prodotti da <varname>debug_print_parse</varname>,
+<varname>debug_print_rewritten</varname> o
+<varname>debug_print_plan</varname>.  
+Questo risulta in un output più leggibile ma 
+molto più lungo rispetto al formato <quote>compatto</quote> usato quando    
+sono spenti. Il valore predefinito è on.
        </para>
       </listitem>
      </varlistentry>
@@ -3335,16 +3337,15 @@ Solo i superutenti posso cambiare quest'impostazione.
      <varlistentry id="guc-log-checkpoints" xreflabel="log_checkpoints">
       <term><varname>log_checkpoints</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>log_checkpoints</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_checkpoints</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Causes checkpoints to be logged in the server log. Some
-        statistics about each checkpoint are included in the log messages,
-        including the number of buffers written and the time spent writing
-        them.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line. The default is off.
+Fa sì che i checkpoint siano sottoposti a log nel log del server. Alcune  
+statistiche su ogni checkpoint sono incluse nei messaggi di log, 
+compreso il numero di buffer scritti e il tempo speso scrivendoli. 
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server. Il valore predefinito è off.
        </para>
       </listitem>
      </varlistentry>
@@ -3352,22 +3353,22 @@ Solo i superutenti posso cambiare quest'impostazione.
      <varlistentry id="guc-log-connections" xreflabel="log_connections">
       <term><varname>log_connections</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>log_connections</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_connections</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Causes each attempted connection to the server to be logged,
-        as well as successful completion of client authentication.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.  The default is off.
+Fa sì che ogni tentativo di connessione al server siano messe nel log,
+così come il completamento con successo dell'autenticazione del client.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server. Il valore predefinito è off.
        </para>
 
        <note>
         <para>
-         Some client programs, like <application>psql</application>, attempt 
-         to connect twice while determining if a password is required, so 
-         duplicate <quote>connection received</quote> messages do not
-         necessarily indicate a problem.
+Alcuni programmi client, come <application>psql</application>, tentano di 
+connettersi due volte mentre determinano se una password viene richiesta, quindi 
+messaggi <quote>connection received</quote> duplicati non indicano necessariamente  
+un problema.
         </para>
        </note>
       </listitem>
@@ -3376,16 +3377,15 @@ Solo i superutenti posso cambiare quest'impostazione.
      <varlistentry id="guc-log-disconnections" xreflabel="log_disconnections">
       <term><varname>log_disconnections</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>log_disconnections</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_disconnections</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        This outputs a line in the server log similar to
-        <varname>log_connections</varname> but at session termination,
-        and includes the duration of the session.  This is off by
-        default.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Questo rende in output una linea nel log del server simile a  
+<varname>log_connections</varname> ma al termine della sessione, 
+e include la durata della sessione. Questo è off in maniera predefinita.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server. Il valore predefinito è off.
        </para>
       </listitem>
      </varlistentry>
@@ -3394,31 +3394,32 @@ Solo i superutenti posso cambiare quest'impostazione.
      <varlistentry id="guc-log-duration" xreflabel="log_duration">
       <term><varname>log_duration</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>log_duration</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_duration</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Causes the duration of every completed statement to be logged.
-        The default is <literal>off</literal>.
-        Only superusers can change this setting.
+Fa sì che la durata di ogni istruzione completata sia messa nel log.
+Il valore predefinito è  <literal>off</literal>.
+Solo i superutenti possono cambiare questo valore.
        </para>
 
        <para>
-        For clients using extended query protocol, durations of the Parse,
-        Bind, and Execute steps are logged independently.
+Per client che usano il protocollo di query esteso, la durata dei passi di Parse, 
+Bind ed Execute sono sottoposti a log in modo indipendente.
        </para>
 
        <note>
         <para>
-         The difference between setting this option and setting
-         <xref linkend="guc-log-min-duration-statement"/> to zero is that
-         exceeding <varname>log_min_duration_statement</varname> forces the text of
-         the query to be logged, but this option doesn't.  Thus, if
-         <varname>log_duration</varname> is <literal>on</literal> and
-         <varname>log_min_duration_statement</varname> has a positive value, all
-         durations are logged but the query text is included only for
-         statements exceeding the threshold.  This behavior can be useful for
-         gathering statistics in high-load installations.
+La differenza tra impostare questa opzione e impostare 
+<xref linkend="guc-log-min-duration-statement"/> a zero è che 
+eccedere <varname>log_min_duration_statement</varname> forza il testo della query 
+da mettere nel log, ma questa opzione non lo fa. Così, se 
+<varname>log_duration</varname> è <literal>on</literal> e
+<varname>log_min_duration_statement</varname> 
+ha un valore positivo, tutte le durate sono messe nel log 
+ma il testo della query è incluso solo per istruzioni 
+che eccedono la soglia. Questo comportamento può essere utile per  
+raccogliere statistiche in installazioni dal carico alto.
         </para>
        </note>
       </listitem>
@@ -3427,20 +3428,20 @@ Solo i superutenti posso cambiare quest'impostazione.
      <varlistentry id="guc-log-error-verbosity" xreflabel="log_error_verbosity">
       <term><varname>log_error_verbosity</varname> (<type>enum</type>)</term>
       <indexterm>
-       <primary><varname>log_error_verbosity</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_error_verbosity</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Controls the amount of detail written in the server log for each
-        message that is logged.  Valid values are <literal>TERSE</literal>,
-        <literal>DEFAULT</literal>, and <literal>VERBOSE</literal>, each adding more
-        fields to displayed messages.  <literal>TERSE</literal> excludes
-        the logging of <literal>DETAIL</literal>, <literal>HINT</literal>,
-        <literal>QUERY</literal>, and <literal>CONTEXT</literal> error information.
-        <literal>VERBOSE</literal> output includes the <symbol>SQLSTATE</symbol> error
-        code (see also <xref linkend="errcodes-appendix"/>) and the source code file name, function name,
-        and line number that generated the error.
-        Only superusers can change this setting.
+Controlla l'ammontare di dettagli scritti nel log del server per ogni messaggio 
+che viene sottoposto a log. Valori validi sono <literal>TERSE</literal>,
+<literal>DEFAULT</literal>, e <literal>VERBOSE</literal>, ognuna che aggiunge più 
+campi per i messaggi mostrati. <literal>TERSE</literal> esclude   
+il log di informazioni di errore di  <literal>DETAIL</literal>, <literal>HINT</literal>,
+<literal>QUERY</literal> e <literal>CONTEXT</literal>. 
+L'output <literal>VERBOSE</literal> include il codice di error <symbol>SQLSTATE</symbol>
+(si veda anche <xref linkend="errcodes-appendix"/>) e il nome del file sorgente, il nome della funzione, 
+e il numero di linea che ha generato l'errore.
+Solo i superutenti possono cambiare questo valore.
        </para>
       </listitem>
      </varlistentry>
@@ -3448,16 +3449,17 @@ Solo i superutenti posso cambiare quest'impostazione.
      <varlistentry id="guc-log-hostname" xreflabel="log_hostname">
       <term><varname>log_hostname</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>log_hostname</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_hostname</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        By default, connection log messages only show the IP address of the
-        connecting host. Turning this parameter on causes logging of the
-        host name as well.  Note that depending on your host name resolution
+In modo predefinito, i messaggi di log di connessione mostrano l'indirizzo IP 
+del host che si sta connettendo. Abilitare questo parametro fa si che anche il  
+nome del host venga messo nel log.
+        Note that depending on your host name resolution
         setup this might impose a non-negligible performance penalty.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server.
        </para>
       </listitem>
      </varlistentry>
@@ -3465,55 +3467,55 @@ Solo i superutenti posso cambiare quest'impostazione.
      <varlistentry id="guc-log-line-prefix" xreflabel="log_line_prefix">
       <term><varname>log_line_prefix</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>log_line_prefix</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_line_prefix</varname></primary>
       </indexterm>
       <listitem>
        <para>
-         This is a <function>printf</function>-style string that is output at the
-         beginning of each log line.
-         <literal>%</literal> characters begin <quote>escape sequences</quote>
-         that are replaced with status information as outlined below.
-         Unrecognized escapes are ignored. Other
-         characters are copied straight to the log line. Some escapes are
-         only recognized by session processes, and are ignored by
-         background processes such as the main server process.
-         This parameter can only be set in the <filename>postgresql.conf</filename>
-         file or on the server command line. The default is an empty string.
+Questà è una stringa in stile <function>printf</function> che è l'output all'inizio 
+di ogni linea di log.
+I caratteri <literal>%</literal> sono l'inizio di <quote>sequenze di escape</quote>
+che sono sostituiti con informazioni di stato come descritto sotto.
+Gli escape non riconosciuti vengono ignorati. Gli altri 
+caratteri sono copiati direttamente nella linea di log. Alcuni escape sono 
+riconosciuti solo da processi di sessione, e sono ignorati da processi in
+background tipo il processo principale del server.
+Questo parametro può essere impostato solo nel file <filename>postgresql.conf</filename>
+o dalla linea di comando del server. Il valore predefinito è una stringa vuota.
 
          <informaltable>
           <tgroup cols="3">
            <thead>
             <row>
              <entry>Escape</entry>
-             <entry>Effect</entry>
-             <entry>Session only</entry>
+             <entry>Effetto</entry>
+             <entry>Solo sessione</entry>
              </row>
             </thead>
            <tbody>
             <row>
              <entry><literal>%a</literal></entry>
-             <entry>Application name</entry>
-             <entry>yes</entry>
+             <entry>Nome dell'applicazione</entry>
+             <entry>si</entry>
             </row>
             <row>
              <entry><literal>%u</literal></entry>
-             <entry>User name</entry>
-             <entry>yes</entry>
+             <entry>Nome utente</entry>
+             <entry>si</entry>
             </row>
             <row>
              <entry><literal>%d</literal></entry>
-             <entry>Database name</entry>
-             <entry>yes</entry>
+             <entry>Nome del database</entry>
+             <entry>si</entry>
             </row>
             <row>
              <entry><literal>%r</literal></entry>
-             <entry>Remote host name or IP address, and remote port</entry>
-             <entry>yes</entry>
+             <entry>Nome del host remoto o indirizzo IP, e porta remota</entry>
+             <entry>si</entry>
             </row>
             <row>
              <entry><literal>%h</literal></entry>
-             <entry>Remote host name or IP address</entry>
-             <entry>yes</entry>
+             <entry>Nome del host remoto o indirizzo IP</entry>
+             <entry>si</entry>
             </row>
             <row>
              <entry><literal>%p</literal></entry>
@@ -3532,44 +3534,45 @@ Solo i superutenti posso cambiare quest'impostazione.
             </row>
             <row>
              <entry><literal>%i</literal></entry>
-             <entry>Command tag: type of session's current command</entry>
-             <entry>yes</entry>
+             <entry>Tag del comando: tipo del comando corrente della sessione</entry>
+             <entry>si</entry>
             </row>
             <row>
              <entry><literal>%e</literal></entry>
-             <entry>SQLSTATE error code</entry>
+             <entry>codice di error SQLSTATE</entry>
              <entry>no</entry>
             </row>
             <row>
              <entry><literal>%c</literal></entry>
-             <entry>Session ID: see below</entry>
+             <entry>ID della sessione: si veda sotto</entry>
              <entry>no</entry>
             </row>
             <row>
              <entry><literal>%l</literal></entry>
-             <entry>Number of the log line for each session or process, starting at 1</entry>
+             <entry>Numero della linea di log per ogni sessione o processo, cominciando da 1</entry>
              <entry>no</entry>
             </row>
             <row>
              <entry><literal>%s</literal></entry>
-             <entry>Process start time stamp</entry>
+             <entry>Momento d'avvio del processo</entry>
              <entry>no</entry>
             </row>
             <row>
              <entry><literal>%v</literal></entry>
-             <entry>Virtual transaction ID (backendID/localXID)</entry>
+             <entry>ID della transazione virtuale (backendID/localXID)</entry>
              <entry>no</entry>
             </row>
             <row>
              <entry><literal>%x</literal></entry>
-             <entry>Transaction ID (0 if none is assigned)</entry>
+             <entry>ID della transazione (0 se non è asegnato)</entry>
              <entry>no</entry>
             </row>
             <row>
              <entry><literal>%q</literal></entry>
-             <entry>Produces no output, but tells non-session
-             processes to stop at this point in the string; ignored by
-             session processes</entry>
+             <entry>
+Non produce output, ma dice ai processi non di sessione 
+di fermarsi a questo punto nella stringa; ignorato dai processi di 
+sessione </entry>
              <entry>no</entry>
             </row>
             <row>
@@ -3581,12 +3584,12 @@ Solo i superutenti posso cambiare quest'impostazione.
           </tgroup>
          </informaltable>
 
-         The <literal>%c</literal> escape prints a quasi-unique session identifier,
-         consisting of two 4-byte hexadecimal numbers (without leading zeros)
-         separated by a dot.  The numbers are the process start time and the
-         process ID, so <literal>%c</literal> can also be used as a space saving way
-         of printing those items.  For example, to generate the session
-         identifier from <literal>pg_stat_activity</literal>, use this query:
+Il codice ecape <literal>%c</literal> stampa un identificatore di sessione quasi univoco,
+che consiste di due numeri esadecimali a 4 byte (senza zeri all'inizio)
+separati da un punto. I numeri sono il momento iniziale del processo e l'ID del processo,
+quindi <literal>%c</literal> può essere usato anche come modo per salvare spazio 
+di stampa di quegli elementi. Per esempio, per generare l'identificatore di sessione 
+da <literal>pg_stat_activity</literal>, usare questa query:
 <programlisting>
 SELECT to_hex(EXTRACT(EPOCH FROM backend_start)::integer) || '.' ||
        to_hex(procpid)
@@ -3597,18 +3600,18 @@ FROM pg_stat_activity;
 
        <tip>
         <para>
-         If you set a nonempty value for <varname>log_line_prefix</varname>,
-         you should usually make its last character be a space, to provide
-         visual separation from the rest of the log line.  A punctuation
-         character can be used too.
+Se si imposta un valore non vuoto per <varname>log_line_prefix</varname>,
+si deve solitamente usare uno spazio come ultimo carattere, per fornire 
+una separazione visuale dal resto della linea di log. Può essere usato anche 
+un carattere di punteggiatura. 
         </para>
        </tip>
 
        <tip>
         <para>
-         <application>Syslog</application> produces its own 
-         time stamp and process ID information, so you probably do not want to
-         include those escapes if you are logging to <application>syslog</application>.
+<application>Syslog</application> produce le proprie informazioni di orario
+e di ID di processo, quindi probabilmente non si vorrà includere questi escape 
+se si sta facendo il log su <application>syslog</application>.
         </para>
        </tip>
       </listitem>
@@ -3617,14 +3620,14 @@ FROM pg_stat_activity;
      <varlistentry id="guc-log-lock-waits" xreflabel="log_lock_waits">
       <term><varname>log_lock_waits</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>log_lock_waits</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_lock_waits</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Controls whether a log message is produced when a session waits
-        longer than <xref linkend="guc-deadlock-timeout"/> to acquire a
-        lock.  This is useful in determining if lock waits are causing
-        poor performance.  The default is <literal>off</literal>.
+Controlla se un messaggio di log viene prodotto quando una sessione aspetta
+più a lungo di <xref linkend="guc-deadlock-timeout"/> per acquisire un lock.
+Questo è utile per determinare se l'attesa del lock stanno causando un decadimento di  
+prestazioni. Il valore predefinito è <literal>off</literal>. 
        </para>
       </listitem>
      </varlistentry>
@@ -3632,30 +3635,32 @@ FROM pg_stat_activity;
      <varlistentry id="guc-log-statement" xreflabel="log_statement">
       <term><varname>log_statement</varname> (<type>enum</type>)</term>
       <indexterm>
-       <primary><varname>log_statement</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_statement</varname></primary>
       </indexterm>
       <listitem>
        <para>
         Controls which SQL statements are logged. Valid values are
-        <literal>none</literal> (off), <literal>ddl</literal>, <literal>mod</literal>, and
-        <literal>all</literal> (all statements). <literal>ddl</literal> logs all data definition
-        statements, such as <command>CREATE</command>, <command>ALTER</command>, and
-        <command>DROP</command> statements. <literal>mod</literal> logs all
-        <literal>ddl</literal> statements, plus data-modifying statements
-        such as <command>INSERT</command>,
-        <command>UPDATE</command>, <command>DELETE</command>, <command>TRUNCATE</command>,
-        and <command>COPY FROM</command>.
-        <command>PREPARE</command>, <command>EXECUTE</command>, and
-        <command>EXPLAIN ANALYZE</command> statements are also logged if their
-        contained command is of an appropriate type.  For clients using
-        extended query protocol, logging occurs when an Execute message
-        is received, and values of the Bind parameters are included
-        (with any embedded single-quote marks doubled).
+Controlla quali istruzioni SQL sono messe nel log. Valori validi sono 
+<literal>none</literal> (off), <literal>ddl</literal>, <literal>mod</literal> e
+<literal>all</literal> (tutte le istruzioni). <literal>ddl</literal> mette nel log tutte le
+istruzioni di data definition, 
+tipo istruzioni <command>CREATE</command>, <command>ALTER</command> e
+<command>DROP</command>. <literal>mod</literal> mette nel log tutte le istruzioni
+<literal>ddl</literal>, più le istruzioni di modifica dei dati tipo 
+<command>INSERT</command>,
+<command>UPDATE</command>, <command>DELETE</command>, <command>TRUNCATE</command>,
+e <command>COPY FROM</command>.
+Anche le istruzioni <command>PREPARE</command>, <command>EXECUTE</command> e
+<command>EXPLAIN ANALYZE</command> sono messe nel log se il loro comando 
+contenuto è del tipo appropriato. Per client che usano 
+il protocollo di query esteso, il log avviene quando un messaggio Execute 
+è ricevuto, e i valori dei parametri Bind sono inclusi 
+(con qualsiasi apice singolo incluso raddopiato).
        </para>
 
        <para>
-        The default is <literal>none</literal>. Only superusers can change this
-        setting.
+Il valore predefinito è <literal>none</literal>. Solo i superutenti possono cambiare questa 
+impostazione.
        </para>
 
        <note>
@@ -3686,9 +3691,9 @@ FROM pg_stat_activity;
         A log entry is made for each temporary file when it is deleted.
         A value of zero logs all temporary file information, while positive
         values log only files whose size is greater than or equal to
-        the specified number of kilobytes.  The
-        default setting is <literal>-1</literal>, which disables such logging.
-        Only superusers can change this setting.
+        the specified number of kilobytes.  
+Il valore predefinito è <literal>-1</literal>, che disabilita questo log.
+Solo i superutenti possono cambiare questo valore.
        </para>
       </listitem>
      </varlistentry>
@@ -3696,18 +3701,18 @@ FROM pg_stat_activity;
      <varlistentry id="guc-log-timezone" xreflabel="log_timezone">
       <term><varname>log_timezone</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>log_timezone</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>log_timezone</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets the time zone used for timestamps written in the log.
-        Unlike <xref linkend="guc-timezone"/>, this value is cluster-wide,
-        so that all sessions will report timestamps consistently.
-        The default is <literal>unknown</literal>, which means use whatever
-        the system environment specifies as the time zone.  See <xref
-        linkend="datatype-timezones"/> for more information.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+Imposta il fuso orario usato per istanti di tempo scritti nel log. 
+A differenza di <xref linkend="guc-timezone"/>, questo valore è a livello di cluster,
+così che tutte sessioni riporteranno gli orari in maniera consistente.
+Il valore predefinito è <literal>unknown</literal>, che significa usare qualsiasi 
+cosa venga specificata dal sistema operativo come fuso orario. Si veda <xref
+linkend="datatype-timezones"/> per maggiori informazioni.
+Questo parametro può essere impostato solo nel file 
+<filename>postgresql.conf</filename> o dalla linea di comando del server.
        </para>
       </listitem>
      </varlistentry>
@@ -3715,31 +3720,31 @@ FROM pg_stat_activity;
      </variablelist>
     </sect2>
      <sect2 id="runtime-config-logging-csvlog">
-     <title>Using CSV-Format Log Output</title>
+     <title>Usare l'output di log in formato CSV</title>
 
        <para>
-        Including <literal>csvlog</literal> in the <varname>log_destination</varname> list
-        provides a convenient way to import log files into a database table.
-        This option emits log lines in comma-separated-values
-        (<acronym>CSV</acronym>) format,
-        with these columns:
-        timestamp with milliseconds,
-        user name,
-        database name,
-        process ID,
-        client host:port number,
-        session ID,
-        per-session line number,
-        command tag,
-        session start time,
-        virtual transaction ID,
-        regular transaction ID,
-        error severity,
-        SQLSTATE code,
-        error message,
-        error message detail,
-        hint,
-        internal query that led to the error (if any),
+Includere <literal>csvlog</literal> nell'elenco <varname>log_destination</varname>
+fornisce un modo conveniente di importare i file di log in una tabella del database.
+Questa opzione emette linee di log in formato  <acronym>CSV</acronym> 
+(valori separati da virgole),
+con queste colonne:
+timestamp con millisecondi, 
+nome utente, 
+nome del database,
+ID del processo,
+host client:numero della porta,
+ID della sessone, 
+numero di linea per sessione,
+tag del comando,
+orario d'avvio della sessione,
+ID della transazione virtuale,
+ID della transazione regolare,
+severità dell'errore,
+codice SQLSTATE,
+messaggio d'errore, 
+dettagli del messaggio d'errore,
+suggerimento,
+query interna che ha causato l'errore (se presente),
         character count of the error position therein,
         error context,
         user query that led to the error (if any and enabled by
@@ -3748,7 +3753,7 @@ FROM pg_stat_activity;
         location of the error in the PostgreSQL source code
         (if <varname>log_error_verbosity</varname> is set to <literal>verbose</literal>),
         and application name.
-        Here is a sample table definition for storing CSV-format log output:
+Ecco una semplice definizione di tabella per salvare output di log in formato CSV: 
 
 <programlisting>
 CREATE TABLE postgres_log
@@ -3782,8 +3787,7 @@ CREATE TABLE postgres_log
        </para>
 
        <para>
-        To import a log file into this table, use the <command>COPY FROM</command>
-        command:
+Per importare un file di log in questa tabella, usare il comando  <command>COPY FROM</command>:
 
 <programlisting>
 COPY postgres_log FROM '/full/path/to/logfile.csv' WITH csv;
@@ -3791,47 +3795,45 @@ COPY postgres_log FROM '/full/path/to/logfile.csv' WITH csv;
        </para>
 
        <para>
-       There are a few things you need to do to simplify importing CSV log
-       files:
+Ci sono poche altre cose da fare per simplificare l'importazione dei file di log CSV:
 
        <orderedlist>
          <listitem>
            <para>
-            Set <varname>log_filename</varname> and
-            <varname>log_rotation_age</varname> to provide a consistent,
-            predictable naming scheme for your log files.  This lets you
-            predict what the file name will be and know when an individual log
-            file is complete and therefore ready to be imported.
+Impostare <varname>log_filename</varname> e
+<varname>log_rotation_age</varname> per fornire uno schema di nomi consistente e 
+prevedibile per i propri file di log. Questo  ti permette di predirre  
+quello che sarà il nome del file e sapere quando un file di log individuale 
+è completo e pronto ad essere importato.
          </para>
         </listitem>
 
         <listitem>
            <para>
-            Set <varname>log_rotation_size</varname> to 0 to disable 
-            size-based log rotation, as it makes the log file name difficult 
-            to predict. 
+Impostare <varname>log_rotation_size</varname> a 0 per disabilitare
+la rotazione dei log basata sulla dimensione, dato che rende difficile predirre
+il nome del file.
            </para>
         </listitem>
 
         <listitem>
           <para>
-           Set <varname>log_truncate_on_rotation</varname> to <literal>on</literal> so
-           that old log data isn't mixed with the new in the same file.
+Impostare  <varname>log_truncate_on_rotation</varname> a <literal>on</literal> così
+che i vecchi dati di log non siano mescolati con i nuovi nello stesso file.
           </para>
         </listitem>
 
         <listitem>
           <para>
-           The table definition above includes a primary key specification.
-           This is useful to protect against accidentally importing the same
-           information twice.  The <command>COPY</command> command commits all of the
-           data it imports at one time, so any error will cause the entire
-           import to fail.  If you import a partial log file and later import
-           the file again when it is complete, the primary key violation will
-           cause the import to fail.  Wait until the log is complete and
-           closed before importing.  This procedure will also protect against
-           accidentally importing a partial line that hasn't been completely
-           written, which would also cause <command>COPY</command> to fail.
+La definizione della tabella sopra include la specificazione di una chiave primaria.
+Questo è utile per protezione contro l'importazione accidentale delle stesse informazioni
+due volte. Il comando <command>COPY</command> fa un commit di tutti i dati 
+che importa in una volta, quindi qualsiasi errore causerà il fallimento dell'intera
+importazione. Se si importa un file di log parziale e successivamente si importa di nuovo il
+file quando è completo, la violazione della chiave primaria causerà il fallimento dell'importazione.
+Aspettare finchè il log è completo e chiuso prima di effettuare l'importazione.
+Questa procedura proteggerà inoltre rispetto all'importazione accidentale di linee parziali
+che non sono state scritte completamente, che farà anche fallire il comando <command>COPY</command>. 
           </para>
         </listitem>
         </orderedlist>

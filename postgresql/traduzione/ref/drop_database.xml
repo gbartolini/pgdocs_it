@@ -13,7 +13,7 @@ PostgreSQL documentation
 
  <refnamediv>
   <refname>DROP DATABASE</refname>
-  <refpurpose>remove a database</refpurpose>
+  <refpurpose>rimuove un database</refpurpose>
  </refnamediv>
 
  <indexterm zone="sql-dropdatabase">
@@ -27,32 +27,27 @@ DROP DATABASE [ IF EXISTS ] <replaceable class="parameter">name</replaceable>
  </refsynopsisdiv>
  
  <refsect1>
-  <title>Description</title>
+  <title>Descrizione</title>
 
   <para>
-   <command>DROP DATABASE</command> drops a database. It removes the
-   catalog entries for the database and deletes the directory
-   containing the data.  It can only be executed by the database owner.
-   Also, it cannot be executed while you or anyone else are connected
-   to the target database.  (Connect to <literal>postgres</literal> or any
-   other database to issue this command.) 
+<command>DROP DATABASE</command> elimina un database. Rimuove le voci di catalogo nel database e cancella la directory che contiene i dati.
+Può essere eseguito solo dal proprietario del database. Inoltre non può essere eseguito mentre si è connessi ad un altro database.
   </para>
 
   <para>
-   <command>DROP DATABASE</command> cannot be undone.  Use it with care!
+<command>DROP DATABASE</command> non è annullabile. Usare con cura.
   </para>
  </refsect1>
 
  <refsect1>
-  <title>Parameters</title>
+  <title>Parameteri</title>
 
   <variablelist>
    <varlistentry>
     <term><literal>IF EXISTS</literal></term>
     <listitem>
      <para>
-      Do not throw an error if the database does not exist. A notice is issued 
-      in this case.
+Non segnala un errore se il database non esiste. In questo caso viene rilasciata una notifica.
      </para>
     </listitem>
    </varlistentry>
@@ -61,7 +56,7 @@ DROP DATABASE [ IF EXISTS ] <replaceable class="parameter">name</replaceable>
     <term><replaceable class="parameter">name</replaceable></term>
     <listitem>
      <para>
-      The name of the database to remove.
+Il nome del database da rimuovere.
      </para>
     </listitem>
    </varlistentry>
@@ -69,7 +64,7 @@ DROP DATABASE [ IF EXISTS ] <replaceable class="parameter">name</replaceable>
  </refsect1>
 
  <refsect1>
-  <title>Notes</title>
+  <title>Note</title>
 
    <para>
     <command>DROP DATABASE</command> cannot be executed inside a transaction
@@ -77,23 +72,22 @@ DROP DATABASE [ IF EXISTS ] <replaceable class="parameter">name</replaceable>
    </para>
 
   <para>
-   This command cannot be executed while connected to the target
-   database. Thus, it might be more convenient to use the program
-   <xref linkend="app-dropdb"/> instead,
-   which is a wrapper around this command.
+Questo comando non può essere eseguito mentre si è connessi al database. 
+Potrebbe essere più conveniente usare il programma <xref linkend="app-dropdb"/>,
+che è un wrapper di questo comando.
   </para>
  </refsect1>
 
  <refsect1>
-  <title>Compatibility</title>
+  <title>Compatibilità</title>
 
   <para>
-   There is no <command>DROP DATABASE</command> statement in the SQL standard.
+Non c'è un'istruzione <command>DROP DATABASE</command> nello standard SQL.
   </para>
  </refsect1>
 
  <refsect1>
-  <title>See Also</title>
+  <title>Vedere anche</title>
 
   <simplelist type="inline">
    <member><xref linkend="sql-createdatabase"/></member>

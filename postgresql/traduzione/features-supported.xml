@@ -3,163 +3,163 @@
  <row>
   <entry>B012</entry>
   <entry></entry>
-  <entry>Embedded C</entry>
+  <entry>C incorporato</entry>
   <entry></entry>
  </row>
  <row>
   <entry>B021</entry>
   <entry></entry>
-  <entry>Direct SQL</entry>
+  <entry>SQL diretto</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E011</entry>
   <entry>Core</entry>
-  <entry>Numeric data types</entry>
+  <entry>Tipi di dato numerico</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E011-01</entry>
   <entry>Core</entry>
-  <entry>INTEGER and SMALLINT data types</entry>
+  <entry>Tipi di dato INTEGER e SMALLINT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E011-02</entry>
   <entry>Core</entry>
-  <entry>REAL, DOUBLE PRECISION, and FLOAT data types</entry>
+  <entry>Tipi di dato REAL, DOUBLE PRECISION e FLOAT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E011-03</entry>
   <entry>Core</entry>
-  <entry>DECIMAL and NUMERIC data types</entry>
+  <entry>Tipi di dato DECIMAL e NUMERIC</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E011-04</entry>
   <entry>Core</entry>
-  <entry>Arithmetic operators</entry>
+  <entry>Operatori aritmetici</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E011-05</entry>
   <entry>Core</entry>
-  <entry>Numeric comparison</entry>
+  <entry>Confronto numerico</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E011-06</entry>
   <entry>Core</entry>
-  <entry>Implicit casting among the numeric data types</entry>
+  <entry>Casting implicito tra i tipi di dato numerico</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E021</entry>
   <entry>Core</entry>
-  <entry>Character data types</entry>
+  <entry>Tipi di dato carattere</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E021-01</entry>
   <entry>Core</entry>
-  <entry>CHARACTER data type</entry>
+  <entry>Tipo di dato CHARACTER</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E021-02</entry>
   <entry>Core</entry>
-  <entry>CHARACTER VARYING data type</entry>
+  <entry>Tipo di dato CHARACTER VARYING</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E021-03</entry>
   <entry>Core</entry>
-  <entry>Character literals</entry>
+  <entry>Caratteri letterali</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E021-04</entry>
   <entry>Core</entry>
-  <entry>CHARACTER_LENGTH function</entry>
-  <entry>trims trailing spaces from CHARACTER values before counting</entry>
+  <entry>Funzione CHARACTER_LENGTH</entry>
+  <entry>Spunta gli spazi terminali da valori CHARACTER prima del conteggio</entry>
  </row>
  <row>
   <entry>E021-05</entry>
   <entry>Core</entry>
-  <entry>OCTET_LENGTH function</entry>
+  <entry>Funzione OCTET_LENGTH</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E021-06</entry>
   <entry>Core</entry>
-  <entry>SUBSTRING function</entry>
+  <entry>Funzione SUBSTRING</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E021-07</entry>
   <entry>Core</entry>
-  <entry>Character concatenation</entry>
+  <entry>Concatenazione carattere</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E021-08</entry>
   <entry>Core</entry>
-  <entry>UPPER and LOWER functions</entry>
+  <entry>Funzioni UPPER e LOWER</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E021-09</entry>
   <entry>Core</entry>
-  <entry>TRIM function</entry>
+  <entry>Funzione TRIM</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E021-10</entry>
   <entry>Core</entry>
-  <entry>Implicit casting among the character string types</entry>
+  <entry>Casting implicito tra i tipi di dato stringa di caratteri</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E021-11</entry>
   <entry>Core</entry>
-  <entry>POSITION function</entry>
+  <entry>Funzione POSITION</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E021-12</entry>
   <entry>Core</entry>
-  <entry>Character comparison</entry>
+  <entry>Confronto carattere</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E031</entry>
   <entry>Core</entry>
-  <entry>Identifiers</entry>
+  <entry>Identificatori</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E031-01</entry>
   <entry>Core</entry>
-  <entry>Delimited identifiers</entry>
+  <entry>Identificatori delimitati</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E031-02</entry>
   <entry>Core</entry>
-  <entry>Lower case identifiers</entry>
+  <entry>Identificatori minuscolo</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E031-03</entry>
   <entry>Core</entry>
-  <entry>Trailing underscore</entry>
+  <entry>Sottolineatura terminale</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E051</entry>
   <entry>Core</entry>
-  <entry>Basic query specification</entry>
+  <entry>Specificazione di query di base</entry>
   <entry></entry>
  </row>
  <row>
@@ -171,205 +171,206 @@
  <row>
   <entry>E051-02</entry>
   <entry>Core</entry>
-  <entry>GROUP BY clause</entry>
+  <entry>Proposizione GROUP BY</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E051-04</entry>
   <entry>Core</entry>
-  <entry>GROUP BY can contain columns not in &lt;select list&gt;</entry>
+  <entry>GROUP BY può contenere colonne che non sono in &lt;select list&gt;</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E051-05</entry>
   <entry>Core</entry>
-  <entry>Select list items can be renamed</entry>
+  <entry>Le voci dellì'elenco select possono essere rinominate</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E051-06</entry>
   <entry>Core</entry>
-  <entry>HAVING clause</entry>
+  <entry>Proposizione HAVING</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E051-07</entry>
   <entry>Core</entry>
-  <entry>Qualified * in select list</entry>
+  <entry>Un * qualificato nell'elenco di select</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E051-08</entry>
   <entry>Core</entry>
-  <entry>Correlation names in the FROM clause</entry>
+  <entry>Correlazione nomi nella proposizione FROM</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E051-09</entry>
   <entry>Core</entry>
-  <entry>Rename columns in the FROM clause</entry>
+  <entry>Rinomina colonne nella proposizione FROM</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E061</entry>
   <entry>Core</entry>
-  <entry>Basic predicates and search conditions</entry>
+  <entry>Predicati di base e condizioni di ricerca</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E061-01</entry>
   <entry>Core</entry>
-  <entry>Comparison predicate</entry>
+  <entry>Predicato di confronto</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E061-02</entry>
   <entry>Core</entry>
-  <entry>BETWEEN predicate</entry>
+  <entry>Predicato BETWEEN</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E061-03</entry>
   <entry>Core</entry>
-  <entry>IN predicate with list of values</entry>
+  <entry>Predicato IN con elenco di valori</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E061-04</entry>
   <entry>Core</entry>
-  <entry>LIKE predicate</entry>
+  <entry>Predicato LIKE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E061-05</entry>
   <entry>Core</entry>
-  <entry>LIKE predicate ESCAPE clause</entry>
+  <entry>Predicato LIKE proposizione ESCAPE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E061-06</entry>
   <entry>Core</entry>
-  <entry>NULL predicate</entry>
+  <entry>Predicato NULL</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E061-07</entry>
   <entry>Core</entry>
-  <entry>Quantified comparison predicate</entry>
+  <entry>Predicato di confronto quantificato</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E061-08</entry>
   <entry>Core</entry>
-  <entry>EXISTS predicate</entry>
+  <entry>Predicato EXISTS</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E061-09</entry>
   <entry>Core</entry>
-  <entry>Subqueries in comparison predicate</entry>
+  <entry>Sub-query in predicato di confronto</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E061-11</entry>
   <entry>Core</entry>
-  <entry>Subqueries in IN predicate</entry>
+  <entry>Sub-query nel predicato IN</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E061-12</entry>
   <entry>Core</entry>
-  <entry>Subqueries in quantified comparison predicate</entry>
+  <entry>Sub-query nel predicato di confronto comparativo</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E061-13</entry>
   <entry>Core</entry>
-  <entry>Correlated subqueries</entry>
+  <entry>Sub-query correlate</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E061-14</entry>
   <entry>Core</entry>
-  <entry>Search condition</entry>
+  <entry>Condizione di ricerca</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E071</entry>
   <entry>Core</entry>
-  <entry>Basic query expressions</entry>
+  <entry>Espressione query di base</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E071-01</entry>
   <entry>Core</entry>
-  <entry>UNION DISTINCT table operator</entry>
+  <entry>Operatore tabella UNION DISTINCT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E071-02</entry>
   <entry>Core</entry>
-  <entry>UNION ALL table operator</entry>
+  <entry>Operatore tabella UNION ALL</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E071-03</entry>
   <entry>Core</entry>
-  <entry>EXCEPT DISTINCT table operator</entry>
+  <entry>Operatore tabella EXCEPT DISTINCT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E071-05</entry>
   <entry>Core</entry>
-  <entry>Columns combined via table operators need not have exactly the same data type</entry>
+  <entry>Colonne combinate tramite operatori tabella non necessitano
+  esattamente dello stesso "data type" (tipo di dato)</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E071-06</entry>
   <entry>Core</entry>
-  <entry>Table operators in subqueries</entry>
+  <entry>Operatori tabella nelle sub-query</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E081-01</entry>
   <entry>Core</entry>
-  <entry>SELECT privilege</entry>
+  <entry>Privilegio SELECT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E081-02</entry>
   <entry>Core</entry>
-  <entry>DELETE privilege</entry>
+  <entry>Privilegio DELETE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E081-03</entry>
   <entry>Core</entry>
-  <entry>INSERT privilege at the table level</entry>
+  <entry>Privilegio INSERT a livello di tabella</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E081-04</entry>
   <entry>Core</entry>
-  <entry>UPDATE privilege at the table level</entry>
+  <entry>Privilegio UPDATE a livello di tabella</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E081-05</entry>
   <entry>Core</entry>
-  <entry>UPDATE privilege at the column level</entry>
+  <entry>Privilegio UPDATE a livello di di colonna</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E081-06</entry>
   <entry>Core</entry>
-  <entry>REFERENCES privilege at the table level</entry>
+  <entry>Privilegio REFERENCES a livello di tabella</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E081-07</entry>
   <entry>Core</entry>
-  <entry>REFERENCES privilege at the column level</entry>
+  <entry>Privilegio REFERENCES a livello di colonna</entry>
   <entry></entry>
  </row>
  <row>
@@ -381,13 +382,13 @@
  <row>
   <entry>E081-10</entry>
   <entry>Core</entry>
-  <entry>EXECUTE privilege</entry>
+  <entry>Privilegio EXECUTE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E091</entry>
   <entry>Core</entry>
-  <entry>Set functions</entry>
+  <entry>Imposta funzioni</entry>
   <entry></entry>
  </row>
  <row>
@@ -423,49 +424,49 @@
  <row>
   <entry>E091-06</entry>
   <entry>Core</entry>
-  <entry>ALL quantifier</entry>
+  <entry>Quantificatore ALL</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E091-07</entry>
   <entry>Core</entry>
-  <entry>DISTINCT quantifier</entry>
+  <entry>Quantificatore DISTINCT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E101</entry>
   <entry>Core</entry>
-  <entry>Basic data manipulation</entry>
+  <entry>Manipolazione dato di base</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E101-01</entry>
   <entry>Core</entry>
-  <entry>INSERT statement</entry>
+  <entry>Dichiarazione INSERT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E101-03</entry>
   <entry>Core</entry>
-  <entry>Searched UPDATE statement</entry>
+  <entry>Dichiarazione UPDATE cercata</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E101-04</entry>
   <entry>Core</entry>
-  <entry>Searched DELETE statement</entry>
+  <entry>Dichiarazione DELETE cercata</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E111</entry>
   <entry>Core</entry>
-  <entry>Single row SELECT statement</entry>
+  <entry>Dichiarazione Single row SELECT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E121</entry>
   <entry>Core</entry>
-  <entry>Basic cursor support</entry>
+  <entry>Supporto cursore di base</entry>
   <entry></entry>
  </row>
  <row>
@@ -477,301 +478,309 @@
  <row>
   <entry>E121-02</entry>
   <entry>Core</entry>
-  <entry>ORDER BY columns need not be in select list</entry>
+  <entry>ORDER BY colonne necessita di trovarsi nell'elenco select</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E121-03</entry>
   <entry>Core</entry>
-  <entry>Value expressions in ORDER BY clause</entry>
+  <entry>Valore espressioni nella proposizione ORDER BY</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E121-04</entry>
   <entry>Core</entry>
-  <entry>OPEN statement</entry>
+  <entry>Dichiarazione OPEN</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E121-06</entry>
   <entry>Core</entry>
-  <entry>Positioned UPDATE statement</entry>
+  <entry>Dichiarazione Positioned UPDATE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E121-07</entry>
   <entry>Core</entry>
-  <entry>Positioned DELETE statement</entry>
+  <entry>Dichiarazione Positioned DELETE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E121-08</entry>
   <entry>Core</entry>
-  <entry>CLOSE statement</entry>
+  <entry>Dichiarazione CLOSE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E121-10</entry>
   <entry>Core</entry>
-  <entry>FETCH statement implicit NEXT</entry>
+  <entry>Dichiarazione FETCH richiede implicitamente NEXT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E121-17</entry>
   <entry>Core</entry>
-  <entry>WITH HOLD cursors</entry>
+  <entry>Cursori WITH HOLD</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E131</entry>
   <entry>Core</entry>
-  <entry>Null value support (nulls in lieu of values)</entry>
+  <entry>Supporto valore nullo (null in luogo dei valori)</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E141</entry>
   <entry>Core</entry>
-  <entry>Basic integrity constraints</entry>
+  <entry>Vincoli di integrità di base</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E141-01</entry>
   <entry>Core</entry>
-  <entry>NOT NULL constraints</entry>
+  <entry>Vincoli NOT NULL</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E141-02</entry>
   <entry>Core</entry>
-  <entry>UNIQUE constraints of NOT NULL columns</entry>
+  <entry>Vincoli UNIQUE di colonne NOT NULL</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E141-03</entry>
   <entry>Core</entry>
-  <entry>PRIMARY KEY constraints</entry>
+  <entry>Vincoli PRIMARY KEY</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E141-04</entry>
   <entry>Core</entry>
-  <entry>Basic FOREIGN KEY constraint with the NO ACTION default for both referential delete action and referential update action</entry>
+  <entry>Vincoli di base FOREIGN KEY con NO ACTION come predefinito sia 
+  per l'azione di cancellazione referenziale sia per quella di
+  aggiornamento referenziale</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E141-06</entry>
   <entry>Core</entry>
-  <entry>CHECK constraints</entry>
+  <entry>Vincoli CHECK</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E141-07</entry>
   <entry>Core</entry>
-  <entry>Column defaults</entry>
+  <entry>Valori predefiniti colonna</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E141-08</entry>
   <entry>Core</entry>
-  <entry>NOT NULL inferred on PRIMARY KEY</entry>
+  <entry>NOT NULL riferito a PRIMARY KEY</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E141-10</entry>
   <entry>Core</entry>
-  <entry>Names in a foreign key can be specified in any order</entry>
+  <entry>I nomi in una "foreign key" (chiave esterna) possono essere
+  specificati in ordine qualsiasi</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E151</entry>
   <entry>Core</entry>
-  <entry>Transaction support</entry>
+  <entry>Supporto transazione</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E151-01</entry>
   <entry>Core</entry>
-  <entry>COMMIT statement</entry>
+  <entry>Dichiarazione COMMIT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E151-02</entry>
   <entry>Core</entry>
-  <entry>ROLLBACK statement</entry>
+  <entry>Dichiarazione ROLLBACK</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E152</entry>
   <entry>Core</entry>
-  <entry>Basic SET TRANSACTION statement</entry>
+  <entry>Dichiarazione di base SET TRANSACTION</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E152-01</entry>
   <entry>Core</entry>
-  <entry>SET TRANSACTION statement: ISOLATION LEVEL SERIALIZABLE clause</entry>
+  <entry>Dichiarazione SET TRANSACTION: proposizione ISOLATION LEVEL 
+  SERIALIZABLE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E152-02</entry>
   <entry>Core</entry>
-  <entry>SET TRANSACTION statement: READ ONLY and READ WRITE clauses</entry>
+  <entry>Dichiarazione SET TRANSACTION: proposizioni READ ONLY e READ 
+  WRITE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E161</entry>
   <entry>Core</entry>
-  <entry>SQL comments using leading double minus</entry>
+  <entry>Commenti SQL che terminano con un doppio meno</entry>
   <entry></entry>
  </row>
  <row>
   <entry>E171</entry>
   <entry>Core</entry>
-  <entry>SQLSTATE support</entry>
+  <entry>Supporto SQLSTATE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F021</entry>
   <entry>Core</entry>
-  <entry>Basic information schema</entry>
+  <entry>Schema informazione di base</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F021-01</entry>
   <entry>Core</entry>
-  <entry>COLUMNS view</entry>
+  <entry>Vista COLUMNS</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F021-02</entry>
   <entry>Core</entry>
-  <entry>TABLES view</entry>
+  <entry>Vista TABLES</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F021-03</entry>
   <entry>Core</entry>
-  <entry>VIEWS view</entry>
+  <entry>Vista VIEWS</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F021-04</entry>
   <entry>Core</entry>
-  <entry>TABLE_CONSTRAINTS view</entry>
+  <entry>Vista TABLE_CONSTRAINTS</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F021-05</entry>
   <entry>Core</entry>
-  <entry>REFERENTIAL_CONSTRAINTS view</entry>
+  <entry>Vista REFERENTIAL_CONSTRAINTS</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F021-06</entry>
   <entry>Core</entry>
-  <entry>CHECK_CONSTRAINTS view</entry>
+  <entry>Vista CHECK_CONSTRAINTS</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F031</entry>
   <entry>Core</entry>
-  <entry>Basic schema manipulation</entry>
+  <entry>Manipolazione schema di base</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F031-01</entry>
   <entry>Core</entry>
-  <entry>CREATE TABLE statement to create persistent base tables</entry>
+  <entry>Dichiarazione CREATE TABLE per creareuna base di tabelle
+  persistente</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F031-02</entry>
   <entry>Core</entry>
-  <entry>CREATE VIEW statement</entry>
+  <entry>Dichiarazione CREATE VIEW</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F031-03</entry>
   <entry>Core</entry>
-  <entry>GRANT statement</entry>
+  <entry>Dichiarazione GRANT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F031-04</entry>
   <entry>Core</entry>
-  <entry>ALTER TABLE statement: ADD COLUMN clause</entry>
+  <entry>Dichiarazione ALTER TABLE: proposizione ADD COLUMN</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F031-13</entry>
   <entry>Core</entry>
-  <entry>DROP TABLE statement: RESTRICT clause</entry>
+  <entry>Dichiarazione DROP TABLE: proposizione RESTRICT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F031-16</entry>
   <entry>Core</entry>
-  <entry>DROP VIEW statement: RESTRICT clause</entry>
+  <entry>Dichiarazione DROP VIEW: proposizione RESTRICT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F031-19</entry>
   <entry>Core</entry>
-  <entry>REVOKE statement: RESTRICT clause</entry>
+  <entry>Dichiarazione REVOKE: proposizione RESTRICT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F032</entry>
   <entry></entry>
-  <entry>CASCADE drop behavior</entry>
+  <entry>Ambiente drop CASCADE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F033</entry>
   <entry></entry>
-  <entry>ALTER TABLE statement: DROP COLUMN clause</entry>
+  <entry>Dichiarazione ALTER TABLE: proposizione DROP COLUMN</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F034</entry>
   <entry></entry>
-  <entry>Extended REVOKE statement</entry>
+  <entry>Dichiarazione Extended REVOKE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F034-01</entry>
   <entry></entry>
-  <entry>REVOKE statement performed by other than the owner of a schema object</entry>
+  <entry>Dichiarazione REVOKE realizzata da soggetto diverso dal
+  proprietario di un oggetto schema</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F034-02</entry>
   <entry></entry>
-  <entry>REVOKE statement: GRANT OPTION FOR clause</entry>
+  <entry>Dichiarazione REVOKE: proposizione GRANT OPTION FOR</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F034-03</entry>
   <entry></entry>
-  <entry>REVOKE statement to revoke a privilege that the grantee has WITH GRANT OPTION</entry>
+  <entry>Dichiarazione REVOKE per revocare un privilegio che è
+  garantito con l'opzione WITH GRANT OPTION</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F041</entry>
   <entry>Core</entry>
-  <entry>Basic joined table</entry>
+  <entry>Tabella joined di base</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F041-01</entry>
   <entry>Core</entry>
-  <entry>Inner join (but not necessarily the INNER keyword)</entry>
+  <entry>Inner join (ma non necessariamente la parola chiave INNER)</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F041-02</entry>
   <entry>Core</entry>
-  <entry>INNER keyword</entry>
+  <entry>Parola chiave INNER</entry>
   <entry></entry>
  </row>
  <row>
@@ -789,55 +798,62 @@
  <row>
   <entry>F041-05</entry>
   <entry>Core</entry>
-  <entry>Outer joins can be nested</entry>
+  <entry>Join esterni possono essere nidificati</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F041-07</entry>
   <entry>Core</entry>
-  <entry>The inner table in a left or right outer join can also be used in an inner join</entry>
+  <entry>La "inner table" in un "outer join" sinistro o destro può anche
+  essere utilizzata in un "inner join"</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F041-08</entry>
   <entry>Core</entry>
-  <entry>All comparison operators are supported (rather than just =)</entry>
+  <entry>Tutti gli operatori di confronto sono supportati (anziché solo
+  "=")</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F051</entry>
   <entry>Core</entry>
-  <entry>Basic date and time</entry>
+  <entry>Data e ora di base</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F051-01</entry>
   <entry>Core</entry>
-  <entry>DATE data type (including support of DATE literal)</entry>
+  <entry>Tipo dato DATE (compreso il supporto di DATE letterale)</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F051-02</entry>
   <entry>Core</entry>
-  <entry>TIME data type (including support of TIME literal) with fractional seconds precision of at least 0</entry>
+  <entry>Tipo dato TIME (compreso il supporto di TIME letterale) con
+  precisione della frazione dei secondi di almeno 0</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F051-03</entry>
   <entry>Core</entry>
-  <entry>TIMESTAMP data type (including support of TIMESTAMP literal) with fractional seconds precision of at least 0 and 6</entry>
+  <entry>Tipo di dato TIMESTAMP (compreso il supporto di TIMESTAMP 
+  letterale) con precisione della frazione di secondi compresa tra 0 e 
+  6</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F051-04</entry>
   <entry>Core</entry>
-  <entry>Comparison predicate on DATE, TIME, and TIMESTAMP data types</entry>
+  <entry>Predicato comparativo di tipi di dato DATE, TIME, e 
+  TIMESTAMP</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F051-05</entry>
   <entry>Core</entry>
-  <entry>Explicit CAST between datetime types and character string types</entry>
+  <entry>CAST esplicito fra tipi di data e orario e tipi di stringa di 
+  carattere</entry>
   <entry></entry>
  </row>
  <row>
@@ -861,163 +877,168 @@
  <row>
   <entry>F052</entry>
   <entry>Enhanced datetime facilities</entry>
-  <entry>Intervals and datetime arithmetic</entry>
+  <entry>Intervalli e aritmetica di data e orario</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F053</entry>
   <entry></entry>
-  <entry>OVERLAPS predicate</entry>
+  <entry>Predicato OVERLAPS</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F081</entry>
   <entry>Core</entry>
-  <entry>UNION and EXCEPT in views</entry>
+  <entry>UNION e EXCEPT nelle viste</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F111</entry>
   <entry></entry>
-  <entry>Isolation levels other than SERIALIZABLE</entry>
+  <entry>Livelli di isolamento diversi da SERIALIZABLE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F111-01</entry>
   <entry></entry>
-  <entry>READ UNCOMMITTED isolation level</entry>
+  <entry>Livelli di isolamento READ UNCOMMITTED</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F111-02</entry>
   <entry></entry>
-  <entry>READ COMMITTED isolation level</entry>
+  <entry>Livelli di isolamento READ COMMITTED</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F111-03</entry>
   <entry></entry>
-  <entry>REPEATABLE READ isolation level</entry>
+  <entry>Livelli di isolamento REPEATABLE READ</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F131</entry>
   <entry>Core</entry>
-  <entry>Grouped operations</entry>
+  <entry>Operazioni raggruppate</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F131-01</entry>
   <entry>Core</entry>
-  <entry>WHERE, GROUP BY, and HAVING clauses supported in queries with grouped views</entry>
+  <entry>Proposizioni WHERE, GROUP BY, e HAVING supportate nelle query 
+  con viste raggruppate</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F131-02</entry>
   <entry>Core</entry>
-  <entry>Multiple tables supported in queries with grouped views</entry>
+  <entry>Tabelle multiple supportate nelle query con viste 
+  raggruppate</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F131-03</entry>
   <entry>Core</entry>
-  <entry>Set functions supported in queries with grouped views</entry>
+  <entry>Imposta funzioni supportate nelle query con viste 
+  raggruppate</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F131-04</entry>
   <entry>Core</entry>
-  <entry>Subqueries with GROUP BY and HAVING clauses and grouped views</entry>
+  <entry>Sub-query con le proposizioni GROUP BY e HAVING e viste
+  raggruppate</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F131-05</entry>
   <entry>Core</entry>
-  <entry>Single row SELECT with GROUP BY and HAVING clauses and grouped views</entry>
+  <entry>Single row SELECT con le proposizioni GROUP BY e HAVING e
+  viste raggruppate</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F171</entry>
   <entry></entry>
-  <entry>Multiple schemas per user</entry>
+  <entry>Schemi multipli per utente</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F191</entry>
   <entry>Enhanced integrity management</entry>
-  <entry>Referential delete actions</entry>
+  <entry>Azioni di cancellazione referenziale</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F200</entry>
   <entry></entry>
-  <entry>TRUNCATE TABLE statement</entry>
+  <entry>Dichiarazione TRUNCATE TABLE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F201</entry>
   <entry>Core</entry>
-  <entry>CAST function</entry>
+  <entry>Funzione CAST</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F221</entry>
   <entry>Core</entry>
-  <entry>Explicit defaults</entry>
+  <entry>Valori predefiniti espliciti</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F222</entry>
   <entry></entry>
-  <entry>INSERT statement: DEFAULT VALUES clause</entry>
+  <entry>Dichiarazione INSERT: proposizione DEFAULT VALUES</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F231</entry>
   <entry></entry>
-  <entry>Privilege tables</entry>
+  <entry>Tabelle Privilege</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F231-01</entry>
   <entry></entry>
-  <entry>TABLE_PRIVILEGES view</entry>
+  <entry>Vista TABLE_PRIVILEGES</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F231-02</entry>
   <entry></entry>
-  <entry>COLUMN_PRIVILEGES view</entry>
+  <entry>Vista COLUMN_PRIVILEGES</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F231-03</entry>
   <entry></entry>
-  <entry>USAGE_PRIVILEGES view</entry>
+  <entry>Vista USAGE_PRIVILEGES</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F251</entry>
   <entry></entry>
-  <entry>Domain support</entry>
+  <entry>Supporto dominio</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F261</entry>
   <entry>Core</entry>
-  <entry>CASE expression</entry>
+  <entry>Espressione CASE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F261-01</entry>
   <entry>Core</entry>
-  <entry>Simple CASE</entry>
+  <entry>CASE Semplice</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F261-02</entry>
   <entry>Core</entry>
-  <entry>Searched CASE</entry>
+  <entry>CASE ricercato</entry>
   <entry></entry>
  </row>
  <row>
@@ -1035,37 +1056,37 @@
  <row>
   <entry>F271</entry>
   <entry></entry>
-  <entry>Compound character literals</entry>
+  <entry>Caratteri composti letterali</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F281</entry>
   <entry></entry>
-  <entry>LIKE enhancements</entry>
+  <entry>Miglioramenti LIKE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F302</entry>
   <entry></entry>
-  <entry>INTERSECT table operator</entry>
+  <entry>Operatore tabella INTERSECT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F302-01</entry>
   <entry></entry>
-  <entry>INTERSECT DISTINCT table operator</entry>
+  <entry>Operatore tabella INTERSECT DISTINCT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F302-02</entry>
   <entry></entry>
-  <entry>INTERSECT ALL table operator</entry>
+  <entry>Operatore tabella INTERSECT ALL</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F304</entry>
   <entry></entry>
-  <entry>EXCEPT ALL table operator</entry>
+  <entry>Operatore tabella EXCEPT ALL</entry>
   <entry></entry>
  </row>
  <row>
@@ -1077,7 +1098,7 @@
  <row>
   <entry>F311-02</entry>
   <entry>Core</entry>
-  <entry>CREATE TABLE for persistent base tables</entry>
+  <entry>CREATE TABLE per tabelle di base persistenti</entry>
   <entry></entry>
  </row>
  <row>
@@ -1089,73 +1110,73 @@
  <row>
   <entry>F311-05</entry>
   <entry>Core</entry>
-  <entry>GRANT statement</entry>
+  <entry>Dichiarazione GRANT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F321</entry>
   <entry></entry>
-  <entry>User authorization</entry>
+  <entry>Autorizzazione utente</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F361</entry>
   <entry></entry>
-  <entry>Subprogram support</entry>
+  <entry>Supporto sotto-programma</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F381</entry>
   <entry></entry>
-  <entry>Extended schema manipulation</entry>
+  <entry>Manipolazione estesa schema</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F381-01</entry>
   <entry></entry>
-  <entry>ALTER TABLE statement: ALTER COLUMN clause</entry>
+  <entry>Dichiarazione ALTER TABLE: proposizione ALTER COLUMN</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F381-02</entry>
   <entry></entry>
-  <entry>ALTER TABLE statement: ADD CONSTRAINT clause</entry>
+  <entry>Dichiarazione ALTER TABLE: proposizione ADD CONSTRAINT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F381-03</entry>
   <entry></entry>
-  <entry>ALTER TABLE statement: DROP CONSTRAINT clause</entry>
+  <entry>Dichiarazione ALTER TABLE: proposizione DROP CONSTRAINT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F382</entry>
   <entry></entry>
-  <entry>Alter column data type</entry>
+  <entry>Tipo di dato Alter column</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F391</entry>
   <entry></entry>
-  <entry>Long identifiers</entry>
+  <entry>Identificatori lunghi</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F392</entry>
   <entry></entry>
-  <entry>Unicode escapes in identifiers</entry>
+  <entry>Caratteri di escape unicode negli identificatori</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F393</entry>
   <entry></entry>
-  <entry>Unicode escapes in literals</entry>
+  <entry>Caratteri di escape unicode nei letterali</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F401</entry>
   <entry></entry>
-  <entry>Extended joined table</entry>
+  <entry>Tabelle joined estese</entry>
   <entry></entry>
  </row>
  <row>
@@ -1179,31 +1200,31 @@
  <row>
   <entry>F402</entry>
   <entry></entry>
-  <entry>Named column joins for LOBs, arrays, and multisets</entry>
+  <entry>Join Named column joins per LOBs, array e multiset</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F411</entry>
   <entry>Enhanced datetime facilities</entry>
-  <entry>Time zone specification</entry>
-  <entry>differences regarding literal interpretation</entry>
+  <entry>Specificazioni di fuso orario</entry>
+  <entry>differenze riguardanti interpretazioni letterali</entry>
  </row>
  <row>
   <entry>F421</entry>
   <entry></entry>
-  <entry>National character</entry>
+  <entry>Carattere nazionale</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F431</entry>
   <entry></entry>
-  <entry>Read-only scrollable cursors</entry>
+  <entry>Cursori scorrevoli read-only (sola lettura)</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F431-01</entry>
   <entry></entry>
-  <entry>FETCH with explicit NEXT</entry>
+  <entry>FETCH con NEXT esplicito</entry>
   <entry></entry>
  </row>
  <row>
@@ -1239,139 +1260,139 @@
  <row>
   <entry>F441</entry>
   <entry></entry>
-  <entry>Extended set function support</entry>
+  <entry>Supporto funzione Extended set</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F442</entry>
   <entry></entry>
-  <entry>Mixed column references in set functions</entry>
+  <entry>Riferimenti Mixed column nelle funzioni set</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F471</entry>
   <entry>Core</entry>
-  <entry>Scalar subquery values</entry>
+  <entry>Valori scalri sub-query</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F481</entry>
   <entry>Core</entry>
-  <entry>Expanded NULL predicate</entry>
+  <entry>Predicato NULL Expanded</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F491</entry>
   <entry>Enhanced integrity management</entry>
-  <entry>Constraint management</entry>
+  <entry>Gestione Constraint</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F501</entry>
   <entry>Core</entry>
-  <entry>Features and conformance views</entry>
+  <entry>Viste caratteristiche e conformità</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F501-01</entry>
   <entry>Core</entry>
-  <entry>SQL_FEATURES view</entry>
+  <entry>Vista SQL_FEATURES</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F501-02</entry>
   <entry>Core</entry>
-  <entry>SQL_SIZING view</entry>
+  <entry>Vista SQL_SIZING</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F501-03</entry>
   <entry>Core</entry>
-  <entry>SQL_LANGUAGES view</entry>
+  <entry>Vista SQL_LANGUAGES</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F502</entry>
   <entry></entry>
-  <entry>Enhanced documentation tables</entry>
+  <entry>Tabella documentazione avanzata</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F502-01</entry>
   <entry></entry>
-  <entry>SQL_SIZING_PROFILES view</entry>
+  <entry>Vista SQL_SIZING_PROFILES</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F502-02</entry>
   <entry></entry>
-  <entry>SQL_IMPLEMENTATION_INFO view</entry>
+  <entry>Vista SQL_IMPLEMENTATION_INFO</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F502-03</entry>
   <entry></entry>
-  <entry>SQL_PACKAGES view</entry>
+  <entry>Vista SQL_PACKAGES</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F531</entry>
   <entry></entry>
-  <entry>Temporary tables</entry>
+  <entry>Tabelle temporanee</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F555</entry>
   <entry>Enhanced datetime facilities</entry>
-  <entry>Enhanced seconds precision</entry>
+  <entry>Precisione avanzata secondi</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F561</entry>
   <entry></entry>
-  <entry>Full value expressions</entry>
+  <entry>Valore espressioni Full</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F571</entry>
   <entry></entry>
-  <entry>Truth value tests</entry>
+  <entry>Test valore esatto</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F591</entry>
   <entry></entry>
-  <entry>Derived tables</entry>
+  <entry>Tabelle derivate</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F611</entry>
   <entry></entry>
-  <entry>Indicator data types</entry>
+  <entry>Tipi di dato indicatore</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F651</entry>
   <entry></entry>
-  <entry>Catalog name qualifiers</entry>
+  <entry>Qualificatori nome catalogo</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F661</entry>
   <entry></entry>
-  <entry>Simple tables</entry>
+  <entry>Tabelle semplici</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F672</entry>
   <entry></entry>
-  <entry>Retrospective check constraints</entry>
+  <entry>Vincoli verifica retrospettiva</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F701</entry>
   <entry>Enhanced integrity management</entry>
-  <entry>Referential update actions</entry>
+  <entry>Azioni di aggiornamento referenziale</entry>
   <entry></entry>
  </row>
  <row>
@@ -1383,13 +1404,13 @@
  <row>
   <entry>F731</entry>
   <entry></entry>
-  <entry>INSERT column privileges</entry>
+  <entry>Privilegi INSERT colonna</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F761</entry>
   <entry></entry>
-  <entry>Session management</entry>
+  <entry>Gestione sessione</entry>
   <entry></entry>
  </row>
  <row>
@@ -1407,73 +1428,73 @@
  <row>
   <entry>F771</entry>
   <entry></entry>
-  <entry>Connection management</entry>
+  <entry>Gestione connessione</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F781</entry>
   <entry></entry>
-  <entry>Self-referencing operations</entry>
+  <entry>Operazioni autoreferenziali</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F791</entry>
   <entry></entry>
-  <entry>Insensitive cursors</entry>
+  <entry>Cursori Insensitive</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F801</entry>
   <entry></entry>
-  <entry>Full set function</entry>
+  <entry>Funzione insieme Full</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F850</entry>
   <entry></entry>
-  <entry>Top-level &lt;order by clause&gt; in &lt;query expression&gt;</entry>
+  <entry>&lt;order by clause&gt; in &lt;query expression&gt; di primo livello</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F851</entry>
   <entry></entry>
-  <entry>&lt;order by clause&gt; in subqueries</entry>
+  <entry>&lt;order by clause&gt; nelle sub-query</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F852</entry>
   <entry></entry>
-  <entry>Top-level &lt;order by clause&gt; in views</entry>
+  <entry>&lt;order by clause&gt; di primo livello nelle viste</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F855</entry>
   <entry></entry>
-  <entry>Nested &lt;order by clause&gt; in &lt;query expression&gt;</entry>
+  <entry>&lt;order by clause&gt; annidato in &lt;query expression&gt;</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F856</entry>
   <entry></entry>
-  <entry>Nested &lt;fetch first clause&gt; in &lt;query expression&gt;</entry>
+  <entry>&lt;fetch first clause&gt; annidato in &lt;query expression&gt;</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F857</entry>
   <entry></entry>
-  <entry>Top-level &lt;fetch first clause&gt; in &lt;query expression&gt;</entry>
+  <entry>&lt;fetch first clause&gt; di primo livello in &lt;query expression&gt;</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F858</entry>
   <entry></entry>
-  <entry>&lt;fetch first clause&gt; in subqueries</entry>
+  <entry>&lt;fetch first clause&gt; in sub-query</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F859</entry>
   <entry></entry>
-  <entry>Top-level &lt;fetch first clause&gt; in views</entry>
+  <entry>&lt;fetch first clause&gt; di primo livello nelle viste</entry>
   <entry></entry>
  </row>
  <row>
@@ -1485,25 +1506,25 @@
  <row>
   <entry>F861</entry>
   <entry></entry>
-  <entry>Top-level &lt;result offset clause&gt; in &lt;query expression&gt;</entry>
+  <entry>&lt;result offset clause&gt; di primo livello in &lt;query expression&gt;</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F862</entry>
   <entry></entry>
-  <entry>&lt;result offset clause&gt; in subqueries</entry>
+  <entry>&lt;result offset clause&gt; nelle sub-query</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F863</entry>
   <entry></entry>
-  <entry>Nested &lt;result offset clause&gt; in &lt;query expression&gt;</entry>
+  <entry>&lt;result offset clause&gt; annidato in &lt;query expression&gt;</entry>
   <entry></entry>
  </row>
  <row>
   <entry>F864</entry>
   <entry></entry>
-  <entry>Top-level &lt;result offset clause&gt; in views</entry>
+  <entry>&lt;result offset clause&gt; di primo livello nelle viste</entry>
   <entry></entry>
  </row>
  <row>
@@ -1515,25 +1536,25 @@
  <row>
   <entry>S071</entry>
   <entry>Enhanced object support</entry>
-  <entry>SQL paths in function and type name resolution</entry>
+  <entry>Percorsi SQL nella risoluzione di funzione e nome tipo</entry>
   <entry></entry>
  </row>
  <row>
   <entry>S092</entry>
   <entry></entry>
-  <entry>Arrays of user-defined types</entry>
+  <entry>Array di tipi definiti dall'utente</entry>
   <entry></entry>
  </row>
  <row>
   <entry>S095</entry>
   <entry></entry>
-  <entry>Array constructors by query</entry>
+  <entry>Costruttori array tramite by query</entry>
   <entry></entry>
  </row>
  <row>
   <entry>S096</entry>
   <entry></entry>
-  <entry>Optional array bounds</entry>
+  <entry>Limiti array opzionali</entry>
   <entry></entry>
  </row>
  <row>
@@ -1545,55 +1566,55 @@
  <row>
   <entry>S111</entry>
   <entry>Enhanced object support</entry>
-  <entry>ONLY in query expressions</entry>
+  <entry>ONLY in espressioni query</entry>
   <entry></entry>
  </row>
  <row>
   <entry>S201</entry>
   <entry></entry>
-  <entry>SQL-invoked routines on arrays</entry>
+  <entry>Routine richiamate da SQL sugli array</entry>
   <entry></entry>
  </row>
  <row>
   <entry>S201-01</entry>
   <entry></entry>
-  <entry>Array parameters</entry>
+  <entry>Parametri array</entry>
   <entry></entry>
  </row>
  <row>
   <entry>S201-02</entry>
   <entry></entry>
-  <entry>Array as result type of functions</entry>
+  <entry>Array come tipo conseguente di funzioni</entry>
   <entry></entry>
  </row>
  <row>
   <entry>S211</entry>
   <entry>Enhanced object support</entry>
-  <entry>User-defined cast functions</entry>
+  <entry>Funzioni cast definite dall'utente</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T031</entry>
   <entry></entry>
-  <entry>BOOLEAN data type</entry>
+  <entry>Tipo di dato BOOLEAN</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T071</entry>
   <entry></entry>
-  <entry>BIginT data type</entry>
+  <entry>Tipo di dato BiginT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T121</entry>
   <entry></entry>
-  <entry>WITH (excluding RECURSIVE) in query expression</entry>
+  <entry>WITH (escludendo RECURSIVE) in espressione query</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T122</entry>
   <entry></entry>
-  <entry>WITH (excluding RECURSIVE) in subquery</entry>
+  <entry>WITH (escludendo RECURSIVE) in sub-query</entry>
   <entry></entry>
  </row>
  <row>
@@ -1605,265 +1626,265 @@
  <row>
   <entry>T132</entry>
   <entry></entry>
-  <entry>Recursive query in subquery</entry>
+  <entry>Recursive query in sub-query</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T141</entry>
   <entry></entry>
-  <entry>SIMILAR predicate</entry>
+  <entry>Predicato SIMILAR</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T151</entry>
   <entry></entry>
-  <entry>DISTINCT predicate</entry>
+  <entry>Predicato DISTINCT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T152</entry>
   <entry></entry>
-  <entry>DISTINCT predicate with negation</entry>
+  <entry>Predicato DISTINCT con negazione</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T171</entry>
   <entry></entry>
-  <entry>LIKE clause in table definition</entry>
+  <entry>Proposizione LIKE nella definizione di tabella</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T172</entry>
   <entry></entry>
-  <entry>AS subquery clause in table definition</entry>
+  <entry>Proposizione sub-query AS nella definizione di tabella</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T173</entry>
   <entry></entry>
-  <entry>Extended LIKE clause in table definition</entry>
+  <entry>Proposizione LIKE estesa nella definizione di tabella</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T191</entry>
   <entry>Enhanced integrity management</entry>
-  <entry>Referential action RESTRICT</entry>
+  <entry>Azione referenziale RESTRICT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T201</entry>
   <entry>Enhanced integrity management</entry>
-  <entry>Comparable data types for referential constraints</entry>
+  <entry>Tipi di dato confrontabili per constraint referenziali</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T211-01</entry>
   <entry>Active database, Enhanced integrity management</entry>
-  <entry>Triggers activated on UPDATE, INSERT, or DELETE of one base table</entry>
+  <entry>UPDATE, INSERT, o DELETE attivati da trigger di una tabella base</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T211-02</entry>
   <entry>Active database, Enhanced integrity management</entry>
-  <entry>BEFORE triggers</entry>
+  <entry>Trigger BEFORE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T211-03</entry>
   <entry>Active database, Enhanced integrity management</entry>
-  <entry>AFTER triggers</entry>
+  <entry>Trigger AFTER</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T211-04</entry>
   <entry>Active database, Enhanced integrity management</entry>
-  <entry>FOR EACH ROW triggers</entry>
+  <entry>Trigger FOR EACH ROW</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T211-05</entry>
   <entry>Active database, Enhanced integrity management</entry>
-  <entry>Ability to specify a search condition that must be true before the trigger is invoked</entry>
+  <entry>Capacità di specificare una condizione di ricerca che può risultare vera prima che sia invocato il trigger</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T211-07</entry>
   <entry>Active database, Enhanced integrity management</entry>
-  <entry>TRIGGER privilege</entry>
+  <entry>Privilegio TRIGGER</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T212</entry>
   <entry>Enhanced integrity management</entry>
-  <entry>Enhanced trigger capability</entry>
+  <entry>Capacità trigger avanzato</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T231</entry>
   <entry></entry>
-  <entry>Sensitive cursors</entry>
+  <entry>Cursori sensibili</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T241</entry>
   <entry></entry>
-  <entry>START TRANSACTION statement</entry>
+  <entry>Dichiarazione START TRANSACTION</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T271</entry>
   <entry></entry>
-  <entry>Savepoints</entry>
+  <entry>Punti di salvataggios</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T281</entry>
   <entry></entry>
-  <entry>SELECT privilege with column granularity</entry>
+  <entry>Privilegio SELECT con granularità colonna</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T312</entry>
   <entry></entry>
-  <entry>OVERLAY function</entry>
+  <entry>Funzione OVERLAY</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T321-01</entry>
   <entry>Core</entry>
-  <entry>User-defined functions with no overloading</entry>
+  <entry>Funzioni definite dall'utente senza sovraccarico</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T321-03</entry>
   <entry>Core</entry>
-  <entry>Function invocation</entry>
+  <entry>Invocazione funzione</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T321-06</entry>
   <entry>Core</entry>
-  <entry>ROUTINES view</entry>
+  <entry>Vista ROUTINES</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T321-07</entry>
   <entry>Core</entry>
-  <entry>parameterS view</entry>
+  <entry>Vista parameterS</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T322</entry>
   <entry>PSM</entry>
-  <entry>Overloading of SQL-invoked functions and procedures</entry>
+  <entry>Sovraccarico di funzioni e procedure richiamate da SQL</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T323</entry>
   <entry></entry>
-  <entry>Explicit security for external routines</entry>
+  <entry>Sicurezza esplicita per routine esterne</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T351</entry>
   <entry></entry>
-  <entry>Bracketed SQL comments (/*...*/ comments)</entry>
+  <entry>Commenti SQL tra parentesi (commenti /*...*/)</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T441</entry>
   <entry></entry>
-  <entry>ABS and MOD functions</entry>
+  <entry>Funzioni ABS e MOD</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T461</entry>
   <entry></entry>
-  <entry>Symmetric BETWEEN predicate</entry>
+  <entry>Predicato BETWEEN simmetrico</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T501</entry>
   <entry></entry>
-  <entry>Enhanced EXISTS predicate</entry>
+  <entry>Predicato EXISTS avanzato</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T551</entry>
   <entry></entry>
-  <entry>Optional key words for default syntax</entry>
+  <entry>Parole chiave opzionali per sintassi predefinita</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T581</entry>
   <entry></entry>
-  <entry>Regular expression substring function</entry>
+  <entry>Funzione substring espressione regolare</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T591</entry>
   <entry></entry>
-  <entry>UNIQUE constraints of possibly null columns</entry>
+  <entry>Vincoli UNIQUE di possibili colonne nulle</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T614</entry>
   <entry></entry>
-  <entry>NTILE function</entry>
+  <entry>Funzione NTILE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T615</entry>
   <entry></entry>
-  <entry>LEAD and LAG functions</entry>
+  <entry>Funzioni LEAD e LAG</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T617</entry>
   <entry></entry>
-  <entry>FIRST_VALUE and LAST_VALUE function</entry>
+  <entry>Funzione FIRST_VALUE e LAST_VALUE</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T621</entry>
   <entry></entry>
-  <entry>Enhanced numeric functions</entry>
+  <entry>Funzioni numeriche avanzate</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T631</entry>
   <entry>Core</entry>
-  <entry>IN predicate with one list element</entry>
+  <entry>Predicato IN con un elemento elenco</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T651</entry>
   <entry></entry>
-  <entry>SQL-schema statements in SQL routines</entry>
+  <entry>Dichiarazione SQL-schema in routine SQL</entry>
   <entry></entry>
  </row>
  <row>
   <entry>T655</entry>
   <entry></entry>
-  <entry>Cyclically dependent routines</entry>
+  <entry>Routine dipendenti ciclicamente</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X010</entry>
   <entry></entry>
-  <entry>XML type</entry>
+  <entry>Tipo XML</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X011</entry>
   <entry></entry>
-  <entry>Arrays of XML type</entry>
+  <entry>Array di tipo XML</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X016</entry>
   <entry></entry>
-  <entry>Persistent XML values</entry>
+  <entry>Valori XML persistenti</entry>
   <entry></entry>
  </row>
  <row>
@@ -1893,13 +1914,13 @@
  <row>
   <entry>X035</entry>
   <entry></entry>
-  <entry>XMLAgg: ORDER BY option</entry>
+  <entry>Opzione XMLAgg: ORDER BY</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X036</entry>
   <entry></entry>
-  <entry>XMLComment</entry>
+  <entry>Commento XML</entry>
   <entry></entry>
  </row>
  <row>
@@ -1911,169 +1932,169 @@
  <row>
   <entry>X040</entry>
   <entry></entry>
-  <entry>Basic table mapping</entry>
+  <entry>Mappatura tabella di base</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X041</entry>
   <entry></entry>
-  <entry>Basic table mapping: nulls absent</entry>
+  <entry>Mappatura tabella di base: null assenti</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X042</entry>
   <entry></entry>
-  <entry>Basic table mapping: null as nil</entry>
+  <entry>Mappatura tabella di base: null come nil</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X043</entry>
   <entry></entry>
-  <entry>Basic table mapping: table as forest</entry>
+  <entry>Mappatura tabella di base: tabella come foresta</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X044</entry>
   <entry></entry>
-  <entry>Basic table mapping: table as element</entry>
+  <entry>Mappatura tabella di base: tabella come elemento</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X045</entry>
   <entry></entry>
-  <entry>Basic table mapping: with target namespace</entry>
+  <entry>Mappatura tabella di base: con namespace obiettivo</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X046</entry>
   <entry></entry>
-  <entry>Basic table mapping: data mapping</entry>
+  <entry>Mappatura tabella di base: mappatura dati</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X047</entry>
   <entry></entry>
-  <entry>Basic table mapping: metadata mapping</entry>
+  <entry>Mappatura tabella di base: mappatura metadati</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X048</entry>
   <entry></entry>
-  <entry>Basic table mapping: base64 encoding of binary strings</entry>
+  <entry>Mappatura tabella di base: codifica base64 di stringhe binarie</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X049</entry>
   <entry></entry>
-  <entry>Basic table mapping: hex encoding of binary strings</entry>
+  <entry>Mappatura tabella di base: codifica esadecimale di stringhe binarie</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X050</entry>
   <entry></entry>
-  <entry>Advanced table mapping</entry>
+  <entry>Mappatura avanzata tabella</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X051</entry>
   <entry></entry>
-  <entry>Advanced table mapping: nulls absent</entry>
+  <entry>Mappatura avanzata tabella: null assenti</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X052</entry>
   <entry></entry>
-  <entry>Advanced table mapping: null as nil</entry>
+  <entry>Mappatura avanzata tabella: null come nil</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X053</entry>
   <entry></entry>
-  <entry>Advanced table mapping: table as forest</entry>
+  <entry>Mappatura avanzata tabella: tabella come foresta</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X054</entry>
   <entry></entry>
-  <entry>Advanced table mapping: table as element</entry>
+  <entry>Mappatura avanzata tabella: tabella come elemento</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X055</entry>
   <entry></entry>
-  <entry>Advanced table mapping: target namespace</entry>
+  <entry>Mappatura avanzata tabella: namespace obiettivo</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X056</entry>
   <entry></entry>
-  <entry>Advanced table mapping: data mapping</entry>
+  <entry>Mappatura avanzata tabella: mappatura dati</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X057</entry>
   <entry></entry>
-  <entry>Advanced table mapping: metadata mapping</entry>
+  <entry>Mappatura avanzata tabella: mappatura metadati</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X058</entry>
   <entry></entry>
-  <entry>Advanced table mapping: base64 encoding of binary strings</entry>
+  <entry>Mappatura avanzata tabella: codifica base64 di stringhe binarie</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X059</entry>
   <entry></entry>
-  <entry>Advanced table mapping: hex encoding of binary strings</entry>
+  <entry>Mappatura avanzata tabella: codifica esadecimale di stringhe binarie</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X060</entry>
   <entry></entry>
-  <entry>XMLParse: Character string input and CONTENT option</entry>
+  <entry>XMLParse: stringa input carattere e opzione CONTENT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X061</entry>
   <entry></entry>
-  <entry>XMLParse: Character string input and DOCUMENT option</entry>
+  <entry>XMLParse: stringa input carattere e opzione DOCUMENT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X070</entry>
   <entry></entry>
-  <entry>XMLSerialize: Character string serialization and CONTENT option</entry>
+  <entry>XMLSerialize: stringa serializzazione carattere e opzione CONTENT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X071</entry>
   <entry></entry>
-  <entry>XMLSerialize: Character string serialization and DOCUMENT option</entry>
+  <entry>XMLSerialize: stringa serializzazione carattere e opzione DOCUMENT</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X072</entry>
   <entry></entry>
-  <entry>XMLSerialize: Character string serialization</entry>
+  <entry>XMLSerialize: stringa serializzazione carattere</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X090</entry>
   <entry></entry>
-  <entry>XML document predicate</entry>
+  <entry>Predicato XML document</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X120</entry>
   <entry></entry>
-  <entry>XML parameters in SQL routines</entry>
+  <entry>Parametri XML in routine SQL</entry>
   <entry></entry>
  </row>
  <row>
   <entry>X121</entry>
   <entry></entry>
-  <entry>XML parameters in external routines</entry>
+  <entry>Parametri XML in routine esterne</entry>
   <entry></entry>
  </row>
 </tbody>

@@ -5,104 +5,96 @@ PostgreSQL documentation
 -->
 
 <refentry id="sql-alterdatabase">
- <refmeta>
-  <refentrytitle>ALTER DATABASE</refentrytitle>
-  <manvolnum>7</manvolnum>
-  <refmiscinfo>SQL - Language Statements</refmiscinfo>
- </refmeta>
+  <refmeta>
+    <refentrytitle>ALTER DATABASE</refentrytitle>
+    <manvolnum>7</manvolnum>
+    <refmiscinfo>SQL - Language Statements</refmiscinfo>
+   </refmeta>
 
- <refnamediv>
-  <refname>ALTER DATABASE</refname>
-  <refpurpose>change a database</refpurpose>
- </refnamediv>
+  <refnamediv>
+    <refname>ALTER DATABASE</refname>
+    <refpurpose>change a database</refpurpose>
+  </refnamediv>
 
- <indexterm zone="sql-alterdatabase">
-  <primary>ALTER DATABASE</primary>
- </indexterm>
+  <indexterm zone="sql-alterdatabase">
+    <primary>ALTER DATABASE</primary>
+  </indexterm>
 
- <refsynopsisdiv>
-<synopsis>
-ALTER DATABASE <replaceable class="parameter">name</replaceable> [ [ WITH ] <replaceable class="parameter">option</replaceable> [ ... ] ]
-
-<phrase>where <replaceable class="parameter">option</replaceable> can be:</phrase>
-
+<refsynopsisdiv>
+  <synopsis>
+    ALTER DATABASE 
+    <replaceable class="parameter">name</replaceable> 
+    [ [ WITH ] <replaceable class="parameter">option</replaceable> [ ... ] ]
+    <phrase>
+      where <replaceable class="parameter">option</replaceable> can be:
+    </phrase>
     CONNECTION LIMIT <replaceable class="parameter">connlimit</replaceable>
+    ALTER DATABASE <replaceable class="parameter">name</replaceable> RENAME TO <replaceable>new_name</replaceable>
+    ALTER DATABASE <replaceable class="parameter">name</replaceable> OWNER TO <replaceable>new_owner</replaceable>
+    ALTER DATABASE <replaceable class="parameter">name</replaceable> SET TABLESPACE <replaceable class="parameter">new_tablespace</replaceable>
+    ALTER DATABASE <replaceable class="parameter">name</replaceable> SET <replaceable>configuration_parameter</replaceable> { TO | = } { <replaceable>value</replaceable> | DEFAULT }
+    ALTER DATABASE <replaceable class="parameter">name</replaceable> SET <replaceable>configuration_parameter</replaceable> FROM CURRENT
+    ALTER DATABASE <replaceable class="parameter">name</replaceable> RESET <replaceable>configuration_parameter</replaceable>
+    ALTER DATABASE <replaceable class="parameter">name</replaceable> RESET ALL
+  </synopsis>
+</refsynopsisdiv>
 
-ALTER DATABASE <replaceable class="parameter">name</replaceable> RENAME TO <replaceable>new_name</replaceable>
-
-ALTER DATABASE <replaceable class="parameter">name</replaceable> OWNER TO <replaceable>new_owner</replaceable>
-
-ALTER DATABASE <replaceable class="parameter">name</replaceable> SET TABLESPACE <replaceable class="parameter">new_tablespace</replaceable>
-
-ALTER DATABASE <replaceable class="parameter">name</replaceable> SET <replaceable>configuration_parameter</replaceable> { TO | = } { <replaceable>value</replaceable> | DEFAULT }
-ALTER DATABASE <replaceable class="parameter">name</replaceable> SET <replaceable>configuration_parameter</replaceable> FROM CURRENT
-ALTER DATABASE <replaceable class="parameter">name</replaceable> RESET <replaceable>configuration_parameter</replaceable>
-ALTER DATABASE <replaceable class="parameter">name</replaceable> RESET ALL
-</synopsis>
- </refsynopsisdiv>
-
- <refsect1>
+<refsect1>
   <title>Description</title>
 
   <para>
-   <command>ALTER DATABASE</command> changes the attributes
-   of a database.
+     <command>ALTER DATABASE</command> changes the attributes
+     of a database.
   </para>
 
   <para>
-   The first form changes certain per-database settings.  (See below for
-   details.)  Only the database owner or a superuser can change these settings.
+La prima forma consente di modificare alcune impostazioni di un database. (Si veda oltre per i dettagli). 
+Solo il proprietario del database o un superutente può modificare queste impostazioni.
   </para> 
 
   <para>
-   The second form changes the name of the database.  Only the database
-   owner or a superuser can rename a database; non-superuser owners must
-   also have the
-   <literal>CREATEDB</literal> privilege.  The current database cannot
-   be renamed.  (Connect to a different database if you need to do
-   that.)
+La seconda forma consente di modificare il nome del database. Solo il proprietario del database o un 
+superutente può rinominare un database; i proprietari che non sono superutenti devono avere anche il 
+privilegio <command>CREATEDB</command>. Il database aperto non può essere rinominato.  (Bisogna connettersi a un database 
+diverso da quello che si vuole rinominare).
   </para>
 
   <para>
-   The third form changes the owner of the database.
-   To alter the owner, you must own the database and also be a direct or
-   indirect member of the new owning role, and you must have the
-   <literal>CREATEDB</literal> privilege.
-   (Note that superusers have all these privileges automatically.)
+La terza forma consente di modificare il proprietario del database. Per modificare il proprietario si deve
+essere proprietario del database e essere anche un membro diretto o indiretto del nuovo ruolo di proprietà,
+e inoltre si deve avere il privilegio <literal>CREATEDB</literal>. (Notare che i superutenti hanno automaticamente tutti questi
+privilegi).
   </para>
 
   <para>
-   The fourth form changes the default tablespace of the database.
-   Only the database owner or a superuser can do this; you must also have
-   create privilege for the new tablespace.
-   This command physically moves any tables or indexes in the database's old
-   default tablespace to the new tablespace.  Note that tables and indexes
-   in non-default tablespaces are not affected.
+La quarta forma consente di modificare il tablespace di default del database. Solo il proprietario del
+database o un superutente può farlo; si deve inoltre anche avere creato i privilegi per il nuovo tablespace.
+Questo comando sposta fisicamente alcune tabelle o indici dal vecchio tablespace di default del database al
+nuovo tablespace. Nota bene: le tabelle o indici sono modificabili solo se presenti nel tablespace di default.
   </para>
 
   <para>
-   The remaining forms change the session default for a run-time
-   configuration variable for a <productname>PostgreSQL</productname>
-   database. Whenever a new session is subsequently started in that
-   database, the specified value becomes the session default value.
-   The database-specific default overrides whatever setting is present
-   in <filename>postgresql.conf</filename> or has been received from the
-   <command>postgres</command> command line.  Only the database
-   owner or a superuser can change the session defaults for a
-   database.  Certain variables cannot be set this way, or can only be
-   set by a superuser.
+Le rimanenti forme consentono di modificare il default di sessione di una variabile di configurazione run-time di un
+ database <productname>PostgreSQL</productname>.
+Ogni volta che inizia una nuova sessione di un database, il valore indicato diventa il valore di default 
+della sessione stessa.
+Lo specifico default del database prevale su qualsivoglia impostazione presente in <filename>postgresql.conf</filename> o è stato
+ricevuto dalla linea di comando di <command>postgres</command>.
+Solo il proprietario o il superutente del database possono cambiare i default di sessione per un database.
+Ci sono variabili che non possono essere impostate in questo modo, oppure possono essere impostate solo da 
+un superutente.
   </para>
- </refsect1>
+</refsect1>
 
- <refsect1>
-  <title>Parameters</title>
+<refsect1>
+  <title>Parametri</title>
 
     <variablelist>
      <varlistentry>
       <term><replaceable class="parameter">name</replaceable></term>
       <listitem>
        <para>
-        The name of the database whose attributes are to be altered.
+Indica il nome del database i cui attributi sono da modificare
        </para>
       </listitem>
      </varlistentry>
@@ -111,8 +103,8 @@ ALTER DATABASE <replaceable class="parameter">name</replaceable> RESET ALL
       <term><replaceable class="parameter">connlimit</replaceable></term>
       <listitem>
        <para>
-        How many concurrent connections can be made
-        to this database.  -1 means no limit.
+Indica il numero di connessioni simultanee che possono essere eseguite in questo database. Il valore -1 
+significa nessun valore.
        </para>
       </listitem>
      </varlistentry> 
@@ -121,7 +113,7 @@ ALTER DATABASE <replaceable class="parameter">name</replaceable> RESET ALL
     <term><replaceable>new_name</replaceable></term>
     <listitem>
      <para>
-      The new name of the database.
+Indica il nuovo nome del database
      </para>
     </listitem>
    </varlistentry>
@@ -130,7 +122,7 @@ ALTER DATABASE <replaceable class="parameter">name</replaceable> RESET ALL
     <term><replaceable class="parameter">new_owner</replaceable></term>
     <listitem>
      <para>
-      The new owner of the database.
+Indica il nuovo proprietario del database
      </para>
     </listitem>
    </varlistentry>
@@ -139,7 +131,7 @@ ALTER DATABASE <replaceable class="parameter">name</replaceable> RESET ALL
     <term><replaceable class="parameter">new_tablespace</replaceable></term>
     <listitem>
      <para>
-      The new default tablespace of the database.
+Indica il tablespace di default del nuovo database
      </para>
     </listitem>
    </varlistentry> 
@@ -149,21 +141,18 @@ ALTER DATABASE <replaceable class="parameter">name</replaceable> RESET ALL
       <term><replaceable>value</replaceable></term>
       <listitem>
        <para>
-        Set this database's session default for the specified configuration
-        parameter to the given value.  If
-        <replaceable>value</replaceable> is <literal>DEFAULT</literal>
-        or, equivalently, <literal>RESET</literal> is used, the
-        database-specific setting is removed, so the system-wide default
-        setting will be inherited in new sessions.  Use <literal>RESET
-        ALL</literal> to clear all database-specific settings.
-        <literal>SET FROM CURRENT</literal> saves the session's current value of
-        the parameter as the database-specific value.
+Imposta il valore predefinito per la sessione del parametro specificato al valore fornito.                    
+Se <replaceable>value</replaceable> utilizzato è DEFAULT o,in modo analogo, viene utilizzato <literal>RESET</literal>, 
+le impostazioni specifiche del database
+vengono rimosse, e l'impostazione di default a livello di sistema sarà ereditata nelle nuove sessioni.
+Utilizzare <literal>RESET ALL</literal> per eliminare le impostazioni specifiche del database. <literal>SET FROM CURRENT</literal> salva il 
+valore corrente della sessione del parametro come il valore specifico del database.
        </para>
 
        <para>
-        See <xref linkend="sql-set"/> and <xref linkend="runtime-config"/>
-        for more information about allowed parameter names
-        and values.
+Si veda <xref linkend="sql-set"/> e <xref linkend="runtime-config"/>
+per maggiori informazioni circa i
+nomi e i valori dei parametri consentiti.
        </para>
       </listitem>
      </varlistentry>
@@ -171,23 +160,21 @@ ALTER DATABASE <replaceable class="parameter">name</replaceable> RESET ALL
  </refsect1>
 
  <refsect1>
-  <title>Notes</title>
+  <title>Note</title>
 
   <para>
-   It is also possible to tie a session default to a specific role
-   rather than to a database; see
-   <xref linkend="sql-alterrole"/>.
-   Role-specific settings override database-specific
-   ones if there is a conflict.
+È anche possibile legare una sessione di default ad un ruolo specifico piuttosto che a un
+database; si veda <xref linkend="sql-alterrole"/>. 
+Impostare il ruolo specifico per far in modo che le
+impostazioni specifiche del database non siano tenute in considerazione in caso di problemi di interpretazione.
   </para>
  </refsect1>
 
  <refsect1>
-  <title>Examples</title>
+  <title>Esempi</title>
 
   <para>
-   To disable index scans by default in the database
-   <literal>test</literal>:
+Per disattivare in maniera predefinita le scansioni con indice del database <literal>test</literal>:
 
 <programlisting>
 ALTER DATABASE test SET enable_indexscan TO off;
@@ -196,16 +183,16 @@ ALTER DATABASE test SET enable_indexscan TO off;
  </refsect1>
 
  <refsect1>
-  <title>Compatibility</title>
+  <title>Compatibilità</title>
     
   <para>
-   The <command>ALTER DATABASE</command> statement is a
-   <productname>PostgreSQL</productname> extension.
+   L'istruzione <command>ALTER DATABASE</command> è  
+   un'estenzione <productname>PostgreSQL</productname>.
   </para>
  </refsect1>
 
  <refsect1>
-  <title>See Also</title>
+  <title>Si veda anche</title>
 
   <simplelist type="inline">
    <member><xref linkend="sql-createdatabase"/></member>

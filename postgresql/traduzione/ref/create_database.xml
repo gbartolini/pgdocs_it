@@ -8,12 +8,12 @@ PostgreSQL documentation
  <refmeta>
   <refentrytitle>CREATE DATABASE</refentrytitle>
   <manvolnum>7</manvolnum>
-  <refmiscinfo>SQL - Language Statements</refmiscinfo>
+  <refmiscinfo>SQL - Istruzioni del linguaggio</refmiscinfo>
  </refmeta>
 
  <refnamediv>
   <refname>CREATE DATABASE</refname>
-  <refpurpose>create a new database</refpurpose>
+  <refpurpose>crea un nuovo database</refpurpose>
  </refnamediv>
 
  <indexterm zone="sql-createdatabase">
@@ -34,7 +34,7 @@ CREATE DATABASE <replaceable class="parameter">name</replaceable>
  </refsynopsisdiv>
 
  <refsect1>
-  <title>Description</title>
+  <title>Descrizione</title>
 
   <para>
    <command>CREATE DATABASE</command> creates a new

@@ -16,10 +16,10 @@ come vengono applicati i comandi SQL per definire e modificare i dati.
  </para>
 
  <para>
-Avvisiamo inoltre gli utenti che sono già familiari con SQL di leggere
+Si avvisano inoltre gli utenti che sono già familiari con SQL di leggere
 questo capitolo attentamente perchè contiene diverse regole e concetti che
-sono implementati incoerentemente tra i database SQL o che sono
-specifici di <productname>PostgreSQL</productname>.
+sono implementati in modo incoerente tra i vari database SQL o che sono
+propriamente specifici di <productname>PostgreSQL</productname>.
  </para>
 
  <sect1 id="sql-syntax-lexical">
@@ -32,48 +32,48 @@ specifici di <productname>PostgreSQL</productname>.
   <para>
 Un input SQL consiste in una sequenza di 
 <firstterm>comandi</firstterm>. Un comando è composto da una 
-sequenza di <firstterm>tokens</firstterm>, trminati da un punto e virgola
-(<quote>;</quote>). La fine dello stream di input termina pure il comando.
-Quali token siano validi dipende dalla sintassi
-del particolare comando.
+sequenza di <firstterm>token</firstterm>, terminati da un punto e virgola
+(<quote>;</quote>). La fine del flusso (stream) di input determina anche la conclusione del comando.
+Quali token siano validi dipende dalla sintassi stessa del particolare comando.
   </para>
 
   <para>
 Un token può essere una <firstterm>parola chiave</firstterm>, un
 <firstterm>identificatore</firstterm>, un <firstterm>identificatore 
-citato</firstterm>, un <firstterm>letterale</firstterm> (o
+quotato</firstterm>, un <firstterm>letterale</firstterm> (o
 costante), o un simbolo speciale. I token normalmente sono
-separati da spazi bianchi (spazio, tab, nuova linea), ma non dev'esserci se 
-non c'è ambiguità (che è generalmente solo il caso in cui un carattere speciale
+separati da spazi bianchi (spazio, tab, nuova linea), ma questo non dinventa obbligatorio
+qualora non ci sia ambiguità (generalmente solo il caso in cui un carattere speciale
 è adiacente a qualche altro tipo di token).
   </para>
 
    <para>
-Per esempio, il seguente input e (sintatticamente) SQL valido:
+Per esempio, il seguente input è (sintatticamente) SQL valido:
 <programlisting>
 SELECT * FROM MY_TABLE;
 UPDATE MY_TABLE SET A = 5;
 INSERT INTO MY_TABLE VALUES (3, 'hi there');
 </programlisting>
 Questa è una sequenza di tre comandi, uno per linea (anche se questo non è 
-richiesto; più di un comando può stare in una linea, e i comandi possono
-essere divisi su più linee).
+richiesto -  più di un comando infatti può stare in una linea, e i comandi possono
+essere distribuiti su più linee).
    </para>
 
   <para>
-Inoltre, in un input SQL ci possono essere <firstterm>commenti</firstterm>. 
-Essi non sono token, sono effettivamente equivalenti a spazi bianchi.
+Inoltre, in un input SQL possono essere inseriti dei <firstterm>commenti</firstterm>. 
+Questi non vengono considerati veri e propri token, ma vengono semplicemente equiparati a uno spazio.
   </para>
 
   <para>
-La sintassi SQL non è molto coerente riguardo a cosa i token identificano come comandi 
-o operandi o parametri. I primi token sono generalmente il nome del comando, così, nell'esempio sopra
-parleremo di un comando <quote>SELECT</quote>, un <quote>UPDATE</quote> e
-un <quote>INSERT</quote>. Ma, per esempio, il comando <command>UPDATE</command> richiede
-sempre che un token <token>SET</token> appaia in una certa posizione, e 
+	  La sintassi SQL non è molto coerente in merito a quali token identificano un comando
+	  e quali invece un operatore o un parametro.
+	  I primissimi token identificano generalmente il nome del comando. Riprendendo l'esempio di sopra,
+	  si tratterebbe quindi di un comando <quote>SELECT</quote>, uno <quote>UPDATE</quote> e
+infine uno <quote>INSERT</quote>. Tuttavia, ad esempio, il comando <command>UPDATE</command> richiede
+che un token <token>SET</token> sia presente in una certa posizione, mentre 
 questa particolare variazione di <command>INSERT</command> 
-richiede <token>VALUES</token> per essere completo. La regole precise per la sintassi
-di ogni comando sono descritte in <xref linkend="reference"/>.
+richiede <token>VALUES</token> per risultare completo. La regole precise per la sintassi
+di ogni comando sono descritte nella <xref linkend="reference"/>.
   </para>
 
   <sect2 id="sql-syntax-identifiers">
@@ -96,13 +96,13 @@ di ogni comando sono descritte in <xref linkend="reference"/>.
 
    <para>
 Token come <token>SELECT</token>, <token>UPDATE</token>, o
-<token>VALUES</token> nell'esempio sopra sono esempi di 
-<firstterm>parole chiave</firstterm>, cioè parole che hanno un significato preciso
+<token>VALUES</token> citati in precedenza sono esempi di 
+<firstterm>parole chiave</firstterm>, ovvero parole che hanno un significato preciso
 nel linguaggio SQL. I token <token>MY_TABLE</token>
 e <token>A</token> sono esempi di 
 <firstterm>identificatori</firstterm>. Essi identificano nomi di
-tabelle, colonne o altri oggetti del database, dipende dal comando in cui vengono 
-usati. Quindi, a volte sono chiamati semplicemente <quote>nomi</quote>.
+tabelle, colonne o altri oggetti del database a seconda del comando in cui vengono 
+usati. Per questo a volte vengono semplicemente chiamati <quote>nomi</quote>.
 Le parole chiave e gli identificatori hanno la stessa struttura lessicale, 
 quindi non è possibile sapere se un token è un identificatore
 o una parola chiave senza conoscere il linguaggio.
@@ -113,25 +113,25 @@ linkend="sql-keywords-appendix"/>.
    <para>
 Identificatori e parole chiave SQL devono cominciare con una 
 lettera (<literal>a</literal>-<literal>z</literal>, ma anche lettere con
-punti diacritici e lettere non Latine) o un underscore
-(<literal>_</literal>).  I caratteri successivi in un identificatore o
+segni diacritici e lettere non Latine) o un underscore
+(<literal>_</literal>).  I successivi caratteri di un identificatore o
 parola chiave possono essere lettere, underscore, cifre
 (<literal>0</literal>-<literal>9</literal>) o segni dollaro
-(<literal>$</literal>). Notare che segni dollaro non sono permessi negli identificatori
+(<literal>$</literal>). Si noti che il segno dollaro non è permessi negli identificatori
 in accordo con lo standard SQL, per questo il loro uso potrebbe rendere le applicazioni 
 meno portabili. 
-Lo standard SQL non definirà parole chiave che contengano 
-cifre o comincino o finiscano con un underscore, cos' identificatori di questa forma sono sicuri
-rispetto a possibili conflitti con esenzioni future dello standard.
+Inoltre, siccome lo standard SQL non definirà mai parole chiave che contengano 
+cifre oppure che comincino o finiscano con un carattere underscore, gli identificatori scritti
+in questa forma sono al sicuro da eventuali conflitti con estensioni future dello standard.
    </para>
 
    <para>
 <indexterm><primary>identifier</primary><secondary>length</secondary></indexterm>
 Il sistema non usa più di <symbol>NAMEDATALEN</symbol>-1
-byte di un identificatore; nomi più lunghi possono essere scritti in
-comandi, ma saranno troncati. In maniera predefinita, 
-<symbol>NAMEDATALEN</symbol> è 64 così la lunghezza massima per gli identificatori 
-è 63 byte. Se questo limite è problematico, può essere alzato cambiando la costante
+byte di un identificatore; nomi più lunghi possono essere scritti nei
+comandi, ma verranno troncati. Di default,
+<symbol>NAMEDATALEN</symbol> è 64 e quindi la lunghezza massima per gli identificatori 
+è 63 byte. Se questo limite dovesse rappresentare un problema, può essere alzato cambiando la costante
 <symbol>NAMEDATALEN</symbol> in 
 <filename>src/include/pg_config_manual.h</filename>.
    </para>
@@ -141,11 +141,12 @@ comandi, ma saranno troncati. In maniera predefinita,
      <primary>sensibilità al case</primary>
      <secondary>di comandi SQL</secondary>
     </indexterm>
-Parole chiave e identificatori non quotati sono insensibili al case. Perciò:
+    Parole chiave e identificatori non quotati sono <emphasis xml:lang="en">case-insensitive</emphasis> e pertanto possono essere
+    scritti indifferentemente con caratteri maiuscoli o minuscoli. Perciò:
 <programlisting>
 UPDATE MY_TABLE SET A = 5;
 </programlisting>
-può essere scritto, equivalentemente:
+può essere scritto equivalentemente:
 <programlisting>
 uPDaTE my_TabLE SeT a = 5;
 </programlisting>

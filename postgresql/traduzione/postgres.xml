@@ -3,17 +3,17 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
 "./dtd/4.3/docbookx.dtd" [
 
-<!ENTITY nbsp "Â ">
-<!ENTITY eacute "Ã©">
-<!ENTITY egrave "Ã¨">
-<!ENTITY agrave "Ã ">
-<!ENTITY uuml "Ã¼">
-<!ENTITY ouml "Ã¶">
-<!ENTITY laquo "Â« ">
-<!ENTITY raquo " Â»">
+<!ENTITY nbsp " ">
+<!ENTITY eacute "é">
+<!ENTITY egrave "è">
+<!ENTITY agrave "à">
+<!ENTITY uuml "ü">
+<!ENTITY ouml "ö">
+<!ENTITY laquo "« ">
+<!ENTITY raquo " »">
 <!ENTITY copy "(c)">
 <!ENTITY mdash " -- ">
-<!ENTITY oelig "Å">
+<!ENTITY oelig "œ">
 <!ENTITY pi "pi">
 
 <!ENTITY % version SYSTEM "version.xml">
@@ -25,7 +25,7 @@
 
 ]>
 
-<book id="postgres" lang="it" xml:lang="it">
+<book id="postgres" lang="it">
  <title>Documentazione di PostgreSQL &version;</title>
 
  <bookinfo>

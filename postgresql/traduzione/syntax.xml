@@ -162,52 +162,50 @@ UPDATE my_table SET a = 5;
      <primary>virgolette</primary>
      <secondary>e identificatori</secondary>
     </indexterm>
-C'è un altro tipo di identificatore: l'<firstterm>identificatore
-delimitati</firstterm> o <firstterm>identificatore quotato</firstterm>.
-Viene formato racchiudendo una sequenza di caratteri arbitraria in doppi apici
+Esiste anche un altro tipo di identificatore: l'<firstterm>identificatore
+delimitato</firstterm> o <firstterm>identificatore quotato</firstterm>.
+Viene formato racchiudendo una sequenza arbitraria di caratteri fra doppi apici
 (<literal>"</literal>).  Un identificatore delimitato 
-è sempre un identificatore, mai una parola chiave. Per questo 
-<literal>"select"</literal> può essere usato per fare riferimento a una colonna
-tabella chiamata <quote>select</quote>, mentre <literal>select</literal>
-non quotato sarebbe considerato una parola chiave e
-perchiò provocherebbe un errore quando usato dove ci si aspetta il nome di una tabella
-o una colonna. L'esempio può essere scritto con indentificatori
-quotati, in questo modo:
+è sempre un identificatore, mai una parola chiave. Per questo motivo, ad esempio,
+<literal>"select"</literal> potrebbe essere usato per fare riferimento a una colonna
+o a una tabella chiamata <quote>select</quote>, mentre <literal>select</literal>
+(non quotato) verrebbe considerato una parola chiave e pertanto
+provocherebbe un errore se usato laddove il nome di una tabella o di una colonna fosse atteso.
+L'esempio può essere scritto con indentificatori
+quotati nel seguente modo:
 <programlisting>
 UPDATE "my_table" SET "a" = 5;
 </programlisting>
    </para>
 
    <para>
-Identificatori quotati possono contenere qualsiasi carattere, ad eccezioni del carattere
-con codice zero. (Per includere un carattere di doppi apici, scrivere due doppi apici).
-Questo permette la creazione di nomi di tabelle o colonne che non sarebbero possibili altrimenti,
-tipo nomi contenenti spazi o e commerciali. Viene comunque applicata la limitazione della lunghezza.
+Gli identificatori quotati possono contenere qualsiasi carattere, ad eccezioni del carattere
+con codice zero (per inserire un carattere di doppi apici, scrivere due doppi apici).
+Questo permette la creazione di nomi di tabelle o colonne che non sarebbero altrimenti possibili,
+tipo nomi contenenti spazi o <emphasis>e commerciali</emphasis> ('&amp;'). Viene comunque applicata la limitazione della lunghezza.
    </para>
 
    <para>
-    <note>Nota per il revisore: TODO</note>
     <indexterm><primary>escape unicode escape</primary><secondary>in
     identificatori</secondary></indexterm> 
-    A variant of quoted
-    identifiers allows including escaped Unicode characters identified
-    by their code points.  This variant starts
-    with <literal>U&amp;</literal> (upper or lower case U followed by
-    ampersand) immediately before the opening double quote, without
-    any spaces in between, for example <literal>U&amp;"foo"</literal>.
-    (Note that this creates an ambiguity with the
-    operator <literal>&amp;</literal>.  Use spaces around the operator to
-    avoid this problem.)  Inside the quotes, Unicode characters can be
-    specified in escaped form by writing a backslash followed by the
-    four-digit hexadecimal code point number or alternatively a
-    backslash followed by a plus sign followed by a six-digit
-    hexadecimal code point number.  For example, the
-    identifier <literal>"data"</literal> could be written as
+    Una variante degli identificatori quotati permette di inserire caratteri
+    Unicode identificati dai loro codici. Questa variante comincia
+    con <literal>U&amp;</literal> (U, maiuscola o minuscola, seguita da una
+    <emphasis>e commerciale</emphasis>) immediatamente prima del carattere
+    di apice doppia, senza alcuno spazio fra essi. Ad esempio: <literal>U&amp;"foo"</literal>.
+    Si noti che ciò genera ambiguità con l'operatore <literal>&amp;</literal>:
+    per evitare questo problema è possibile inserire spazi intorno all'operatore.
+    All'interno degli apici, i caratteri Unicode possono essere specificati nella
+    forma <emphasis xml:lang="en">escaped</emphasis>, ovvero inserendo un carattere
+    di <emphasis xml:lang="en">backslash</emphasis> ('\', barra inversa) seguito dal codice di quattro
+    cifre esadecimali oppure alternativamente dal segno più ('+') e dal codice di sei
+    cifre esadecimali. Ad esempio,
+    l'identificatore <literal>"data"</literal> potrebbe essere scritto come
 <programlisting>
 U&amp;"d\0061t\+000061"
 </programlisting>
-    The following less trivial example writes the Russian
-    word <quote>slon</quote> (elephant) in Cyrillic letters:
+    Il seguente e meno banale esempio scrive la parola russa
+    <quote>slon</quote> (elefante) in caratteri cirillici:
 <programlisting>
 U&amp;"\0441\043B\043E\043D"
 </programlisting>
@@ -222,12 +220,12 @@ U&amp;"d!0061t!+000061" UESCAPE '!'
 </programlisting>
 Il carattere di escape può essere un singolo carattere piuttosto che una cifra decimale, 
 il segno più, un singolo apice, doppi apici, 
-o un carattere di spazio. Notare che il carattere di escape è scritto in singoli apici,
-non doppi apici.
+o un carattere di spazio. Notare che il carattere di escape è scritto in singoli apici
+e non doppi.
    </para>
 
    <para>
-Per includere il carattere di escape letteralmente nell'identificatore, scriverlo
+Per inserire il carattere di escape letteralmente nell'identificatore, è necessario scriverlo
 due volte. 
    </para>
 
@@ -235,8 +233,8 @@ due volte.
 La sintassi di escape Unicode funziona solo quando la codifica del server è
 <literal>UTF8</literal>.  Quando sono usate altre codifiche per il server, possono
 essere specificati solo codici nell'intervallo ASCII (fino a <literal>\007F</literal>). 
-Sia la forma a 4 cifre che quella a 6 cifre può essere usata per 
-specificare coppie surrogate UTF-16 per comporre caratteri con codici
+Sia la forma a 4 cifre che quella a 6 cifre possono essere usate per 
+specificare coppie surrogate UTF-16 e comporre caratteri con codici
 più grandi di U+FFFF, anche se la disponibilità della forma a 6 cifre tecnicamente la 
 rende non necessaria. (Quando le coppie surrogate sono usate con server che usano codifica 
 <literal>UTF8</literal>, esse sono prima combinate in un singolo codice 
@@ -244,7 +242,7 @@ che viene codificato in UTF-8).
    </para>
 
    <para>
-Quotare un identificatore lo rende anche sensibile al case, mentre
+Quotare un identificatore significa renderlo rende anche sensibile al case, mentre
 nomi non quotati sono sempre resi in minuscolo. Per esempio, gli identificatori 
 <literal>FOO</literal>, <literal>foo</literal>, e
 <literal>"foo"</literal> sono considerati allo stesso modo da 
@@ -253,9 +251,9 @@ sono diversi da quei tre e anche tra di loro. (Il comportamento di <productname>
 non è compatibile con lo standard SQL, che dice che i nomi non quotati  
 dovrebbero essere resi in maiuscolo. Così, 
 <literal>foo</literal>
-dovrebbe essere equivalente a  <literal>"FOO"</literal>, non a
-<literal>"foo"</literal>,s econdo lo standard. Se si vuole scrivere applicazioni portabili
-si dovrebbe quotare sempre un particolare nome o non quotarlo mai.
+dovrebbe essere equivalente a <literal>"FOO"</literal>, non a
+<literal>"foo"</literal>, secondo lo standard.
+Si suggerisce di quotare sempre o non quotare mai un particolare nome al fine di scrivere applicationi portabili.
    </para>
   </sect2>
 
@@ -536,7 +534,7 @@ Per includere il carattere di escape letteralmente nella stringa, scriverlo due 
    </sect3>
 
    <sect3 id="sql-syntax-dollar-quoting">
-    <title>Costanti stringa quitate da dollari</title>
+    <title>Costanti stringa quotate da dollari</title>
 
      <indexterm>
       <primary>quotare con dollaro</primary>

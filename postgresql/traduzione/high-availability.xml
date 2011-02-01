@@ -2,88 +2,90 @@
 <!-- $PostgreSQL$ -->
 
 <chapter id="high-availability">
- <title>High Availability, Load Balancing, and Replication</title>
+ <title>Alta disponibilità, bilanciamento di carico e replica</title>
 
- <indexterm><primary>high availability</primary></indexterm>
+ <indexterm><primary>alta disponibilità</primary></indexterm>
  <indexterm><primary>failover</primary></indexterm>
- <indexterm><primary>replication</primary></indexterm>
- <indexterm><primary>load balancing</primary></indexterm>
+ <indexterm><primary>replica</primary></indexterm>
+ <indexterm><primary>bilanciamento di carico</primary></indexterm>
  <indexterm><primary>clustering</primary></indexterm>
- <indexterm><primary>data partitioning</primary></indexterm>
+ <indexterm><primary>partizionamento dei dati</primary></indexterm>
 
  <para>
-  Database servers can work together to allow a second server to
-  take over quickly if the primary server fails (high
-  availability), or to allow several computers to serve the same
-  data (load balancing).  Ideally, database servers could work
-  together seamlessly.  Web servers serving static web pages can
-  be combined quite easily by merely load-balancing web requests
-  to multiple machines.  In fact, read-only database servers can
-  be combined relatively easily too.  Unfortunately, most database
-  servers have a read/write mix of requests, and read/write servers
-  are much harder to combine.  This is because though read-only
-  data needs to be placed on each server only once, a write to any
-  server has to be propagated to all servers so that future read
-  requests to those servers return consistent results.
+I server database possono lavorare insieme per permettere ad un secondo  
+server di prenderne il posto se il server primario fallisce (alta
+disponibilità), o per permettere a diversi computer di servire gli 
+stessi dati (bilanciamento di carico). Idealmente, i server database 
+potrebbero lavorare insieme ininterrottamente. I server web che servono
+pagine web statiche possono essere combinati abbastanza facilmente
+semplicemente bilanciando le richieste web su molteplici macchine. 
+Infatti, server database in sola lettura possono essere combinati in maniera
+relativamente semplice. Sfortunatamente, la maggior parte dei server database
+hanno un insieme di richieste di lettura e scrittura, e i server in lettura/scrittura
+sono molto difficili da combinare. Questo perchè sebbene i dati in sola lettura 
+devono essere posizionati su ogni server solo una volta, una scrittura 
+ad un qualsiasi server deve essere propagata a tutti i server così che le 
+letture future su quei server ritornino risultati consistenti. 
  </para>
 
  <para>
-  This synchronization problem is the fundamental difficulty for
-  servers working together.  Because there is no single solution
-  that eliminates the impact of the sync problem for all use cases,
-  there are multiple solutions.  Each solution addresses this
-  problem in a different way, and minimizes its impact for a specific
-  workload.
+Questo problema di sincronizzazione è la difficoltà fondamentale perchè
+i server lavorino insieme. Dato che non c'è una singola soluzione
+che elimina l'impatto del problema di sincronizzazione per tutti i casi d'uso, 
+ci sono diverse possibilità. Ogni soluzione indirizza questo problema in modo
+differente, e minimizza il suo impatto per un carico di lavoro specifico.
  </para>
 
  <para>
-  Some solutions deal with synchronization by allowing only one
-  server to modify the data.  Servers that can modify data are
-  called read/write, <firstterm>master</firstterm> or <firstterm>primary</firstterm> servers.
-  Servers that track changes in the master are called <firstterm>standby</firstterm>
-  or <firstterm>slave</firstterm> servers. A standby server that cannot be connected
-  to until it is promoted to a master server is called a <firstterm>warm
-  standby</firstterm> server, and one that can accept connections and serves read-only
-  queries is called a <firstterm>hot standby</firstterm> server.
+Alcune soluzioni realizzano la sincronizzazione permettendo solo 
+ad un server di modificare i dati. I server che possono modificare i dati 
+vengono chiamati server read/write, <firstterm>master</firstterm> o
+<firstterm>primary</firstterm>.
+I server che tengono traccia dei cambiamenti nel master vengono chiamati 
+<firstterm>standby</firstterm>
+o server <firstterm>slave</firstterm>. Un server standby a cui non ci si può connettere  
+finchè non viene promosso a server master viene chiamato server <firstterm>warm
+standby</firstterm>, ed uno che può accettare connessioni e servire query in sola lettura
+viene chiamato server <firstterm>hot standby</firstterm>.
  </para>
 
  <para>
-  Some solutions are synchronous,
-  meaning that a data-modifying transaction is not considered
-  committed until all servers have committed the transaction.  This
-  guarantees that a failover will not lose any data and that all
-  load-balanced servers will return consistent results no matter
-  which server is queried. In contrast, asynchronous solutions allow some
-  delay between the time of a commit and its propagation to the other servers,
-  opening the possibility that some transactions might be lost in
-  the switch to a backup server, and that load balanced servers
-  might return slightly stale results.  Asynchronous communication
-  is used when synchronous would be too slow.
+Alcune soluzioni sono sincrone, 
+che significa che una transazione che non modifica i dati non si considera
+sottoposta a commit finchè tutti i server non hanno fatto il commit della transazione.
+Questo garantisce un failover che non perderà nessun dato e i server 
+con bilanciamento di carico restituiranno risultati consistenti qualsiasi 
+server verrà interrogato. Al contrario, soluzioni asincrone permettono 
+un po' di ritardo tra il momento di una commit e la sua propagazione agli altri server, 
+aprendo la possibilità che alcune transazioni potrebbero essere perse
+nel passaggio a un server di backup, e che i server con carico bilanciatio
+potrebbero ritornare risultati leggermenti non aggiornati. La comunicazione
+asincrona viene usata quando quella sincrona sarebbe troppo lenta.
  </para>
 
  <para>
-  Solutions can also be categorized by their granularity.  Some solutions
-  can deal only with an entire database server, while others allow control
-  at the per-table or per-database level.
+Le soluzioni possono anche essere categorizzate dalla loro granularità. Alcune 
+soluzioni possono trattare un intero server di database, mentre altre permettono
+di avere un controllo a livello di tabella o di singolo database.
  </para>
 
  <para>
-  Performance must be considered in any choice.  There is usually a
-  trade-off between functionality and
-  performance.  For example, a fully synchronous solution over a slow
-  network might cut performance by more than half, while an asynchronous
-  one might have a minimal performance impact.
+Le prestazioni devono essere tenute in considerazione prima di prendere 
+qualsiasi decisione. Di solito c'è un trade-off tra le funzionalità 
+e le prestazioni. Per esempio, una soluzione completamente sincrona 
+su una rete lenta potrebbe far diminuire le prestazioni di più della metà,
+mentre una asincrona potrebbe avere un impatto minimo sulle prestazioni.
  </para>
 
  <para>
-  The remainder of this section outlines various failover, replication,
-  and load balancing solutions.  A <ulink
-  url="http://www.postgres-r.org/documentation/terms">glossary</ulink> is
-  also available.
+Il promemoria di questa sezione evidenzia diverse soluzioni di failover, replica, 
+e bilanciamento di carico. Anche un  <ulink
+url="http://www.postgres-r.org/documentation/terms">glossario</ulink> 
+è disponibile.
  </para>
 
  <sect1 id="different-replication-solutions">
- <title>Comparison of different solutions</title>
+ <title>Confronto di diverse solutioni</title>
 
  <variablelist>
 
@@ -92,22 +94,22 @@
    <listitem>
 
     <para>
-     Shared disk failover avoids synchronization overhead by having only one
-     copy of the database.  It uses a single disk array that is shared by
-     multiple servers.  If the main database server fails, the standby server
-     is able to mount and start the database as though it were recovering from
-     a database crash.  This allows rapid failover with no data loss.
+Shared disk failover evita l'overhead di sincronizzazione avendo una sola copia  
+del database. Usa un singolo array di disco che è condiviso da molteplici server.
+Se il server database principale fallisce, il server standby
+è capace di montare e avviare il database sebbene stesse recuperando da un crash.
+Questo permette un failover rapido senza perdita di dati.
     </para>
 
     <para>
      Shared hardware functionality is common in network storage devices.
      Using a network file system is also possible, though care must be
      taken that the file system has full <acronym>POSIX</acronym> behavior (see <xref
-     linkend="creating-cluster-nfs"/>).  One significant limitation of this
-     method is that if the shared disk array fails or becomes corrupt, the
-     primary and standby servers are both nonfunctional.  Another issue is
-     that the standby server should never access the shared storage while
-     the primary server is running.
+     linkend="creating-cluster-nfs"/>).  
+Una limitazione significativa di questo metodo è che se l'array di disco condiviso
+fallisce o si corrompe, i server primario e standby diventano entrambi non funzionanti.
+Un'altra questione è che il server standby non accede mai l'immagazzinamento condiviso 
+mentre il server primario è in esecuzione.
     </para>
 
    </listitem>
@@ -145,39 +147,39 @@ protocol to make nodes agree on a serializable transactional order.
    <listitem>
 
     <para>
-     Warm and hot standby servers can be kept current by reading a
-     stream of write-ahead log (<acronym>WAL</acronym>)
-     records.  If the main server fails, the standby contains
-     almost all of the data of the main server, and can be quickly
-     made the new master database server.  This is asynchronous and
-     can only be done for the entire database server.
+I server warm e hot standby possono essere tenuti aggiornati leggendo  
+uno stream di record di log write-ahead (<acronym>WAL</acronym>).
+Se il server principale fallisce, lo standby contiene
+praticamente tutti i dati del server principale, e può essere reso velocemente
+il nuovo server database master. Quest'operazione è asincrona e
+può essere fatta solo per l'intero server database.
     </para>
     <para>
-     A PITR standby server can be implemented using file-based log shipping
-     (<xref linkend="warm-standby"/>) or streaming replication (see
-     <xref linkend="streaming-replication"/>), or a combination of both. For
-     information on hot standby, see <xref linkend="hot-standby"/>.
+Un server stanby PITR può essere implementato usando il log shipping basato sui file
+(<xref linkend="warm-standby"/>) o la replica streaming (si veda
+<xref linkend="streaming-replication"/>), o una combinazione di entrambi. Per  
+informazioni su hot standby, si veda <xref linkend="hot-standby"/>.
     </para>
    </listitem>
   </varlistentry>
 
   <varlistentry>
-   <term>Trigger-Based Master-Standby Replication</term>
+   <term>Replica master-slave basata sui trigger</term>
    <listitem>
 
     <para>
-     A master-standby replication setup sends all data modification
-     queries to the master server.  The master server asynchronously
-     sends data changes to the standby server.  The standby can answer
-     read-only queries while the master server is running.  The
-     standby server is ideal for data warehouse queries.
+Un sistema di replica master-standby manda tutte le query che modificano i dati
+al server master. Il server master manda in modo asincrono
+i cambiamenti dei dati al server standby. Lo standby può rispondere
+con query in sola lettura mentre il server master è in esecuzione. Il server
+standby è ideale per query di data warehouse.
     </para>
 
     <para>
-     <productname>Slony-I</productname> is an example of this type of replication, with per-table
-     granularity, and support for multiple standby servers.  Because it
-     updates the standby server asynchronously (in batches), there is
-     possible data loss during fail over.
+<productname>Slony-I</productname> è un esempio di questo tipo di replica, con granularità
+a livello di tabella, e supporto per molti server standby. Dato che aggiorna
+il server standby in modo asincrono, c'è una possibile perdita di dati 
+durante il fail over.
     </para>
    </listitem>
   </varlistentry>
@@ -217,48 +219,48 @@ protocol to make nodes agree on a serializable transactional order.
   </varlistentry>
 
   <varlistentry>
-   <term>Asynchronous Multimaster Replication</term>
+   <term>Replica multimaster asincrona</term>
    <listitem>
 
     <para>
-     For servers that are not regularly connected, like laptops or
-     remote servers, keeping data consistent among servers is a
-     challenge.  Using asynchronous multimaster replication, each
-     server works independently, and periodically communicates with
-     the other servers to identify conflicting transactions.  The
-     conflicts can be resolved by users or conflict resolution rules.
-     Bucardo is an example of this type of replication.
+Per server che non sono connessi regolarmente, come portatili o 
+server remoti, mantenere la consistenza dei dati tra i server è una 
+sfida. Usando la replica multimaster asincrona, ogni server funziona
+indipendentemente, e comunica periodicamente con gli altri server
+per identificare transazioni che sono in conflittto. I conflitti 
+possono essere risolti da utenti o da regole di risoluzione dei conflitti.
+Bucardo è un esempio di questo tipo di replica.
     </para>
    </listitem>
   </varlistentry>
 
   <varlistentry>
-   <term>Synchronous Multimaster Replication</term>
+   <term>Replica multimaster sincrona</term>
    <listitem>
 
     <para>
-     In synchronous multimaster replication, each server can accept
-     write requests, and modified data is transmitted from the
-     original server to every other server before each transaction
-     commits.  Heavy write activity can cause excessive locking,
-     leading to poor performance.  In fact, write performance is
-     often worse than that of a single server.  Read requests can
-     be sent to any server.  Some implementations use shared disk
-     to reduce the communication overhead.  Synchronous multimaster
-     replication is best for mostly read workloads, though its big
-     advantage is that any server can accept write requests &mdash;
-     there is no need to partition workloads between master and
-     standby servers, and because the data changes are sent from one
-     server to another, there is no problem with non-deterministic
-     functions like <function>random()</function>.
+Nella replica multimaster sincrona, ogni server può accettare 
+richieste di scrittura, e i dati modificati vengono trasmessi dal server originale 
+ad ogni altro server prima di ogni commit di transazione. 
+Attività di scrittura pesante può causare un'eccessiva attività di locking, 
+generando prestazioni scarse. Infatti, le prestazioni di scrittura spesso 
+sono peggiori rispetto a quelle di un singolo server. Le richieste di lettura 
+possono essere mandate a qualsiasi server. Alcune implementazioni usano dischi condivisi
+per ridurre l'overhead di comunicazione. La replica multimaster sincrona
+è la migliore per carichi di lavoro che sono per la maggior parte in lettura, 
+sebbene il suo maggior vantaggio è che qualsiasi server accetta rischieste di scrittura - 
+non c'è bisogno di partizionale i carichi di lavoro tra i server master e standby,
+e dato che i cambiamenti dei dati vengono mandati da un server all'altro, 
+non c'è problema con funzioni non deterministiche come 
+<function>random()</function>.
     </para>
 
     <para>
-     <productname>PostgreSQL</productname> does not offer this type of replication,
-     though <productname>PostgreSQL</productname> two-phase commit (<xref
-     linkend="sql-prepare-transaction"/> and <xref
-     linkend="sql-commit-prepared"/>)
-     can be used to implement this in application code or middleware.
+<productname>PostgreSQL</productname> non offre questo tipo di replica,
+sebbene la commit a due fasi (<xref
+linkend="sql-prepare-transaction"/> e <xref
+linkend="sql-commit-prepared"/>)
+può essere usata per implementarlo nel codice dell'applicazione.
     </para>
    </listitem>
   </varlistentry>

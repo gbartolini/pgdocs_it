@@ -8,7 +8,7 @@ PostgreSQL documentation
  <refmeta>
   <refentrytitle>CREATE DATABASE</refentrytitle>
   <manvolnum>7</manvolnum>
-  <refmiscinfo>SQL - Istruzioni del linguaggio</refmiscinfo>
+  <refmiscinfo>SQL - Language Statements</refmiscinfo>
  </refmeta>
 
  <refnamediv>
@@ -37,57 +37,56 @@ CREATE DATABASE <replaceable class="parameter">name</replaceable>
   <title>Descrizione</title>
 
   <para>
-   <command>CREATE DATABASE</command> creates a new
+   <command>CREATE DATABASE</command> crea un nuovo
    <productname>PostgreSQL</productname> database.
   </para>
 
   <para>
-   To create a database, you must be a superuser or have the special
-   <literal>CREATEDB</literal> privilege.
-   See <xref linkend="sql-createuser"/>.
+   Per creare un database, bisogna essere un superutente o bisogna avere il privilegio
+   <literal>CREATEDB</literal> .
+   Si veda <xref linkend="sql-createuser"/>.
   </para>
 
   <para>
-   Normally, the creator becomes the owner of the new database.
-   Superusers can create databases owned by other users, by using the
-   <literal>OWNER</literal> clause. They can even create databases owned by
-   users with no special privileges. Non-superusers with <literal>CREATEDB</literal>
-   privilege can only create databases owned by themselves.
+   Normalmente, il creatore diventa proprietario del nuovo database.
+   I superutenti possono creare database di proprietà di altri utenti, utilizzando la clausola 
+   <literal>OWNER</literal> . Essi possono anche creare database di proprietà di utenti
+   senza privilegi particolari. I non super utenti con il privilegio di <literal>CREATEDB</literal>
+   possono solo creare database di loro proprietà.
   </para>
 
   <para>
-   By default, the new database will be created by cloning the standard
-   system database <literal>template1</literal>.  A different template can be
-   specified by writing <literal>TEMPLATE
-   <replaceable class="parameter">name</replaceable></literal>.  In particular,
-   by writing <literal>TEMPLATE template0</literal>, you can create a virgin
-   database containing only the standard objects predefined by your
-   version of <productname>PostgreSQL</productname>.  This is useful
-   if you wish to avoid copying
-   any installation-local objects that might have been added to
+   Con l'impostazione predefinita, il nuovo database sarà creato attraverso la clonazione del database 
+   standard di sistema <literal>template1</literal>.  Un template diverso può essere
+   specificato scrivendo <literal>TEMPLATE
+   <replaceable class="parameter">name</replaceable></literal>.  In particolare,
+   scrivendo <literal>TEMPLATE template0</literal>, è possibile creare un database vergine
+   che contiene solo gli oggetti standard predefiniti dalla
+   versione <productname>PostgreSQL</productname>.  Questo è utile   se si vuole evitare di copiare gli oggetti
+   di installazione locale che potrebbero essere stati aggiunti a 
    <literal>template1</literal>.
   </para>
  </refsect1>
 
  <refsect1>
-  <title>Parameters</title>
+  <title>Parametri</title>
 
     <variablelist>
      <varlistentry>
       <term><replaceable class="parameter">name</replaceable></term>
       <listitem>
        <para>
-        The name of a database to create.
+        Il nome del database da creare.
        </para>
       </listitem>
      </varlistentry>
      <varlistentry>
-      <term><replaceable class="parameter">use_name</replaceable></term>
+      <term><replaceable class="parameter">user_name</replaceable></term>
       <listitem>
        <para>
-        The name of the database user who will own the new database,
-        or <literal>DEFAULT</literal> to use the default (namely, the
-        user executing the command).
+        Il nome dell'utente del database che sarà propietario del nuovo database,
+        o <literal>DEFAULT</literal> per usare il predefinito (cioè l'utente 
+        che esegue il comando).
        </para>
       </listitem>
      </varlistentry>
@@ -95,8 +94,8 @@ CREATE DATABASE <replaceable class="parameter">name</replaceable>
       <term><replaceable class="parameter">template</replaceable></term>
       <listitem>
        <para>
-        The name of the template from which to create the new database,
-        or <literal>DEFAULT</literal> to use the default template
+        Il nome del template da cui creare il nuovo database,
+        o <literal>DEFAULT</literal> per utilizzare il template predefinito
         (<literal>template1</literal>).
        </para>
       </listitem>
@@ -105,14 +104,14 @@ CREATE DATABASE <replaceable class="parameter">name</replaceable>
       <term><replaceable class="parameter">encoding</replaceable></term>
       <listitem>
        <para>
-        Character set encoding to use in the new database.  Specify
-        a string constant (e.g., <literal>'SQL_ASCII'</literal>),
-        or an integer encoding number, or <literal>DEFAULT</literal>
-        to use the default encoding (namely, the encoding of the
-        template database). The character sets supported by the
-        <productname>PostgreSQL</productname> server are described in
-        <xref linkend="multibyte-charset-supported"/>. See below for
-        additional restrictions.
+        La codifica dei caratteri impostati da utilizzare nel nuovo database. Specificare
+        una stringa costante (ad esempio, <literal>"SQL_ASCII"</literal>),
+        o un numero intero corrispondente al tipo di codifica, o <literal>DEFAULT</literal>
+        per usare la codifica predefinita (cioè, la codifica del database template).
+        Il set di caratteri supportati dal server
+        <productname>PostgreSQL</productname> sono descritti in
+        <xref linkend="multibyte-charset-supported"/>. (Si veda sotto per le altre restrizioni).
+
        </para>
       </listitem>
      </varlistentry>
@@ -120,11 +119,11 @@ CREATE DATABASE <replaceable class="parameter">name</replaceable>
       <term><replaceable class="parameter">lc_collate</replaceable></term>
       <listitem>
        <para>
-        Collation order (<literal>LC_COLLATE</literal>) to use in the new database.
-        This affects the sort order applied to strings, e.g. in queries with
-        ORDER BY, as well as the order used in indexes on text columns.
-        The default is to use the collation order of the template database.
-        See below for additional restrictions.
+        Ordine di confronto (<literal>LC_COLLATE</literal>) da utilizzare nel nuovo database.
+        Questo influenza il tipo di ordinamento applicato a stringhe, ad esempio, nelle query con 
+        ORDER BY, così come l'ordine adottato negli indici su colonne di testo.
+        Il predefinito utilizza l'ordine di confronto del database template.
+        (Si veda sotto per le altre restrizioni).
        </para>
       </listitem>
      </varlistentry>
@@ -132,10 +131,10 @@ CREATE DATABASE <replaceable class="parameter">name</replaceable>
       <term><replaceable class="parameter">lc_ctype</replaceable></term>
       <listitem>
        <para>
-        Character classification (<literal>LC_CTYPE</literal>) to use in the new
-        database. This affects the categorization of characters, e.g. lower,
-        upper and digit. The default is to use the character classification of
-        the template database. See below for additional restrictions.
+        Tipo di classificazione (<literal>LC_CTYPE</literal>) da utilizzare nel nuovo
+        database. Questo riguarda la categorizzazione di caratteri, ad esempio, inferiore,
+        superiore e cifre. Il predefinito utilizza la classificazione dei caratteri 
+        del database template. (Si veda sotto per le altre restrizioni).
        </para>
       </listitem>
      </varlistentry>
@@ -143,13 +142,13 @@ CREATE DATABASE <replaceable class="parameter">name</replaceable>
       <term><replaceable class="parameter">tablespace</replaceable></term>
       <listitem>
        <para>
-        The name of the tablespace that will be associated with the
-        new database, or <literal>DEFAULT</literal> to use the
-        template database's tablespace. This
-        tablespace will be the default tablespace used for objects
-        created in this database. See
+        Il nome del tablespace che sarà associato al 
+        nuovo database, o <literal>DEFAULT</literal> che utilizza il
+        tablesapce del database template. Questo tablespace
+        sarà il tablespace predefinito utilizzato per oggetti
+        creati in questo database. Si veda
         <xref linkend="sql-createtablespace"/>
-        for more information.
+        per ulteriori informazioni.
        </para>
       </listitem>
      </varlistentry>
@@ -158,92 +157,71 @@ CREATE DATABASE <replaceable class="parameter">name</replaceable>
       <term><replaceable class="parameter">connlimit</replaceable></term>
       <listitem>
        <para>
-        How many concurrent connections can be made
-        to this database.  -1 (the default) means no limit.
+        Quante connessioni simultanee possono essere fatte 
+        in questo database. -1 (il predefinito) indica nessun limite.
        </para>
       </listitem>
      </varlistentry>
     </variablelist>
 
   <para>
-   Optional parameters can be written in any order, not only the order
-   illustrated above.
-  </para>
+   I parametri opzionali possono essere scritti in qualsiasi ordine,
+   non solo nell'ordine sopra illustrato.  </para>
  </refsect1>
 
  <refsect1>
-  <title>Notes</title>
+  <title>Note</title>
 
    <para>
-    <command>CREATE DATABASE</command> cannot be executed inside a transaction
-    block.
+    <command>CREATE DATABASE</command> non può essere eseguito all'interno di un blocco di transazione.
    </para>
 
    <para>
-    Errors along the line of <quote>could not initialize database directory</quote>
-    are most likely related to insufficient permissions on the data
-    directory, a full disk, or other file system problems.
+    Errori del tipo <quote>could not initialize database directory(Impossibile inizializzare directory del database)</quote>
+    più probabilmente sono legati alle autorizzazioni insufficienti nella directory di dati, o ad un disco pieno, o altri problemi di file system.
    </para>
 
    <para>
-    Use <xref linkend="sql-dropdatabase"/> to remove a database.
+    Si usa il comando <xref linkend="sql-dropdatabase"/> per rimuovere un database.
    </para>
 
    <para>
-    The program <xref linkend="app-createdb"/> is a
-    wrapper program around this command, provided for convenience.
+    Il programma <xref linkend="app-createdb"/> è un programma wrapper eseguito con questo comando, che viene fornito per comodità.
    </para>
 
   <para>
-   Although it is possible to copy a database other than <literal>template1</literal>
-   by specifying its name as the template, this is not (yet) intended as
-   a general-purpose <quote><command>COPY DATABASE</command></quote> facility.
-   The principal limitation is that no other sessions can be connected to
-   the template database while it is being copied.  <command>CREATE
-   DATABASE</command> will fail if any other connection exists when it starts;
-   otherwise, new connections to the template database are locked out
-   until <command>CREATE DATABASE</command> completes.
-   See <xref linkend="manage-ag-templatedbs"/> for more information.
+   Anche se è possibile copiare un database diverso dal <literal>template1</literal>
+   specificando il proprio nome come il template, questo non è (ancora) inteso come un generico impianto di <quote><command>COPY DATABASE</command></quote>.
+   Il principale limite è che nessuna delle altre sessioni può essere connessa al database template mentre viene copiato.  <command>CREATE
+   DATABASE</command> non riuscirà ad essere eseguito, se quando inizia esiste un altro collegamento con altre sessioni ; in caso contrario, le nuove connessioni al database template vengono bloccate fino a che il comando  <command>CREATE DATABASE</command> sarà completato.
+   Si veda <xref linkend="manage-ag-templatedbs"/> per maggiori informazioni.
   </para>
 
   <para>
-   The character set encoding specified for the new database must be
-   compatible with the chosen locale settings (<literal>LC_COLLATE</literal> and
-   <literal>LC_CTYPE</literal>).  If the locale is <literal>C</literal> (or equivalently
-   <literal>POSIX</literal>), then all encodings are allowed, but for other
-   locale settings there is only one encoding that will work properly.
-   (On Windows, however, UTF-8 encoding can be used with any locale.)
-   <command>CREATE DATABASE</command> will allow superusers to specify
-   <literal>SQL_ASCII</literal> encoding regardless of the locale settings,
-   but this choice is deprecated and may result in misbehavior of
-   character-string functions if data that is not encoding-compatible
-   with the locale is stored in the database.
+   La codifica del set di caratteri specificati per il nuovo database devono essere compatibili con le impostazioni locali (<literal>LC_COLLATE</literal> e
+   <literal>LC_CTYPE</literal>).  Se il locale è <literal>C</literal> (o a livello uguale
+   <literal>POSIX</literal>), allora tutte le codifiche sono ammesse, ma per le impostazioni di altri editor sarà una sola la codifica che funzionerà correttamente. (Su Windows, invece, la codifica UTF-8 può essere utilizzata in qualsiasi paese).
+   <command>CREATE DATABASE</command> permetterà ai superutenti di specificare la codifica
+   <literal>SQL_ASCII</literal> indipendentemente dalle impostazioni locali, ma questa scelta è obsoleta e potrebbe portare a comportamenti scorretti delle funzioni di carattere-string, se i dati, la cui codifica non è compatibile con il locale, sono memorizzati nel database.
   </para>
 
   <para>
-   The encoding and locale settings must match those of the template database,
-   except when <literal>template0</literal> is used as template.  This is because
-   other databases might contain data that does not match the specified
-   encoding, or might contain indexes whose sort ordering is affected by
-   <literal>LC_COLLATE</literal> and <literal>LC_CTYPE</literal>.  Copying such data would
-   result in a database that is corrupt according to the new settings.
-   <literal>template0</literal>, however, is known to not contain any data or
-   indexes that would be affected.
+   La codifica e le impostazioni locali devono corrispondere a quelle del database template, tranne quando il <literal>template0</literal> è usato come template.  Questo perché altri database potrebbero contenere dati che non corrispondono alla codifica specificata, o potrebbero contenere gli indici il cui ordinamento è influenzato da
+   <literal>LC_COLLATE</literal> e <literal>LC_CTYPE</literal>.  Copiare dati avrebbe come risultato un database che si modifica seguendo le nuove impostazioni.
+   <literal>template0</literal>, tuttavia, è noto per non contenere tutti i dati o indici che potrebbero interessare.
   </para>
 
   <para>
-   The <literal>CONNECTION LIMIT</literal> option is only enforced approximately;
-   if two new sessions start at about the same time when just one
-   connection <quote>slot</quote> remains for the database, it is possible that
-   both will fail.  Also, the limit is not enforced against superusers.
+   L'opzione <literal>CONNECTION LIMIT</literal> è eseguita solo parzialmente; se due nuove sessioni partono da circa lo stesso tempo di cui solo una connessione <quote>slot</quote> rimane per il database, è possibile che ambedue abbiano esito negativo. Inoltre, il limite non viene applicato per il superutente.
+
   </para>
  </refsect1>
 
- <refsect1>
-  <title>Examples</title>
+<refsect1>
+  <title>Esempi</title>
 
   <para>
-   To create a new database:
+   Per creare un nuovo database:
 
 <programlisting>
 CREATE DATABASE lusiadas;
@@ -251,8 +229,8 @@ CREATE DATABASE lusiadas;
   </para>
 
   <para>
-   To create a database <literal>sales</literal> owned by user <literal>salesapp</literal>
-   with a default tablespace of <literal>salesspace</literal>:
+   Per creare un database <literal>sales</literal> di proprietà dell'utente <literal>salesapp</literal>
+   con un tablespace predefinito di <literal>salesspace</literal>:
 
 <programlisting>
 CREATE DATABASE sales OWNER salesapp TABLESPACE salesspace;
@@ -260,37 +238,34 @@ CREATE DATABASE sales OWNER salesapp TABLESPACE salesspace;
   </para>
 
   <para>
-   To create a database <literal>music</literal> which supports the ISO-8859-1
-   character set:
+   Per creare un database <literal>music</literal> che supporta il set di caratteri ISO-8859-1:
 
 <programlisting>
 CREATE DATABASE music ENCODING 'LATIN1' TEMPLATE template0;
 </programlisting>
 
-   In this example, the <literal>TEMPLATE template0</literal> clause would only
-   be required if <literal>template1</literal>'s encoding is not ISO-8859-1.
-   Note that changing encoding might require selecting new
-   <literal>LC_COLLATE</literal> and <literal>LC_CTYPE</literal> settings as well.
+   In questo esempio, il <literal>TEMPLATE template0</literal> sarebbe clausola necessaria solo se
+       la codifica di<literal>template1</literal> non è ISO-8859-1.
+   Si noti che il cambiamento della codifica potrebbe richiedere la selezione di nuove impostazioni
+   <literal>LC_COLLATE</literal> e <literal>LC_CTYPE</literal>. 
   </para>
  </refsect1>
 
  <refsect1>
-  <title>Compatibility</title>
+  <title>Compatibilità</title>
 
   <para>
-   There is no <command>CREATE DATABASE</command> statement in the SQL
-   standard.  Databases are equivalent to catalogs, whose creation is
-   implementation-defined.
+   Non è presente l'istruzione <command>CREATE DATABASE</command> nello standard SQL.
+   I database sono equivalenti a cataloghi, la cui creazione è definita dall'implementazione.
   </para>
  </refsect1>
 
  <refsect1>
-  <title>See Also</title>
+  <title>Si veda anche</title>
 
   <simplelist type="inline">
    <member><xref linkend="sql-alterdatabase"/></member>
    <member><xref linkend="sql-dropdatabase"/></member>
   </simplelist>
  </refsect1>
-
 </refentry>

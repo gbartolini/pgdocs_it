@@ -3843,17 +3843,17 @@ che non sono state scritte completamente, che farà anche fallire il comando <co
    </sect1>
 
    <sect1 id="runtime-config-statistics">
-    <title>Run-Time Statistics</title>
+    <title>Statistiche durante l'esecuzione</title>
 
     <sect2 id="runtime-config-statistics-collector">
-     <title>Query and Index Statistics Collector</title>
+     <title>Collettore di statistiche di query e indici</title>
 
      <para>
-      These parameters control server-wide statistics collection features.
-      When statistics collection is enabled, the data that is produced can be
-      accessed via the <structname>pg_stat</structname> and
-      <structname>pg_statio</structname> family of system views.
-      Refer to <xref linkend="monitoring"/> for more information.
+Questi parametri controllano insiemi di statistiche a livello di serveri. 
+Quando la raccolta di  statistiche è abilitata, i dati che vengono prodotti possono essere
+acceduti attraverso le viste di sistema <structname>pg_stat</structname>
+e <structname>pg_statio</structname>. 
+Ci si riferisca a <xref linkend="monitoring"/> per maggiori informazioni.
      </para>
 
      <variablelist>
@@ -3861,18 +3861,18 @@ che non sono state scritte completamente, che farà anche fallire il comando <co
      <varlistentry id="guc-track-activities" xreflabel="track_activities">
       <term><varname>track_activities</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>track_activities</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>track_activities</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Enables the collection of information on the currently
-        executing command of each session, along with the time when
-        that command began execution. This parameter is on by
-        default. Note that even when enabled, this information is not
-        visible to all users, only to superusers and the user owning
-        the session being reported on, so it should not represent a
-        security risk.
-        Only superusers can change this setting.
+Abilita la raccolta di informazioni sul comando attualmente
+in esecuzione di ogni sessione, così come il momento in cui quel comando
+ha iniziato l'esecuzione. Queso parametro è attivo in maniera predefinita.
+Si noti che anche quando abilitato, quest'informazione non è visibile a tutti gli utenti,
+solo ai superutenti e a quelli proprietari della sessione 
+su cui viene riportata, quindi non dovrebbe rappresentare un rischio di 
+sicurezza.
+Solo i superutenti possono cambiare questo valore.
        </para>
       </listitem>
      </varlistentry>
@@ -3880,15 +3880,14 @@ che non sono state scritte completamente, che farà anche fallire il comando <co
      <varlistentry id="guc-track-activity-query-size" xreflabel="track_activity_query_size">
       <term><varname>track_activity_query_size</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>track_activity_query_size</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>track_activity_query_size</varname></primary>
       </indexterm>
       <listitem>
        <para>
-       Specifies the number of bytes reserved to track the currently
-       executing command for each active session, for the
-       <structname>pg_stat_activity</structname>.<structfield>current_query</structfield> field.
-       The default value is 1024. This parameter can only be set at server
-       start.
+Specifica in numero di byte riservati per tenere traccia del comando correntemente in 
+esecuzione per ogni sessione attiva, per il campo 
+<structname>pg_stat_activity</structname>.<structfield>current_query</structfield>. 
+Il valore predefinito è 1024. Questo parametro può essere impostato solo all'avvio del server.
        </para>
       </listitem>
      </varlistentry>
@@ -3896,14 +3895,14 @@ che non sono state scritte completamente, che farà anche fallire il comando <co
      <varlistentry id="guc-track-counts" xreflabel="track_counts">
       <term><varname>track_counts</varname> (<type>boolean</type>)</term>
       <indexterm>
-       <primary><varname>track_counts</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>track_counts</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Enables collection of statistics on database activity.
-        This parameter is on by default, because the autovacuum
-        daemon needs the collected information.
-        Only superusers can change this setting.
+Abilita la raccolta di statistiche sull'attività del database.
+Questo parametro è attivo in maniera predefinita, perchè il demone autovacuum
+ha bisogno delle informazioni raccolte.
+Solo i superutenti possono cambiare quest'impostazione.
        </para>
       </listitem>
      </varlistentry>
@@ -4432,22 +4431,23 @@ quando si ripristinano definizioni di funzione da un dump.
        <primary>livello di isolamento di transazione</primary>
       </indexterm>
       <indexterm>
-       <primary><varname>default_transaction_isolation</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>default_transaction_isolation</varname></primary>
       </indexterm>
       <term><varname>default_transaction_isolation</varname> (<type>enum</type>)</term>
       <listitem>
        <para>
-        Each SQL transaction has an isolation level, which can be
-        either <quote>read uncommitted</quote>, <quote>read
-        committed</quote>, <quote>repeatable read</quote>, or
-        <quote>serializable</quote>.  This parameter controls the
-        default isolation level of each new transaction. The default
-        is <quote>read committed</quote>.
+Ogni transazione SQL ha un livello di isolamento, che può essere
+o <quote>read uncommitted</quote>, <quote>read
+committed</quote>, <quote>repeatable read</quote> o
+<quote>serializable</quote>.  
+Questo parametro controlla il livello di isolamento predefinito 
+di ogni nuova transazione. Il valore predefinito è
+<quote>read committed</quote>.
        </para>
 
        <para>
-        Consult <xref linkend="mvcc"/> and <xref
-        linkend="sql-set-transaction"/> for more information.
+Consultare <xref linkend="mvcc"/> e <xref
+linkend="sql-set-transaction"/> per maggiori infomazioni.
        </para>
       </listitem>
      </varlistentry>
@@ -4457,19 +4457,19 @@ quando si ripristinano definizioni di funzione da un dump.
        <primary>read-only transaction</primary>
       </indexterm>
       <indexterm>
-       <primary><varname>default_transaction_read_only</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>default_transaction_read_only</varname></primary>
       </indexterm>
 
       <term><varname>default_transaction_read_only</varname> (<type>boolean</type>)</term>
       <listitem>
        <para>
-        A read-only SQL transaction cannot alter non-temporary tables.
-        This parameter controls the default read-only status of each new
-        transaction. The default is <literal>off</literal> (read/write).
+Una transazione SQL in sola lettura non può modificare tabelle non temporanee.
+Questo parametro controlla lo stato predefinito di sola lettura di ogni nuova transazione.
+Il valore predefinito è <literal>off</literal> (read/write).
        </para>
 
        <para>
-        Consult <xref linkend="sql-set-transaction"/> for more information.
+Consultare <xref linkend="sql-set-transaction"/> per maggiori informazioni.
        </para>
       </listitem>
      </varlistentry>
@@ -4477,17 +4477,17 @@ quando si ripristinano definizioni di funzione da un dump.
      <varlistentry id="guc-session-replication-role" xreflabel="session_replication_role">
       <term><varname>session_replication_role</varname> (<type>enum</type>)</term>
       <indexterm>
-       <primary><varname>session_replication_role</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>session_replication_role</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Controls firing of replication-related triggers and rules for the
-        current session.  Setting this variable requires
-        superuser privilege and results in discarding any previously cached
-        query plans.  Possible values are <literal>origin</literal> (the default),
-        <literal>replica</literal> and <literal>local</literal>.
-        See <xref linkend="sql-altertable"/> for
-        more information.
+Controlla l'attivazione di trigger relative alla replica e regole per la sessione
+corrente. Impostare questa variabile richiede privilegi di superutente
+e risulta nello scartare qualsiasi piano di query messo in cache 
+precedentemente. I valori possibili sono <literal>origin</literal> (il predefinito),
+<literal>replica</literal> e <literal>local</literal>.
+Si veda <xref linkend="sql-altertable"/> per 
+maggiori informazioni.
        </para>
       </listitem>
      </varlistentry>
@@ -4495,21 +4495,21 @@ quando si ripristinano definizioni di funzione da un dump.
      <varlistentry id="guc-statement-timeout" xreflabel="statement_timeout">
       <term><varname>statement_timeout</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>statement_timeout</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>statement_timeout</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Abort any statement that takes over the specified number of
-        milliseconds, starting from the time the command arrives at the server
-        from the client.  If <varname>log_min_error_statement</varname> is set to
-        <literal>ERROR</literal> or lower, the statement that timed out will also be
-        logged.  A value of zero (the default) turns this off.
+Annulla qualsiasi istruzione che ci mette più dello specificato numero di millisecondi,
+partendo dal tempo in cui il comando arriva al server dal client. 
+Se <varname>log_min_error_statement</varname> è impostato a 
+<literal>ERROR</literal> o più basso, saranno messe nel log anche le istruzioni che sono 
+andate in timeout. Un valore di zero (il predefinito) disabilita questo.
        </para>
 
        <para>
-        Setting <varname>statement_timeout</varname> in
-        <filename>postgresql.conf</filename> is not recommended because it
-        affects all sessions.
+Impostare <varname>statement_timeout</varname> in
+<filename>postgresql.conf</filename>non è raccomandato perchè ha effetto su tutte
+le sessioni.
        </para>
       </listitem>
      </varlistentry>
@@ -4517,7 +4517,7 @@ quando si ripristinano definizioni di funzione da un dump.
      <varlistentry id="guc-vacuum-freeze-table-age" xreflabel="vacuum_freeze_table_age">
       <term><varname>vacuum_freeze_table_age</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>vacuum_freeze_table_age</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>vacuum_freeze_table_age</varname></primary>
       </indexterm>
       <listitem>
        <para>
@@ -4538,20 +4538,20 @@ quando si ripristinano definizioni di funzione da un dump.
      <varlistentry id="guc-vacuum-freeze-min-age" xreflabel="vacuum_freeze_min_age">
       <term><varname>vacuum_freeze_min_age</varname> (<type>integer</type>)</term>
       <indexterm>
-       <primary><varname>vacuum_freeze_min_age</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>vacuum_freeze_min_age</varname></primary>
       </indexterm>
       <listitem>
        <para>
         Specifies the cutoff age (in transactions) that <command>VACUUM</command>
         should use to decide whether to replace transaction IDs with
         <literal>FrozenXID</literal> while scanning a table.
-        The default is 50 million transactions.  Although
-        users can set this value anywhere from zero to one billion,
-        <command>VACUUM</command> will silently limit the effective value to half
-        the value of <xref linkend="guc-autovacuum-freeze-max-age"/>, so
-        that there is not an unreasonably short time between forced
-        autovacuums.  For more information see <xref
-        linkend="vacuum-for-wraparound"/>.
+Il valore predefinito è 50 milioni di transazioni. Sebbene 
+gli utenti possano impostare questo valore da zero a un bilione,
+<command>VACUUM</command> limiterà silenziosamente l'effettivo valore a metà del 
+valore di <xref linkend="guc-autovacuum-freeze-max-age"/>, così che non
+ci sia un tempo esageratamente breve tra autovacuum forzati.
+Per maggiori informazioni si veda <xref
+linkend="vacuum-for-wraparound"/>.
        </para>
       </listitem>
      </varlistentry>
@@ -4559,16 +4559,16 @@ quando si ripristinano definizioni di funzione da un dump.
      <varlistentry id="guc-bytea-output" xreflabel="bytea_output">
       <term><varname>bytea_output</varname> (<type>enum</type>)</term>
       <indexterm>
-       <primary><varname>bytea_output</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>bytea_output</varname> configuration parameter</primary>
       </indexterm>
       <listitem>
        <para>
-        Sets the output format for values of type <type>bytea</type>.
-        Valid values are <literal>hex</literal> (the default)
-        and <literal>escape</literal> (the traditional PostgreSQL
-        format).  See <xref linkend="datatype-binary"/> for more
-        information.  The <type>bytea</type> type always
-        accepts both formats on input, regardless of this setting.
+Imposta il formato di output per valori di tipo <type>bytea</type>.
+Valori validi sono <literal>hex</literal> (predefinito)
+e <literal>escape</literal> (il formato tradizionale di PostgreSQL).
+Si veda <xref linkend="datatype-binary"/> per maggiori 
+informazioni. Il tipo <type>bytea</type> accetta sempre 
+entrambi i formati in input, malgrado quest'impostazione.
        </para>
       </listitem>
      </varlistentry>
@@ -4576,26 +4576,26 @@ quando si ripristinano definizioni di funzione da un dump.
      <varlistentry id="guc-xmlbinary" xreflabel="xmlbinary">
       <term><varname>xmlbinary</varname> (<type>enum</type>)</term>
       <indexterm>
-       <primary><varname>xmlbinary</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>xmlbinary</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets how binary values are to be encoded in XML.  This applies
-        for example when <type>bytea</type> values are converted to
-        XML by the functions <function>xmlelement</function> or
-        <function>xmlforest</function>.  Possible values are
-        <literal>base64</literal> and <literal>hex</literal>, which
-        are both defined in the XML Schema standard.  The default is
-        <literal>base64</literal>.  For further information about
-        XML-related functions, see <xref linkend="functions-xml"/>.
+Imposta come devono essere codificati i valori binari in XML. Questo di applica 
+per esempio quando i valori <type>bytea</type> sono convertiti in
+XMLdalla funzione <function>xmlelement</function> o
+<function>xmlforest</function>. I valori possibili sono
+<literal>base64</literal> e <literal>hex</literal>, che 
+sono entrambi definiti nello standard XML Schema. Il valore predefinito è
+<literal>base64</literal>. Per informazioni sulle funzioni XML correlate,
+si veda <xref linkend="functions-xml"/>.
        </para>
 
        <para>
-        The actual choice here is mostly a matter of taste,
-        constrained only by possible restrictions in client
-        applications.  Both methods support all possible values,
-        although the hex encoding will be somewhat larger than the
-        base64 encoding.
+La scelta effettiva qui è una questione di gusti, 
+vincolata solo da possibili restrizioni nelle applicazioni client.
+Entrambi i metodi supportano tutti i possibili valori, 
+benchè la codifica hex sarà in qualche modo più grande rispetto alla codifica
+base64.
        </para>
       </listitem>
      </varlistentry>
@@ -4603,27 +4603,25 @@ quando si ripristinano definizioni di funzione da un dump.
      <varlistentry id="guc-xmloption" xreflabel="xmloption">
       <term><varname>xmloption</varname> (<type>enum</type>)</term>
       <indexterm>
-       <primary><varname>xmloption</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>xmloption</varname></primary>
       </indexterm>
       <indexterm>
        <primary><varname>SET XML OPTION</varname></primary>
       </indexterm>
       <indexterm>
-       <primary>XML option</primary>
+       <primary>opzione XML</primary>
       </indexterm>
       <listitem>
        <para>
-        Sets whether <literal>DOCUMENT</literal> or
-        <literal>CONTENT</literal> is implicit when converting between
-        XML and character string values.  See <xref
-        linkend="datatype-xml"/> for a description of this.  Valid
-        values are <literal>DOCUMENT</literal> and
-        <literal>CONTENT</literal>.  The default is
-        <literal>CONTENT</literal>.
+Imposta se <literal>DOCUMENT</literal> o  <literal>CONTENT</literal> 
+sono impliciti quando si converte tra XML e valori stringa di caratteri.
+Si veda <xref  linkend="datatype-xml"/> per una descrizione. Valori validi 
+sono <literal>DOCUMENT</literal> e <literal>CONTENT</literal>.
+Il valore predefinito è <literal>CONTENT</literal>.
        </para>
 
        <para>
-        According to the SQL standard, the command to set this option is
+In conformità allo standard SQL, il comando per impostare quest'opzione è
 <synopsis>
 SET XML OPTION { DOCUMENT | CONTENT };
 </synopsis>
@@ -4635,33 +4633,33 @@ SET XML OPTION { DOCUMENT | CONTENT };
      </variablelist>
     </sect2>
      <sect2 id="runtime-config-client-format">
-     <title>Locale and Formatting</title>
+     <title>Locale e formattazione</title>
 
      <variablelist>
 
      <varlistentry id="guc-datestyle" xreflabel="DateStyle">
       <term><varname>DateStyle</varname> (<type>string</type>)</term>
       <indexterm>
-       <primary><varname>DateStyle</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>DateStyle</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets the display format for date and time values, as well as the
-        rules for interpreting ambiguous date input values. For
-        historical reasons, this variable contains two independent
-        components: the output format specification (<literal>ISO</literal>,
-        <literal>Postgres</literal>, <literal>SQL</literal>, or <literal>German</literal>)
-        and the input/output specification for year/month/day ordering
-        (<literal>DMY</literal>, <literal>MDY</literal>, or <literal>YMD</literal>). These
-        can be set separately or together. The keywords <literal>Euro</literal>
-        and <literal>European</literal> are synonyms for <literal>DMY</literal>; the
-        keywords <literal>US</literal>, <literal>NonEuro</literal>, and
-        <literal>NonEuropean</literal> are synonyms for <literal>MDY</literal>. See
-        <xref linkend="datatype-datetime"/> for more information. The
-        built-in default is <literal>ISO, MDY</literal>, but
-        <application>initdb</application> will initialize the
-        configuration file with a setting that corresponds to the
-        behavior of the chosen <varname>lc_time</varname> locale.
+Impostare il formato per la visualizzazione dei valori di data e tempo, così come  
+le regole per l'interpretazione di valori di date in input ambigue. Per
+ragioni storiche, questa variabile contiene due componenti indipendenti:
+la specificazione del formato di output  (<literal>ISO</literal>,
+<literal>Postgres</literal>, <literal>SQL</literal>, o <literal>German</literal>)
+e la specifica di input/output per l'ordine di anno/mese/giorno 
+(<literal>DMY</literal>, <literal>MDY</literal> o <literal>YMD</literal>). Questi
+possono essere impostati separatamente o insieme. Le parole chiave <literal>Euro</literal>
+e <literal>European</literal> sono sinonimi per <literal>DMY</literal>; le
+parole chiave <literal>US</literal>, <literal>NonEuro</literal> e 
+<literal>NonEuropean</literal> sono sinonimi per <literal>MDY</literal>. Si veda
+<xref linkend="datatype-datetime"/> per maggiori informazioni. Il valore
+incorporato predefinito è <literal>ISO, MDY</literal>, ma
+<application>initdb</application> inizializzerà il file di configurazione
+con un'impostazione che corrisponde al comportamento del locale scelto con
+<varname>lc_time</varname>.
        </para>
       </listitem>
      </varlistentry>
@@ -4669,14 +4667,15 @@ SET XML OPTION { DOCUMENT | CONTENT };
      <varlistentry id="guc-intervalstyle" xreflabel="IntervalStyle">
       <term><varname>IntervalStyle</varname> (<type>enum</type>)</term>
       <indexterm>
-       <primary><varname>IntervalStyle</varname> configuration parameter</primary>
+       <primary>Parametro di configurazione <varname>IntervalStyle</varname></primary>
       </indexterm>
       <listitem>
        <para>
-        Sets the display format for interval values.
-        The value <literal>sql_standard</literal> will produce
-        output matching <acronym>SQL</acronym> standard interval literals.
+Imposta il formato di visualizzazione per valori di intervallo.
+Il valore <literal>sql_standard</literal> produrrà
+corrispondente allo standard <acronym>SQL</acronym> per gli intervalli.
         The value <literal>postgres</literal> (which is the default) will produce
+Il valore <literal>postgres</literal>  (che è il predefinito) produrrà  
         output matching <productname>PostgreSQL</productname> releases prior to 8.4
         when the <xref linkend="guc-datestyle"/>
         parameter was set to <literal>ISO</literal>.

@@ -122,12 +122,13 @@ mentre il server primario è in esecuzione.
     <para>
      A modified version of shared hardware functionality is file system
      replication, where all changes to a file system are mirrored to a file
-     system residing on another computer.  The only restriction is that
-     the mirroring must be done in a way that ensures the standby server
-     has a consistent copy of the file system &mdash; specifically, writes
-     to the standby must be done in the same order as those on the master.
-     <productname>DRBD</productname> is a popular file system replication solution
-     for Linux.
+     system residing on another computer.  
+La sola restrizione è che 
+il mirroring deve essere fatto in modo da assicurare che il server standby abbia
+una copia consistente del file system - nello specifico, le scritture 
+sullo standby devono essere fatte nello stesso ordine di quelle sul master.
+<productname>DRBD</productname> è una soluzione popolare di replica con file system
+per Linux.
     </para>
 
 <!--
@@ -266,14 +267,14 @@ può essere usata per implementarlo nel codice dell'applicazione.
   </varlistentry>
 
   <varlistentry>
-   <term>Commercial Solutions</term>
+   <term>Soluzioni commerciali</term>
    <listitem>
 
     <para>
-     Because <productname>PostgreSQL</productname> is open source and easily
-     extended, a number of companies have taken <productname>PostgreSQL</productname>
-     and created commercial closed-source solutions with unique
-     failover, replication, and load balancing capabilities.
+Dato che <productname>PostgreSQL</productname> è open source e facilmente estendibile,  
+un certo numero di compagnie hanno usato <productname>PostgreSQL</productname>
+e creato soluzioni commerciali non open source con capacità di failover,
+replica e bilanciamento di carico particolari.
     </para>
    </listitem>
   </varlistentry>
@@ -281,12 +282,12 @@ può essere usata per implementarlo nel codice dell'applicazione.
  </variablelist>
 
  <para>
-  <xref linkend="high-availability-matrix"/> summarizes
-  the capabilities of the various solutions listed above.
+<xref linkend="high-availability-matrix"/> riassume
+le capacità delle varie soluzioni elencate sopra.
  </para>
 
  <table id="high-availability-matrix">
-  <title>High Availability, Load Balancing, and Replication Feature Matrix</title>
+  <title>Matrice delle caratteristice di alta disponibilità, bilanciamento di carico e replica</title>
   <tgroup cols="8">
    <thead>
     <row>
@@ -418,41 +419,41 @@ può essere usata per implementarlo nel codice dell'applicazione.
  </table>
 
  <para>
-  There are a few solutions that do not fit into the above categories:
+Ci sono alcune soluzioni che non appartengono alle categorie sopra:
  </para>
 
  <variablelist>
 
   <varlistentry>
-   <term>Data Partitioning</term>
+   <term>Partizionamento dei dati</term>
    <listitem>
 
     <para>
-     Data partitioning splits tables into data sets.  Each set can
-     be modified by only one server.  For example, data can be
-     partitioned by offices, e.g., London and Paris, with a server
-     in each office.  If queries combining London and Paris data
-     are necessary, an application can query both servers, or
-     master/standby replication can be used to keep a read-only copy
-     of the other office's data on each server.
+Il partizionamento dei dati divide le tabelle in insiemi di dati. Ogni insieme può 
+essere modificato solamente da un server. Per esempio, i dati possono essere
+partizionati per uffici, per esempio Londra e Parigi, con un server 
+in ogni ufficio. Se le query che combinano i dati di  Londra e Parigi  
+sono necessarie, un'applicazione può interrogare entrambi i server, o 
+è possibile usare la replica master/standby per mantenere una copia 
+in sola lettura dei dati dell'altro ufficio su ogni server.
     </para>
    </listitem>
   </varlistentry>
 
   <varlistentry>
-   <term>Multiple-Server Parallel Query Execution</term>
+   <term>Esecuzione parallela di query su più server</term>
    <listitem>
 
     <para>
-     Many of the above solutions allow multiple servers to handle multiple
-     queries, but none allow a single query to use multiple servers to
-     complete faster.  This solution allows multiple servers to work
-     concurrently on a single query.  It is usually accomplished by
-     splitting the data among servers and having each server execute its
-     part of the query and return results to a central server where they
-     are combined and returned to the user.  <productname>Pgpool-II</productname>
-     has this capability.  Also, this can be implemented using the
-     <productname>PL/Proxy</productname> tool set.
+Molte delle soluzioni presentate sopra permettono la gestione di molte query da parte
+di molti server, ma nessuna permette che una singola query usi molteplici server    
+per terminare più velocemente. Questa soluzione permette a molti server di funzionare 
+concorrentemente su una singola query. Di solito questo di ottiene 
+dividendo i dati tra i server e facendo si che ogni server esegua la sua parte 
+della query e restituisca i risultati al server centrale dove saranno combinati 
+e restituiti all'utente. <productname>Pgpool-II</productname>
+ha questa capacità. Inoltre, questo comportamento può essere implementato usando 
+l'insieme di strumenti <productname>PL/Proxy</productname>.
     </para>
 
    </listitem>
@@ -468,35 +469,35 @@ può essere usata per implementarlo nel codice dell'applicazione.
 
 
   <para>
-   Continuous archiving can be used to create a <firstterm>high
-   availability</firstterm> (HA) cluster configuration with one or more
-   <firstterm>standby servers</firstterm> ready to take over operations if the
-   primary server fails. This capability is widely referred to as
-   <firstterm>warm standby</firstterm> or <firstterm>log shipping</firstterm>.
+L'archiviazione continua può essere usate per creare un cluster ad <firstterm>alta
+disponibilità</firstterm> (HA) con uno o più
+<firstterm>server standby</firstterm> pronti a prendere il controllo delle operazioni se
+il server primario fallisce. Ci si riferisce comunemente a questa capacità con il termine
+<firstterm>warm standby</firstterm> o <firstterm>log shipping</firstterm>.
   </para>
 
   <para>
-   The primary and standby server work together to provide this capability,
-   though the servers are only loosely coupled. The primary server operates
-   in continuous archiving mode, while each standby server operates in
-   continuous recovery mode, reading the WAL files from the primary. No
-   changes to the database tables are required to enable this capability,
-   so it offers low administration overhead compared to some other
-   replication solutions. This configuration also has relatively low
-   performance impact on the primary server.
+I server primario e standby lavorano insieme per fornire questa capacità,
+sebbene i server siano accoppiati in maniera approssimativa. Il server primario opera
+in modalità di archiviazione continua, mentre ogni server di standby opera
+in modalità di recovery continua, leggendo i file WAL dal primario. Non è richiesto  
+nessun cambiamento  alle tabelle del database per abilitare questa capacità, 
+quindi offre un basso overhead di amministrazione comparato a qualche altra soluzione 
+di replica. Questa configurazione ha anche un impatto relativamente basso sulle 
+prestazioni del server primario.  
   </para>
 
   <para>
-   Directly moving WAL records from one database server to another
-   is typically described as log shipping. <productname>PostgreSQL</productname>
-   implements file-based log shipping, which means that WAL records are
-   transferred one file (WAL segment) at a time. WAL files (16MB) can be
-   shipped easily and cheaply over any distance, whether it be to an
-   adjacent system, another system at the same site, or another system on
-   the far side of the globe. The bandwidth required for this technique
-   varies according to the transaction rate of the primary server.
-   Record-based log shipping is also possible with streaming replication
-   (see <xref linkend="streaming-replication"/>).
+Muovere direttamente i record WAL da un database a un altro è tipicamente 
+descritto come log shipping. <productname>PostgreSQL</productname>
+implementa il log shipping basato sui file, che significa che i record WAL 
+vengono trasferiti un file (segmento WAL) alla volta. I file WAL  (16MB) 
+possono essere spediti facilmente e convenientemente a qualsiasi distanza, sia 
+un sistema adiacente, che un altro sistema nello stesso sito, o un altro sistema
+dall'altro lato del pianeta. La banda richiesta per questa tecnica 
+varia in accordo al ritmo di transazioni del server primario. 
+Il log shipping basato sui record è possibile anche tramite la replica streaming 
+(si veda <xref linkend="streaming-replication"/>).
   </para>
 
   <para>
@@ -513,16 +514,16 @@ può essere usata per implementarlo nel codice dell'applicazione.
   </para>
 
   <para>
-   Recovery performance is sufficiently good that the standby will
-   typically be only moments away from full
-   availability once it has been activated. As a result, this is called
-   a warm standby configuration which offers high
-   availability. Restoring a server from an archived base backup and
-   rollforward will take considerably longer, so that technique only
-   offers a solution for disaster recovery, not high availability.
-   A standby server can also be used for read-only queries, in which case
-   it is called a Hot Standby server. See <xref linkend="hot-standby"/> for
-   more information.
+Le prestazioni per il recovery sono sufficentemente buone e quindi 
+lo standby tipicamente sarà solo alcuni momenti indietro rispetto a una 
+completa disponibilità una volta che è statop attivato. Come risultato, 
+questa viene definita configurazione warm standby che offre alta 
+disponibilità. Ripristinare un server da un backup di base archiviato e
+fare un rollforward ci metterà considerevolmente di più, quindi questa tecnica 
+offre solamente una soluzione per il disaster recovery, non per l'alta disponibilità.
+Un server di standby può essere usato anche per query in sola lettura, nel qual caso
+è chiamato server Hot Standby. Si veda <xref linkend="hot-standby"/> per maggiori 
+informazioni.
   </para>
 
   <indexterm zone="high-availability">
@@ -553,35 +554,33 @@ può essere usata per implementarlo nel codice dell'applicazione.
    <title>Planning</title>
 
    <para>
-    It is usually wise to create the primary and standby servers
-    so that they are as similar as possible, at least from the
-    perspective of the database server.  In particular, the path names
-    associated with tablespaces will be passed across unmodified, so both
-    primary and standby servers must have the same mount paths for
-    tablespaces if that feature is used.  Keep in mind that if
-    <xref linkend="sql-createtablespace"/>
-    is executed on the primary, any new mount point needed for it must
-    be created on the primary and all standby servers before the command
-    is executed. Hardware need not be exactly the same, but experience shows
-    that maintaining two identical systems is easier than maintaining two
-    dissimilar ones over the lifetime of the application and system.
-    In any case the hardware architecture must be the same &mdash; shipping
-    from, say, a 32-bit to a 64-bit system will not work.
+Di solito è consigliato creare i server primario e standby 
+in modo che siano il più simili possibile, almeno dalla prospettiva
+del server database. In particolare, i nomi dei percorsi associati 
+ai tablespace saranno trasportati non modificati, quindi sia il server primario che  
+lo standby devono avere gli stessi percorsi di mount per i 
+tablespace se usano quella caratteristica. Si tenga a mente che se
+<xref linkend="sql-createtablespace"/>
+viene eseguita sul primario, qualsiasi  
+nuovo punto di mount necessario deve essere creato sul primario e su tutti gli 
+standby prima che venga eseguito il comando. L'hardware non deve essere esattamente lo stesso, 
+ma l'esperienza ci porta a dire che mantenere
+due sistemi identici è più facile che mantenerne due dissimili.
+In ogni caso l'architettura hardware deve essere la stessa - diciamo che lo shipping
+da un sistema a 32 bit ad uno a 64 bit non funzionerà.
    </para>
 
    <para>
-    In general, log shipping between servers running different major
-    <productname>PostgreSQL</productname> release
-    levels is not possible. It is the policy of the PostgreSQL Global
-    Development Group not to make changes to disk formats during minor release
-    upgrades, so it is likely that running different minor release levels
-    on primary and standby servers will work successfully. However, no
-    formal support for that is offered and you are advised to keep primary
-    and standby servers at the same release level as much as possible.
-    When updating to a new minor release, the safest policy is to update
-    the standby servers first &mdash; a new minor release is more likely
-    to be able to read WAL files from a previous minor release than vice
-    versa.
+In generale, il log shipping tra server che utilizzano diverse versioni maggiori di 
+<productname>PostgreSQL</productname> non è possibile. La politica del 
+PostgreSQL Global Development Group è di non cambiare i formati su disco 
+durante aggiornamenti a versioni minori, quindi probabilmente usare diverse versioni minori 
+sui server primario e standby funzionerà. Comunque, non viene fornito nessun supporto
+formale per questo e si è avvisati di tenere i server primario e standby  
+il più possibile allo stesso livello di versione. 
+Quando si aggiorna a una nuova versione minore, la politica più sicura è di aggiornare
+prima i server standby - una nuova versione minore probabilmente riuscirà 
+a leggere i file WAL da una versione minore precedente piuttosto che il vice versa.
    </para>
 
   </sect2>
@@ -684,23 +683,23 @@ può essere usata per implementarlo nel codice dell'applicazione.
    </para>
 
    <para>
-    You can use <varname>archive_cleanup_command</varname> to prune the archive of
-    files no longer needed by the standby.
+È possibile usare <varname>archive_cleanup_command</varname> per eliminare l'archivio di file
+non più necessari allo standby.
    </para>
 
    <para>
-    If you're setting up the standby server for high availability purposes,
-    set up WAL archiving, connections and authentication like the primary
-    server, because the standby server will work as a primary server after
-    failover. You will also need to set <varname>trigger_file</varname> to make
-    it possible to fail over.
-    If you're setting up the standby server for reporting
-    purposes, with no plans to fail over to it, <varname>trigger_file</varname>
-    is not required.
+Se si sta configurando il server standby per scopi di alta affidabilità,
+impostare l'archiviazione WAL, le connessioni e l'autenticazione come sul server,
+perchè il server standby funzionerà come server primario dopo il failover. 
+Si dovrà anche impostare <varname>trigger_file</varname> per rendere possibile 
+il failover.
+Se si sta impostando il server standby per scopi di reportistica,
+senza piani per il failover, allora <varname>trigger_file</varname>
+non è necessario.
    </para>
 
    <para>
-    A simple example of a <filename>recovery.conf</filename> is:
+Un esempio semplice di una <filename>recovery.conf</filename> è:
 <programlisting>
 standby_mode = 'on'
 primary_conninfo = 'host=192.168.1.50 port=5432 user=foo password=foopass'
@@ -710,126 +709,125 @@ trigger_file = '/path/to/trigger_file'
    </para>
 
    <para>
-    You can have any number of standby servers, but if you use streaming
-    replication, make sure you set <varname>max_wal_senders</varname> high enough in
-    the primary to allow them to be connected simultaneously.
+È possibile avere qualsiasi numero di server standby, ma se si usa la replica streaming, 
+assicurarsi di impostare <varname>max_wal_senders</varname> ad un valore abbastanza alto 
+nel primario da permettergli di essere connessi simultaneamente.
    </para>
 
    <para>
-    If you're using a WAL archive, its size can be minimized using
-    the <varname>archive_cleanup_command</varname> option to remove files that are
-    no longer required by the standby server. Note however, that if you're
-    using the archive for backup purposes, you need to retain files needed
-    to recover from at least the latest base backup, even if they're no
-    longer needed by the standby.
+Se si sta usando un archivio WAL, la sua dimensione può essere minimizzara usando 
+l'opzione <varname>archive_cleanup_command</varname> per rimuovere i file che non 
+sono più richiesti dal server standby. Notare comunque, che se si sta uasndo 
+l'archivio per scopi di backup, si dovranno mantenere i file necessari
+per ripristinare da almeno l'ultimo backup di base, anche se non sono più necessari 
+allo standby.
    </para>
   </sect2>
 
   <sect2 id="streaming-replication">
-   <title>Streaming Replication</title>
+   <title>Replica streaming</title>
 
    <indexterm zone="high-availability">
-    <primary>Streaming Replication</primary>
+    <primary>Replica streaming</primary>
    </indexterm>
 
    <para>
-    Streaming replication allows a standby server to stay more up-to-date
-    than is possible with file-based log shipping. The standby connects
-    to the primary, which streams WAL records to the standby as they're
-    generated, without waiting for the WAL file to be filled.
+La replica streaming permette ad un server standby di rimanere più aggiornato
+rispetto al log shipping basato su file. Lo standby si connette
+al primario, che manda i record WAL allo standby appena vengono generati, 
+senza aspettare che il file WAL sia riempito.
    </para>
 
    <para>
-    Streaming replication is asynchronous, so there is still a small delay
-    between committing a transaction in the primary and for the changes to
-    become visible in the standby. The delay is however much smaller than with
-    file-based log shipping, typically under one second assuming the standby
-    is powerful enough to keep up with the load. With streaming replication,
-    <varname>archive_timeout</varname> is not required to reduce the data loss
+La replica streaming è asincrona, quindi c'è ancora un piccolo ritardo
+tra il commit di una transazione nel primario e perchè i cambiamenti diventino 
+visibili nello standby. Il ritardo comunque è molto minore rispetto 
+al log shipping basato su file, tipicamente sotto il secondo, assumendo che lo standby 
+sia potente abbastanza da sopportare il carico. Con la replica streaming,  
+<varname>archive_timeout</varname> non è richiesto per ridurre la finestra di perdita di dati.
     window.
    </para>
 
    <para>
-    If you use streaming replication without file-based continuous
-    archiving, you have to set <varname>wal_keep_segments</varname> in the master
-    to a value high enough to ensure that old WAL segments are not recycled
-    too early, while the standby might still need them to catch up. If the
-    standby falls behind too much, it needs to be reinitialized from a new
-    base backup. If you set up a WAL archive that's accessible from the
-    standby, <varname>wal_keep_segments</varname> is not required as the standby can always
-    use the archive to catch up.
+Se si usa la replica streaming senza l'archiviazione continua basata su file, 
+si deve impostare <varname>wal_keep_segments</varname> nel master 
+ad un valore alto abbastanza da assicurare che i segmenti WAL vecchi non vengano 
+riciclati troppo presto, mentre lo standby potrebbe comunque averne bisogno. Se 
+lo standby rimane troppo indietro, ha bisogno di essere inizializzato di nuovo da un
+nuovo backup di base. Se si prepara un archivio WAL che sia accessibile dallo standby, 
+<varname>wal_keep_segments</varname> non è richiesto dato che lo standby può sempre
+usare l'archivio per aggiornarsi.
    </para>
 
    <para>
-    To use streaming replication, set up a file-based log-shipping standby
-    server as described in <xref linkend="warm-standby"/>. The step that
-    turns a file-based log-shipping standby into streaming replication
-    standby is setting <varname>primary_conninfo</varname> setting in the
-    <filename>recovery.conf</filename> file to point to the primary server. Set
-    <xref linkend="guc-listen-addresses"/> and authentication options
-    (see <filename>pg_hba.conf</filename>) on the primary so that the standby server
-    can connect to the <literal>replication</literal> pseudo-database on the primary
-    server (see <xref linkend="streaming-replication-authentication"/>).
+Per usare la replica streaming, impostare un server standby con log-shipping basato
+su file come descritto in  <xref linkend="warm-standby"/>. Il passo che  
+porta uno standby basato sul log shipping ad essere uno standby basato sulla
+replica streaming è quello di impostare <varname>primary_conninfo</varname> nel
+file <filename>recovery.conf</filename> che punti al server primario. Impostare  
+<xref linkend="guc-listen-addresses"/> e le opzioni di autenticazione 
+(si veda <filename>pg_hba.conf</filename>) sul primario così che il server standby 
+possa connettersi allo pseudo-database <literal>replication</literal> sul server
+primario (si veda <xref linkend="streaming-replication-authentication"/>).
    </para>
 
    <para>
-    On systems that support the keepalive socket option, setting
-    <xref linkend="guc-tcp-keepalives-idle"/>,
-    <xref linkend="guc-tcp-keepalives-interval"/> and
-    <xref linkend="guc-tcp-keepalives-count"/> helps the primary promptly
-    notice a broken connection.
+Su sistemi che supportano l'opzione socket keepalive, impostare
+<xref linkend="guc-tcp-keepalives-idle"/>,
+<xref linkend="guc-tcp-keepalives-interval"/> e
+<xref linkend="guc-tcp-keepalives-count"/> 
+aiuterebbe il primario a notificare 
+una connessione interrotta.
    </para>
 
    <para>
-    Set the maximum number of concurrent connections from the standby servers
-    (see <xref linkend="guc-max-wal-senders"/> for details).
+Impostare il numero massimo di connessioni concorrenti dai server standby
+(si veda <xref linkend="guc-max-wal-senders"/> per maggiori dettagli).
    </para>
 
    <para>
-    When the standby is started and <varname>primary_conninfo</varname> is set
-    correctly, the standby will connect to the primary after replaying all
-    WAL files available in the archive. If the connection is established
-    successfully, you will see a walreceiver process in the standby, and
-    a corresponding walsender process in the primary.
+Quando lo standby viene avviato e <varname>primary_conninfo</varname> è impostato 
+correttamente, lo standby si connetterà al primario dopo aver ripetuto tutti i file WAL 
+disponibile nell'archivio. Se la connessione è stabilita con successo, 
+si noterà un processo walreceiver sullo standby, e un corrispondente processo
+walsender sul primario.
    </para>
 
    <sect3 id="streaming-replication-authentication">
-    <title>Authentication</title>
+    <title>Autenticazione</title>
     <para>
-     It is very important that the access privileges for replication be set up
-     so that only trusted users can read the WAL stream, because it is
-     easy to extract privileged information from it.  Standby servers must
-     authenticate to the primary as a superuser account.
-     So a role with the <literal>SUPERUSER</literal> and <literal>LOgin</literal>
-     privileges needs to be created on the primary.
+È molto importante che i privilegi d'accesso per la replica siano impostati 
+in modo che solo gli utenti fidati possano leggere lo stream WAL, dato che 
+è facile estrarne informazioni privilegiate. I server standby devono autenticarsi
+al primario come account superutente.
+Quindi è necessario creare un ruolo con i privilegi <literal>SUPERUSER</literal> e <literal>LOGIN</literal>
+sul primario.
     </para>
     <para>
-     Client authentication for replication is controlled by a
-     <filename>pg_hba.conf</filename> record specifying <literal>replication</literal> in the
-     <replaceable>database</replaceable> field. For example, if the standby is running on
-     host IP <literal>192.168.1.100</literal> and the superuser's name for replication
-     is <literal>foo</literal>, the administrator can add the following line to the
-     <filename>pg_hba.conf</filename> file on the primary:
+L'autenticazione del client per la replica è controllata da un record nel file 
+<filename>pg_hba.conf</filename> che specifica <literal>replication</literal> nel campo 
+<replaceable>database</replaceable>. Per esempio, se lo standby è in esecuzione sull'IP 
+<literal>192.168.1.100</literal> e il nome utente per la replica è 
+<literal>foo</literal>, l'amministratore può aggiungere la linea seguente al file 
+<filename>pg_hba.conf</filename> sul primario:
 
 <programlisting>
-# Allow the user "foo" from host 192.168.1.100 to connect to the primary
-# as a replication standby if the user's password is correctly supplied.
+# Permette all'utente "foo" dal host 192.168.1.100 di connettersi al primario
+# come standby di replica se la password viene fornita correttamente
 #
 # TYPE  DATABASE        USER            CIDR-ADDRESS            METHOD
 host    replication     foo             192.168.1.100/32        md5
 </programlisting>
     </para>
     <para>
-     The host name and port number of the primary, connection user name,
-     and password are specified in the <filename>recovery.conf</filename> file.
-     The password can also be set in the <filename>~/.pgpass</filename> file on the
-     standby (specify <literal>replication</literal> in the <replaceable>database</replaceable>
-     field).
-     For example, if the primary is running on host IP <literal>192.168.1.50</literal>,
-     port <literal>5432</literal>, the superuser's name for replication is
-     <literal>foo</literal>, and the password is <literal>foopass</literal>, the administrator
-     can add the following line to the <filename>recovery.conf</filename> file on the
-     standby:
+Il nome del host e il numero della porta del primario, il nome utente per la connessione
+e la password, sono specificati nel file <filename>recovery.conf</filename>.
+La password può essere impostata anche nel file <filename>~/.pgpass</filename> sullo standby
+(specificare <literal>replication</literal> nel campo <replaceable>database</replaceable>).
+Per esempio, se il primario è in esecuzione sull'IP <literal>192.168.1.50</literal>,
+porta <literal>5432</literal>, il nome del superutente per la replica è 
+<literal>foo</literal>, e la password è <literal>foopass</literal>, l'amministratore 
+può aggiungere la seguente linea al file <filename>recovery.conf</filename> sullo standby:
 
 <programlisting>
 # The standby connects to the primary that is running on host 192.168.1.50
@@ -840,20 +838,19 @@ primary_conninfo = 'host=192.168.1.50 port=5432 user=foo password=foopass'
    </sect3>
 
    <sect3 id="streaming-replication-monitoring">
-    <title>Monitoring</title>
+    <title>Monitoraggio</title>
     <para>
-     An important health indicator of streaming replication is the amount
-     of WAL records generated in the primary, but not yet applied in the
-     standby. You can calculate this lag by comparing the current WAL write
-     location on the primary with the last WAL location received by the
-     standby. They can be retrieved using
-     <function>pg_current_xlog_location</function> on the primary and the
-     <function>pg_last_xlog_receive_location</function> on the standby,
-     respectively (see <xref linkend="functions-admin-backup-table"/> and
-     <xref linkend="functions-recovery-info-table"/> for details).
-     The last WAL receive location in the standby is also displayed in the
-     process status of the WAL receiver process, displayed using the
-     <command>ps</command> command (see <xref linkend="monitoring-ps"/> for details).
+Un indicatore di salute della replica streaming importante è la quantità
+di record WAL generati nel primario, ma non ancora applicati nello stanby.
+È possibile calcolare questo ritardo confrontando la locazione di scrittura 
+dello WAL corrente sul primario e l'ultima locazione ricevuta dallo standby.
+Esse possono essere ottenute usando <function>pg_current_xlog_location</function>
+sul primario e <function>pg_last_xlog_receive_location</function>
+sullo standby, rispettivamente (si veda <xref linkend="functions-admin-backup-table"/> e 
+<xref linkend="functions-recovery-info-table"/> per maggiori dettagli).
+L'ultima locazione WAL ricevuta nello standby viene visualizzata anche nello stato
+del processo WAL receiver, visibile con il comando 
+<command>ps</command> (si veda <xref linkend="monitoring-ps"/> per maggiori dettagli).
     </para>
    </sect3>
 
@@ -864,25 +861,25 @@ primary_conninfo = 'host=192.168.1.50 port=5432 user=foo password=foopass'
    <title>Failover</title>
 
    <para>
-    If the primary server fails then the standby server should begin
-    failover procedures.
+Se il server primario fallisce allora il server standby dovrebbe iniziare le
+procedure di failover. 
    </para>
 
    <para>
-    If the standby server fails then no failover need take place. If the
-    standby server can be restarted, even some time later, then the recovery
-    process can also be restarted immediately, taking advantage of
-    restartable recovery. If the standby server cannot be restarted, then a
-    full new standby server instance should be created.
+Se il server standby fallisce allora non c'è bisogno che avvenga alcun failover. Se 
+il server standby può essere riavviato, anche più tardi, allora anche il processo di
+recovery può essere riavviato immediatamente, ottenendo il vantaggio del recovery 
+riavviabile. Se il server standby non può essere riavviato, allora dovrebbe essere
+creata un'istanza completamente nuova del server standby. 
    </para>
 
    <para>
-    If the primary server fails and the standby server becomes the
-    new primary, and then the old primary restarts, you must have
-    a mechanism for informing the old primary that it is no longer the primary. This is
-    sometimes known as <acronym>STONITH</acronym> (Shoot The Other Node In The Head), which is
-    necessary to avoid situations where both systems think they are the
-    primary, which will lead to confusion and ultimately data loss.
+Se il server primario fallisce e il server standby diventa il nuovo primario,  
+e poi il vecchio primario viene riavviato, si deve avere un
+meccanismo per informare il vecchio primario che non è più il primario. A volte ci si 
+riferisce a quasto come <acronym>STONITH</acronym> (Shoot The Other Node In The Head), che 
+è per evitare situazioni dove entrambi i sistemi pensano di essere il primario, 
+che genera confusione ed essenzialmente perdita di dati.
    </para>
 
    <para>
@@ -896,35 +893,34 @@ primary_conninfo = 'host=192.168.1.50 port=5432 user=foo password=foopass'
    </para>
 
    <para>
-    <productname>PostgreSQL</productname> does not provide the system
-    software required to identify a failure on the primary and notify
-    the standby database server.  Many such tools exist and are well
-    integrated with the operating system facilities required for
-    successful failover, such as IP address migration.
+<productname>PostgreSQL</productname> non fornisce il software di sistema necessario 
+a identificare un fallimento sul primario e notificare il server database di standby.
+Molti di questi strumenti esistono e sono ben integrati 
+con le strutture del sistema operativo richieste per un failover 
+riuscito bene, tipo la migrazione dell'indirizzo IP.
    </para>
 
    <para>
-    Once failover to the standby occurs, there is only a
-    single server in operation. This is known as a degenerate state.
-    The former standby is now the primary, but the former primary is down
-    and might stay down.  To return to normal operation, a standby server
-    must be recreated,
-    either on the former primary system when it comes up, or on a third,
-    possibly new, system. Once complete the primary and standby can be
-    considered to have switched roles. Some people choose to use a third
-    server to provide backup for the new primary until the new standby
-    server is recreated,
-    though clearly this complicates the system configuration and
-    operational processes.
+Una volta che avviene il failover verso lo standby, c'è solo un 
+singolo server in funzione. Questo è noto essere uno stato corrotto.  
+Lo standby precedente adesso è il primario, ma il rpecedente primario è giu e potrebbe 
+rimanere giù. Per tornare alle operazioni normali, deve essere ricreato
+un server standby,
+o sul precedente sistema primario quando viene tirato su, o su un terzo sistema,
+possibilmente nuovo. Una volta completato possiamo considerare invertiti
+i ruoli di primario e standby. Alcune persone scelgono di usare un terzo server 
+per avere dei backup del nuovo primario finchè il nuovo server standby non è ricreato,  
+sebbene questo chiaramente complichi le configurazioni dei sistemi 
+e i processi operazionali.
    </para>
 
    <para>
-    So, switching from primary to standby server can be fast but requires
-    some time to re-prepare the failover cluster. Regular switching from
-    primary to standby is useful, since it allows regular downtime on
-    each system for maintenance. This also serves as a test of the
-    failover mechanism to ensure that it will really work when you need it.
-    Written administration procedures are advised.
+Quindi, passare da primario a standby può essere veloce ma richiede
+un po' di tempo per ripreparare il cluster di failover. Il passaggio regolare  
+da primario a standby è utile, dato che permette periodi di fermo regolari di ogni sistema
+per manutenzione. Questo serve anche come test del meccanismo di failoevr
+per assicurare che funzionerà realmente quando se ne avrà bisogno. 
+Sono consigliate procedure di amministrazione scritte. 
    </para>
 
    <para>
@@ -939,55 +935,56 @@ primary_conninfo = 'host=192.168.1.50 port=5432 user=foo password=foopass'
   </sect1>
 
   <sect1 id="log-shipping-alternative">
-   <title>Alternative method for log shipping</title>
+   <title>Metodo alternativo per il log shipping</title>
 
    <para>
-    An alternative to the built-in standby mode described in the previous
-    sections is to use a <varname>restore_command</varname> that polls the archive location.
-    This was the only option available in versions 8.4 and below. In this
-    setup, set <varname>standby_mode</varname> off, because you are implementing
-    the polling required for standby operation yourself. See
-    contrib/pg_standby (<xref linkend="pgstandby"/>) for a reference
-    implementation of this.
+Un'alternativa alla modalità standby incorporata descritta nelle precedenti 
+sezioni è di usare un <varname>restore_command</varname> che sonda la posizione dell'archivio.
+Questa era la sola opzione disponibile nelle versioni 8.4 e precedenti. In questa 
+configurazione, impostare <varname>standby_mode</varname> a off, dato che si sta implementando
+da soli il polling richiesto per l'operazione di standby. Si veda
+contrib/pg_standby (<xref linkend="pgstandby"/>) per un'implementazione di riferimento
+di questo.
    </para>
 
    <para>
-    Note that in this mode, the server will apply WAL one file at a
-    time, so if you use the standby server for queries (see Hot Standby),
-    there is a delay between an action in the master and when the
-    action becomes visible in the standby, corresponding the time it takes
-    to fill up the WAL file. <varname>archive_timeout</varname> can be used to make that delay
-    shorter. Also note that you can't combine streaming replication with
-    this method.
+Si noti che in questa modalità, il server applicherà lo WAL un file 
+alla volta, quindi se si usa il server standby per query (si veda Hot Standby),
+c'è un ritardo tra un'azione nel master e quando l'azione 
+diventa visibile nello standby, corrispondendo al tempo che ci mette a riempire
+il file WAL. <varname>archive_timeout</varname> può essere usato per rendere minore il ritardo. 
+Notare inoltre che non è possibile combinare la replica streaming con 
+questo metodo.
    </para>
 
    <para>
-    The operations that occur on both primary and standby servers are
-    normal continuous archiving and recovery tasks. The only point of
-    contact between the two database servers is the archive of WAL files
-    that both share: primary writing to the archive, standby reading from
-    the archive. Care must be taken to ensure that WAL archives from separate
-    primary servers do not become mixed together or confused. The archive
-    need not be large if it is only required for standby operation.
+Le operazioni che avvengono sia sul primario che sullo standby sono 
+normali compiti di archiviazione continua e ripristino. Il solo punto di  
+contatto tra i due server database è l'archivio di file WAL
+che entrambi condividono: il primario scrivendo l'archivio, lo standby leggendo
+dall'archivio. Dev'essere posta attenzione per essere sicuri che gli archivi WAL 
+da server primari separati non si mescolino tra loro. L'archivio non deve 
+essere grande se è richiesto solo per operazioni di standby.
    </para>
 
    <para>
-    The magic that makes the two loosely coupled servers work together is
-    simply a <varname>restore_command</varname> used on the standby that,
-    when asked for the next WAL file, waits for it to become available from
-    the primary. The <varname>restore_command</varname> is specified in the
-    <filename>recovery.conf</filename> file on the standby server. Normal recovery
-    processing would request a file from the WAL archive, reporting failure
-    if the file was unavailable.  For standby processing it is normal for
-    the next WAL file to be unavailable, so the standby must wait for
-    it to appear. For files ending in <literal>.backup</literal> or
-    <literal>.history</literal> there is no need to wait, and a non-zero return
-    code must be returned. A waiting <varname>restore_command</varname> can be
-    written as a custom script that loops after polling for the existence of
-    the next WAL file. There must also be some way to trigger failover, which
-    should interrupt the <varname>restore_command</varname>, break the loop and
-    return a file-not-found error to the standby server. This ends recovery
-    and the standby will then come up as a normal server.
+Il trucco che fa funzionare insieme i due server è semplicemente un 
+<varname>restore_command</varname> usato sullo standby che, 
+quando richiesto per il prossimo file WAL, aspetta che diventi disponibile dal primario.
+Il <varname>restore_command</varname> viene specificato nel file 
+<filename>recovery.conf</filename> sul server stanby. Il processo di  ripristino 
+normale richiederebbe un file dall'archivio WAL, riportando un fallimento 
+se il file non era disponibile. Per il processamento dello standby è normale 
+che il prossimo file WAL non sia disponibile, quindi lo standby deve aspettare 
+che appaia. Per file che terminano con <literal>.backup</literal> o 
+<literal>.history</literal> non c'è bisogno di aspettare, e un deve essere restituito 
+un codice diverso da zero. 
+Un <varname>restore_command</varname> di attesa può essere 
+scritto come script personalizzato che cicla dopo aver fatto il pool per l'esistenza del 
+prossimo file WAL. Ci deve essere anche qualche modo di triggerare il failover, che
+dovrebbe interrompere il <varname>restore_command</varname>, rompere il ciclo e
+ritornare un errore di tipo file-non-trovato al server standby. Questo termina il ripristino
+e lo standby quindi tornerà attivo come un server normale.
    </para>
 
    <para>
@@ -1063,10 +1060,10 @@ if (!triggered)
      </listitem>
      <listitem>
       <para>
-       Begin recovery on the standby server from the local WAL
-       archive, using a <filename>recovery.conf</filename> that specifies a
-       <varname>restore_command</varname> that waits as described
-       previously (see <xref linkend="backup-pitr-recovery"/>).
+Cominciare il ripristino sul server standby dall'archivio WAL locale,
+usare un <filename>recovery.conf</filename> che specifica un 
+ <varname>restore_command</varname> che aspetta come descritto 
+precedentemente (si veda <xref linkend="backup-pitr-recovery"/>).
       </para>
      </listitem>
     </orderedlist>
@@ -1074,7 +1071,9 @@ if (!triggered)
 
    <para>
     Recovery treats the WAL archive as read-only, so once a WAL file has
+Il rispristino tratta l'archivio WAL in sola lettura, quindi una volta che una
     been copied to the standby system it can be copied to tape at the same
+
     time as it is being read by the standby database server.
     Thus, running a standby server for high availability can be performed at
     the same time as files are stored for longer term disaster recovery
@@ -1551,8 +1550,11 @@ if (!triggered)
 
    <para>
     If <varname>hot_standby</varname> is turned <literal>on</literal> in
+Se  <varname>hot_standby</varname> è <literal>on</literal> in   
     <filename>postgresql.conf</filename> and there is a <filename>recovery.conf</filename>
+nel <filename>postgresql.conf</filename> ed è presente un file <filename>recovery.conf</filename>,
     file present, the server will run in Hot Standby mode.
+ 
     However, it may take some time for Hot Standby connections to be allowed,
     because the server will not accept connections until it has completed
     sufficient recovery to provide a consistent state against which queries
@@ -1825,65 +1827,63 @@ LOG:  database system is ready to accept read only connections
    </para>
 
    <para>
-    On the standby, parameters <xref linkend="guc-hot-standby"/>,
-    <xref linkend="guc-max-standby-archive-delay"/> and
-    <xref linkend="guc-max-standby-streaming-delay"/> can be used.
-    <xref linkend="guc-vacuum-defer-cleanup-age"/> has no effect
-    as long as the server remains in standby mode, though it will
-    become relevant if the standby becomes primary.
+Sullo standby, possono essere usati i parametri <xref linkend="guc-hot-standby"/>,
+<xref linkend="guc-max-standby-archive-delay"/> e
+<xref linkend="guc-max-standby-streaming-delay"/>.
+<xref linkend="guc-vacuum-defer-cleanup-age"/> non ha effetto
+fino a che il server rimane in modalità standby, sebbene diventi rilevante
+se lo standby diventa il primario. 
    </para>
   </sect2>
 
   <sect2 id="hot-standby-caveats">
-   <title>Caveats</title>
+   <title>Avvertimenti</title>
 
    <para>
-    There are several limitations of Hot Standby.
-    These can and probably will be fixed in future releases:
+Hot Standby ha diverse limitazioni. 
+Queste potranno e probabilmente saranno corrette in versioni future:
 
   <itemizedlist>
    <listitem>
     <para>
-     Operations on hash indexes are not presently WAL-logged, so
-     replay will not update these indexes.  Hash indexes will not be
-     used for query plans during recovery.
+Le operazioni sugli indici hash attualmente non sono sottoposte a log nel WAL, 
+quindi rifarle non aggiornerà questi indici. Gli indici hash non verrano 
+usati per i piani delle query durante il ripristino.
     </para>
    </listitem>
    <listitem>
     <para>
-     Full knowledge of running transactions is required before snapshots
-     can be taken. Transactions that use large numbers of subtransactions
-     (currently greater than 64) will delay the start of read only
-     connections until the completion of the longest running write transaction.
-     If this situation occurs, explanatory messages will be sent to the server log.
+È richiesta la conoscienza completa delle transazioni in esecuzione prima che possano
+essere realizzati degli snapshot. Transazioni che usano grandi numeri di transazioni
+(attualmente maggiori di 64) ritarderanno l'inizio delle connessioni in sola lettura  
+fino al completamento della transazione in esecuzione più lunga. 
+Se si presenta questa situazione, verrano spediti al log messaggi di spiegazione. 
     </para>
    </listitem>
    <listitem>
     <para>
-     Valid starting points for standby queries are generated at each
-     checkpoint on the master. If the standby is shut down while the master
-     is in a shutdown state, it might not be possible to re-enter Hot Standby
-     until the primary is started up, so that it generates further starting
-     points in the WAL logs.  This situation isn't a problem in the most
-     common situations where it might happen. Generally, if the primary is
-     shut down and not available anymore, that's likely due to a serious
-     failure that requires the standby being converted to operate as
-     the new primary anyway.  And in situations where the primary is
-     being intentionally taken down, coordinating to make sure the standby
-     becomes the new primary smoothly is also standard procedure.
+Punti d'inizio validi per query standby vengono generati ad ogni checkpoint 
+sul master. Se lo standby viene spento mentre il master è in uno stato di shutdown,
+potrebbe non essere possibile di rientrare in Hot Standby 
+fino a che il primario viene fatto partire, così che generi ulteriori punti d'inizio 
+nei log WAL. Questa situazione non è un problema nella maggior parte delle situazioni 
+dove potrebbe succedere. Generalmente, se il primario viene spento 
+e quindi  non è più disponibile, probabilmente è per via di un fallimento grave
+che richiede che lo standby venga convertito ad agire da nuovo primario in ogni caso. 
+E in situazioni doe il primario viene arrestato intenzionalmente, assicurarsi  
+che lo standby diventi il nuovo primario fa parte della procedura standard.
     </para>
    </listitem>
    <listitem>
     <para>
-     At the end of recovery, <literal>AccessExclusiveLocks</literal> held by prepared transactions
-     will require twice the normal number of lock table entries. If you plan
-     on running either a large number of concurrent prepared transactions
-     that normally take <literal>AccessExclusiveLocks</literal>, or you plan on having one
-     large transaction that takes many <literal>AccessExclusiveLocks</literal>, you are
-     advised to select a larger value of <varname>max_locks_per_transaction</varname>,
-     perhaps as much as twice the value of the parameter on
-     the primary server. You need not consider this at all if
-     your setting of <varname>max_prepared_transactions</varname> is <literal>0</literal>.
+Al termine del ripristino, i lock di tipo <literal>AccessExclusiveLocks</literal> mantenuti dalle transazioni 
+preparate richiederanno il doppio del normale numero di voci di lock di tabella. Se si pianifica 
+di eseguire o un gran numero di transazioni preparate concorrenti rispetto 
+a quelli presi normalmente, o pianificare di avere una transazione grande che prende molti 
+<literal>AccessExclusiveLocks</literal>, si consiglia di selezionare un valore maggiore per 
+<varname>max_locks_per_transaction</varname>, forse grande il doppio del valore 
+del parametro sul server primario. Non si ha bisogno di preoccuparsi di questo 
+se <varname>max_prepared_transactions</varname> è <literal>0</literal>.
     </para>
    </listitem>
   </itemizedlist>
